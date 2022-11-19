@@ -3,7 +3,7 @@ import { add } from "../latex/add";
 import { NumberType } from "../numbers/number";
 import { Rational } from "../numbers/rationals/rational";
 import { Interval } from "../sets/intervals/intervals";
-import { randint } from "../mathutils/randint";
+import { randint } from "../mathutils/random/randint";
 import { Polynomial } from "./polynomial";
 import { Latex } from "../latex/latex";
 import { DiscreteSet } from "../sets/discreteSet";

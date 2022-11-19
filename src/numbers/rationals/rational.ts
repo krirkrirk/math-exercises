@@ -1,4 +1,4 @@
-import { gcd } from "../../mathutils/gcd";
+import { gcd } from "../../mathutils/arithmetic/gcd";
 
 export class Rational {
   num: number;
