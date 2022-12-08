@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 exports.DiscreteSet = void 0;
-var randomIn_1 = require("../utils/randomIn");
+var random_1 = require("../utils/random");
 var DiscreteSet = /** @class */ (function () {
     function DiscreteSet(elements) {
         var _this = this;
@@ -23,7 +23,7 @@ var DiscreteSet = /** @class */ (function () {
         return this.elements.includes(el);
     };
     DiscreteSet.prototype.getRandomElement = function () {
-        return (0, randomIn_1.randomIn)(this.elements);
+        return (0, random_1.random)(this.elements);
     };
     return DiscreteSet;
 }());

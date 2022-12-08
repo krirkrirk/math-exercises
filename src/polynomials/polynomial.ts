@@ -1,6 +1,7 @@
+import { Expression } from "../expression/expression";
 import { Latex } from "../latex/latex";
 
-export class Polynomial {
+export class Polynomial implements Expression {
   degree: number;
   variable: string;
   /**
@@ -15,20 +16,26 @@ export class Polynomial {
    */
   constructor(coefficients: number[], variable: string = "x") {
     if (coefficients.length === 0) throw Error("coeffs must be not null");
-    if (coefficients[coefficients.length - 1] === 0) throw Error("n-th coeff must be not null");
+    if (coefficients[coefficients.length - 1] === 0)
+      throw Error("n-th coeff must be not null");
     this.coefficients = coefficients;
     this.variable = variable;
     this.degree = coefficients.length - 1;
   }
   equals(P: Polynomial): boolean {
-    return P.degree === this.degree && this.coefficients.every((coeff, i) => coeff === P.coefficients[i]);
+    return (
+      P.degree === this.degree &&
+      this.coefficients.every((coeff, i) => coeff === P.coefficients[i])
+    );
   }
 
   add(P: Polynomial): Polynomial {
-    if (P.variable !== this.variable) throw Error("Can't add two polynomials with different variables");
+    if (P.variable !== this.variable)
+      throw Error("Can't add two polynomials with different variables");
 
     const newDegree =
-      P.degree === this.degree && P.coefficients[P.degree] === -this.coefficients[this.degree]
+      P.degree === this.degree &&
+      P.coefficients[P.degree] === -this.coefficients[this.degree]
         ? P.degree - 1
         : Math.max(P.degree, this.degree);
     const res: number[] = [];
@@ -39,7 +46,8 @@ export class Polynomial {
   }
 
   multiply(Q: Polynomial): Polynomial {
-    if (Q.variable !== this.variable) throw Error("Can't multiply two polynomials with different variables");
+    if (Q.variable !== this.variable)
+      throw Error("Can't multiply two polynomials with different variables");
 
     const p = this.degree;
     const q = Q.degree;
@@ -54,6 +62,13 @@ export class Polynomial {
     }
 
     return new Polynomial(res, this.variable);
+  }
+
+  opposite() {
+    return new Polynomial(
+      this.coefficients.map((coeff) => -coeff),
+      this.variable
+    );
   }
 
   toTex(): string {
@@ -73,7 +88,14 @@ export class Polynomial {
       else if (i === this.degree) {
         s += coeff === 1 ? "" : coeff === -1 ? "-" : coeff;
       } else {
-        s += coeff === 1 ? "+" : coeff === -1 ? "-" : coeff > 0 ? `+${coeff}` : coeff;
+        s +=
+          coeff === 1
+            ? "+"
+            : coeff === -1
+            ? "-"
+            : coeff > 0
+            ? `+${coeff}`
+            : coeff;
       }
       //x^n
       if (i === 0) continue;
@@ -85,5 +107,8 @@ export class Polynomial {
       // s += this.coefficients[i] + this.variable + `^{${i}}`;
     }
     return s;
+  }
+  toString(): string {
+    return this.toTex();
   }
 }

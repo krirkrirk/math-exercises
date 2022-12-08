@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 exports.Rational = void 0;
-var gcd_1 = require("../../mathutils/gcd");
+var gcd_1 = require("../../mathutils/arithmetic/gcd");
 var Rational = /** @class */ (function () {
     function Rational(numerator, denumerator) {
         this.num = numerator;

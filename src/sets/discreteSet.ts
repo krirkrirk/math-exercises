@@ -1,4 +1,4 @@
-import { randomIn } from "../utils/randomIn";
+import { random } from "../utils/random";
 import { MathSetInterface } from "./mathSetInterface";
 
 export class DiscreteSet<T> implements MathSetInterface<T> {
@@ -24,6 +24,6 @@ export class DiscreteSet<T> implements MathSetInterface<T> {
   }
 
   getRandomElement(): T {
-    return randomIn(this.elements);
+    return random(this.elements);
   }
 }

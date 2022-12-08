@@ -19,24 +19,25 @@ exports.Affine = exports.AffineConstructor = void 0;
 var rational_1 = require("../numbers/rationals/rational");
 var intervals_1 = require("../sets/intervals/intervals");
 var polynomial_1 = require("./polynomial");
+var discreteSet_1 = require("../sets/discreteSet");
 var AffineConstructor = /** @class */ (function () {
     function AffineConstructor() {
     }
-    AffineConstructor.random = function (intervalA, intervalB) {
-        if (intervalA === void 0) { intervalA = new intervals_1.Interval("[[-10; 10]]"); }
-        if (intervalB === void 0) { intervalB = new intervals_1.Interval("[[-10; 10]]"); }
-        var a = intervalA.getRandomElement();
-        var b = intervalB.getRandomElement();
+    AffineConstructor.random = function (domainA, domainB) {
+        if (domainA === void 0) { domainA = new intervals_1.Interval("[[-10; 10]]").difference(new discreteSet_1.DiscreteSet([0])); }
+        if (domainB === void 0) { domainB = new intervals_1.Interval("[[-10; 10]]"); }
+        var a = domainA.getRandomElement();
+        var b = domainB.getRandomElement();
         return new Affine(a, b);
     };
-    AffineConstructor.differentRandoms = function (nb, intervalA, intervalB) {
-        if (intervalA === void 0) { intervalA = new intervals_1.Interval("[[-10; 10]]"); }
-        if (intervalB === void 0) { intervalB = new intervals_1.Interval("[[-10; 10]]"); }
+    AffineConstructor.differentRandoms = function (nb, domainA, domainB) {
+        if (domainA === void 0) { domainA = new intervals_1.Interval("[[-10; 10]]").difference(new discreteSet_1.DiscreteSet([0])); }
+        if (domainB === void 0) { domainB = new intervals_1.Interval("[[-10; 10]]"); }
         var res = [];
         var _loop_1 = function (i) {
             var aff;
             do {
-                aff = AffineConstructor.random(intervalA, intervalB);
+                aff = AffineConstructor.random(domainA, domainB);
             } while (res.some(function (affine) { return affine.equals(aff); }));
             res.push(aff);
         };
@@ -60,6 +61,9 @@ var Affine = /** @class */ (function (_super) {
     }
     Affine.prototype.getRoot = function () {
         return new rational_1.Rational(-this.b, this.a).simplify().toTex();
+    };
+    Affine.prototype.toString = function () {
+        return _super.prototype.toTex.call(this);
     };
     return Affine;
 }(polynomial_1.Polynomial));

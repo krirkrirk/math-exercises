@@ -11,7 +11,9 @@ import { MathSet } from "../sets/mathSet";
 
 export abstract class AffineConstructor {
   static random(
-    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(new DiscreteSet([0])),
+    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(
+      new DiscreteSet([0])
+    ),
     domainB: MathSet<number> = new Interval("[[-10; 10]]")
   ): Affine {
     const a = domainA.getRandomElement();
@@ -21,7 +23,9 @@ export abstract class AffineConstructor {
 
   static differentRandoms(
     nb: number,
-    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(new DiscreteSet([0])),
+    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(
+      new DiscreteSet([0])
+    ),
     domainB: MathSet<number> = new Interval("[[-10; 10]]")
   ): Affine[] {
     const res: Affine[] = [];
@@ -43,7 +47,7 @@ export abstract class AffineConstructor {
   // }
 }
 
-export class Affine extends Polynomial implements Expression {
+export class Affine extends Polynomial {
   a: number;
   b: number;
   variable: string;
@@ -57,5 +61,9 @@ export class Affine extends Polynomial implements Expression {
 
   getRoot(): string {
     return new Rational(-this.b, this.a).simplify().toTex();
+  }
+
+  toString(): string {
+    return super.toTex();
   }
 }

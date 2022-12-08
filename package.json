@@ -1,19 +1,28 @@
 {
-  "name": "latex-generators",
+  "name": "math-exercises",
   "version": "1.0.0",
-  "description": "",
+  "description": "Générateurs d'exercices et questions mathématiques en latex",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon"
   },
   "keywords": [],
-  "author": "",
+  "author": "Heureux Hasard",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.11.9",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
-    "typescript": "^4.8.4"
-  }
+    "typescript": "^4.9.3"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krirkrirk/math-exercices.git"
+  },
+  "bugs": {
+    "url": "https://github.com/krirkrirk/math-exercices/issues"
+  },
+  "homepage": "https://github.com/krirkrirk/math-exercices#readme"
 }

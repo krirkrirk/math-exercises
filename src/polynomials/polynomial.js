@@ -18,12 +18,14 @@ var Polynomial = /** @class */ (function () {
         this.degree = coefficients.length - 1;
     }
     Polynomial.prototype.equals = function (P) {
-        return P.degree === this.degree && this.coefficients.every(function (coeff, i) { return coeff === P.coefficients[i]; });
+        return (P.degree === this.degree &&
+            this.coefficients.every(function (coeff, i) { return coeff === P.coefficients[i]; }));
     };
     Polynomial.prototype.add = function (P) {
         if (P.variable !== this.variable)
             throw Error("Can't add two polynomials with different variables");
-        var newDegree = P.degree === this.degree && P.coefficients[P.degree] === -this.coefficients[this.degree]
+        var newDegree = P.degree === this.degree &&
+            P.coefficients[P.degree] === -this.coefficients[this.degree]
             ? P.degree - 1
             : Math.max(P.degree, this.degree);
         var res = [];
@@ -47,6 +49,9 @@ var Polynomial = /** @class */ (function () {
         }
         return new Polynomial(res, this.variable);
     };
+    Polynomial.prototype.opposite = function () {
+        return new Polynomial(this.coefficients.map(function (coeff) { return -coeff; }), this.variable);
+    };
     Polynomial.prototype.toTex = function () {
         // if (this.degree == 0) return "" + this.b;
         // function getMonome(power: number): string {
@@ -66,7 +71,14 @@ var Polynomial = /** @class */ (function () {
                 s += coeff === 1 ? "" : coeff === -1 ? "-" : coeff;
             }
             else {
-                s += coeff === 1 ? "+" : coeff === -1 ? "-" : coeff > 0 ? "+".concat(coeff) : coeff;
+                s +=
+                    coeff === 1
+                        ? "+"
+                        : coeff === -1
+                            ? "-"
+                            : coeff > 0
+                                ? "+".concat(coeff)
+                                : coeff;
             }
             //x^n
             if (i === 0)
@@ -80,6 +92,9 @@ var Polynomial = /** @class */ (function () {
             // s += this.coefficients[i] + this.variable + `^{${i}}`;
         }
         return s;
+    };
+    Polynomial.prototype.toString = function () {
+        return this.toTex();
     };
     return Polynomial;
 }());
