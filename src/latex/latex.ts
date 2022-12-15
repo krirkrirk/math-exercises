@@ -22,7 +22,7 @@ export class Latex {
     let s = this.tex;
     switch (typeof term) {
       case "number":
-        this.tex += term === 0 ? "" : `${term > 0 ? "+" : ""}${term}`;
+        this.tex += term === 0 ? "" : `${term > 0 && this.tex !== "" ? "+" : ""}${term}`;
         break;
       default:
         break;

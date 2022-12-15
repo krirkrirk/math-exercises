@@ -1,3 +1,3 @@
-class Integer  {
-
+export class Integer {
+  toTex() {}
 }

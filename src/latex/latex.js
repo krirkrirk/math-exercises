@@ -24,7 +24,7 @@ var Latex = /** @class */ (function () {
         var s = this.tex;
         switch (typeof term) {
             case "number":
-                this.tex += term === 0 ? "" : "".concat(term > 0 ? "+" : "").concat(term);
+                this.tex += term === 0 ? "" : "".concat(term > 0 && this.tex !== "" ? "+" : "").concat(term);
                 break;
             default:
                 break;

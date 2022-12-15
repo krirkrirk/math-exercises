@@ -62,6 +62,17 @@ var Interval = /** @class */ (function () {
     //res = a
     // return new MathSet();
     // }
+    Interval.prototype.exclude = function (nb) {
+        var _this = this;
+        var rand = function () {
+            var x;
+            do {
+                x = _this.getRandomElement();
+            } while (x === nb);
+            return x;
+        };
+        return new mathSet_1.MathSet(this.toTex() + "\\{".concat(nb, "\\}"), rand);
+    };
     Interval.prototype.difference = function (set) {
         var _this = this;
         var rand = function () {

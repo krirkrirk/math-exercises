@@ -68,6 +68,17 @@ export class Interval implements MathSetInterface<Number> {
   //res = a
   // return new MathSet();
   // }
+  exclude(nb: number) {
+    const rand = () => {
+      let x;
+      do {
+        x = this.getRandomElement();
+      } while (x === nb);
+      return x;
+    };
+
+    return new MathSet(this.toTex() + `\\{${nb}\\}`, rand);
+  }
 
   difference(set: DiscreteSet<number>) {
     const rand = () => {

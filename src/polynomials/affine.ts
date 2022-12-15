@@ -1,19 +1,12 @@
-import { Expression } from "../expression/expression";
-import { add } from "../latex/add";
-import { NumberType } from "../numbers/number";
 import { Rational } from "../numbers/rationals/rational";
 import { Interval } from "../sets/intervals/intervals";
-import { randint } from "../mathutils/random/randint";
 import { Polynomial } from "./polynomial";
-import { Latex } from "../latex/latex";
 import { DiscreteSet } from "../sets/discreteSet";
 import { MathSet } from "../sets/mathSet";
 
 export abstract class AffineConstructor {
   static random(
-    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(
-      new DiscreteSet([0])
-    ),
+    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(new DiscreteSet([0])),
     domainB: MathSet<number> = new Interval("[[-10; 10]]")
   ): Affine {
     const a = domainA.getRandomElement();
@@ -23,9 +16,7 @@ export abstract class AffineConstructor {
 
   static differentRandoms(
     nb: number,
-    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(
-      new DiscreteSet([0])
-    ),
+    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(new DiscreteSet([0])),
     domainB: MathSet<number> = new Interval("[[-10; 10]]")
   ): Affine[] {
     const res: Affine[] = [];
