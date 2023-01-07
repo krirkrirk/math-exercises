@@ -20,18 +20,23 @@ var rational_1 = require("../numbers/rationals/rational");
 var intervals_1 = require("../sets/intervals/intervals");
 var polynomial_1 = require("./polynomial");
 var discreteSet_1 = require("../sets/discreteSet");
+var integer_1 = require("../numbers/integer/integer");
+var multiplyNode_1 = require("../tree/nodes/operators/multiplyNode");
+var numberNode_1 = require("../tree/nodes/numbers/numberNode");
+var variableNode_1 = require("../tree/nodes/variables/variableNode");
+var addNode_1 = require("../tree/nodes/operators/addNode");
 var AffineConstructor = /** @class */ (function () {
     function AffineConstructor() {
     }
     AffineConstructor.random = function (domainA, domainB) {
-        if (domainA === void 0) { domainA = new intervals_1.Interval("[[-10; 10]]").difference(new discreteSet_1.DiscreteSet([0])); }
+        if (domainA === void 0) { domainA = new intervals_1.Interval("[[-10; 10]]").difference(new discreteSet_1.DiscreteSet([new integer_1.Integer(0, "0")])); }
         if (domainB === void 0) { domainB = new intervals_1.Interval("[[-10; 10]]"); }
         var a = domainA.getRandomElement();
         var b = domainB.getRandomElement();
-        return new Affine(a, b);
+        return new Affine(a.value, b.value);
     };
     AffineConstructor.differentRandoms = function (nb, domainA, domainB) {
-        if (domainA === void 0) { domainA = new intervals_1.Interval("[[-10; 10]]").difference(new discreteSet_1.DiscreteSet([0])); }
+        if (domainA === void 0) { domainA = new intervals_1.Interval("[[-10; 10]]").difference(new discreteSet_1.DiscreteSet([new integer_1.Integer(0, "0")])); }
         if (domainB === void 0) { domainB = new intervals_1.Interval("[[-10; 10]]"); }
         var res = [];
         var _loop_1 = function (i) {
@@ -53,7 +58,10 @@ var Affine = /** @class */ (function (_super) {
     __extends(Affine, _super);
     function Affine(a, b, variable) {
         if (variable === void 0) { variable = "x"; }
-        var _this = _super.call(this, [b, a], variable) || this;
+        var _this = this;
+        if (a === 0)
+            throw Error("affine must have a#0");
+        _this = _super.call(this, [b, a], variable) || this;
         _this.a = a;
         _this.b = b;
         _this.variable = variable;
@@ -64,6 +72,14 @@ var Affine = /** @class */ (function (_super) {
     };
     Affine.prototype.toString = function () {
         return _super.prototype.toTex.call(this);
+    };
+    Affine.prototype.toTree = function () {
+        if (this.b === 0) {
+            return new multiplyNode_1.MultiplyNode(new numberNode_1.NumberNode(this.a + "", this.a), new variableNode_1.VariableNode(this.variable));
+        }
+        else {
+            return new addNode_1.AddNode(new multiplyNode_1.MultiplyNode(new numberNode_1.NumberNode(this.a + "", this.a), new variableNode_1.VariableNode(this.variable)), new numberNode_1.NumberNode(this.b + "", this.b));
+        }
     };
     return Affine;
 }(polynomial_1.Polynomial));

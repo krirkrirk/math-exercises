@@ -15,7 +15,7 @@ export interface Exercise {
   section: string;
   levels: string[];
   connector: string;
-  generator(nb: number, options: Object): Question[];
+  generator(nb: number): Question[];
   // questions: Question[];
   // constructor({ generatorType, questionsNumber }: ExerciseParameters) {
 

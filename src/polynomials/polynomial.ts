@@ -15,7 +15,10 @@ export class Polynomial implements Expression {
    */
   constructor(coefficients: number[], variable: string = "x") {
     if (coefficients.length === 0) throw Error("coeffs must be not null");
-    if (coefficients[coefficients.length - 1] === 0) throw Error("n-th coeff must be not null");
+    if (coefficients[coefficients.length - 1] === 0) {
+      console.log(coefficients);
+      throw Error("n-th coeff must be not null");
+    }
     this.coefficients = coefficients;
     this.variable = variable;
     this.degree = coefficients.length - 1;
@@ -31,6 +34,7 @@ export class Polynomial implements Expression {
       P.degree === this.degree && P.coefficients[P.degree] === -this.coefficients[this.degree]
         ? P.degree - 1
         : Math.max(P.degree, this.degree);
+
     const res: number[] = [];
     for (let i = 0; i < newDegree + 1; i++) {
       res[i] = P.coefficients[i] + this.coefficients[i];
@@ -56,7 +60,7 @@ export class Polynomial implements Expression {
     return new Polynomial(res, this.variable);
   }
 
-  opposite() {
+  opposite(): Polynomial {
     return new Polynomial(
       this.coefficients.map((coeff) => -coeff),
       this.variable

@@ -1,4 +1,5 @@
 import { add } from "../../../operations/add";
+import { multiply } from "../../../operations/multiply";
 import { substract } from "../../../operations/substract";
 import { Affine, AffineConstructor } from "../../../polynomials/affine";
 import { random } from "../../../utils/random";
@@ -7,7 +8,6 @@ import { Exercise, Question } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
 /**
- *
  *  type (ax+b)(cx+d) ± (ax+b)(ex+f)
  */
 
@@ -18,10 +18,6 @@ export const factoType1Exercise: Exercise = {
   levels: ["3", "2"],
   section: "Calcul Littéral",
   generator: (nb: number) => getDistinctQuestions(getFactoType1Question, nb),
-  // questions: Question[];
-  // constructor(nbOfQuestions: number) {
-  //   this.questions = getDistinctQuestions(getFactoType1Question, nbOfQuestions);
-  // }
 };
 
 export function getFactoType1Question(): Question {
@@ -36,9 +32,15 @@ export function getFactoType1Question(): Question {
 
   const operation = random([add, substract]);
 
-  const statement = `(${permut[0][0]})(${permut[0][1]}) ${operation.tex} (${permut[1][0]})(${permut[1][1]})`;
+  const statement = operation.texApply(
+    multiply.texApply(permut[0][0], permut[0][1]),
+    multiply.texApply(permut[1][0], permut[1][1])
+  );
 
-  const answer = `(${affines[0]})(${operation.apply(affines[1], affines[2])})`;
+  // `(${permut[0][0]})(${permut[0][1]}) ${operation.tex} (${permut[1][0]})(${permut[1][1]})`;
+
+  const answer = multiply.texApply(affines[0], operation.mathApply(affines[1], affines[2]));
+  // const answer = `(${affines[0]})(${operation.mathApply(affines[1], affines[2])})`;
   const question: Question = {
     statement,
     answer,

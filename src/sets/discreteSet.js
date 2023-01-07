@@ -6,13 +6,13 @@ var DiscreteSet = /** @class */ (function () {
     function DiscreteSet(elements) {
         var _this = this;
         this.elements = Array.from(new Set(elements));
-        var tex = "{";
+        var tex = "\\{";
         this.elements.forEach(function (el, index) {
-            tex += el;
+            tex += el.tex;
             if (index < _this.elements.length - 1)
                 tex += ";";
             else
-                tex += "}";
+                tex += "\\}";
         });
         this.tex = tex;
     }
@@ -20,7 +20,7 @@ var DiscreteSet = /** @class */ (function () {
         return this.tex;
     };
     DiscreteSet.prototype.includes = function (el) {
-        return this.elements.includes(el);
+        return this.elements.some(function (nb) { return nb.value === el.value && nb.tex === el.tex; });
     };
     DiscreteSet.prototype.getRandomElement = function () {
         return (0, random_1.random)(this.elements);

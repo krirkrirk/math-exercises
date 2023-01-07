@@ -1,9 +1,11 @@
 import { EPSILON } from "../../numbers/epsilon";
-import { NumberType } from "../../numbers/number";
+import { Nombre, NumberType } from "../../numbers/nombre";
 import { round } from "../../mathutils/round";
 import { MathSetInterface } from "../mathSetInterface";
 import { DiscreteSet } from "../discreteSet";
 import { MathSet } from "../mathSet";
+import { Integer } from "../../numbers/integer/integer";
+import { Real } from "../../numbers/reals/real";
 
 enum BoundType {
   OO = "]a;b[",
@@ -12,7 +14,7 @@ enum BoundType {
   FF = "[a;b]",
 }
 
-export class Interval implements MathSetInterface<Number> {
+export class Interval implements MathSetInterface {
   min: number;
   max: number;
   boundType: BoundType;
@@ -43,7 +45,6 @@ export class Interval implements MathSetInterface<Number> {
         this.boundType = BoundType.OF;
         break;
       default:
-        console.log(`${left}a;b${right}`);
         throw console.error("wrong interval");
     }
     function getBound(bound: string) {
@@ -73,14 +74,13 @@ export class Interval implements MathSetInterface<Number> {
       let x;
       do {
         x = this.getRandomElement();
-      } while (x === nb);
+      } while (x.value === nb);
       return x;
     };
-
     return new MathSet(this.toTex() + `\\{${nb}\\}`, rand);
   }
 
-  difference(set: DiscreteSet<number>) {
+  difference(set: DiscreteSet): MathSet<Nombre> {
     const rand = () => {
       let x;
       do {
@@ -92,13 +92,20 @@ export class Interval implements MathSetInterface<Number> {
     return new MathSet(this.toTex() + `\\ ${set.toTex()}`, rand);
   }
 
-  toTex() {
-    return;
+  toTex(): string {
+    return this.tex;
   }
-  getRandomElement(precision: number = this.type === NumberType.Integer ? 0 : 2): number {
+
+  getRandomElement(precision: number = this.type === NumberType.Integer ? 0 : 2): Nombre {
     if (this.min === -Infinity || this.max === Infinity) throw Error("Can't chose amongst infinity");
     let min = this.boundType === BoundType.OO || this.boundType === BoundType.OF ? this.min + EPSILON : this.min;
     let max = this.boundType === BoundType.OO || this.boundType === BoundType.FO ? this.max - EPSILON : this.max;
-    return round(min + Math.random() * (max - this.min), precision);
+    const value = round(min + Math.random() * (max - this.min), precision);
+    switch (this.type) {
+      case NumberType.Integer:
+        return new Integer(value, value.toString());
+      default:
+        return new Real(value, value.toString());
+    }
   }
 }

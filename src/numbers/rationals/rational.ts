@@ -15,18 +15,22 @@ export class Rational implements Expression {
   toTex() {
     return `\\frac{${this.num}}{${this.denum}}`;
   }
-  
-  add(expression: Expression): Expression {
 
+  add(expression: Expression): Expression {
+    return this;
   }
 
-  opposite(): Expression {
+  multiply(expression: Expression): Expression {
+    return this;
+  }
+
+  opposite(): Rational {
     return new Rational(-this.num, this.denum);
   }
 
   simplify(): Rational {
     const div = Math.abs(gcd(this.num, this.denum));
-    if (this.denum === div) return;
+    if (this.denum === div) return this;
     return new Rational(this.num / div, this.denum / div);
   }
 }

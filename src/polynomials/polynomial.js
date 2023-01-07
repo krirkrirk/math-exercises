@@ -11,21 +11,21 @@ var Polynomial = /** @class */ (function () {
         if (variable === void 0) { variable = "x"; }
         if (coefficients.length === 0)
             throw Error("coeffs must be not null");
-        if (coefficients[coefficients.length - 1] === 0)
+        if (coefficients[coefficients.length - 1] === 0) {
+            console.log(coefficients);
             throw Error("n-th coeff must be not null");
+        }
         this.coefficients = coefficients;
         this.variable = variable;
         this.degree = coefficients.length - 1;
     }
     Polynomial.prototype.equals = function (P) {
-        return (P.degree === this.degree &&
-            this.coefficients.every(function (coeff, i) { return coeff === P.coefficients[i]; }));
+        return P.degree === this.degree && this.coefficients.every(function (coeff, i) { return coeff === P.coefficients[i]; });
     };
     Polynomial.prototype.add = function (P) {
         if (P.variable !== this.variable)
             throw Error("Can't add two polynomials with different variables");
-        var newDegree = P.degree === this.degree &&
-            P.coefficients[P.degree] === -this.coefficients[this.degree]
+        var newDegree = P.degree === this.degree && P.coefficients[P.degree] === -this.coefficients[this.degree]
             ? P.degree - 1
             : Math.max(P.degree, this.degree);
         var res = [];
@@ -71,14 +71,7 @@ var Polynomial = /** @class */ (function () {
                 s += coeff === 1 ? "" : coeff === -1 ? "-" : coeff;
             }
             else {
-                s +=
-                    coeff === 1
-                        ? "+"
-                        : coeff === -1
-                            ? "-"
-                            : coeff > 0
-                                ? "+".concat(coeff)
-                                : coeff;
+                s += coeff === 1 ? "+" : coeff === -1 ? "-" : coeff > 0 ? "+".concat(coeff) : coeff;
             }
             //x^n
             if (i === 0)

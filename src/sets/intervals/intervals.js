@@ -2,9 +2,11 @@
 exports.__esModule = true;
 exports.Interval = void 0;
 var epsilon_1 = require("../../numbers/epsilon");
-var number_1 = require("../../numbers/number");
+var nombre_1 = require("../../numbers/nombre");
 var round_1 = require("../../mathutils/round");
 var mathSet_1 = require("../mathSet");
+var integer_1 = require("../../numbers/integer/integer");
+var real_1 = require("../../numbers/reals/real");
 var BoundType;
 (function (BoundType) {
     BoundType["OO"] = "]a;b[";
@@ -20,7 +22,7 @@ var Interval = /** @class */ (function () {
         if (tex === void 0) { tex = "[-10; 10]"; }
         this.tex = tex;
         var isInt = tex[1] === "[" || tex[1] === "]";
-        this.type = isInt ? number_1.NumberType.Integer : number_1.NumberType.Real;
+        this.type = isInt ? nombre_1.NumberType.Integer : nombre_1.NumberType.Real;
         var left = tex[0];
         var right = tex[tex.length - 1];
         var _a = tex.slice(isInt ? 2 : 1, isInt ? tex.length - 2 : tex.length - 1).split(";"), a = _a[0], b = _a[1];
@@ -38,7 +40,6 @@ var Interval = /** @class */ (function () {
                 this.boundType = BoundType.OF;
                 break;
             default:
-                console.log("".concat(left, "a;b").concat(right));
                 throw console.error("wrong interval");
         }
         function getBound(bound) {
@@ -68,7 +69,7 @@ var Interval = /** @class */ (function () {
             var x;
             do {
                 x = _this.getRandomElement();
-            } while (x === nb);
+            } while (x.value === nb);
             return x;
         };
         return new mathSet_1.MathSet(this.toTex() + "\\{".concat(nb, "\\}"), rand);
@@ -85,15 +86,21 @@ var Interval = /** @class */ (function () {
         return new mathSet_1.MathSet(this.toTex() + "\\ ".concat(set.toTex()), rand);
     };
     Interval.prototype.toTex = function () {
-        return;
+        return this.tex;
     };
     Interval.prototype.getRandomElement = function (precision) {
-        if (precision === void 0) { precision = this.type === number_1.NumberType.Integer ? 0 : 2; }
+        if (precision === void 0) { precision = this.type === nombre_1.NumberType.Integer ? 0 : 2; }
         if (this.min === -Infinity || this.max === Infinity)
             throw Error("Can't chose amongst infinity");
         var min = this.boundType === BoundType.OO || this.boundType === BoundType.OF ? this.min + epsilon_1.EPSILON : this.min;
         var max = this.boundType === BoundType.OO || this.boundType === BoundType.FO ? this.max - epsilon_1.EPSILON : this.max;
-        return (0, round_1.round)(min + Math.random() * (max - this.min), precision);
+        var value = (0, round_1.round)(min + Math.random() * (max - this.min), precision);
+        switch (this.type) {
+            case nombre_1.NumberType.Integer:
+                return new integer_1.Integer(value, value.toString());
+            default:
+                return new real_1.Real(value, value.toString());
+        }
     };
     return Interval;
 }());

@@ -11,8 +11,19 @@ var Rational = /** @class */ (function () {
     Rational.prototype.toTex = function () {
         return "\\frac{".concat(this.num, "}{").concat(this.denum, "}");
     };
+    Rational.prototype.add = function (expression) {
+        return this;
+    };
+    Rational.prototype.multiply = function (expression) {
+        return this;
+    };
+    Rational.prototype.opposite = function () {
+        return new Rational(-this.num, this.denum);
+    };
     Rational.prototype.simplify = function () {
         var div = Math.abs((0, gcd_1.gcd)(this.num, this.denum));
+        if (this.denum === div)
+            return this;
         return new Rational(this.num / div, this.denum / div);
     };
     return Rational;

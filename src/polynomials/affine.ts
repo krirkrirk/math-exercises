@@ -3,20 +3,26 @@ import { Interval } from "../sets/intervals/intervals";
 import { Polynomial } from "./polynomial";
 import { DiscreteSet } from "../sets/discreteSet";
 import { MathSet } from "../sets/mathSet";
+import { Integer } from "../numbers/integer/integer";
+import { Node, NodeType } from "../tree/nodes/node";
+import { MultiplyNode } from "../tree/nodes/operators/multiplyNode";
+import { NumberNode } from "../tree/nodes/numbers/numberNode";
+import { VariableNode } from "../tree/nodes/variables/variableNode";
+import { AddNode } from "../tree/nodes/operators/addNode";
 
 export abstract class AffineConstructor {
   static random(
-    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(new DiscreteSet([0])),
+    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(new DiscreteSet([new Integer(0, "0")])),
     domainB: MathSet<number> = new Interval("[[-10; 10]]")
   ): Affine {
     const a = domainA.getRandomElement();
     const b = domainB.getRandomElement();
-    return new Affine(a, b);
+    return new Affine(a.value, b.value);
   }
 
   static differentRandoms(
     nb: number,
-    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(new DiscreteSet([0])),
+    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(new DiscreteSet([new Integer(0, "0")])),
     domainB: MathSet<number> = new Interval("[[-10; 10]]")
   ): Affine[] {
     const res: Affine[] = [];
@@ -44,6 +50,7 @@ export class Affine extends Polynomial {
   variable: string;
 
   constructor(a: number, b: number, variable: string = "x") {
+    if (a === 0) throw Error("affine must have a#0");
     super([b, a], variable);
     this.a = a;
     this.b = b;
@@ -56,5 +63,16 @@ export class Affine extends Polynomial {
 
   toString(): string {
     return super.toTex();
+  }
+
+  toTree(): Node {
+    if (this.b === 0) {
+      return new MultiplyNode(new NumberNode(this.a + "", this.a), new VariableNode(this.variable));
+    } else {
+      return new AddNode(
+        new MultiplyNode(new NumberNode(this.a + "", this.a), new VariableNode(this.variable)),
+        new NumberNode(this.b + "", this.b)
+      );
+    }
   }
 }
