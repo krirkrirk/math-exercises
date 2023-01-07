@@ -1,26 +1,22 @@
 import { addAndSubExercise } from "./exercises/calcul/addAndSub";
-import { simpleDistributivity } from "./exercises/calculLitteral/distributivity/distributivity";
+import { allIdentities } from "./exercises/calculLitteral/distributivity/allIdentities";
+import { doubleDistributivity } from "./exercises/calculLitteral/distributivity/doubleDistributivity";
+import { simpleDistributivity } from "./exercises/calculLitteral/distributivity/simpleDistributivity";
+import { equationType1Exercise } from "./exercises/calculLitteral/equation/equationType1Exercise";
+import { equationType2Exercise } from "./exercises/calculLitteral/equation/equationType2Exercise";
+import { equationType3Exercise } from "./exercises/calculLitteral/equation/equationType3Exercise";
+import { equationType4Exercise } from "./exercises/calculLitteral/equation/equationType4Exercise";
 import { factoType1Exercise } from "./exercises/calculLitteral/factorisation/factoType1Exercise";
+import { simplifySquareRoot } from "./exercises/squareRoots/simpifySquareRoot";
 import { randint } from "./mathutils/random/randint";
 import { Rational } from "./numbers/rationals/rational";
+import { SquareRoot } from "./numbers/reals/squareRoot";
 import { Affine } from "./polynomials/affine";
-import { LatexParser } from "./tree/latexParser/latexParser";
+import { Polynomial } from "./polynomials/polynomial";
+import { latexParse } from "./tree/latexParser/latexParse";
 import { VariableNode } from "./tree/nodes/variables/variableNode";
 
-// exercice = new Exercice(Factorisation.type, nbQuestions, opts)
-//exercice = {questions: {statement, answer}, consigne, label, section, levels, connector, }
-const exercice1 = factoType1Exercise;
-console.log(exercice1.instruction);
-console.log(exercice1.generator(10));
-
-// const exercice2 = simpleDistributivity;
-// console.log(exercice2.instruction);
-// console.log(exercice2.generator(10));
-// const q = new Rational(10, 5);
-// console.log(q.simplify().toTex());
-
-const aff = new Affine(4, 5);
-const tree = aff.toTree();
-const parser = new LatexParser();
-console.log(tree);
-console.log(parser.parse(tree));
+console.log(equationType1Exercise.generator(10));
+console.log(equationType2Exercise.generator(10));
+console.log(equationType3Exercise.generator(10));
+console.log(equationType4Exercise.generator(10));

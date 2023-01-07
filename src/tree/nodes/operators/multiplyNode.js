@@ -10,6 +10,9 @@ var MultiplyNode = /** @class */ (function () {
         this.leftChild = leftChild;
         this.rightChild = rightChild;
     }
+    MultiplyNode.prototype.toString = function () {
+        return "(".concat(this.leftChild, ")*(").concat(this.rightChild, ")");
+    };
     return MultiplyNode;
 }());
 exports.MultiplyNode = MultiplyNode;

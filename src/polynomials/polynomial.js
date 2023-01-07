@@ -1,6 +1,12 @@
 "use strict";
 exports.__esModule = true;
 exports.Polynomial = void 0;
+var numberNode_1 = require("../tree/nodes/numbers/numberNode");
+var addNode_1 = require("../tree/nodes/operators/addNode");
+var multiplyNode_1 = require("../tree/nodes/operators/multiplyNode");
+var oppositeNode_1 = require("../tree/nodes/operators/oppositeNode");
+var powerNode_1 = require("../tree/nodes/operators/powerNode");
+var variableNode_1 = require("../tree/nodes/variables/variableNode");
 var Polynomial = /** @class */ (function () {
     /**
      *
@@ -12,7 +18,6 @@ var Polynomial = /** @class */ (function () {
         if (coefficients.length === 0)
             throw Error("coeffs must be not null");
         if (coefficients[coefficients.length - 1] === 0) {
-            console.log(coefficients);
             throw Error("n-th coeff must be not null");
         }
         this.coefficients = coefficients;
@@ -20,12 +25,15 @@ var Polynomial = /** @class */ (function () {
         this.degree = coefficients.length - 1;
     }
     Polynomial.prototype.equals = function (P) {
-        return P.degree === this.degree && this.coefficients.every(function (coeff, i) { return coeff === P.coefficients[i]; });
+        return (P.degree === this.degree &&
+            this.coefficients.every(function (coeff, i) { return coeff === P.coefficients[i]; }));
     };
+    Polynomial.prototype.getRoots = function () { };
     Polynomial.prototype.add = function (P) {
         if (P.variable !== this.variable)
             throw Error("Can't add two polynomials with different variables");
-        var newDegree = P.degree === this.degree && P.coefficients[P.degree] === -this.coefficients[this.degree]
+        var newDegree = P.degree === this.degree &&
+            P.coefficients[P.degree] === -this.coefficients[this.degree]
             ? P.degree - 1
             : Math.max(P.degree, this.degree);
         var res = [];
@@ -33,6 +41,9 @@ var Polynomial = /** @class */ (function () {
             res[i] = P.coefficients[i] + this.coefficients[i];
         }
         return new Polynomial(res, this.variable);
+    };
+    Polynomial.prototype.times = function (nb) {
+        return new Polynomial(this.coefficients.map(function (coeff) { return coeff * nb; }), this.variable);
     };
     Polynomial.prototype.multiply = function (Q) {
         if (Q.variable !== this.variable)
@@ -52,14 +63,42 @@ var Polynomial = /** @class */ (function () {
     Polynomial.prototype.opposite = function () {
         return new Polynomial(this.coefficients.map(function (coeff) { return -coeff; }), this.variable);
     };
+    Polynomial.prototype.toTree = function () {
+        var _this = this;
+        var recursive = function (cursor) {
+            var coeff = _this.coefficients[cursor];
+            if (coeff === 0)
+                return recursive(cursor - 1);
+            if (cursor === 0) {
+                return new numberNode_1.NumberNode(coeff);
+            }
+            var monome = cursor > 1
+                ? new powerNode_1.PowerNode(new variableNode_1.VariableNode(_this.variable), new numberNode_1.NumberNode(cursor))
+                : new variableNode_1.VariableNode(_this.variable);
+            var res;
+            if (coeff === 1)
+                res = monome;
+            else if (coeff === -1)
+                res = new oppositeNode_1.OppositeNode(monome);
+            else
+                res = new multiplyNode_1.MultiplyNode(new numberNode_1.NumberNode(coeff), monome);
+            var nextCoeff;
+            for (var i = cursor - 1; i > -1; i--) {
+                if (_this.coefficients[i]) {
+                    nextCoeff = _this.coefficients[i];
+                    break;
+                }
+            }
+            if (nextCoeff) {
+                return new addNode_1.AddNode(res, recursive(cursor - 1));
+            }
+            else {
+                return res;
+            }
+        };
+        return recursive(this.degree);
+    };
     Polynomial.prototype.toTex = function () {
-        // if (this.degree == 0) return "" + this.b;
-        // function getMonome(power: number): string {
-        //   if (power === 0) return "";
-        //   if (power === 1) return this.variable;
-        //   else return `${this.variable}^{${power}}`;
-        // }
-        // let s = this.coefficients[this.degree] + this.variable + this.degree > 1 ? `^{${this.degree}}` : "";
         var s = "";
         for (var i = this.degree; i > -1; i--) {
             var coeff = this.coefficients[i];
@@ -71,7 +110,14 @@ var Polynomial = /** @class */ (function () {
                 s += coeff === 1 ? "" : coeff === -1 ? "-" : coeff;
             }
             else {
-                s += coeff === 1 ? "+" : coeff === -1 ? "-" : coeff > 0 ? "+".concat(coeff) : coeff;
+                s +=
+                    coeff === 1
+                        ? "+"
+                        : coeff === -1
+                            ? "-"
+                            : coeff > 0
+                                ? "+".concat(coeff)
+                                : coeff;
             }
             //x^n
             if (i === 0)
@@ -80,9 +126,6 @@ var Polynomial = /** @class */ (function () {
                 s += this.variable;
             else
                 s += "".concat(this.variable, "^{").concat(i, "}");
-            // latex.add(this.coefficients[i]);
-            // s += addLatex(this.coefficients[i]);
-            // s += this.coefficients[i] + this.variable + `^{${i}}`;
         }
         return s;
     };

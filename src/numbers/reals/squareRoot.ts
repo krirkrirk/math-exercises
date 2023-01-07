@@ -1,13 +1,20 @@
 import { isSquare } from "../../mathutils/arithmetic/isSquare";
 import { primeFactors } from "../../mathutils/arithmetic/primeFactors";
 import { randint } from "../../mathutils/random/randint";
+import { Node } from "../../tree/nodes/node";
+import { NumberNode } from "../../tree/nodes/numbers/numberNode";
+import { MultiplyNode } from "../../tree/nodes/operators/multiplyNode";
 import { Real } from "./real";
+import { SqrtNode } from "../../tree/nodes/functions/sqrtNode";
 
 export abstract class SquareRootConstructor {
   /**
    * @returns simplifiable square root type sqrt(c)=a*sqrt(b)
    */
-  randomSimplifiable({ allowPerfectSquare = false, maxSquare = 11 }): SquareRoot {
+  static randomSimplifiable({
+    allowPerfectSquare = false,
+    maxSquare = 11,
+  }): SquareRoot {
     const a = randint(2, maxSquare);
     let b;
     let bMin = allowPerfectSquare ? 1 : 2;
@@ -18,37 +25,53 @@ export abstract class SquareRootConstructor {
   }
 }
 
-export class SquareRoot implements Real {
-  tex: string;
-
-  constructor(operand: string | number) {
-    this.tex = `\\sqrt{${operand}}`;
+export class SquareRoot extends Real {
+  operand: number;
+  constructor(operand: number) {
+    super(Math.sqrt(operand), `\\sqrt{${operand}}`);
+    this.operand = operand;
   }
 
-  simplify() {
-    const factors = primeFactors(b);
-
-    /**
-     * finds primes with even exponents
-     */
+  simplify(): Real {
+    const factors = primeFactors(this.operand);
+    // finds primes with even exponents
     const multiples = [1];
     for (let i = 0; i < factors.length - 1; i++) {
       if (factors[i] === factors[i + 1]) {
         multiples.push(factors[i]);
-        factors.splice(i, 2); 
+        factors.splice(i, 2);
+        i--;
       }
     }
+    const outsideSqrt = multiples.reduce((x, y) => x * y);
+    const insideSqrt =
+      factors.length === 0 ? 1 : factors.reduce((x, y) => x * y);
+
+    const simplified =
+      insideSqrt !== 1
+        ? new Real(
+            outsideSqrt * Math.sqrt(insideSqrt),
+            `${outsideSqrt === 1 ? "" : `${outsideSqrt}`}\\sqrt{${insideSqrt}}`
+          )
+        : new Real(outsideSqrt, outsideSqrt + "");
+    simplified.toTree = (): Node => {
+      return insideSqrt !== 1
+        ? outsideSqrt === 1
+          ? new SqrtNode(new NumberNode(insideSqrt))
+          : new MultiplyNode(
+              new NumberNode(outsideSqrt),
+              new SqrtNode(new NumberNode(insideSqrt))
+            )
+        : new NumberNode(outsideSqrt);
+    };
+    return simplified;
   }
 
   toTex(): string {
     return this.tex;
   }
+
+  toTree(): Node {
+    return new SqrtNode(new NumberNode(this.operand));
+  }
 }
-
-const outsideSqrtB = multiples.reduce((x, y) => x * y); // A should be muliply be all those numbers
-const insideSqrtB = factors.length === 0 ? "" : factors.reduce((x, y) => x * y); // here is what remains in the squareroot
-
-if (b === 1) answer = `${a}`;
-else if (factors.length === 0) answer = `${a * outsideSqrtB}`;
-// if the is no leftover in the squareroot, it just vanish
-else answer = `${a * outsideSqrtB}\\sqrt{${insideSqrtB}}`;

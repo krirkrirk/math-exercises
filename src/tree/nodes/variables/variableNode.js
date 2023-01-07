@@ -12,6 +12,9 @@ var VariableNode = /** @class */ (function () {
         this.tex = tex;
         this.type = node_1.NodeType.variable;
     }
+    VariableNode.prototype.toString = function () {
+        return "".concat(this.tex);
+    };
     return VariableNode;
 }());
 exports.VariableNode = VariableNode;

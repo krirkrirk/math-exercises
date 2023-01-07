@@ -25,7 +25,9 @@ var Interval = /** @class */ (function () {
         this.type = isInt ? nombre_1.NumberType.Integer : nombre_1.NumberType.Real;
         var left = tex[0];
         var right = tex[tex.length - 1];
-        var _a = tex.slice(isInt ? 2 : 1, isInt ? tex.length - 2 : tex.length - 1).split(";"), a = _a[0], b = _a[1];
+        var _a = tex
+            .slice(isInt ? 2 : 1, isInt ? tex.length - 2 : tex.length - 1)
+            .split(";"), a = _a[0], b = _a[1];
         switch ("".concat(left, "a;b").concat(right)) {
             case "[a;b]":
                 this.boundType = BoundType.FF;
@@ -92,12 +94,16 @@ var Interval = /** @class */ (function () {
         if (precision === void 0) { precision = this.type === nombre_1.NumberType.Integer ? 0 : 2; }
         if (this.min === -Infinity || this.max === Infinity)
             throw Error("Can't chose amongst infinity");
-        var min = this.boundType === BoundType.OO || this.boundType === BoundType.OF ? this.min + epsilon_1.EPSILON : this.min;
-        var max = this.boundType === BoundType.OO || this.boundType === BoundType.FO ? this.max - epsilon_1.EPSILON : this.max;
+        var min = this.boundType === BoundType.OO || this.boundType === BoundType.OF
+            ? this.min + epsilon_1.EPSILON
+            : this.min;
+        var max = this.boundType === BoundType.OO || this.boundType === BoundType.FO
+            ? this.max - epsilon_1.EPSILON
+            : this.max;
         var value = (0, round_1.round)(min + Math.random() * (max - this.min), precision);
         switch (this.type) {
             case nombre_1.NumberType.Integer:
-                return new integer_1.Integer(value, value.toString());
+                return new integer_1.Integer(value);
             default:
                 return new real_1.Real(value, value.toString());
         }

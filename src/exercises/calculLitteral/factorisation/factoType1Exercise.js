@@ -1,10 +1,11 @@
 "use strict";
 exports.__esModule = true;
 exports.getFactoType1Question = exports.factoType1Exercise = void 0;
-var add_1 = require("../../../operations/add");
-var multiply_1 = require("../../../operations/multiply");
-var substract_1 = require("../../../operations/substract");
 var affine_1 = require("../../../polynomials/affine");
+var latexParse_1 = require("../../../tree/latexParser/latexParse");
+var addNode_1 = require("../../../tree/nodes/operators/addNode");
+var multiplyNode_1 = require("../../../tree/nodes/operators/multiplyNode");
+var substractNode_1 = require("../../../tree/nodes/operators/substractNode");
 var random_1 = require("../../../utils/random");
 var shuffle_1 = require("../../../utils/shuffle");
 var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
@@ -27,14 +28,16 @@ function getFactoType1Question() {
     ];
     (0, shuffle_1.shuffle)(permut[0]);
     (0, shuffle_1.shuffle)(permut[1]);
-    var operation = (0, random_1.random)([add_1.add, substract_1.substract]);
-    var statement = operation.texApply(multiply_1.multiply.texApply(permut[0][0], permut[0][1]), multiply_1.multiply.texApply(permut[1][0], permut[1][1]));
-    // `(${permut[0][0]})(${permut[0][1]}) ${operation.tex} (${permut[1][0]})(${permut[1][1]})`;
-    var answer = multiply_1.multiply.texApply(affines[0], operation.mathApply(affines[1], affines[2]));
-    // const answer = `(${affines[0]})(${operation.mathApply(affines[1], affines[2])})`;
+    var operation = (0, random_1.random)(["add", "substract"]);
+    var statementTree = operation === "add"
+        ? new addNode_1.AddNode(new multiplyNode_1.MultiplyNode(permut[0][0].toTree(), permut[0][1].toTree()), new multiplyNode_1.MultiplyNode(permut[1][0].toTree(), permut[1][1].toTree()))
+        : new substractNode_1.SubstractNode(new multiplyNode_1.MultiplyNode(permut[0][0].toTree(), permut[0][1].toTree()), new multiplyNode_1.MultiplyNode(permut[1][0].toTree(), permut[1][1].toTree()));
+    var answerTree = new multiplyNode_1.MultiplyNode(affines[0].toTree(), affines[1]
+        .add(operation === "add" ? affines[2] : affines[2].opposite())
+        .toTree());
     var question = {
-        statement: statement,
-        answer: answer
+        statement: (0, latexParse_1.latexParse)(statementTree),
+        answer: (0, latexParse_1.latexParse)(answerTree)
     };
     return question;
 }

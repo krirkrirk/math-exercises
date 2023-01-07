@@ -11,4 +11,8 @@ export class MultiplyNode implements Node, OperatorNode {
     this.leftChild = leftChild;
     this.rightChild = rightChild;
   }
+
+  toString(): string {
+    return `(${this.leftChild})*(${this.rightChild})`;
+  }
 }

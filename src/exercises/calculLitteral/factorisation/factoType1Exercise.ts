@@ -2,6 +2,10 @@ import { add } from "../../../operations/add";
 import { multiply } from "../../../operations/multiply";
 import { substract } from "../../../operations/substract";
 import { Affine, AffineConstructor } from "../../../polynomials/affine";
+import { latexParse } from "../../../tree/latexParser/latexParse";
+import { AddNode } from "../../../tree/nodes/operators/addNode";
+import { MultiplyNode } from "../../../tree/nodes/operators/multiplyNode";
+import { SubstractNode } from "../../../tree/nodes/operators/substractNode";
 import { random } from "../../../utils/random";
 import { shuffle } from "../../../utils/shuffle";
 import { Exercise, Question } from "../../exercise";
@@ -30,20 +34,29 @@ export function getFactoType1Question(): Question {
   shuffle(permut[0]);
   shuffle(permut[1]);
 
-  const operation = random([add, substract]);
+  const operation = random(["add", "substract"]);
 
-  const statement = operation.texApply(
-    multiply.texApply(permut[0][0], permut[0][1]),
-    multiply.texApply(permut[1][0], permut[1][1])
+  const statementTree =
+    operation === "add"
+      ? new AddNode(
+          new MultiplyNode(permut[0][0].toTree(), permut[0][1].toTree()),
+          new MultiplyNode(permut[1][0].toTree(), permut[1][1].toTree())
+        )
+      : new SubstractNode(
+          new MultiplyNode(permut[0][0].toTree(), permut[0][1].toTree()),
+          new MultiplyNode(permut[1][0].toTree(), permut[1][1].toTree())
+        );
+
+  const answerTree = new MultiplyNode(
+    affines[0].toTree(),
+    affines[1]
+      .add(operation === "add" ? affines[2] : affines[2].opposite())
+      .toTree()
   );
 
-  // `(${permut[0][0]})(${permut[0][1]}) ${operation.tex} (${permut[1][0]})(${permut[1][1]})`;
-
-  const answer = multiply.texApply(affines[0], operation.mathApply(affines[1], affines[2]));
-  // const answer = `(${affines[0]})(${operation.mathApply(affines[1], affines[2])})`;
   const question: Question = {
-    statement,
-    answer,
+    statement: latexParse(statementTree),
+    answer: latexParse(answerTree),
   };
   return question;
 }

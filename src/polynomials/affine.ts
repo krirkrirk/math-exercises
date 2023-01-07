@@ -9,11 +9,14 @@ import { MultiplyNode } from "../tree/nodes/operators/multiplyNode";
 import { NumberNode } from "../tree/nodes/numbers/numberNode";
 import { VariableNode } from "../tree/nodes/variables/variableNode";
 import { AddNode } from "../tree/nodes/operators/addNode";
+import { Nombre } from "../numbers/nombre";
 
 export abstract class AffineConstructor {
   static random(
-    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(new DiscreteSet([new Integer(0, "0")])),
-    domainB: MathSet<number> = new Interval("[[-10; 10]]")
+    domainA: MathSet = new Interval("[[-10; 10]]").difference(
+      new DiscreteSet([new Integer(0)])
+    ),
+    domainB: MathSet = new Interval("[[-10; 10]]")
   ): Affine {
     const a = domainA.getRandomElement();
     const b = domainB.getRandomElement();
@@ -22,8 +25,10 @@ export abstract class AffineConstructor {
 
   static differentRandoms(
     nb: number,
-    domainA: MathSet<number> = new Interval("[[-10; 10]]").difference(new DiscreteSet([new Integer(0, "0")])),
-    domainB: MathSet<number> = new Interval("[[-10; 10]]")
+    domainA: MathSet = new Interval("[[-10; 10]]").difference(
+      new DiscreteSet([new Integer(0)])
+    ),
+    domainB: MathSet = new Interval("[[-10; 10]]")
   ): Affine[] {
     const res: Affine[] = [];
     for (let i = 0; i < nb; i++) {
@@ -35,13 +40,6 @@ export abstract class AffineConstructor {
     }
     return res;
   }
-
-  // static add(aff1: Affine, aff2: Affine | number): Affine {
-  //   if(typeof aff2)
-  // }
-  // static randomWithIntegerRoot(): Affine {
-  //   const root = randint(-10, 10);
-  // }
 }
 
 export class Affine extends Polynomial {
@@ -50,29 +48,17 @@ export class Affine extends Polynomial {
   variable: string;
 
   constructor(a: number, b: number, variable: string = "x") {
-    if (a === 0) throw Error("affine must have a#0");
     super([b, a], variable);
     this.a = a;
     this.b = b;
     this.variable = variable;
   }
 
-  getRoot(): string {
-    return new Rational(-this.b, this.a).simplify().toTex();
+  getRoot(): Nombre {
+    return new Rational(-this.b, this.a).simplify();
   }
 
   toString(): string {
     return super.toTex();
-  }
-
-  toTree(): Node {
-    if (this.b === 0) {
-      return new MultiplyNode(new NumberNode(this.a + "", this.a), new VariableNode(this.variable));
-    } else {
-      return new AddNode(
-        new MultiplyNode(new NumberNode(this.a + "", this.a), new VariableNode(this.variable)),
-        new NumberNode(this.b + "", this.b)
-      );
-    }
   }
 }

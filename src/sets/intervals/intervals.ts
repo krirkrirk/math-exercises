@@ -29,7 +29,9 @@ export class Interval implements MathSetInterface {
     this.type = isInt ? NumberType.Integer : NumberType.Real;
     const left = tex[0];
     const right = tex[tex.length - 1];
-    const [a, b] = tex.slice(isInt ? 2 : 1, isInt ? tex.length - 2 : tex.length - 1).split(";");
+    const [a, b] = tex
+      .slice(isInt ? 2 : 1, isInt ? tex.length - 2 : tex.length - 1)
+      .split(";");
 
     switch (`${left}a;b${right}`) {
       case "[a;b]":
@@ -80,7 +82,7 @@ export class Interval implements MathSetInterface {
     return new MathSet(this.toTex() + `\\{${nb}\\}`, rand);
   }
 
-  difference(set: DiscreteSet): MathSet<Nombre> {
+  difference(set: DiscreteSet): MathSet {
     const rand = () => {
       let x;
       do {
@@ -96,14 +98,23 @@ export class Interval implements MathSetInterface {
     return this.tex;
   }
 
-  getRandomElement(precision: number = this.type === NumberType.Integer ? 0 : 2): Nombre {
-    if (this.min === -Infinity || this.max === Infinity) throw Error("Can't chose amongst infinity");
-    let min = this.boundType === BoundType.OO || this.boundType === BoundType.OF ? this.min + EPSILON : this.min;
-    let max = this.boundType === BoundType.OO || this.boundType === BoundType.FO ? this.max - EPSILON : this.max;
+  getRandomElement(
+    precision: number = this.type === NumberType.Integer ? 0 : 2
+  ): Nombre {
+    if (this.min === -Infinity || this.max === Infinity)
+      throw Error("Can't chose amongst infinity");
+    let min =
+      this.boundType === BoundType.OO || this.boundType === BoundType.OF
+        ? this.min + EPSILON
+        : this.min;
+    let max =
+      this.boundType === BoundType.OO || this.boundType === BoundType.FO
+        ? this.max - EPSILON
+        : this.max;
     const value = round(min + Math.random() * (max - this.min), precision);
     switch (this.type) {
       case NumberType.Integer:
-        return new Integer(value, value.toString());
+        return new Integer(value);
       default:
         return new Real(value, value.toString());
     }

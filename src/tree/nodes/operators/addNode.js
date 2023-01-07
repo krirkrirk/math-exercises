@@ -10,6 +10,9 @@ var AddNode = /** @class */ (function () {
         this.leftChild = leftChild;
         this.rightChild = rightChild;
     }
+    AddNode.prototype.toString = function () {
+        return "".concat(this.leftChild, " + ").concat(this.rightChild);
+    };
     return AddNode;
 }());
 exports.AddNode = AddNode;

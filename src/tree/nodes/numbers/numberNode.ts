@@ -7,11 +7,13 @@ export class NumberNode implements Node {
   id = "number";
   leftChild = null;
   rightChild = null;
-  constructor(tex: string, value: number) {
-    if (isNaN(+tex)) throw Error("not a number");
-
+  constructor(value: number) {
     this.value = value;
-    this.tex = tex;
+    this.tex = value + "";
     this.type = NodeType.number;
+  }
+
+  toString(): string {
+    return `${this.tex}`;
   }
 }

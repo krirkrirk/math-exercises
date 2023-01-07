@@ -1,4 +1,12 @@
 import { Expression } from "../expression/expression";
+import { Node } from "../tree/nodes/node";
+import { NumberNode } from "../tree/nodes/numbers/numberNode";
+import { AddNode } from "../tree/nodes/operators/addNode";
+import { MultiplyNode } from "../tree/nodes/operators/multiplyNode";
+import { OppositeNode } from "../tree/nodes/operators/oppositeNode";
+import { PowerNode } from "../tree/nodes/operators/powerNode";
+import { SubstractNode } from "../tree/nodes/operators/substractNode";
+import { VariableNode } from "../tree/nodes/variables/variableNode";
 
 export class Polynomial implements Expression {
   degree: number;
@@ -16,7 +24,6 @@ export class Polynomial implements Expression {
   constructor(coefficients: number[], variable: string = "x") {
     if (coefficients.length === 0) throw Error("coeffs must be not null");
     if (coefficients[coefficients.length - 1] === 0) {
-      console.log(coefficients);
       throw Error("n-th coeff must be not null");
     }
     this.coefficients = coefficients;
@@ -24,14 +31,19 @@ export class Polynomial implements Expression {
     this.degree = coefficients.length - 1;
   }
   equals(P: Polynomial): boolean {
-    return P.degree === this.degree && this.coefficients.every((coeff, i) => coeff === P.coefficients[i]);
+    return (
+      P.degree === this.degree &&
+      this.coefficients.every((coeff, i) => coeff === P.coefficients[i])
+    );
   }
-
+  getRoots() {}
   add(P: Polynomial): Polynomial {
-    if (P.variable !== this.variable) throw Error("Can't add two polynomials with different variables");
+    if (P.variable !== this.variable)
+      throw Error("Can't add two polynomials with different variables");
 
     const newDegree =
-      P.degree === this.degree && P.coefficients[P.degree] === -this.coefficients[this.degree]
+      P.degree === this.degree &&
+      P.coefficients[P.degree] === -this.coefficients[this.degree]
         ? P.degree - 1
         : Math.max(P.degree, this.degree);
 
@@ -41,9 +53,15 @@ export class Polynomial implements Expression {
     }
     return new Polynomial(res, this.variable);
   }
-
+  times(nb: number): Polynomial {
+    return new Polynomial(
+      this.coefficients.map((coeff) => coeff * nb),
+      this.variable
+    );
+  }
   multiply(Q: Polynomial): Polynomial {
-    if (Q.variable !== this.variable) throw Error("Can't multiply two polynomials with different variables");
+    if (Q.variable !== this.variable)
+      throw Error("Can't multiply two polynomials with different variables");
 
     const p = this.degree;
     const q = Q.degree;
@@ -67,15 +85,45 @@ export class Polynomial implements Expression {
     );
   }
 
-  toTex(): string {
-    // if (this.degree == 0) return "" + this.b;
-    // function getMonome(power: number): string {
-    //   if (power === 0) return "";
-    //   if (power === 1) return this.variable;
-    //   else return `${this.variable}^{${power}}`;
-    // }
+  toTree(): Node {
+    const recursive = (cursor: number): Node => {
+      const coeff = this.coefficients[cursor];
+      if (coeff === 0) return recursive(cursor - 1);
 
-    // let s = this.coefficients[this.degree] + this.variable + this.degree > 1 ? `^{${this.degree}}` : "";
+      if (cursor === 0) {
+        return new NumberNode(coeff);
+      }
+
+      const monome =
+        cursor > 1
+          ? new PowerNode(
+              new VariableNode(this.variable),
+              new NumberNode(cursor)
+            )
+          : new VariableNode(this.variable);
+
+      let res: Node;
+      if (coeff === 1) res = monome;
+      else if (coeff === -1) res = new OppositeNode(monome);
+      else res = new MultiplyNode(new NumberNode(coeff), monome);
+
+      let nextCoeff;
+      for (let i = cursor - 1; i > -1; i--) {
+        if (this.coefficients[i]) {
+          nextCoeff = this.coefficients[i];
+          break;
+        }
+      }
+      if (nextCoeff) {
+        return new AddNode(res, recursive(cursor - 1));
+      } else {
+        return res;
+      }
+    };
+    return recursive(this.degree);
+  }
+
+  toTex(): string {
     let s = "";
     for (let i = this.degree; i > -1; i--) {
       const coeff = this.coefficients[i];
@@ -84,16 +132,19 @@ export class Polynomial implements Expression {
       else if (i === this.degree) {
         s += coeff === 1 ? "" : coeff === -1 ? "-" : coeff;
       } else {
-        s += coeff === 1 ? "+" : coeff === -1 ? "-" : coeff > 0 ? `+${coeff}` : coeff;
+        s +=
+          coeff === 1
+            ? "+"
+            : coeff === -1
+            ? "-"
+            : coeff > 0
+            ? `+${coeff}`
+            : coeff;
       }
       //x^n
       if (i === 0) continue;
       if (i === 1) s += this.variable;
       else s += `${this.variable}^{${i}}`;
-
-      // latex.add(this.coefficients[i]);
-      // s += addLatex(this.coefficients[i]);
-      // s += this.coefficients[i] + this.variable + `^{${i}}`;
     }
     return s;
   }
