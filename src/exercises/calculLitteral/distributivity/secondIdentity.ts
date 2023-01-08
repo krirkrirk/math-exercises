@@ -1,6 +1,4 @@
-import { randint } from "../../../mathutils/random/randint";
 import { Integer } from "../../../numbers/integer/integer";
-import { multiply } from "../../../operations/multiply";
 import { AffineConstructor } from "../../../polynomials/affine";
 import { DiscreteSet } from "../../../sets/discreteSet";
 import { Interval } from "../../../sets/intervals/intervals";
@@ -17,17 +15,12 @@ export const secondIdentity: Exercise = {
   label: "Identité remarquable $(a-b)^2$",
   levels: ["3", "2"],
   section: "Calcul Littéral",
-  generator: (nb: number) =>
-    getDistinctQuestions(getSecondIdentityQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getSecondIdentityQuestion, nb),
 };
 
 export function getSecondIdentityQuestion(): Question {
-  const intervalA = new Interval("[[0; 10]]").difference(
-    new DiscreteSet([new Integer(0)])
-  );
-  const intervalB = new Interval("[[-10; 0]]").difference(
-    new DiscreteSet([new Integer(0)])
-  );
+  const intervalA = new Interval("[[0; 10]]").difference(new DiscreteSet([new Integer(0)]));
+  const intervalB = new Interval("[[-10; 0]]").difference(new DiscreteSet([new Integer(0)]));
   const affine = AffineConstructor.random(intervalA, intervalB);
 
   const statementTree = new PowerNode(affine.toTree(), new NumberNode(2));

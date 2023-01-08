@@ -1,11 +1,4 @@
-/**
- *  type (ax+b)(cx+d) ± (ax+b)(ex+f)
- */
-
-import {
-  SquareRoot,
-  SquareRootConstructor,
-} from "../../numbers/reals/squareRoot";
+import { SquareRootConstructor } from "../../numbers/reals/squareRoot";
 import { latexParse } from "../../tree/latexParser/latexParse";
 import { Exercise, Question } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";

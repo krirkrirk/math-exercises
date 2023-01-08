@@ -1,6 +1,4 @@
-import { randint } from "../../../mathutils/random/randint";
 import { Integer } from "../../../numbers/integer/integer";
-import { multiply } from "../../../operations/multiply";
 import { Affine, AffineConstructor } from "../../../polynomials/affine";
 import { DiscreteSet } from "../../../sets/discreteSet";
 import { Interval } from "../../../sets/intervals/intervals";
@@ -11,7 +9,7 @@ import { PowerNode } from "../../../tree/nodes/operators/powerNode";
 import { Exercise, Question } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
-export const firstIdentity: Exercise = {
+export const thirdIdentity: Exercise = {
   connector: "=",
   instruction: "Développer et réduire :",
   label: "Identité remarquable $(a+b)(a-b)$",
@@ -21,9 +19,7 @@ export const firstIdentity: Exercise = {
 };
 
 export function getThirdIdentityQuestion(): Question {
-  const interval = new Interval("[[-10; 10]]").difference(
-    new DiscreteSet([new Integer(0)])
-  );
+  const interval = new Interval("[[-10; 10]]").difference(new DiscreteSet([new Integer(0)]));
   const affine = AffineConstructor.random(interval, interval);
   const affine2 = new Affine(affine.a, -affine.b);
   const statementTree = new MultiplyNode(affine.toTree(), affine2.toTree());

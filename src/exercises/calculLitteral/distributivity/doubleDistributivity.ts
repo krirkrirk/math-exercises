@@ -1,6 +1,4 @@
-import { randint } from "../../../mathutils/random/randint";
 import { Integer } from "../../../numbers/integer/integer";
-import { multiply } from "../../../operations/multiply";
 import { AffineConstructor } from "../../../polynomials/affine";
 import { DiscreteSet } from "../../../sets/discreteSet";
 import { Interval } from "../../../sets/intervals/intervals";
@@ -16,20 +14,14 @@ export const doubleDistributivity: Exercise = {
   label: "Distributivité double",
   levels: ["3", "2"],
   section: "Calcul Littéral",
-  generator: (nb: number) =>
-    getDistinctQuestions(getDoubleDistributivityQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getDoubleDistributivityQuestion, nb),
 };
 
 export function getDoubleDistributivityQuestion(): Question {
-  const interval = new Interval("[[-10; 10]]").difference(
-    new DiscreteSet([new Integer(0)])
-  );
+  const interval = new Interval("[[-10; 10]]").difference(new DiscreteSet([new Integer(0)]));
   const affines = AffineConstructor.differentRandoms(2, interval, interval);
 
-  const statementTree = new MultiplyNode(
-    affines[0].toTree(),
-    affines[1].toTree()
-  );
+  const statementTree = new MultiplyNode(affines[0].toTree(), affines[1].toTree());
   const answerTree = affines[0].multiply(affines[1]).toTree();
 
   return {

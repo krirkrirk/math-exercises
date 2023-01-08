@@ -1,12 +1,9 @@
-import { randint } from "../../../mathutils/random/randint";
 import { Integer } from "../../../numbers/integer/integer";
-import { multiply } from "../../../operations/multiply";
 import { AffineConstructor } from "../../../polynomials/affine";
 import { DiscreteSet } from "../../../sets/discreteSet";
 import { Interval } from "../../../sets/intervals/intervals";
 import { latexParse } from "../../../tree/latexParser/latexParse";
 import { NumberNode } from "../../../tree/nodes/numbers/numberNode";
-import { MultiplyNode } from "../../../tree/nodes/operators/multiplyNode";
 import { PowerNode } from "../../../tree/nodes/operators/powerNode";
 import { Exercise, Question } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
@@ -21,9 +18,7 @@ export const firstIdentity: Exercise = {
 };
 
 export function getFirstIdentityQuestion(): Question {
-  const interval = new Interval("[[1; 10]]").difference(
-    new DiscreteSet([new Integer(0)])
-  );
+  const interval = new Interval("[[1; 10]]").difference(new DiscreteSet([new Integer(0)]));
   const affine = AffineConstructor.random(interval, interval);
 
   const statementTree = new PowerNode(affine.toTree(), new NumberNode(2));

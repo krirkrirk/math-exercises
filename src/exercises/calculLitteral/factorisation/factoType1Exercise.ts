@@ -1,6 +1,3 @@
-import { add } from "../../../operations/add";
-import { multiply } from "../../../operations/multiply";
-import { substract } from "../../../operations/substract";
 import { Affine, AffineConstructor } from "../../../polynomials/affine";
 import { latexParse } from "../../../tree/latexParser/latexParse";
 import { AddNode } from "../../../tree/nodes/operators/addNode";
@@ -49,9 +46,7 @@ export function getFactoType1Question(): Question {
 
   const answerTree = new MultiplyNode(
     affines[0].toTree(),
-    affines[1]
-      .add(operation === "add" ? affines[2] : affines[2].opposite())
-      .toTree()
+    affines[1].add(operation === "add" ? affines[2] : affines[2].opposite()).toTree()
   );
 
   const question: Question = {

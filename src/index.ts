@@ -1,4 +1,3 @@
-import { addAndSubExercise } from "./exercises/calcul/addAndSub";
 import { allIdentities } from "./exercises/calculLitteral/distributivity/allIdentities";
 import { doubleDistributivity } from "./exercises/calculLitteral/distributivity/doubleDistributivity";
 import { simpleDistributivity } from "./exercises/calculLitteral/distributivity/simpleDistributivity";
@@ -7,6 +6,7 @@ import { equationType2Exercise } from "./exercises/calculLitteral/equation/equat
 import { equationType3Exercise } from "./exercises/calculLitteral/equation/equationType3Exercise";
 import { equationType4Exercise } from "./exercises/calculLitteral/equation/equationType4Exercise";
 import { factoType1Exercise } from "./exercises/calculLitteral/factorisation/factoType1Exercise";
+import { exercises } from "./exercises/exercises";
 import { simplifySquareRoot } from "./exercises/squareRoots/simpifySquareRoot";
 import { randint } from "./mathutils/random/randint";
 import { Rational } from "./numbers/rationals/rational";
@@ -16,7 +16,4 @@ import { Polynomial } from "./polynomials/polynomial";
 import { latexParse } from "./tree/latexParser/latexParse";
 import { VariableNode } from "./tree/nodes/variables/variableNode";
 
-console.log(equationType1Exercise.generator(10));
-console.log(equationType2Exercise.generator(10));
-console.log(equationType3Exercise.generator(10));
-console.log(equationType4Exercise.generator(10));
+export { exercises };

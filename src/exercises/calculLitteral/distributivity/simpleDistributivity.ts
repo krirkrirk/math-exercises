@@ -1,6 +1,4 @@
-import { randint } from "../../../mathutils/random/randint";
 import { Integer } from "../../../numbers/integer/integer";
-import { multiply } from "../../../operations/multiply";
 import { AffineConstructor } from "../../../polynomials/affine";
 import { DiscreteSet } from "../../../sets/discreteSet";
 import { Interval } from "../../../sets/intervals/intervals";
@@ -16,21 +14,15 @@ export const simpleDistributivity: Exercise = {
   label: "Distributivité simple",
   levels: ["3", "2"],
   section: "Calcul Littéral",
-  generator: (nb: number) =>
-    getDistinctQuestions(getSimpleDistributivityQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getSimpleDistributivityQuestion, nb),
 };
 
 export function getSimpleDistributivityQuestion(): Question {
-  const interval = new Interval("[[-10; 10]]").difference(
-    new DiscreteSet([new Integer(0)])
-  );
+  const interval = new Interval("[[-10; 10]]").difference(new DiscreteSet([new Integer(0)]));
   const affine = AffineConstructor.random(interval, interval);
   const coeff = interval.getRandomElement();
 
-  const statementTree = new MultiplyNode(
-    new NumberNode(coeff.value),
-    affine.toTree()
-  );
+  const statementTree = new MultiplyNode(new NumberNode(coeff.value), affine.toTree());
   const answerTree = affine.times(coeff.value).toTree();
   return {
     statement: latexParse(statementTree),
