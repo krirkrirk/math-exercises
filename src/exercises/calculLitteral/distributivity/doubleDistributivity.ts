@@ -9,6 +9,7 @@ import { Exercise, Question } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
 export const doubleDistributivity: Exercise = {
+  id: "doubleDistri",
   connector: "=",
   instruction: "Développer et réduire :",
   label: "Distributivité double",

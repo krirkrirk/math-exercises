@@ -4,6 +4,7 @@ import { Exercise, Question } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
 export const simplifySquareRoot: Exercise = {
+  id: "simplifySqrt",
   connector: "=",
   instruction: "Simplifier :",
   label: "Simplification de racines carrées",

@@ -6,6 +6,7 @@ import { getSecondIdentityQuestion } from "./secondIdentity";
 import { getThirdIdentityQuestion } from "./thirdIdentity";
 
 export const allIdentities: Exercise = {
+  id: "allIdRmq",
   connector: "=",
   instruction: "Développer et réduire :",
   label: "Identités remarquables (toutes)",

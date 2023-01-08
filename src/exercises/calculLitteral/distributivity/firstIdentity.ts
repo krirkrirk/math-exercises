@@ -9,6 +9,7 @@ import { Exercise, Question } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
 export const firstIdentity: Exercise = {
+  id: "idRmq1",
   connector: "=",
   instruction: "Développer et réduire :",
   label: "Identité remarquable $(a+b)^2$",

@@ -10,6 +10,7 @@ import { Exercise, Question } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
 export const thirdIdentity: Exercise = {
+  id: "idRmq3",
   connector: "=",
   instruction: "Développer et réduire :",
   label: "Identité remarquable $(a+b)(a-b)$",

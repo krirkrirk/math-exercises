@@ -13,6 +13,7 @@ import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
  */
 
 export const factoType1Exercise: Exercise = {
+  id: "facto1",
   connector: "=",
   instruction: "Factoriser :",
   label: "Factorisation du type $(ax+b)(cx+d) \\pm (ax+b)(ex+f)$",

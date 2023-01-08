@@ -10,6 +10,7 @@ export interface Question {
 }
 
 export interface Exercise {
+  id: string;
   instruction: string;
   label: string;
   section: string;

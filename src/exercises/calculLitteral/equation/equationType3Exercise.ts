@@ -13,20 +13,19 @@ import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
  *  type ax+b=c
  */
 export const equationType3Exercise: Exercise = {
+  id: "equa3",
+
   connector: "\\iff",
   instruction: "Résoudre : ",
   label: "Equations $ax+b=c$",
   levels: ["4", "3", "2"],
   section: "Calcul littéral",
-  generator: (nb: number) =>
-    getDistinctQuestions(getEquationType3ExerciseQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getEquationType3ExerciseQuestion, nb),
 };
 
 export function getEquationType3ExerciseQuestion(): Question {
   const interval = new Interval("[[-10; 10]]");
-  const intervalStar = new Interval("[[-10; 10]]").difference(
-    new DiscreteSet([new Integer(0)])
-  );
+  const intervalStar = new Interval("[[-10; 10]]").difference(new DiscreteSet([new Integer(0)]));
   const b = intervalStar.getRandomElement();
   const a = intervalStar.getRandomElement();
   const c = interval.getRandomElement();
