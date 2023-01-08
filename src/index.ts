@@ -1,3 +1,7 @@
+import { fractionAndIntegerSum } from "./exercises/calcul/fractions/fractionAndIntegerSum";
+import { fractionsProduct } from "./exercises/calcul/fractions/fractionsProduct";
+import { fractionsSum, getFractionsSum } from "./exercises/calcul/fractions/fractionsSum";
+import { simplifyFraction } from "./exercises/calcul/fractions/simplifyFraction";
 import { allIdentities } from "./exercises/calculLitteral/distributivity/allIdentities";
 import { doubleDistributivity } from "./exercises/calculLitteral/distributivity/doubleDistributivity";
 import { simpleDistributivity } from "./exercises/calculLitteral/distributivity/simpleDistributivity";
@@ -9,11 +13,15 @@ import { factoType1Exercise } from "./exercises/calculLitteral/factorisation/fac
 import { exercises } from "./exercises/exercises";
 import { simplifySquareRoot } from "./exercises/squareRoots/simpifySquareRoot";
 import { randint } from "./mathutils/random/randint";
-import { Rational } from "./numbers/rationals/rational";
+import { Rational, RationalConstructor } from "./numbers/rationals/rational";
 import { SquareRoot } from "./numbers/reals/squareRoot";
 import { Affine } from "./polynomials/affine";
 import { Polynomial } from "./polynomials/polynomial";
 import { latexParse } from "./tree/latexParser/latexParse";
 import { VariableNode } from "./tree/nodes/variables/variableNode";
 
+const exo = fractionAndIntegerSum;
+console.log(exo.generator(10));
+const exo2 = fractionsProduct;
+console.log(exo2.generator(10));
 export { exercises };

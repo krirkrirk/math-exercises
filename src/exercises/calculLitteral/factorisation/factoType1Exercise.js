@@ -23,12 +23,7 @@ exports.factoType1Exercise = {
 };
 function getFactoType1Question() {
     var affines = affine_1.AffineConstructor.differentRandoms(3);
-    var permut = [
-        [affines[0], affines[1]],
-        [affines[0], affines[2]],
-    ];
-    (0, shuffle_1.shuffle)(permut[0]);
-    (0, shuffle_1.shuffle)(permut[1]);
+    var permut = [(0, shuffle_1.shuffle)([affines[0], affines[1]]), (0, shuffle_1.shuffle)([affines[0], affines[2]])];
     var operation = (0, random_1.random)(["add", "substract"]);
     var statementTree = operation === "add"
         ? new addNode_1.AddNode(new multiplyNode_1.MultiplyNode(permut[0][0].toTree(), permut[0][1].toTree()), new multiplyNode_1.MultiplyNode(permut[1][0].toTree(), permut[1][1].toTree()))

@@ -11,6 +11,12 @@ export class AddNode implements Node, OperatorNode {
     this.leftChild = leftChild;
     this.rightChild = rightChild;
   }
+  shuffle() {
+    if (Math.random() < 0.5) return;
+    const temp = this.leftChild;
+    this.leftChild = this.rightChild;
+    this.rightChild = temp;
+  }
   toString(): string {
     return `${this.leftChild} + ${this.rightChild}`;
   }

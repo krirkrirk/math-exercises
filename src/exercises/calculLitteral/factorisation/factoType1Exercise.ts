@@ -25,12 +25,7 @@ export const factoType1Exercise: Exercise = {
 export function getFactoType1Question(): Question {
   const affines = AffineConstructor.differentRandoms(3);
 
-  const permut: Affine[][] = [
-    [affines[0], affines[1]],
-    [affines[0], affines[2]],
-  ];
-  shuffle(permut[0]);
-  shuffle(permut[1]);
+  const permut: Affine[][] = [shuffle([affines[0], affines[1]]), shuffle([affines[0], affines[2]])];
 
   const operation = random(["add", "substract"]);
 

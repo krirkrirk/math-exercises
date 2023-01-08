@@ -20,16 +20,12 @@ function latexParse(node) {
                 case "add":
                     return "".concat(leftTex, " ").concat(rightTex[0] === "-" ? "" : "+ ").concat(rightTex);
                 case "opposite":
-                    var needBrackets = leftChild.id === "add" ||
-                        leftChild.id === "substract" ||
-                        leftTex[0] === "-";
+                    var needBrackets = leftChild.id === "add" || leftChild.id === "substract" || leftTex[0] === "-";
                     if (needBrackets)
                         leftTex = "(".concat(leftTex, ")");
                     return "-".concat(leftTex);
                 case "substract": {
-                    var needBrackets_1 = rightChild.id === "add" ||
-                        rightChild.id === "substract" ||
-                        rightTex[0] === "-";
+                    var needBrackets_1 = rightChild.id === "add" || rightChild.id === "substract" || rightTex[0] === "-";
                     if (needBrackets_1)
                         rightTex = "(".concat(rightTex, ")");
                     return "".concat(leftTex, " - ").concat(rightTex);
@@ -37,21 +33,18 @@ function latexParse(node) {
                 case "multiply": {
                     if (leftChild.id === "add" || leftChild.id === "substract")
                         leftTex = "(".concat(leftTex, ")");
-                    var needBrackets_2 = rightChild.id === "add" ||
-                        rightChild.id === "substract" ||
-                        rightTex[0] === "-";
+                    var needBrackets_2 = rightChild.id === "add" || rightChild.id === "substract" || rightTex[0] === "-";
                     if (needBrackets_2)
                         rightTex = "(".concat(rightTex, ")");
-                    var showTimesSign = !isNaN(+rightTex[0]); //permet de gérer le cas 3*2^x
+                    // !isNaN(+rightTex[0])  permet de gérer le cas 3*2^x
+                    var showTimesSign = !isNaN(+rightTex[0]) || rightChild.id === "divide";
                     return "".concat(leftTex).concat(showTimesSign ? "\\times " : "").concat(rightTex);
                 }
                 case "divide": {
                     return "\\frac{".concat(leftTex, "}{").concat(rightTex, "}");
                 }
                 case "power": {
-                    if (leftChild.id === "add" ||
-                        leftChild.id === "substract" ||
-                        leftChild.id === "multiply")
+                    if (leftChild.id === "add" || leftChild.id === "substract" || leftChild.id === "multiply")
                         leftTex = "(".concat(leftTex, ")");
                     return "".concat(leftTex, "^{").concat(rightTex, "}");
                 }

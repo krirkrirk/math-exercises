@@ -20,31 +20,22 @@ export function latexParse(node: Node | null): string {
           return `${leftTex} ${rightTex[0] === "-" ? "" : "+ "}${rightTex}`;
 
         case "opposite":
-          const needBrackets =
-            leftChild!.id === "add" ||
-            leftChild!.id === "substract" ||
-            leftTex[0] === "-";
+          const needBrackets = leftChild!.id === "add" || leftChild!.id === "substract" || leftTex[0] === "-";
           if (needBrackets) leftTex = `(${leftTex})`;
           return `-${leftTex}`;
 
         case "substract": {
-          const needBrackets =
-            rightChild!.id === "add" ||
-            rightChild!.id === "substract" ||
-            rightTex[0] === "-";
+          const needBrackets = rightChild!.id === "add" || rightChild!.id === "substract" || rightTex[0] === "-";
           if (needBrackets) rightTex = `(${rightTex})`;
           return `${leftTex} - ${rightTex}`;
         }
 
         case "multiply": {
-          if (leftChild!.id === "add" || leftChild!.id === "substract")
-            leftTex = `(${leftTex})`;
-          const needBrackets =
-            rightChild!.id === "add" ||
-            rightChild!.id === "substract" ||
-            rightTex[0] === "-";
+          if (leftChild!.id === "add" || leftChild!.id === "substract") leftTex = `(${leftTex})`;
+          const needBrackets = rightChild!.id === "add" || rightChild!.id === "substract" || rightTex[0] === "-";
           if (needBrackets) rightTex = `(${rightTex})`;
-          const showTimesSign = !isNaN(+rightTex[0]); //permet de gérer le cas 3*2^x
+          // !isNaN(+rightTex[0])  permet de gérer le cas 3*2^x
+          const showTimesSign = !isNaN(+rightTex[0]) || rightChild!.id === "divide";
           return `${leftTex}${showTimesSign ? "\\times " : ""}${rightTex}`;
         }
 
@@ -53,11 +44,7 @@ export function latexParse(node: Node | null): string {
         }
 
         case "power": {
-          if (
-            leftChild!.id === "add" ||
-            leftChild!.id === "substract" ||
-            leftChild!.id === "multiply"
-          )
+          if (leftChild!.id === "add" || leftChild!.id === "substract" || leftChild!.id === "multiply")
             leftTex = `(${leftTex})`;
           return `${leftTex}^{${rightTex}}`;
         }
