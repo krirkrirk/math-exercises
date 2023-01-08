@@ -7,6 +7,7 @@ var firstIdentity_1 = require("./firstIdentity");
 var secondIdentity_1 = require("./secondIdentity");
 var thirdIdentity_1 = require("./thirdIdentity");
 exports.allIdentities = {
+    id: "allIdRmq",
     connector: "=",
     instruction: "Développer et réduire :",
     label: "Identités remarquables (toutes)",

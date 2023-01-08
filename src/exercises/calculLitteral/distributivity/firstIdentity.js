@@ -10,6 +10,7 @@ var numberNode_1 = require("../../../tree/nodes/numbers/numberNode");
 var powerNode_1 = require("../../../tree/nodes/operators/powerNode");
 var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
 exports.firstIdentity = {
+    id: "idRmq1",
     connector: "=",
     instruction: "Développer et réduire :",
     label: "Identité remarquable $(a+b)^2$",

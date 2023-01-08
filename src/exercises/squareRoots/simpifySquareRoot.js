@@ -1,13 +1,11 @@
 "use strict";
-/**
- *  type (ax+b)(cx+d) ± (ax+b)(ex+f)
- */
 exports.__esModule = true;
 exports.getSimplifySquareRoot = exports.simplifySquareRoot = void 0;
 var squareRoot_1 = require("../../numbers/reals/squareRoot");
 var latexParse_1 = require("../../tree/latexParser/latexParse");
 var getDistinctQuestions_1 = require("../utils/getDistinctQuestions");
 exports.simplifySquareRoot = {
+    id: "simplifySqrt",
     connector: "=",
     instruction: "Simplifier :",
     label: "Simplification de racines carrées",

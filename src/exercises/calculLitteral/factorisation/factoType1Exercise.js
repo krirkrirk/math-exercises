@@ -13,6 +13,7 @@ var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
  *  type (ax+b)(cx+d) ± (ax+b)(ex+f)
  */
 exports.factoType1Exercise = {
+    id: "facto1",
     connector: "=",
     instruction: "Factoriser :",
     label: "Factorisation du type $(ax+b)(cx+d) \\pm (ax+b)(ex+f)$",
@@ -32,9 +33,7 @@ function getFactoType1Question() {
     var statementTree = operation === "add"
         ? new addNode_1.AddNode(new multiplyNode_1.MultiplyNode(permut[0][0].toTree(), permut[0][1].toTree()), new multiplyNode_1.MultiplyNode(permut[1][0].toTree(), permut[1][1].toTree()))
         : new substractNode_1.SubstractNode(new multiplyNode_1.MultiplyNode(permut[0][0].toTree(), permut[0][1].toTree()), new multiplyNode_1.MultiplyNode(permut[1][0].toTree(), permut[1][1].toTree()));
-    var answerTree = new multiplyNode_1.MultiplyNode(affines[0].toTree(), affines[1]
-        .add(operation === "add" ? affines[2] : affines[2].opposite())
-        .toTree());
+    var answerTree = new multiplyNode_1.MultiplyNode(affines[0].toTree(), affines[1].add(operation === "add" ? affines[2] : affines[2].opposite()).toTree());
     var question = {
         statement: (0, latexParse_1.latexParse)(statementTree),
         answer: (0, latexParse_1.latexParse)(answerTree)

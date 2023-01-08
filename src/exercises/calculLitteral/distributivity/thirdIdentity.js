@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.getThirdIdentityQuestion = exports.firstIdentity = void 0;
+exports.getThirdIdentityQuestion = exports.thirdIdentity = void 0;
 var integer_1 = require("../../../numbers/integer/integer");
 var affine_1 = require("../../../polynomials/affine");
 var discreteSet_1 = require("../../../sets/discreteSet");
@@ -8,7 +8,8 @@ var intervals_1 = require("../../../sets/intervals/intervals");
 var latexParse_1 = require("../../../tree/latexParser/latexParse");
 var multiplyNode_1 = require("../../../tree/nodes/operators/multiplyNode");
 var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
-exports.firstIdentity = {
+exports.thirdIdentity = {
+    id: "idRmq3",
     connector: "=",
     instruction: "Développer et réduire :",
     label: "Identité remarquable $(a+b)(a-b)$",

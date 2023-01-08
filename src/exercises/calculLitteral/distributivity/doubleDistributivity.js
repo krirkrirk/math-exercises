@@ -9,14 +9,13 @@ var latexParse_1 = require("../../../tree/latexParser/latexParse");
 var multiplyNode_1 = require("../../../tree/nodes/operators/multiplyNode");
 var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
 exports.doubleDistributivity = {
+    id: "doubleDistri",
     connector: "=",
     instruction: "Développer et réduire :",
     label: "Distributivité double",
     levels: ["3", "2"],
     section: "Calcul Littéral",
-    generator: function (nb) {
-        return (0, getDistinctQuestions_1.getDistinctQuestions)(getDoubleDistributivityQuestion, nb);
-    }
+    generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getDoubleDistributivityQuestion, nb); }
 };
 function getDoubleDistributivityQuestion() {
     var interval = new intervals_1.Interval("[[-10; 10]]").difference(new discreteSet_1.DiscreteSet([new integer_1.Integer(0)]));

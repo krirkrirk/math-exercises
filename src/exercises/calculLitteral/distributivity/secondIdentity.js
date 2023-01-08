@@ -10,14 +10,13 @@ var numberNode_1 = require("../../../tree/nodes/numbers/numberNode");
 var powerNode_1 = require("../../../tree/nodes/operators/powerNode");
 var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
 exports.secondIdentity = {
+    id: "idRmq2",
     connector: "=",
     instruction: "Développer et réduire :",
     label: "Identité remarquable $(a-b)^2$",
     levels: ["3", "2"],
     section: "Calcul Littéral",
-    generator: function (nb) {
-        return (0, getDistinctQuestions_1.getDistinctQuestions)(getSecondIdentityQuestion, nb);
-    }
+    generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getSecondIdentityQuestion, nb); }
 };
 function getSecondIdentityQuestion() {
     var intervalA = new intervals_1.Interval("[[0; 10]]").difference(new discreteSet_1.DiscreteSet([new integer_1.Integer(0)]));

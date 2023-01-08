@@ -14,14 +14,13 @@ var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
  *  type ax+b=c
  */
 exports.equationType3Exercise = {
+    id: "equa3",
     connector: "\\iff",
     instruction: "Résoudre : ",
     label: "Equations $ax+b=c$",
     levels: ["4", "3", "2"],
     section: "Calcul littéral",
-    generator: function (nb) {
-        return (0, getDistinctQuestions_1.getDistinctQuestions)(getEquationType3ExerciseQuestion, nb);
-    }
+    generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getEquationType3ExerciseQuestion, nb); }
 };
 function getEquationType3ExerciseQuestion() {
     var interval = new intervals_1.Interval("[[-10; 10]]");

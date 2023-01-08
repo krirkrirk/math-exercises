@@ -1,10 +1,5 @@
 "use strict";
 exports.__esModule = true;
-var equationType1Exercise_1 = require("./exercises/calculLitteral/equation/equationType1Exercise");
-var equationType2Exercise_1 = require("./exercises/calculLitteral/equation/equationType2Exercise");
-var equationType3Exercise_1 = require("./exercises/calculLitteral/equation/equationType3Exercise");
-var equationType4Exercise_1 = require("./exercises/calculLitteral/equation/equationType4Exercise");
-console.log(equationType1Exercise_1.equationType1Exercise.generator(10));
-console.log(equationType2Exercise_1.equationType2Exercise.generator(10));
-console.log(equationType3Exercise_1.equationType3Exercise.generator(10));
-console.log(equationType4Exercise_1.equationType4Exercise.generator(10));
+exports.exercises = void 0;
+var exercises_1 = require("./exercises/exercises");
+exports.exercises = exercises_1.exercises;
