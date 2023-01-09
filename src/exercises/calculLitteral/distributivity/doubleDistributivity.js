@@ -14,6 +14,7 @@ exports.doubleDistributivity = {
     instruction: "Développer et réduire :",
     label: "Distributivité double",
     levels: ["3", "2"],
+    isSingleStep: false,
     section: "Calcul Littéral",
     generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getDoubleDistributivityQuestion, nb); }
 };

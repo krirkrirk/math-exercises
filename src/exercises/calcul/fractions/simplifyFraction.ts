@@ -7,9 +7,10 @@ export const simplifyFraction: Exercise = {
   id: "simplifySqrt",
   connector: "=",
   instruction: "Simplifier :",
-  label: "Simplification de racines carrées",
-  levels: ["3", "2", "1"],
-  section: "Racines carrées",
+  label: "Simplification de fractions",
+  levels: ["4", "3", "2"],
+  isSingleStep: false,
+  section: "Fractions",
   generator: (nb: number) => getDistinctQuestions(getSimplifyFraction, nb),
 };
 

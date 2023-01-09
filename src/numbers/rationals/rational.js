@@ -15,7 +15,7 @@ var gcd_1 = require("../../mathutils/arithmetic/gcd");
 var lcd_1 = require("../../mathutils/arithmetic/lcd");
 var randint_1 = require("../../mathutils/random/randint");
 var numberNode_1 = require("../../tree/nodes/numbers/numberNode");
-var divideNode_1 = require("../../tree/nodes/operators/divideNode");
+var fractionNode_1 = require("../../tree/nodes/operators/fractionNode");
 var random_1 = require("../../utils/random");
 var shuffle_1 = require("../../utils/shuffle");
 var integer_1 = require("../integer/integer");
@@ -52,6 +52,8 @@ var RationalConstructor = /** @class */ (function () {
 exports.RationalConstructor = RationalConstructor;
 var Rational = /** @class */ (function () {
     function Rational(numerator, denumerator) {
+        if (denumerator === 0)
+            throw Error("division by zero");
         this.num = numerator;
         this.denum = denumerator;
         this.value = numerator / denumerator;
@@ -81,7 +83,7 @@ var Rational = /** @class */ (function () {
         switch (nb.type) {
             case nombre_1.NumberType.Integer: {
                 var num = this.num * nb.value;
-                var denum = this.denum * nb.value;
+                var denum = this.denum;
                 return new Rational(num, denum).simplify();
             }
             case nombre_1.NumberType.Rational: {
@@ -93,11 +95,26 @@ var Rational = /** @class */ (function () {
         }
         throw Error("not implemented yet");
     };
+    Rational.prototype.divide = function (nb) {
+        switch (nb.type) {
+            case nombre_1.NumberType.Integer: {
+                var denum = this.denum * nb.value;
+                return new Rational(this.num, denum).simplify();
+            }
+            case nombre_1.NumberType.Rational: {
+                var rational = nb;
+                var num = this.num * rational.denum;
+                var denum = this.denum * rational.num;
+                return new Rational(num, denum).simplify();
+            }
+        }
+        throw Error("not implemented yet");
+    };
     Rational.prototype.opposite = function () {
         return new Rational(-this.num, this.denum);
     };
     Rational.prototype.toTree = function () {
-        return new divideNode_1.DivideNode(new numberNode_1.NumberNode(this.num), new numberNode_1.NumberNode(this.denum));
+        return new fractionNode_1.FractionNode(new numberNode_1.NumberNode(this.num), new numberNode_1.NumberNode(this.denum));
     };
     Rational.prototype.simplify = function () {
         var sign = (this.num > 0 && this.denum > 0) || (this.num < 0 && this.denum < 0) ? 1 : -1;

@@ -4,7 +4,7 @@ exports.Polynomial = void 0;
 var numberNode_1 = require("../tree/nodes/numbers/numberNode");
 var addNode_1 = require("../tree/nodes/operators/addNode");
 var multiplyNode_1 = require("../tree/nodes/operators/multiplyNode");
-var oppositeNode_1 = require("../tree/nodes/operators/oppositeNode");
+var oppositeNode_1 = require("../tree/nodes/functions/oppositeNode");
 var powerNode_1 = require("../tree/nodes/operators/powerNode");
 var variableNode_1 = require("../tree/nodes/variables/variableNode");
 var Polynomial = /** @class */ (function () {
@@ -25,15 +25,13 @@ var Polynomial = /** @class */ (function () {
         this.degree = coefficients.length - 1;
     }
     Polynomial.prototype.equals = function (P) {
-        return (P.degree === this.degree &&
-            this.coefficients.every(function (coeff, i) { return coeff === P.coefficients[i]; }));
+        return P.degree === this.degree && this.coefficients.every(function (coeff, i) { return coeff === P.coefficients[i]; });
     };
     Polynomial.prototype.getRoots = function () { };
     Polynomial.prototype.add = function (P) {
         if (P.variable !== this.variable)
             throw Error("Can't add two polynomials with different variables");
-        var newDegree = P.degree === this.degree &&
-            P.coefficients[P.degree] === -this.coefficients[this.degree]
+        var newDegree = P.degree === this.degree && P.coefficients[P.degree] === -this.coefficients[this.degree]
             ? P.degree - 1
             : Math.max(P.degree, this.degree);
         var res = [];
@@ -110,14 +108,7 @@ var Polynomial = /** @class */ (function () {
                 s += coeff === 1 ? "" : coeff === -1 ? "-" : coeff;
             }
             else {
-                s +=
-                    coeff === 1
-                        ? "+"
-                        : coeff === -1
-                            ? "-"
-                            : coeff > 0
-                                ? "+".concat(coeff)
-                                : coeff;
+                s += coeff === 1 ? "+" : coeff === -1 ? "-" : coeff > 0 ? "+".concat(coeff) : coeff;
             }
             //x^n
             if (i === 0)

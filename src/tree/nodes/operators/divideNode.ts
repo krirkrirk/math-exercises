@@ -1,23 +1,16 @@
 import { Node, NodeType } from "../node";
-import { OperatorNode } from "./operatorNode";
+import { OperatorIds, OperatorNode } from "./operatorNode";
 
-export class DivideNode implements Node, OperatorNode {
-  leftChild: Node;
-  rightChild: Node;
-  type: NodeType = NodeType.operator;
-  id: string = "divide";
-  tex = "\\frac";
-
+export class DivideNode extends OperatorNode {
   /**
    * @param leftChild num
    * @param rightChild denum
    */
   constructor(leftChild: Node, rightChild: Node) {
-    this.leftChild = leftChild;
-    this.rightChild = rightChild;
+    super(OperatorIds.divide, leftChild, rightChild, false, "\\div");
   }
 
   toString(): string {
-    return `\\frac{${this.leftChild}}{${this.rightChild}}`;
+    return `(${this.leftChild}) \\div (${this.rightChild})`;
   }
 }

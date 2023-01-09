@@ -16,6 +16,7 @@ exports.factoType1Exercise = {
     id: "facto1",
     connector: "=",
     instruction: "Factoriser :",
+    isSingleStep: false,
     label: "Factorisation du type $(ax+b)(cx+d) \\pm (ax+b)(ex+f)$",
     levels: ["3", "2"],
     section: "Calcul Littéral",

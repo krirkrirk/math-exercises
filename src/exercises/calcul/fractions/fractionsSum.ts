@@ -11,6 +11,7 @@ export const fractionsSum: Exercise = {
   label: "Sommes de fractions",
   levels: ["4", "3", "2", "1"],
   section: "Fractions",
+  isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionsSum, nb),
 };
 

@@ -12,6 +12,7 @@ export interface Question {
 export interface Exercise {
   id: string;
   instruction: string;
+  isSingleStep: boolean;
   label: string;
   section: string;
   levels: string[];

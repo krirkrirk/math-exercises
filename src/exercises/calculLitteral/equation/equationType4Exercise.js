@@ -20,6 +20,7 @@ exports.equationType4Exercise = {
     label: "Equations $ax+b=cx+d$",
     levels: ["4", "3", "2"],
     section: "Calcul littéral",
+    isSingleStep: false,
     generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getEquationType4ExerciseQuestion, nb); }
 };
 function getEquationType4ExerciseQuestion() {

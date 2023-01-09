@@ -1,4 +1,3 @@
-import { Expression } from "../../expression/expression";
 import { coprimesOf } from "../../mathutils/arithmetic/coprimesOf";
 import { gcd } from "../../mathutils/arithmetic/gcd";
 import { lcd } from "../../mathutils/arithmetic/lcd";
@@ -6,6 +5,7 @@ import { randint } from "../../mathutils/random/randint";
 import { Node } from "../../tree/nodes/node";
 import { NumberNode } from "../../tree/nodes/numbers/numberNode";
 import { DivideNode } from "../../tree/nodes/operators/divideNode";
+import { FractionNode } from "../../tree/nodes/operators/fractionNode";
 import { random } from "../../utils/random";
 import { shuffle } from "../../utils/shuffle";
 import { Integer } from "../integer/integer";
@@ -44,6 +44,7 @@ export class Rational implements Nombre {
   type: NumberType;
 
   constructor(numerator: number, denumerator: number) {
+    if (denumerator === 0) throw Error("division by zero");
     this.num = numerator;
     this.denum = denumerator;
     this.value = numerator / denumerator;
@@ -76,7 +77,7 @@ export class Rational implements Nombre {
     switch (nb.type) {
       case NumberType.Integer: {
         const num = this.num * nb.value;
-        const denum = this.denum * nb.value;
+        const denum = this.denum;
         return new Rational(num, denum).simplify();
       }
       case NumberType.Rational: {
@@ -88,13 +89,28 @@ export class Rational implements Nombre {
     }
     throw Error("not implemented yet");
   }
+  divide(nb: Nombre): Nombre {
+    switch (nb.type) {
+      case NumberType.Integer: {
+        const denum = this.denum * nb.value;
+        return new Rational(this.num, denum).simplify();
+      }
+      case NumberType.Rational: {
+        const rational = nb as Rational;
+        const num = this.num * rational.denum;
+        const denum = this.denum * rational.num;
+        return new Rational(num, denum).simplify();
+      }
+    }
+    throw Error("not implemented yet");
+  }
 
   opposite(): Rational {
     return new Rational(-this.num, this.denum);
   }
 
   toTree(): Node {
-    return new DivideNode(new NumberNode(this.num), new NumberNode(this.denum));
+    return new FractionNode(new NumberNode(this.num), new NumberNode(this.denum));
   }
 
   simplify(): Nombre {

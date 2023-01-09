@@ -1,15 +1,9 @@
 import { Node, NodeType } from "../node";
-import { OperatorNode } from "./operatorNode";
+import { OperatorIds, OperatorNode } from "./operatorNode";
 
-export class EqualNode implements Node, OperatorNode {
-  leftChild: Node;
-  rightChild: Node;
-  type: NodeType = NodeType.operator;
-  id: string = "equal";
-  tex = "=";
+export class EqualNode extends OperatorNode {
   constructor(leftChild: Node, rightChild: Node) {
-    this.leftChild = leftChild;
-    this.rightChild = rightChild;
+    super(OperatorIds.equal, leftChild, rightChild, true, "=");
   }
   toString(): string {
     return `${this.leftChild} = ${this.rightChild}`;

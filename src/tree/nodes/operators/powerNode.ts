@@ -1,14 +1,9 @@
 import { Node, NodeType } from "../node";
+import { OperatorIds, OperatorNode } from "./operatorNode";
 
-export class PowerNode implements Node {
-  tex = "^";
-  type = NodeType.operator;
-  id = "power";
-  leftChild: Node;
-  rightChild: Node;
+export class PowerNode extends OperatorNode {
   constructor(leftChild: Node, rightChild: Node) {
-    this.leftChild = leftChild;
-    this.rightChild = rightChild;
+    super(OperatorIds.power, leftChild, rightChild, false, "^");
   }
 
   toString(): string {

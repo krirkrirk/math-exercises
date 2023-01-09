@@ -20,6 +20,7 @@ export const equationType3Exercise: Exercise = {
   label: "Equations $ax+b=c$",
   levels: ["4", "3", "2"],
   section: "Calcul littéral",
+  isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getEquationType3ExerciseQuestion, nb),
 };
 

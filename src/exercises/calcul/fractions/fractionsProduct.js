@@ -12,6 +12,7 @@ exports.fractionsProduct = {
     label: "Produits de fractions",
     levels: ["4", "3", "2", "1"],
     section: "Fractions",
+    isSingleStep: false,
     generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getFractionsProduct, nb); }
 };
 function getFractionsProduct() {

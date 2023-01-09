@@ -1,15 +1,9 @@
 import { Node, NodeType } from "../node";
-import { OperatorNode } from "./operatorNode";
+import { OperatorIds, OperatorNode } from "./operatorNode";
 
-export class MultiplyNode implements Node, OperatorNode {
-  leftChild: Node;
-  rightChild: Node;
-  type: NodeType = NodeType.operator;
-  id: string = "multiply";
-  tex = "\\times";
+export class MultiplyNode extends OperatorNode {
   constructor(leftChild: Node, rightChild: Node) {
-    this.leftChild = leftChild;
-    this.rightChild = rightChild;
+    super(OperatorIds.multiply, leftChild, rightChild, true, "\\times");
   }
 
   toString(): string {

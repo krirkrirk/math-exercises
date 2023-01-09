@@ -8,7 +8,5 @@ export enum NodeType {
 export interface Node {
   type: NodeType;
   tex: string;
-  id: string;
-  leftChild: Node | null;
-  rightChild: Node | null;
+  toString: () => string;
 }

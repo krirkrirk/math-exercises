@@ -13,6 +13,7 @@ exports.fractionAndIntegerSum = {
     instruction: "Calculer la forme irréductible :",
     label: "Sommes de fractions",
     levels: ["4", "3", "2", "1"],
+    isSingleStep: false,
     section: "Fractions",
     generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getFractionAndIntegerSum, nb); }
 };

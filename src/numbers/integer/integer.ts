@@ -1,7 +1,7 @@
-import { Expression } from "../../expression/expression";
 import { Node } from "../../tree/nodes/node";
 import { NumberNode } from "../../tree/nodes/numbers/numberNode";
 import { Nombre, NumberType } from "../nombre";
+import { Rational } from "../rationals/rational";
 
 export class Integer implements Nombre {
   value: number;
@@ -17,7 +17,16 @@ export class Integer implements Nombre {
   toTree(): Node {
     return new NumberNode(this.value);
   }
-  // add(expression: Expression): Expression {
 
-  // }
+  divide(nb: Nombre): Nombre {
+    switch (nb.type) {
+      case NumberType.Integer:
+        return new Rational(this.value, nb.value).simplify();
+      case NumberType.Rational:
+        const rational = nb as Rational;
+        return new Rational(this.value * rational.denum, rational.num).simplify();
+      default:
+        throw Error("not implemented");
+    }
+  }
 }

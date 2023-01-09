@@ -11,10 +11,7 @@ export abstract class SquareRootConstructor {
   /**
    * @returns simplifiable square root type sqrt(c)=a*sqrt(b)
    */
-  static randomSimplifiable({
-    allowPerfectSquare = false,
-    maxSquare = 11,
-  }): SquareRoot {
+  static randomSimplifiable({ allowPerfectSquare = false, maxSquare = 11 }): SquareRoot {
     const a = randint(2, maxSquare);
     let b;
     let bMin = allowPerfectSquare ? 1 : 2;
@@ -44,8 +41,7 @@ export class SquareRoot extends Real {
       }
     }
     const outsideSqrt = multiples.reduce((x, y) => x * y);
-    const insideSqrt =
-      factors.length === 0 ? 1 : factors.reduce((x, y) => x * y);
+    const insideSqrt = factors.length === 0 ? 1 : factors.reduce((x, y) => x * y);
 
     const simplified =
       insideSqrt !== 1
@@ -58,10 +54,7 @@ export class SquareRoot extends Real {
       return insideSqrt !== 1
         ? outsideSqrt === 1
           ? new SqrtNode(new NumberNode(insideSqrt))
-          : new MultiplyNode(
-              new NumberNode(outsideSqrt),
-              new SqrtNode(new NumberNode(insideSqrt))
-            )
+          : new MultiplyNode(new NumberNode(outsideSqrt), new SqrtNode(new NumberNode(insideSqrt)))
         : new NumberNode(outsideSqrt);
     };
     return simplified;

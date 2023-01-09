@@ -12,6 +12,7 @@ export const fractionAndIntegerSum: Exercise = {
   instruction: "Calculer la forme irréductible :",
   label: "Sommes de fractions",
   levels: ["4", "3", "2", "1"],
+  isSingleStep: false,
   section: "Fractions",
   generator: (nb: number) => getDistinctQuestions(getFractionAndIntegerSum, nb),
 };

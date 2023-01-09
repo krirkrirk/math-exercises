@@ -11,6 +11,9 @@ import { equationType3Exercise } from "./exercises/calculLitteral/equation/equat
 import { equationType4Exercise } from "./exercises/calculLitteral/equation/equationType4Exercise";
 import { factoType1Exercise } from "./exercises/calculLitteral/factorisation/factoType1Exercise";
 import { exercises } from "./exercises/exercises";
+import { powersDivision } from "./exercises/powers/powersDivision";
+import { powersPower } from "./exercises/powers/powersPower";
+import { powersProduct } from "./exercises/powers/powersProduct";
 import { simplifySquareRoot } from "./exercises/squareRoots/simpifySquareRoot";
 import { randint } from "./mathutils/random/randint";
 import { Rational, RationalConstructor } from "./numbers/rationals/rational";
@@ -20,8 +23,12 @@ import { Polynomial } from "./polynomials/polynomial";
 import { latexParse } from "./tree/latexParser/latexParse";
 import { VariableNode } from "./tree/nodes/variables/variableNode";
 
-const exo = fractionAndIntegerSum;
-console.log(exo.generator(10));
-const exo2 = fractionsProduct;
-console.log(exo2.generator(10));
+// exercises.forEach((exo) => {
+//   console.log(exo.instruction, exo.generator(10));
+// });
+console.log(powersPower.generator(10));
+console.log(powersProduct.generator(10));
+
+console.log(powersDivision.generator(10));
+
 export { exercises };

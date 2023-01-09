@@ -10,6 +10,7 @@ exports.simplifySquareRoot = {
     instruction: "Simplifier :",
     label: "Simplification de racines carrées",
     levels: ["3", "2", "1"],
+    isSingleStep: false,
     section: "Racines carrées",
     generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getSimplifySquareRoot, nb); }
 };

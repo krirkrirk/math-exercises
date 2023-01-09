@@ -15,6 +15,7 @@ exports.simpleDistributivity = {
     instruction: "Développer et réduire :",
     label: "Distributivité simple",
     levels: ["3", "2"],
+    isSingleStep: false,
     section: "Calcul Littéral",
     generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getSimpleDistributivityQuestion, nb); }
 };

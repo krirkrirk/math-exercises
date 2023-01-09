@@ -1,7 +1,8 @@
+import { FunctionNode, FunctionsIds } from "../nodes/functions/functionNode";
 import { Node, NodeType } from "../nodes/node";
-import { OperatorNode } from "../nodes/operators/operatorNode";
+import { OperatorIds, OperatorNode } from "../nodes/operators/operatorNode";
 
-export function latexParse(node: Node | null): string {
+export function latexParse(node: Node): string {
   if (!node) {
     console.log("parsing a null node ???");
     return "";
@@ -12,54 +13,112 @@ export function latexParse(node: Node | null): string {
     case NodeType.number:
       return node.tex;
     case NodeType.operator:
-      let rightTex = latexParse(node.rightChild);
-      let leftTex = latexParse(node.leftChild);
-      const { leftChild, rightChild } = node;
-      switch (node.id) {
-        case "add":
+      const operatorNode = node as OperatorNode;
+      let rightTex = latexParse(operatorNode.rightChild);
+      let leftTex = latexParse(operatorNode.leftChild);
+      const { leftChild, rightChild } = operatorNode;
+      switch (operatorNode.id) {
+        case OperatorIds.add:
           return `${leftTex} ${rightTex[0] === "-" ? "" : "+ "}${rightTex}`;
 
-        case "opposite":
-          const needBrackets = leftChild!.id === "add" || leftChild!.id === "substract" || leftTex[0] === "-";
-          if (needBrackets) leftTex = `(${leftTex})`;
-          return `-${leftTex}`;
+        case OperatorIds.substract: {
+          const needBrackets =
+            (rightChild.type === NodeType.operator &&
+              [OperatorIds.add, OperatorIds.substract].includes((rightChild as OperatorNode).id)) ||
+            rightTex[0] === "-";
 
-        case "substract": {
-          const needBrackets = rightChild!.id === "add" || rightChild!.id === "substract" || rightTex[0] === "-";
           if (needBrackets) rightTex = `(${rightTex})`;
+
           return `${leftTex} - ${rightTex}`;
         }
 
-        case "multiply": {
-          if (leftChild!.id === "add" || leftChild!.id === "substract") leftTex = `(${leftTex})`;
-          const needBrackets = rightChild!.id === "add" || rightChild!.id === "substract" || rightTex[0] === "-";
+        case OperatorIds.multiply: {
+          if (leftChild.type === NodeType.operator) {
+            if ([OperatorIds.add, OperatorIds.substract, OperatorIds.divide].includes((leftChild as OperatorNode).id))
+              leftTex = `(${leftTex})`;
+          }
+          let needBrackets = rightTex[0] === "-";
+          if (rightChild.type === NodeType.operator) {
+            const operatorRightChild = rightChild as OperatorNode;
+            needBrackets ||= [OperatorIds.add, OperatorIds.substract].includes(operatorRightChild.id);
+          }
           if (needBrackets) rightTex = `(${rightTex})`;
-          // !isNaN(+rightTex[0])  permet de gérer le cas 3*2^x
-          const showTimesSign = !isNaN(+rightTex[0]) || rightChild!.id === "divide";
+
+          //  permet de gérer le cas 3*2^x
+          let showTimesSign = !isNaN(+rightTex[0]) || rightChild.type === NodeType.number;
+          if (rightChild.type === NodeType.operator) {
+            const operatorRightChild = rightChild as OperatorNode;
+            showTimesSign ||= [OperatorIds.fraction].includes(operatorRightChild.id);
+          }
           return `${leftTex}${showTimesSign ? "\\times " : ""}${rightTex}`;
         }
 
-        case "divide": {
+        case OperatorIds.divide: {
+          if (leftChild.type === NodeType.operator) {
+            if ([OperatorIds.add, OperatorIds.substract, OperatorIds.multiply].includes((leftChild as OperatorNode).id))
+              leftTex = `(${leftTex})`;
+          }
+          let needBrackets = rightTex[0] === "-";
+          if (rightChild.type === NodeType.operator) {
+            const operatorRightChild = rightChild as OperatorNode;
+            needBrackets ||= [OperatorIds.add, OperatorIds.substract].includes(operatorRightChild.id);
+          }
+          if (needBrackets) rightTex = `(${rightTex})`;
+
+          //  permet de gérer le cas 3*2^x
+          let showTimesSign = !isNaN(+rightTex[0]);
+          if (rightChild.type === NodeType.operator) {
+            const operatorRightChild = rightChild as OperatorNode;
+            showTimesSign ||= [OperatorIds.fraction].includes(operatorRightChild.id);
+          }
+          return `${leftTex}${showTimesSign ? "\\div " : ""}${rightTex}`;
+        }
+
+        case OperatorIds.fraction: {
           return `\\frac{${leftTex}}{${rightTex}}`;
         }
 
-        case "power": {
-          if (leftChild!.id === "add" || leftChild!.id === "substract" || leftChild!.id === "multiply")
-            leftTex = `(${leftTex})`;
+        case OperatorIds.power: {
+          let needBrackets = leftTex[0] === "-";
+          if (leftChild.type === NodeType.operator) {
+            const childOperator = leftChild as OperatorNode;
+            needBrackets ||= [
+              OperatorIds.add,
+              OperatorIds.substract,
+              OperatorIds.multiply,
+              OperatorIds.divide,
+              OperatorIds.fraction,
+              OperatorIds.power,
+            ].includes(childOperator.id);
+          }
+          if (needBrackets) leftTex = `(${leftTex})`;
           return `${leftTex}^{${rightTex}}`;
         }
 
-        case "equal": {
+        case OperatorIds.equal: {
           return `${leftTex} = ${rightTex}`;
         }
         default:
           return node.tex;
       }
+
     case NodeType.function: {
-      let leftTex = latexParse(node.leftChild);
-      switch (node.id) {
-        case "sqrt": {
-          return `\\sqrt{${leftTex}}`;
+      const functionNode = node as FunctionNode;
+      const child = functionNode.child;
+      let childTex = latexParse(functionNode.child);
+      switch (functionNode.id) {
+        case FunctionsIds.sqrt: {
+          return `\\sqrt{${childTex}}`;
+        }
+
+        case FunctionsIds.opposite: {
+          let needBrackets = childTex[0] === "-";
+          if (child.type === NodeType.operator) {
+            const operatorChild = child as OperatorNode;
+            needBrackets ||= [OperatorIds.add, OperatorIds.substract].includes(operatorChild.id);
+          }
+          if (needBrackets) childTex = `(${childTex})`;
+          return `-${childTex}`;
         }
       }
     }

@@ -13,9 +13,7 @@ import { Nombre } from "../numbers/nombre";
 
 export abstract class AffineConstructor {
   static random(
-    domainA: MathSet = new Interval("[[-10; 10]]").difference(
-      new DiscreteSet([new Integer(0)])
-    ),
+    domainA: MathSet = new Interval("[[-10; 10]]").difference(new DiscreteSet([new Integer(0)])),
     domainB: MathSet = new Interval("[[-10; 10]]")
   ): Affine {
     const a = domainA.getRandomElement();
@@ -25,9 +23,7 @@ export abstract class AffineConstructor {
 
   static differentRandoms(
     nb: number,
-    domainA: MathSet = new Interval("[[-10; 10]]").difference(
-      new DiscreteSet([new Integer(0)])
-    ),
+    domainA: MathSet = new Interval("[[-10; 10]]").difference(new DiscreteSet([new Integer(0)])),
     domainB: MathSet = new Interval("[[-10; 10]]")
   ): Affine[] {
     const res: Affine[] = [];

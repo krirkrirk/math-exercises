@@ -11,6 +11,7 @@ export const allIdentities: Exercise = {
   instruction: "Développer et réduire :",
   label: "Identités remarquables (toutes)",
   levels: ["3", "2"],
+  isSingleStep: false,
   section: "Calcul Littéral",
   generator: (nb: number) => getDistinctQuestions(getAllIdentitiesQuestion, nb),
 };

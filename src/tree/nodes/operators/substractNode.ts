@@ -1,15 +1,9 @@
 import { Node, NodeType } from "../node";
-import { OperatorNode } from "./operatorNode";
+import { OperatorIds, OperatorNode } from "./operatorNode";
 
-export class SubstractNode implements Node, OperatorNode {
-  leftChild: Node;
-  rightChild: Node;
-  type: NodeType = NodeType.operator;
-  id: string = "substract";
-  tex = "-";
+export class SubstractNode extends OperatorNode {
   constructor(leftChild: Node, rightChild: Node) {
-    this.leftChild = leftChild;
-    this.rightChild = rightChild;
+    super(OperatorIds.substract, leftChild, rightChild, false, "-");
   }
   toString(): string {
     return `${this.leftChild}-(${this.rightChild})`;

@@ -1,11 +1,10 @@
 "use strict";
 exports.__esModule = true;
 exports.exercises = void 0;
-var fractionAndIntegerSum_1 = require("./exercises/calcul/fractions/fractionAndIntegerSum");
-var fractionsProduct_1 = require("./exercises/calcul/fractions/fractionsProduct");
 var exercises_1 = require("./exercises/exercises");
 exports.exercises = exercises_1.exercises;
-var exo = fractionAndIntegerSum_1.fractionAndIntegerSum;
-console.log(exo.generator(10));
-var exo2 = fractionsProduct_1.fractionsProduct;
-console.log(exo2.generator(10));
+var powersPower_1 = require("./exercises/powers/powersPower");
+// exercises.forEach((exo) => {
+//   console.log(exo.instruction, exo.generator(10));
+// });
+console.log(powersPower_1.powersPower.generator(10));

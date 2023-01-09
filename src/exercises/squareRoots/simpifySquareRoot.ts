@@ -9,6 +9,7 @@ export const simplifySquareRoot: Exercise = {
   instruction: "Simplifier :",
   label: "Simplification de racines carrées",
   levels: ["3", "2", "1"],
+  isSingleStep: false,
   section: "Racines carrées",
   generator: (nb: number) => getDistinctQuestions(getSimplifySquareRoot, nb),
 };
