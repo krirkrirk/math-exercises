@@ -11,7 +11,7 @@ export const fractionAndIntegerProduct: Exercise = {
   id: "fractionAndIntegerProduct",
   connector: "=",
   instruction: "Calculer la forme irréductible :",
-  label: "Sommes de fractions",
+  label: "Produit d'un entier et d'une fraction",
   levels: ["4", "3", "2", "1"],
   isSingleStep: false,
   section: "Fractions",

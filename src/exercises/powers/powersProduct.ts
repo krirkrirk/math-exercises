@@ -17,7 +17,7 @@ export const powersOfTenProduct: Exercise = {
   instruction: "Calculer :",
   label: "Multiplication de puissances de 10",
   levels: ["4", "3", "2", "1"],
-  section: "Calculs",
+  section: "Puissances",
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(() => getPowersProductQuestion(true), nb),
 };

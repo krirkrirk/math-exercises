@@ -19,7 +19,7 @@ export const factoType1Exercise: Exercise = {
   isSingleStep: false,
   label: "Factorisation du type $(ax+b)(cx+d) \\pm (ax+b)(ex+f)$",
   levels: ["3", "2"],
-  section: "Calcul Littéral",
+  section: "Calcul littéral",
   generator: (nb: number) => getDistinctQuestions(getFactoType1Question, nb),
 };
 

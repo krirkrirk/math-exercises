@@ -16,7 +16,7 @@ export const secondIdentity: Exercise = {
   label: "Identité remarquable $(a-b)^2$",
   levels: ["3", "2"],
   isSingleStep: false,
-  section: "Calcul Littéral",
+  section: "Calcul littéral",
   generator: (nb: number) => getDistinctQuestions(getSecondIdentityQuestion, nb),
 };
 

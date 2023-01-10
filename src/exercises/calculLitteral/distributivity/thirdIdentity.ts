@@ -16,7 +16,7 @@ export const thirdIdentity: Exercise = {
   label: "Identité remarquable $(a+b)(a-b)$",
   levels: ["3", "2"],
   isSingleStep: false,
-  section: "Calcul Littéral",
+  section: "Calcul littéral",
   generator: (nb: number) => getDistinctQuestions(getThirdIdentityQuestion, nb),
 };
 

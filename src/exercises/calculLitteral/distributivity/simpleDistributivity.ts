@@ -15,7 +15,7 @@ export const simpleDistributivity: Exercise = {
   label: "Distributivité simple",
   levels: ["3", "2"],
   isSingleStep: false,
-  section: "Calcul Littéral",
+  section: "Calcul littéral",
   generator: (nb: number) => getDistinctQuestions(getSimpleDistributivityQuestion, nb),
 };
 
