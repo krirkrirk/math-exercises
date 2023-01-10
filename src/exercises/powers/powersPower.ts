@@ -24,7 +24,7 @@ export const powersOfTenPower: Exercise = {
   instruction: "Calculer :",
   label: "Puissance de 10 d'une puissance",
   levels: ["4", "3", "2", "1"],
-  section: "Calculs",
+  section: "Puissances",
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(() => getPowersPowerQuestion(true), nb),
 };
@@ -35,7 +35,7 @@ export const powersPower: Exercise = {
   instruction: "Calculer :",
   label: "Puissance d'une puissance",
   levels: ["4", "3", "2", "1"],
-  section: "Calculs",
+  section: "Puissances",
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getPowersPowerQuestion, nb),
 };

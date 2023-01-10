@@ -5,9 +5,9 @@ export class NumberNode implements Node {
   value: number;
   type: NodeType = NodeType.number;
 
-  constructor(value: number) {
+  constructor(value: number, tex?: string) {
     this.value = value;
-    this.tex = value + "";
+    this.tex = tex || value + "";
   }
 
   toString(): string {

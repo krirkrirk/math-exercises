@@ -7,6 +7,7 @@ import { fractionsProduct } from "./calcul/fractions/fractionsProduct";
 import { fractionsSum } from "./calcul/fractions/fractionsSum";
 import { simplifyFraction } from "./calcul/fractions/simplifyFraction";
 import { operationsPriorities } from "./calcul/operationsPriorities";
+import { roundToCentieme, roundToDizieme, roundToMillieme, roundToUnit } from "./calcul/rounding/roundToUnit";
 import { allIdentities } from "./calculLitteral/distributivity/allIdentities";
 import { doubleDistributivity } from "./calculLitteral/distributivity/doubleDistributivity";
 import { firstIdentity } from "./calculLitteral/distributivity/firstIdentity";
@@ -19,8 +20,10 @@ import { equationType3Exercise } from "./calculLitteral/equation/equationType3Ex
 import { equationType4Exercise } from "./calculLitteral/equation/equationType4Exercise";
 import { factoType1Exercise } from "./calculLitteral/factorisation/factoType1Exercise";
 import { powersDivision, powersOfTenDivision } from "./powers/powersDivision";
+import { powersOfTenToDecimal } from "./powers/powersOfTenToDecimal";
 import { powersOfTenPower, powersPower } from "./powers/powersPower";
 import { powersOfTenProduct, powersProduct } from "./powers/powersProduct";
+import { scientificToDecimal } from "./powers/scientificToDecimal";
 import { simplifySquareRoot } from "./squareRoots/simpifySquareRoot";
 
 export const exercises = [
@@ -62,6 +65,13 @@ export const exercises = [
   addAndSubExercise,
 
   /**
+   * rounding
+   */
+  roundToCentieme,
+  roundToDizieme,
+  roundToMillieme,
+  roundToUnit,
+  /**
    * puissances
    */
   powersDivision,
@@ -70,4 +80,6 @@ export const exercises = [
   powersOfTenDivision,
   powersOfTenPower,
   powersOfTenProduct,
+  scientificToDecimal,
+  powersOfTenToDecimal,
 ];

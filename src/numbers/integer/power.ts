@@ -2,6 +2,7 @@ import { Node } from "../../tree/nodes/node";
 import { NumberNode } from "../../tree/nodes/numbers/numberNode";
 import { PowerNode } from "../../tree/nodes/operators/powerNode";
 import { Nombre, NumberType } from "../nombre";
+import { Integer } from "./integer";
 
 export class Power implements Nombre {
   value: number;
@@ -23,6 +24,24 @@ export class Power implements Nombre {
     if (this.operand === 0) return new NumberNode(0);
     if (this.operand === -1) return new NumberNode(this.power % 2 === 0 ? 1 : -1);
     return this.toTree();
+  }
+  toDecimalWriting(): Nombre {
+    if (this.operand !== 10) throw Error("only implemented for powers of ten so far");
+    let s = "";
+    if (this.power > -1) {
+      s += "1";
+      for (let i = 0; i < this.power; i++) {
+        s += 0;
+      }
+    } else {
+      s += "1";
+      for (let i = 1; i < Math.abs(this.power); i++) {
+        s = "0" + s;
+      }
+      s = "0." + s;
+    }
+
+    return new Integer(Number(s), s);
   }
   toTree(): Node {
     return new PowerNode(new NumberNode(this.operand), new NumberNode(this.power));

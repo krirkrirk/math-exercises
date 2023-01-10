@@ -10,6 +10,7 @@ var fractionsProduct_1 = require("./calcul/fractions/fractionsProduct");
 var fractionsSum_1 = require("./calcul/fractions/fractionsSum");
 var simplifyFraction_1 = require("./calcul/fractions/simplifyFraction");
 var operationsPriorities_1 = require("./calcul/operationsPriorities");
+var roundToUnit_1 = require("./calcul/rounding/roundToUnit");
 var allIdentities_1 = require("./calculLitteral/distributivity/allIdentities");
 var doubleDistributivity_1 = require("./calculLitteral/distributivity/doubleDistributivity");
 var firstIdentity_1 = require("./calculLitteral/distributivity/firstIdentity");
@@ -21,6 +22,11 @@ var equationType2Exercise_1 = require("./calculLitteral/equation/equationType2Ex
 var equationType3Exercise_1 = require("./calculLitteral/equation/equationType3Exercise");
 var equationType4Exercise_1 = require("./calculLitteral/equation/equationType4Exercise");
 var factoType1Exercise_1 = require("./calculLitteral/factorisation/factoType1Exercise");
+var powersDivision_1 = require("./powers/powersDivision");
+var powersOfTenToDecimal_1 = require("./powers/powersOfTenToDecimal");
+var powersPower_1 = require("./powers/powersPower");
+var powersProduct_1 = require("./powers/powersProduct");
+var scientificToDecimal_1 = require("./powers/scientificToDecimal");
 var simpifySquareRoot_1 = require("./squareRoots/simpifySquareRoot");
 exports.exercises = [
     /**
@@ -56,4 +62,22 @@ exports.exercises = [
      */
     operationsPriorities_1.operationsPriorities,
     addAndSub_1.addAndSubExercise,
+    /**
+     * rounding
+     */
+    roundToUnit_1.roundToCentieme,
+    roundToUnit_1.roundToDizieme,
+    roundToUnit_1.roundToMillieme,
+    roundToUnit_1.roundToUnit,
+    /**
+     * puissances
+     */
+    powersDivision_1.powersDivision,
+    powersPower_1.powersPower,
+    powersProduct_1.powersProduct,
+    powersDivision_1.powersOfTenDivision,
+    powersPower_1.powersOfTenPower,
+    powersProduct_1.powersOfTenProduct,
+    scientificToDecimal_1.scientificToDecimal,
+    powersOfTenToDecimal_1.powersOfTenToDecimal,
 ];

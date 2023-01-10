@@ -18,7 +18,7 @@ export const powersDivision: Exercise = {
   instruction: "Calculer :",
   label: "Dvision de puissances",
   levels: ["4", "3", "2", "1"],
-  section: "Calculs",
+  section: "Puissances",
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getPowersDivisionQuestion, nb),
 };
@@ -28,7 +28,7 @@ export const powersOfTenDivision: Exercise = {
   instruction: "Calculer :",
   label: "Dvision de puissances de 10",
   levels: ["4", "3", "2", "1"],
-  section: "Calculs",
+  section: "Puissances",
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(() => getPowersDivisionQuestion(true), nb),
 };
