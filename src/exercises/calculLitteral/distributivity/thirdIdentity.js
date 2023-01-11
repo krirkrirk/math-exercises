@@ -15,7 +15,7 @@ exports.thirdIdentity = {
     label: "Identité remarquable $(a+b)(a-b)$",
     levels: ["3", "2"],
     isSingleStep: false,
-    section: "Calcul Littéral",
+    section: "Calcul littéral",
     generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getThirdIdentityQuestion, nb); }
 };
 function getThirdIdentityQuestion() {

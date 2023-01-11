@@ -16,7 +16,7 @@ exports.simpleDistributivity = {
     label: "Distributivité simple",
     levels: ["3", "2"],
     isSingleStep: false,
-    section: "Calcul Littéral",
+    section: "Calcul littéral",
     generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getSimpleDistributivityQuestion, nb); }
 };
 function getSimpleDistributivityQuestion() {

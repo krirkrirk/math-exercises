@@ -1,5 +1,4 @@
 import { randint } from "../../mathutils/random/randint";
-import { Interval } from "../../sets/intervals/intervals";
 import { latexParse } from "../../tree/latexParser/latexParse";
 import { NumberNode } from "../../tree/nodes/numbers/numberNode";
 import { AddNode } from "../../tree/nodes/operators/addNode";

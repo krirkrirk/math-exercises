@@ -17,7 +17,7 @@ exports.powersOfTenProduct = {
     instruction: "Calculer :",
     label: "Multiplication de puissances de 10",
     levels: ["4", "3", "2", "1"],
-    section: "Calculs",
+    section: "Puissances",
     isSingleStep: true,
     generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(function () { return getPowersProductQuestion(true); }, nb); }
 };

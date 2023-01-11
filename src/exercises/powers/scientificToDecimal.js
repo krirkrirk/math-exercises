@@ -16,7 +16,7 @@ exports.scientificToDecimal = {
     id: "scientificToDecimal",
     connector: "=",
     instruction: "Donner l'écriture décimale de :",
-    label: "Ecriture décimale de $a\\times 10^x",
+    label: "Ecriture décimale de $a\\times 10^x$",
     levels: ["5", "4", "3", "2"],
     section: "Puissances",
     isSingleStep: true,

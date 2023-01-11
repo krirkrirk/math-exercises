@@ -14,7 +14,7 @@ exports.powersOfTenPower = {
     id: "powersOfTenPower",
     connector: "=",
     instruction: "Calculer :",
-    label: "Puissance de 10 d'une puissance",
+    label: "Puissance d'une puissance de 10 ",
     levels: ["4", "3", "2", "1"],
     section: "Puissances",
     isSingleStep: true,

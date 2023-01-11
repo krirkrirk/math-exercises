@@ -12,7 +12,7 @@ exports.fractionAndIntegerDivision = {
     id: "fractionAndIntegerDivision",
     connector: "=",
     instruction: "Calculer la forme irréductible :",
-    label: "Sommes de fractions",
+    label: "Division d'un entier et d'une fraction",
     levels: ["4", "3", "2", "1"],
     isSingleStep: false,
     section: "Fractions",

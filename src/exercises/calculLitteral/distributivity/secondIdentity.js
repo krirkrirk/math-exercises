@@ -16,7 +16,7 @@ exports.secondIdentity = {
     label: "Identité remarquable $(a-b)^2$",
     levels: ["3", "2"],
     isSingleStep: false,
-    section: "Calcul Littéral",
+    section: "Calcul littéral",
     generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getSecondIdentityQuestion, nb); }
 };
 function getSecondIdentityQuestion() {

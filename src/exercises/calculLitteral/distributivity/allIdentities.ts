@@ -12,7 +12,7 @@ export const allIdentities: Exercise = {
   label: "Identités remarquables (toutes)",
   levels: ["3", "2"],
   isSingleStep: false,
-  section: "Calcul Littéral",
+  section: "Calcul littéral",
   generator: (nb: number) => getDistinctQuestions(getAllIdentitiesQuestion, nb),
 };
 
