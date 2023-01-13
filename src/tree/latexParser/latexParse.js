@@ -62,13 +62,7 @@ function latexParse(node) {
                     }
                     if (needBrackets)
                         rightTex = "(".concat(rightTex, ")");
-                    //  permet de gérer le cas 3*2^x
-                    var showTimesSign = !isNaN(+rightTex[0]);
-                    if (rightChild.type === node_1.NodeType.operator) {
-                        var operatorRightChild = rightChild;
-                        showTimesSign || (showTimesSign = [operatorNode_1.OperatorIds.fraction].includes(operatorRightChild.id));
-                    }
-                    return "".concat(leftTex).concat(showTimesSign ? "\\div " : "").concat(rightTex);
+                    return "".concat(leftTex, " \\div ").concat(rightTex);
                 }
                 case operatorNode_1.OperatorIds.fraction: {
                     return "\\frac{".concat(leftTex, "}{").concat(rightTex, "}");

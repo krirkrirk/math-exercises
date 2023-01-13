@@ -65,13 +65,7 @@ export function latexParse(node: Node): string {
           }
           if (needBrackets) rightTex = `(${rightTex})`;
 
-          //  permet de gérer le cas 3*2^x
-          let showTimesSign = !isNaN(+rightTex[0]);
-          if (rightChild.type === NodeType.operator) {
-            const operatorRightChild = rightChild as OperatorNode;
-            showTimesSign ||= [OperatorIds.fraction].includes(operatorRightChild.id);
-          }
-          return `${leftTex}${showTimesSign ? "\\div " : ""}${rightTex}`;
+          return `${leftTex} \\div ${rightTex}`;
         }
 
         case OperatorIds.fraction: {

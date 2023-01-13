@@ -18,7 +18,7 @@ exports.equationType1Exercise = {
     label: "Equations $x+a = b$",
     levels: ["4", "3", "2"],
     section: "Calcul littéral",
-    isSingleStep: false,
+    isSingleStep: true,
     generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getEquationType1ExerciseQuestion, nb); }
 };
 function getEquationType1ExerciseQuestion() {

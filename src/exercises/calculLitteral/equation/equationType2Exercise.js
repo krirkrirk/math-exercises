@@ -20,7 +20,7 @@ exports.equationType2Exercise = {
     label: "Equations $ax=b$",
     levels: ["4", "3", "2"],
     section: "Calcul littéral",
-    isSingleStep: false,
+    isSingleStep: true,
     generator: function (nb) { return (0, getDistinctQuestions_1.getDistinctQuestions)(getEquationType2ExerciseQuestion, nb); }
 };
 function getEquationType2ExerciseQuestion() {

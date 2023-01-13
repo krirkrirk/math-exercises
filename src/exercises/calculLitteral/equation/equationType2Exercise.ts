@@ -20,7 +20,7 @@ export const equationType2Exercise: Exercise = {
   label: "Equations $ax=b$",
   levels: ["4", "3", "2"],
   section: "Calcul littéral",
-  isSingleStep: false,
+  isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getEquationType2ExerciseQuestion, nb),
 };
 

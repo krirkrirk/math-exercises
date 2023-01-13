@@ -52,7 +52,10 @@ export function getPriorityQuestions(): Question {
             new AddNode(new NumberNode(c), new MultiplyNode(new NumberNode(a), new NumberNode(b))),
             new NumberNode(d)
           );
-      answer = a * b + c + d + "";
+      answer = (a * b + c + d).toString();
+      console.log("type", type);
+      console.log("statement", statement);
+      console.log("answer", answer);
       break;
     case 2: // a/b ±c±d
       [b, c, d] = [1, 2, 3].map((el) => randint(-10, 11, [0]));
@@ -68,7 +71,10 @@ export function getPriorityQuestions(): Question {
             new AddNode(new NumberNode(c), new DivideNode(new NumberNode(a), new NumberNode(b))),
             new NumberNode(d)
           );
-      answer = a / b + c + d + "";
+      answer = (a / b + c + d).toString();
+      console.log("type", type);
+      console.log("statement", statement);
+      console.log("answer", answer);
       break;
     case 3: // a*b ± c*d
       [a, b, c, d] = [1, 2, 3, 4].map((el) => randint(-10, 11));
@@ -76,7 +82,10 @@ export function getPriorityQuestions(): Question {
         new MultiplyNode(new NumberNode(a), new NumberNode(b)),
         new MultiplyNode(new NumberNode(c), new NumberNode(d))
       );
-      answer = a * b + c * d + "";
+      answer = (a * b + c * d).toString();
+      console.log("type", type);
+      console.log("statement", statement);
+      console.log("answer", answer);
       break;
     case 4: // a*b ± c/d
       [a, b] = [1, 2].map((el) => randint(-10, 11));
@@ -86,7 +95,10 @@ export function getPriorityQuestions(): Question {
         new MultiplyNode(new NumberNode(a), new NumberNode(b)),
         new DivideNode(new NumberNode(c), new NumberNode(d))
       ).shuffle();
-      answer = a * b + c / d + "";
+      answer = (a * b + c / d).toString();
+      console.log("type", type);
+      console.log("statement", statement);
+      console.log("answer", answer);
       break;
     case 5: // a/b ± c/d
       [b, d] = [1, 2].map((el) => randint(-10, 11, [0]));
@@ -96,7 +108,10 @@ export function getPriorityQuestions(): Question {
         new DivideNode(new NumberNode(a), new NumberNode(b)),
         new DivideNode(new NumberNode(c), new NumberNode(d))
       );
-      answer = a / b + c / d + "";
+      answer = (a / b + c / d).toString();
+      console.log("type", type);
+      console.log("statement", statement);
+      console.log("answer", answer);
       break;
     case 5: // a*b*c ± d
       [b, d] = [1, 2].map((el) => randint(-10, 11, [0]));
@@ -106,7 +121,10 @@ export function getPriorityQuestions(): Question {
         new MultiplyNode(new MultiplyNode(new NumberNode(a), new NumberNode(b)), new NumberNode(c)),
         new NumberNode(d)
       ).shuffle();
-      answer = (a * b * c) / d + "";
+      answer = a * b * c + d + "";
+      console.log("type", type);
+      console.log("statement", statement.toString());
+      console.log("answer", answer);
       break;
   }
 
