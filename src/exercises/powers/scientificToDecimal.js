@@ -4,7 +4,7 @@ exports.getScientificToDecimalQuestion = exports.scientificToDecimal = void 0;
 var randint_1 = require("../../mathutils/random/randint");
 var decimal_1 = require("../../numbers/decimals/decimal");
 var integer_1 = require("../../numbers/integer/integer");
-var latexParse_1 = require("../../tree/latexParser/latexParse");
+var latexParser_1 = require("../../tree/parsers/latexParser");
 var numberNode_1 = require("../../tree/nodes/numbers/numberNode");
 var multiplyNode_1 = require("../../tree/nodes/operators/multiplyNode");
 var powerNode_1 = require("../../tree/nodes/operators/powerNode");
@@ -30,8 +30,8 @@ function getScientificToDecimalQuestion() {
     var statement = new multiplyNode_1.MultiplyNode(new numberNode_1.NumberNode(randDecimal.value), new powerNode_1.PowerNode(new numberNode_1.NumberNode(10), new numberNode_1.NumberNode(randPower)));
     var answerTree = randDecimal.multiplyByPowerOfTen(randPower).toTree();
     var question = {
-        statement: (0, latexParse_1.latexParse)(statement),
-        answer: (0, latexParse_1.latexParse)(answerTree)
+        statement: (0, latexParser_1.latexParser)(statement),
+        answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;
 }

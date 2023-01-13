@@ -2,7 +2,7 @@
 exports.__esModule = true;
 exports.getSimplifySquareRoot = exports.simplifySquareRoot = void 0;
 var squareRoot_1 = require("../../numbers/reals/squareRoot");
-var latexParse_1 = require("../../tree/latexParser/latexParse");
+var latexParser_1 = require("../../tree/parsers/latexParser");
 var getDistinctQuestions_1 = require("../utils/getDistinctQuestions");
 exports.simplifySquareRoot = {
     id: "simplifySqrt",
@@ -20,8 +20,8 @@ function getSimplifySquareRoot() {
         maxSquare: 11
     });
     var question = {
-        statement: (0, latexParse_1.latexParse)(squareRoot.toTree()),
-        answer: (0, latexParse_1.latexParse)(squareRoot.simplify().toTree())
+        statement: (0, latexParser_1.latexParser)(squareRoot.toTree()),
+        answer: (0, latexParser_1.latexParser)(squareRoot.simplify().toTree())
     };
     return question;
 }

@@ -3,7 +3,7 @@ import { Rational } from "../../../numbers/rationals/rational";
 import { Affine } from "../../../polynomials/affine";
 import { DiscreteSet } from "../../../sets/discreteSet";
 import { Interval } from "../../../sets/intervals/intervals";
-import { latexParse } from "../../../tree/latexParser/latexParse";
+import { latexParser } from "../../../tree/parsers/latexParser";
 import { EqualNode } from "../../../tree/nodes/operators/equalNode";
 import { VariableNode } from "../../../tree/nodes/variables/variableNode";
 import { Exercise, Question } from "../../exercise";
@@ -36,8 +36,8 @@ export function getEquationType3ExerciseQuestion(): Question {
   const statementTree = new EqualNode(affine, c.toTree());
   const answerTree = new EqualNode(new VariableNode("x"), solution.toTree());
   const question: Question = {
-    statement: latexParse(statementTree),
-    answer: latexParse(answerTree),
+    statement: latexParser(statementTree),
+    answer: latexParser(answerTree),
   };
   return question;
 }

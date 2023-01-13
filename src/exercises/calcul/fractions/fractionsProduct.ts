@@ -1,5 +1,5 @@
 import { RationalConstructor } from "../../../numbers/rationals/rational";
-import { latexParse } from "../../../tree/latexParser/latexParse";
+import { latexParser } from "../../../tree/parsers/latexParser";
 import { AddNode } from "../../../tree/nodes/operators/addNode";
 import { MultiplyNode } from "../../../tree/nodes/operators/multiplyNode";
 import { Exercise, Question } from "../../exercise";
@@ -22,8 +22,8 @@ export function getFractionsProduct(): Question {
   const statementTree = new MultiplyNode(rational.toTree(), rational2.toTree());
   const answerTree = rational.multiply(rational2).toTree();
   const question: Question = {
-    statement: latexParse(statementTree),
-    answer: latexParse(answerTree),
+    statement: latexParser(statementTree),
+    answer: latexParser(answerTree),
   };
   return question;
 }

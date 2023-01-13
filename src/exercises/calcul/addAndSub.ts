@@ -1,5 +1,5 @@
 import { randint } from "../../mathutils/random/randint";
-import { latexParse } from "../../tree/latexParser/latexParse";
+import { latexParser } from "../../tree/parsers/latexParser";
 import { NumberNode } from "../../tree/nodes/numbers/numberNode";
 import { AddNode } from "../../tree/nodes/operators/addNode";
 import { Exercise, Question } from "../exercise";
@@ -32,7 +32,7 @@ export function getAddAndSubQuestions(): Question {
   }
   const answer = numbers.reduce((a, b) => a + b) + "";
   const question: Question = {
-    statement: latexParse(statementTree),
+    statement: latexParser(statementTree),
     answer: answer,
   };
   return question;

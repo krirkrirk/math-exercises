@@ -1,6 +1,6 @@
 import { randint } from "../../mathutils/random/randint";
 import { Power } from "../../numbers/integer/power";
-import { latexParse } from "../../tree/latexParser/latexParse";
+import { latexParser } from "../../tree/parsers/latexParser";
 import { NumberNode } from "../../tree/nodes/numbers/numberNode";
 import { FractionNode } from "../../tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "../../tree/nodes/operators/multiplyNode";
@@ -30,8 +30,8 @@ export function getPowersOfTenDivisionQuestion(): Question {
   const answerTree = new Power(10, randPower).toDecimalWriting().toTree();
 
   const question: Question = {
-    statement: latexParse(statement),
-    answer: latexParse(answerTree),
+    statement: latexParser(statement),
+    answer: latexParser(answerTree),
   };
   return question;
 }

@@ -1,5 +1,5 @@
 import { Affine, AffineConstructor } from "../../../polynomials/affine";
-import { latexParse } from "../../../tree/latexParser/latexParse";
+import { latexParser } from "../../../tree/parsers/latexParser";
 import { AddNode } from "../../../tree/nodes/operators/addNode";
 import { MultiplyNode } from "../../../tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "../../../tree/nodes/operators/substractNode";
@@ -47,8 +47,8 @@ export function getFactoType1Question(): Question {
   );
 
   const question: Question = {
-    statement: latexParse(statementTree),
-    answer: latexParse(answerTree),
+    statement: latexParser(statementTree),
+    answer: latexParser(answerTree),
   };
   return question;
 }

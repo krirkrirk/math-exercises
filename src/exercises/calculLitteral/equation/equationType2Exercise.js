@@ -6,7 +6,7 @@ var rational_1 = require("../../../numbers/rationals/rational");
 var affine_1 = require("../../../polynomials/affine");
 var discreteSet_1 = require("../../../sets/discreteSet");
 var intervals_1 = require("../../../sets/intervals/intervals");
-var latexParse_1 = require("../../../tree/latexParser/latexParse");
+var latexParser_1 = require("../../../tree/parsers/latexParser");
 var equalNode_1 = require("../../../tree/nodes/operators/equalNode");
 var variableNode_1 = require("../../../tree/nodes/variables/variableNode");
 var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
@@ -33,8 +33,8 @@ function getEquationType2ExerciseQuestion() {
     var tree = new equalNode_1.EqualNode(affine, b.toTree());
     var answer = new equalNode_1.EqualNode(new variableNode_1.VariableNode("x"), solution.toTree());
     var question = {
-        statement: (0, latexParse_1.latexParse)(tree),
-        answer: (0, latexParse_1.latexParse)(answer)
+        statement: (0, latexParser_1.latexParser)(tree),
+        answer: (0, latexParser_1.latexParser)(answer)
     };
     return question;
 }

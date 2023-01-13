@@ -4,7 +4,7 @@ exports.getFractionAndIntegerDivision = exports.fractionAndIntegerDivision = voi
 var randint_1 = require("../../../mathutils/random/randint");
 var integer_1 = require("../../../numbers/integer/integer");
 var rational_1 = require("../../../numbers/rationals/rational");
-var latexParse_1 = require("../../../tree/latexParser/latexParse");
+var latexParser_1 = require("../../../tree/parsers/latexParser");
 var divideNode_1 = require("../../../tree/nodes/operators/divideNode");
 var random_1 = require("../../../utils/random");
 var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
@@ -27,8 +27,8 @@ function getFractionAndIntegerDivision() {
         : new divideNode_1.DivideNode(rational.toTree(), integer.toTree());
     var answerTree = integerFirst ? integer.divide(rational).toTree() : rational.divide(integer).toTree();
     var question = {
-        statement: (0, latexParse_1.latexParse)(statementTree),
-        answer: (0, latexParse_1.latexParse)(answerTree)
+        statement: (0, latexParser_1.latexParser)(statementTree),
+        answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;
 }

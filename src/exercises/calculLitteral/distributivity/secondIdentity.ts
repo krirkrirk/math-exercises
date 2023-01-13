@@ -2,7 +2,7 @@ import { Integer } from "../../../numbers/integer/integer";
 import { AffineConstructor } from "../../../polynomials/affine";
 import { DiscreteSet } from "../../../sets/discreteSet";
 import { Interval } from "../../../sets/intervals/intervals";
-import { latexParse } from "../../../tree/latexParser/latexParse";
+import { latexParser } from "../../../tree/parsers/latexParser";
 import { NumberNode } from "../../../tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "../../../tree/nodes/operators/multiplyNode";
 import { PowerNode } from "../../../tree/nodes/operators/powerNode";
@@ -29,7 +29,7 @@ export function getSecondIdentityQuestion(): Question {
   const answerTree = affine.multiply(affine).toTree();
 
   return {
-    statement: latexParse(statementTree),
-    answer: latexParse(answerTree),
+    statement: latexParser(statementTree),
+    answer: latexParser(answerTree),
   };
 }

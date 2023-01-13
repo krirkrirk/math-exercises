@@ -5,7 +5,7 @@ var integer_1 = require("../../../numbers/integer/integer");
 var affine_1 = require("../../../polynomials/affine");
 var discreteSet_1 = require("../../../sets/discreteSet");
 var intervals_1 = require("../../../sets/intervals/intervals");
-var latexParse_1 = require("../../../tree/latexParser/latexParse");
+var latexParser_1 = require("../../../tree/parsers/latexParser");
 var multiplyNode_1 = require("../../../tree/nodes/operators/multiplyNode");
 var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
 exports.thirdIdentity = {
@@ -25,8 +25,8 @@ function getThirdIdentityQuestion() {
     var statementTree = new multiplyNode_1.MultiplyNode(affine.toTree(), affine2.toTree());
     var answerTree = affine.multiply(affine2).toTree();
     return {
-        statement: (0, latexParse_1.latexParse)(statementTree),
-        answer: (0, latexParse_1.latexParse)(answerTree)
+        statement: (0, latexParser_1.latexParser)(statementTree),
+        answer: (0, latexParser_1.latexParser)(answerTree)
     };
 }
 exports.getThirdIdentityQuestion = getThirdIdentityQuestion;

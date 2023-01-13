@@ -3,7 +3,7 @@ import { Integer } from "../../numbers/integer/integer";
 import { Power } from "../../numbers/integer/power";
 import { DiscreteSet } from "../../sets/discreteSet";
 import { Interval } from "../../sets/intervals/intervals";
-import { latexParse } from "../../tree/latexParser/latexParse";
+import { latexParser } from "../../tree/parsers/latexParser";
 import { Node } from "../../tree/nodes/node";
 import { NumberNode } from "../../tree/nodes/numbers/numberNode";
 import { AddNode } from "../../tree/nodes/operators/addNode";
@@ -48,8 +48,8 @@ export function getPowersPowerQuestion(useOnlyPowersOfTen: boolean = false): Que
   let answerTree = new Power(a, b * c).simplify();
 
   const question: Question = {
-    statement: latexParse(statement),
-    answer: latexParse(answerTree),
+    statement: latexParser(statement),
+    answer: latexParser(answerTree),
   };
   return question;
 }

@@ -2,7 +2,7 @@ import { Integer } from "../../../numbers/integer/integer";
 import { AffineConstructor } from "../../../polynomials/affine";
 import { DiscreteSet } from "../../../sets/discreteSet";
 import { Interval } from "../../../sets/intervals/intervals";
-import { latexParse } from "../../../tree/latexParser/latexParse";
+import { latexParser } from "../../../tree/parsers/latexParser";
 import { NumberNode } from "../../../tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "../../../tree/nodes/operators/multiplyNode";
 import { Exercise, Question } from "../../exercise";
@@ -27,7 +27,7 @@ export function getSimpleDistributivityQuestion(): Question {
   const statementTree = new MultiplyNode(new NumberNode(coeff.value), affine.toTree());
   const answerTree = affine.times(coeff.value).toTree();
   return {
-    statement: latexParse(statementTree),
-    answer: latexParse(answerTree),
+    statement: latexParser(statementTree),
+    answer: latexParser(answerTree),
   };
 }

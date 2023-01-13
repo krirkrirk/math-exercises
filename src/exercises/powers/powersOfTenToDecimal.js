@@ -3,7 +3,7 @@ exports.__esModule = true;
 exports.getPowersOfTenDivisionQuestion = exports.powersOfTenToDecimal = void 0;
 var randint_1 = require("../../mathutils/random/randint");
 var power_1 = require("../../numbers/integer/power");
-var latexParse_1 = require("../../tree/latexParser/latexParse");
+var latexParser_1 = require("../../tree/parsers/latexParser");
 var numberNode_1 = require("../../tree/nodes/numbers/numberNode");
 var powerNode_1 = require("../../tree/nodes/operators/powerNode");
 var getDistinctQuestions_1 = require("../utils/getDistinctQuestions");
@@ -25,8 +25,8 @@ function getPowersOfTenDivisionQuestion() {
     var statement = new powerNode_1.PowerNode(new numberNode_1.NumberNode(10), new numberNode_1.NumberNode(randPower));
     var answerTree = new power_1.Power(10, randPower).toDecimalWriting().toTree();
     var question = {
-        statement: (0, latexParse_1.latexParse)(statement),
-        answer: (0, latexParse_1.latexParse)(answerTree)
+        statement: (0, latexParser_1.latexParser)(statement),
+        answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;
 }

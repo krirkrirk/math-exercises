@@ -2,7 +2,7 @@
 exports.__esModule = true;
 exports.getSimplifyFraction = exports.simplifyFraction = void 0;
 var rational_1 = require("../../../numbers/rationals/rational");
-var latexParse_1 = require("../../../tree/latexParser/latexParse");
+var latexParser_1 = require("../../../tree/parsers/latexParser");
 var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
 exports.simplifyFraction = {
     id: "simplifySqrt",
@@ -17,8 +17,8 @@ exports.simplifyFraction = {
 function getSimplifyFraction() {
     var rational = rational_1.RationalConstructor.randomSimplifiable(10);
     var question = {
-        statement: (0, latexParse_1.latexParse)(rational.toTree()),
-        answer: (0, latexParse_1.latexParse)(rational.simplify().toTree())
+        statement: (0, latexParser_1.latexParser)(rational.toTree()),
+        answer: (0, latexParser_1.latexParser)(rational.simplify().toTree())
     };
     return question;
 }

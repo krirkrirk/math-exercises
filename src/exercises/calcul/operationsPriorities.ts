@@ -1,5 +1,5 @@
 import { randint } from "../../mathutils/random/randint";
-import { latexParse } from "../../tree/latexParser/latexParse";
+import { latexParser } from "../../tree/parsers/latexParser";
 import { Node } from "../../tree/nodes/node";
 import { NumberNode } from "../../tree/nodes/numbers/numberNode";
 import { AddNode } from "../../tree/nodes/operators/addNode";
@@ -108,7 +108,7 @@ export function getPriorityQuestions(): Question {
   }
 
   const question: Question = {
-    statement: latexParse(statement!),
+    statement: latexParser(statement!),
     answer: answer,
   };
   return question;

@@ -4,7 +4,7 @@ exports.getFractionAndIntegerProduct = exports.fractionAndIntegerProduct = void 
 var randint_1 = require("../../../mathutils/random/randint");
 var integer_1 = require("../../../numbers/integer/integer");
 var rational_1 = require("../../../numbers/rationals/rational");
-var latexParse_1 = require("../../../tree/latexParser/latexParse");
+var latexParser_1 = require("../../../tree/parsers/latexParser");
 var multiplyNode_1 = require("../../../tree/nodes/operators/multiplyNode");
 var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
 exports.fractionAndIntegerProduct = {
@@ -23,8 +23,8 @@ function getFractionAndIntegerProduct() {
     var statementTree = new multiplyNode_1.MultiplyNode(rational.toTree(), integer.toTree()).shuffle();
     var answerTree = rational.multiply(integer).toTree();
     var question = {
-        statement: (0, latexParse_1.latexParse)(statementTree),
-        answer: (0, latexParse_1.latexParse)(answerTree)
+        statement: (0, latexParser_1.latexParser)(statementTree),
+        answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;
 }

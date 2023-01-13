@@ -2,7 +2,7 @@
 exports.__esModule = true;
 exports.getFractionsDivision = exports.fractionsDivision = void 0;
 var rational_1 = require("../../../numbers/rationals/rational");
-var latexParse_1 = require("../../../tree/latexParser/latexParse");
+var latexParser_1 = require("../../../tree/parsers/latexParser");
 var divideNode_1 = require("../../../tree/nodes/operators/divideNode");
 var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
 exports.fractionsDivision = {
@@ -21,8 +21,8 @@ function getFractionsDivision() {
     var statementTree = new divideNode_1.DivideNode(rational.toTree(), rational2.toTree());
     var answerTree = rational.divide(rational2).toTree();
     var question = {
-        statement: (0, latexParse_1.latexParse)(statementTree),
-        answer: (0, latexParse_1.latexParse)(answerTree)
+        statement: (0, latexParser_1.latexParser)(statementTree),
+        answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;
 }

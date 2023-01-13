@@ -1,5 +1,5 @@
 import { SquareRootConstructor } from "../../numbers/reals/squareRoot";
-import { latexParse } from "../../tree/latexParser/latexParse";
+import { latexParser } from "../../tree/parsers/latexParser";
 import { Exercise, Question } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
@@ -20,8 +20,8 @@ export function getSimplifySquareRoot(): Question {
     maxSquare: 11,
   });
   const question: Question = {
-    statement: latexParse(squareRoot.toTree()),
-    answer: latexParse(squareRoot.simplify().toTree()),
+    statement: latexParser(squareRoot.toTree()),
+    answer: latexParser(squareRoot.simplify().toTree()),
   };
   return question;
 }

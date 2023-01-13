@@ -2,7 +2,7 @@ import { FunctionNode, FunctionsIds } from "../nodes/functions/functionNode";
 import { Node, NodeType } from "../nodes/node";
 import { OperatorIds, OperatorNode } from "../nodes/operators/operatorNode";
 
-export function latexParse(node: Node): string {
+export function latexParser(node: Node): string {
   if (!node) {
     console.log("parsing a null node ???");
     return "";
@@ -14,8 +14,8 @@ export function latexParse(node: Node): string {
       return node.tex;
     case NodeType.operator:
       const operatorNode = node as OperatorNode;
-      let rightTex = latexParse(operatorNode.rightChild);
-      let leftTex = latexParse(operatorNode.leftChild);
+      let rightTex = latexParser(operatorNode.rightChild);
+      let leftTex = latexParser(operatorNode.leftChild);
       const { leftChild, rightChild } = operatorNode;
       switch (operatorNode.id) {
         case OperatorIds.add:
@@ -99,7 +99,7 @@ export function latexParse(node: Node): string {
     case NodeType.function: {
       const functionNode = node as FunctionNode;
       const child = functionNode.child;
-      let childTex = latexParse(functionNode.child);
+      let childTex = latexParser(functionNode.child);
       switch (functionNode.id) {
         case FunctionsIds.sqrt: {
           return `\\sqrt{${childTex}}`;

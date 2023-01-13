@@ -1,6 +1,6 @@
 import { randint } from "../../mathutils/random/randint";
 import { Power } from "../../numbers/integer/power";
-import { latexParse } from "../../tree/latexParser/latexParse";
+import { latexParser } from "../../tree/parsers/latexParser";
 import { NumberNode } from "../../tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "../../tree/nodes/operators/multiplyNode";
 import { PowerNode } from "../../tree/nodes/operators/powerNode";
@@ -44,8 +44,8 @@ export function getPowersProductQuestion(useOnlyPowersOfTen: boolean = false): Q
   const answerTree = new Power(a, b + c).simplify();
 
   const question: Question = {
-    statement: latexParse(statement),
-    answer: latexParse(answerTree),
+    statement: latexParser(statement),
+    answer: latexParser(answerTree),
   };
   return question;
 }

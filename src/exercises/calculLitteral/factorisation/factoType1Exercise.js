@@ -2,7 +2,7 @@
 exports.__esModule = true;
 exports.getFactoType1Question = exports.factoType1Exercise = void 0;
 var affine_1 = require("../../../polynomials/affine");
-var latexParse_1 = require("../../../tree/latexParser/latexParse");
+var latexParser_1 = require("../../../tree/parsers/latexParser");
 var addNode_1 = require("../../../tree/nodes/operators/addNode");
 var multiplyNode_1 = require("../../../tree/nodes/operators/multiplyNode");
 var substractNode_1 = require("../../../tree/nodes/operators/substractNode");
@@ -31,8 +31,8 @@ function getFactoType1Question() {
         : new substractNode_1.SubstractNode(new multiplyNode_1.MultiplyNode(permut[0][0].toTree(), permut[0][1].toTree()), new multiplyNode_1.MultiplyNode(permut[1][0].toTree(), permut[1][1].toTree()));
     var answerTree = new multiplyNode_1.MultiplyNode(affines[0].toTree(), affines[1].add(operation === "add" ? affines[2] : affines[2].opposite()).toTree());
     var question = {
-        statement: (0, latexParse_1.latexParse)(statementTree),
-        answer: (0, latexParse_1.latexParse)(answerTree)
+        statement: (0, latexParser_1.latexParser)(statementTree),
+        answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;
 }

@@ -1,5 +1,5 @@
 import { RationalConstructor } from "../../../numbers/rationals/rational";
-import { latexParse } from "../../../tree/latexParser/latexParse";
+import { latexParser } from "../../../tree/parsers/latexParser";
 import { AddNode } from "../../../tree/nodes/operators/addNode";
 import { DivideNode } from "../../../tree/nodes/operators/divideNode";
 import { MultiplyNode } from "../../../tree/nodes/operators/multiplyNode";
@@ -23,8 +23,8 @@ export function getFractionsDivision(): Question {
   const statementTree = new DivideNode(rational.toTree(), rational2.toTree());
   const answerTree = rational.divide(rational2).toTree();
   const question: Question = {
-    statement: latexParse(statementTree),
-    answer: latexParse(answerTree),
+    statement: latexParser(statementTree),
+    answer: latexParser(answerTree),
   };
   return question;
 }

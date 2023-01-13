@@ -1,5 +1,5 @@
 import { RationalConstructor } from "../../../numbers/rationals/rational";
-import { latexParse } from "../../../tree/latexParser/latexParse";
+import { latexParser } from "../../../tree/parsers/latexParser";
 import { AddNode } from "../../../tree/nodes/operators/addNode";
 import { Exercise, Question } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
@@ -21,8 +21,8 @@ export function getFractionsSum(): Question {
   const statementTree = new AddNode(rational.toTree(), rational2.toTree());
   const answerTree = rational.add(rational2).toTree();
   const question: Question = {
-    statement: latexParse(statementTree),
-    answer: latexParse(answerTree),
+    statement: latexParser(statementTree),
+    answer: latexParser(answerTree),
   };
   return question;
 }

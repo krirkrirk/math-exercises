@@ -1,6 +1,6 @@
 import { randint } from "../../../mathutils/random/randint";
 import { DecimalConstructor } from "../../../numbers/decimals/decimal";
-import { latexParse } from "../../../tree/latexParser/latexParse";
+import { latexParser } from "../../../tree/parsers/latexParser";
 import { Exercise, Question } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
@@ -61,8 +61,8 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
   const precision = randint(precisionAsked + 1, precisionAsked + 5);
   const dec = DecimalConstructor.random(0, 1000, precision);
   const question: Question = {
-    statement: latexParse(dec.toTree()),
-    answer: latexParse(dec.round(precisionAsked).toTree()),
+    statement: latexParser(dec.toTree()),
+    answer: latexParser(dec.round(precisionAsked).toTree()),
   };
   return question;
 }

@@ -5,7 +5,7 @@ var integer_1 = require("../../../numbers/integer/integer");
 var affine_1 = require("../../../polynomials/affine");
 var discreteSet_1 = require("../../../sets/discreteSet");
 var intervals_1 = require("../../../sets/intervals/intervals");
-var latexParse_1 = require("../../../tree/latexParser/latexParse");
+var latexParser_1 = require("../../../tree/parsers/latexParser");
 var numberNode_1 = require("../../../tree/nodes/numbers/numberNode");
 var powerNode_1 = require("../../../tree/nodes/operators/powerNode");
 var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
@@ -26,8 +26,8 @@ function getSecondIdentityQuestion() {
     var statementTree = new powerNode_1.PowerNode(affine.toTree(), new numberNode_1.NumberNode(2));
     var answerTree = affine.multiply(affine).toTree();
     return {
-        statement: (0, latexParse_1.latexParse)(statementTree),
-        answer: (0, latexParse_1.latexParse)(answerTree)
+        statement: (0, latexParser_1.latexParser)(statementTree),
+        answer: (0, latexParser_1.latexParser)(answerTree)
     };
 }
 exports.getSecondIdentityQuestion = getSecondIdentityQuestion;

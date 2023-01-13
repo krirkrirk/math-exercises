@@ -3,7 +3,7 @@ exports.__esModule = true;
 exports.getRoundQuestions = exports.roundToMillieme = exports.roundToCentieme = exports.roundToDizieme = exports.roundToUnit = void 0;
 var randint_1 = require("../../../mathutils/random/randint");
 var decimal_1 = require("../../../numbers/decimals/decimal");
-var latexParse_1 = require("../../../tree/latexParser/latexParse");
+var latexParser_1 = require("../../../tree/parsers/latexParser");
 var getDistinctQuestions_1 = require("../../utils/getDistinctQuestions");
 /**
  * arrondi à l'unité
@@ -62,8 +62,8 @@ function getRoundQuestions(precisionAsked) {
     var precision = (0, randint_1.randint)(precisionAsked + 1, precisionAsked + 5);
     var dec = decimal_1.DecimalConstructor.random(0, 1000, precision);
     var question = {
-        statement: (0, latexParse_1.latexParse)(dec.toTree()),
-        answer: (0, latexParse_1.latexParse)(dec.round(precisionAsked).toTree())
+        statement: (0, latexParser_1.latexParser)(dec.toTree()),
+        answer: (0, latexParser_1.latexParser)(dec.round(precisionAsked).toTree())
     };
     return question;
 }

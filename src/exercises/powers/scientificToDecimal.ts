@@ -2,7 +2,7 @@ import { randint } from "../../mathutils/random/randint";
 import { DecimalConstructor } from "../../numbers/decimals/decimal";
 import { IntegerConstructor } from "../../numbers/integer/integer";
 import { Power } from "../../numbers/integer/power";
-import { latexParse } from "../../tree/latexParser/latexParse";
+import { latexParser } from "../../tree/parsers/latexParser";
 import { NumberNode } from "../../tree/nodes/numbers/numberNode";
 import { FractionNode } from "../../tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "../../tree/nodes/operators/multiplyNode";
@@ -37,8 +37,8 @@ export function getScientificToDecimalQuestion(): Question {
   const answerTree = randDecimal.multiplyByPowerOfTen(randPower).toTree();
 
   const question: Question = {
-    statement: latexParse(statement),
-    answer: latexParse(answerTree),
+    statement: latexParser(statement),
+    answer: latexParser(answerTree),
   };
   return question;
 }
