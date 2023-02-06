@@ -27,7 +27,7 @@ function getFractionAndIntegerDivision() {
         : new divideNode_1.DivideNode(rational.toTree(), integer.toTree());
     var answerTree = integerFirst ? integer.divide(rational).toTree() : rational.divide(integer).toTree();
     var question = {
-        statement: (0, latexParser_1.latexParser)(statementTree),
+        startStatement: (0, latexParser_1.latexParser)(statementTree),
         answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;

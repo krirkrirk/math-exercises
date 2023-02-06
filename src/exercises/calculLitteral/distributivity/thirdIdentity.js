@@ -25,7 +25,7 @@ function getThirdIdentityQuestion() {
     var statementTree = new multiplyNode_1.MultiplyNode(affine.toTree(), affine2.toTree());
     var answerTree = affine.multiply(affine2).toTree();
     return {
-        statement: (0, latexParser_1.latexParser)(statementTree),
+        startStatement: (0, latexParser_1.latexParser)(statementTree),
         answer: (0, latexParser_1.latexParser)(answerTree)
     };
 }

@@ -26,7 +26,7 @@ function getSecondIdentityQuestion() {
     var statementTree = new powerNode_1.PowerNode(affine.toTree(), new numberNode_1.NumberNode(2));
     var answerTree = affine.multiply(affine).toTree();
     return {
-        statement: (0, latexParser_1.latexParser)(statementTree),
+        startStatement: (0, latexParser_1.latexParser)(statementTree),
         answer: (0, latexParser_1.latexParser)(answerTree)
     };
 }

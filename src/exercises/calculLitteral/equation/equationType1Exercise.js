@@ -30,7 +30,7 @@ function getEquationType1ExerciseQuestion() {
     var affine = new affine_1.Affine(1, a.value).toTree();
     var tree = new equalNode_1.EqualNode(affine, b.toTree());
     var question = {
-        statement: (0, latexParser_1.latexParser)(tree),
+        startStatement: (0, latexParser_1.latexParser)(tree),
         answer: "x = ".concat(solution)
     };
     return question;

@@ -20,7 +20,7 @@ function getSimplifySquareRoot() {
         maxSquare: 11
     });
     var question = {
-        statement: (0, latexParser_1.latexParser)(squareRoot.toTree()),
+        startStatement: (0, latexParser_1.latexParser)(squareRoot.toTree()),
         answer: (0, latexParser_1.latexParser)(squareRoot.simplify().toTree())
     };
     return question;

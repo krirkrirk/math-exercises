@@ -34,9 +34,8 @@ function derivateParser(node) {
                     return new addNode_1.AddNode(new multiplyNode_1.MultiplyNode(derivateParser(u), v), new multiplyNode_1.MultiplyNode(u, derivateParser(v)));
                 }
                 case operatorNode_1.OperatorIds.divide:
-                case operatorNode_1.OperatorIds.fraction: {
+                case operatorNode_1.OperatorIds.fraction:
                     return new fractionNode_1.FractionNode(new substractNode_1.SubstractNode(new multiplyNode_1.MultiplyNode(derivateParser(u), v), new multiplyNode_1.MultiplyNode(u, derivateParser(v))), new powerNode_1.PowerNode(v, new numberNode_1.NumberNode(2)));
-                }
                 case operatorNode_1.OperatorIds.power: {
                     var operatorNode_2 = node;
                     var n = operatorNode_2.rightChild;

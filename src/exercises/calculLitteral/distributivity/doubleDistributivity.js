@@ -24,7 +24,7 @@ function getDoubleDistributivityQuestion() {
     var statementTree = new multiplyNode_1.MultiplyNode(affines[0].toTree(), affines[1].toTree());
     var answerTree = affines[0].multiply(affines[1]).toTree();
     return {
-        statement: (0, latexParser_1.latexParser)(statementTree),
+        startStatement: (0, latexParser_1.latexParser)(statementTree),
         answer: (0, latexParser_1.latexParser)(answerTree)
     };
 }

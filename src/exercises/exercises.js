@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.exercises = void 0;
+exports.exercises = exports.data = void 0;
 var addAndSub_1 = require("./calcul/addAndSub");
 var fractionAndIntegerDivision_1 = require("./calcul/fractions/fractionAndIntegerDivision");
 var fractionAndIntegerProduct_1 = require("./calcul/fractions/fractionAndIntegerProduct");
@@ -28,6 +28,9 @@ var powersPower_1 = require("./powers/powersPower");
 var powersProduct_1 = require("./powers/powersProduct");
 var scientificToDecimal_1 = require("./powers/scientificToDecimal");
 var simpifySquareRoot_1 = require("./squareRoots/simpifySquareRoot");
+exports.data = [
+    {}
+];
 exports.exercises = [
     /**
      * calcul litteral

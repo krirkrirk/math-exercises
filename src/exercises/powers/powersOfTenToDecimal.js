@@ -25,7 +25,7 @@ function getPowersOfTenDivisionQuestion() {
     var statement = new powerNode_1.PowerNode(new numberNode_1.NumberNode(10), new numberNode_1.NumberNode(randPower));
     var answerTree = new power_1.Power(10, randPower).toDecimalWriting().toTree();
     var question = {
-        statement: (0, latexParser_1.latexParser)(statement),
+        startStatement: (0, latexParser_1.latexParser)(statement),
         answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;

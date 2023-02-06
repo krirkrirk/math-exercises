@@ -32,7 +32,7 @@ function getAddAndSubQuestions() {
     }
     var answer = numbers.reduce(function (a, b) { return a + b; }) + "";
     var question = {
-        statement: (0, latexParser_1.latexParser)(statementTree),
+        startStatement: (0, latexParser_1.latexParser)(statementTree),
         answer: answer
     };
     return question;

@@ -17,7 +17,7 @@ exports.simplifyFraction = {
 function getSimplifyFraction() {
     var rational = rational_1.RationalConstructor.randomSimplifiable(10);
     var question = {
-        statement: (0, latexParser_1.latexParser)(rational.toTree()),
+        startStatement: (0, latexParser_1.latexParser)(rational.toTree()),
         answer: (0, latexParser_1.latexParser)(rational.simplify().toTree())
     };
     return question;

@@ -7,7 +7,7 @@ var getDistinctQuestions = function (generator, nb) {
         var question;
         do {
             question = generator();
-        } while (res.some(function (q) { return q.statement === question.statement; }));
+        } while (res.some(function (q) { return q.startStatement === question.startStatement; }));
         res.push(question);
     };
     for (var i = 0; i < nb; i++) {

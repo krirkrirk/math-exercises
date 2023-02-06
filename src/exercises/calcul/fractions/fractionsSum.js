@@ -21,7 +21,7 @@ function getFractionsSum() {
     var statementTree = new addNode_1.AddNode(rational.toTree(), rational2.toTree());
     var answerTree = rational.add(rational2).toTree();
     var question = {
-        statement: (0, latexParser_1.latexParser)(statementTree),
+        startStatement: (0, latexParser_1.latexParser)(statementTree),
         answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;

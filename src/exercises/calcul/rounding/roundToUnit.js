@@ -62,7 +62,7 @@ function getRoundQuestions(precisionAsked) {
     var precision = (0, randint_1.randint)(precisionAsked + 1, precisionAsked + 5);
     var dec = decimal_1.DecimalConstructor.random(0, 1000, precision);
     var question = {
-        statement: (0, latexParser_1.latexParser)(dec.toTree()),
+        startStatement: (0, latexParser_1.latexParser)(dec.toTree()),
         answer: (0, latexParser_1.latexParser)(dec.round(precisionAsked).toTree())
     };
     return question;

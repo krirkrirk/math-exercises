@@ -31,7 +31,7 @@ function getFactoType1Question() {
         : new substractNode_1.SubstractNode(new multiplyNode_1.MultiplyNode(permut[0][0].toTree(), permut[0][1].toTree()), new multiplyNode_1.MultiplyNode(permut[1][0].toTree(), permut[1][1].toTree()));
     var answerTree = new multiplyNode_1.MultiplyNode(affines[0].toTree(), affines[1].add(operation === "add" ? affines[2] : affines[2].opposite()).toTree());
     var question = {
-        statement: (0, latexParser_1.latexParser)(statementTree),
+        startStatement: (0, latexParser_1.latexParser)(statementTree),
         answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;

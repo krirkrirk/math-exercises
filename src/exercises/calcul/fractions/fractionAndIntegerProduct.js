@@ -23,7 +23,7 @@ function getFractionAndIntegerProduct() {
     var statementTree = new multiplyNode_1.MultiplyNode(rational.toTree(), integer.toTree()).shuffle();
     var answerTree = rational.multiply(integer).toTree();
     var question = {
-        statement: (0, latexParser_1.latexParser)(statementTree),
+        startStatement: (0, latexParser_1.latexParser)(statementTree),
         answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;

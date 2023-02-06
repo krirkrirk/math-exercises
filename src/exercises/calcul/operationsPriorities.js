@@ -81,7 +81,7 @@ function getPriorityQuestions() {
             break;
     }
     var question = {
-        statement: (0, latexParser_1.latexParser)(statement),
+        startStatement: (0, latexParser_1.latexParser)(statement),
         answer: answer
     };
     return question;

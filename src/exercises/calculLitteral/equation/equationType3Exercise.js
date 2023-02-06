@@ -34,7 +34,7 @@ function getEquationType3ExerciseQuestion() {
     var statementTree = new equalNode_1.EqualNode(affine, c.toTree());
     var answerTree = new equalNode_1.EqualNode(new variableNode_1.VariableNode("x"), solution.toTree());
     var question = {
-        statement: (0, latexParser_1.latexParser)(statementTree),
+        startStatement: (0, latexParser_1.latexParser)(statementTree),
         answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;

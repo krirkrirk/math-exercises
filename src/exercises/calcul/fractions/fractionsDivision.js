@@ -21,7 +21,7 @@ function getFractionsDivision() {
     var statementTree = new divideNode_1.DivideNode(rational.toTree(), rational2.toTree());
     var answerTree = rational.divide(rational2).toTree();
     var question = {
-        statement: (0, latexParser_1.latexParser)(statementTree),
+        startStatement: (0, latexParser_1.latexParser)(statementTree),
         answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;

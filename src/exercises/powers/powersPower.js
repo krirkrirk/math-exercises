@@ -37,7 +37,7 @@ function getPowersPowerQuestion(useOnlyPowersOfTen) {
     var statement = new powerNode_1.PowerNode(new powerNode_1.PowerNode(new numberNode_1.NumberNode(a), new numberNode_1.NumberNode(b)), new numberNode_1.NumberNode(c));
     var answerTree = new power_1.Power(a, b * c).simplify();
     var question = {
-        statement: (0, latexParser_1.latexParser)(statement),
+        startStatement: (0, latexParser_1.latexParser)(statement),
         answer: (0, latexParser_1.latexParser)(answerTree)
     };
     return question;

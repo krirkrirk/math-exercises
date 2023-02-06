@@ -33,7 +33,7 @@ function getEquationType2ExerciseQuestion() {
     var tree = new equalNode_1.EqualNode(affine, b.toTree());
     var answer = new equalNode_1.EqualNode(new variableNode_1.VariableNode("x"), solution.toTree());
     var question = {
-        statement: (0, latexParser_1.latexParser)(tree),
+        startStatement: (0, latexParser_1.latexParser)(tree),
         answer: (0, latexParser_1.latexParser)(answer)
     };
     return question;
