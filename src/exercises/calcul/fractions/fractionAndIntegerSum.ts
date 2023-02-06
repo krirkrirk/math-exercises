@@ -24,7 +24,7 @@ export function getFractionAndIntegerSum(): Question {
   statementTree.shuffle();
   const answerTree = rational.add(integer).toTree();
   const question: Question = {
-    statement: latexParser(statementTree),
+    startStatement: latexParser(statementTree),
     answer: latexParser(answerTree),
   };
   return question;

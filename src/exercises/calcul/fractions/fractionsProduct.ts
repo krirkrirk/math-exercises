@@ -22,7 +22,7 @@ export function getFractionsProduct(): Question {
   const statementTree = new MultiplyNode(rational.toTree(), rational2.toTree());
   const answerTree = rational.multiply(rational2).toTree();
   const question: Question = {
-    statement: latexParser(statementTree),
+    startStatement: latexParser(statementTree),
     answer: latexParser(answerTree),
   };
   return question;

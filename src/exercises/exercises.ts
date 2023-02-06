@@ -26,6 +26,12 @@ import { powersOfTenProduct, powersProduct } from "./powers/powersProduct";
 import { scientificToDecimal } from "./powers/scientificToDecimal";
 import { simplifySquareRoot } from "./squareRoots/simpifySquareRoot";
 
+export const data = [
+  {
+    
+  }
+]
+
 export const exercises = [
   /**
    * calcul litteral

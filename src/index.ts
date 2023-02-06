@@ -11,5 +11,4 @@ import { derivateParser } from "./tree/parsers/derivateParser";
 // });
 
 const pol = new Polynomial([2, 3, 1, 4]);
-console.log(latexParser(derivateParser(pol.toTree())));
 export { exercises };

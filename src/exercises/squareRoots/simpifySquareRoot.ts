@@ -20,7 +20,7 @@ export function getSimplifySquareRoot(): Question {
     maxSquare: 11,
   });
   const question: Question = {
-    statement: latexParser(squareRoot.toTree()),
+    startStatement: latexParser(squareRoot.toTree()),
     answer: latexParser(squareRoot.simplify().toTree()),
   };
   return question;

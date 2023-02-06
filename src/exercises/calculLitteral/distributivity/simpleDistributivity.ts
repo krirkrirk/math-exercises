@@ -27,7 +27,7 @@ export function getSimpleDistributivityQuestion(): Question {
   const statementTree = new MultiplyNode(new NumberNode(coeff.value), affine.toTree());
   const answerTree = affine.times(coeff.value).toTree();
   return {
-    statement: latexParser(statementTree),
+    startStatement: latexParser(statementTree),
     answer: latexParser(answerTree),
   };
 }

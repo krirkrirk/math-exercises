@@ -44,7 +44,7 @@ export function getPowersProductQuestion(useOnlyPowersOfTen: boolean = false): Q
   const answerTree = new Power(a, b + c).simplify();
 
   const question: Question = {
-    statement: latexParser(statement),
+    startStatement: latexParser(statement),
     answer: latexParser(answerTree),
   };
   return question;

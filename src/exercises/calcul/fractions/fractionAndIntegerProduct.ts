@@ -25,7 +25,7 @@ export function getFractionAndIntegerProduct(): Question {
 
   const answerTree = rational.multiply(integer).toTree();
   const question: Question = {
-    statement: latexParser(statementTree),
+    startStatement: latexParser(statementTree),
     answer: latexParser(answerTree),
   };
   return question;

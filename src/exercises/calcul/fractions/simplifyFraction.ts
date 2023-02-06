@@ -17,7 +17,7 @@ export const simplifyFraction: Exercise = {
 export function getSimplifyFraction(): Question {
   const rational = RationalConstructor.randomSimplifiable(10);
   const question: Question = {
-    statement: latexParser(rational.toTree()),
+    startStatement: latexParser(rational.toTree()),
     answer: latexParser(rational.simplify().toTree()),
   };
   return question;

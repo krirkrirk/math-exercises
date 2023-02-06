@@ -32,7 +32,7 @@ export function getAddAndSubQuestions(): Question {
   }
   const answer = numbers.reduce((a, b) => a + b) + "";
   const question: Question = {
-    statement: latexParser(statementTree),
+    startStatement: latexParser(statementTree),
     answer: answer,
   };
   return question;

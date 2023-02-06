@@ -36,7 +36,7 @@ export function getEquationType3ExerciseQuestion(): Question {
   const statementTree = new EqualNode(affine, c.toTree());
   const answerTree = new EqualNode(new VariableNode("x"), solution.toTree());
   const question: Question = {
-    statement: latexParser(statementTree),
+    startStatement: latexParser(statementTree),
     answer: latexParser(answerTree),
   };
   return question;

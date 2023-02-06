@@ -30,7 +30,7 @@ export function getPowersOfTenDivisionQuestion(): Question {
   const answerTree = new Power(10, randPower).toDecimalWriting().toTree();
 
   const question: Question = {
-    statement: latexParser(statement),
+    startStatement: latexParser(statement),
     answer: latexParser(answerTree),
   };
   return question;

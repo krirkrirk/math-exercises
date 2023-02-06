@@ -47,7 +47,7 @@ export function getFactoType1Question(): Question {
   );
 
   const question: Question = {
-    statement: latexParser(statementTree),
+    startStatement: latexParser(statementTree),
     answer: latexParser(answerTree),
   };
   return question;

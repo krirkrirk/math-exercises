@@ -5,7 +5,7 @@
 // }
 
 export interface Question {
-  statement: string;
+  startStatement: string;
   answer: string;
 }
 

@@ -28,7 +28,7 @@ export function getThirdIdentityQuestion(): Question {
   const answerTree = affine.multiply(affine2).toTree();
 
   return {
-    statement: latexParser(statementTree),
+    startStatement: latexParser(statementTree),
     answer: latexParser(answerTree),
   };
 }

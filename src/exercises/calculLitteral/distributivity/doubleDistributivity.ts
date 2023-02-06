@@ -27,7 +27,7 @@ export function getDoubleDistributivityQuestion(): Question {
   const answerTree = affines[0].multiply(affines[1]).toTree();
 
   return {
-    statement: latexParser(statementTree),
+    startStatement: latexParser(statementTree),
     answer: latexParser(answerTree),
   };
 }

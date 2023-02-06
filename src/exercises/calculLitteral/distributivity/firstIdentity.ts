@@ -27,7 +27,7 @@ export function getFirstIdentityQuestion(): Question {
   const answerTree = affine.multiply(affine).toTree();
 
   return {
-    statement: latexParser(statementTree),
+    startStatement: latexParser(statementTree),
     answer: latexParser(answerTree),
   };
 }

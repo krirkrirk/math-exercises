@@ -31,7 +31,7 @@ export function getFractionAndIntegerDivision(): Question {
 
   const answerTree = integerFirst ? integer.divide(rational).toTree() : rational.divide(integer).toTree();
   const question: Question = {
-    statement: latexParser(statementTree),
+    startStatement: latexParser(statementTree),
     answer: latexParser(answerTree),
   };
   return question;

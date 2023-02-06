@@ -108,7 +108,7 @@ export function getPriorityQuestions(): Question {
   }
 
   const question: Question = {
-    statement: latexParser(statement!),
+    startStatement: latexParser(statement!),
     answer: answer,
   };
   return question;

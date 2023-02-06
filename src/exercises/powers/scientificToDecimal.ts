@@ -37,7 +37,7 @@ export function getScientificToDecimalQuestion(): Question {
   const answerTree = randDecimal.multiplyByPowerOfTen(randPower).toTree();
 
   const question: Question = {
-    statement: latexParser(statement),
+    startStatement: latexParser(statement),
     answer: latexParser(answerTree),
   };
   return question;

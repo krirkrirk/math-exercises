@@ -23,7 +23,7 @@ export function getFractionsDivision(): Question {
   const statementTree = new DivideNode(rational.toTree(), rational2.toTree());
   const answerTree = rational.divide(rational2).toTree();
   const question: Question = {
-    statement: latexParser(statementTree),
+    startStatement: latexParser(statementTree),
     answer: latexParser(answerTree),
   };
   return question;

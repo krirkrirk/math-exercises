@@ -61,7 +61,7 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
   const precision = randint(precisionAsked + 1, precisionAsked + 5);
   const dec = DecimalConstructor.random(0, 1000, precision);
   const question: Question = {
-    statement: latexParser(dec.toTree()),
+    startStatement: latexParser(dec.toTree()),
     answer: latexParser(dec.round(precisionAsked).toTree()),
   };
   return question;
