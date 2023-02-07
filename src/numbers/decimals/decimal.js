@@ -38,7 +38,7 @@ var Decimal = /** @class */ (function () {
     }
     /**
      *
-     * @param precision 0 = unité, 1 = dizieme, ... , -1 : dizaine
+     * @param precision 0 = unité, 1 = dixieme, ... , -1 : dizaine
      * @returns
      */
     Decimal.prototype.round = function (precision) {

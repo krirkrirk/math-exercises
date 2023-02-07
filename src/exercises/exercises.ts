@@ -7,7 +7,13 @@ import { fractionsProduct } from "./calcul/fractions/fractionsProduct";
 import { fractionsSum } from "./calcul/fractions/fractionsSum";
 import { simplifyFraction } from "./calcul/fractions/simplifyFraction";
 import { operationsPriorities } from "./calcul/operationsPriorities";
-import { roundToCentieme, roundToDizieme, roundToMillieme, roundToUnit } from "./calcul/rounding/roundToUnit";
+import {
+  allRoundings,
+  roundToCentieme,
+  roundToDixieme,
+  roundToMillieme,
+  roundToUnit,
+} from "./calcul/rounding/rounding";
 import { allIdentities } from "./calculLitteral/distributivity/allIdentities";
 import { doubleDistributivity } from "./calculLitteral/distributivity/doubleDistributivity";
 import { firstIdentity } from "./calculLitteral/distributivity/firstIdentity";
@@ -26,11 +32,7 @@ import { powersOfTenProduct, powersProduct } from "./powers/powersProduct";
 import { scientificToDecimal } from "./powers/scientificToDecimal";
 import { simplifySquareRoot } from "./squareRoots/simpifySquareRoot";
 
-export const data = [
-  {
-    
-  }
-]
+export const data = [{}];
 
 export const exercises = [
   /**
@@ -74,9 +76,10 @@ export const exercises = [
    * rounding
    */
   roundToCentieme,
-  roundToDizieme,
+  roundToDixieme,
   roundToMillieme,
   roundToUnit,
+  allRoundings,
   /**
    * puissances
    */

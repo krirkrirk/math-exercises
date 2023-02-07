@@ -10,7 +10,7 @@ var fractionsProduct_1 = require("./calcul/fractions/fractionsProduct");
 var fractionsSum_1 = require("./calcul/fractions/fractionsSum");
 var simplifyFraction_1 = require("./calcul/fractions/simplifyFraction");
 var operationsPriorities_1 = require("./calcul/operationsPriorities");
-var roundToUnit_1 = require("./calcul/rounding/roundToUnit");
+var rounding_1 = require("./calcul/rounding/rounding");
 var allIdentities_1 = require("./calculLitteral/distributivity/allIdentities");
 var doubleDistributivity_1 = require("./calculLitteral/distributivity/doubleDistributivity");
 var firstIdentity_1 = require("./calculLitteral/distributivity/firstIdentity");
@@ -28,9 +28,7 @@ var powersPower_1 = require("./powers/powersPower");
 var powersProduct_1 = require("./powers/powersProduct");
 var scientificToDecimal_1 = require("./powers/scientificToDecimal");
 var simpifySquareRoot_1 = require("./squareRoots/simpifySquareRoot");
-exports.data = [
-    {}
-];
+exports.data = [{}];
 exports.exercises = [
     /**
      * calcul litteral
@@ -68,10 +66,11 @@ exports.exercises = [
     /**
      * rounding
      */
-    roundToUnit_1.roundToCentieme,
-    roundToUnit_1.roundToDizieme,
-    roundToUnit_1.roundToMillieme,
-    roundToUnit_1.roundToUnit,
+    rounding_1.roundToCentieme,
+    rounding_1.roundToDixieme,
+    rounding_1.roundToMillieme,
+    rounding_1.roundToUnit,
+    rounding_1.allRoundings,
     /**
      * puissances
      */

@@ -10,5 +10,4 @@ import { derivateParser } from "./tree/parsers/derivateParser";
 //   console.log(exo.instruction, exo.generator(10));
 // });
 
-const pol = new Polynomial([2, 3, 1, 4]);
 export { exercises };

@@ -41,7 +41,7 @@ export class Decimal implements Nombre {
 
   /**
    *
-   * @param precision 0 = unité, 1 = dizieme, ... , -1 : dizaine
+   * @param precision 0 = unité, 1 = dixieme, ... , -1 : dizaine
    * @returns
    */
   round(precision: number): Nombre {

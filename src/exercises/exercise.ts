@@ -5,6 +5,7 @@
 // }
 
 export interface Question {
+  instruction?: string;
   startStatement: string;
   answer: string;
 }
@@ -18,8 +19,4 @@ export interface Exercise {
   levels: string[];
   connector: string;
   generator(nb: number): Question[];
-  // questions: Question[];
-  // constructor({ generatorType, questionsNumber }: ExerciseParameters) {
-
-  // }
 }
