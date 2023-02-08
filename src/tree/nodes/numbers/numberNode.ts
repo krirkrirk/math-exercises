@@ -1,4 +1,4 @@
-import { Node, NodeType } from "../node";
+import { Node, NodeType } from '../node';
 
 export class NumberNode implements Node {
   tex: string;
@@ -7,10 +7,13 @@ export class NumberNode implements Node {
 
   constructor(value: number, tex?: string) {
     this.value = value;
-    this.tex = tex || value + "";
+    this.tex = tex || value + '';
   }
 
   toString(): string {
+    return `${this.tex}`;
+  }
+  toTex(): string {
     return `${this.tex}`;
   }
 }

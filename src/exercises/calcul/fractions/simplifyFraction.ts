@@ -1,16 +1,16 @@
-import { RationalConstructor } from "../../../numbers/rationals/rational";
-import { latexParser } from "../../../tree/parsers/latexParser";
-import { Exercise, Question } from "../../exercise";
-import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
+import { RationalConstructor } from '../../../numbers/rationals/rational';
+import { latexParser } from '../../../tree/parsers/latexParser';
+import { Exercise, Question } from '../../exercise';
+import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
 
 export const simplifyFraction: Exercise = {
-  id: "simplifySqrt",
-  connector: "=",
-  instruction: "Simplifier :",
-  label: "Simplification de fractions",
-  levels: ["4", "3", "2"],
+  id: 'simplifyFrac',
+  connector: '=',
+  instruction: 'Simplifier :',
+  label: 'Simplification de fractions',
+  levels: ['4', '3', '2'],
   isSingleStep: false,
-  section: "Fractions",
+  section: 'Fractions',
   generator: (nb: number) => getDistinctQuestions(getSimplifyFraction, nb),
 };
 

@@ -1,4 +1,4 @@
-import { Node, NodeType } from "../node";
+import { Node, NodeType } from '../node';
 
 export enum FunctionsIds {
   opposite,
