@@ -1,5 +1,4 @@
 import { RationalConstructor } from '../../../numbers/rationals/rational';
-import { latexParser } from '../../../tree/parsers/latexParser';
 import { Exercise, Question } from '../../exercise';
 import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
 
@@ -17,8 +16,8 @@ export const simplifyFraction: Exercise = {
 export function getSimplifyFraction(): Question {
   const rational = RationalConstructor.randomSimplifiable(10);
   const question: Question = {
-    startStatement: latexParser(rational.toTree()),
-    answer: latexParser(rational.simplify().toTree()),
+    startStatement: rational.toTree().toTex(),
+    answer: rational.simplify().toTree().toTex(),
   };
   return question;
 }

@@ -1,5 +1,5 @@
-import { coin } from "../../../utils/coin";
-import { Node, NodeType } from "../node";
+import { coin } from '../../../utils/coin';
+import { Node, NodeType } from '../node';
 
 export enum OperatorIds {
   add,
@@ -11,7 +11,7 @@ export enum OperatorIds {
   equal,
 }
 
-export abstract class OperatorNode implements Node {
+export abstract class OperatorNode {
   id: OperatorIds;
   leftChild: Node;
   rightChild: Node;
@@ -27,10 +27,10 @@ export abstract class OperatorNode implements Node {
   }
 
   /**shuffles in place */
-  shuffle(): Node {
-    if (!this.isCommutative) return this;
-    if (coin()) return this;
+  shuffle(): void {
+    if (!this.isCommutative) return;
+    if (coin()) return;
     [this.leftChild, this.rightChild] = [this.rightChild, this.leftChild];
-    return this;
+    return;
   }
 }

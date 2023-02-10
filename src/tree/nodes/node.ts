@@ -7,6 +7,6 @@ export enum NodeType {
 
 export interface Node {
   type: NodeType;
-  tex: string;
-  toString: () => string;
+  toMathString: () => string;
+  toTex: () => string;
 }

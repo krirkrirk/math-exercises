@@ -5,7 +5,7 @@ export enum FunctionsIds {
   sqrt,
 }
 
-export abstract class FunctionNode implements Node {
+export abstract class FunctionNode {
   id: FunctionsIds;
   child: Node;
   type = NodeType.function;

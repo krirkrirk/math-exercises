@@ -1,16 +1,19 @@
-import { Node, NodeType } from "../node";
-import { OperatorIds, OperatorNode } from "./operatorNode";
+import { Node, NodeType } from '../node';
+import { OperatorIds, OperatorNode } from './operatorNode';
 
-export class FractionNode extends OperatorNode {
+export class FractionNode extends OperatorNode implements Node {
   /**
    * @param leftChild num
    * @param rightChild denum
    */
   constructor(leftChild: Node, rightChild: Node) {
-    super(OperatorIds.fraction, leftChild, rightChild, false, "\\frac");
+    super(OperatorIds.fraction, leftChild, rightChild, false, '\\frac');
   }
 
-  toString(): string {
-    return `\\frac{${this.leftChild}}{${this.rightChild}}`;
+  toMathString(): string {
+    return `(${this.leftChild.toMathString()}) / (${this.rightChild.toMathString()})`;
+  }
+  toTex(): string {
+    return `\\frac{${this.leftChild.toTex()}}{${this.rightChild.toTex()}}`;
   }
 }

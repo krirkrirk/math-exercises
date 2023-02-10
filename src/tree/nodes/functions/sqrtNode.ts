@@ -1,12 +1,16 @@
-import { Node, NodeType } from "../node";
-import { FunctionNode, FunctionsIds } from "./functionNode";
+import { Node, NodeType } from '../node';
+import { FunctionNode, FunctionsIds } from './functionNode';
 
-export class SqrtNode extends FunctionNode {
+export class SqrtNode extends FunctionNode implements Node {
   type: NodeType = NodeType.function;
   constructor(child: Node) {
-    super(FunctionsIds.sqrt, child, "\\sqrt");
+    super(FunctionsIds.sqrt, child, '\\sqrt');
   }
-  toString(): string {
-    return `sqrt(${this.child})`;
+  toMathString(): string {
+    return `sqrt(${this.child.toMathString()})`;
+  }
+
+  toTex(): string {
+    return `\\sqrt{${this.child.toTex()}}`;
   }
 }

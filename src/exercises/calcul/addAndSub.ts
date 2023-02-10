@@ -1,20 +1,19 @@
-import { randint } from "../../mathutils/random/randint";
-import { latexParser } from "../../tree/parsers/latexParser";
-import { NumberNode } from "../../tree/nodes/numbers/numberNode";
-import { AddNode } from "../../tree/nodes/operators/addNode";
-import { Exercise, Question } from "../exercise";
-import { getDistinctQuestions } from "../utils/getDistinctQuestions";
+import { randint } from '../../mathutils/random/randint';
+import { NumberNode } from '../../tree/nodes/numbers/numberNode';
+import { AddNode } from '../../tree/nodes/operators/addNode';
+import { Exercise, Question } from '../exercise';
+import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 /**
  * a±b±c±d
  */
 export const addAndSubExercise: Exercise = {
-  id: "addAndSub",
-  connector: "=",
-  instruction: "Calculer :",
-  label: "Additions et soustractions",
-  levels: ["6", "5"],
-  section: "Calculs",
+  id: 'addAndSub',
+  connector: '=',
+  instruction: 'Calculer :',
+  label: 'Additions et soustractions',
+  levels: ['6', '5'],
+  section: 'Calculs',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getAddAndSubQuestions, nb),
 };
@@ -30,9 +29,9 @@ export function getAddAndSubQuestions(): Question {
   for (let i = 2; i < allNumbersNodes.length; i++) {
     statementTree = new AddNode(statementTree, allNumbersNodes[i]);
   }
-  const answer = numbers.reduce((a, b) => a + b) + "";
+  const answer = numbers.reduce((a, b) => a + b) + '';
   const question: Question = {
-    startStatement: latexParser(statementTree),
+    startStatement: statementTree.toTex(),
     answer: answer,
   };
   return question;

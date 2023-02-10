@@ -1,10 +1,11 @@
+import { simplify } from 'mathjs';
 import { Interval } from '../sets/intervals/intervals';
 import { MathSet } from '../sets/mathSet';
 import { Node } from '../tree/nodes/node';
 import { NumberNode } from '../tree/nodes/numbers/numberNode';
 import { AddNode } from '../tree/nodes/operators/addNode';
 import { FractionNode } from '../tree/nodes/operators/fractionNode';
-import { latexParser } from '../tree/parsers/latexParser';
+import { simplifyNode } from '../tree/parsers/simplify';
 
 export abstract class PointConstructor {
   //   static random(domainX: MathSet = new Interval('[[-10; 10]]'), domainY: MathSet = new Interval('[[-10; 10]]')): Point {
@@ -28,19 +29,14 @@ export class Point {
     return `${this.name}`;
   }
   toTexWithCoords(): string {
-    return `${this.name}\\left(${latexParser(this.x)}; ${latexParser(this.y)}\\right)`;
+    return `${this.name}\\left(${this.x.toTex()}; ${this.y.toTex()}\\right)`;
   }
 
-  midpoint(B : Point, name = "I"):Point{
-    return new Point(name, 
-      new FractionNode(
-        new AddNode(this.x, B.x), 
-        new NumberNode(2)
-      ),
-      new FractionNode(
-        new AddNode(this.y, B.y), 
-        new NumberNode(2)
-      )
-    )
+  midpoint(B: Point, name = 'I'): Point {
+    return new Point(
+      name,
+      simplifyNode(new FractionNode(new AddNode(this.x, B.x), new NumberNode(2))),
+      simplifyNode(new FractionNode(new AddNode(this.y, B.y), new NumberNode(2))),
+    );
   }
 }

@@ -1,15 +1,18 @@
-import { Node, NodeType } from "../node";
+import { Node, NodeType } from '../node';
 
 export class VariableNode implements Node {
-  tex: string;
+  name: string;
   type = NodeType.variable;
 
-  constructor(tex: string) {
-    if (tex.length !== 1 || !tex.match("[a-zA-Z]")) throw Error("variable must be a letter");
-    this.tex = tex;
+  constructor(name: string) {
+    if (name.length !== 1 || !name.match('[a-zA-Z]')) throw Error('variable must be a letter');
+    this.name = name;
   }
 
-  toString(): string {
-    return `${this.tex}`;
+  toTex(): string {
+    return `${this.name}`;
+  }
+  toMathString(): string {
+    return `${this.name}`;
   }
 }

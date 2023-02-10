@@ -1,4 +1,4 @@
-import { Question } from "../exercise";
+import { Question } from '../exercise';
 export const getDistinctQuestions = (generator: Function, nb: number): Question[] => {
   const res: Question[] = [];
 
@@ -6,9 +6,7 @@ export const getDistinctQuestions = (generator: Function, nb: number): Question[
     let question: Question;
     do {
       question = generator();
-    } while (res.some((q) => 
-      q.instruction ? q.instruction === question.instruction :
-      q.startStatement === question.startStatement));
+    } while (res.some((q) => q.instruction === question.instruction && q.startStatement === question.startStatement));
     res.push(question);
   }
   return res;

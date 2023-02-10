@@ -1,19 +1,18 @@
-import { randint } from "../../../mathutils/random/randint";
-import { Integer } from "../../../numbers/integer/integer";
-import { RationalConstructor } from "../../../numbers/rationals/rational";
-import { latexParser } from "../../../tree/parsers/latexParser";
-import { AddNode } from "../../../tree/nodes/operators/addNode";
-import { Exercise, Question } from "../../exercise";
-import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
+import { randint } from '../../../mathutils/random/randint';
+import { Integer } from '../../../numbers/integer/integer';
+import { RationalConstructor } from '../../../numbers/rationals/rational';
+import { AddNode } from '../../../tree/nodes/operators/addNode';
+import { Exercise, Question } from '../../exercise';
+import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
 
 export const fractionAndIntegerSum: Exercise = {
-  id: "fractionAndIntegerSum",
-  connector: "=",
-  instruction: "Calculer la forme irréductible :",
+  id: 'fractionAndIntegerSum',
+  connector: '=',
+  instruction: 'Calculer la forme irréductible :',
   label: "Somme d'un entier et d'une fraction",
-  levels: ["4", "3", "2", "1"],
+  levels: ['4', '3', '2', '1'],
   isSingleStep: false,
-  section: "Fractions",
+  section: 'Fractions',
   generator: (nb: number) => getDistinctQuestions(getFractionAndIntegerSum, nb),
 };
 
@@ -24,8 +23,8 @@ export function getFractionAndIntegerSum(): Question {
   statementTree.shuffle();
   const answerTree = rational.add(integer).toTree();
   const question: Question = {
-    startStatement: latexParser(statementTree),
-    answer: latexParser(answerTree),
+    startStatement: statementTree.toTex(),
+    answer: answerTree.toTex(),
   };
   return question;
 }

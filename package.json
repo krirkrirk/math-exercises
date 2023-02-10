@@ -31,5 +31,8 @@
   "bugs": {
     "url": "https://github.com/krirkrirk/math-exercices/issues"
   },
-  "homepage": "https://github.com/krirkrirk/math-exercices#readme"
+  "homepage": "https://github.com/krirkrirk/math-exercices#readme",
+  "dependencies": {
+    "mathjs": "^11.5.1"
+  }
 }

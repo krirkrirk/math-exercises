@@ -1,20 +1,19 @@
-import { randint } from "../../../mathutils/random/randint";
-import { Integer } from "../../../numbers/integer/integer";
-import { RationalConstructor } from "../../../numbers/rationals/rational";
-import { latexParser } from "../../../tree/parsers/latexParser";
-import { DivideNode } from "../../../tree/nodes/operators/divideNode";
-import { random } from "../../../utils/random";
-import { Exercise, Question } from "../../exercise";
-import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
+import { randint } from '../../../mathutils/random/randint';
+import { Integer } from '../../../numbers/integer/integer';
+import { RationalConstructor } from '../../../numbers/rationals/rational';
+import { DivideNode } from '../../../tree/nodes/operators/divideNode';
+import { random } from '../../../utils/random';
+import { Exercise, Question } from '../../exercise';
+import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
 
 export const fractionAndIntegerDivision: Exercise = {
-  id: "fractionAndIntegerDivision",
-  connector: "=",
-  instruction: "Calculer la forme irréductible :",
+  id: 'fractionAndIntegerDivision',
+  connector: '=',
+  instruction: 'Calculer la forme irréductible :',
   label: "Division d'un entier et d'une fraction",
-  levels: ["4", "3", "2", "1"],
+  levels: ['4', '3', '2', '1'],
   isSingleStep: false,
-  section: "Fractions",
+  section: 'Fractions',
   generator: (nb: number) => getDistinctQuestions(getFractionAndIntegerDivision, nb),
 };
 
@@ -29,8 +28,8 @@ export function getFractionAndIntegerDivision(): Question {
 
   const answerTree = integerFirst ? integer.divide(rational).toTree() : rational.divide(integer).toTree();
   const question: Question = {
-    startStatement: latexParser(statementTree),
-    answer: latexParser(answerTree),
+    startStatement: statementTree.toTex(),
+    answer: answerTree.toTex(),
   };
   return question;
 }

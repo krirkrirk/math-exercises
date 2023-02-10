@@ -1,16 +1,16 @@
-import { operationsPriorities } from "./exercises/calcul/operations/operationsPriorities";
-import { exercises } from "./exercises/exercises";
-import { latexParser } from "./tree/parsers/latexParser";
-import { NumberNode } from "./tree/nodes/numbers/numberNode";
-import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
-import { Polynomial } from "./polynomials/polynomial";
-import { derivateParser } from "./tree/parsers/derivateParser";
-import { midpoint } from "./exercises/geometry/cartesian/midpoint";
-import { factoType1Exercise } from "./exercises/calculLitteral/factorisation/factoType1Exercise";
-import { scalarProductViaCoords } from "./exercises/geometry/vectors/scalarProductViaCoords";
+import { exercises } from './exercises/exercises';
+import { midpoint } from './exercises/geometry/cartesian/midpoint';
+import { AddNode } from './tree/nodes/operators/addNode';
+import { VariableNode } from './tree/nodes/variables/variableNode';
+import { simplifyNode } from './tree/parsers/simplify';
+// import { simplify } from './tree/parsers/simplify';
 
-// exercises.forEach((exo) => {
-//   console.log(exo.instruction, exo.generator(10));
-// });
-console.log(scalarProductViaCoords.generator(10));
+exercises.forEach((exo) => {
+  console.log(exo.instruction, exo.generator(10));
+});
+
+// import { scalarProductViaCoords } from './exercises/geometry/vectors/scalarProductViaCoords';
+
+// console.log(scalarProductViaCoords.generator(10));
+// console.log(midpoint.generator(10));
 export { exercises };

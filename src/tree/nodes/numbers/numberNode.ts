@@ -10,7 +10,7 @@ export class NumberNode implements Node {
     this.tex = tex || value + '';
   }
 
-  toString(): string {
+  toMathString(): string {
     return `${this.tex}`;
   }
   toTex(): string {
