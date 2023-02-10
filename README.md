@@ -52,9 +52,13 @@ Beware, some exercises do not have instructions, because the instruction is dire
 
 Math expressions are implemented via a tree of Nodes that you'll find inside `tree/nodes`.
 
-Any expression can be turned into a valid latex output via the `.toTex()` method. 
+Any expression can be turned into a valid latex output via the `.toTex()` method.
 
-They also can be simplified via the `simplifyNode` method. 
+They also can be simplified via the `simplifyNode` method.
+
+## Math objects
+
+This library also aims to implement pretty much all mathematical objects and notions up to 12th grade : all types of numbers and operations on them, but also points, vectors, polynomials, sets... Thus it can also be used for basic mathematics work.
 
 ## Minimal dependencies
 
@@ -64,4 +68,4 @@ We're trying to keep to our dependencies to a minimum. So far we're only using m
 
 Any contribution is welcomed.
 
-There are a ton of exercises left to implement !
+There are tons of exercises left to implement !
