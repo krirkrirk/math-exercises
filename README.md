@@ -52,7 +52,9 @@ Beware, some exercises do not have instructions, because the instruction is dire
 
 Math expressions are implemented via a tree of Nodes that you'll find inside `tree/nodes`.
 
-The `latexParser` function will parse the tree into a TeX string that is using a valid mathemtical syntax.
+Any expression can be turned into a valid latex output via the `.toTex()` method. 
+
+They also can be simplified via the `simplifyNode` method. 
 
 ## Minimal dependencies
 
