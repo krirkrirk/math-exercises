@@ -1,0 +1,63 @@
+# math-exercises
+
+This is a generator of Math exercises for middle school and high school. 
+
+So far, exercises are written in French, but any translation is welcome ! 
+
+This library is used by [Mathlive.fr](https://www.mathlive.fr) for collaborative quizzes.
+
+## 🚧 Work in progress !
+
+This library is still in beta and the architecture may very well completely change in the future.
+
+Incoming improvements : 
+
+- Random images generation using tikZ
+
+- Steps within answers
+
+- Coverage of all topics up to 12th grade
+
+- Better classification of exercises
+
+
+## Exercises format
+
+Each exercise has a `generator` that will return distinct questions for this exercises. 
+
+The Question in itself has an `instruction`, a `startStatement` and an `answer` (which are all tex strings). 
+
+## How to use 
+
+
+Example with (ax+b)^2 questions : 
+```
+import { firstIdentity } from exercises/calculLitteral/distributivity/firstIdentity
+
+console.log(firstIdentity.instruction);
+const question = firstIdentity.generator(1)
+console.log(question.startStatement)
+console.log(question.answer)
+
+//output : 
+// Développer et réduire : 
+// (2x+3)^2
+// 4x^2 + 12x + 9
+```
+Beware, some exercises do not have instructions, because the instruction is directly in the question itself. 
+
+## Expression tree and latex parser
+
+Math expressions are implemented via a tree of Nodes that you'll find inside `tree/nodes`.
+
+The `latexParser` function will parse the tree into a TeX string that is using a valid mathemtical syntax.
+
+## Minimal dependencies
+
+We're trying to keep to our dependencies to a minimum. So far we're only using mathjs as an external library, to evaluate and simplify expression trees. We would love to have our own way of simplifying expressions in the future.
+
+## How to contribute
+
+Any contribution is welcomed. 
+
+There are a ton of exercises left to implement ! 
