@@ -1,7 +1,7 @@
 {
   "name": "math-exercises",
   "version": "1.3.1",
-  "description": "Générateurs d'exercices et questions mathématiques en latex",
+  "description": "Math exercises generator for middle school and high school",
   "main": "src/index.js",
   "files": [
     "lib/**/*"
@@ -26,12 +26,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/krirkrirk/math-exercices.git"
+    "url": "git+https://github.com/krirkrirk/math-exercises.git"
   },
   "bugs": {
-    "url": "https://github.com/krirkrirk/math-exercices/issues"
+    "url": "https://github.com/krirkrirk/math-exercises/issues"
   },
-  "homepage": "https://github.com/krirkrirk/math-exercices#readme",
+  "homepage": "https://github.com/krirkrirk/math-exercises#readme",
   "dependencies": {
     "mathjs": "^11.5.1"
   }
