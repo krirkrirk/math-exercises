@@ -6,7 +6,7 @@ import { fractionsDivision } from "./calcul/fractions/fractionsDivision";
 import { fractionsProduct } from "./calcul/fractions/fractionsProduct";
 import { fractionsSum } from "./calcul/fractions/fractionsSum";
 import { simplifyFraction } from "./calcul/fractions/simplifyFraction";
-import { operationsPriorities } from "./calcul/operationsPriorities";
+import { operationsPriorities } from "./calcul/operations/operationsPriorities";
 import {
   allRoundings,
   roundToCentieme,
@@ -25,6 +25,8 @@ import { equationType2Exercise } from "./calculLitteral/equation/equationType2Ex
 import { equationType3Exercise } from "./calculLitteral/equation/equationType3Exercise";
 import { equationType4Exercise } from "./calculLitteral/equation/equationType4Exercise";
 import { factoType1Exercise } from "./calculLitteral/factorisation/factoType1Exercise";
+import { midpoint } from "./geometry/cartesian/midpoint";
+import { scalarProductViaCoords } from "./geometry/vectors/scalarProductViaCoords";
 import { powersDivision, powersOfTenDivision } from "./powers/powersDivision";
 import { powersOfTenToDecimal } from "./powers/powersOfTenToDecimal";
 import { powersOfTenPower, powersPower } from "./powers/powersPower";
@@ -80,6 +82,17 @@ export const exercises = [
   roundToMillieme,
   roundToUnit,
   allRoundings,
+
+  /**
+   * geometry
+   */
+  midpoint,
+  
+  /**
+   * vectors
+   */
+  scalarProductViaCoords,
+
   /**
    * puissances
    */

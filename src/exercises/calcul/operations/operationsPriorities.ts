@@ -1,13 +1,13 @@
-import { randint } from "../../mathutils/random/randint";
-import { latexParser } from "../../tree/parsers/latexParser";
-import { Node } from "../../tree/nodes/node";
-import { NumberNode } from "../../tree/nodes/numbers/numberNode";
-import { AddNode } from "../../tree/nodes/operators/addNode";
-import { DivideNode } from "../../tree/nodes/operators/divideNode";
-import { MultiplyNode } from "../../tree/nodes/operators/multiplyNode";
-import { coin } from "../../utils/coin";
-import { Exercise, Question } from "../exercise";
-import { getDistinctQuestions } from "../utils/getDistinctQuestions";
+import { randint } from "../../../mathutils/random/randint";
+import { latexParser } from "../../../tree/parsers/latexParser";
+import { Node } from "../../../tree/nodes/node";
+import { NumberNode } from "../../../tree/nodes/numbers/numberNode";
+import { AddNode } from "../../../tree/nodes/operators/addNode";
+import { DivideNode } from "../../../tree/nodes/operators/divideNode";
+import { MultiplyNode } from "../../../tree/nodes/operators/multiplyNode";
+import { coin } from "../../../utils/coin";
+import { Exercise, Question } from "../../exercise";
+import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
 /**
  * a*b ±c±d

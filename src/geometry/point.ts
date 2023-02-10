@@ -2,6 +2,8 @@ import { Interval } from '../sets/intervals/intervals';
 import { MathSet } from '../sets/mathSet';
 import { Node } from '../tree/nodes/node';
 import { NumberNode } from '../tree/nodes/numbers/numberNode';
+import { AddNode } from '../tree/nodes/operators/addNode';
+import { FractionNode } from '../tree/nodes/operators/fractionNode';
 import { latexParser } from '../tree/parsers/latexParser';
 
 export abstract class PointConstructor {
@@ -23,12 +25,22 @@ export class Point {
   }
 
   toTex(): string {
-    return `${this.name}\\left(${latexParser(this.x)} \\right${latexParser(this.y)})`;
+    return `${this.name}`;
+  }
+  toTexWithCoords(): string {
+    return `${this.name}\\left(${latexParser(this.x)}; ${latexParser(this.y)}\\right)`;
+  }
+
+  midpoint(B : Point, name = "I"):Point{
+    return new Point(name, 
+      new FractionNode(
+        new AddNode(this.x, B.x), 
+        new NumberNode(2)
+      ),
+      new FractionNode(
+        new AddNode(this.y, B.y), 
+        new NumberNode(2)
+      )
+    )
   }
 }
-
-/**
- * construct random points avec x, y
- * vector a partir des points : calcul des coordonnées
- *
- */

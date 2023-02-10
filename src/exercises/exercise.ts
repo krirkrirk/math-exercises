@@ -6,7 +6,7 @@
 
 export interface Question {
   instruction?: string;
-  startStatement: string;
+  startStatement?: string;
   answer: string;
 }
 

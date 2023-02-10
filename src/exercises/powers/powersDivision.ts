@@ -34,7 +34,7 @@ export const powersOfTenDivision: Exercise = {
 };
 
 export function getPowersDivisionQuestion(useOnlyPowersOfTen: boolean = false): Question {
-  const a = useOnlyPowersOfTen ? 10 : randint(-11, 11);
+  const a = useOnlyPowersOfTen ? 10 : randint(-11, 11, [0]);
   const [b, c] = [1, 2].map((el) => randint(-11, 11));
 
   const statement = new FractionNode(

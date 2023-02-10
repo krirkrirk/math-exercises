@@ -4,10 +4,11 @@ export const getDistinctQuestions = (generator: Function, nb: number): Question[
 
   for (let i = 0; i < nb; i++) {
     let question: Question;
-
     do {
       question = generator();
-    } while (res.some((q) => q.startStatement === question.startStatement));
+    } while (res.some((q) => 
+      q.instruction ? q.instruction === question.instruction :
+      q.startStatement === question.startStatement));
     res.push(question);
   }
   return res;
