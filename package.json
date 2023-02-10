@@ -1,6 +1,6 @@
 {
   "name": "math-exercises",
-  "version": "1.2.11",
+  "version": "1.3.0",
   "description": "Générateurs d'exercices et questions mathématiques en latex",
   "main": "src/index.js",
   "files": [
