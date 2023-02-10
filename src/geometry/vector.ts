@@ -32,7 +32,7 @@ export class Vector {
   }
 
   toTexWithCoords(): string {
-    return `\\overrightarrow{${this.name}}\\begin{pmatrix}${latexParser(this.x)} \\${latexParser(this.y)} \\end{pmatrix}`;
+    return `\\overrightarrow{${this.name}}\\begin{pmatrix}${latexParser(this.x)} \\\ ${latexParser(this.y)} \\end{pmatrix}`;
   }
 
   scalarProduct(v: Vector): Node {
