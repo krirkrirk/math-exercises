@@ -1,17 +1,17 @@
-import { EPSILON } from "../../numbers/epsilon";
-import { Nombre, NumberType } from "../../numbers/nombre";
-import { round } from "../../mathutils/round";
-import { MathSetInterface } from "../mathSetInterface";
-import { DiscreteSet } from "../discreteSet";
-import { MathSet } from "../mathSet";
-import { Integer } from "../../numbers/integer/integer";
-import { Real } from "../../numbers/reals/real";
+import { EPSILON } from '../../numbers/epsilon';
+import { Nombre, NumberType } from '../../numbers/nombre';
+import { round } from '../../mathutils/round';
+import { MathSetInterface } from '../mathSetInterface';
+import { DiscreteSet } from '../discreteSet';
+import { MathSet } from '../mathSet';
+import { Integer } from '../../numbers/integer/integer';
+import { Real } from '../../numbers/reals/real';
 
 enum BoundType {
-  OO = "]a;b[",
-  OF = "]a;b]",
-  FO = "[a;b[",
-  FF = "[a;b]",
+  OO = ']a;b[',
+  OF = ']a;b]',
+  FO = '[a;b[',
+  FF = '[a;b]',
 }
 
 export class Interval implements MathSetInterface {
@@ -23,36 +23,35 @@ export class Interval implements MathSetInterface {
   /**
    * [[a; b]] pour un interval d'integer;  [a;b] pour des réels
    */
-  constructor(tex = "[-10; 10]") {
+  constructor(tex = '[-10; 10]') {
+    if (!tex.includes(';')) throw Error('wrong interval format');
     this.tex = tex;
-    const isInt = tex[1] === "[" || tex[1] === "]";
+    const isInt = tex[1] === '[' || tex[1] === ']';
     this.type = isInt ? NumberType.Integer : NumberType.Real;
     const left = tex[0];
     const right = tex[tex.length - 1];
-    const [a, b] = tex
-      .slice(isInt ? 2 : 1, isInt ? tex.length - 2 : tex.length - 1)
-      .split(";");
+    const [a, b] = tex.slice(isInt ? 2 : 1, isInt ? tex.length - 2 : tex.length - 1).split(';');
 
     switch (`${left}a;b${right}`) {
-      case "[a;b]":
+      case '[a;b]':
         this.boundType = BoundType.FF;
         break;
-      case "]a;b[":
+      case ']a;b[':
         this.boundType = BoundType.OO;
         break;
-      case "[a;b[":
+      case '[a;b[':
         this.boundType = BoundType.FO;
         break;
-      case "]a;b]":
+      case ']a;b]':
         this.boundType = BoundType.OF;
         break;
       default:
-        throw console.error("wrong interval");
+        throw console.error('wrong interval format');
     }
     function getBound(bound: string) {
-      return bound === "-\\infty"
+      return bound === '-\\infty'
         ? Number.NEGATIVE_INFINITY
-        : bound === "+\\infty"
+        : bound === '+\\infty'
         ? Number.POSITIVE_INFINITY
         : Number(bound);
     }
@@ -98,19 +97,10 @@ export class Interval implements MathSetInterface {
     return this.tex;
   }
 
-  getRandomElement(
-    precision: number = this.type === NumberType.Integer ? 0 : 2
-  ): Nombre {
-    if (this.min === -Infinity || this.max === Infinity)
-      throw Error("Can't chose amongst infinity");
-    let min =
-      this.boundType === BoundType.OO || this.boundType === BoundType.OF
-        ? this.min + EPSILON
-        : this.min;
-    let max =
-      this.boundType === BoundType.OO || this.boundType === BoundType.FO
-        ? this.max - EPSILON
-        : this.max;
+  getRandomElement(precision: number = this.type === NumberType.Integer ? 0 : 2): Nombre {
+    if (this.min === -Infinity || this.max === Infinity) throw Error("Can't chose amongst infinity");
+    let min = this.boundType === BoundType.OO || this.boundType === BoundType.OF ? this.min + EPSILON : this.min;
+    let max = this.boundType === BoundType.OO || this.boundType === BoundType.FO ? this.max - EPSILON : this.max;
     const value = round(min + Math.random() * (max - this.min), precision);
     switch (this.type) {
       case NumberType.Integer:

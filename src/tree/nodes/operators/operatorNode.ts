@@ -1,4 +1,4 @@
-import { coin } from '../../../utils/coin';
+import { coinFlip } from '../../../utils/coinFlip';
 import { Node, NodeType } from '../node';
 
 export enum OperatorIds {
@@ -29,7 +29,7 @@ export abstract class OperatorNode {
   /**shuffles in place */
   shuffle(): void {
     if (!this.isCommutative) return;
-    if (coin()) return;
+    if (coinFlip()) return;
     [this.leftChild, this.rightChild] = [this.rightChild, this.leftChild];
     return;
   }

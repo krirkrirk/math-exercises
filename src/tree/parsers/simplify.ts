@@ -4,7 +4,6 @@ import { SqrtNode } from '../nodes/functions/sqrtNode';
 import { Node } from '../nodes/node';
 import { NumberNode } from '../nodes/numbers/numberNode';
 import { AddNode } from '../nodes/operators/addNode';
-import { DivideNode } from '../nodes/operators/divideNode';
 import { FractionNode } from '../nodes/operators/fractionNode';
 import { MultiplyNode } from '../nodes/operators/multiplyNode';
 import { PowerNode } from '../nodes/operators/powerNode';
@@ -23,12 +22,10 @@ interface MathjsNode {
 }
 
 export const simplifyNode = (node: Node): Node => {
-  console.log(node.toMathString());
   return mathjsNodeToNode(mathsimplify(node.toMathString()) as unknown as MathjsNode);
 };
 
 const mathjsNodeToNode = (mathjsNode: MathjsNode): Node => {
-  console.log(mathjsNode);
   if (mathjsNode.isSymbolNode) {
     return new VariableNode(mathjsNode.name!);
   } else if (mathjsNode.isConstantNode) {

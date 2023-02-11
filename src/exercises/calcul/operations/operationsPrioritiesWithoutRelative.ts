@@ -5,7 +5,7 @@
 // import { AddNode } from "../../tree/nodes/operators/addNode";
 // import { DivideNode } from "../../tree/nodes/operators/divideNode";
 // import { MultiplyNode } from "../../tree/nodes/operators/multiplyNode";
-// import { coin } from "../../utils/coin";
+// import { coinFlip } from "../../utils/coinFlip";
 // import { Exercise, Question } from "../exercise";
 // import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
@@ -38,7 +38,7 @@
 //     case 1: // a*b ±c±d
 //       [c, d] = [1, 2, 3, 4].map((el) => randint(-10, 11, [0]));
 //       [a, b] = [1, 2].map((el) => randint(-10, 11));
-//       statement = coin()
+//       statement = coinFlip()
 //         ? //a*b first ou last
 //           new AddNode(
 //             new MultiplyNode(new NumberNode(a), new NumberNode(b)),
@@ -54,7 +54,7 @@
 //     case 2: // a/b ±c±d
 //       [b, c, d] = [1, 2, 3].map((el) => randint(-10, 11, [0]));
 //       a = b * randint(0, 11);
-//       statement = coin()
+//       statement = coinFlip()
 //         ? //a/b first ou last
 //           new AddNode(
 //             new DivideNode(new NumberNode(a), new NumberNode(b)),

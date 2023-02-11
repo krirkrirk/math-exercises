@@ -9,7 +9,7 @@ import { AddNode } from '../../tree/nodes/operators/addNode';
 import { DivideNode } from '../../tree/nodes/operators/divideNode';
 import { MultiplyNode } from '../../tree/nodes/operators/multiplyNode';
 import { PowerNode } from '../../tree/nodes/operators/powerNode';
-import { coin } from '../../utils/coin';
+import { coinFlip } from '../../utils/coinFlip';
 import { Exercise, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 

@@ -1,6 +1,3 @@
-import { simplify } from 'mathjs';
-import { Interval } from '../sets/intervals/intervals';
-import { MathSet } from '../sets/mathSet';
 import { Node } from '../tree/nodes/node';
 import { NumberNode } from '../tree/nodes/numbers/numberNode';
 import { AddNode } from '../tree/nodes/operators/addNode';
