@@ -25,6 +25,7 @@ export function getFractionAndIntegerProduct(): Question {
 
   const answerTree = rational.multiply(integer).toTree();
   const question: Question = {
+    instruction: '',
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
   };

@@ -3,6 +3,8 @@ import { Node, NodeType } from '../node';
 export enum FunctionsIds {
   opposite,
   sqrt,
+  cos,
+  sin,
 }
 
 export abstract class FunctionNode {

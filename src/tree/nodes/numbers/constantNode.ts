@@ -1,13 +1,13 @@
 import { Node, NodeType } from '../node';
 
-export class NumberNode implements Node {
+export class ConstantNode implements Node {
   tex: string;
-  value: number;
+  approxValue: number;
   type: NodeType = NodeType.number;
 
-  constructor(value: number, tex?: string) {
-    this.value = value;
-    this.tex = tex || value + '';
+  constructor(tex: string, approxValue: number) {
+    this.approxValue = approxValue;
+    this.tex = tex;
   }
 
   toMathString(): string {

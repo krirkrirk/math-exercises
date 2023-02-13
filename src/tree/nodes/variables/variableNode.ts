@@ -15,4 +15,7 @@ export class VariableNode implements Node {
   toMathString(): string {
     return `${this.name}`;
   }
+  // simplify(): Node {
+  //   return this;
+  // }
 }

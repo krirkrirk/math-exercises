@@ -22,6 +22,7 @@ export function getFractionsDivision(): Question {
   const statementTree = new DivideNode(rational.toTree(), rational2.toTree());
   const answerTree = rational.divide(rational2).toTree();
   const question: Question = {
+    instruction: '',
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
   };

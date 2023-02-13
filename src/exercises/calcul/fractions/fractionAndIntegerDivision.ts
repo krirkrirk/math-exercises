@@ -29,6 +29,7 @@ export function getFractionAndIntegerDivision(): Question {
 
   const answerTree = integerFirst ? integer.divide(rational).toTree() : rational.divide(integer).toTree();
   const question: Question = {
+    instruction: '',
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
   };

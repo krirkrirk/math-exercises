@@ -23,6 +23,7 @@ export function getFractionAndIntegerSum(): Question {
   statementTree.shuffle();
   const answerTree = rational.add(integer).toTree();
   const question: Question = {
+    instruction: '',
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
   };
