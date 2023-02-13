@@ -5,9 +5,9 @@ import { VariableNode } from './tree/nodes/variables/variableNode';
 import { simplifyNode } from './tree/parsers/simplify';
 // import { simplify } from './tree/parsers/simplify';
 
-exercises.forEach((exo) => {
-  console.log(exo.instruction, exo.generator(10));
-});
+// exercises.forEach((exo) => {
+//   console.log(exo.instruction, exo.generator(10));
+// });
 
 // import { scalarProductViaCoords } from './exercises/geometry/vectors/scalarProductViaCoords';
 
