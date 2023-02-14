@@ -1,7 +1,9 @@
+import { OppositeNode } from '../tree/nodes/functions/oppositeNode';
 import { SqrtNode } from '../tree/nodes/functions/sqrtNode';
 import { NumberNode } from '../tree/nodes/numbers/numberNode';
 import { PiNode } from '../tree/nodes/numbers/piNode';
 import { FractionNode } from '../tree/nodes/operators/fractionNode';
+import { MultiplyNode } from '../tree/nodes/operators/multiplyNode';
 
 export const remarkableTrigoValues = [
   {
@@ -25,8 +27,23 @@ export const remarkableTrigoValues = [
     sin: new FractionNode(new SqrtNode(new NumberNode(3)), new NumberNode(2)),
   },
   {
-    angle: new NumberNode(1),
+    angle: new FractionNode(PiNode, new NumberNode(2)),
     cos: new NumberNode(0),
     sin: new NumberNode(1),
+  },
+  {
+    angle: new FractionNode(new MultiplyNode(new NumberNode(2), PiNode), new NumberNode(3)),
+    cos: new OppositeNode(new FractionNode(new NumberNode(1), new NumberNode(2))),
+    sin: new FractionNode(new SqrtNode(new NumberNode(3)), new NumberNode(2)),
+  },
+  {
+    angle: new FractionNode(new MultiplyNode(new NumberNode(3), PiNode), new NumberNode(4)),
+    cos: new OppositeNode(new FractionNode(new SqrtNode(new NumberNode(2)), new NumberNode(2))),
+    sin: new FractionNode(new SqrtNode(new NumberNode(2)), new NumberNode(2)),
+  },
+  {
+    angle: PiNode,
+    cos: new NumberNode(-1),
+    sin: new NumberNode(0),
   },
 ];

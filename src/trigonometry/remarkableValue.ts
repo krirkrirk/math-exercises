@@ -1,3 +1,4 @@
+import { randint } from '../mathutils/random/randint';
 import { Node } from '../tree/nodes/node';
 import { random } from '../utils/random';
 import { remarkableTrigoValues } from './remarkableValues';
@@ -6,6 +7,12 @@ export abstract class RemarkableValueConstructor {
   static mainInterval = () => {
     const randValue = random(remarkableTrigoValues);
     return new RemarkableValue(randValue.angle, randValue.cos, randValue.sin);
+  };
+
+  static simplifiable = () => {
+    const randValue = random(remarkableTrigoValues);
+    const toAdd = randint(-3, 4) * 2;
+    const newAngle = randValue.angle;
   };
 }
 

@@ -36,6 +36,6 @@
     "mathjs": "^11.5.1"
   },
   "exports": {
-    ".": "/lib/index.js"
+    ".": "./lib/index.js"
   }
 }

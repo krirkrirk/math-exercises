@@ -1,9 +1,10 @@
+import { RemarkableValue } from '../../trigonometry/remarkableValue';
 import { coinFlip } from '../../utils/coinFlip';
 import { Exercise, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 export const simplifySquareRoot: Exercise = {
-  id: 'remarkableValues',
+  id: 'mainRemarkableValues',
   connector: '=',
   instruction: 'Donner la valeur exacte :',
   label: 'Valeurs remarquables de cos et sin',
@@ -16,7 +17,7 @@ export const simplifySquareRoot: Exercise = {
 export function getRemarkableValues(): Question {
   const isCos = coinFlip();
 
-  const remarkableValue;
+  const remarkableValue = RemarkableValue;
 
   const question: Question = {
     startStatement: isCos ? `\\cos(${remarkableValue.toTex()})` : `\\sin(${remarkableValue.toTex()})`,
