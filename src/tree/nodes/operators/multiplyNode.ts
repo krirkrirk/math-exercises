@@ -3,12 +3,21 @@ import { OperatorIds, OperatorNode } from './operatorNode';
 
 export class MultiplyNode extends OperatorNode implements Node {
   constructor(leftChild: Node, rightChild: Node) {
-    super(OperatorIds.multiply, leftChild, rightChild, true, '\\times');
+    let [left, right] = [leftChild, rightChild];
+    const shouldSwitch = leftChild.type === NodeType.constant && rightChild.type === NodeType.number;
+    if (shouldSwitch) {
+      console.log('switch');
+      [left, right] = [rightChild, leftChild];
+    }
+    console.log('left', left, 'right', right);
+
+    super(OperatorIds.multiply, left, right, true, '\\times');
   }
 
   toMathString(): string {
     return `(${this.leftChild.toMathString()})*(${this.rightChild.toMathString()})`;
   }
+
   toTex(): string {
     let leftTex = this.leftChild.toTex();
     let rightTex = this.rightChild.toTex();
@@ -35,6 +44,7 @@ export class MultiplyNode extends OperatorNode implements Node {
       const operatorRightChild = this.rightChild as unknown as OperatorNode;
       showTimesSign ||= [OperatorIds.fraction].includes(operatorRightChild.id);
     }
+
     return `${leftTex}${showTimesSign ? '\\times ' : ''}${rightTex}`;
   }
 }

@@ -3,21 +3,21 @@ import { coinFlip } from '../../utils/coinFlip';
 import { Exercise, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
-export const mainRemarkableValuesExercise: Exercise = {
-  id: 'mainRemarkableValues',
+export const remarkableValuesExercise: Exercise = {
+  id: 'remarkableValues',
   connector: '=',
   instruction: 'Donner la valeur exacte :',
-  label: 'Valeurs remarquables de cos et sin sur [-\\pi, \\pi]',
+  label: 'Valeurs remarquables de cos et sin',
   levels: ['1', '0'],
   isSingleStep: false,
   section: 'Trigonométrie',
-  generator: (nb: number) => getDistinctQuestions(getMainRemarkableValues, nb),
+  generator: (nb: number) => getDistinctQuestions(getRemarkableValues, nb),
 };
 
-export function getMainRemarkableValues(): Question {
+export function getRemarkableValues(): Question {
   const isCos = coinFlip();
 
-  const remarkableValue = RemarkableValueConstructor.mainInterval();
+  const remarkableValue = RemarkableValueConstructor.simplifiable();
 
   const question: Question = {
     startStatement: isCos

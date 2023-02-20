@@ -2,21 +2,18 @@ import { Node, NodeType } from '../node';
 
 export class ConstantNode implements Node {
   tex: string;
-  approxValue: number;
-  type: NodeType = NodeType.number;
+  mathString: string;
+  type: NodeType = NodeType.constant;
 
-  constructor(tex: string, approxValue: number) {
-    this.approxValue = approxValue;
+  constructor(tex: string, mathString: string) {
     this.tex = tex;
+    this.mathString = mathString;
   }
 
   toMathString(): string {
-    return `${this.tex}`;
+    return `${this.mathString}`;
   }
   toTex(): string {
     return `${this.tex}`;
   }
-  // simplify(): Node {
-  //   return this;
-  // }
 }

@@ -4,8 +4,9 @@ import { NumberNode } from '../tree/nodes/numbers/numberNode';
 import { PiNode } from '../tree/nodes/numbers/piNode';
 import { FractionNode } from '../tree/nodes/operators/fractionNode';
 import { MultiplyNode } from '../tree/nodes/operators/multiplyNode';
+import { RemarkableValue } from './remarkableValue';
 
-export const remarkableTrigoValues = [
+export const remarkableTrigoValues: RemarkableValue[] = [
   {
     angle: new NumberNode(0),
     cos: new NumberNode(1),

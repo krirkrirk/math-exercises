@@ -3,6 +3,7 @@ import { OppositeNode } from '../nodes/functions/oppositeNode';
 import { SqrtNode } from '../nodes/functions/sqrtNode';
 import { Node } from '../nodes/node';
 import { NumberNode } from '../nodes/numbers/numberNode';
+import { PiNode } from '../nodes/numbers/piNode';
 import { AddNode } from '../nodes/operators/addNode';
 import { FractionNode } from '../nodes/operators/fractionNode';
 import { MultiplyNode } from '../nodes/operators/multiplyNode';
@@ -26,7 +27,9 @@ export const simplifyNode = (node: Node): Node => {
 };
 
 const mathjsNodeToNode = (mathjsNode: MathjsNode): Node => {
+  console.log(mathjsNode);
   if (mathjsNode.isSymbolNode) {
+    if (mathjsNode.name === 'pi') return PiNode;
     return new VariableNode(mathjsNode.name!);
   } else if (mathjsNode.isConstantNode) {
     return new NumberNode(mathjsNode.value!);
