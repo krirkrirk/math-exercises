@@ -1,15 +1,16 @@
+import { FunctionNode, FunctionsIds } from '../functions/functionNode';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from './operatorNode';
 
 export class MultiplyNode extends OperatorNode implements Node {
   constructor(leftChild: Node, rightChild: Node) {
     let [left, right] = [leftChild, rightChild];
-    const shouldSwitch = leftChild.type === NodeType.constant && rightChild.type === NodeType.number;
+    const shouldSwitch =
+      (rightChild.type === NodeType.function && (rightChild as unknown as FunctionNode).id === FunctionsIds.opposite) ||
+      (leftChild.type === NodeType.constant && rightChild.type === NodeType.number);
     if (shouldSwitch) {
-      console.log('switch');
       [left, right] = [rightChild, leftChild];
     }
-    console.log('left', left, 'right', right);
 
     super(OperatorIds.multiply, left, right, true, '\\times');
   }

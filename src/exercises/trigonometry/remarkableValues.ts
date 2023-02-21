@@ -1,4 +1,4 @@
-import { RemarkableValue, RemarkableValueConstructor } from '../../trigonometry/remarkableValue';
+import { RemarkableValueConstructor } from '../../trigonometry/remarkableValue';
 import { coinFlip } from '../../utils/coinFlip';
 import { Exercise, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
@@ -16,9 +16,7 @@ export const remarkableValuesExercise: Exercise = {
 
 export function getRemarkableValues(): Question {
   const isCos = coinFlip();
-
   const remarkableValue = RemarkableValueConstructor.simplifiable();
-
   const question: Question = {
     startStatement: isCos
       ? `\\cos\\left(${remarkableValue.angle.toTex()}\\right)`

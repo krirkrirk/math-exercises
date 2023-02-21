@@ -27,7 +27,6 @@ export const simplifyNode = (node: Node): Node => {
 };
 
 const mathjsNodeToNode = (mathjsNode: MathjsNode): Node => {
-  console.log(mathjsNode);
   if (mathjsNode.isSymbolNode) {
     if (mathjsNode.name === 'pi') return PiNode;
     return new VariableNode(mathjsNode.name!);
