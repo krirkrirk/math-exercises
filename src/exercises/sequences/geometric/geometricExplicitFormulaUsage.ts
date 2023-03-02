@@ -1,7 +1,6 @@
 import { randint } from '../../../mathutils/random/randint';
-import { SquareRootConstructor } from '../../numbers/reals/squareRoot';
-import { Exercise, Question } from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+import { Exercise, Question } from '../../exercise';
+import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
 
 export const geometricExplicitFormulaUsage: Exercise = {
   id: 'geometricExplicitFormula',
