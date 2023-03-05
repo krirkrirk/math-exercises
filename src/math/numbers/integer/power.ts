@@ -1,8 +1,8 @@
-import { Node } from "../../tree/nodes/node";
-import { NumberNode } from "../../tree/nodes/numbers/numberNode";
-import { PowerNode } from "../../tree/nodes/operators/powerNode";
-import { Nombre, NumberType } from "../nombre";
-import { Integer } from "./integer";
+import { Node } from '#root/tree/nodes/node';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { PowerNode } from '#root/tree/nodes/operators/powerNode';
+import { Nombre, NumberType } from '../nombre';
+import { Integer } from './integer';
 
 export class Power implements Nombre {
   value: number;
@@ -26,19 +26,19 @@ export class Power implements Nombre {
     return this.toTree();
   }
   toDecimalWriting(): Nombre {
-    if (this.operand !== 10) throw Error("only implemented for powers of ten so far");
-    let s = "";
+    if (this.operand !== 10) throw Error('only implemented for powers of ten so far');
+    let s = '';
     if (this.power > -1) {
-      s += "1";
+      s += '1';
       for (let i = 0; i < this.power; i++) {
         s += 0;
       }
     } else {
-      s += "1";
+      s += '1';
       for (let i = 1; i < Math.abs(this.power); i++) {
-        s = "0" + s;
+        s = '0' + s;
       }
-      s = "0." + s;
+      s = '0.' + s;
     }
 
     return new Integer(Number(s), s);

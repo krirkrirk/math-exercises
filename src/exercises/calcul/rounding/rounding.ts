@@ -1,7 +1,7 @@
-import { Exercise, Question } from 'src/exercises/exercise';
-import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
-import { DecimalConstructor } from 'src/math/numbers/decimals/decimal';
-import { randint } from 'src/math/utils/random/randint';
+import { Exercise, Question } from '#root/exercises/exercise';
+import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { DecimalConstructor } from '#root/math/numbers/decimals/decimal';
+import { randint } from '#root/math/utils/random/randint';
 
 /**
  * arrondi à l'unité

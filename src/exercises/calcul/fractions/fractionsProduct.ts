@@ -1,7 +1,7 @@
-import { Exercise, Question } from 'src/exercises/exercise';
-import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
-import { RationalConstructor } from 'src/math/numbers/rationals/rational';
-import { MultiplyNode } from 'src/tree/nodes/operators/multiplyNode';
+import { Exercise, Question } from '#root/exercises/exercise';
+import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { RationalConstructor } from '#root/math/numbers/rationals/rational';
+import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 
 export const fractionsProduct: Exercise = {
   id: 'fractionsProduct',

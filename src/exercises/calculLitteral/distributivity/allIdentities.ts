@@ -1,6 +1,6 @@
-import { Exercise, Question } from 'src/exercises/exercise';
-import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
-import { random } from 'src/utils/random';
+import { Exercise, Question } from '#root/exercises/exercise';
+import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { random } from '#root/utils/random';
 import { getFirstIdentityQuestion } from './firstIdentity';
 import { getSecondIdentityQuestion } from './secondIdentity';
 import { getThirdIdentityQuestion } from './thirdIdentity';

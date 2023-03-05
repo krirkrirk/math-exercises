@@ -1,8 +1,8 @@
-import { Node } from 'src/tree/nodes/node';
-import { NumberNode } from 'src/tree/nodes/numbers/numberNode';
-import { AddNode } from 'src/tree/nodes/operators/addNode';
-import { FractionNode } from 'src/tree/nodes/operators/fractionNode';
-import { simplifyNode } from 'src/tree/parsers/simplify';
+import { Node } from '#root/tree/nodes/node';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { AddNode } from '#root/tree/nodes/operators/addNode';
+import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
+import { simplifyNode } from '#root/tree/parsers/simplify';
 
 export abstract class PointConstructor {
   //   static random(domainX: MathSet = new Interval('[[-10; 10]]'), domainY: MathSet = new Interval('[[-10; 10]]')): Point {

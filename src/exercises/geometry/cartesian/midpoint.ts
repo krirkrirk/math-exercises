@@ -1,8 +1,8 @@
-import { Exercise, Question } from 'src/exercises/exercise';
-import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
-import { Point } from 'src/math/geometry/point';
-import { distinctRandTupleInt } from 'src/math/utils/random/randTupleInt';
-import { NumberNode } from 'src/tree/nodes/numbers/numberNode';
+import { Exercise, Question } from '#root/exercises/exercise';
+import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Point } from '#root/math/geometry/point';
+import { distinctRandTupleInt } from '#root/math/utils/random/randTupleInt';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 
 export const midpoint: Exercise = {
   id: 'midpoint',

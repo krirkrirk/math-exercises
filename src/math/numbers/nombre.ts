@@ -1,5 +1,4 @@
-import { Node } from "../tree/nodes/node";
-import { NumberNode } from "../tree/nodes/numbers/numberNode";
+import { Node } from '#root/tree/nodes/node';
 
 export enum NumberType {
   Integer,

@@ -1,10 +1,10 @@
-import { Exercise, Question } from 'src/exercises/exercise';
-import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
-import { Integer } from 'src/math/numbers/integer/integer';
-import { Affine, AffineConstructor } from 'src/math/polynomials/affine';
-import { DiscreteSet } from 'src/math/sets/discreteSet';
-import { Interval } from 'src/math/sets/intervals/intervals';
-import { MultiplyNode } from 'src/tree/nodes/operators/multiplyNode';
+import { Exercise, Question } from '#root/exercises/exercise';
+import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Integer } from '#root/math/numbers/integer/integer';
+import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
+import { DiscreteSet } from '#root/math/sets/discreteSet';
+import { Interval } from '#root/math/sets/intervals/intervals';
+import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 
 export const thirdIdentity: Exercise = {
   id: 'idRmq3',

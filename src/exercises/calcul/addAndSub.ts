@@ -1,6 +1,6 @@
-import { randint } from 'src/math/utils/random/randint';
-import { NumberNode } from 'src/tree/nodes/numbers/numberNode';
-import { AddNode } from 'src/tree/nodes/operators/addNode';
+import { randint } from '#root/math/utils/random/randint';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { Exercise, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 

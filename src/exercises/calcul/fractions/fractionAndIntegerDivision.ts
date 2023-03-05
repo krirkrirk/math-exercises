@@ -1,10 +1,10 @@
-import { Exercise, Question } from 'src/exercises/exercise';
-import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
-import { Integer } from 'src/math/numbers/integer/integer';
-import { RationalConstructor } from 'src/math/numbers/rationals/rational';
-import { randint } from 'src/math/utils/random/randint';
-import { DivideNode } from 'src/tree/nodes/operators/divideNode';
-import { coinFlip } from 'src/utils/coinFlip';
+import { Exercise, Question } from '#root/exercises/exercise';
+import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Integer } from '#root/math/numbers/integer/integer';
+import { RationalConstructor } from '#root/math/numbers/rationals/rational';
+import { randint } from '#root/math/utils/random/randint';
+import { DivideNode } from '#root/tree/nodes/operators/divideNode';
+import { coinFlip } from '#root/utils/coinFlip';
 
 export const fractionAndIntegerDivision: Exercise = {
   id: 'fractionAndIntegerDivision',

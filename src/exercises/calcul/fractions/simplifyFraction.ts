@@ -1,6 +1,6 @@
-import { Exercise, Question } from 'src/exercises/exercise';
-import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
-import { RationalConstructor } from 'src/math/numbers/rationals/rational';
+import { Exercise, Question } from '#root/exercises/exercise';
+import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { RationalConstructor } from '#root/math/numbers/rationals/rational';
 
 export const simplifyFraction: Exercise = {
   id: 'simplifyFrac',

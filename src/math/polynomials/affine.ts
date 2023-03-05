@@ -1,15 +1,10 @@
-import { Rational } from '../../numbers/rationals/rational';
-import { Interval } from '../../sets/intervals/intervals';
+import { Integer } from '../numbers/integer/integer';
+import { Nombre } from '../numbers/nombre';
+import { Rational } from '../numbers/rationals/rational';
+import { DiscreteSet } from '../sets/discreteSet';
+import { Interval } from '../sets/intervals/intervals';
+import { MathSet } from '../sets/mathSet';
 import { Polynomial } from './polynomial';
-import { DiscreteSet } from '../../sets/discreteSet';
-import { MathSet } from '../../sets/mathSet';
-import { Integer } from '../../numbers/integer/integer';
-import { Node, NodeType } from '../../tree/nodes/node';
-import { MultiplyNode } from '../../tree/nodes/operators/multiplyNode';
-import { NumberNode } from '../../tree/nodes/numbers/numberNode';
-import { VariableNode } from '../../tree/nodes/variables/variableNode';
-import { AddNode } from '../../tree/nodes/operators/addNode';
-import { Nombre } from '../../numbers/nombre';
 
 export abstract class AffineConstructor {
   static random(

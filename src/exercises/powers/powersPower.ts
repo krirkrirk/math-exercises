@@ -2,10 +2,10 @@
  * (a^b)^c
  */
 
-import { Power } from 'src/math/numbers/integer/power';
-import { randint } from 'src/math/utils/random/randint';
-import { NumberNode } from 'src/tree/nodes/numbers/numberNode';
-import { PowerNode } from 'src/tree/nodes/operators/powerNode';
+import { Power } from '#root/math/numbers/integer/power';
+import { randint } from '#root/math/utils/random/randint';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { Exercise, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 

@@ -1,15 +1,15 @@
-import { coprimesOf } from "../../mathutils/arithmetic/coprimesOf";
-import { gcd } from "../../mathutils/arithmetic/gcd";
-import { lcd } from "../../mathutils/arithmetic/lcd";
-import { randint } from "../../mathutils/random/randint";
-import { Node } from "../../tree/nodes/node";
-import { NumberNode } from "../../tree/nodes/numbers/numberNode";
-import { DivideNode } from "../../tree/nodes/operators/divideNode";
-import { FractionNode } from "../../tree/nodes/operators/fractionNode";
-import { random } from "../../utils/random";
-import { shuffle } from "../../utils/shuffle";
-import { Integer } from "../integer/integer";
-import { Nombre, NumberType } from "../nombre";
+import { coprimesOf } from '#root/math/utils/arithmetic/coprimesOf';
+import { gcd } from '#root/math/utils/arithmetic/gcd';
+import { lcd } from '#root/math/utils/arithmetic/lcd';
+import { randint } from '#root/math/utils/random/randint';
+import { Node } from '#root/tree/nodes/node';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
+import { random } from '#root/utils/random';
+import { shuffle } from '#root/utils/shuffle';
+import { Integer } from '../integer/integer';
+
+import { Nombre, NumberType } from '../nombre';
 
 export abstract class RationalConstructor {
   /**
@@ -44,7 +44,7 @@ export class Rational implements Nombre {
   type: NumberType;
 
   constructor(numerator: number, denumerator: number) {
-    if (denumerator === 0) throw Error("division by zero");
+    if (denumerator === 0) throw Error('division by zero');
     this.num = numerator;
     this.denum = denumerator;
     this.value = numerator / denumerator;
@@ -70,7 +70,7 @@ export class Rational implements Nombre {
         return new Rational(num, ppcm).simplify();
       }
     }
-    throw Error("not implemented yet");
+    throw Error('not implemented yet');
   }
 
   multiply(nb: Nombre): Nombre {
@@ -87,7 +87,7 @@ export class Rational implements Nombre {
         return new Rational(num, denum).simplify();
       }
     }
-    throw Error("not implemented yet");
+    throw Error('not implemented yet');
   }
   divide(nb: Nombre): Nombre {
     switch (nb.type) {
@@ -102,7 +102,7 @@ export class Rational implements Nombre {
         return new Rational(num, denum).simplify();
       }
     }
-    throw Error("not implemented yet");
+    throw Error('not implemented yet');
   }
 
   opposite(): Rational {

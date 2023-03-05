@@ -1,6 +1,6 @@
-// import { Exercise, Question } from "src/exercises/exercise";
-// import { getDistinctQuestions } from "src/exercises/utils/getDistinctQuestions";
-// import { randint } from "src/math/utils/random/randint";
+// import { Exercise, Question } from "#root/exercises/exercise";
+// import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+// import { randint } from "#root/math/utils/random/randint";
 
 // export const geometricExplicitFormulaUsage: Exercise = {
 //   id: 'geometricExplicitFormulaUsage',

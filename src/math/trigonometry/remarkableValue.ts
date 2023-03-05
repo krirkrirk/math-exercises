@@ -1,11 +1,12 @@
-import { randint } from '../mathutils/random/randint';
-import { Node } from '../tree/nodes/node';
-import { NumberNode } from '../tree/nodes/numbers/numberNode';
-import { PiNode } from '../tree/nodes/numbers/piNode';
-import { AddNode } from '../tree/nodes/operators/addNode';
-import { MultiplyNode } from '../tree/nodes/operators/multiplyNode';
-import { simplifyNode } from '../tree/parsers/simplify';
-import { random } from '../utils/random';
+import { Node } from '#root/tree/nodes/node';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { PiNode } from '#root/tree/nodes/numbers/piNode';
+import { AddNode } from '#root/tree/nodes/operators/addNode';
+import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
+import { simplifyNode } from '#root/tree/parsers/simplify';
+import { random } from '#root/utils/random';
+
+import { randint } from '../utils/random/randint';
 import { remarkableTrigoValues } from './remarkableValues';
 
 export interface RemarkableValue {

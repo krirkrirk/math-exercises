@@ -1,11 +1,11 @@
-import { isSquare } from "../../mathutils/arithmetic/isSquare";
-import { primeFactors } from "../../mathutils/arithmetic/primeFactors";
-import { randint } from "../../mathutils/random/randint";
-import { Node } from "../../tree/nodes/node";
-import { NumberNode } from "../../tree/nodes/numbers/numberNode";
-import { MultiplyNode } from "../../tree/nodes/operators/multiplyNode";
-import { Real } from "./real";
-import { SqrtNode } from "../../tree/nodes/functions/sqrtNode";
+import { isSquare } from '#root/math/utils/arithmetic/isSquare';
+import { primeFactors } from '#root/math/utils/arithmetic/primeFactors';
+import { randint } from '#root/math/utils/random/randint';
+import { SqrtNode } from '#root/tree/nodes/functions/sqrtNode';
+import { Node } from '#root/tree/nodes/node';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
+import { Real } from './real';
 
 export abstract class SquareRootConstructor {
   /**
@@ -47,9 +47,9 @@ export class SquareRoot extends Real {
       insideSqrt !== 1
         ? new Real(
             outsideSqrt * Math.sqrt(insideSqrt),
-            `${outsideSqrt === 1 ? "" : `${outsideSqrt}`}\\sqrt{${insideSqrt}}`
+            `${outsideSqrt === 1 ? '' : `${outsideSqrt}`}\\sqrt{${insideSqrt}}`,
           )
-        : new Real(outsideSqrt, outsideSqrt + "");
+        : new Real(outsideSqrt, outsideSqrt + '');
     simplified.toTree = (): Node => {
       return insideSqrt !== 1
         ? outsideSqrt === 1

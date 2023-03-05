@@ -6,14 +6,14 @@
  * a/b ± c*d
  */
 
-import { Exercise, Question } from 'src/exercises/exercise';
-import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
-import { randint } from 'src/math/utils/random/randint';
-import { NumberNode } from 'src/tree/nodes/numbers/numberNode';
-import { AddNode } from 'src/tree/nodes/operators/addNode';
-import { DivideNode } from 'src/tree/nodes/operators/divideNode';
-import { MultiplyNode } from 'src/tree/nodes/operators/multiplyNode';
-import { coinFlip } from 'src/utils/coinFlip';
+import { Exercise, Question } from '#root/exercises/exercise';
+import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { randint } from '#root/math/utils/random/randint';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { AddNode } from '#root/tree/nodes/operators/addNode';
+import { DivideNode } from '#root/tree/nodes/operators/divideNode';
+import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
+import { coinFlip } from '#root/utils/coinFlip';
 
 export const operationsPriorities: Exercise = {
   id: 'operationsPriorities',

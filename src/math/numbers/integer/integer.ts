@@ -1,8 +1,8 @@
-import { randint } from "../../mathutils/random/randint";
-import { Node } from "../../tree/nodes/node";
-import { NumberNode } from "../../tree/nodes/numbers/numberNode";
-import { Nombre, NumberType } from "../nombre";
-import { Rational } from "../rationals/rational";
+import { randint } from '#root/math/utils/random/randint';
+import { Node } from '#root/tree/nodes/node';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { Nombre, NumberType } from '../nombre';
+import { Rational } from '../rationals/rational';
 
 export abstract class IntegerConstructor {
   static random(nbOfDigits: number) {
@@ -17,7 +17,7 @@ export class Integer implements Nombre {
 
   constructor(value: number, tex?: string) {
     this.value = value;
-    this.tex = tex || value + "";
+    this.tex = tex || value + '';
     this.type = NumberType.Integer;
   }
 
@@ -26,22 +26,22 @@ export class Integer implements Nombre {
   }
 
   round(precision: number) {
-    const intString = this.value + "";
+    const intString = this.value + '';
 
     if (precision >= intString.length || precision < 1) throw Error("can't round to higher precision");
 
-    let newInt = "";
+    let newInt = '';
     const shouldRoundUp = Number(intString[intString.length - precision]) > 4;
     if (shouldRoundUp) {
       for (let i = 0; i < precision; i++) {
-        newInt += "0";
+        newInt += '0';
       }
       let retenue = true;
       let i = intString.length - precision - 1;
 
       while (retenue) {
         const nb = (Number(intString[i]) + 1) % 10;
-        newInt = "" + nb + newInt;
+        newInt = '' + nb + newInt;
         if (nb === 0) {
           i--;
         } else {
@@ -53,7 +53,7 @@ export class Integer implements Nombre {
       }
     } else {
       for (let i = 0; i < intString.length; i++) {
-        newInt += i < intString.length - precision ? intString[i] : "0";
+        newInt += i < intString.length - precision ? intString[i] : '0';
       }
     }
     return new Integer(Number(newInt));
@@ -66,7 +66,7 @@ export class Integer implements Nombre {
         const rational = nb as Rational;
         return new Rational(this.value * rational.denum, rational.num).simplify();
       default:
-        throw Error("not implemented");
+        throw Error('not implemented');
     }
   }
 }

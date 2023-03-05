@@ -1,9 +1,9 @@
-import { OppositeNode } from '../tree/nodes/functions/oppositeNode';
-import { SqrtNode } from '../tree/nodes/functions/sqrtNode';
-import { NumberNode } from '../tree/nodes/numbers/numberNode';
-import { PiNode } from '../tree/nodes/numbers/piNode';
-import { FractionNode } from '../tree/nodes/operators/fractionNode';
-import { MultiplyNode } from '../tree/nodes/operators/multiplyNode';
+import { OppositeNode } from '#root/tree/nodes/functions/oppositeNode';
+import { SqrtNode } from '#root/tree/nodes/functions/sqrtNode';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { PiNode } from '#root/tree/nodes/numbers/piNode';
+import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
+import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { RemarkableValue } from './remarkableValue';
 
 export const remarkableTrigoValues: RemarkableValue[] = [

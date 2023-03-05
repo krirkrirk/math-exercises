@@ -1,11 +1,11 @@
-import { Integer } from '../../../numbers/integer/integer';
-import { AffineConstructor } from '../../../math/polynomials/affine';
-import { DiscreteSet } from '../../../sets/discreteSet';
-import { Interval } from '../../../sets/intervals/intervals';
-import { NumberNode } from '../../../tree/nodes/numbers/numberNode';
-import { PowerNode } from '../../../tree/nodes/operators/powerNode';
-import { Exercise, Question } from '../../exercise';
-import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
+import { Exercise, Question } from '#root/exercises/exercise';
+import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Integer } from '#root/math/numbers/integer/integer';
+import { AffineConstructor } from '#root/math/polynomials/affine';
+import { DiscreteSet } from '#root/math/sets/discreteSet';
+import { Interval } from '#root/math/sets/intervals/intervals';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 
 export const firstIdentity: Exercise = {
   id: 'idRmq1',

@@ -1,5 +1,4 @@
-import { Node } from "src/tree/nodes/node";
-
+import { Node } from '#root/tree/nodes/node';
 
 enum SequenceType {
   arithmetic,
@@ -10,13 +9,12 @@ export class Sequence {
   type: SequenceType;
   firstTerm: Node;
   reason?: Node;
-  recurrenceFormula? : string;
+  recurrenceFormula?: string;
   explicitFormula?: string;
-  
+
   constructor(type: SequenceType, firstTerm: Node, reason?: Node) {
     this.type = type;
     this.firstTerm = firstTerm;
     this.reason = reason;
-    this.
   }
 }

@@ -1,6 +1,6 @@
-import { Node } from "../../tree/nodes/node";
-import { NumberNode } from "../../tree/nodes/numbers/numberNode";
-import { Nombre, NumberType } from "../nombre";
+import { Node } from '#root/tree/nodes/node';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { Nombre, NumberType } from '../nombre';
 
 export class Real implements Nombre {
   value: number;

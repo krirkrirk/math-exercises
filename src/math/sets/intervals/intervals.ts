@@ -1,11 +1,11 @@
-import { EPSILON } from '../../numbers/epsilon';
-import { Nombre, NumberType } from '../../numbers/nombre';
-import { round } from '../../mathutils/round';
-import { MathSetInterface } from '../mathSetInterface';
+import { EPSILON } from '#root/math/numbers/epsilon';
+import { Integer } from '#root/math/numbers/integer/integer';
+import { Nombre, NumberType } from '#root/math/numbers/nombre';
+import { Real } from '#root/math/numbers/reals/real';
+import { round } from '#root/math/utils/round';
 import { DiscreteSet } from '../discreteSet';
 import { MathSet } from '../mathSet';
-import { Integer } from '../../numbers/integer/integer';
-import { Real } from '../../numbers/reals/real';
+import { MathSetInterface } from '../mathSetInterface';
 
 enum BoundType {
   OO = ']a;b[',

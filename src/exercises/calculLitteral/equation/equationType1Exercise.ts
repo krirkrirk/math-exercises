@@ -1,10 +1,10 @@
-import { Exercise, Question } from 'src/exercises/exercise';
-import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
-import { Integer } from 'src/math/numbers/integer/integer';
-import { Affine } from 'src/math/polynomials/affine';
-import { DiscreteSet } from 'src/math/sets/discreteSet';
-import { Interval } from 'src/math/sets/intervals/intervals';
-import { EqualNode } from 'src/tree/nodes/operators/equalNode';
+import { Exercise, Question } from '#root/exercises/exercise';
+import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Integer } from '#root/math/numbers/integer/integer';
+import { Affine } from '#root/math/polynomials/affine';
+import { DiscreteSet } from '#root/math/sets/discreteSet';
+import { Interval } from '#root/math/sets/intervals/intervals';
+import { EqualNode } from '#root/tree/nodes/operators/equalNode';
 
 /**
  *  type x+a=b

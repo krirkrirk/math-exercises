@@ -1,4 +1,4 @@
-import { SquareRootConstructor } from 'src/math/numbers/reals/squareRoot';
+import { SquareRootConstructor } from '#root/math/numbers/reals/squareRoot';
 import { Exercise, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 

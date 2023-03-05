@@ -1,17 +1,17 @@
-import { Nombre } from "../numbers/nombre";
-import { random } from "../utils/random";
-import { MathSetInterface } from "./mathSetInterface";
+import { random } from '#root/utils/random';
+import { Nombre } from '../numbers/nombre';
+import { MathSetInterface } from './mathSetInterface';
 
 export class DiscreteSet implements MathSetInterface {
   elements: Nombre[];
   tex: string;
   constructor(elements: Nombre[]) {
     this.elements = Array.from(new Set(elements));
-    let tex = "\\{";
+    let tex = '\\{';
     this.elements.forEach((el, index) => {
       tex += el.tex;
-      if (index < this.elements.length - 1) tex += ";";
-      else tex += "\\}";
+      if (index < this.elements.length - 1) tex += ';';
+      else tex += '\\}';
     });
     this.tex = tex;
   }

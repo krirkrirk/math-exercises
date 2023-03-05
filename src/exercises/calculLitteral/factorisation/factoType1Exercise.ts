@@ -2,14 +2,14 @@
  *  type (ax+b)(cx+d) ± (ax+b)(ex+f)
  */
 
-import { Exercise, Question } from 'src/exercises/exercise';
-import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
-import { Affine, AffineConstructor } from 'src/math/polynomials/affine';
-import { AddNode } from 'src/tree/nodes/operators/addNode';
-import { MultiplyNode } from 'src/tree/nodes/operators/multiplyNode';
-import { SubstractNode } from 'src/tree/nodes/operators/substractNode';
-import { random } from 'src/utils/random';
-import { shuffle } from 'src/utils/shuffle';
+import { Exercise, Question } from '#root/exercises/exercise';
+import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
+import { AddNode } from '#root/tree/nodes/operators/addNode';
+import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
+import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
+import { random } from '#root/utils/random';
+import { shuffle } from '#root/utils/shuffle';
 
 export const factoType1Exercise: Exercise = {
   id: 'facto1',

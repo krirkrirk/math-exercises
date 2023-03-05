@@ -1,8 +1,8 @@
-import { Node } from '../tree/nodes/node';
-import { AddNode } from '../tree/nodes/operators/addNode';
-import { MultiplyNode } from '../tree/nodes/operators/multiplyNode';
-import { SubstractNode } from '../tree/nodes/operators/substractNode';
-import { simplifyNode } from '../tree/parsers/simplify';
+import { Node } from '#root/tree/nodes/node';
+import { AddNode } from '#root/tree/nodes/operators/addNode';
+import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
+import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
+import { simplifyNode } from '#root/tree/parsers/simplify';
 import { Point } from './point';
 
 export abstract class VectorConstructor {
