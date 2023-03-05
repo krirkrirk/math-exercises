@@ -1,8 +1,8 @@
-import { Vector } from '../../../geometry/vector';
-import { distinctRandTupleInt } from '../../../mathutils/random/randTupleInt';
-import { NumberNode } from '../../../tree/nodes/numbers/numberNode';
-import { Exercise, Question } from '../../exercise';
-import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
+import { Exercise, Question } from 'src/exercises/exercise';
+import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
+import { Vector } from 'src/math/geometry/vector';
+import { distinctRandTupleInt } from 'src/math/utils/random/randTupleInt';
+import { NumberNode } from 'src/tree/nodes/numbers/numberNode';
 
 export const scalarProductViaCoords: Exercise = {
   id: 'scalarProductViaCoords',

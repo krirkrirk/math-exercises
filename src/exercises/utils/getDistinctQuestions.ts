@@ -1,4 +1,5 @@
 import { Question } from '../exercise';
+
 export const getDistinctQuestions = (generator: Function, nb: number): Question[] => {
   const res: Question[] = [];
 

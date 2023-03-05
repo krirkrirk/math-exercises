@@ -1,11 +1,10 @@
-import { Integer } from '../../../numbers/integer/integer';
-import { AffineConstructor } from '../../../polynomials/affine';
-import { DiscreteSet } from '../../../sets/discreteSet';
-import { Interval } from '../../../sets/intervals/intervals';
-import { NumberNode } from '../../../tree/nodes/numbers/numberNode';
-import { MultiplyNode } from '../../../tree/nodes/operators/multiplyNode';
-import { Exercise, Question } from '../../exercise';
-import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
+import { Exercise, Question } from 'src/exercises/exercise';
+import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
+import { Integer } from 'src/math/numbers/integer/integer';
+import { AffineConstructor } from 'src/math/polynomials/affine';
+import { DiscreteSet } from 'src/math/sets/discreteSet';
+import { Interval } from 'src/math/sets/intervals/intervals';
+import { MultiplyNode } from 'src/tree/nodes/operators/multiplyNode';
 
 export const doubleDistributivity: Exercise = {
   id: 'doubleDistri',

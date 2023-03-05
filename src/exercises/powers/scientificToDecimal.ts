@@ -1,17 +1,15 @@
-import { randint } from '../../mathutils/random/randint';
-import { DecimalConstructor } from '../../numbers/decimals/decimal';
-import { IntegerConstructor } from '../../numbers/integer/integer';
-import { Power } from '../../numbers/integer/power';
-import { NumberNode } from '../../tree/nodes/numbers/numberNode';
-import { FractionNode } from '../../tree/nodes/operators/fractionNode';
-import { MultiplyNode } from '../../tree/nodes/operators/multiplyNode';
-import { PowerNode } from '../../tree/nodes/operators/powerNode';
-import { Exercise, Question } from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-
 /**
  * a*10^x vers décimal
  *  */
+
+import { DecimalConstructor } from 'src/math/numbers/decimals/decimal';
+import { IntegerConstructor } from 'src/math/numbers/integer/integer';
+import { randint } from 'src/math/utils/random/randint';
+import { NumberNode } from 'src/tree/nodes/numbers/numberNode';
+import { MultiplyNode } from 'src/tree/nodes/operators/multiplyNode';
+import { PowerNode } from 'src/tree/nodes/operators/powerNode';
+import { Exercise, Question } from '../exercise';
+import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 export const scientificToDecimal: Exercise = {
   id: 'scientificToDecimal',

@@ -1,5 +1,5 @@
-import { RemarkableValueConstructor } from '../../trigonometry/remarkableValue';
-import { coinFlip } from '../../utils/coinFlip';
+import { RemarkableValueConstructor } from 'src/math/trigonometry/remarkableValue';
+import { coinFlip } from 'src/utils/coinFlip';
 import { Exercise, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 

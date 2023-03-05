@@ -1,18 +1,18 @@
-import { random } from "../../../utils/random";
-import { Exercise, Question } from "../../exercise";
-import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
-import { getFirstIdentityQuestion } from "./firstIdentity";
-import { getSecondIdentityQuestion } from "./secondIdentity";
-import { getThirdIdentityQuestion } from "./thirdIdentity";
+import { Exercise, Question } from 'src/exercises/exercise';
+import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
+import { random } from 'src/utils/random';
+import { getFirstIdentityQuestion } from './firstIdentity';
+import { getSecondIdentityQuestion } from './secondIdentity';
+import { getThirdIdentityQuestion } from './thirdIdentity';
 
 export const allIdentities: Exercise = {
-  id: "allIdRmq",
-  connector: "=",
-  instruction: "Développer et réduire :",
-  label: "Identités remarquables (toutes)",
-  levels: ["3", "2"],
+  id: 'allIdRmq',
+  connector: '=',
+  instruction: 'Développer et réduire :',
+  label: 'Identités remarquables (toutes)',
+  levels: ['3', '2'],
   isSingleStep: false,
-  section: "Calcul littéral",
+  section: 'Calcul littéral',
   generator: (nb: number) => getDistinctQuestions(getAllIdentitiesQuestion, nb),
 };
 

@@ -1,12 +1,12 @@
-import { Integer } from '../../../numbers/integer/integer';
-import { Rational } from '../../../numbers/rationals/rational';
-import { Affine } from '../../../polynomials/affine';
-import { DiscreteSet } from '../../../sets/discreteSet';
-import { Interval } from '../../../sets/intervals/intervals';
-import { EqualNode } from '../../../tree/nodes/operators/equalNode';
-import { VariableNode } from '../../../tree/nodes/variables/variableNode';
-import { Exercise, Question } from '../../exercise';
-import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
+import { Exercise, Question } from 'src/exercises/exercise';
+import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
+import { Integer } from 'src/math/numbers/integer/integer';
+import { Rational } from 'src/math/numbers/rationals/rational';
+import { Affine } from 'src/math/polynomials/affine';
+import { DiscreteSet } from 'src/math/sets/discreteSet';
+import { Interval } from 'src/math/sets/intervals/intervals';
+import { EqualNode } from 'src/tree/nodes/operators/equalNode';
+import { VariableNode } from 'src/tree/nodes/variables/variableNode';
 
 /**
  *  type ax+b=c

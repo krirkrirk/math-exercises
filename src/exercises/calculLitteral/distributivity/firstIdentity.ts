@@ -1,5 +1,5 @@
 import { Integer } from '../../../numbers/integer/integer';
-import { AffineConstructor } from '../../../polynomials/affine';
+import { AffineConstructor } from '../../../math/polynomials/affine';
 import { DiscreteSet } from '../../../sets/discreteSet';
 import { Interval } from '../../../sets/intervals/intervals';
 import { NumberNode } from '../../../tree/nodes/numbers/numberNode';

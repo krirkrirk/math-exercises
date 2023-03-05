@@ -1,15 +1,14 @@
-import { randint } from '../../mathutils/random/randint';
-import { Power } from '../../numbers/integer/power';
-import { NumberNode } from '../../tree/nodes/numbers/numberNode';
-import { FractionNode } from '../../tree/nodes/operators/fractionNode';
-import { MultiplyNode } from '../../tree/nodes/operators/multiplyNode';
-import { PowerNode } from '../../tree/nodes/operators/powerNode';
-import { Exercise, Question } from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-
 /**
  * a^b/a^c
  */
+
+import { Power } from 'src/math/numbers/integer/power';
+import { randint } from 'src/math/utils/random/randint';
+import { NumberNode } from 'src/tree/nodes/numbers/numberNode';
+import { FractionNode } from 'src/tree/nodes/operators/fractionNode';
+import { PowerNode } from 'src/tree/nodes/operators/powerNode';
+import { Exercise, Question } from '../exercise';
+import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 export const powersDivision: Exercise = {
   id: 'powersDivision',

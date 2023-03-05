@@ -1,10 +1,9 @@
-import { randint } from '../../../mathutils/random/randint';
-import { Integer } from '../../../numbers/integer/integer';
-import { RationalConstructor } from '../../../numbers/rationals/rational';
-import { AddNode } from '../../../tree/nodes/operators/addNode';
-import { MultiplyNode } from '../../../tree/nodes/operators/multiplyNode';
-import { Exercise, Question } from '../../exercise';
-import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
+import { Exercise, Question } from 'src/exercises/exercise';
+import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
+import { Integer } from 'src/math/numbers/integer/integer';
+import { RationalConstructor } from 'src/math/numbers/rationals/rational';
+import { randint } from 'src/math/utils/random/randint';
+import { MultiplyNode } from 'src/tree/nodes/operators/multiplyNode';
 
 export const fractionAndIntegerProduct: Exercise = {
   id: 'fractionAndIntegerProduct',

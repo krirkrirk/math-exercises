@@ -1,9 +1,7 @@
-import { RationalConstructor } from '../../../numbers/rationals/rational';
-import { AddNode } from '../../../tree/nodes/operators/addNode';
-import { DivideNode } from '../../../tree/nodes/operators/divideNode';
-import { MultiplyNode } from '../../../tree/nodes/operators/multiplyNode';
-import { Exercise, Question } from '../../exercise';
-import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
+import { Exercise, Question } from 'src/exercises/exercise';
+import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
+import { RationalConstructor } from 'src/math/numbers/rationals/rational';
+import { DivideNode } from 'src/tree/nodes/operators/divideNode';
 
 export const fractionsDivision: Exercise = {
   id: 'fractionsDivision',

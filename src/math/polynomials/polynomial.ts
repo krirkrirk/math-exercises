@@ -1,11 +1,11 @@
-import { Node } from "../tree/nodes/node";
-import { NumberNode } from "../tree/nodes/numbers/numberNode";
-import { AddNode } from "../tree/nodes/operators/addNode";
-import { MultiplyNode } from "../tree/nodes/operators/multiplyNode";
-import { OppositeNode } from "../tree/nodes/functions/oppositeNode";
-import { PowerNode } from "../tree/nodes/operators/powerNode";
-import { SubstractNode } from "../tree/nodes/operators/substractNode";
-import { VariableNode } from "../tree/nodes/variables/variableNode";
+import { Node } from '../../tree/nodes/node';
+import { NumberNode } from '../../tree/nodes/numbers/numberNode';
+import { AddNode } from '../../tree/nodes/operators/addNode';
+import { MultiplyNode } from '../../tree/nodes/operators/multiplyNode';
+import { OppositeNode } from '../../tree/nodes/functions/oppositeNode';
+import { PowerNode } from '../../tree/nodes/operators/powerNode';
+import { SubstractNode } from '../../tree/nodes/operators/substractNode';
+import { VariableNode } from '../../tree/nodes/variables/variableNode';
 
 export class Polynomial {
   degree: number;
@@ -20,10 +20,10 @@ export class Polynomial {
    * @param coefficients coefficients[i] est le coeff de x^i
    * @param variable
    */
-  constructor(coefficients: number[], variable: string = "x") {
-    if (coefficients.length === 0) throw Error("coeffs must be not null");
+  constructor(coefficients: number[], variable: string = 'x') {
+    if (coefficients.length === 0) throw Error('coeffs must be not null');
     if (coefficients[coefficients.length - 1] === 0) {
-      throw Error("n-th coeff must be not null");
+      throw Error('n-th coeff must be not null');
     }
     this.coefficients = coefficients;
     this.variable = variable;
@@ -50,7 +50,7 @@ export class Polynomial {
   times(nb: number): Polynomial {
     return new Polynomial(
       this.coefficients.map((coeff) => coeff * nb),
-      this.variable
+      this.variable,
     );
   }
   multiply(Q: Polynomial): Polynomial {
@@ -74,7 +74,7 @@ export class Polynomial {
   opposite(): Polynomial {
     return new Polynomial(
       this.coefficients.map((coeff) => -coeff),
-      this.variable
+      this.variable,
     );
   }
 
@@ -114,15 +114,15 @@ export class Polynomial {
   }
 
   toTex(): string {
-    let s = "";
+    let s = '';
     for (let i = this.degree; i > -1; i--) {
       const coeff = this.coefficients[i];
       if (coeff === 0) continue;
       if (i === 0) s += coeff > 0 ? `+${coeff}` : coeff;
       else if (i === this.degree) {
-        s += coeff === 1 ? "" : coeff === -1 ? "-" : coeff;
+        s += coeff === 1 ? '' : coeff === -1 ? '-' : coeff;
       } else {
-        s += coeff === 1 ? "+" : coeff === -1 ? "-" : coeff > 0 ? `+${coeff}` : coeff;
+        s += coeff === 1 ? '+' : coeff === -1 ? '-' : coeff > 0 ? `+${coeff}` : coeff;
       }
       //x^n
       if (i === 0) continue;

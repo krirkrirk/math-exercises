@@ -1,15 +1,15 @@
-import { Affine, AffineConstructor } from '../../../polynomials/affine';
-import { AddNode } from '../../../tree/nodes/operators/addNode';
-import { MultiplyNode } from '../../../tree/nodes/operators/multiplyNode';
-import { SubstractNode } from '../../../tree/nodes/operators/substractNode';
-import { random } from '../../../utils/random';
-import { shuffle } from '../../../utils/shuffle';
-import { Exercise, Question } from '../../exercise';
-import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
-
 /**
  *  type (ax+b)(cx+d) ± (ax+b)(ex+f)
  */
+
+import { Exercise, Question } from 'src/exercises/exercise';
+import { getDistinctQuestions } from 'src/exercises/utils/getDistinctQuestions';
+import { Affine, AffineConstructor } from 'src/math/polynomials/affine';
+import { AddNode } from 'src/tree/nodes/operators/addNode';
+import { MultiplyNode } from 'src/tree/nodes/operators/multiplyNode';
+import { SubstractNode } from 'src/tree/nodes/operators/substractNode';
+import { random } from 'src/utils/random';
+import { shuffle } from 'src/utils/shuffle';
 
 export const factoType1Exercise: Exercise = {
   id: 'facto1',

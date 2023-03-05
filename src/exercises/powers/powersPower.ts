@@ -1,21 +1,13 @@
-import { randint } from '../../mathutils/random/randint';
-import { Integer } from '../../numbers/integer/integer';
-import { Power } from '../../numbers/integer/power';
-import { DiscreteSet } from '../../sets/discreteSet';
-import { Interval } from '../../sets/intervals/intervals';
-import { Node } from '../../tree/nodes/node';
-import { NumberNode } from '../../tree/nodes/numbers/numberNode';
-import { AddNode } from '../../tree/nodes/operators/addNode';
-import { DivideNode } from '../../tree/nodes/operators/divideNode';
-import { MultiplyNode } from '../../tree/nodes/operators/multiplyNode';
-import { PowerNode } from '../../tree/nodes/operators/powerNode';
-import { coinFlip } from '../../utils/coinFlip';
-import { Exercise, Question } from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-
 /**
  * (a^b)^c
  */
+
+import { Power } from 'src/math/numbers/integer/power';
+import { randint } from 'src/math/utils/random/randint';
+import { NumberNode } from 'src/tree/nodes/numbers/numberNode';
+import { PowerNode } from 'src/tree/nodes/operators/powerNode';
+import { Exercise, Question } from '../exercise';
+import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 export const powersOfTenPower: Exercise = {
   id: 'powersOfTenPower',

@@ -1,4 +1,5 @@
-import { Node } from '../tree/nodes/node';
+import { Node } from "src/tree/nodes/node";
+
 
 enum SequenceType {
   arithmetic,

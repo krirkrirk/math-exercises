@@ -1,15 +1,13 @@
-import { randint } from '../../mathutils/random/randint';
-import { Power } from '../../numbers/integer/power';
-import { NumberNode } from '../../tree/nodes/numbers/numberNode';
-import { FractionNode } from '../../tree/nodes/operators/fractionNode';
-import { MultiplyNode } from '../../tree/nodes/operators/multiplyNode';
-import { PowerNode } from '../../tree/nodes/operators/powerNode';
-import { Exercise, Question } from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-
 /**
  * 10^(-x) into 0,0...1
  */
+
+import { Power } from 'src/math/numbers/integer/power';
+import { randint } from 'src/math/utils/random/randint';
+import { NumberNode } from 'src/tree/nodes/numbers/numberNode';
+import { PowerNode } from 'src/tree/nodes/operators/powerNode';
+import { Exercise, Question } from '../exercise';
+import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 export const powersOfTenToDecimal: Exercise = {
   id: 'powersOfTenToDecimal',
