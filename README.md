@@ -32,13 +32,13 @@ You can see all the exercises implemented so far [by playing with the select inp
 
 Example with (ax+b)^2 questions :
 
-```
-import { firstIdentity } from exercises/calculLitteral/distributivity/firstIdentity
+```js
+import { firstIdentity } from 'exercises/calculLitteral/distributivity/firstIdentity';
 
 console.log(firstIdentity.instruction);
-const question = firstIdentity.generator(1)
-console.log(question.startStatement)
-console.log(question.answer)
+const question = firstIdentity.generator(1);
+console.log(question.startStatement);
+console.log(question.answer);
 
 //output :
 // Développer et réduire :
@@ -46,7 +46,9 @@ console.log(question.answer)
 // 4x^2 + 12x + 9
 ```
 
-Beware, some exercises do not have instructions, because the instruction is directly in the question itself.
+Some exercises do not have instructions, because the instruction is directly in the question itself.
+
+A list of all exercises is exported from root.
 
 ## Expression tree and latex parser
 

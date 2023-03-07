@@ -7,31 +7,30 @@ import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { VariableNode } from '#root/tree/nodes/variables/variableNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 
-export const geometricExplicitFormulaUsage: Exercise = {
-  id: 'geometricExplicitFormulaUsage',
+export const geometricFindExplicitFormula: Exercise = {
+  id: 'geometricFindExplicitFormula',
   connector: '=',
   instruction: '',
-  label: "Utiliser la formule explicite d'une suite géométrique",
+  label: "Déterminer la formule explicite d'une suite géométrique",
   levels: ['1', '0'],
   isSingleStep: false,
   section: 'Suites',
-  generator: (nb: number) => getDistinctQuestions(getGeometricExplicitFormulaUsage, nb),
+  generator: (nb: number) => getDistinctQuestions(getGeometricFindExplicitFormula, nb),
 };
 
-export function getGeometricExplicitFormulaUsage(): Question {
-  const askedRank = randint(0, 10);
-
+export function getGeometricFindExplicitFormula(): Question {
+  const firstRank = 0;
   const firstValue = randint(1, 10);
   const reason = randint(2, 10);
+
   const formula = new MultiplyNode(
     new NumberNode(firstValue),
     new PowerNode(new NumberNode(reason), new VariableNode('n')),
   );
-  const formulaTex = simplifyNode(formula).toTex();
   const question: Question = {
-    instruction: `La suite $(u_n)$ est définie par $u_n = ${formulaTex}$. Calculer $u_{${askedRank}}$`,
-    startStatement: `u_{${askedRank}}`,
-    answer: (firstValue * Math.pow(reason, askedRank)).toString(),
+    instruction: `$(u_n)$ est une suite géométrique de premier terme $u_{${firstRank}} = ${firstValue}$ et de raison $q = ${reason}$. Donner l'expression de $u_n$ en fonction de $n$.`,
+    startStatement: 'u_n',
+    answer: simplifyNode(formula).toTex(),
   };
   return question;
 }
