@@ -11,7 +11,7 @@ export const geometricExplicitFormulaUsage: Exercise = {
   id: 'geometricExplicitFormulaUsage',
   connector: '=',
   instruction: '',
-  label: "Utiliser la formule explicite d'une suite géométrique",
+  label: "Utiliser la formule générale d'une suite géométrique",
   levels: ['1', '0'],
   isSingleStep: false,
   section: 'Suites',

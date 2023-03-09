@@ -11,7 +11,7 @@ export const geometricFindExplicitFormula: Exercise = {
   id: 'geometricFindExplicitFormula',
   connector: '=',
   instruction: '',
-  label: "Déterminer la formule explicite d'une suite géométrique",
+  label: "Déterminer la formule générale d'une suite géométrique",
   levels: ['1', '0'],
   isSingleStep: false,
   section: 'Suites',

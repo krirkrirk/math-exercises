@@ -32,6 +32,11 @@ import { powersOfTenToDecimal } from './powers/powersOfTenToDecimal';
 import { powersOfTenPower, powersPower } from './powers/powersPower';
 import { powersOfTenProduct, powersProduct } from './powers/powersProduct';
 import { scientificToDecimal } from './powers/scientificToDecimal';
+import { geometricExplicitFormulaUsage } from './sequences/geometric/geometricExplicitFormulaUsage';
+import { geometricFindExplicitFormula } from './sequences/geometric/geometricFindExplicitFormula';
+import { geometricFindReason } from './sequences/geometric/geometricFindReason';
+import { geometricReasonUsage } from './sequences/geometric/geometricReasonUsage';
+import { geometricRecurrenceFormulaUsage } from './sequences/geometric/geometricRecurrenceFormulaUsage';
 import { simplifySquareRoot } from './squareRoots/simpifySquareRoot';
 
 export const exercises = [
@@ -102,4 +107,13 @@ export const exercises = [
   powersOfTenProduct,
   scientificToDecimal,
   powersOfTenToDecimal,
+
+  /**
+   * suites
+   */
+  geometricExplicitFormulaUsage,
+  geometricFindReason,
+  geometricFindExplicitFormula,
+  geometricReasonUsage,
+  geometricRecurrenceFormulaUsage,
 ];

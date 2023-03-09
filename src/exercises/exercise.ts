@@ -4,6 +4,8 @@
 //   implies = "\\Rightarrow",
 // }
 
+export type GeneratorOptions = {};
+
 export interface Question {
   instruction?: string;
   startStatement?: string;
@@ -18,5 +20,5 @@ export interface Exercise {
   section: string;
   levels: string[];
   connector: string;
-  generator(nb: number): Question[];
+  generator(nb: number, options: GeneratorOptions): Question[];
 }
