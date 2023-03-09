@@ -25,7 +25,7 @@ export function getGeometricRecurrenceFormulaUsage(options: GeometricRecurrenceF
   const askedRank = firstRank + 1;
 
   const question: Question = {
-    instruction: `$(u_n)$ est une suite définie par $u_{n+1} = ${reason}\\times u_n$ et $u_{${firstRank}} = ${firstValue}. Calculer $u_{${askedRank}}`,
+    instruction: `$(u_n)$ est une suite définie par $u_{n+1} = ${reason}\\times u_n$ et $u_{${firstRank}} = ${firstValue}$. Calculer $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer: (firstValue * reason).toString(),
   };
