@@ -20,5 +20,5 @@ export interface Exercise {
   section: string;
   levels: string[];
   connector: string;
-  generator(nb: number, options: GeneratorOptions): Question[];
+  generator(nb: number, options?: GeneratorOptions): Question[];
 }
