@@ -19,7 +19,7 @@ export function getGeometricReasonUsage(): Question {
   const askedRank = startRank + 1;
   const startValue = randint(1, 10);
   const question = {
-    instruction: `$(u_n)$ est une suite géométrique de raison $q = ${reason}$ et $u_{${startRank}} = ${startValue}$. Calculer $u_{${askedRank}}$`,
+    instruction: `$(u_n)$ est une suite géométrique de raison $q = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : `,
     startStatement: `u_{${askedRank}}`,
     answer: (startValue * reason).toString(),
   };

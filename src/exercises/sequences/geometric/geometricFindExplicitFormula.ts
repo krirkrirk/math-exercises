@@ -28,7 +28,7 @@ export function getGeometricFindExplicitFormula(): Question {
     new PowerNode(new NumberNode(reason), new VariableNode('n')),
   );
   const question: Question = {
-    instruction: `$(u_n)$ est une suite géométrique de premier terme $u_{${firstRank}} = ${firstValue}$ et de raison $q = ${reason}$. Donner l'expression de $u_n$ en fonction de $n$.`,
+    instruction: `$(u_n)$ est une suite géométrique de premier terme $u_{${firstRank}} = ${firstValue}$ et de raison $q = ${reason}$. $\\\\$ Donner l'expression de $u_n$ en fonction de $n$.`,
     startStatement: 'u_n',
     answer: simplifyNode(formula).toTex(),
   };

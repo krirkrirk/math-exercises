@@ -29,7 +29,7 @@ export function getGeometricExplicitFormulaUsage(): Question {
   );
   const formulaTex = simplifyNode(formula).toTex();
   const question: Question = {
-    instruction: `La suite $(u_n)$ est définie par $u_n = ${formulaTex}$. Calculer $u_{${askedRank}}$`,
+    instruction: `$(u_n)$ est une suite géométrique définie par $u_n = ${formulaTex}$. Calculer :`,
     startStatement: `u_{${askedRank}}`,
     answer: (firstValue * Math.pow(reason, askedRank)).toString(),
   };
