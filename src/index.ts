@@ -10,34 +10,30 @@ const allExercises = [...exercises];
 //   console.log(exo.generator(10));
 // });
 
-dotenv.config();
+const runServer = () => {
+  dotenv.config();
+  const app: Express = express();
 
-const app: Express = express();
+  app.use(cors());
 
-// const corsOptions = {
-//   origin: ['127.0.0.1:5173/'],
-//   credentials: false,
-// };
-
-app.use(cors());
-
-app.get('/', (req: Request, res: Response) => {
-  res.json(allExercises);
-});
-
-app.get('/exo', (req: Request, res: Response) => {
-  const exoId = req.query.exoId;
-  const exo = allExercises.find((exo) => exo.id == exoId);
-  if (!exo) res.send('Exo not found');
-  const questions = exo?.generator(10);
-  res.json({
-    exercise: exo,
-    questions,
+  app.get('/', (req: Request, res: Response) => {
+    res.json(allExercises);
   });
-});
 
-app.listen('5000', () => {
-  console.log(`[server]: Server is running at http://localhost:5000`);
-});
+  app.get('/exo', (req: Request, res: Response) => {
+    const exoId = req.query.exoId;
+    const exo = allExercises.find((exo) => exo.id == exoId);
+    if (!exo) res.send('Exo not found');
+    const questions = exo?.generator(10);
+    res.json({
+      exercise: exo,
+      questions,
+    });
+  });
 
-export { allExercises };
+  app.listen('5000', () => {
+    console.log(`[server]: Server is running at http://localhost:5000`);
+  });
+};
+
+export { allExercises, runServer };
