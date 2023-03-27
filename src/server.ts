@@ -31,4 +31,4 @@ const runServer = () => {
   });
 };
 
-// runServer();
+if (process.env.MODE === 'dev') runServer();
