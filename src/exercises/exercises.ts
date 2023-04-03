@@ -20,6 +20,7 @@ import { firstIdentity } from './calculLitteral/distributivity/firstIdentity';
 import { secondIdentity } from './calculLitteral/distributivity/secondIdentity';
 import { simpleDistributivity } from './calculLitteral/distributivity/simpleDistributivity';
 import { thirdIdentity } from './calculLitteral/distributivity/thirdIdentity';
+import { equationSimpleSquare } from './calculLitteral/equation/equationSimpleSquare';
 import { equationType1Exercise } from './calculLitteral/equation/equationType1Exercise';
 import { equationType2Exercise } from './calculLitteral/equation/equationType2Exercise';
 import { equationType3Exercise } from './calculLitteral/equation/equationType3Exercise';
@@ -30,6 +31,9 @@ import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
 import { factoType1Exercise } from './calculLitteral/factorisation/factoType1Exercise';
 import { midpoint } from './geometry/cartesian/midpoint';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
+import { applyPercent } from './percent/applyPercent';
+import { globalPercent } from './percent/globalPercent';
+import { reciprocalPercentage } from './percent/reciprocalPercentage';
 import { powersDivision, powersOfTenDivision } from './powers/powersDivision';
 import { powersOfTenToDecimal } from './powers/powersOfTenToDecimal';
 import { powersOfTenPower, powersPower } from './powers/powersPower';
@@ -122,4 +126,12 @@ export const exercises = [
   geometricFindExplicitFormula,
   geometricReasonUsage,
   geometricRecurrenceFormulaUsage,
+
+  /**
+   * Pourcentages
+    */ 
+  applyPercent,
+  globalPercent,
+  reciprocalPercentage,
+  equationSimpleSquare,
 ];
