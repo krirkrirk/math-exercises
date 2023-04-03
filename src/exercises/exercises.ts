@@ -25,6 +25,8 @@ import { equationType1Exercise } from './calculLitteral/equation/equationType1Ex
 import { equationType2Exercise } from './calculLitteral/equation/equationType2Exercise';
 import { equationType3Exercise } from './calculLitteral/equation/equationType3Exercise';
 import { equationType4Exercise } from './calculLitteral/equation/equationType4Exercise';
+import { firstDegreeEquation } from './calculLitteral/equation/firstDegreeEquation';
+import { firstDegreeGeneralEquation } from './calculLitteral/equation/firstDegreeGeneralEquation';
 import { factoIdRmq1 } from './calculLitteral/factorisation/factoIdRmq1';
 import { factoIdRmq2 } from './calculLitteral/factorisation/factoIdRmq2';
 import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
@@ -134,4 +136,6 @@ export const exercises = [
   globalPercent,
   reciprocalPercentage,
   equationSimpleSquare,
+  firstDegreeEquation,
+  firstDegreeGeneralEquation,
 ];
