@@ -19,6 +19,6 @@ export interface Exercise {
   label: string;
   section: string;
   levels: string[];
-  connector: string;
+  connector: '=' | '\\iff' | '\\approx';
   generator(nb: number, options?: GeneratorOptions): Question[];
 }
