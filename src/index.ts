@@ -6,6 +6,6 @@ const allExercises = [...exercises];
 //   console.log(exo);
 //   console.log(exo.generator(10));
 // });
-if (process.env.MODE === 'dev') import('./server');
+import('./server');
 
 export { allExercises };

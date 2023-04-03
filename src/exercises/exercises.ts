@@ -30,6 +30,7 @@ import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
 import { factoType1Exercise } from './calculLitteral/factorisation/factoType1Exercise';
 import { midpoint } from './geometry/cartesian/midpoint';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
+import { applyPercent } from './percent/applyPercent';
 import { powersDivision, powersOfTenDivision } from './powers/powersDivision';
 import { powersOfTenToDecimal } from './powers/powersOfTenToDecimal';
 import { powersOfTenPower, powersPower } from './powers/powersPower';
@@ -122,4 +123,9 @@ export const exercises = [
   geometricFindExplicitFormula,
   geometricReasonUsage,
   geometricRecurrenceFormulaUsage,
+
+  /**
+   * Pourcentages
+    */ 
+  applyPercent,
 ];

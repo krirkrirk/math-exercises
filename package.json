@@ -7,7 +7,7 @@
     "lib/**/*"
   ],
   "scripts": {
-    "dev": "MODE=dev nodemon",
+    "dev": "nodemon",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon",
