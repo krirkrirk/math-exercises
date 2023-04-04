@@ -139,9 +139,11 @@ export const exercises = [
   globalPercent,
   reciprocalPercentage,
   equationSimpleSquare,
+
   usualDerivative,
   thirdDegreeDerivative,
   averageEvolutionRate,
   firstDegreeEquation,
   firstDegreeGeneralEquation,
+
 ];
