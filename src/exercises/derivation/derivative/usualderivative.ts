@@ -4,18 +4,18 @@ import { round } from "#root/math/utils/round";
 import { Exercise, Question } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
-export const usualderivative: Exercise = {
-    id: 'usualderivative',
+export const usualDerivative: Exercise = {
+    id: 'usualDerivative',
     connector: '=',
     instruction: '',
     label: 'Dérivées usuelles',
     levels: ['2', '1'],
     section: 'Dérivées',
     isSingleStep: false,
-    generator: (nb: number) => getDistinctQuestions(getUsualderivative, nb),
+    generator: (nb: number) => getDistinctQuestions(getUsualDerivative, nb),
   };
 
-export function getUsualderivative(): Question {
+export function getUsualDerivative(): Question {
 
     const a = randint(-10, 10, [0]);
     const b = randint(-10, 10);
