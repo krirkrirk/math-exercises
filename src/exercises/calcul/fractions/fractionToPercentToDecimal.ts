@@ -1,4 +1,4 @@
-import { Exercise, Question } from "#root/exercises/exercise";
+/*import { Exercise, Question } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
@@ -26,7 +26,7 @@ export function getFractionToPercentToDecimal(): Question {
     const b = randint(1, 100);
     const percent = round(a/b, 4) * 100;
     const decimal = round(a/b, 2);
-    const flip = randint(1,4);
+    const flip = randint(1,7);
 
     let instruction;
     let answer = "";
@@ -35,6 +35,10 @@ export function getFractionToPercentToDecimal(): Question {
         case 1: {
             instruction = `Convertir le nombre suivant $${decimal}$ en pourcentage et en fraction`;
             answer = `\\{${percent}\\%\\ ; \\frac{${a/pgcd(a,b)}}{${b/pgcd(a,b)}}\\}`;
+        }
+
+        case 2: {
+
         }
     }
 
@@ -45,4 +49,4 @@ export function getFractionToPercentToDecimal(): Question {
       };
 
       return question;
-}
+}*/
