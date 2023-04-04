@@ -34,6 +34,7 @@ import { usualderivative } from './derivation/derivative/usualderivative';
 import { midpoint } from './geometry/cartesian/midpoint';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
 import { applyPercent } from './percent/applyPercent';
+import { averageEvolutionRate } from './percent/averageEvolutionRate';
 import { globalPercent } from './percent/globalPercent';
 import { reciprocalPercentage } from './percent/reciprocalPercentage';
 import { powersDivision, powersOfTenDivision } from './powers/powersDivision';
@@ -138,4 +139,5 @@ export const exercises = [
   equationSimpleSquare,
   usualderivative,
   thridDegreeDerivative,
+  averageEvolutionRate,
 ];
