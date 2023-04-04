@@ -3,22 +3,23 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 
-export const thridDegreeDerivative: Exercise = {
-    id: 'thridDegreeDerivative',
+export const thirdDegreeDerivative: Exercise = {
+    id: 'thirdDegreeDerivative',
     connector: '=',
     instruction: '',
-    label: "dérivée d'un polynôme de degré 3",
+    label: "Dérivée d'un polynôme de degré 3",
     levels: ['2', '1'],
     section: 'Dérivées',
     isSingleStep: false,
-    generator: (nb: number) => getDistinctQuestions(getThridDegreeDerivative, nb),
+    generator: (nb: number) => getDistinctQuestions(getThirdDegreeDerivative, nb),
   };
 
-export function getThridDegreeDerivative(): Question {
+export function getThirdDegreeDerivative(): Question {
     
     const coefficients = [];
-
-    for (let i = 0; i <= 3; i++)
+    
+    coefficients.push(randint(-10, 10, [0]));
+    for (let i = 1; i <= 3; i++)
         coefficients.push(randint(-10, 10));
   
     const polynomial = new Polynomial(coefficients);
