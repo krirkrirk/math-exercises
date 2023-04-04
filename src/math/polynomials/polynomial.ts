@@ -80,8 +80,13 @@ export class Polynomial {
 
   derivate(): Polynomial {
     const res: number[] = [];
-    return new Polynomial(this.coefficients, this.variable);
+
+    for (let i = 1; i < this.coefficients.length; i++)
+      res.push(i * this.coefficients[i]);
+
+    return new Polynomial(res, this.variable);
   }
+
   toTree(): Node {
     const recursive = (cursor: number): Node => {
       const coeff = this.coefficients[cursor];

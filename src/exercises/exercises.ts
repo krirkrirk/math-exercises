@@ -29,6 +29,8 @@ import { factoIdRmq1 } from './calculLitteral/factorisation/factoIdRmq1';
 import { factoIdRmq2 } from './calculLitteral/factorisation/factoIdRmq2';
 import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
 import { factoType1Exercise } from './calculLitteral/factorisation/factoType1Exercise';
+import { thridDegreeDerivative } from './derivation/derivative/thridDegreeDerivative';
+import { usualderivative } from './derivation/derivative/usualderivative';
 import { midpoint } from './geometry/cartesian/midpoint';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
 import { applyPercent } from './percent/applyPercent';
@@ -128,10 +130,12 @@ export const exercises = [
   geometricRecurrenceFormulaUsage,
 
   /**
-   * Pourcentages
+   * islam
     */ 
   applyPercent,
   globalPercent,
   reciprocalPercentage,
   equationSimpleSquare,
+  usualderivative,
+  thridDegreeDerivative,
 ];
