@@ -44,6 +44,7 @@ import { powersOfTenToDecimal } from './powers/powersOfTenToDecimal';
 import { powersOfTenPower, powersPower } from './powers/powersPower';
 import { powersOfTenProduct, powersProduct } from './powers/powersProduct';
 import { scientificToDecimal } from './powers/scientificToDecimal';
+import { conditionalProbability } from './proba/conditionalProbability';
 import { geometricExplicitFormulaUsage } from './sequences/geometric/geometricExplicitFormulaUsage';
 import { geometricFindExplicitFormula } from './sequences/geometric/geometricFindExplicitFormula';
 import { geometricFindReason } from './sequences/geometric/geometricFindReason';
@@ -134,7 +135,7 @@ export const exercises = [
 
   /**
    * islam
-    */ 
+   */
   applyPercent,
   globalPercent,
   reciprocalPercentage,
@@ -145,5 +146,5 @@ export const exercises = [
   averageEvolutionRate,
   firstDegreeEquation,
   firstDegreeGeneralEquation,
-
+  conditionalProbability,
 ];
