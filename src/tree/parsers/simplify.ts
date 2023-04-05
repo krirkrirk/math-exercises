@@ -36,7 +36,7 @@ const mathjsNodeToNode = (mathjsNode: MathjsNode): Node => {
     switch (mathjsNode.fn) {
       case 'add':
         return new AddNode(mathjsNodeToNode(mathjsNode.args![0]), mathjsNodeToNode(mathjsNode.args![1]));
-      case 'substract':
+      case 'subtract':
         return new SubstractNode(mathjsNodeToNode(mathjsNode.args![0]), mathjsNodeToNode(mathjsNode.args![1]));
       case 'unaryMinus':
         return new OppositeNode(mathjsNodeToNode(mathjsNode.args![0]));
@@ -54,5 +54,6 @@ const mathjsNodeToNode = (mathjsNode: MathjsNode): Node => {
         return new SqrtNode(mathjsNodeToNode(mathjsNode.args![0]));
     }
   }
+
   throw Error('unrecognized mathjs node');
 };
