@@ -44,6 +44,12 @@ import { powersOfTenToDecimal } from './powers/powersOfTenToDecimal';
 import { powersOfTenPower, powersPower } from './powers/powersPower';
 import { powersOfTenProduct, powersProduct } from './powers/powersProduct';
 import { scientificToDecimal } from './powers/scientificToDecimal';
+import { arithmeticExplicitFormulaUsage } from './sequences/arithmetic/arithmeticExplicitFormulaUsage';
+import { arithmeticFindExplicitFormula } from './sequences/arithmetic/arithmeticFindExplicitFormula';
+import { arithmeticFindReason } from './sequences/arithmetic/arithmeticFindReason';
+import { arithmeticReasonUsage } from './sequences/arithmetic/arithmeticReasonUsage';
+import { arithmeticRecurrenceFormulaUsage } from './sequences/arithmetic/arithmeticRecurrenceFormulaUsage';
+import { arithmeticThresholdFind } from './sequences/arithmetic/arithmeticThresholdFind';
 import { geometricExplicitFormulaUsage } from './sequences/geometric/geometricExplicitFormulaUsage';
 import { geometricFindExplicitFormula } from './sequences/geometric/geometricFindExplicitFormula';
 import { geometricFindReason } from './sequences/geometric/geometricFindReason';
@@ -145,5 +151,12 @@ export const exercises = [
   averageEvolutionRate,
   firstDegreeEquation,
   firstDegreeGeneralEquation,
+
+  arithmeticExplicitFormulaUsage,
+  arithmeticFindExplicitFormula,
+  arithmeticFindReason,
+  arithmeticReasonUsage,
+  arithmeticRecurrenceFormulaUsage,
+  arithmeticThresholdFind,
 
 ];
