@@ -1,4 +1,5 @@
 import { addAndSubExercise } from './calcul/addAndSub';
+import { addAndSubWithoutRelatives } from './calcul/addAndSubWithoutRelatives';
 import { fractionAndIntegerDivision } from './calcul/fractions/fractionAndIntegerDivision';
 import { fractionAndIntegerProduct } from './calcul/fractions/fractionAndIntegerProduct';
 import { fractionAndIntegerSum } from './calcul/fractions/fractionAndIntegerSum';
@@ -140,7 +141,7 @@ export const exercises = [
 
   /**
    * islam
-    */ 
+   */
   applyPercent,
   globalPercent,
   reciprocalPercentage,
@@ -158,5 +159,5 @@ export const exercises = [
   arithmeticReasonUsage,
   arithmeticRecurrenceFormulaUsage,
   arithmeticThresholdFind,
-
+  addAndSubWithoutRelatives,
 ];
