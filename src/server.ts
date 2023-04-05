@@ -2,6 +2,9 @@ import { exercises } from './exercises/exercises';
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import { Droite, Point, PointConstructor } from './math/geometry/point';
+import { NumberNode } from './tree/nodes/numbers/numberNode';
+import { leadingCoefficient } from './exercises/geometry/cartesian/leadingCoefficient';
 
 const allExercises = [...exercises];
 
@@ -25,6 +28,28 @@ const runServer = () => {
       questions,
     });
   });
+
+  /*console.log(new Droite('D', new NumberNode(2), new NumberNode(-1)).toEquationExpression());
+  console.log(
+    PointConstructor.fromTwoPoints(
+      new Point('A', new NumberNode(0), new NumberNode(-1)),
+      new Point('B', new NumberNode(1), new NumberNode(1)),
+    ).toEquationExpression(),
+  );
+  console.log(
+    PointConstructor.fromPointAndSlope(
+      new Point('A', new NumberNode(0), new NumberNode(-1)),
+      new NumberNode(2),
+    ).toEquationExpression(),
+  );
+  console.log(
+    PointConstructor.fromPointAndAngle(
+      new Point('A', new NumberNode(0), new NumberNode(-1)),
+      new NumberNode(1.107),
+    ).toEquationExpression(),
+  );*/
+
+  console.log(leadingCoefficient.generator(1));
 
   app.listen('5000', () => {
     console.log(`[server]: Server is running at http://localhost:5000`);
