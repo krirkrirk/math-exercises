@@ -1,5 +1,4 @@
 import { randint } from '#root/math/utils/random/randint';
-import { min } from 'mathjs';
 import { Exercise, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { round } from '#root/math/utils/round';
@@ -18,7 +17,7 @@ export const conditionalProbability: Exercise = {
 export function getConditionalProbability(): Question {
   const pA = randint(2, 100);
   const pB = randint(2, 100);
-  const pAB = randint(1, min(pA, pB));
+  const pAB = randint(1, Math.min(pA, pB));
   const pA_B = round(pAB / pB, 2);
   const pB_A = round(pAB / pA, 2);
 
