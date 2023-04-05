@@ -47,7 +47,13 @@ export function getUsualDerivative(): Question {
             break;
         }
         case 5: {
-            instruction += `$${a}\\sqrt{x}$`;
+            if (a === 1)
+                instruction += `$\\sqrt{x}$`;
+            else if (a === -1)
+                instruction += `$-\\sqrt{x}$`;
+            else
+                instruction += `$${a}\\sqrt{x}$`;
+                
             if (a/2 === round(a/2, 0))
                 answer = `\\frac{${a/2}}{\\sqrt{x}}`;
             else
