@@ -27,7 +27,7 @@ export const operationsPriorities: Exercise = {
 };
 
 export function getPriorityQuestions(): Question {
-  const type = randint(1, 6);
+  const type = randint(1, 2);
   let startStatement = '';
   let answer: string = '';
   let a, b, c, d: number;
