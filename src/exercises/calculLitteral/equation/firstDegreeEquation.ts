@@ -13,7 +13,7 @@ export const firstDegreeEquation: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFirstDegreeEquation, nb),
 };
-
+2;
 const pgcd = (a: number, b: number): number => {
   if (b === 0) return a;
   return pgcd(b, a % b);

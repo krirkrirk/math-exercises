@@ -15,7 +15,7 @@ export const equationType1Exercise: Exercise = {
   instruction: 'Résoudre : ',
   label: 'Equations $x+a = b$',
   levels: ['4', '3', '2'],
-  section: 'Calcul littéral',
+  section: 'Équations',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getEquationType1ExerciseQuestion, nb),
 };

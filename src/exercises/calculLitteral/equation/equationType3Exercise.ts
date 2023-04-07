@@ -18,7 +18,7 @@ export const equationType3Exercise: Exercise = {
   instruction: 'Résoudre : ',
   label: 'Equations $ax+b=c$',
   levels: ['4', '3', '2'],
-  section: 'Calcul littéral',
+  section: 'Équations',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getEquationType3ExerciseQuestion, nb),
 };
