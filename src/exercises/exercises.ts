@@ -158,7 +158,6 @@ export const exercises = [
   firstDegreeGeneralEquation,
   conditionalProbability,
 
-
   arithmeticExplicitFormulaUsage,
   arithmeticFindExplicitFormula,
   arithmeticFindReason,
