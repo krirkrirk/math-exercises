@@ -1,4 +1,5 @@
 import { addAndSubExercise } from './calcul/addAndSub';
+import { addAndSubWithoutRelatives } from './calcul/addAndSubWithoutRelatives';
 import { fractionAndIntegerDivision } from './calcul/fractions/fractionAndIntegerDivision';
 import { fractionAndIntegerProduct } from './calcul/fractions/fractionAndIntegerProduct';
 import { fractionAndIntegerSum } from './calcul/fractions/fractionAndIntegerSum';
@@ -7,6 +8,7 @@ import { fractionsProduct } from './calcul/fractions/fractionsProduct';
 import { fractionsSum } from './calcul/fractions/fractionsSum';
 import { simplifyFraction } from './calcul/fractions/simplifyFraction';
 import { operationsPriorities } from './calcul/operations/operationsPriorities';
+import { operationsPrioritiesWithoutRelative } from './calcul/operations/operationsPrioritiesWithoutRelative';
 import {
   allRoundings,
   roundToCentieme,
@@ -33,6 +35,7 @@ import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
 import { factoType1Exercise } from './calculLitteral/factorisation/factoType1Exercise';
 import { thirdDegreeDerivative } from './derivation/derivative/thirdDegreeDerivative';
 import { usualDerivative } from './derivation/derivative/usualderivative';
+import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberReading';
 import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
 import { midpoint } from './geometry/cartesian/midpoint';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
@@ -45,12 +48,16 @@ import { powersOfTenToDecimal } from './powers/powersOfTenToDecimal';
 import { powersOfTenPower, powersPower } from './powers/powersPower';
 import { powersOfTenProduct, powersProduct } from './powers/powersProduct';
 import { scientificToDecimal } from './powers/scientificToDecimal';
+
+import { conditionalProbability } from './proba/conditionalProbability';
+
 import { arithmeticExplicitFormulaUsage } from './sequences/arithmetic/arithmeticExplicitFormulaUsage';
 import { arithmeticFindExplicitFormula } from './sequences/arithmetic/arithmeticFindExplicitFormula';
 import { arithmeticFindReason } from './sequences/arithmetic/arithmeticFindReason';
 import { arithmeticReasonUsage } from './sequences/arithmetic/arithmeticReasonUsage';
 import { arithmeticRecurrenceFormulaUsage } from './sequences/arithmetic/arithmeticRecurrenceFormulaUsage';
 import { arithmeticThresholdFind } from './sequences/arithmetic/arithmeticThresholdFind';
+
 import { geometricExplicitFormulaUsage } from './sequences/geometric/geometricExplicitFormulaUsage';
 import { geometricFindExplicitFormula } from './sequences/geometric/geometricFindExplicitFormula';
 import { geometricFindReason } from './sequences/geometric/geometricFindReason';
@@ -152,6 +159,7 @@ export const exercises = [
   averageEvolutionRate,
   firstDegreeEquation,
   firstDegreeGeneralEquation,
+  conditionalProbability,
 
   arithmeticExplicitFormulaUsage,
   arithmeticFindExplicitFormula,
@@ -160,4 +168,8 @@ export const exercises = [
   arithmeticRecurrenceFormulaUsage,
   arithmeticThresholdFind,
   leadingCoefficient,
+  addAndSubWithoutRelatives,
+  operationsPrioritiesWithoutRelative,
+  derivativeNumberReading,
+  //derivativeNumberReading2,
 ];

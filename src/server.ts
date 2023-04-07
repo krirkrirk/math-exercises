@@ -2,9 +2,6 @@ import { exercises } from './exercises/exercises';
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { Droite, Point, PointConstructor } from './math/geometry/point';
-import { NumberNode } from './tree/nodes/numbers/numberNode';
-import { leadingCoefficient } from './exercises/geometry/cartesian/leadingCoefficient';
 
 const allExercises = [...exercises];
 
@@ -49,7 +46,7 @@ const runServer = () => {
     ).toEquationExpression(),
   );*/
 
-  console.log(leadingCoefficient.generator(1));
+  //console.log(leadingCoefficient.generator(2));
 
   app.listen('5000', () => {
     console.log(`[server]: Server is running at http://localhost:5000`);
