@@ -8,6 +8,7 @@ import { fractionsProduct } from './calcul/fractions/fractionsProduct';
 import { fractionsSum } from './calcul/fractions/fractionsSum';
 import { simplifyFraction } from './calcul/fractions/simplifyFraction';
 import { operationsPriorities } from './calcul/operations/operationsPriorities';
+import { operationsPrioritiesWithoutRelative } from './calcul/operations/operationsPrioritiesWithoutRelative';
 import {
   allRoundings,
   roundToCentieme,
@@ -165,4 +166,5 @@ export const exercises = [
   arithmeticRecurrenceFormulaUsage,
   arithmeticThresholdFind,
   addAndSubWithoutRelatives,
+  operationsPrioritiesWithoutRelative,
 ];
