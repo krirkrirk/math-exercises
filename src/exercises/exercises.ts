@@ -35,6 +35,8 @@ import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
 import { factoType1Exercise } from './calculLitteral/factorisation/factoType1Exercise';
 import { thirdDegreeDerivative } from './derivation/derivative/thirdDegreeDerivative';
 import { usualDerivative } from './derivation/derivative/usualderivative';
+import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberReading';
+import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
 import { midpoint } from './geometry/cartesian/midpoint';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
 import { applyPercent } from './percent/applyPercent';
@@ -165,6 +167,9 @@ export const exercises = [
   arithmeticReasonUsage,
   arithmeticRecurrenceFormulaUsage,
   arithmeticThresholdFind,
+  leadingCoefficient,
   addAndSubWithoutRelatives,
   operationsPrioritiesWithoutRelative,
+  derivativeNumberReading,
+  //derivativeNumberReading2,
 ];
