@@ -103,8 +103,10 @@ export const exercises = [
   /**
    * calcul
    */
-  operationsPriorities,
   addAndSubExercise,
+  addAndSubWithoutRelatives,
+  operationsPriorities,
+  operationsPrioritiesWithoutRelative,
 
   /**
    * rounding
@@ -167,9 +169,7 @@ export const exercises = [
   arithmeticReasonUsage,
   arithmeticRecurrenceFormulaUsage,
   arithmeticThresholdFind,
-  leadingCoefficient,
-  addAndSubWithoutRelatives,
-  operationsPrioritiesWithoutRelative,
-  derivativeNumberReading,
+  // leadingCoefficient,
+  // derivativeNumberReading,
   //derivativeNumberReading2,
 ];
