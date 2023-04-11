@@ -9,8 +9,8 @@ export const usualDerivative: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Dérivées usuelles',
-  levels: ['2', '1'],
-  section: 'Dérivées',
+  levels: ['1', '0'],
+  section: 'Dérivation',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getUsualDerivative, nb),
 };

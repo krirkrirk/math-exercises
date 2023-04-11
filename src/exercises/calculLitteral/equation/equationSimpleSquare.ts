@@ -8,7 +8,7 @@ export const equationSimpleSquare: Exercise = {
   instruction: '',
   label: 'Résoudre une équation du second degré du type x² = a',
   levels: ['2', '1'],
-  section: 'Pourcentages',
+  section: 'Équations',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getEquationSimpleSquare, nb),
 };

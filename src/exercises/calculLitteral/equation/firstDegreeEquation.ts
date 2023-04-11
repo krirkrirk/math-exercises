@@ -11,7 +11,7 @@ export const firstDegreeEquation: Exercise = {
   instruction: '',
   label: 'Résoudre une équation du premier degré du type $\\frac{a}{x} = b$',
   levels: ['2', '1'],
-  section: 'equation',
+  section: 'Équations',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFirstDegreeEquation, nb),
 };

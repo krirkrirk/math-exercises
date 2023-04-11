@@ -8,8 +8,8 @@ export const thirdDegreeDerivative: Exercise = {
   connector: '=',
   instruction: '',
   label: "Dérivée d'un polynôme de degré 3",
-  levels: ['2', '1'],
-  section: 'Dérivées',
+  levels: ['1', '0'],
+  section: 'Dérivation',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getThirdDegreeDerivative, nb),
 };
