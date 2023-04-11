@@ -50,6 +50,8 @@ import { powersOfTenProduct, powersProduct } from './powers/powersProduct';
 import { scientificToDecimal } from './powers/scientificToDecimal';
 
 import { conditionalProbability } from './proba/conditionalProbability';
+import { marginalAndConditionalFrequency } from './proba/marginalAndConditionalFrequency';
+import { probabilityTree } from './proba/probabilityTree';
 
 import { arithmeticExplicitFormulaUsage } from './sequences/arithmetic/arithmeticExplicitFormulaUsage';
 import { arithmeticFindExplicitFormula } from './sequences/arithmetic/arithmeticFindExplicitFormula';
@@ -169,7 +171,9 @@ export const exercises = [
   arithmeticReasonUsage,
   arithmeticRecurrenceFormulaUsage,
   arithmeticThresholdFind,
-  // leadingCoefficient,
-  // derivativeNumberReading,
+  leadingCoefficient,
+  derivativeNumberReading,
   //derivativeNumberReading2,
+  probabilityTree,
+  marginalAndConditionalFrequency,
 ];

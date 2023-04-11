@@ -4,7 +4,7 @@ import { randint } from '#root/math/utils/random/randint';
 
 export const equationSimpleSquare: Exercise = {
   id: 'equationSimpleSquare',
-  connector: '\\iff',
+  connector: '=',
   instruction: '',
   label: 'Résoudre une équation du second degré du type x² = a',
   levels: ['2', '1'],
@@ -39,7 +39,7 @@ export function getEquationSimpleSquare(): Question {
 
   const question: Question = {
     instruction,
-    startStatement: `S = `,
+    startStatement: `x  `,
     answer,
   };
 
