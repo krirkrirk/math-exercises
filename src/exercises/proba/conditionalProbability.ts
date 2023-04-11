@@ -70,6 +70,7 @@ export function getConditionalProbability(): Question {
     instruction,
     startStatement,
     answer,
+    keys: [],
   };
 
   return question;

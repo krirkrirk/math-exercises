@@ -32,6 +32,7 @@ export function getGeometricExplicitFormulaUsage(): Question {
     instruction: `$(u_n)$ est une suite géométrique définie par $u_n = ${formulaTex}$. Calculer :`,
     startStatement: `u_{${askedRank}}`,
     answer: (firstValue * Math.pow(reason, askedRank)).toString(),
+    keys: [],
   };
   return question;
 }

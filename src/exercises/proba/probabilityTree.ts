@@ -65,6 +65,7 @@ export function getProbabilityTree(): Question {
     instruction,
     startStatement,
     answer,
+    keys: [],
   };
 
   return question;

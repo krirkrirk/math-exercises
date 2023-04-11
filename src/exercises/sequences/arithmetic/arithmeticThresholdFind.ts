@@ -42,6 +42,7 @@ export function getArithmeticThresholdFind(): Question {
     instruction,
     startStatement: `n`,
     answer: (Math.floor((randValue - firstValue) / reason) + 1).toString(),
+    keys: [],
   };
 
   return question;
