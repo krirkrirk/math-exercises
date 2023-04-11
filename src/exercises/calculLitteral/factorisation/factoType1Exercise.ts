@@ -48,6 +48,7 @@ export function getFactoType1Question(): Question {
   const question: Question = {
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
+    keys: ['x'],
   };
   return question;
 }

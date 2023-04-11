@@ -118,6 +118,7 @@ export function getPriorityQuestions(): Question {
   const question: Question = {
     startStatement,
     answer,
+    keys: [],
   };
   return question;
 }

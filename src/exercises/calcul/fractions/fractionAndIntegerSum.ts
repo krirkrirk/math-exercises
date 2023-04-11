@@ -26,6 +26,7 @@ export function getFractionAndIntegerSum(): Question {
     instruction: '',
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
+    keys: [],
   };
   return question;
 }

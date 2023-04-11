@@ -81,6 +81,7 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
     instruction: instructions[precisionAsked],
     startStatement: dec.toTree().toTex(),
     answer: dec.round(precisionAsked).toTree().toTex(),
+    keys: [],
   };
   return question;
 }

@@ -31,6 +31,7 @@ export function getFractionAndIntegerDivision(): Question {
     instruction: '',
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
+    keys: [],
   };
   return question;
 }

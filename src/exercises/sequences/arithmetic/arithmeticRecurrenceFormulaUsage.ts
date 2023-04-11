@@ -23,6 +23,7 @@ export function getArithmeticRecurrenceFormulaUsage(): Question {
     instruction: `$(u_n)$ est une suite définie par $u_{n+1} = ${reason} + u_n$ et $u_{${firstRank}} = ${firstValue}$. Calculer :`,
     startStatement: `u_{${askedRank}}`,
     answer: (firstValue + reason).toString(),
+    keys: ['r', 'n', 'u', 'underscore'],
   };
   return question;
 }

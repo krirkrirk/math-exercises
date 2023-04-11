@@ -18,6 +18,7 @@ export function getSimplifyFraction(): Question {
   const question: Question = {
     startStatement: rational.toTree().toTex(),
     answer: rational.simplify().toTree().toTex(),
+    keys: [],
   };
   return question;
 }

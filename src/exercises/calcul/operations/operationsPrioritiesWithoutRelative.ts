@@ -248,6 +248,7 @@ export function getOperationsPrioritiesWithoutRelative(): Question {
   const question: Question = {
     startStatement,
     answer,
+    keys: [],
   };
   return question;
 }

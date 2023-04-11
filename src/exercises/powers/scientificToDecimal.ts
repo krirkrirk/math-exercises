@@ -36,6 +36,7 @@ export function getScientificToDecimalQuestion(): Question {
   const question: Question = {
     startStatement: statement.toTex(),
     answer: answerTree.toTex(),
+    keys: [],
   };
   return question;
 }

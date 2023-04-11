@@ -41,6 +41,7 @@ export function getPowersPowerQuestion(useOnlyPowersOfTen: boolean = false): Que
   const question: Question = {
     startStatement: statement.toTex(),
     answer: answerTree.toTex(),
+    keys: [],
   };
   return question;
 }

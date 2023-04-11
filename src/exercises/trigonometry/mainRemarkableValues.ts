@@ -24,6 +24,7 @@ export function getMainRemarkableValues(): Question {
       ? `\\cos\\left(${remarkableValue.angle.toTex()}\\right)`
       : `\\sin\\left(${remarkableValue.angle.toTex()}\\right)`,
     answer: isCos ? remarkableValue.cos.toTex() : remarkableValue.sin.toTex(),
+    keys: ['pi', 'cos', 'sin'],
   };
   return question;
 }

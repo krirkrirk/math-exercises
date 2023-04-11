@@ -10,6 +10,7 @@ export interface Question {
   instruction?: string;
   startStatement?: string;
   answer: string;
+  keys?: string[];
 }
 
 export interface Exercise {

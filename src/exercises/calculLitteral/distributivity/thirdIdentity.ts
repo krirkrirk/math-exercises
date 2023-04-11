@@ -27,5 +27,6 @@ export function getThirdIdentityQuestion(): Question {
   return {
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
+    keys: ['x'],
   };
 }

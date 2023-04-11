@@ -22,6 +22,7 @@ export function getFractionsSum(): Question {
   const question: Question = {
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
+    keys: [],
   };
   return question;
 }

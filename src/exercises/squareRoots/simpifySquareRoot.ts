@@ -21,6 +21,7 @@ export function getSimplifySquareRoot(): Question {
   const question: Question = {
     startStatement: squareRoot.toTree().toTex(),
     answer: squareRoot.simplify().toTree().toTex(),
+    keys: [],
   };
   return question;
 }
