@@ -10,7 +10,7 @@
     "dev": "nodemon",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "build": "tsc && tsc-alias"
   },
   "keywords": [],
