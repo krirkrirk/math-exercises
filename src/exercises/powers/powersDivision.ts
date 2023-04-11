@@ -44,6 +44,7 @@ export function getPowersDivisionQuestion(useOnlyPowersOfTen: boolean = false): 
   const question: Question = {
     startStatement: statement.toTex(),
     answer: answerTree.toTex(),
+    keys: [],
   };
   return question;
 }

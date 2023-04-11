@@ -37,6 +37,7 @@ export function getEquationType3ExerciseQuestion(): Question {
   const question: Question = {
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
+    keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
   };
   return question;
 }

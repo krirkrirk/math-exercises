@@ -70,7 +70,7 @@ export function getConditionalProbability(): Question {
     instruction,
     startStatement,
     answer,
-    keys: [],
+    keys: ['p', '\\cap', 'underscore'],
   };
 
   return question;

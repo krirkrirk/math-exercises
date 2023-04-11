@@ -70,7 +70,7 @@ export function getMarginalAndConditionalFrequency(): Question {
     instruction: `$|\\;\\;\\;| A | B | \\\\ | C | ${x1} | ${x2} | \\\\| D | ${x3} | ${x4} |\\\\$ Calculer la fréquence ${freqString[rand]}`,
     startStatement: `${frequences[rand]}`,
     answer: Calculs[rand].toString(),
-    keys: [],
+    keys: ['f', 'cap', 'underscore'],
   };
 
   return question;

@@ -39,8 +39,8 @@ export function getEquationSimpleSquare(): Question {
 
   const question: Question = {
     instruction,
-    startStatement: `x  `,
     answer,
+    keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
   };
 
   return question;

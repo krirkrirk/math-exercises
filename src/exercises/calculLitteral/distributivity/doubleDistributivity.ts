@@ -27,5 +27,6 @@ export function getDoubleDistributivityQuestion(): Question {
   return {
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
+    keys: ['x'],
   };
 }

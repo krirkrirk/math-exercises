@@ -34,6 +34,7 @@ export function getEquationType2ExerciseQuestion(): Question {
   const question: Question = {
     startStatement: tree.toTex(),
     answer: answer.toTex(),
+    keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
   };
   return question;
 }

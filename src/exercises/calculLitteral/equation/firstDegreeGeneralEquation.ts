@@ -26,6 +26,7 @@ export function getFirstDegreeGeneralEquation(): Question {
     instruction: `Résoudre l'équation suivante $${new Polynomial([b, a])} = ${new Polynomial([0, c])}$`,
     startStatement: `x`,
     answer: simplifyNode(new NumberNode(-b / (a - c))).toTex(),
+    keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
   };
 
   return question;

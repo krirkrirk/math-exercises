@@ -25,7 +25,7 @@ export function getArithmeticFindReason(): Question {
     instruction: `$(u_n)$ est une suite arithmétique. On sait que $u_{${rank1}} = ${value1}$ et $u_{${rank2}} = ${value2}$. Quelle est la raison de la suite $(u_n)$ ?`,
     startStatement: 'r',
     answer: reason.toString(),
-    keys: [],
+    keys: ['r', 'n', 'u', 'underscore'],
   };
   return question;
 }

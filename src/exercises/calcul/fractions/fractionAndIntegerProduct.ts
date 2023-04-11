@@ -27,6 +27,7 @@ export function getFractionAndIntegerProduct(): Question {
     instruction: '',
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
+    keys: [],
   };
   return question;
 }

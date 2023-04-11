@@ -39,7 +39,7 @@ export function getGlobalPercentQuestion(): Question {
   const question: Question = {
     instruction,
     answer,
-    keys: [],
+    keys: ['percent'],
   };
 
   return question;

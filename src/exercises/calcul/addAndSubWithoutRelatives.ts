@@ -48,6 +48,7 @@ export function getAddAndSubWithoutRelatives(): Question {
   const question: Question = {
     startStatement: statementTree.toTex(),
     answer: answer.toString(),
+    keys: [],
   };
   return question;
 }

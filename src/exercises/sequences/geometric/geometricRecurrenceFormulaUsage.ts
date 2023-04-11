@@ -28,7 +28,7 @@ export function getGeometricRecurrenceFormulaUsage(options: GeometricRecurrenceF
     instruction: `$(u_n)$ est une suite définie par $u_{n+1} = ${reason}\\times u_n$ et $u_{${firstRank}} = ${firstValue}$. Calculer :`,
     startStatement: `u_{${askedRank}}`,
     answer: (firstValue * reason).toString(),
-    keys: [],
+    keys: ['q', 'n', 'u', 'underscore'],
   };
   return question;
 }

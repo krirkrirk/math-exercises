@@ -22,7 +22,7 @@ export function getGeometricReasonUsage(): Question {
     instruction: `$(u_n)$ est une suite géométrique de raison $q = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : `,
     startStatement: `u_{${askedRank}}`,
     answer: (startValue * reason).toString(),
-    key: [],
+    keys: ['q', 'n', 'u', 'underscore'],
   };
   return question;
 }

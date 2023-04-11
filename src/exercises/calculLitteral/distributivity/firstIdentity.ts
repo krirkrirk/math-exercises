@@ -28,5 +28,6 @@ export function getFirstIdentityQuestion(): Question {
   return {
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
+    keys: ['x'],
   };
 }

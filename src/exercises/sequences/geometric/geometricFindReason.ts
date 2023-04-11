@@ -23,7 +23,7 @@ export function getGeometricFindReason(): Question {
     instruction: `$(u_n)$ est une suite géométrique. On sait que $u_{${rank1}} = ${value1}$ et $u_{${rank2}} = ${value2}$. Quelle est la raison de la suite $(u_n)$ ?`,
     startStatement: 'q',
     answer: reason.toString(),
-    keys: [],
+    keys: ['q', 'n', 'u', 'underscore'],
   };
   return question;
 }

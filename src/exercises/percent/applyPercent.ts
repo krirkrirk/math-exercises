@@ -34,7 +34,7 @@ export function getApplyPercentQuestion(): Question {
   const question: Question = {
     instruction,
     answer: ans.toString(),
-    keys: [],
+    keys: ['percent'],
   };
 
   return question;

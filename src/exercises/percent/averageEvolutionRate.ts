@@ -25,7 +25,7 @@ export function getAverageEvolutionRate(): Question {
   const question: Question = {
     instruction,
     answer,
-    keys: [],
+    keys: ['percent'],
   };
 
   return question;

@@ -32,6 +32,7 @@ export function getEquationType1ExerciseQuestion(): Question {
   const question: Question = {
     startStatement: tree.toTex(),
     answer: `x = ${solution}`,
+    keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
   };
   return question;
 }

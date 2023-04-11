@@ -24,6 +24,7 @@ export function getFirstDegreeEquation(): Question {
     instruction: `Résoudre l'équation suivante $\\frac{${a}}{x} = ${b}$`,
     startStatement: `x`,
     answer: simplifyNode(new NumberNode(a / b)).toTex(),
+    keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
   };
 
   return question;

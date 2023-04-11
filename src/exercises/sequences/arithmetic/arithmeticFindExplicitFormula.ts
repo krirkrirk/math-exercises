@@ -32,7 +32,7 @@ export function getArithmeticFindExplicitFormula(): Question {
     instruction: `$(u_n)$ est une suite arithmétique de premier terme $u_{${firstRank}} = ${firstValue}$ et de raison $r = ${reason}$. $\\\\$ Donner l'expression de $u_n$ en fonction de $n$.`,
     startStatement: 'u_n',
     answer: formula.toString(),
-    keys: ['n'],
+    keys: ['r', 'n', 'u', 'underscore'],
   };
 
   return question;

@@ -33,6 +33,7 @@ export function getAddAndSubQuestions(): Question {
   const question: Question = {
     startStatement: statementTree.toTex(),
     answer: answer,
+    keys: [],
   };
   return question;
 }
