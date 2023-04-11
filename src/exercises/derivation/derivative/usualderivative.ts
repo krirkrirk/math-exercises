@@ -26,26 +26,31 @@ export function getUsualDerivative(): Question {
 
   switch (flip) {
     case 1: {
+      // f(x) = c
       instruction += `$${c}$`;
       answer = `0`;
       break;
     }
     case 2: {
+      // f(x) = ax + b
       instruction += `$${new Polynomial([b, a]).toString()}$`;
       answer = `${a}`;
       break;
     }
     case 3: {
+      // f(x) = ax² + bx + c
       instruction += `$${new Polynomial([c, b, a]).toString()}$`;
       answer = `${new Polynomial([b, 2 * a]).toString()}`;
       break;
     }
     case 4: {
+      //f(x) = a/x
       instruction += `$\\frac{${a}}{x}$`;
       answer = `\\frac{${-a}}{x^2}`;
       break;
     }
     case 5: {
+      // f(x) = a * sqrt(x)
       if (a === 1) instruction += `$\\sqrt{x}$`;
       else if (a === -1) instruction += `$-\\sqrt{x}$`;
       else instruction += `$${a}\\sqrt{x}$`;
@@ -60,6 +65,7 @@ export function getUsualDerivative(): Question {
     instruction,
     startStatement: `f'(x)`,
     answer,
+    keys: ['x'],
   };
 
   return question;

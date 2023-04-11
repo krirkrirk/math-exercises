@@ -27,6 +27,7 @@ export function getThirdDegreeDerivative(): Question {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$ `,
     startStatement: `f'(x)`,
     answer: derivative.toString(),
+    keys: ['x'],
   };
 
   return question;

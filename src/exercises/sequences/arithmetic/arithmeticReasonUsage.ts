@@ -22,6 +22,7 @@ export function getArithmeticReasonUsage(): Question {
     instruction: `$(u_n)$ est une suite arithmétique de raison $r = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : `,
     startStatement: `u_{${askedRank}}`,
     answer: (startValue + reason).toString(),
+    keys: [],
   };
   return question;
 }
