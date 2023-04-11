@@ -28,7 +28,6 @@ import { equationType2Exercise } from './calculLitteral/equation/equationType2Ex
 import { equationType3Exercise } from './calculLitteral/equation/equationType3Exercise';
 import { equationType4Exercise } from './calculLitteral/equation/equationType4Exercise';
 import { firstDegreeEquation } from './calculLitteral/equation/firstDegreeEquation';
-import { firstDegreeGeneralEquation } from './calculLitteral/equation/firstDegreeGeneralEquation';
 import { factoIdRmq1 } from './calculLitteral/factorisation/factoIdRmq1';
 import { factoIdRmq2 } from './calculLitteral/factorisation/factoIdRmq2';
 import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
@@ -50,6 +49,8 @@ import { powersOfTenProduct, powersProduct } from './powers/powersProduct';
 import { scientificToDecimal } from './powers/scientificToDecimal';
 
 import { conditionalProbability } from './proba/conditionalProbability';
+import { marginalAndConditionalFrequency } from './proba/marginalAndConditionalFrequency';
+import { probabilityTree } from './proba/probabilityTree';
 
 import { arithmeticExplicitFormulaUsage } from './sequences/arithmetic/arithmeticExplicitFormulaUsage';
 import { arithmeticFindExplicitFormula } from './sequences/arithmetic/arithmeticFindExplicitFormula';
@@ -79,10 +80,16 @@ export const exercises = [
   secondIdentity,
   thirdIdentity,
   allIdentities,
+
+  /**
+   * equations
+   */
   equationType1Exercise,
   equationType2Exercise,
   equationType3Exercise,
   equationType4Exercise,
+  firstDegreeEquation,
+  equationSimpleSquare,
 
   /**
    * square roots
@@ -147,6 +154,12 @@ export const exercises = [
   geometricFindExplicitFormula,
   geometricReasonUsage,
   geometricRecurrenceFormulaUsage,
+  arithmeticExplicitFormulaUsage,
+  arithmeticFindExplicitFormula,
+  arithmeticFindReason,
+  arithmeticReasonUsage,
+  arithmeticRecurrenceFormulaUsage,
+  arithmeticThresholdFind,
 
   /**
    * islam
@@ -154,22 +167,14 @@ export const exercises = [
   applyPercent,
   globalPercent,
   reciprocalPercentage,
-  equationSimpleSquare,
+  averageEvolutionRate,
 
   usualDerivative,
   thirdDegreeDerivative,
-  averageEvolutionRate,
-  firstDegreeEquation,
-  firstDegreeGeneralEquation,
   conditionalProbability,
-
-  arithmeticExplicitFormulaUsage,
-  arithmeticFindExplicitFormula,
-  arithmeticFindReason,
-  arithmeticReasonUsage,
-  arithmeticRecurrenceFormulaUsage,
-  arithmeticThresholdFind,
   // leadingCoefficient,
   // derivativeNumberReading,
   //derivativeNumberReading2,
+  probabilityTree,
+  marginalAndConditionalFrequency,
 ];

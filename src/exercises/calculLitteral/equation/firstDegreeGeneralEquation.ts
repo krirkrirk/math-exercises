@@ -1,48 +1,32 @@
-import { Exercise, Question } from "#root/exercises/exercise";
-import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { randint } from "#root/math/utils/random/randint";
-import { round } from "#root/math/utils/round";
+import { Exercise, Question } from '#root/exercises/exercise';
+import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Polynomial } from '#root/math/polynomials/polynomial';
+import { randint } from '#root/math/utils/random/randint';
+import { round } from '#root/math/utils/round';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { simplifyNode } from '#root/tree/parsers/simplify';
 
 export const firstDegreeGeneralEquation: Exercise = {
-    id: 'firstDegreeGeneralEquation',
-    connector: '\\iff',
-    instruction: '',
-    label: 'Résoudre une équation du premier degré du type ax + b = cx',
-    levels: ['2', '1'],
-    section: 'Pourcentages',
-    isSingleStep: false,
-    generator: (nb: number) => getDistinctQuestions(getFirstDegreeGeneralEquation, nb),
+  id: 'firstDegreeGeneralEquation',
+  connector: '=',
+  instruction: '',
+  label: 'Résoudre une équation du premier degré du type ax + b = cx',
+  levels: ['2', '1'],
+  section: 'Pourcentages',
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getFirstDegreeGeneralEquation, nb),
 };
 
-
-const pgcd = (a: number, b: number): number => {
-    if (b === 0)
-      return a;
-    return pgcd(b, a % b);
-}
-
 export function getFirstDegreeGeneralEquation(): Question {
+  let a = randint(-9, 10, [0]);
+  const b = randint(-9, 10);
+  const c = randint(-9, 10, [a, 0]);
 
-    let a = randint(-20, 20);
-    const b = randint(-20, 20);
-    const c = randint(-20, 20);
+  const question: Question = {
+    instruction: `Résoudre l'équation suivante $${new Polynomial([b, a])} = ${new Polynomial([0, c])}$`,
+    startStatement: `x`,
+    answer: simplifyNode(new NumberNode(-b / (a - c))).toTex(),
+  };
 
-    while (a == 0 || a == 1)
-        a = randint(-12, 12);
-
-    const instruction = `Résoudre l'équation suivante $${a}x + ${b} = ${c}$`;
-    let answer;
-
-    if ((c-b)/a == round((c-b)/a, 0))
-        answer = `${(c-b)/a}`;
-    else
-        answer = `\\frac{${(c-b)/pgcd((c-b),a)}}{${a/pgcd((c-b),a)}}`;
-
-    const question: Question = {
-      instruction,
-      startStatement: `x = `,
-      answer,
-    };
-
-    return question;
+  return question;
 }
