@@ -61,11 +61,37 @@ export function getProbabilityTree(): Question {
     }
   }
 
+  let commands = [
+    'Racine = Point({0,0})',
+    'A = Point({2,2})',
+    'B = Point({2,-2})',
+    'AC = Point({5,3})',
+    'AD = Point({5,1})',
+    'BC = Point({5,-1})',
+    'BD = Point({5,-3})',
+    'Segment(Racine,A)',
+    'Segment(A,AC)',
+    'Segment(A,AD)',
+    'Segment(Racine,B)',
+    'Segment(B,BC)',
+    'Segment(B,BD)',
+    'ShowAxes(false)',
+    'ShowGrid(false)',
+    `Text("P(A) = ${pA.toTex()}", (-2, 2), true, true)`,
+    `Text("P_A(C) = ${pA_C.toTex()}", (2.3, 4), true, true)`,
+    `Text("P_A(D) = ${pA_D.toTex()}", (2.3, 2), true, true)`,
+    `Text("P(B) = ${pB.toTex()}", (-2, -1), true, true)`,
+    `Text("P_B(C) = ${pB_C.toTex()}", (2.3, 0), true, true)`,
+    `Text("P_B(D) = ${pB_D.toTex()}", (2.3, -2.5), true, true)`,
+  ];
+
   const question: Question = {
     instruction,
     startStatement,
     answer,
     keys: [],
+    commands,
+    coords: [-2, 8, -4, 4],
   };
 
   return question;

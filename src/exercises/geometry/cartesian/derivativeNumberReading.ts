@@ -61,6 +61,12 @@ export function getDerivativeNumberReading(): Question {
     instruction,
     //startStatement: 'a',
     answer: droite.getLeadingCoefficient(),
+    commands: [
+      polynome.toString(),
+      `g(x) = (${droite.a.toMathString()}) * x + (${droite.b.toMathString()})`,
+      `(${xA},${yA})`,
+    ],
+    coords: [xA - 5, xA + 5, yA - 5, yA + 5],
   };
 
   return question;

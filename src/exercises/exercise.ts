@@ -11,6 +11,8 @@ export interface Question {
   startStatement?: string;
   answer: string;
   keys?: string[];
+  commands?: string[];
+  coords?: number[];
 }
 
 export interface Exercise {

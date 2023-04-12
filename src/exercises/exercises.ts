@@ -172,9 +172,9 @@ export const exercises = [
   usualDerivative,
   thirdDegreeDerivative,
   conditionalProbability,
-  // leadingCoefficient,
-  // derivativeNumberReading,
+  leadingCoefficient,
+  derivativeNumberReading,
   //derivativeNumberReading2,
-  // probabilityTree,
+  probabilityTree,
   // marginalAndConditionalFrequency,
 ];

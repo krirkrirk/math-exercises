@@ -30,12 +30,33 @@ export function getLeadingCoefficientQuestion(): Question {
 
   const droite = DroiteConstructor.fromTwoPoints(pointA, pointB, 'D');
 
-  let instruction = `Quel est le coefficient directeur de la droite $${droite.toEquationExpression()}$`;
+  let instruction = `Quel est le coefficient directeur de la droite suivante`;
+
+  let xmin, xmax, ymin, ymax: number;
+
+  if (eval(droite.b.toMathString()) > 0) {
+    ymax = eval(droite.b.toMathString()) + 1;
+    ymin = -1;
+  } else {
+    ymin = eval(droite.b.toMathString()) - 1;
+    ymax = 1;
+  }
+
+  if (-eval(droite.b.toMathString()) / eval(droite.a.toMathString()) > 0) {
+    xmax = -eval(droite.b.toMathString()) / eval(droite.a.toMathString()) + 1;
+    xmin = -1;
+  } else {
+    xmin = -eval(droite.b.toMathString()) / eval(droite.a.toMathString()) - 1;
+    xmax = 1;
+  }
 
   const question: Question = {
     instruction,
-    //startStatement: pointA.toTexWithCoords() + ' ' + pointB.toTexWithCoords(),
+    startStatement: droite.toEquationExpression(),
     answer: droite.getLeadingCoefficient(),
+    keys: [],
+    commands: [`f(x) = (${droite.a.toMathString()}) * x + (${droite.b.toMathString()})`],
+    coords: [xmin, xmax, ymin, ymax],
   };
 
   return question;
