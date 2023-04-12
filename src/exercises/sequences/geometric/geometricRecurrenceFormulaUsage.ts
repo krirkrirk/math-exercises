@@ -14,6 +14,8 @@ export const geometricRecurrenceFormulaUsage: Exercise = {
   levels: ['1', '0'],
   isSingleStep: false,
   section: 'Suites',
+  keys: ['q', 'n', 'u', 'underscore'],
+
   generator: (nb: number, options: GeometricRecurrenceFormulaUsageOptions) =>
     getDistinctQuestions(getGeometricRecurrenceFormulaUsage, nb),
 };

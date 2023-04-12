@@ -15,6 +15,7 @@ export const doubleDistributivity: Exercise = {
   isSingleStep: false,
   section: 'Calcul littéral',
   generator: (nb: number) => getDistinctQuestions(getDoubleDistributivityQuestion, nb),
+  keys: ['x'],
 };
 
 export function getDoubleDistributivityQuestion(): Question {

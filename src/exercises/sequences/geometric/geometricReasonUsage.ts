@@ -11,6 +11,7 @@ export const geometricReasonUsage: Exercise = {
   isSingleStep: false,
   section: 'Suites',
   generator: (nb: number) => getDistinctQuestions(getGeometricReasonUsage, nb),
+  keys: ['q', 'n', 'u', 'underscore'],
 };
 
 export function getGeometricReasonUsage(): Question {

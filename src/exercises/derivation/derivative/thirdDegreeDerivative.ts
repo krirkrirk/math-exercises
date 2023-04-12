@@ -12,6 +12,7 @@ export const thirdDegreeDerivative: Exercise = {
   section: 'Dérivation',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getThirdDegreeDerivative, nb),
+  keys: ['x'],
 };
 
 export function getThirdDegreeDerivative(): Question {

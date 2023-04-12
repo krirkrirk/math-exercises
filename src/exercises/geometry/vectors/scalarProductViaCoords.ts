@@ -13,6 +13,7 @@ export const scalarProductViaCoords: Exercise = {
   levels: ['1, 0'],
   section: 'Vecteurs',
   generator: (nb: number) => getDistinctQuestions(getScalarProductViaCoordsQuestion, nb),
+  keys: [],
 };
 
 export function getScalarProductViaCoordsQuestion(): Question {
@@ -24,5 +25,6 @@ export function getScalarProductViaCoordsQuestion(): Question {
     instruction: `Soit $${u.toTexWithCoords()}$ et $${v.toTexWithCoords()}$. Calculer $${u.toTex()}\\cdot ${v.toTex()}$.`,
     startStatement: `${u.toTex()}\\cdot ${v.toTex()}`,
     answer: u.scalarProduct(v).toTex(),
+    keys: [],
   };
 }

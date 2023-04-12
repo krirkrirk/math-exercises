@@ -16,6 +16,7 @@ export const geometricExplicitFormulaUsage: Exercise = {
   isSingleStep: false,
   section: 'Suites',
   generator: (nb: number) => getDistinctQuestions(getGeometricExplicitFormulaUsage, nb),
+  keys: ['n', 'u', 'underscore'],
 };
 
 export function getGeometricExplicitFormulaUsage(): Question {

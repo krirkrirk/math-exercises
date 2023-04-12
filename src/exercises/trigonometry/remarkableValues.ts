@@ -12,6 +12,7 @@ export const remarkableValuesExercise: Exercise = {
   isSingleStep: false,
   section: 'Trigonométrie',
   generator: (nb: number) => getDistinctQuestions(getRemarkableValues, nb),
+  keys: ['pi', 'cos', 'sin'],
 };
 
 export function getRemarkableValues(): Question {

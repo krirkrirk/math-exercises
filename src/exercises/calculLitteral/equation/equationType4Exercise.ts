@@ -21,6 +21,7 @@ export const equationType4Exercise: Exercise = {
   section: 'Équations',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getEquationType4ExerciseQuestion, nb),
+  keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
 };
 
 export function getEquationType4ExerciseQuestion(): Question {

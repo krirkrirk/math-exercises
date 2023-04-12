@@ -11,6 +11,7 @@ export const arithmeticReasonUsage: Exercise = {
   isSingleStep: false,
   section: 'Suites',
   generator: (nb: number) => getDistinctQuestions(getArithmeticReasonUsage, nb),
+  keys: ['r', 'n', 'u', 'underscore'],
 };
 
 export function getArithmeticReasonUsage(): Question {

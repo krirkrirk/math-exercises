@@ -15,6 +15,7 @@ export const firstDegreeGeneralEquation: Exercise = {
   section: 'Pourcentages',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFirstDegreeGeneralEquation, nb),
+  keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
 };
 
 export function getFirstDegreeGeneralEquation(): Question {
