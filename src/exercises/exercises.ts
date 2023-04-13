@@ -178,4 +178,7 @@ export const exercises = [
   probabilityTree,
   // marginalAndConditionalFrequency,
   fractionToPercentToDecimal,
+
+  marginalAndConditionalFrequency,
+
 ];
