@@ -19,6 +19,8 @@ export const scientificToDecimal: Exercise = {
   levels: ['5', '4', '3', '2'],
   section: 'Puissances',
   isSingleStep: true,
+  keys: [],
+
   generator: (nb: number) => getDistinctQuestions(getScientificToDecimalQuestion, nb),
 };
 

@@ -12,6 +12,7 @@ export const marginalAndConditionalFrequency: Exercise = {
   isSingleStep: false,
   section: 'Probabilités',
   generator: (nb: number) => getDistinctQuestions(getMarginalAndConditionalFrequency, nb),
+  keys: ['f', 'cap', 'underscore'],
 };
 
 export function getMarginalAndConditionalFrequency(): Question {

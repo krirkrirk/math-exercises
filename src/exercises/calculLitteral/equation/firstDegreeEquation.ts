@@ -14,6 +14,7 @@ export const firstDegreeEquation: Exercise = {
   section: 'Équations',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFirstDegreeEquation, nb),
+  keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
 };
 
 export function getFirstDegreeEquation(): Question {

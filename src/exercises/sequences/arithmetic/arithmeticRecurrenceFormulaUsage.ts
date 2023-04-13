@@ -11,6 +11,7 @@ export const arithmeticRecurrenceFormulaUsage: Exercise = {
   isSingleStep: false,
   section: 'Suites',
   generator: (nb: number) => getDistinctQuestions(getArithmeticRecurrenceFormulaUsage, nb),
+  keys: ['r', 'n', 'u', 'underscore'],
 };
 
 export function getArithmeticRecurrenceFormulaUsage(): Question {

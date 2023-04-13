@@ -23,5 +23,6 @@ export interface Exercise {
   section: string;
   levels: string[];
   connector: '=' | '\\iff' | '\\approx';
+  keys?: string[];
   generator(nb: number, options?: GeneratorOptions): Question[];
 }

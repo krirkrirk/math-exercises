@@ -18,6 +18,7 @@ export const arithmeticThresholdFind: Exercise = {
   isSingleStep: false,
   section: 'Suites',
   generator: (nb: number) => getDistinctQuestions(getArithmeticThresholdFind, nb),
+  keys: ['r', 'n', 'u', 'underscore', 'inf', 'sup', 'approx'],
 };
 
 export function getArithmeticThresholdFind(): Question {

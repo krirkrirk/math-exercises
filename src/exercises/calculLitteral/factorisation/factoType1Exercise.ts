@@ -20,6 +20,7 @@ export const factoType1Exercise: Exercise = {
   levels: ['3', '2'],
   section: 'Calcul littéral',
   generator: (nb: number) => getDistinctQuestions(getFactoType1Question, nb),
+  keys: ['x'],
 };
 
 export function getFactoType1Question(): Question {

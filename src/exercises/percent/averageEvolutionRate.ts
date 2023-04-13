@@ -13,6 +13,7 @@ export const averageEvolutionRate: Exercise = {
   section: 'Pourcentages',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getAverageEvolutionRate, nb),
+  keys: ['percent'],
 };
 
 export function getAverageEvolutionRate(): Question {

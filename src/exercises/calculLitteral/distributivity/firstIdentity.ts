@@ -16,6 +16,7 @@ export const firstIdentity: Exercise = {
   isSingleStep: false,
   section: 'Calcul littéral',
   generator: (nb: number) => getDistinctQuestions(getFirstIdentityQuestion, nb),
+  keys: ['x'],
 };
 
 export function getFirstIdentityQuestion(): Question {

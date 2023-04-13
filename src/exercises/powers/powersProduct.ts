@@ -30,6 +30,7 @@ export const powersProduct: Exercise = {
   section: 'Puissances',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getPowersProductQuestion, nb),
+  keys: [],
 };
 
 export function getPowersProductQuestion(useOnlyPowersOfTen: boolean = false): Question {

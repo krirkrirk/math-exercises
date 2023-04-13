@@ -19,6 +19,7 @@ export const arithmeticFindExplicitFormula: Exercise = {
   isSingleStep: false,
   section: 'Suites',
   generator: (nb: number) => getDistinctQuestions(getArithmeticFindExplicitFormula, nb),
+  keys: ['r', 'n', 'u', 'underscore'],
 };
 
 export function getArithmeticFindExplicitFormula(): Question {

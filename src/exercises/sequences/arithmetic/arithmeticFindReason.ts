@@ -11,6 +11,8 @@ export const arithmeticFindReason: Exercise = {
   levels: ['1', '0'],
   isSingleStep: false,
   section: 'Suites',
+  keys: ['r', 'n', 'u', 'underscore'],
+
   generator: (nb: number) => getDistinctQuestions(getArithmeticFindReason, nb),
 };
 

@@ -11,6 +11,7 @@ export const simplifyFraction: Exercise = {
   isSingleStep: false,
   section: 'Fractions',
   generator: (nb: number) => getDistinctQuestions(getSimplifyFraction, nb),
+  keys: [],
 };
 
 export function getSimplifyFraction(): Question {

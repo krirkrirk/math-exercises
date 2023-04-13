@@ -12,6 +12,7 @@ export const fractionsSum: Exercise = {
   section: 'Fractions',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionsSum, nb),
+  keys: [],
 };
 
 export function getFractionsSum(): Question {

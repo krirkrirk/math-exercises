@@ -13,6 +13,7 @@ export const midpoint: Exercise = {
   isSingleStep: false,
   section: 'Géométrie cartésienne',
   generator: (nb: number) => getDistinctQuestions(getMidpointQuestion, nb),
+  keys: ['semicolon'],
 };
 
 export function getMidpointQuestion(): Question {

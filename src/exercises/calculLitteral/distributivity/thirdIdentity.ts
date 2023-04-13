@@ -15,6 +15,7 @@ export const thirdIdentity: Exercise = {
   isSingleStep: false,
   section: 'Calcul littéral',
   generator: (nb: number) => getDistinctQuestions(getThirdIdentityQuestion, nb),
+  keys: ['x'],
 };
 
 export function getThirdIdentityQuestion(): Question {

@@ -16,6 +16,7 @@ export const addAndSubWithoutRelatives: Exercise = {
   section: 'Calculs',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getAddAndSubWithoutRelatives, nb),
+  keys: [],
 };
 
 export function getAddAndSubWithoutRelatives(): Question {

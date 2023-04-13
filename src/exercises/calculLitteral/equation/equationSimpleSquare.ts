@@ -11,6 +11,7 @@ export const equationSimpleSquare: Exercise = {
   section: 'Équations',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getEquationSimpleSquare, nb),
+  keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
 };
 
 const higherFactor = (n: number): number => {

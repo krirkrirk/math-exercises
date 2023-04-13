@@ -13,6 +13,7 @@ export const usualDerivative: Exercise = {
   section: 'Dérivation',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getUsualDerivative, nb),
+  keys: ['x'],
 };
 
 export function getUsualDerivative(): Question {

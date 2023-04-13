@@ -12,6 +12,7 @@ export const reciprocalPercentage: Exercise = {
   section: 'Pourcentages',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getReciprocalPercentageQuestion, nb),
+  keys: ['percent'],
 };
 
 export function getReciprocalPercentageQuestion(): Question {
