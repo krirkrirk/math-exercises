@@ -17,16 +17,20 @@ export const probabilityTree: Exercise = {
 };
 
 export function getProbabilityTree(): Question {
-  const A = randint(4, 9);
-  const B = randint(4, 10 - A);
+  const A = randint(2, 9);
+  const B = randint(2, 10 - A);
+  const AC = randint(2, 9);
+  const AD = randint(2, 10 - AC);
+  const BC = randint(2, 9);
+  const BD = randint(2, 10 - BC);
 
   const pA = simplifyNode(new NumberNode(A / (A + B)));
   const pB = simplifyNode(new NumberNode(B / (A + B)));
 
-  const pA_C = simplifyNode(new NumberNode((A - 1) / (A + B - 1)));
-  const pA_D = simplifyNode(new NumberNode(B / (A + B - 1)));
-  const pB_C = simplifyNode(new NumberNode(A / (A + B - 1)));
-  const pB_D = simplifyNode(new NumberNode((B - 1) / (A + B - 1)));
+  const pA_C = simplifyNode(new NumberNode(AC / (AC + AD)));
+  const pA_D = simplifyNode(new NumberNode(AD / (AC + AD)));
+  const pB_C = simplifyNode(new NumberNode(BC / (BC + BD)));
+  const pB_D = simplifyNode(new NumberNode(BD / (BC + BD)));
 
   let instruction = `En utilisant l'arbre de probabilité suivant, `;
   let startStatement = '';
@@ -87,8 +91,8 @@ export function getProbabilityTree(): Question {
     'Text("B", (1.85 , -2.7))',
     'Text("C", (5.5 , 2.85))',
     'Text("D", (5.5 , 0.85))',
-    'Text("C", (5.5 , -3.1))',
-    'Text("D", (5.5 , -1.1))',
+    'Text("C", (5.5 , -1.1))',
+    'Text("D", (5.5 , -3.1))',
   ];
 
   const question: Question = {
