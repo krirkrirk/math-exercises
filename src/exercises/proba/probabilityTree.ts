@@ -28,7 +28,7 @@ export function getProbabilityTree(): Question {
   const pB_C = simplifyNode(new NumberNode(A / (A + B - 1)));
   const pB_D = simplifyNode(new NumberNode((B - 1) / (A + B - 1)));
 
-  let instruction = `$P(A) = ${pA.toTex()}, P(B) = ${pB.toTex()}$.$\\\\$ $P_A(C) = ${pA_C.toTex()}, P_A(D) = ${pA_D.toTex()}, P_B(C) = ${pB_C.toTex()}, P_B(D) = ${pB_D.toTex()}$.`;
+  let instruction = `En utilisant l'arbre de probabilité suivant, `;
   let startStatement = '';
   let answer = '';
 
@@ -77,12 +77,18 @@ export function getProbabilityTree(): Question {
     'Segment(B,BD)',
     'ShowAxes(false)',
     'ShowGrid(false)',
-    `Text("P(A) = ${pA.toTex()}", (-2, 2), true, true)`,
-    `Text("P_A(C) = ${pA_C.toTex()}", (2.3, 4), true, true)`,
-    `Text("P_A(D) = ${pA_D.toTex()}", (2.3, 2), true, true)`,
-    `Text("P(B) = ${pB.toTex()}", (-2, -1), true, true)`,
-    `Text("P_B(C) = ${pB_C.toTex()}", (2.3, 0), true, true)`,
-    `Text("P_B(D) = ${pB_D.toTex()}", (2.3, -2.5), true, true)`,
+    `Text("${pA.toTex()}", (0.5, 2.5), true, true)`,
+    `Text("${pA_C.toTex()}", (3, 4), true, true)`,
+    `Text("${pA_D.toTex()}", (3, 1.5), true, true)`,
+    `Text("${pB.toTex()}", (0.5, -1), true, true)`,
+    `Text("${pB_C.toTex()}", (3, 0), true, true)`,
+    `Text("${pB_D.toTex()}", (3, -2.5), true, true)`,
+    'Text("A", (1.85 , 2.5))',
+    'Text("B", (1.85 , -2.7))',
+    'Text("C", (5.5 , 2.85))',
+    'Text("D", (5.5 , 0.85))',
+    'Text("C", (5.5 , -3.1))',
+    'Text("D", (5.5 , -1.1))',
   ];
 
   const question: Question = {

@@ -4,11 +4,12 @@ import { DroiteConstructor } from '#root/math/geometry/droite';
 import { Point } from '#root/math/geometry/point';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { evaluate } from 'mathjs';
 
 export const leadingCoefficient: Exercise = {
   id: 'leadingCoefficient',
   connector: '=',
-  instruction: '',
+  instruction: 'Quel est le coefficient directeur de la droite suivante :',
   label: 'Déterminer le coefficient directeur',
   levels: ['3', '2', '1'],
   isSingleStep: false,
@@ -17,7 +18,7 @@ export const leadingCoefficient: Exercise = {
 };
 
 export function getLeadingCoefficientQuestion(): Question {
-  let xA: number, yA, xB, yB: number;
+  let xA, yA, xB, yB: number;
   let pointA, pointB: Point;
 
   do {
@@ -29,33 +30,31 @@ export function getLeadingCoefficientQuestion(): Question {
   } while (xB - xA === 0);
 
   const droite = DroiteConstructor.fromTwoPoints(pointA, pointB, 'D');
-
-  let instruction = `Quel est le coefficient directeur de la droite suivante`;
+  const a = droite.a.toMathString();
+  const b = droite.b.toMathString();
 
   let xmin, xmax, ymin, ymax: number;
 
-  if (eval(droite.b.toMathString()) > 0) {
-    ymax = eval(droite.b.toMathString()) + 1;
+  if (evaluate(b) > 0) {
+    ymax = evaluate(b) + 1;
     ymin = -1;
   } else {
-    ymin = eval(droite.b.toMathString()) - 1;
+    ymin = evaluate(b) - 1;
     ymax = 1;
   }
 
-  if (-eval(droite.b.toMathString()) / eval(droite.a.toMathString()) > 0) {
-    xmax = -eval(droite.b.toMathString()) / eval(droite.a.toMathString()) + 1;
+  if (-evaluate(b) / evaluate(a) > 0) {
+    xmax = -evaluate(b) / evaluate(a) + 1;
     xmin = -1;
   } else {
-    xmin = -eval(droite.b.toMathString()) / eval(droite.a.toMathString()) - 1;
+    xmin = -evaluate(b) / evaluate(a) - 1;
     xmax = 1;
   }
 
   const question: Question = {
-    instruction,
-    startStatement: droite.toEquationExpression(),
     answer: droite.getLeadingCoefficient(),
     keys: [],
-    commands: [`f(x) = (${droite.a.toMathString()}) * x + (${droite.b.toMathString()})`],
+    commands: [`f(x) = (${a}) * x + (${b})`],
     coords: [xmin, xmax, ymin, ymax],
   };
 
