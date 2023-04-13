@@ -16,6 +16,7 @@ export const addAndSubExercise: Exercise = {
   section: 'Calculs',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getAddAndSubQuestions, nb),
+  keys: [],
 };
 
 export function getAddAndSubQuestions(): Question {

@@ -24,6 +24,7 @@ export const operationsPrioritiesWithoutRelative: Exercise = {
   section: 'Calculs',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getOperationsPrioritiesWithoutRelative, nb),
+  keys: [],
 };
 
 export function getOperationsPrioritiesWithoutRelative(): Question {

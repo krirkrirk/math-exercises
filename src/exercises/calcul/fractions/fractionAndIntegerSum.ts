@@ -14,6 +14,7 @@ export const fractionAndIntegerSum: Exercise = {
   isSingleStep: false,
   section: 'Fractions',
   generator: (nb: number) => getDistinctQuestions(getFractionAndIntegerSum, nb),
+  keys: [],
 };
 
 export function getFractionAndIntegerSum(): Question {

@@ -12,6 +12,7 @@ export const conditionalProbability: Exercise = {
   isSingleStep: false,
   section: 'Probabilités',
   generator: (nb: number) => getDistinctQuestions(getConditionalProbability, nb),
+  keys: ['p', 'cap', 'underscore'],
 };
 
 export function getConditionalProbability(): Question {

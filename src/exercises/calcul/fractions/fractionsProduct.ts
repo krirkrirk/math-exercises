@@ -12,6 +12,7 @@ export const fractionsProduct: Exercise = {
   section: 'Fractions',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionsProduct, nb),
+  keys: [],
 };
 
 export function getFractionsProduct(): Question {

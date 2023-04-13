@@ -12,6 +12,8 @@ export const globalPercent: Exercise = {
   section: 'Pourcentages',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getGlobalPercentQuestion, nb),
+  keys: ['percent'],
+
 };
 
 export function getGlobalPercentQuestion(): Question {

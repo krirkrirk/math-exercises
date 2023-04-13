@@ -11,6 +11,7 @@ export const simplifySquareRoot: Exercise = {
   isSingleStep: false,
   section: 'Racines carrées',
   generator: (nb: number) => getDistinctQuestions(getSimplifySquareRoot, nb),
+  keys: [],
 };
 
 export function getSimplifySquareRoot(): Question {

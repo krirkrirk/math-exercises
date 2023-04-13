@@ -11,6 +11,7 @@ export const geometricFindReason: Exercise = {
   isSingleStep: false,
   section: 'Suites',
   generator: (nb: number) => getDistinctQuestions(getGeometricFindReason, nb),
+  keys: ['q', 'n', 'u', 'underscore'],
 };
 
 export function getGeometricFindReason(): Question {

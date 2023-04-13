@@ -13,6 +13,8 @@ export const applyPercent: Exercise = {
   section: 'Pourcentages',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getApplyPercentQuestion, nb),
+  keys: ['percent'],
+
 };
 
 export function getApplyPercentQuestion(): Question {

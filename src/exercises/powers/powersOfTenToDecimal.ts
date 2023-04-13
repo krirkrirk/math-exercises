@@ -18,6 +18,7 @@ export const powersOfTenToDecimal: Exercise = {
   section: 'Puissances',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getPowersOfTenDivisionQuestion, nb),
+  keys: [],
 };
 
 export function getPowersOfTenDivisionQuestion(): Question {

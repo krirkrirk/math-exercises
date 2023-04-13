@@ -15,6 +15,7 @@ export const roundToUnit: Exercise = {
   section: 'Calculs',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions(0), nb),
+  keys: [],
 };
 /**
  * arrondi à l'unité

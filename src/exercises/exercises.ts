@@ -176,5 +176,6 @@ export const exercises = [
   derivativeNumberReading,
   //derivativeNumberReading2,
   probabilityTree,
-  // marginalAndConditionalFrequency,
+  marginalAndConditionalFrequency,
+
 ];

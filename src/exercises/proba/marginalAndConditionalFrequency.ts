@@ -12,6 +12,7 @@ export const marginalAndConditionalFrequency: Exercise = {
   isSingleStep: false,
   section: 'Probabilités',
   generator: (nb: number) => getDistinctQuestions(getMarginalAndConditionalFrequency, nb),
+  keys: ['f', 'cap', 'underscore'],
 };
 
 export function getMarginalAndConditionalFrequency(): Question {
@@ -67,7 +68,14 @@ export function getMarginalAndConditionalFrequency(): Question {
   Calculs = Calculs.map((el) => round(el, 2));
 
   const question: Question = {
-    instruction: `$|\\;\\;\\;| A | B | \\\\ | C | ${x1} | ${x2} | \\\\| D | ${x3} | ${x4} |\\\\$ Calculer la fréquence ${freqString[rand]}`,
+    instruction: `On considère le tableau d'effectifs suivant : 
+
+| |A|B|
+|-|-|-|
+|C|${x1}|${x2}|
+|D|${x3}|${x4}|
+
+Calculer la fréquence ${freqString[rand]}.`,
     startStatement: `${frequences[rand]}`,
     answer: Calculs[rand].toString(),
     keys: ['f', 'cap', 'underscore'],
