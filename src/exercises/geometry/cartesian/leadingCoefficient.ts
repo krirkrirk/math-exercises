@@ -32,22 +32,24 @@ export function getLeadingCoefficientQuestion(): Question {
   const droite = DroiteConstructor.fromTwoPoints(pointA, pointB, 'D');
   const a = droite.a.toMathString();
   const b = droite.b.toMathString();
+  const aValue = evaluate(a);
+  const bValue = evaluate(b);
 
   let xmin, xmax, ymin, ymax: number;
 
-  if (evaluate(b) > 0) {
-    ymax = evaluate(b) + 1;
+  if (bValue > 0) {
+    ymax = bValue + 1;
     ymin = -1;
   } else {
-    ymin = evaluate(b) - 1;
+    ymin = bValue - 1;
     ymax = 1;
   }
 
-  if (-evaluate(b) / evaluate(a) > 0) {
-    xmax = -evaluate(b) / evaluate(a) + 1;
+  if (-bValue / aValue > 0) {
+    xmax = -bValue / aValue + 1;
     xmin = -1;
   } else {
-    xmin = -evaluate(b) / evaluate(a) - 1;
+    xmin = -bValue / aValue - 1;
     xmax = 1;
   }
 
