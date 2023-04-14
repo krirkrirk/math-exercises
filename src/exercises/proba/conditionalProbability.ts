@@ -32,37 +32,37 @@ export function getConditionalProbability(): Question {
     case 1: {
       instruction += `$p(A) = ${pA / 100}, p(A \\cap B) = ${pAB / 100}$.$\\\\$Déterminer $p_A(B)$.`;
       startStatement = `p_A(B)`;
-      answer = `${pB_A}`.replace('.', ',');
+      answer = `${pB_A}`;
       break;
     }
     case 2: {
       instruction += `$p(B) = ${pB / 100}, p(B \\cap A) = ${pAB / 100}$.$\\\\$Déterminer $p_B(A)$.`;
       startStatement = `p_B(A)`;
-      answer = `${pA_B}`.replace('.', ',');
+      answer = `${pA_B}`;
       break;
     }
     case 3: {
       instruction += `$p(A) = ${pA / 100}, p_A(B) = ${pB_A}$.$\\\\$Déterminer $p(A \\cap B)$.`;
       startStatement = `p(A \\cap B)`;
-      answer = `${pAB / 100}`.replace('.', ',');
+      answer = `${pAB / 100}`;
       break;
     }
     case 4: {
       instruction += `$p(B) = ${pB / 100}, p_B(A) = ${pA_B}$.$\\\\$Déterminer $p(A \\cap B)$.`;
       startStatement = `p(A \\cap B)`;
-      answer = `${pAB / 100}`.replace('.', ',');
+      answer = `${pAB / 100}`;
       break;
     }
     case 5: {
       instruction += `$p(A \\cap B) = ${pAB / 100}, p_B(A) = ${pA_B}$.$\\\\$Déterminer $p(B)$.`;
       startStatement = `p(B)`;
-      answer = `${pB / 100}`.replace('.', ',');
+      answer = `${pB / 100}`;
       break;
     }
     case 6: {
       instruction += `$p(A \\cap B) = ${pAB / 100}, p_A(B) = ${pB_A}$.$\\\\$Déterminer $p(A)$.`;
       startStatement = `p(A)`;
-      answer = `${pA / 100}`.replace('.', ',');
+      answer = `${pA / 100}`;
       break;
     }
   }

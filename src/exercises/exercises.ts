@@ -7,6 +7,10 @@ import { fractionsDivision } from './calcul/fractions/fractionsDivision';
 import { fractionsProduct } from './calcul/fractions/fractionsProduct';
 import { fractionsSum } from './calcul/fractions/fractionsSum';
 import { simplifyFraction } from './calcul/fractions/simplifyFraction';
+import { mentalAddAndSub } from './calcul/mentalCaluls.ts/mentalAddAndSub';
+import { mentalDivisions } from './calcul/mentalCaluls.ts/mentalDivisions';
+import { mentalMultiplications } from './calcul/mentalCaluls.ts/mentalMultiplications';
+import { mentalPercentage } from './calcul/mentalCaluls.ts/mentalPercentage';
 import { operationsPriorities } from './calcul/operations/operationsPriorities';
 import { operationsPrioritiesWithoutRelative } from './calcul/operations/operationsPrioritiesWithoutRelative';
 import {
@@ -34,8 +38,6 @@ import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
 import { factoType1Exercise } from './calculLitteral/factorisation/factoType1Exercise';
 import { thirdDegreeDerivative } from './derivation/derivative/thirdDegreeDerivative';
 import { usualDerivative } from './derivation/derivative/usualderivative';
-import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberReading';
-import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
 import { midpoint } from './geometry/cartesian/midpoint';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
 import { applyPercent } from './percent/applyPercent';
@@ -50,7 +52,6 @@ import { scientificToDecimal } from './powers/scientificToDecimal';
 
 import { conditionalProbability } from './proba/conditionalProbability';
 import { marginalAndConditionalFrequency } from './proba/marginalAndConditionalFrequency';
-import { probabilityTree } from './proba/probabilityTree';
 
 import { arithmeticExplicitFormulaUsage } from './sequences/arithmetic/arithmeticExplicitFormulaUsage';
 import { arithmeticFindExplicitFormula } from './sequences/arithmetic/arithmeticFindExplicitFormula';
@@ -177,4 +178,8 @@ export const exercises = [
   //derivativeNumberReading2,
   // probabilityTree,
   marginalAndConditionalFrequency,
+  mentalAddAndSub,
+  mentalMultiplications,
+  mentalDivisions,
+  mentalPercentage,
 ];
