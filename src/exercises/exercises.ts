@@ -174,11 +174,7 @@ export const exercises = [
   conditionalProbability,
   leadingCoefficient,
   derivativeNumberReading,
-  //derivativeNumberReading2,
   probabilityTree,
-  // marginalAndConditionalFrequency,
   fractionToPercentToDecimal,
-
   marginalAndConditionalFrequency,
-
 ];
