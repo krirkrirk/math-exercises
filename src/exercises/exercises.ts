@@ -3,6 +3,7 @@ import { addAndSubWithoutRelatives } from './calcul/addAndSubWithoutRelatives';
 import { fractionAndIntegerDivision } from './calcul/fractions/fractionAndIntegerDivision';
 import { fractionAndIntegerProduct } from './calcul/fractions/fractionAndIntegerProduct';
 import { fractionAndIntegerSum } from './calcul/fractions/fractionAndIntegerSum';
+import { fractionToPercentToDecimal } from './calcul/fractions/fractionToPercentToDecimal';
 import { fractionsDivision } from './calcul/fractions/fractionsDivision';
 import { fractionsProduct } from './calcul/fractions/fractionsProduct';
 import { fractionsSum } from './calcul/fractions/fractionsSum';
@@ -169,14 +170,13 @@ export const exercises = [
   globalPercent,
   reciprocalPercentage,
   averageEvolutionRate,
-
   usualDerivative,
   thirdDegreeDerivative,
   conditionalProbability,
-  // leadingCoefficient,
-  // derivativeNumberReading,
-  //derivativeNumberReading2,
-  // probabilityTree,
+  leadingCoefficient,
+  derivativeNumberReading,
+  probabilityTree,
+  fractionToPercentToDecimal,
   marginalAndConditionalFrequency,
   mentalAddAndSub,
   mentalMultiplications,

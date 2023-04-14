@@ -1,52 +1,73 @@
-/*import { Exercise, Question } from "#root/exercises/exercise";
-import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { randint } from "#root/math/utils/random/randint";
-import { round } from "#root/math/utils/round";
+import { Exercise, Question } from '#root/exercises/exercise';
+import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { randint } from '#root/math/utils/random/randint';
+import { round } from '#root/math/utils/round';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
+import { simplifyNode } from '#root/tree/parsers/simplify';
 
 export const fractionToPercentToDecimal: Exercise = {
-    id: 'fractionToPercentToDecimal',
-    connector: '\\iff',
-    instruction: '',
-    label: 'Résoudre une équation du premier degré du type ax + b = cx',
-    levels: ['2', '1'],
-    section: 'Pourcentages',
-    isSingleStep: false,
-    generator: (nb: number) => getDistinctQuestions(getFractionToPercentToDecimal, nb),
+  id: 'fractionToPercentToDecimal',
+  connector: '\\iff',
+  instruction: '',
+  label: "Passer d'une écriture d'un nombre à une autre (décimale, fractionnaire, sous forme de pourcentage).",
+  levels: ['2', '1'],
+  section: 'Fractions',
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getFractionToPercentToDecimal, nb),
 };
 
-const pgcd = (a: number, b: number): number => {
-    if (b === 0)
-      return a;
-    return pgcd(b, a % b);
-}
-
 export function getFractionToPercentToDecimal(): Question {
+  const denominator = 2 ** randint(0, 5) * 5 ** randint(0, 5);
+  const numerator = randint(1, denominator);
 
-    const a = randint(1, 100);
-    const b = randint(1, 100);
-    const percent = round(a/b, 4) * 100;
-    const decimal = round(a/b, 2);
-    const flip = randint(1,7);
+  const fraction = new FractionNode(new NumberNode(numerator), new NumberNode(denominator));
+  const decimal = numerator / denominator;
+  const percent = round((numerator / denominator) * 100, 2);
 
-    let instruction;
-    let answer = "";
+  const rand = randint(1, 7);
+  let instruction;
+  let answer = '';
 
-    switch (flip){
-        case 1: {
-            instruction = `Convertir le nombre suivant $${decimal}$ en pourcentage et en fraction`;
-            answer = `\\{${percent}\\%\\ ; \\frac{${a/pgcd(a,b)}}{${b/pgcd(a,b)}}\\}`;
-        }
-
-        case 2: {
-
-        }
+  switch (rand) {
+    case 1: {
+      instruction = `Convertir le nombre suivant $${decimal}$ en pourcentage`;
+      answer = `${percent}\\%`;
+      break;
     }
+    case 2: {
+      instruction = `Convertir le nombre suivant $${decimal}$ en fraction`;
+      answer = `${simplifyNode(fraction).toTex()}`;
+      break;
+    }
+    case 3: {
+      instruction = `Convertir le nombre suivant $${percent}\\%$ en décimal`;
+      answer = `${decimal}`;
+      break;
+    }
+    case 4: {
+      instruction = `Convertir le nombre suivant $${percent}\\%$ en fraction`;
+      answer = `${simplifyNode(fraction).toTex()}`;
+      break;
+    }
+    case 5: {
+      instruction = `Convertir le nombre suivant $${fraction.toTex()}$ en décimal`;
+      answer = `${decimal}`;
+      break;
+    }
+    case 6: {
+      instruction = `Convertir le nombre suivant $${fraction.toTex()}$ en pourcentage`;
+      answer = `${percent}\\%`;
+      break;
+    }
+  }
 
-    const question: Question = {
-        instruction,
-        startStatement: `s = `,
-        answer,
-      };
+  const question: Question = {
+    instruction,
+    //startStatement: `${simplifyNode(fraction).toTex()}`,
+    answer: answer.replace('.', ','),
+    keys: [],
+  };
 
-      return question;
-}*/
+  return question;
+}

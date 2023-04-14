@@ -4,11 +4,12 @@ import { DroiteConstructor } from '#root/math/geometry/droite';
 import { Point } from '#root/math/geometry/point';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { evaluate } from 'mathjs';
 
 export const leadingCoefficient: Exercise = {
   id: 'leadingCoefficient',
   connector: '=',
-  instruction: '',
+  instruction: 'Quel est le coefficient directeur de la droite suivante :',
   label: 'Déterminer le coefficient directeur',
   levels: ['3', '2', '1'],
   isSingleStep: false,
@@ -17,7 +18,7 @@ export const leadingCoefficient: Exercise = {
 };
 
 export function getLeadingCoefficientQuestion(): Question {
-  let xA: number, yA, xB, yB: number;
+  let xA, yA, xB, yB: number;
   let pointA, pointB: Point;
 
   do {
@@ -29,13 +30,34 @@ export function getLeadingCoefficientQuestion(): Question {
   } while (xB - xA === 0);
 
   const droite = DroiteConstructor.fromTwoPoints(pointA, pointB, 'D');
+  const a = droite.a.toMathString();
+  const b = droite.b.toMathString();
+  const aValue = evaluate(a);
+  const bValue = evaluate(b);
 
-  let instruction = `Quel est le coefficient directeur de la droite $${droite.toEquationExpression()}$`;
+  let xmin, xmax, ymin, ymax: number;
+
+  if (bValue > 0) {
+    ymax = bValue + 1;
+    ymin = -1;
+  } else {
+    ymin = bValue - 1;
+    ymax = 1;
+  }
+
+  if (-bValue / aValue > 0) {
+    xmax = -bValue / aValue + 1;
+    xmin = -1;
+  } else {
+    xmin = -bValue / aValue - 1;
+    xmax = 1;
+  }
 
   const question: Question = {
-    instruction,
-    //startStatement: pointA.toTexWithCoords() + ' ' + pointB.toTexWithCoords(),
     answer: droite.getLeadingCoefficient(),
+    keys: [],
+    commands: [`f(x) = (${a}) * x + (${b})`],
+    coords: [xmin, xmax, ymin, ymax],
   };
 
   return question;

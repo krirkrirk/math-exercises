@@ -17,18 +17,22 @@ export const probabilityTree: Exercise = {
 };
 
 export function getProbabilityTree(): Question {
-  const A = randint(4, 9);
-  const B = randint(4, 10 - A);
+  const A = randint(2, 9);
+  const B = randint(2, 10 - A);
+  const AC = randint(2, 9);
+  const AD = randint(2, 10 - AC);
+  const BC = randint(2, 9);
+  const BD = randint(2, 10 - BC);
 
   const pA = simplifyNode(new NumberNode(A / (A + B)));
   const pB = simplifyNode(new NumberNode(B / (A + B)));
 
-  const pA_C = simplifyNode(new NumberNode((A - 1) / (A + B - 1)));
-  const pA_D = simplifyNode(new NumberNode(B / (A + B - 1)));
-  const pB_C = simplifyNode(new NumberNode(A / (A + B - 1)));
-  const pB_D = simplifyNode(new NumberNode((B - 1) / (A + B - 1)));
+  const pA_C = simplifyNode(new NumberNode(AC / (AC + AD)));
+  const pA_D = simplifyNode(new NumberNode(AD / (AC + AD)));
+  const pB_C = simplifyNode(new NumberNode(BC / (BC + BD)));
+  const pB_D = simplifyNode(new NumberNode(BD / (BC + BD)));
 
-  let instruction = `$P(A) = ${pA.toTex()}, P(B) = ${pB.toTex()}$.$\\\\$ $P_A(C) = ${pA_C.toTex()}, P_A(D) = ${pA_D.toTex()}, P_B(C) = ${pB_C.toTex()}, P_B(D) = ${pB_D.toTex()}$.`;
+  let instruction = `En utilisant l'arbre de probabilité suivant, `;
   let startStatement = '';
   let answer = '';
 
@@ -61,11 +65,43 @@ export function getProbabilityTree(): Question {
     }
   }
 
+  let commands = [
+    'Racine = Point({0,0})',
+    'A = Point({2,2})',
+    'B = Point({2,-2})',
+    'AC = Point({5,3})',
+    'AD = Point({5,1})',
+    'BC = Point({5,-1})',
+    'BD = Point({5,-3})',
+    'Segment(Racine,A)',
+    'Segment(A,AC)',
+    'Segment(A,AD)',
+    'Segment(Racine,B)',
+    'Segment(B,BC)',
+    'Segment(B,BD)',
+    'ShowAxes(false)',
+    'ShowGrid(false)',
+    `Text("${pA.toTex()}", (0.5, 2.5), true, true)`,
+    `Text("${pA_C.toTex()}", (3, 4), true, true)`,
+    `Text("${pA_D.toTex()}", (3, 1.5), true, true)`,
+    `Text("${pB.toTex()}", (0.5, -1), true, true)`,
+    `Text("${pB_C.toTex()}", (3, 0), true, true)`,
+    `Text("${pB_D.toTex()}", (3, -2.5), true, true)`,
+    'Text("A", (1.85 , 2.5))',
+    'Text("B", (1.85 , -2.7))',
+    'Text("C", (5.5 , 2.85))',
+    'Text("D", (5.5 , 0.85))',
+    'Text("C", (5.5 , -1.1))',
+    'Text("D", (5.5 , -3.1))',
+  ];
+
   const question: Question = {
     instruction,
     startStatement,
     answer,
     keys: [],
+    commands,
+    coords: [-2, 8, -4, 4],
   };
 
   return question;
