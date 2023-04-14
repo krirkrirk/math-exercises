@@ -39,6 +39,8 @@ import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
 import { factoType1Exercise } from './calculLitteral/factorisation/factoType1Exercise';
 import { thirdDegreeDerivative } from './derivation/derivative/thirdDegreeDerivative';
 import { usualDerivative } from './derivation/derivative/usualderivative';
+import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberReading';
+import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
 import { midpoint } from './geometry/cartesian/midpoint';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
 import { applyPercent } from './percent/applyPercent';
@@ -53,6 +55,7 @@ import { scientificToDecimal } from './powers/scientificToDecimal';
 
 import { conditionalProbability } from './proba/conditionalProbability';
 import { marginalAndConditionalFrequency } from './proba/marginalAndConditionalFrequency';
+import { probabilityTree } from './proba/probabilityTree';
 
 import { arithmeticExplicitFormulaUsage } from './sequences/arithmetic/arithmeticExplicitFormulaUsage';
 import { arithmeticFindExplicitFormula } from './sequences/arithmetic/arithmeticFindExplicitFormula';

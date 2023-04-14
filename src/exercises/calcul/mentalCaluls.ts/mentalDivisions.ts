@@ -1,10 +1,10 @@
 import { Exercise, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
+import { round } from '#root/math/utils/round';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { DivideNode } from '#root/tree/nodes/operators/divideNode';
 import { coinFlip } from '#root/utils/coinFlip';
-import { round } from 'mathjs';
 
 export const mentalDivisions: Exercise = {
   id: 'mentalDivisions',
