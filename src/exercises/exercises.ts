@@ -8,6 +8,10 @@ import { fractionsDivision } from './calcul/fractions/fractionsDivision';
 import { fractionsProduct } from './calcul/fractions/fractionsProduct';
 import { fractionsSum } from './calcul/fractions/fractionsSum';
 import { simplifyFraction } from './calcul/fractions/simplifyFraction';
+import { mentalAddAndSub } from './calcul/mentalCaluls.ts/mentalAddAndSub';
+import { mentalDivisions } from './calcul/mentalCaluls.ts/mentalDivisions';
+import { mentalMultiplications } from './calcul/mentalCaluls.ts/mentalMultiplications';
+import { mentalPercentage } from './calcul/mentalCaluls.ts/mentalPercentage';
 import { operationsPriorities } from './calcul/operations/operationsPriorities';
 import { operationsPrioritiesWithoutRelative } from './calcul/operations/operationsPrioritiesWithoutRelative';
 import {
@@ -33,6 +37,11 @@ import { factoIdRmq1 } from './calculLitteral/factorisation/factoIdRmq1';
 import { factoIdRmq2 } from './calculLitteral/factorisation/factoIdRmq2';
 import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
 import { factoType1Exercise } from './calculLitteral/factorisation/factoType1Exercise';
+import { firstDegreeDerivative } from './derivation/derivative/firstDegreeDerivative';
+import { inverseFunctionDerivative } from './derivation/derivative/inverseFunctionDerivative';
+import { powerFunctionDerivative } from './derivation/derivative/powerFunctionDerivative';
+import { rootFunctionDerivative } from './derivation/derivative/rootFunctionDerivative';
+import { secondDegreeDerivative } from './derivation/derivative/secondDegreeDerivative';
 import { thirdDegreeDerivative } from './derivation/derivative/thirdDegreeDerivative';
 import { usualDerivative } from './derivation/derivative/usualderivative';
 import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberReading';
@@ -170,11 +179,20 @@ export const exercises = [
   reciprocalPercentage,
   averageEvolutionRate,
   usualDerivative,
+  firstDegreeDerivative,
+  secondDegreeDerivative,
   thirdDegreeDerivative,
+  inverseFunctionDerivative,
+  rootFunctionDerivative,
+  powerFunctionDerivative,
   conditionalProbability,
   leadingCoefficient,
   derivativeNumberReading,
   probabilityTree,
   fractionToPercentToDecimal,
   marginalAndConditionalFrequency,
+  mentalAddAndSub,
+  mentalMultiplications,
+  mentalDivisions,
+  mentalPercentage,
 ];

@@ -29,7 +29,7 @@ export class DivideNode extends OperatorNode implements Node {
     let needBrackets = rightTex[0] === '-';
     if (this.rightChild.type === NodeType.operator) {
       const operatorRightChild = this.rightChild as unknown as OperatorNode;
-      needBrackets ||= [OperatorIds.add, OperatorIds.substract].includes(operatorRightChild.id);
+      needBrackets ||= [OperatorIds.add, OperatorIds.substract, OperatorIds.divide].includes(operatorRightChild.id);
     }
     if (needBrackets) rightTex = `(${rightTex})`;
 

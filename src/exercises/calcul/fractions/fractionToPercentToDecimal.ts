@@ -65,8 +65,8 @@ export function getFractionToPercentToDecimal(): Question {
   const question: Question = {
     instruction,
     //startStatement: `${simplifyNode(fraction).toTex()}`,
-    answer: answer.replace('.', ','),
-    keys: [],
+    answer,
+    keys: ['percent'],
   };
 
   return question;
