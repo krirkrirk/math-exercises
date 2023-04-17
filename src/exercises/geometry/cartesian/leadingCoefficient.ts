@@ -9,7 +9,7 @@ import { evaluate } from 'mathjs';
 export const leadingCoefficient: Exercise = {
   id: 'leadingCoefficient',
   connector: '=',
-  instruction: 'Quel est le coefficient directeur de la droite suivante :',
+  instruction: 'Déterminer le coefficient directeur de la droite représentée ci-dessous :',
   label: 'Déterminer le coefficient directeur',
   levels: ['3', '2', '1'],
   isSingleStep: false,
