@@ -37,6 +37,11 @@ import { factoIdRmq1 } from './calculLitteral/factorisation/factoIdRmq1';
 import { factoIdRmq2 } from './calculLitteral/factorisation/factoIdRmq2';
 import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
 import { factoType1Exercise } from './calculLitteral/factorisation/factoType1Exercise';
+import { firstDegreeDerivative } from './derivation/derivative/firstDegreeDerivative';
+import { inverseFunctionDerivative } from './derivation/derivative/inverseFunctionDerivative';
+import { powerFunctionDerivative } from './derivation/derivative/powerFunctionDerivative';
+import { rootFunctionDerivative } from './derivation/derivative/rootFunctionDerivative';
+import { secondDegreeDerivative } from './derivation/derivative/secondDegreeDerivative';
 import { thirdDegreeDerivative } from './derivation/derivative/thirdDegreeDerivative';
 import { usualDerivative } from './derivation/derivative/usualderivative';
 import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberReading';
@@ -174,7 +179,12 @@ export const exercises = [
   reciprocalPercentage,
   averageEvolutionRate,
   usualDerivative,
+  firstDegreeDerivative,
+  secondDegreeDerivative,
   thirdDegreeDerivative,
+  inverseFunctionDerivative,
+  rootFunctionDerivative,
+  powerFunctionDerivative,
   conditionalProbability,
   leadingCoefficient,
   derivativeNumberReading,
