@@ -20,7 +20,7 @@ export const powerFunctionDerivative: Exercise = {
 };
 
 export function getPowerFunctionDerivative(): Question {
-  const a = randint(-10, 10, [0]);
+  const a = randint(-9, 10, [0]);
   const n = randint(2, 10);
 
   const statement = simplifyNode(

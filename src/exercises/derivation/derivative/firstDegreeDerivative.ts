@@ -16,7 +16,7 @@ export const firstDegreeDerivative: Exercise = {
 };
 
 export function getFirstDegreeDerivative(): Question {
-  const [a, b] = [randint(-9, 10), randint(-9, 10)];
+  const [a, b] = [randint(-9, 10, [0]), randint(-9, 10)];
   const polynomial = new Polynomial([b, a]);
 
   const question: Question = {

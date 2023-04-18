@@ -18,8 +18,8 @@ export const thirdDegreeDerivative: Exercise = {
 export function getThirdDegreeDerivative(): Question {
   const coefficients = [];
 
-  coefficients.push(randint(-10, 10, [0]));
-  for (let i = 1; i <= 3; i++) coefficients.push(randint(-10, 10));
+  for (let i = 1; i <= 3; i++) coefficients.push(randint(-9, 10));
+  coefficients.push(randint(-9, 10, [0]));
 
   const polynomial = new Polynomial(coefficients);
   const derivative = polynomial.derivate();
