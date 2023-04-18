@@ -16,7 +16,7 @@ export const rootFunctionDerivative: Exercise = {
 };
 
 export function getRootFunctionDerivative(): Question {
-  const a = randint(-10, 10, [0]);
+  const a = randint(-9, 10, [0]);
 
   let instruction = `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =$ `;
   let answer = '';
