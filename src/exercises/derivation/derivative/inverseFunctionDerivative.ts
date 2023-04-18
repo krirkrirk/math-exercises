@@ -15,7 +15,7 @@ export const inverseFunctionDerivative: Exercise = {
 };
 
 export function getInverseFunctionDerivative(): Question {
-  const a = randint(-10, 10, [0]);
+  const a = randint(-9, 10, [0]);
 
   const question: Question = {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =\\frac{${a}}{x}$ `,

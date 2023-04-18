@@ -16,10 +16,7 @@ export const secondDegreeDerivative: Exercise = {
 };
 
 export function getSecondDegreeDerivative(): Question {
-  const coefficients = [];
-
-  coefficients.push(randint(-9, 10, [0]));
-  for (let i = 1; i <= 2; i++) coefficients.push(randint(-9, 10));
+  const coefficients = [randint(-9, 10), randint(-9, 10), randint(-9, 10, [0])];
 
   const polynomial = new Polynomial(coefficients);
   const derivative = polynomial.derivate();

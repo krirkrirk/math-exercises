@@ -1,6 +1,7 @@
 import { randint } from '#root/math/utils/random/randint';
 import { Exercise, Question } from '../../exercise';
 import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
+import { getConstanteDerivative } from './constanteDerivative';
 import { getFirstDegreeDerivative } from './firstDegreeDerivative';
 import { getInverseFunctionDerivative } from './inverseFunctionDerivative';
 import { getPowerFunctionDerivative } from './powerFunctionDerivative';
@@ -21,7 +22,7 @@ export const usualDerivative: Exercise = {
 };
 
 export function getUsualDerivative(): Question {
-  const rand = randint(1, 7);
+  const rand = randint(1, 8);
 
   switch (rand) {
     case 1:
@@ -36,6 +37,8 @@ export function getUsualDerivative(): Question {
       return getPowerFunctionDerivative();
     case 6:
       return getRootFunctionDerivative();
+    case 7:
+      return getConstanteDerivative();
     default:
       throw Error('erreur');
   }

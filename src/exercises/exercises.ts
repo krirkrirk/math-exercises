@@ -37,6 +37,7 @@ import { factoIdRmq1 } from './calculLitteral/factorisation/factoIdRmq1';
 import { factoIdRmq2 } from './calculLitteral/factorisation/factoIdRmq2';
 import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
 import { factoType1Exercise } from './calculLitteral/factorisation/factoType1Exercise';
+import { constanteDerivative } from './derivation/derivative/constanteDerivative';
 import { firstDegreeDerivative } from './derivation/derivative/firstDegreeDerivative';
 import { inverseFunctionDerivative } from './derivation/derivative/inverseFunctionDerivative';
 import { powerFunctionDerivative } from './derivation/derivative/powerFunctionDerivative';
@@ -179,6 +180,7 @@ export const exercises = [
   reciprocalPercentage,
   averageEvolutionRate,
   usualDerivative,
+  constanteDerivative,
   firstDegreeDerivative,
   secondDegreeDerivative,
   thirdDegreeDerivative,
