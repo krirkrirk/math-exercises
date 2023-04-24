@@ -37,6 +37,12 @@ import { factoIdRmq1 } from './calculLitteral/factorisation/factoIdRmq1';
 import { factoIdRmq2 } from './calculLitteral/factorisation/factoIdRmq2';
 import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
 import { factoType1Exercise } from './calculLitteral/factorisation/factoType1Exercise';
+import { aeraConversion } from './conversion/aeraConversion';
+import { capacityConversion } from './conversion/capacityConversion';
+import { lengthConversion } from './conversion/lengthConversion';
+import { massConversion } from './conversion/massConversion';
+import { volumeCapacityConversion } from './conversion/volumeCapacityConversion';
+import { volumeConversion } from './conversion/volumeConversion';
 import { constanteDerivative } from './derivation/derivative/constanteDerivative';
 import { firstDegreeDerivative } from './derivation/derivative/firstDegreeDerivative';
 import { inverseFunctionDerivative } from './derivation/derivative/inverseFunctionDerivative';
@@ -197,4 +203,15 @@ export const exercises = [
   mentalMultiplications,
   mentalDivisions,
   mentalPercentage,
+
+  /**
+   * nv generateurs
+   */
+
+  capacityConversion,
+  lengthConversion,
+  massConversion,
+  aeraConversion,
+  volumeConversion,
+  volumeCapacityConversion,
 ];
