@@ -48,6 +48,7 @@ import { usualDerivative } from './derivation/derivative/usualderivative';
 import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberReading';
 import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
 import { midpoint } from './geometry/cartesian/midpoint';
+import { thales } from './geometry/euclidean/thales';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
 import { applyPercent } from './percent/applyPercent';
 import { averageEvolutionRate } from './percent/averageEvolutionRate';
@@ -197,4 +198,5 @@ export const exercises = [
   mentalMultiplications,
   mentalDivisions,
   mentalPercentage,
+  thales,
 ];
