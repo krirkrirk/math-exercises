@@ -8,11 +8,11 @@ export const aeraConversion: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Conversion des aires',
-  levels: ['1', '0'],
+  levels: ['6', '5'],
   section: 'Conversions',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getAeraConversion, nb),
-  keys: ['x'],
+  keys: [],
 };
 
 export function getAeraConversion(): Question {
@@ -23,7 +23,7 @@ export function getAeraConversion(): Question {
   const randomAera = DecimalConstructor.random(0, 1000, randint(0, 4));
 
   const question: Question = {
-    instruction: `$${randomAera.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
+    instruction: `$${randomAera.value}$ ${units[randomUnitIndex]} = ... ${units[randomUnitInstructionIndex]}`,
     answer: randomAera.multiplyByPowerOfTen(2 * (randomUnitIndex - randomUnitInstructionIndex)).value + '',
     keys: [],
   };

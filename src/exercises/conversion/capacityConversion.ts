@@ -8,11 +8,11 @@ export const capacityConversion: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Conversion de capacités',
-  levels: ['1', '0'],
+  levels: ['6', '5'],
   section: 'Conversions',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getCapacityConversion, nb),
-  keys: ['x'],
+  keys: [],
 };
 
 export function getCapacityConversion(): Question {
@@ -23,7 +23,7 @@ export function getCapacityConversion(): Question {
   const randomCapacity = DecimalConstructor.random(0, 1000, randint(0, 4));
 
   const question: Question = {
-    instruction: `$${randomCapacity.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
+    instruction: `$${randomCapacity.value}$ ${units[randomUnitIndex]} = ... ${units[randomUnitInstructionIndex]}`,
     answer: randomCapacity.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '',
     keys: [],
   };

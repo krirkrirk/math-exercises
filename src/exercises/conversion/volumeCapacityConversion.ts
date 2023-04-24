@@ -9,11 +9,11 @@ export const volumeCapacityConversion: Exercise = {
   connector: '=',
   instruction: '',
   label: "Conversion d'un volume vers une contenance et vice versa",
-  levels: ['1', '0'],
+  levels: ['6', '5'],
   section: 'Conversions',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getVolumeCapacityConversion, nb),
-  keys: ['x'],
+  keys: [],
 };
 
 export function getVolumeCapacityConversion(): Question {
@@ -39,7 +39,7 @@ export function getVolumeCapacityConversion(): Question {
   }
 
   const question: Question = {
-    instruction: `$${random.value}$ $${instructionUnit}$ = ... $${AsnwerUnit}$`,
+    instruction: `$${random.value}$ ${instructionUnit} = ... ${AsnwerUnit}`,
     answer,
     keys: [],
   };

@@ -8,11 +8,11 @@ export const volumeConversion: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Conversion de volumes',
-  levels: ['1', '0'],
+  levels: ['6', '5'],
   section: 'Conversions',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getVolumeConversion, nb),
-  keys: ['x'],
+  keys: [],
 };
 
 export function getVolumeConversion(): Question {
@@ -23,7 +23,7 @@ export function getVolumeConversion(): Question {
   const randomVolume = DecimalConstructor.random(0, 1000, randint(0, 4));
 
   const question: Question = {
-    instruction: `$${randomVolume.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
+    instruction: `$${randomVolume.value}$ ${units[randomUnitIndex]} = ... ${units[randomUnitInstructionIndex]}`,
     answer: randomVolume.multiplyByPowerOfTen(3 * (randomUnitIndex - randomUnitInstructionIndex)).value + '',
     keys: [],
   };

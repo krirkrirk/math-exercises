@@ -8,11 +8,11 @@ export const massConversion: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Conversion de masses',
-  levels: ['1', '0'],
+  levels: ['6', '5'],
   section: 'Conversions',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getMassConversion, nb),
-  keys: ['x'],
+  keys: [],
 };
 
 export function getMassConversion(): Question {
@@ -23,7 +23,7 @@ export function getMassConversion(): Question {
   const randomMass = DecimalConstructor.random(0, 1000, randint(0, 4));
 
   const question: Question = {
-    instruction: `$${randomMass.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
+    instruction: `$${randomMass.value}$ ${units[randomUnitIndex]} = ... ${units[randomUnitInstructionIndex]}`,
     answer: randomMass.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '',
     keys: [],
   };
