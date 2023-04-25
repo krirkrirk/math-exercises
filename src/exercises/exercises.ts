@@ -37,6 +37,12 @@ import { factoIdRmq1 } from './calculLitteral/factorisation/factoIdRmq1';
 import { factoIdRmq2 } from './calculLitteral/factorisation/factoIdRmq2';
 import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
 import { factoType1Exercise } from './calculLitteral/factorisation/factoType1Exercise';
+import { aeraConversion } from './conversion/aeraConversion';
+import { capacityConversion } from './conversion/capacityConversion';
+import { lengthConversion } from './conversion/lengthConversion';
+import { massConversion } from './conversion/massConversion';
+import { volumeCapacityConversion } from './conversion/volumeCapacityConversion';
+import { volumeConversion } from './conversion/volumeConversion';
 import { constanteDerivative } from './derivation/derivative/constanteDerivative';
 import { firstDegreeDerivative } from './derivation/derivative/firstDegreeDerivative';
 import { inverseFunctionDerivative } from './derivation/derivative/inverseFunctionDerivative';
@@ -48,7 +54,9 @@ import { usualDerivative } from './derivation/derivative/usualderivative';
 import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberReading';
 import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
 import { midpoint } from './geometry/cartesian/midpoint';
+import { pythagore } from './geometry/euclidean/pythagore';
 import { thales } from './geometry/euclidean/thales';
+import { thalesCalcul } from './geometry/euclidean/thalesCalcul';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
 import { applyPercent } from './percent/applyPercent';
 import { averageEvolutionRate } from './percent/averageEvolutionRate';
@@ -199,4 +207,17 @@ export const exercises = [
   mentalDivisions,
   mentalPercentage,
   thales,
+  thalesCalcul,
+  pythagore,
+
+  /**
+   * nv generateurs
+   */
+
+  capacityConversion,
+  lengthConversion,
+  massConversion,
+  aeraConversion,
+  volumeConversion,
+  volumeCapacityConversion,
 ];

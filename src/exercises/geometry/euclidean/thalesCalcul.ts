@@ -1,12 +1,16 @@
 import { Exercise, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
+import { simplifyNode } from '#root/tree/parsers/simplify';
+import { coinFlip } from '#root/utils/coinFlip';
 
-export const thales: Exercise = {
-  id: 'thales',
+export const thalesCalcul: Exercise = {
+  id: 'thalesCalcul',
   connector: '=',
   instruction: '',
-  label: 'Utiliser le théoreme de Thalès',
+  label: 'Utiliser le théoreme de Thalès pour faire des calculs',
   levels: ['3', '2', '1'],
   isSingleStep: false,
   section: 'Géométrie euclidienne',
@@ -20,7 +24,7 @@ export function getThales(): Question {
 
   const [xA, yA] = [randint(-10, 11), randint(-10, 11)];
   let xB, yB, xC, yC;
-  let d1, d2; // distance entre le point A et B
+  let d1, d2, d3; // distance entre le point A et B
   let theta = 0; // angle entre AB et AC
 
   do {
@@ -29,6 +33,8 @@ export function getThales(): Question {
     d2 = Math.sqrt((xC - xA) ** 2 + (yC - yA) ** 2);
     theta = Math.acos(((xB - xA) * (xC - xA) + (yB - yA) * (yC - yA)) / (d1 * d2));
   } while (!theta || theta < 0.35 || theta > 2.1 || d1 / d2 > 1.3 || d1 / d2 < 0.7);
+
+  d3 = Math.sqrt(d1 ** 2 + d2 ** 2 - 2 * d1 * d2 * Math.cos(theta));
 
   const factor = randint(-5, 6, [-2, -1, 0, 1, 2]) / 10;
 
@@ -63,9 +69,45 @@ export function getThales(): Question {
     `ShowLabel(${points[4]}, true)`,
   ];
 
+  const droites = [
+    `${points[0]}${points[1]}`,
+    `${points[0]}${points[3]}`,
+    `${points[0]}${points[2]}`,
+    `${points[0]}${points[4]}`,
+    `${points[1]}${points[2]}`,
+    `${points[3]}${points[4]}`,
+  ];
+
+  const length = [d1, factor * d1, d2, factor * d2, d3, factor * d3].map((el) => Math.round(Math.abs(el)));
+
+  const rand = randint(0, 3);
+  let rand2 = randint(0, 3, [rand]);
+  if (length[2 * rand] === length[2 * rand2]) rand2 = randint(0, 3, [rand, rand2]);
+
+  let instruction = `Dans la figure ci-dessous, nous avons (${points[3]}${points[4]})//(${points[1]}${points[2]}), `;
+  let statement;
+
+  if (coinFlip()) {
+    instruction += `${droites[2 * rand]} = $${length[2 * rand]}$, ${droites[2 * rand + 1]} = $${
+      length[2 * rand + 1]
+    }$, ${droites[2 * rand2]} = $${length[2 * rand2]}$.$\\\\$Déterminer ${droites[2 * rand2 + 1]}`;
+
+    statement = simplifyNode(
+      new FractionNode(new NumberNode(length[2 * rand2] * length[2 * rand + 1]), new NumberNode(length[2 * rand])),
+    );
+  } else {
+    instruction += `${droites[2 * rand]} = $${length[2 * rand]}$, ${droites[2 * rand + 1]} = $${
+      length[2 * rand + 1]
+    }$, ${droites[2 * rand2 + 1]} = $${length[2 * rand2 + 1]}$.$\\\\$Déterminer ${droites[2 * rand2]}`;
+
+    statement = simplifyNode(
+      new FractionNode(new NumberNode(length[2 * rand2 + 1] * length[2 * rand]), new NumberNode(length[2 * rand + 1])),
+    );
+  }
+
   const question: Question = {
-    instruction: `En utilisant le théoreme de Thalès, Écrire l'égalité des quotients sachant que :$\\\\$ (${points[3]}${points[4]})//(${points[1]}${points[2]})`,
-    answer: `\\frac{${points[0]}${points[3]}}{${points[0]}${points[1]}} = \\frac{${points[0]}${points[4]}}{${points[0]}${points[2]}} = \\frac{${points[3]}${points[4]}}{${points[1]}${points[2]}}`,
+    instruction,
+    answer: statement.toTex(),
     keys: [],
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
