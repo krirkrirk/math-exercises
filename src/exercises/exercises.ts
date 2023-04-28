@@ -55,6 +55,9 @@ import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberRe
 import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
 import { midpoint } from './geometry/cartesian/midpoint';
 import { pythagore } from './geometry/euclidean/pythagore';
+import { pythagoreC } from './geometry/euclidean/pythagore copy';
+import { pythagoreCalcul } from './geometry/euclidean/pythagoreCalcul';
+import { pythagoreCalculC } from './geometry/euclidean/pythagoreCalcul copy';
 import { thales } from './geometry/euclidean/thales';
 import { thalesCalcul } from './geometry/euclidean/thalesCalcul';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
@@ -209,6 +212,9 @@ export const exercises = [
   thales,
   thalesCalcul,
   pythagore,
+  pythagoreCalcul,
+  pythagoreC,
+  pythagoreCalculC,
 
   /**
    * nv generateurs

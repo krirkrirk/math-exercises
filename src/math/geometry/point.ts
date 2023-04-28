@@ -3,6 +3,7 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
+import { evaluate } from 'mathjs';
 
 export abstract class PointConstructor {
   //   static random(domainX: MathSet = new Interval('[[-10; 10]]'), domainY: MathSet = new Interval('[[-10; 10]]')): Point {
@@ -25,8 +26,17 @@ export class Point {
   toTex(): string {
     return `${this.name}`;
   }
+
   toTexWithCoords(): string {
     return `${this.name}\\left(${this.x.toTex()}; ${this.y.toTex()}\\right)`;
+  }
+
+  getXnumber(): number {
+    return evaluate(this.x.toMathString());
+  }
+
+  getYnumber(): number {
+    return evaluate(this.y.toMathString());
   }
 
   midpoint(B: Point, name = 'I'): Point {
@@ -35,5 +45,11 @@ export class Point {
       simplifyNode(new FractionNode(new AddNode(this.x, B.x), new NumberNode(2))),
       simplifyNode(new FractionNode(new AddNode(this.y, B.y), new NumberNode(2))),
     );
+  }
+
+  distanceTo(B: Point): number {
+    const dx = this.getXnumber() - B.getXnumber();
+    const dy = this.getYnumber() - B.getYnumber();
+    return Math.sqrt(dx ** 2 + dy ** 2);
   }
 }
