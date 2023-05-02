@@ -25,11 +25,11 @@ export function getApplyPercentQuestion(): Question {
   if (coinFlip()) {
     ans = randNbr * (1 + randPercent / 100);
     ans = round(ans, 2);
-    instruction = `Appliquer une augmentation de $${randPercent}\\%$ à $${randNbr}$.`;
+    instruction = `Appliquer une hausse de $${randPercent}\\%$ à $${randNbr}$.`;
   } else {
     ans = randNbr * (1 - randPercent / 100);
     ans = round(ans, 2);
-    instruction = `Appliquer une diminution de $${randPercent}\\%$ à $${randNbr}$.`;
+    instruction = `Appliquer une baisse de $${randPercent}\\%$ à $${randNbr}$.`;
   }
 
   const question: Question = {

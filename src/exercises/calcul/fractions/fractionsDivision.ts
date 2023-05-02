@@ -6,7 +6,7 @@ import { DivideNode } from '#root/tree/nodes/operators/divideNode';
 export const fractionsDivision: Exercise = {
   id: 'fractionsDivision',
   connector: '=',
-  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible",
+  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
   label: 'Divisions de fractions',
   levels: ['4', '3', '2', '1'],
   section: 'Fractions',

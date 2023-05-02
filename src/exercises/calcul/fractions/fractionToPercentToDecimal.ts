@@ -31,32 +31,32 @@ export function getFractionToPercentToDecimal(): Question {
 
   switch (rand) {
     case 1: {
-      instruction = `Écrire le nombre $${decimal}$ sous forme de pourcentage`;
+      instruction = `Écrire le nombre $${decimal}$ sous forme de pourcentage.`;
       answer = `${percent}\\%`;
       break;
     }
     case 2: {
-      instruction = `Écrire le nombre $${decimal}$ sous forme de fraction`;
+      instruction = `Écrire le nombre $${decimal}$ sous forme de fraction.`;
       answer = `${simplifyNode(fraction).toTex()}`;
       break;
     }
     case 3: {
-      instruction = `Écrire le nombre $${percent}\\%$ sous forme décimale`;
+      instruction = `Écrire le nombre $${percent}\\%$ sous forme décimale.`;
       answer = `${decimal}`;
       break;
     }
     case 4: {
-      instruction = `Écrire le nombre $${percent}\\%$ sous forme de fraction`;
+      instruction = `Écrire le nombre $${percent}\\%$ sous forme de fraction.`;
       answer = `${simplifyNode(fraction).toTex()}`;
       break;
     }
     case 5: {
-      instruction = `Écrire le nombre $${fraction.toTex()}$ sous forme décimale`;
+      instruction = `Écrire le nombre $${fraction.toTex()}$ sous forme décimale.`;
       answer = `${decimal}`;
       break;
     }
     case 6: {
-      instruction = `Écrire le nombre $${fraction.toTex()}$ sous forme de pourcentage`;
+      instruction = `Écrire le nombre $${fraction.toTex()}$ sous forme de pourcentage.`;
       answer = `${percent}\\%`;
       break;
     }
