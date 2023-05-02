@@ -26,7 +26,7 @@ export function getReciprocalPercentageQuestion(): Question {
 
   const question: Question = {
     instruction,
-    answer: `${round(ans, 2)} \\%`,
+    answer: `${ans > 0 ? '+' + round(ans, 2) : round(ans, 2)} \\%`,
     keys: ['percent'],
   };
 

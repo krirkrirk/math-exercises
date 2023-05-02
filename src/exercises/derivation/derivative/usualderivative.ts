@@ -3,9 +3,6 @@ import { Exercise, Question } from '../../exercise';
 import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
 import { getConstanteDerivative } from './constanteDerivative';
 import { getFirstDegreeDerivative } from './firstDegreeDerivative';
-import { getInverseFunctionDerivative } from './inverseFunctionDerivative';
-import { getPowerFunctionDerivative } from './powerFunctionDerivative';
-import { getRootFunctionDerivative } from './rootFunctionDerivative';
 import { getSecondDegreeDerivative } from './secondDegreeDerivative';
 import { getThirdDegreeDerivative } from './thirdDegreeDerivative';
 
@@ -13,7 +10,7 @@ export const usualDerivative: Exercise = {
   id: 'usualDerivative',
   connector: '=',
   instruction: '',
-  label: 'Dérivées usuelles',
+  label: 'Dérivées des fonctions de référence',
   levels: ['1', '0'],
   section: 'Dérivation',
   isSingleStep: false,
@@ -22,7 +19,7 @@ export const usualDerivative: Exercise = {
 };
 
 export function getUsualDerivative(): Question {
-  const rand = randint(1, 8);
+  const rand = randint(1, 5);
 
   switch (rand) {
     case 1:
@@ -32,12 +29,6 @@ export function getUsualDerivative(): Question {
     case 3:
       return getThirdDegreeDerivative();
     case 4:
-      return getInverseFunctionDerivative();
-    case 5:
-      return getPowerFunctionDerivative();
-    case 6:
-      return getRootFunctionDerivative();
-    case 7:
       return getConstanteDerivative();
     default:
       throw Error('erreur');
