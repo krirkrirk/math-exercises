@@ -18,7 +18,7 @@ export function getConstanteDerivative(): Question {
   const c = randint(-9, 10, [0]);
 
   const question: Question = {
-    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${c}$ `,
+    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${c}$.`,
     startStatement: `f'(x)`,
     answer: '0',
     keys: [],

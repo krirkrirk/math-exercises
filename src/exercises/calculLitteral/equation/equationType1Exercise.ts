@@ -13,7 +13,7 @@ export const equationType1Exercise: Exercise = {
   id: 'equa1',
   connector: '\\iff',
   instruction: 'Résoudre : ',
-  label: 'Equations $x+a = b$',
+  label: 'Équations $x+a = b$',
   levels: ['4', '3', '2'],
   section: 'Équations',
   isSingleStep: true,

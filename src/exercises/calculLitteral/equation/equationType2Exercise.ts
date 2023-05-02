@@ -15,7 +15,7 @@ export const equationType2Exercise: Exercise = {
   id: 'equa2',
   connector: '\\iff',
   instruction: 'Résoudre : ',
-  label: 'Equations $ax=b$',
+  label: 'Équations $ax=b$',
   levels: ['4', '3', '2'],
   section: 'Équations',
   isSingleStep: true,

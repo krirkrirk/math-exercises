@@ -6,7 +6,7 @@ import { AddNode } from '#root/tree/nodes/operators/addNode';
 export const fractionsSum: Exercise = {
   id: 'fractionsSum',
   connector: '=',
-  instruction: 'Calculer la forme irréductible :',
+  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible",
   label: 'Sommes de fractions',
   levels: ['4', '3', '2', '1'],
   section: 'Fractions',

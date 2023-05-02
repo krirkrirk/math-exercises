@@ -22,7 +22,7 @@ export function getSecondDegreeDerivative(): Question {
   const derivative = polynomial.derivate();
 
   const question: Question = {
-    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$ `,
+    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
     startStatement: `f'(x)`,
     answer: derivative.toString(),
     keys: ['x'],
