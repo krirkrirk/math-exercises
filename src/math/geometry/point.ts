@@ -5,11 +5,11 @@ import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 
 export abstract class PointConstructor {
-  //   static random(domainX: MathSet = new Interval('[[-10; 10]]'), domainY: MathSet = new Interval('[[-10; 10]]')): Point {
-  //     const x = domainX.getRandomElement();
-  //     const y = domainY.getRandomElement();
-  //     return new Point('A', new NumberNode(x.value), new NumberNode(y.value));
-  //   }
+  // static random(domainX: MathSet = new Interval('[[-10; 10]]'), domainY: MathSet = new Interval('[[-10; 10]]')): Point {
+  //   const x = domainX.getRandomElement();
+  //   const y = domainY.getRandomElement();
+  //   return new Point('A', new NumberNode(x.value), new NumberNode(y.value));
+  // }
 }
 
 export class Point {
@@ -25,6 +25,7 @@ export class Point {
   toTex(): string {
     return `${this.name}`;
   }
+
   toTexWithCoords(): string {
     return `${this.name}\\left(${this.x.toTex()}; ${this.y.toTex()}\\right)`;
   }
@@ -37,3 +38,17 @@ export class Point {
     );
   }
 }
+
+/**
+ * Droite{
+ * constructor : 
+ *  depuis 2 points : A,B --> Droite
+ *  depuis 1 point + coeff dir --> Droite
+ *  avec une équation de droite --> Droite
+ * 
+ * méthodes : 
+ *    toEquation() --> y = 3x+2
+ *    toCoeffDIr --> a
+
+ * }
+ */
