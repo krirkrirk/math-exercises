@@ -18,7 +18,7 @@ export function getInverseFunctionDerivative(): Question {
   const a = randint(-9, 10, [0]);
 
   const question: Question = {
-    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =\\frac{${a}}{x}$ `,
+    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =\\frac{${a}}{x}$.`,
     startStatement: `f'(x)`,
     answer: `\\frac{${-a}}{x^2}`,
     keys: ['x'],

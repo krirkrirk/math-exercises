@@ -1,6 +1,5 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
-import { sqrt } from 'mathjs';
 import { Exercise, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
@@ -20,7 +19,7 @@ export function getAverageEvolutionRate(): Question {
   const rate = randint(1, 100);
   const nbMois = randint(2, 13);
 
-  const instruction = `un prix augmente de $${rate}\\%$ en $${nbMois}$ mois. Quel est le taux d'évolution moyen par mois ?`;
+  const instruction = `Un prix augmente de $${rate}\\%$ en $${nbMois}$ mois. Quel est le taux d'évolution mensuel moyen ?`;
   const answer = `${round((Math.pow(1 + rate / 100, 1 / nbMois) - 1) * 100, 2)}\\%`;
 
   const question: Question = {

@@ -32,7 +32,7 @@ export function getPowerFunctionDerivative(): Question {
   );
 
   const question: Question = {
-    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =${statement.toTex()}$ `,
+    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =${statement.toTex()}$.`,
     startStatement: `f'(x)`,
     answer: answerStatement.toTex(),
     keys: ['x'],

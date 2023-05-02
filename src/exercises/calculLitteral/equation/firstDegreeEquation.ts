@@ -1,7 +1,6 @@
 import { Exercise, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
-import { round } from '#root/math/utils/round';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 
@@ -22,7 +21,7 @@ export function getFirstDegreeEquation(): Question {
   const b = randint(-30, 30, [0]);
 
   const question: Question = {
-    instruction: `Résoudre l'équation suivante $\\frac{${a}}{x} = ${b}$`,
+    instruction: `Résoudre l'équation suivante : $\\frac{${a}}{x} = ${b}$`,
     startStatement: `x`,
     answer: simplifyNode(new NumberNode(a / b)).toTex(),
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],

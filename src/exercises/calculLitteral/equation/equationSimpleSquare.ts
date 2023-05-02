@@ -25,11 +25,10 @@ export function getEquationSimpleSquare(): Question {
 
   if (randNbr >= 0) while (higherFactor(randNbr) === 1) randNbr = randint(1, 100);
 
-  const instruction = `Résoudre l'équation suivante $x^2 = ${randNbr}$`;
-  let ans = Math.sqrt(randNbr);
+  const instruction = `Résoudre l'équation suivante : $x^2 = ${randNbr}$`;
+  const ans = Math.sqrt(randNbr);
 
-  if (Math.sqrt(randNbr) == Math.floor(Math.sqrt(randNbr)))
-    answer = `\\{${Math.sqrt(randNbr)}\\ ; -${Math.sqrt(randNbr)}\\}`;
+  if (ans === Math.floor(ans)) answer = `\\{${ans}\\ ; -${ans}\\}`;
   else {
     const factor = higherFactor(randNbr);
     const radicand = randNbr / factor ** 2;

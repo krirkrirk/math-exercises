@@ -9,8 +9,8 @@ import { coinFlip } from '#root/utils/coinFlip';
 export const mentalAddAndSub: Exercise = {
   id: 'mentalAddAndSub',
   connector: '=',
-  instruction: 'Calculer :',
-  label: "Effectuer mentalement des calculs d'additions et de soustractions simples",
+  instruction: 'Calculer.',
+  label: 'Effectuer mentalement des additions et des soustractions simples',
   levels: ['6', '5', '4', '3', '2', '1', '0'],
   section: 'Calculs',
   isSingleStep: true,

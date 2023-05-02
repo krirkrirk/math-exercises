@@ -20,7 +20,7 @@ export function getFirstDegreeDerivative(): Question {
   const polynomial = new Polynomial([b, a]);
 
   const question: Question = {
-    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$ `,
+    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
     startStatement: `f'(x)`,
     answer: a + '',
     keys: [],

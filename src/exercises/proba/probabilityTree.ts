@@ -9,7 +9,7 @@ export const probabilityTree: Exercise = {
   id: 'probabilityTree',
   connector: '=',
   instruction: '',
-  label: 'Calculs dans un arbre pondéré',
+  label: "Calculs de probabilités à l'aide d'un arbre pondéré",
   levels: ['1', '0'],
   isSingleStep: false,
   section: 'Probabilités',
