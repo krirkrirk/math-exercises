@@ -6,7 +6,6 @@ import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { SqrtNode } from '#root/tree/nodes/functions/sqrtNode';
 import { randint } from '../utils/random/randint';
-import { type } from 'os';
 
 export abstract class TriangleConstructor {
   static createRandomRightTriangle(r1 = 0, r2 = 5, name1 = 'A', name2 = 'B', name3 = 'C'): Triangle {
@@ -28,7 +27,7 @@ export abstract class TriangleConstructor {
   }
 }
 
-type GenerateCommandsProps = { angle?: string[]; showSideLabel?: boolean; showAngleValue?: boolean };
+type GenerateCommandsProps = { angle?: string; showSideLabel?: boolean; showAngleValue?: boolean };
 
 export class Triangle {
   vertexA: Point;
@@ -177,12 +176,17 @@ export class Triangle {
         `ShowLabel(alpha, false)`,
       );
 
-    if (angle !== undefined)
+    if (angle) {
+      const temp =
+        angle === this.vertexB.name
+          ? [this.vertexA.name, this.vertexB.name, this.vertexC.name]
+          : [this.vertexB.name, this.vertexC.name, this.vertexA.name];
       commands.push(
-        `be = Angle(${angle[0]}, ${angle[1]}, ${angle[2]}, Line(${angle[0]}, ${angle[1]}))`,
+        `be = Angle(${temp[0]}, ${temp[1]}, ${temp[2]}, Line(${temp[0]}, ${temp[1]}))`,
         `ShowLabel(be, false)`,
         `SetColor(be, "Red")`,
       );
+    }
 
     return commands;
   }

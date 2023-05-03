@@ -60,6 +60,9 @@ import { pythagoreCalcul } from './geometry/euclidean/pythagoreCalcul';
 import { pythagoreCalculC } from './geometry/euclidean/pythagoreCalcul copy';
 import { thales } from './geometry/euclidean/thales';
 import { thalesCalcul } from './geometry/euclidean/thalesCalcul';
+import { trigonometry } from './geometry/euclidean/trigonometry';
+import { trigonometryAngleCalcul } from './geometry/euclidean/trigonometryAngleCalcul';
+import { trigonometrySideCalcul } from './geometry/euclidean/trigonometrySideCalcul';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
 import { applyPercent } from './percent/applyPercent';
 import { averageEvolutionRate } from './percent/averageEvolutionRate';
@@ -215,6 +218,9 @@ export const exercises = [
   pythagoreCalcul,
   pythagoreC,
   pythagoreCalculC,
+  trigonometry,
+  trigonometryAngleCalcul,
+  trigonometrySideCalcul,
 
   /**
    * nv generateurs
