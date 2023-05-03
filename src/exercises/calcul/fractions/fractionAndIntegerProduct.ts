@@ -8,7 +8,7 @@ import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 export const fractionAndIntegerProduct: Exercise = {
   id: 'fractionAndIntegerProduct',
   connector: '=',
-  instruction: 'Calculer la forme irréductible :',
+  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
   label: "Produit d'un entier et d'une fraction",
   levels: ['4', '3', '2', '1'],
   isSingleStep: false,

@@ -9,12 +9,17 @@ export const probabilityTree: Exercise = {
   id: 'probabilityTree',
   connector: '=',
   instruction: '',
-  label: 'Calculs dans un arbre pondéré',
+  label: "Calculs de probabilités à l'aide d'un arbre pondéré",
   levels: ['1', '0'],
   isSingleStep: false,
   section: 'Probabilités',
   generator: (nb: number) => getDistinctQuestions(getProbabilityTree, nb),
 };
+
+function pgcd(a: number, b: number): number {
+  while (b) [a, b] = [b, a % b];
+  return a;
+}
 
 export function getProbabilityTree(): Question {
   const A = randint(2, 9);
@@ -80,12 +85,12 @@ export function getProbabilityTree(): Question {
     'Segment(B,BD)',
     'ShowAxes(false)',
     'ShowGrid(false)',
-    `Text("\\scriptsize${pA.toTex()}", (0.5, 2.5), true, true)`,
-    `Text("\\scriptsize${pA_C.toTex()}", (3, 4), true, true)`,
-    `Text("\\scriptsize${pA_D.toTex()}", (3.2, 1.5), true, true)`,
-    `Text("\\scriptsize${pB.toTex()}", (0.5, -1), true, true)`,
-    `Text("\\scriptsize${pB_C.toTex()}", (2.8, 0), true, true)`,
-    `Text("\\scriptsize${pB_D.toTex()}", (3, -2.5), true, true)`,
+    `Text("\\scriptsize${A / pgcd(A, A + B)}/${(A + B) / pgcd(A, A + B)}", (0.3, 2.1), true, true)`,
+    `Text("\\scriptsize${AC / pgcd(AC, AC + AD)}/${(AC + AD) / pgcd(AC, AC + AD)}", (2.8, 3.5), true, true)`,
+    `Text("\\scriptsize${AD / pgcd(AD, AC + AD)}/${(AC + AD) / pgcd(AD, AC + AD)}", (2.8, 1.4), true, true)`,
+    `Text("\\scriptsize${B / pgcd(B, A + B)}/${(A + B) / pgcd(B, A + B)}", (0.3, -1.2), true, true)`,
+    `Text("\\scriptsize${BC / pgcd(BC, BC + BD)}/${(BC + BD) / pgcd(BC, BC + BD)}", (2.8, -0.6), true, true)`,
+    `Text("\\scriptsize${BD / pgcd(BD, BC + BD)}/${(BC + BD) / pgcd(BD, BC + BD)}", (2.8, -2.5), true, true)`,
     'Text("A", (1.85 , 2.5))',
     'Text("B", (1.85 , -2.8))',
     'Text("C", (5.5 , 2.85))',

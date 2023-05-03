@@ -10,7 +10,7 @@ export const fractionToPercentToDecimal: Exercise = {
   id: 'fractionToPercentToDecimal',
   connector: '\\iff',
   instruction: '',
-  label: "Passer d'une écriture d'un nombre à une autre (décimale, fractionnaire, sous forme de pourcentage).",
+  label: "Passer d'une écriture d'un nombre à une autre",
   levels: ['2', '1'],
   section: 'Fractions',
   isSingleStep: false,
@@ -19,7 +19,7 @@ export const fractionToPercentToDecimal: Exercise = {
 
 export function getFractionToPercentToDecimal(): Question {
   const denominator = 2 ** randint(0, 5) * 5 ** randint(0, 5);
-  const numerator = randint(1, denominator);
+  const numerator = denominator !== 1 ? randint(1, denominator) : randint(1, 100);
 
   const fraction = new FractionNode(new NumberNode(numerator), new NumberNode(denominator));
   const decimal = numerator / denominator;
@@ -31,32 +31,32 @@ export function getFractionToPercentToDecimal(): Question {
 
   switch (rand) {
     case 1: {
-      instruction = `Convertir le nombre suivant $${decimal}$ en pourcentage`;
+      instruction = `Écrire le nombre $${decimal}$ sous forme de pourcentage.`;
       answer = `${percent}\\%`;
       break;
     }
     case 2: {
-      instruction = `Convertir le nombre suivant $${decimal}$ en fraction`;
+      instruction = `Écrire le nombre $${decimal}$ sous forme de fraction.`;
       answer = `${simplifyNode(fraction).toTex()}`;
       break;
     }
     case 3: {
-      instruction = `Convertir le nombre suivant $${percent}\\%$ en décimal`;
+      instruction = `Écrire le nombre $${percent}\\%$ sous forme décimale.`;
       answer = `${decimal}`;
       break;
     }
     case 4: {
-      instruction = `Convertir le nombre suivant $${percent}\\%$ en fraction`;
+      instruction = `Écrire le nombre $${percent}\\%$ sous forme de fraction.`;
       answer = `${simplifyNode(fraction).toTex()}`;
       break;
     }
     case 5: {
-      instruction = `Convertir le nombre suivant $${fraction.toTex()}$ en décimal`;
+      instruction = `Écrire le nombre $${fraction.toTex()}$ sous forme décimale.`;
       answer = `${decimal}`;
       break;
     }
     case 6: {
-      instruction = `Convertir le nombre suivant $${fraction.toTex()}$ en pourcentage`;
+      instruction = `Écrire le nombre $${fraction.toTex()}$ sous forme de pourcentage.`;
       answer = `${percent}\\%`;
       break;
     }
@@ -64,7 +64,7 @@ export function getFractionToPercentToDecimal(): Question {
 
   const question: Question = {
     instruction,
-    //startStatement: `${simplifyNode(fraction).toTex()}`,
+    //startStatement: `${numerator} et ${denominator}`,
     answer,
     keys: ['percent'],
   };
