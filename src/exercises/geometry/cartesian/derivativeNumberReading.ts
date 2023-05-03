@@ -38,7 +38,7 @@ export function getDerivativeNumberReading(): Question {
 
   const polynome = new Polynomial([d, c, b / 2, a / 3]);
 
-  const instruction = `Ci-dessous sont tracées la courbe de la fonction f et la tangente à cette courbe au point d'abscisse $${xA}$.$\\\\$ Déterminer le coefficient directeur de la tangente qui passe par ce point.`;
+  const instruction = `Ci-dessous sont tracées la courbe de la fonction $f$ et la tangente à cette courbe au point d'abscisse $${xA}$.$\\\\$ Déterminer le coefficient directeur de la tangente qui passe par ce point.`;
   const commands = [
     polynome.toString(),
     `g(x) = (${droite.a.toMathString()}) * x + (${droite.b.toMathString()})`,

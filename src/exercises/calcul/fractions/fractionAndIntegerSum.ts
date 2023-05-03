@@ -8,7 +8,7 @@ import { AddNode } from '#root/tree/nodes/operators/addNode';
 export const fractionAndIntegerSum: Exercise = {
   id: 'fractionAndIntegerSum',
   connector: '=',
-  instruction: 'Calculer la forme irréductible :',
+  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
   label: "Somme d'un entier et d'une fraction",
   levels: ['4', '3', '2', '1'],
   isSingleStep: false,

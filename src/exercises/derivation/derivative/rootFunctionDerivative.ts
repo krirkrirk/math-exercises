@@ -21,9 +21,9 @@ export function getRootFunctionDerivative(): Question {
   let instruction = `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =$ `;
   let answer = '';
 
-  if (a === 1) instruction += `$\\sqrt{x}$`;
-  else if (a === -1) instruction += `$-\\sqrt{x}$`;
-  else instruction += `$${a}\\sqrt{x}$`;
+  if (a === 1) instruction += `$\\sqrt{x}$.`;
+  else if (a === -1) instruction += `$-\\sqrt{x}$.`;
+  else instruction += `$${a}\\sqrt{x}$.`;
 
   if (a / 2 === round(a / 2, 0)) answer = `\\frac{${a / 2}}{\\sqrt{x}}`;
   else answer = `\\frac{${a}}{2\\sqrt{x}}`;

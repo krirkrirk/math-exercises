@@ -7,7 +7,7 @@ export const conditionalProbability: Exercise = {
   id: 'conditionalProbability',
   connector: '=',
   instruction: '',
-  label: 'Calcul de probabilité conditionnelle avec la formule',
+  label: 'Calcul de probabilité conditionnelle avec la formule de Bayes',
   levels: ['1', '0'],
   isSingleStep: false,
   section: 'Probabilités',
@@ -30,38 +30,56 @@ export function getConditionalProbability(): Question {
 
   switch (flip) {
     case 1: {
-      instruction += `$p(A) = ${pA / 100}, p(A \\cap B) = ${pAB / 100}$.$\\\\$Déterminer $p_A(B)$.`;
-      startStatement = `p_A(B)`;
+      instruction += `$P(A) = ${(pA / 100 + '').replace('.', ',')}\\ et\\ P(A \\cap B) = ${(pAB / 100 + '').replace(
+        '.',
+        ',',
+      )}$.$\\\\$Déterminer $P_A(B)$.`;
+      startStatement = `P_A(B)`;
       answer = `${pB_A}`;
       break;
     }
     case 2: {
-      instruction += `$p(B) = ${pB / 100}, p(B \\cap A) = ${pAB / 100}$.$\\\\$Déterminer $p_B(A)$.`;
-      startStatement = `p_B(A)`;
+      instruction += `$P(B) = ${(pB / 100 + '').replace('.', ',')}\\ et\\ P(B \\cap A) = ${(pAB / 100 + '').replace(
+        '.',
+        ',',
+      )}$.$\\\\$Déterminer $P_B(A)$.`;
+      startStatement = `P_B(A)`;
       answer = `${pA_B}`;
       break;
     }
     case 3: {
-      instruction += `$p(A) = ${pA / 100}, p_A(B) = ${pB_A}$.$\\\\$Déterminer $p(A \\cap B)$.`;
-      startStatement = `p(A \\cap B)`;
+      instruction += `$P(A) = ${(pA / 100 + '').replace('.', ',')}\\ et\\ P_A(B) = ${(pB_A + '').replace(
+        '.',
+        ',',
+      )}$.$\\\\$Déterminer $P(A \\cap B)$.`;
+      startStatement = `P(A \\cap B)`;
       answer = `${pAB / 100}`;
       break;
     }
     case 4: {
-      instruction += `$p(B) = ${pB / 100}, p_B(A) = ${pA_B}$.$\\\\$Déterminer $p(A \\cap B)$.`;
-      startStatement = `p(A \\cap B)`;
+      instruction += `$P(B) = ${(pB / 100 + '').replace('.', ',')}\\ et\\ P_B(A) = ${(pA_B + '').replace(
+        '.',
+        ',',
+      )}$.$\\\\$Déterminer $P(A \\cap B)$.`;
+      startStatement = `P(A \\cap B)`;
       answer = `${pAB / 100}`;
       break;
     }
     case 5: {
-      instruction += `$p(A \\cap B) = ${pAB / 100}, p_B(A) = ${pA_B}$.$\\\\$Déterminer $p(B)$.`;
-      startStatement = `p(B)`;
+      instruction += `$P(A \\cap B) = ${(pAB / 100 + '').replace('.', ',')}\\ et\\ P_B(A) = ${(pA_B + '').replace(
+        '.',
+        ',',
+      )}$.$\\\\$Déterminer $P(B)$.`;
+      startStatement = `P(B)`;
       answer = `${pB / 100}`;
       break;
     }
     case 6: {
-      instruction += `$p(A \\cap B) = ${pAB / 100}, p_A(B) = ${pB_A}$.$\\\\$Déterminer $p(A)$.`;
-      startStatement = `p(A)`;
+      instruction += `$P(A \\cap B) = ${(pAB / 100 + '').replace('.', ',')}\\ et\\ P_A(B) = ${(pB_A + '').replace(
+        '.',
+        ',',
+      )}$.$\\\\$Déterminer $P(A)$.`;
+      startStatement = `P(A)`;
       answer = `${pA / 100}`;
       break;
     }

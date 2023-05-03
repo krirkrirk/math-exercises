@@ -16,7 +16,7 @@ export const equationType3Exercise: Exercise = {
 
   connector: '\\iff',
   instruction: 'Résoudre : ',
-  label: 'Equations $ax+b=c$',
+  label: 'Équations $ax+b=c$',
   levels: ['4', '3', '2'],
   section: 'Équations',
   isSingleStep: false,

@@ -6,7 +6,7 @@ import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 export const fractionsProduct: Exercise = {
   id: 'fractionsProduct',
   connector: '=',
-  instruction: 'Calculer la forme irréductible :',
+  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
   label: 'Produits de fractions',
   levels: ['4', '3', '2', '1'],
   section: 'Fractions',

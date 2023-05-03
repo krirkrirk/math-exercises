@@ -9,7 +9,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 export const fractionAndIntegerDivision: Exercise = {
   id: 'fractionAndIntegerDivision',
   connector: '=',
-  instruction: 'Calculer la forme irréductible :',
+  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
   label: "Division d'un entier et d'une fraction",
   levels: ['4', '3', '2', '1'],
   isSingleStep: false,

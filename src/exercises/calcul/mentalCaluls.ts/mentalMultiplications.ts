@@ -9,8 +9,8 @@ import { coinFlip } from '#root/utils/coinFlip';
 export const mentalMultiplications: Exercise = {
   id: 'mentalMultiplications',
   connector: '=',
-  instruction: 'Calculer :',
-  label: 'Effectuer mentalement des calculs de multiplications simples',
+  instruction: 'Calculer.',
+  label: 'Effectuer mentalement des multiplications simples',
   levels: ['6', '5', '4', '3', '2', '1', '0'],
   section: 'Calculs',
   isSingleStep: true,

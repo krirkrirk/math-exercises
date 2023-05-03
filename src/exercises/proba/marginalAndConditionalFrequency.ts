@@ -1,5 +1,7 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { simplifyNode } from '#root/tree/parsers/simplify';
 import { Exercise, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
@@ -50,7 +52,7 @@ export function getMarginalAndConditionalFrequency(): Question {
     'f_B(D)',
   ];
 
-  let Calculs = [
+  const Calculs = [
     (x1 + x3) / x,
     (x2 + x4) / x,
     (x1 + x2) / x,
@@ -65,7 +67,7 @@ export function getMarginalAndConditionalFrequency(): Question {
     x4 / (x2 + x4),
   ];
 
-  Calculs = Calculs.map((el) => round(el, 2));
+  const calculsNodes = Calculs.map((el) => simplifyNode(new NumberNode(el)));
 
   const question: Question = {
     instruction: `On considère le tableau d'effectifs suivant : 
@@ -77,7 +79,7 @@ export function getMarginalAndConditionalFrequency(): Question {
 
 Calculer la fréquence ${freqString[rand]}.`,
     startStatement: `${frequences[rand]}`,
-    answer: Calculs[rand].toString(),
+    answer: calculsNodes[rand].toTex(),
     keys: ['f', 'cap', 'underscore'],
   };
 
