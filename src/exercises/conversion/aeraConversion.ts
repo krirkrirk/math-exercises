@@ -19,11 +19,16 @@ export function getAeraConversion(): Question {
   const units = ['mm^2', 'cm^2', 'dm^2', 'm^2', 'dam^2', 'hm^2', 'km^2'];
 
   const randomUnitIndex = randint(0, 7);
-  const randomUnitInstructionIndex = randint(0, 7, [randomUnitIndex]);
+  const randomUnitInstructionIndex = randint(
+    // cette manip a pour but d'éviter des conversion de type km² --> cm² ou le contraire (chiffre trop grand/petit)
+    randomUnitIndex - 2 < 0 ? 0 : randomUnitIndex - 2,
+    randomUnitIndex + 2 > 7 ? 7 : randomUnitIndex + 3,
+    [randomUnitIndex],
+  );
   const randomAera = DecimalConstructor.random(0, 1000, randint(0, 4));
 
   const question: Question = {
-    instruction: `$${randomAera.value}$ ${units[randomUnitIndex]} = ... ${units[randomUnitInstructionIndex]}`,
+    instruction: `$${randomAera.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
     answer: randomAera.multiplyByPowerOfTen(2 * (randomUnitIndex - randomUnitInstructionIndex)).value + '',
     keys: [],
   };
