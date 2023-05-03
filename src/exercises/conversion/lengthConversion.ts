@@ -23,7 +23,7 @@ export function getLengthConversion(): Question {
   const randomlength = DecimalConstructor.random(0, 1000, randint(0, 4));
 
   const question: Question = {
-    instruction: `$${randomlength.value}$ ${units[randomUnitIndex]} = ... ${units[randomUnitInstructionIndex]}`,
+    instruction: `$${randomlength.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
     answer: randomlength.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '',
     keys: [],
   };

@@ -23,7 +23,7 @@ export function getMassConversion(): Question {
   const randomMass = DecimalConstructor.random(0, 1000, randint(0, 4));
 
   const question: Question = {
-    instruction: `$${randomMass.value}$ ${units[randomUnitIndex]} = ... ${units[randomUnitInstructionIndex]}`,
+    instruction: `$${randomMass.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
     answer: randomMass.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '',
     keys: [],
   };

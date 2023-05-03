@@ -23,7 +23,7 @@ export function getCapacityConversion(): Question {
   const randomCapacity = DecimalConstructor.random(0, 1000, randint(0, 4));
 
   const question: Question = {
-    instruction: `$${randomCapacity.value}$ ${units[randomUnitIndex]} = ... ${units[randomUnitInstructionIndex]}`,
+    instruction: `$${randomCapacity.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
     answer: randomCapacity.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '',
     keys: [],
   };
