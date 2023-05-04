@@ -39,27 +39,15 @@ export function getTrigonometryAngleCalcul(): Question {
       ? Math.round((Math.acos(sideLengths[0] / sideLengths[2]) * 180) / Math.PI)
       : Math.round((Math.acos(sideLengths[1] / sideLengths[2]) * 180) / Math.PI);
 
-  const commands = [
-    ...triangle.generateCommands({ angle: angle[randAngle] }),
-    `ShowAxes(false)`,
-    `ShowGrid(false)`,
-    `ShowLabel(${sides[randside]}, true)`,
-    `SetCaption(${sides[randside]}, "${sideLengths[randside]} cm")`,
-    `ShowLabel(${sides[randside2]}, true)`,
-    `SetCaption(${sides[randside2]}, "${sideLengths[randside2]} cm")`,
-    `ShowLabel(be, true)`,
-    `SetCaption(be, "?")`,
-  ];
-
   const question: Question = {
-    instruction: `Le triangle ${triangle.getTriangleName()} rectanble en ${triangle.getRightAngle()} est tel que ${
+    instruction: `Le triangle ${triangle.getTriangleName()} rectangle en ${triangle.getRightAngle()} est tel que ${
       sides[randside]
     } = $${sideLengths[randside]}$ cm et ${sides[randside2]} = $${
       sideLengths[randside2]
     }$ cm.$\\\\$ Calculer $\\widehat{${angle[randAngle]}}$ à 1° près.`,
     answer: answer + '°',
     keys: [...vertices, 'equal'],
-    commands,
+    commands: [...triangle.generateCommands({ angle: angle[randAngle], colorAngle: 'Red' })],
     coords: triangle.generateCoords(),
   };
 

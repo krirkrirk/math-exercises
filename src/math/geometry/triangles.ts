@@ -27,7 +27,15 @@ export abstract class TriangleConstructor {
   }
 }
 
-type GenerateCommandsProps = { angle?: string; showSideLabel?: boolean; showAngleValue?: boolean };
+type GenerateCommandsProps = {
+  angle?: string;
+  colorAngle?: string;
+  sideLabels?: string[];
+  SetCaption?: string[];
+  sideAndColor?: string[];
+  showAxes?: boolean;
+  showGrid?: boolean;
+};
 
 export class Triangle {
   vertexA: Point;
@@ -153,7 +161,15 @@ export class Triangle {
     return '';
   }
 
-  generateCommands({ angle }: GenerateCommandsProps): string[] {
+  generateCommands({
+    angle,
+    colorAngle,
+    sideLabels,
+    SetCaption,
+    sideAndColor,
+    showAxes,
+    showGrid,
+  }: GenerateCommandsProps): string[] {
     let commands = [
       `${this.vertexA.name} = Point({${this.vertexA.getXnumber()}, ${this.vertexA.getYnumber()}})`,
       `${this.vertexB.name} = Point({${this.vertexB.getXnumber()}, ${this.vertexB.getYnumber()}})`,
@@ -167,7 +183,8 @@ export class Triangle {
       `ShowLabel(${this.getSideCName()}, false)`,
       `ShowLabel(${this.getSideBName()}, false)`,
       `ShowLabel(${this.getSideBName()}, false)`,
-      // `If(${this.isRight()})`
+      `ShowAxes(${showAxes ?? false})`,
+      `ShowGrid(${showGrid ?? false})`,
     ];
 
     if (this.isRight())
@@ -184,9 +201,16 @@ export class Triangle {
       commands.push(
         `be = Angle(${temp[0]}, ${temp[1]}, ${temp[2]}, Line(${temp[0]}, ${temp[1]}))`,
         `ShowLabel(be, false)`,
-        `SetColor(be, "Red")`,
+        `SetColor(be, "${colorAngle}")`,
       );
     }
+
+    if (sideLabels)
+      for (let i = 0; i < sideLabels.length; i++) {
+        commands.push(`ShowLabel(${sideLabels[i]}, true)`);
+        if (SetCaption) commands.push(`SetCaption(${sideLabels[i]}, "${SetCaption[i]}")`);
+      }
+    if (sideAndColor) commands.push(`SetColor(${sideAndColor[0]}, "${sideAndColor[1]}")`);
 
     return commands;
   }

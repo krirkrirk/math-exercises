@@ -40,17 +40,13 @@ export function getTrigonometrySideCalcul(): Question {
   ];
 
   const commands = [
-    ...triangle.generateCommands({ angle: angle[randAngle] }),
-    `ShowAxes(false)`,
-    `ShowGrid(false)`,
-    `ShowLabel(${sides[randside]}, true)`,
-    `SetCaption(${sides[randside]}, "${sideLengths[randside]} cm")`,
-    `ShowLabel(${angle[randAngle]}, true)`,
-    `SetCaption(${angle[randAngle]}, "${angleValue[randAngle]}°")`,
-    `ShowLabel(${sides[randsideQuestion]}, true)`,
-    `SetCaption(${sides[randsideQuestion]}, "?")`,
-    `SetColor(${sides[randsideQuestion]}, "Red")`,
-    `SetColor(be, "black")`,
+    ...triangle.generateCommands({
+      angle: angle[randAngle],
+      colorAngle: 'Black',
+      sideLabels: [sides[randsideQuestion]],
+      SetCaption: ['?'],
+      sideAndColor: [sides[randsideQuestion], 'Red'],
+    }),
   ];
 
   const question: Question = {

@@ -48,13 +48,11 @@ export function getTrigonometry(): Question {
       quotient = [''];
   }
 
-  const commands = [...triangle.generateCommands({ angle: angle[randAngle] }), `ShowAxes(false)`, `ShowGrid(false)`];
-
   const question: Question = {
     instruction: `À quel quotient est égal le ${trigo[randTrigo]} de l'angle $\\widehat{${angle[randAngle]}}$?`,
     answer: quotient[randTrigo],
     keys: [...vertices, 'equal'],
-    commands,
+    commands: [...triangle.generateCommands({ angle: angle[randAngle], colorAngle: 'Red' })],
     coords: triangle.generateCoords(),
   };
 
