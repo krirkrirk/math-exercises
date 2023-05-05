@@ -52,7 +52,7 @@ export class Droite {
   }
 
   toPolynome(): string {
-    const polynome = new Polynomial([parseFloat(this.b.toMathString()), parseFloat(this.a.toMathString())], 'x');
+    const polynome = new Polynomial([evaluate(this.b.toMathString()), evaluate(this.a.toMathString())], 'x');
     return polynome.toTex();
   }
 
