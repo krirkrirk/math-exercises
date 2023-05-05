@@ -52,6 +52,10 @@ export class Point {
     const dy = this.getYnumber() - B.getYnumber();
     return Math.sqrt(dx ** 2 + dy ** 2);
   }
+
+  equalTo(B: Point): boolean {
+    return this.x === B.x && this.y === B.y;
+  }
 }
 
 /**

@@ -25,6 +25,26 @@ export abstract class TriangleConstructor {
     } while (!d1 || !d2 || d1 / d2 < r1 || d1 / d2 > r2);
     return new Triangle(pointA, pointB, pointC);
   }
+
+  static createRandomTriangle(a1 = 0.69, a2 = 1.5, name1 = 'A', name2 = 'B', name3 = 'C'): Triangle {
+    let pointA, pointB, pointC, d1: number, d2: number, triangle;
+    do {
+      pointA = new Point(name1, new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
+      pointB = new Point(name2, new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
+      pointC = new Point(name3, new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
+      triangle = new Triangle(pointA, pointB, pointC);
+    } while (
+      triangle.isRight() ||
+      pointA.distanceTo(pointB) === 0 ||
+      pointB.distanceTo(pointC) === 0 ||
+      pointC.distanceTo(pointA) === 0 ||
+      triangle.getAngleA() < a1 ||
+      triangle.getAngleA() > a2 ||
+      triangle.getAngleB() < a1 ||
+      triangle.getAngleB() > a2
+    );
+    return new Triangle(pointA, pointB, pointC);
+  }
 }
 
 type GenerateCommandsProps = {
@@ -106,15 +126,15 @@ export class Triangle {
 
   getAngleB(): number {
     return Math.acos(
-      (this.getSideBnumber() ** 2 + this.getSideCnumber() ** 2 - this.getSideAnumber() ** 2) /
-        (2 * this.getSideBnumber() * this.getSideCnumber()),
+      (this.getSideAnumber() ** 2 + this.getSideCnumber() ** 2 - this.getSideBnumber() ** 2) /
+        (2 * this.getSideAnumber() * this.getSideCnumber()),
     );
   }
 
   getAngleC(): number {
     return Math.acos(
-      (this.getSideBnumber() ** 2 + this.getSideCnumber() ** 2 - this.getSideAnumber() ** 2) /
-        (2 * this.getSideBnumber() * this.getSideCnumber()),
+      (this.getSideAnumber() ** 2 + this.getSideBnumber() ** 2 - this.getSideCnumber() ** 2) /
+        (2 * this.getSideAnumber() * this.getSideBnumber()),
     );
   }
 
