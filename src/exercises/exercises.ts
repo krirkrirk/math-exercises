@@ -14,6 +14,7 @@ import { mentalMultiplications } from './calcul/mentalCaluls.ts/mentalMultiplica
 import { mentalPercentage } from './calcul/mentalCaluls.ts/mentalPercentage';
 import { operationsPriorities } from './calcul/operations/operationsPriorities';
 import { operationsPrioritiesWithoutRelative } from './calcul/operations/operationsPrioritiesWithoutRelative';
+import { primeNumbers } from './calcul/arithmetics/primeNumbers';
 import {
   allRoundings,
   roundToCentieme,
@@ -214,4 +215,5 @@ export const exercises = [
   aeraConversion,
   volumeConversion,
   volumeCapacityConversion,
+  primeNumbers,
 ];
