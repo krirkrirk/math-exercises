@@ -53,6 +53,8 @@ import { thirdDegreeDerivative } from './derivation/derivative/thirdDegreeDeriva
 import { usualDerivative } from './derivation/derivative/usualderivative';
 import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberReading';
 import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
+import { leadingCoefficientCalculV1 } from './geometry/cartesian/leadingCoefficientCalculV1';
+import { leadingCoefficientCalculV2 } from './geometry/cartesian/leadingCoefficientCalculV2';
 import { midpoint } from './geometry/cartesian/midpoint';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
 import { applyPercent } from './percent/applyPercent';
@@ -214,4 +216,6 @@ export const exercises = [
   aeraConversion,
   volumeConversion,
   volumeCapacityConversion,
+  leadingCoefficientCalculV1,
+  leadingCoefficientCalculV2,
 ];
