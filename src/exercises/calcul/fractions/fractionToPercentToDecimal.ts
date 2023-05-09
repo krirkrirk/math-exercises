@@ -19,7 +19,7 @@ export const fractionToPercentToDecimal: Exercise = {
 
 export function getFractionToPercentToDecimal(): Question {
   const denominator = 2 ** randint(0, 5) * 5 ** randint(0, 5);
-  const numerator = randint(1, denominator);
+  const numerator = denominator !== 1 ? randint(1, denominator) : randint(1, 100);
 
   const fraction = new FractionNode(new NumberNode(numerator), new NumberNode(denominator));
   const decimal = numerator / denominator;
@@ -64,7 +64,7 @@ export function getFractionToPercentToDecimal(): Question {
 
   const question: Question = {
     instruction,
-    //startStatement: `${simplifyNode(fraction).toTex()}`,
+    //startStatement: `${numerator} et ${denominator}`,
     answer,
     keys: ['percent'],
   };

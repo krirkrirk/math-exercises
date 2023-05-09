@@ -13,6 +13,7 @@ export interface Question {
   keys?: string[];
   commands?: string[];
   coords?: number[];
+  options?: any;
 }
 
 export interface Exercise {

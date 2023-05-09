@@ -20,9 +20,13 @@ export function getVolumeCapacityConversion(): Question {
   const volumeUnits = ['mm^3', 'cm^3', 'dm^3', 'm^3', 'dam^3', 'hm^3', 'km^3'];
   const capacityUnits = ['mL', 'cL', 'dL', 'L', 'daL', 'hL', 'kL'];
 
-  const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(0, 7);
-  let random = DecimalConstructor.random(0, 1000, randint(0, 4));
+  const randomUnitIndex = randint(
+    // cette manip a pour but d'éviter des conversion avec des nombres trop grand/petit
+    randomUnitInstructionIndex - 1 < 0 ? 0 : randomUnitInstructionIndex - 1,
+    randomUnitInstructionIndex + 2 > 7 ? 7 : randomUnitInstructionIndex + 2,
+  );
+  const random = DecimalConstructor.random(0, 1000, randint(0, 4));
 
   let instructionUnit;
   let AsnwerUnit;
@@ -39,7 +43,7 @@ export function getVolumeCapacityConversion(): Question {
   }
 
   const question: Question = {
-    instruction: `$${random.value}$ ${instructionUnit} = ... ${AsnwerUnit}`,
+    instruction: `$${random.value}$ $${instructionUnit}$ = ... $${AsnwerUnit}$`,
     answer,
     keys: [],
   };

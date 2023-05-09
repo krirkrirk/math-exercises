@@ -16,6 +16,11 @@ export const probabilityTree: Exercise = {
   generator: (nb: number) => getDistinctQuestions(getProbabilityTree, nb),
 };
 
+function pgcd(a: number, b: number): number {
+  while (b) [a, b] = [b, a % b];
+  return a;
+}
+
 export function getProbabilityTree(): Question {
   const A = randint(2, 9);
   const B = randint(2, 10 - A);
@@ -80,12 +85,12 @@ export function getProbabilityTree(): Question {
     'Segment(B,BD)',
     'ShowAxes(false)',
     'ShowGrid(false)',
-    `Text("\\scriptsize${A}/${A + B}", (0.3, 2.1), true, true)`,
-    `Text("\\scriptsize${AC}/${AC + AD}", (2.8, 3.5), true, true)`,
-    `Text("\\scriptsize${AD}/${AC + AD}", (2.8, 1.4), true, true)`,
-    `Text("\\scriptsize${B}/${A + B}", (0.3, -1.2), true, true)`,
-    `Text("\\scriptsize${BC}/${BC + BD}", (2.8, -0.6), true, true)`,
-    `Text("\\scriptsize${BD}/${BC + BD}", (2.8, -2.5), true, true)`,
+    `Text("\\scriptsize${A / pgcd(A, A + B)}/${(A + B) / pgcd(A, A + B)}", (0.3, 2.1), true, true)`,
+    `Text("\\scriptsize${AC / pgcd(AC, AC + AD)}/${(AC + AD) / pgcd(AC, AC + AD)}", (2.8, 3.5), true, true)`,
+    `Text("\\scriptsize${AD / pgcd(AD, AC + AD)}/${(AC + AD) / pgcd(AD, AC + AD)}", (2.8, 1.4), true, true)`,
+    `Text("\\scriptsize${B / pgcd(B, A + B)}/${(A + B) / pgcd(B, A + B)}", (0.3, -1.2), true, true)`,
+    `Text("\\scriptsize${BC / pgcd(BC, BC + BD)}/${(BC + BD) / pgcd(BC, BC + BD)}", (2.8, -0.6), true, true)`,
+    `Text("\\scriptsize${BD / pgcd(BD, BC + BD)}/${(BC + BD) / pgcd(BD, BC + BD)}", (2.8, -2.5), true, true)`,
     'Text("A", (1.85 , 2.5))',
     'Text("B", (1.85 , -2.8))',
     'Text("C", (5.5 , 2.85))',
