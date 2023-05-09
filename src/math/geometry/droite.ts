@@ -5,9 +5,10 @@ import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
-import { evaluate, round } from 'mathjs';
+import { evaluate } from 'mathjs';
 import { Point } from './point';
 import { Polynomial } from '../polynomials/polynomial';
+import { round } from '../utils/round';
 
 export abstract class DroiteConstructor {
   static fromTwoPoints(A: Point, B: Point, name = 'd'): Droite {

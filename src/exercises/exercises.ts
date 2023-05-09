@@ -58,6 +58,15 @@ import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
 import { leadingCoefficientCalculV1 } from './geometry/cartesian/leadingCoefficientCalculV1';
 import { leadingCoefficientCalculV2 } from './geometry/cartesian/leadingCoefficientCalculV2';
 import { midpoint } from './geometry/cartesian/midpoint';
+import { triangleArea } from './geometry/euclidean/TriangleArea';
+import { pythagore } from './geometry/euclidean/pythagore';
+import { pythagoreCalcul } from './geometry/euclidean/pythagoreCalcul';
+import { rightTriangleArea } from './geometry/euclidean/rightTriangleArea';
+import { thales } from './geometry/euclidean/thales';
+import { thalesCalcul } from './geometry/euclidean/thalesCalcul';
+import { trigonometry } from './geometry/euclidean/trigonometry';
+import { trigonometryAngleCalcul } from './geometry/euclidean/trigonometryAngleCalcul';
+import { trigonometrySideCalcul } from './geometry/euclidean/trigonometrySideCalcul';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
 import { applyPercent } from './percent/applyPercent';
 import { averageEvolutionRate } from './percent/averageEvolutionRate';
@@ -207,6 +216,15 @@ export const exercises = [
   mentalMultiplications,
   mentalDivisions,
   mentalPercentage,
+  thales,
+  thalesCalcul,
+  pythagore,
+  pythagoreCalcul,
+  trigonometry,
+  trigonometryAngleCalcul,
+  trigonometrySideCalcul,
+  rightTriangleArea,
+  triangleArea,
 
   /**
    * nv generateurs
