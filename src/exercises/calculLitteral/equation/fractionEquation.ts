@@ -10,12 +10,12 @@ export const fractionEquation: Exercise = {
   id: 'fractionEquation',
   connector: '\\iff',
   instruction: 'Résoudre :',
-  label: 'Résoudre un quotient nul',
+  label: 'Résoudre une équation quotient nul',
   levels: ['2', '1'],
   section: 'Équations',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionEquation, nb),
-  keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou'],
+  keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou', 'emptyset'],
 };
 
 export function getFractionEquation(): Question {
@@ -37,7 +37,7 @@ export function getFractionEquation(): Question {
   const question: Question = {
     startStatement: `\\frac{${polynome1.toTex()}}{${polynome2.toTex()}} = 0`,
     answer,
-    keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou'],
+    keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou', 'emptyset'],
   };
 
   return question;
