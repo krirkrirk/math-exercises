@@ -9,7 +9,7 @@ export const leadingCoefficientCalculV2: Exercise = {
   id: 'leadingCoefficientCalculV2',
   connector: '=',
   instruction: '',
-  label: "Coefficient direfteur à l'aide de deux points",
+  label: "Coefficient directeur à l'aide de deux points",
   levels: ['3', '2', '1'],
   isSingleStep: false,
   section: 'Droites',
