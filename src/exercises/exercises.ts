@@ -236,7 +236,6 @@ export const exercises = [
   aeraConversion,
   volumeConversion,
   volumeCapacityConversion,
-  equationsProd,
   multiplicationEquation,
   fractionEquation,
   leadingCoefficientCalculV1,
