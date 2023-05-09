@@ -2,7 +2,8 @@ import { Exercise, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
 import { randint } from '#root/math/utils/random/randint';
-import { round } from '#root/math/utils/round';
+import { coinFlip } from '#root/utils/coinFlip';
+import { shuffle } from '#root/utils/shuffle';
 
 export const pythagoreCalcul: Exercise = {
   id: 'pythagoreCalcul',
@@ -20,48 +21,48 @@ export function getPythagoreCalcul(): Question {
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i));
 
-  const triangle = TriangleConstructor.createRandomRightTriangle(0.7, 1.3, ...vertices);
+  const triangle = TriangleConstructor.createRandomRightTriangle({ minRapport: 0.7, maxRapport: 1.3, names: vertices });
 
   const sides = [triangle.getSideCName(), triangle.getSideBName(), triangle.getSideAName()];
 
   const sideLengths = [triangle.getSideCnumber(), triangle.getSideBnumber(), triangle.getSideAnumber()].map((el) =>
-    round(el / 2, 0),
+    Math.round(el / 2),
   );
 
-  const rand = randint(0, 3); // valeurs possible : 0 1 2
-  const rand2 = randint(0, 3, [rand]); // si rand = 0, valeurs possible 1 2
-  const rand3 = randint(0, 3, [rand, rand2]); // valeurs possibles, c'est uniquement ce qui reste des 3 valeurs, une seul valeur possible
-
+  const zeroOrOne = shuffle([0, 1]);
+  const randoms = coinFlip() ? [...zeroOrOne, 2] : [2, ...zeroOrOne];
+  // le but est d'avoir une chance sur 2 d'avoir un hépoténus et une 1 chance sur 2 d'avoir un a des 2 autres cote
   let answer;
 
-  if (rand3 === 2) {
-    // cas de l'hypoténuse
+  if (randoms[2] === 2) {
+    // cas de l'hypoténus
     answer = Math.hypot(sideLengths[0], sideLengths[1]);
     answer = Math.round(answer) === answer ? answer : `\\sqrt{${sideLengths[0] ** 2 + sideLengths[1] ** 2}}`;
   } else {
     // les deux autres cotés
-    answer = Math.sqrt(Math.abs(sideLengths[rand] ** 2 - sideLengths[rand2] ** 2));
+    answer = Math.sqrt(Math.abs(sideLengths[randoms[0]] ** 2 - sideLengths[randoms[1]] ** 2));
     answer =
-      Math.round(answer) === answer ? answer : `\\sqrt{${Math.abs(sideLengths[rand] ** 2 - sideLengths[rand2] ** 2)}}`;
+      Math.round(answer) === answer
+        ? answer
+        : `\\sqrt{${Math.abs(sideLengths[randoms[0]] ** 2 - sideLengths[randoms[1]] ** 2)}}`;
   }
 
   const commands = [
     ...triangle.generateCommands({
-      sideLabels: [...sides, sides[rand3]],
-      SetCaption: [...sideLengths.map((el) => el + ''), '?'],
-      sideAndColor: [sides[rand3], 'Red'],
+      showLabels: [...sides, sides[randoms[2]]],
+      setCaptions: [...sideLengths.map((el) => el + ''), '?'],
+      highlightedSide: sides[randoms[2]],
     }),
   ];
 
   const question: Question = {
-    instruction: `Dans le triangle ${triangle.getTriangleName()} ci-dessous rectangle en ${triangle.getRightAngle()}, sachant que ${
-      sides[rand]
-    } = $${sideLengths[rand]}$ et que ${sides[rand2]} = $${sideLengths[rand2]}$.$\\\\$Calculer la longueur exacte ${
-      sides[rand3]
-    }`,
-    startStatement: `${sides[rand3]}`,
+    instruction: `Dans le triangle ${triangle.getTriangleName()} ci-dessous rectangle en ${triangle.getRightAngle()}, on sait que ${
+      sides[randoms[0]]
+    } = $${sideLengths[randoms[0]]}$ et que ${sides[randoms[1]]} = $${
+      sideLengths[randoms[1]]
+    }$.$\\\\$Calculer la longueur exacte ${sides[randoms[2]]}`,
     answer: answer + '',
-    keys: [],
+    keys: [...vertices, 'equal'],
     commands,
     coords: triangle.generateCoords(),
   };

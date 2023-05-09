@@ -8,7 +8,7 @@ export const trigonometrySideCalcul: Exercise = {
   id: 'trigonometrySideCalcul',
   connector: '=',
   instruction: '',
-  label: 'Calculer une longueur dans un triangle rectangle',
+  label: 'Utiliser la trigonométrie pour calculer un côté',
   levels: ['4', '3', '2'],
   isSingleStep: false,
   section: 'Géométrie euclidienne',
@@ -20,7 +20,7 @@ export function getTrigonometrySideCalcul(): Question {
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i));
 
-  const triangle = TriangleConstructor.createRandomRightTriangle(0.5, 1.5, ...vertices);
+  const triangle = TriangleConstructor.createRandomRightTriangle({ minRapport: 0.5, maxRapport: 1.5, names: vertices });
 
   const sides = [triangle.getSideCName(), triangle.getSideBName(), triangle.getSideAName()];
 
@@ -41,22 +41,22 @@ export function getTrigonometrySideCalcul(): Question {
 
   const commands = [
     ...triangle.generateCommands({
-      angle: angle[randAngle],
-      colorAngle: 'Black',
-      sideLabels: [sides[randsideQuestion]],
-      SetCaption: ['?'],
-      sideAndColor: [sides[randsideQuestion], 'Red'],
+      highlightedAngle: angle[randAngle],
+      colorHighlightedAngle: 'Black',
+      showLabels: [sides[randsideQuestion]],
+      setCaptions: ['?'],
+      highlightedSide: sides[randsideQuestion],
     }),
   ];
 
   const question: Question = {
-    instruction: `Le triangle ${triangle.getTriangleName()} rectanble en ${triangle.getRightAngle()} tel que ${
+    instruction: `Le triangle ${triangle.getTriangleName()} rectangle en ${triangle.getRightAngle()} tel que ${
       sides[randside]
     } = $${sideLengths[randside]}$ cm et $\\widehat{${angle[randAngle]}}$ = $${
       angleValue[randAngle]
     }$°.$\\\\$ Calculer ${sides[randsideQuestion]} à $0,1$ cm près.`,
     answer: `${round(sideLengths[randsideQuestion], 1)}`,
-    keys: [...vertices, 'equal'],
+    keys: [...vertices, 'equal', '°', 'cos', 'sin', 'tan', 'arccos', 'arcsin', 'arctan'],
     commands,
     coords: triangle.generateCoords(),
   };

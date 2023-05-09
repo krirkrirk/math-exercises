@@ -54,7 +54,7 @@ import { usualDerivative } from './derivation/derivative/usualderivative';
 import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberReading';
 import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
 import { midpoint } from './geometry/cartesian/midpoint';
-import { TriangleArea } from './geometry/euclidean/TriangleArea';
+import { triangleArea } from './geometry/euclidean/TriangleArea';
 import { pythagore } from './geometry/euclidean/pythagore';
 import { pythagoreCalcul } from './geometry/euclidean/pythagoreCalcul';
 import { rightTriangleArea } from './geometry/euclidean/rightTriangleArea';
@@ -220,7 +220,7 @@ export const exercises = [
   trigonometryAngleCalcul,
   trigonometrySideCalcul,
   rightTriangleArea,
-  TriangleArea,
+  triangleArea,
 
   /**
    * nv generateurs

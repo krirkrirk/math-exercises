@@ -19,9 +19,9 @@ export function getTrigonometry(): Question {
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i));
 
-  const triangle = TriangleConstructor.createRandomRightTriangle(0.7, 1.3, ...vertices);
+  const triangle = TriangleConstructor.createRandomRightTriangle({ minRapport: 0.7, maxRapport: 1.3, names: vertices });
 
-  const trigo = ['cosinus', 'sinus', 'tangente'];
+  const trigo = ['le cosinus', 'le sinus', 'la tangente'];
   const randTrigo = randint(0, 3);
 
   const angle = [triangle.vertexB.name, triangle.vertexC.name];
@@ -49,10 +49,10 @@ export function getTrigonometry(): Question {
   }
 
   const question: Question = {
-    instruction: `À quel quotient est égal le ${trigo[randTrigo]} de l'angle $\\widehat{${angle[randAngle]}}$?`,
+    instruction: `À quel quotient est égal ${trigo[randTrigo]} de l'angle $\\widehat{${angle[randAngle]}}$?`,
     answer: quotient[randTrigo],
     keys: [...vertices, 'equal'],
-    commands: [...triangle.generateCommands({ angle: angle[randAngle], colorAngle: 'Red' })],
+    commands: [...triangle.generateCommands({ highlightedAngle: angle[randAngle] })],
     coords: triangle.generateCoords(),
   };
 

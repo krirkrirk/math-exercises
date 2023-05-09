@@ -54,7 +54,7 @@ export class Point {
   }
 
   equalTo(B: Point): boolean {
-    return this.x === B.x && this.y === B.y;
+    return this.getXnumber() === B.getXnumber() && this.getYnumber() === B.getYnumber();
   }
 }
 

@@ -8,51 +8,52 @@ import { SqrtNode } from '#root/tree/nodes/functions/sqrtNode';
 import { randint } from '../utils/random/randint';
 
 export abstract class TriangleConstructor {
-  static createRandomRightTriangle(r1 = 0, r2 = 5, name1 = 'A', name2 = 'B', name3 = 'C'): Triangle {
+  static createRandomRightTriangle({ minRapport = 0, maxRapport = 5, names = ['A', 'B', 'C'] }): Triangle {
     let pointA, pointB, pointC, d1: number, d2: number;
     do {
-      pointA = new Point(name1, new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
-      pointB = new Point(name2, new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
+      const xA = randint(-10, 11);
+      const yA = randint(-10, 11);
+      const xB = randint(-10, 11);
+      const yB = randint(-10, 11);
+      pointA = new Point(names[0], new NumberNode(xA), new NumberNode(yA));
+      pointB = new Point(names[1], new NumberNode(xB), new NumberNode(yB));
       d1 = pointA.distanceTo(pointB);
-      const xA = pointA.getXnumber();
-      const yA = pointA.getYnumber();
-      const xB = pointB.getXnumber();
-      const yB = pointB.getYnumber();
       const xC = randint(-11, 10);
       const yC = yA - ((xB - xA) * (xC - xA)) / (yB - yA);
-      pointC = new Point(name3, new NumberNode(xC), new NumberNode(yC));
+      pointC = new Point(names[2], new NumberNode(xC), new NumberNode(yC));
       d2 = pointA.distanceTo(pointC);
-    } while (!d1 || !d2 || d1 / d2 < r1 || d1 / d2 > r2);
+    } while (!d1 || !d2 || d1 / d2 < minRapport || d1 / d2 > maxRapport);
     return new Triangle(pointA, pointB, pointC);
   }
 
-  static createRandomTriangle(a1 = 0.69, a2 = 1.5, name1 = 'A', name2 = 'B', name3 = 'C'): Triangle {
-    let pointA, pointB, pointC, d1: number, d2: number, triangle;
+  static createRandomTriangle({ minAngle = 0.69, maxAngle = 1.5, names = ['A', 'B', 'C'] }): Triangle {
+    let pointA, pointB, pointC, triangle;
     do {
-      pointA = new Point(name1, new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
-      pointB = new Point(name2, new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
-      pointC = new Point(name3, new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
+      pointA = new Point(names[0], new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
+      pointB = new Point(names[1], new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
+      pointC = new Point(names[2], new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
       triangle = new Triangle(pointA, pointB, pointC);
     } while (
       triangle.isRight() ||
       pointA.distanceTo(pointB) === 0 ||
       pointB.distanceTo(pointC) === 0 ||
       pointC.distanceTo(pointA) === 0 ||
-      triangle.getAngleA() < a1 ||
-      triangle.getAngleA() > a2 ||
-      triangle.getAngleB() < a1 ||
-      triangle.getAngleB() > a2
+      triangle.getAngleA() < minAngle ||
+      triangle.getAngleA() > maxAngle ||
+      triangle.getAngleB() < minAngle ||
+      triangle.getAngleB() > maxAngle
     );
     return new Triangle(pointA, pointB, pointC);
   }
 }
 
 type GenerateCommandsProps = {
-  angle?: string;
-  colorAngle?: string;
-  sideLabels?: string[];
-  SetCaption?: string[];
-  sideAndColor?: string[];
+  highlightedAngle?: string;
+  colorHighlightedAngle?: string;
+  highlightedSide?: string;
+  colorHighlightedSide?: string;
+  showLabels?: string[];
+  setCaptions?: string[];
   showAxes?: boolean;
   showGrid?: boolean;
 };
@@ -182,11 +183,12 @@ export class Triangle {
   }
 
   generateCommands({
-    angle,
-    colorAngle,
-    sideLabels,
-    SetCaption,
-    sideAndColor,
+    highlightedAngle: highlightedAngle,
+    colorHighlightedAngle: colorHighlightedAngle,
+    showLabels: showLabels,
+    setCaptions: setCaptions,
+    highlightedSide: highlightedSide,
+    colorHighlightedSide: colorHighlightedSide,
     showAxes,
     showGrid,
   }: GenerateCommandsProps): string[] {
@@ -213,24 +215,27 @@ export class Triangle {
         `ShowLabel(alpha, false)`,
       );
 
-    if (angle) {
-      const temp =
-        angle === this.vertexB.name
-          ? [this.vertexA.name, this.vertexB.name, this.vertexC.name]
-          : [this.vertexB.name, this.vertexC.name, this.vertexA.name];
+    const defautColor = 'Red';
+
+    if (highlightedAngle) {
+      let temp = [''];
+      if (highlightedAngle === this.vertexB.name) temp = [this.vertexA.name, this.vertexB.name, this.vertexC.name];
+      if (highlightedAngle === this.vertexC.name) temp = [this.vertexB.name, this.vertexC.name, this.vertexA.name];
+      if (highlightedAngle === this.vertexA.name) temp = [this.vertexC.name, this.vertexA.name, this.vertexB.name];
+
       commands.push(
         `be = Angle(${temp[0]}, ${temp[1]}, ${temp[2]}, Line(${temp[0]}, ${temp[1]}))`,
         `ShowLabel(be, false)`,
-        `SetColor(be, "${colorAngle}")`,
+        `SetColor(be, "${colorHighlightedAngle ?? defautColor}")`,
       );
     }
 
-    if (sideLabels)
-      for (let i = 0; i < sideLabels.length; i++) {
-        commands.push(`ShowLabel(${sideLabels[i]}, true)`);
-        if (SetCaption) commands.push(`SetCaption(${sideLabels[i]}, "${SetCaption[i]}")`);
+    if (showLabels)
+      for (let i = 0; i < showLabels.length; i++) {
+        commands.push(`ShowLabel(${showLabels[i]}, true)`);
+        if (setCaptions) commands.push(`SetCaption(${showLabels[i]}, "${setCaptions[i]}")`);
       }
-    if (sideAndColor) commands.push(`SetColor(${sideAndColor[0]}, "${sideAndColor[1]}")`);
+    if (highlightedSide) commands.push(`SetColor(${highlightedSide}, "${colorHighlightedSide ?? defautColor}")`);
 
     return commands;
   }

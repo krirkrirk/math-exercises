@@ -6,7 +6,7 @@ export const thales: Exercise = {
   id: 'thales',
   connector: '=',
   instruction: '',
-  label: 'Utiliser le théoreme de Thalès',
+  label: "Ecrire l'égalité de Thalès",
   levels: ['5', '4', '3', '2'],
   isSingleStep: false,
   section: 'Géométrie euclidienne',
