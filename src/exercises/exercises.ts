@@ -33,6 +33,8 @@ import { equationType2Exercise } from './calculLitteral/equation/equationType2Ex
 import { equationType3Exercise } from './calculLitteral/equation/equationType3Exercise';
 import { equationType4Exercise } from './calculLitteral/equation/equationType4Exercise';
 import { firstDegreeEquation } from './calculLitteral/equation/firstDegreeEquation';
+import { fractionEquation } from './calculLitteral/equation/fractionEquation';
+import { multiplicationEquation } from './calculLitteral/equation/multiplicationEquation';
 import { factoIdRmq1 } from './calculLitteral/factorisation/factoIdRmq1';
 import { factoIdRmq2 } from './calculLitteral/factorisation/factoIdRmq2';
 import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
@@ -216,6 +218,9 @@ export const exercises = [
   aeraConversion,
   volumeConversion,
   volumeCapacityConversion,
+  equationsProd,
+  multiplicationEquation,
+  fractionEquation,
   leadingCoefficientCalculV1,
   leadingCoefficientCalculV2,
 ];
