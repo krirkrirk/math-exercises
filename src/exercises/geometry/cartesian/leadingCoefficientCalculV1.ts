@@ -12,7 +12,7 @@ export const leadingCoefficientCalculV1: Exercise = {
   label: "Calculer le coefficient directeur d'une fonction affine",
   levels: ['3', '2', '1'],
   isSingleStep: true,
-  section: 'Géométrie cartésienne',
+  section: 'Fonctions affines',
   generator: (nb: number) => getDistinctQuestions(getLeadingCoefficientCalculV1Question, nb),
 };
 
@@ -23,6 +23,7 @@ export function getLeadingCoefficientCalculV1Question(): Question {
 
   const question: Question = {
     instruction: `Soit $f$ une fonction affine telle que $f(${xA})$ = $${yA}$ et $f(${xB})$ = $${yB}$.$\\\\$Quel est le coefficient directeur de $f$ ?`,
+    startStatement: 'a',
     answer: simplifyNode(new FractionNode(new NumberNode(yB - yA), new NumberNode(xB - xA))).toTex(),
   };
   return question;

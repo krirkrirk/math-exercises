@@ -9,10 +9,10 @@ export const leadingCoefficientCalculV2: Exercise = {
   id: 'leadingCoefficientCalculV2',
   connector: '=',
   instruction: '',
-  label: "Calculer le coefficient directeur d'une droite qui passe par deux points",
+  label: "Coefficient direfteur à l'aide de deux points",
   levels: ['3', '2', '1'],
-  isSingleStep: true,
-  section: 'Géométrie cartésienne',
+  isSingleStep: false,
+  section: 'Droites',
   generator: (nb: number) => getDistinctQuestions(getLeadingCoefficientCalculV1Question, nb),
 };
 
@@ -22,7 +22,7 @@ export function getLeadingCoefficientCalculV1Question(): Question {
   const yB = randint(-9, 10);
 
   const question: Question = {
-    instruction: `Soit d'une droite passant par les points A(${xA},${yA}) et B(${xB},${yB}).$\\\\$Déterminer le coefficient directeur de cette droite.`,
+    instruction: `Soit $d$ une droite passant par les points A(${xA},${yA}) et B(${xB},${yB}).$\\\\$Déterminer le coefficient directeur de $d$.`,
     answer: simplifyNode(new FractionNode(new NumberNode(yB - yA), new NumberNode(xB - xA))).toTex(),
   };
   return question;
