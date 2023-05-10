@@ -70,7 +70,7 @@ export function getMentalPercentage(): Question {
   }
 
   const question: Question = {
-    instruction: `Calculer : $${a}\\%$ de $${b}$.`,
+    instruction: `Calculer : $${String(a).replace('.', ',')}\\%$ de $${b}$.`,
     answer: (a * b) / 100 + '',
     keys: [],
   };

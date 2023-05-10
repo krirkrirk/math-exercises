@@ -8,7 +8,7 @@ const allExercises = [...exercises];
 const runServer = () => {
   dotenv.config();
   const app: Express = express();
-
+  await console.log();
   app.use(cors());
 
   app.get('/', (req: Request, res: Response) => {

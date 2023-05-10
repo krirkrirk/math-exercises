@@ -30,7 +30,7 @@ export function getConditionalProbability(): Question {
 
   switch (flip) {
     case 1: {
-      instruction += `$P(A) = ${(pA / 100 + '').replace('.', ',')}\\ et\\ P(A \\cap B) = ${(pAB / 100 + '').replace(
+      instruction += `$P(A) = ${(pA / 100 + '').replace('.', ',')}\\ $ et $\\ P(A \\cap B) = ${(pAB / 100 + '').replace(
         '.',
         ',',
       )}$.$\\\\$Déterminer $P_A(B)$.`;
@@ -39,7 +39,7 @@ export function getConditionalProbability(): Question {
       break;
     }
     case 2: {
-      instruction += `$P(B) = ${(pB / 100 + '').replace('.', ',')}\\ et\\ P(B \\cap A) = ${(pAB / 100 + '').replace(
+      instruction += `$P(B) = ${(pB / 100 + '').replace('.', ',')}\\ $ et $\\ P(B \\cap A) = ${(pAB / 100 + '').replace(
         '.',
         ',',
       )}$.$\\\\$Déterminer $P_B(A)$.`;
@@ -48,7 +48,7 @@ export function getConditionalProbability(): Question {
       break;
     }
     case 3: {
-      instruction += `$P(A) = ${(pA / 100 + '').replace('.', ',')}\\ et\\ P_A(B) = ${(pB_A + '').replace(
+      instruction += `$P(A) = ${(pA / 100 + '').replace('.', ',')}\\ $ et $\\ P_A(B) = ${(pB_A + '').replace(
         '.',
         ',',
       )}$.$\\\\$Déterminer $P(A \\cap B)$.`;
@@ -57,7 +57,7 @@ export function getConditionalProbability(): Question {
       break;
     }
     case 4: {
-      instruction += `$P(B) = ${(pB / 100 + '').replace('.', ',')}\\ et\\ P_B(A) = ${(pA_B + '').replace(
+      instruction += `$P(B) = ${(pB / 100 + '').replace('.', ',')}\\ $ et $\\ P_B(A) = ${(pA_B + '').replace(
         '.',
         ',',
       )}$.$\\\\$Déterminer $P(A \\cap B)$.`;
@@ -66,7 +66,7 @@ export function getConditionalProbability(): Question {
       break;
     }
     case 5: {
-      instruction += `$P(A \\cap B) = ${(pAB / 100 + '').replace('.', ',')}\\ et\\ P_B(A) = ${(pA_B + '').replace(
+      instruction += `$P(A \\cap B) = ${(pAB / 100 + '').replace('.', ',')}\\ $ et $\\ P_B(A) = ${(pA_B + '').replace(
         '.',
         ',',
       )}$.$\\\\$Déterminer $P(B)$.`;
@@ -75,7 +75,7 @@ export function getConditionalProbability(): Question {
       break;
     }
     case 6: {
-      instruction += `$P(A \\cap B) = ${(pAB / 100 + '').replace('.', ',')}\\ et\\ P_A(B) = ${(pB_A + '').replace(
+      instruction += `$P(A \\cap B) = ${(pAB / 100 + '').replace('.', ',')}\\ $ et $\\ P_A(B) = ${(pB_A + '').replace(
         '.',
         ',',
       )}$.$\\\\$Déterminer $P(A)$.`;
