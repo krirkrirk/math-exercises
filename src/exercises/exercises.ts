@@ -33,6 +33,8 @@ import { equationType2Exercise } from './calculLitteral/equation/equationType2Ex
 import { equationType3Exercise } from './calculLitteral/equation/equationType3Exercise';
 import { equationType4Exercise } from './calculLitteral/equation/equationType4Exercise';
 import { firstDegreeEquation } from './calculLitteral/equation/firstDegreeEquation';
+import { fractionEquation } from './calculLitteral/equation/fractionEquation';
+import { multiplicationEquation } from './calculLitteral/equation/multiplicationEquation';
 import { factoIdRmq1 } from './calculLitteral/factorisation/factoIdRmq1';
 import { factoIdRmq2 } from './calculLitteral/factorisation/factoIdRmq2';
 import { factoIdRmq3 } from './calculLitteral/factorisation/factoIdRmq3';
@@ -53,7 +55,18 @@ import { thirdDegreeDerivative } from './derivation/derivative/thirdDegreeDeriva
 import { usualDerivative } from './derivation/derivative/usualderivative';
 import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberReading';
 import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
+import { leadingCoefficientCalculV1 } from './geometry/cartesian/leadingCoefficientCalculV1';
+import { leadingCoefficientCalculV2 } from './geometry/cartesian/leadingCoefficientCalculV2';
 import { midpoint } from './geometry/cartesian/midpoint';
+import { triangleArea } from './geometry/euclidean/TriangleArea';
+import { pythagore } from './geometry/euclidean/pythagore';
+import { pythagoreCalcul } from './geometry/euclidean/pythagoreCalcul';
+import { rightTriangleArea } from './geometry/euclidean/rightTriangleArea';
+import { thales } from './geometry/euclidean/thales';
+import { thalesCalcul } from './geometry/euclidean/thalesCalcul';
+import { trigonometry } from './geometry/euclidean/trigonometry';
+import { trigonometryAngleCalcul } from './geometry/euclidean/trigonometryAngleCalcul';
+import { trigonometrySideCalcul } from './geometry/euclidean/trigonometrySideCalcul';
 import { scalarProductViaCoords } from './geometry/vectors/scalarProductViaCoords';
 import { applyPercent } from './percent/applyPercent';
 import { averageEvolutionRate } from './percent/averageEvolutionRate';
@@ -203,6 +216,15 @@ export const exercises = [
   mentalMultiplications,
   mentalDivisions,
   mentalPercentage,
+  thales,
+  thalesCalcul,
+  pythagore,
+  pythagoreCalcul,
+  trigonometry,
+  trigonometryAngleCalcul,
+  trigonometrySideCalcul,
+  rightTriangleArea,
+  triangleArea,
 
   /**
    * nv generateurs
@@ -214,4 +236,8 @@ export const exercises = [
   aeraConversion,
   volumeConversion,
   volumeCapacityConversion,
+  multiplicationEquation,
+  fractionEquation,
+  leadingCoefficientCalculV1,
+  leadingCoefficientCalculV2,
 ];
