@@ -105,7 +105,7 @@ export function getProbabilityTree(): Question {
     answer,
     keys: [],
     commands,
-    coords: [-2, 8, -4, 4],
+    coords: [-2, 8, -5, 5],
   };
 
   return question;

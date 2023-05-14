@@ -11,7 +11,7 @@ export const midpoint: Exercise = {
   label: 'Coordonnées du milieu',
   levels: ['3', '2', '1'],
   isSingleStep: false,
-  section: 'Géométrie cartésienn',
+  section: 'Géométrie cartésienne',
   generator: (nb: number) => getDistinctQuestions(getMidpointQuestion, nb),
   keys: ['semicolon'],
 };
