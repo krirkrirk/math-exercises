@@ -8,7 +8,7 @@ export const triangleArea: Exercise = {
   id: 'triangleArea',
   connector: '=',
   instruction: '',
-  label: "Calculer l'aire d'un triangle",
+  label: "Calculer l'aire d'un triangle (avec figure)",
   levels: ['4', '3', '2'],
   isSingleStep: false,
   section: 'Géométrie euclidienne',
