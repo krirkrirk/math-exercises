@@ -54,7 +54,7 @@ import { rootFunctionDerivative } from './derivation/derivative/rootFunctionDeri
 import { secondDegreeDerivative } from './derivation/derivative/secondDegreeDerivative';
 import { thirdDegreeDerivative } from './derivation/derivative/thirdDegreeDerivative';
 import { usualDerivative } from './derivation/derivative/usualderivative';
-import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberReading';
+import { derivativeNumberReading } from './derivation/derivativeNumberReading';
 import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
 import { leadingCoefficientCalculV1 } from './geometry/cartesian/leadingCoefficientCalculV1';
 import { leadingCoefficientCalculV2 } from './geometry/cartesian/leadingCoefficientCalculV2';

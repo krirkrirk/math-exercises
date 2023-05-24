@@ -14,7 +14,7 @@ export const derivativeNumberReading: Exercise = {
   label: 'Lecture de nombre dérivé',
   levels: ['3', '2', '1'],
   isSingleStep: false,
-  section: 'Géométrie cartésienne',
+  section: 'Dérivation',
   generator: (nb: number) => getDistinctQuestions(getDerivativeNumberReading, nb),
 };
 

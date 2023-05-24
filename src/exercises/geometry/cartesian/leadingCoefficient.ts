@@ -13,7 +13,7 @@ export const leadingCoefficient: Exercise = {
   label: 'Déterminer le coefficient directeur',
   levels: ['3', '2', '1'],
   isSingleStep: false,
-  section: 'Géométrie cartésienne',
+  section: 'Droites',
   generator: (nb: number) => getDistinctQuestions(getLeadingCoefficientQuestion, nb),
 };
 
