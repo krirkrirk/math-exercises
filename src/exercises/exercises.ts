@@ -14,6 +14,7 @@ import { mentalMultiplications } from './calcul/mentalCaluls.ts/mentalMultiplica
 import { mentalPercentage } from './calcul/mentalCaluls.ts/mentalPercentage';
 import { operationsPriorities } from './calcul/operations/operationsPriorities';
 import { operationsPrioritiesWithoutRelative } from './calcul/operations/operationsPrioritiesWithoutRelative';
+import { primeNumbers } from './calcul/arithmetics/primeNumbers';
 import {
   allRoundings,
   roundToCentieme,
@@ -58,7 +59,6 @@ import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
 import { leadingCoefficientCalculV1 } from './geometry/cartesian/leadingCoefficientCalculV1';
 import { leadingCoefficientCalculV2 } from './geometry/cartesian/leadingCoefficientCalculV2';
 import { midpoint } from './geometry/cartesian/midpoint';
-import { triangleArea } from './geometry/euclidean/TriangleArea';
 import { pythagore } from './geometry/euclidean/pythagore';
 import { pythagoreCalcul } from './geometry/euclidean/pythagoreCalcul';
 import { rightTriangleArea } from './geometry/euclidean/rightTriangleArea';
@@ -95,6 +95,15 @@ import { geometricFindReason } from './sequences/geometric/geometricFindReason';
 import { geometricReasonUsage } from './sequences/geometric/geometricReasonUsage';
 import { geometricRecurrenceFormulaUsage } from './sequences/geometric/geometricRecurrenceFormulaUsage';
 import { simplifySquareRoot } from './squareRoots/simpifySquareRoot';
+import { rectangleArea } from './geometry/euclidean/rectangleArea';
+import { rectanglePerimeter } from './geometry/euclidean/rectanglePerimeter';
+import { squareArea } from './geometry/euclidean/squareArea';
+import { squarePerimeter } from './geometry/euclidean/squarePerimeter';
+import { trianglePerimeter } from './geometry/euclidean/trianglePerimeter';
+import { triangleAreaV2 } from './geometry/euclidean/triangleAreaV2';
+import { circleArea } from './geometry/euclidean/circleArea';
+import { circleCircumference } from './geometry/euclidean/circleCircumference';
+import { triangleArea } from './geometry/euclidean/triangleArea';
 
 export const exercises = [
   /**
@@ -236,8 +245,17 @@ export const exercises = [
   aeraConversion,
   volumeConversion,
   volumeCapacityConversion,
+  primeNumbers,
   multiplicationEquation,
   fractionEquation,
   leadingCoefficientCalculV1,
   leadingCoefficientCalculV2,
+  rectangleArea,
+  rectanglePerimeter,
+  squareArea,
+  squarePerimeter,
+  triangleAreaV2,
+  trianglePerimeter,
+  circleArea,
+  circleCircumference,
 ];

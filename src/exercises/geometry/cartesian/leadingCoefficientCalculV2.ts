@@ -22,7 +22,7 @@ export function getLeadingCoefficientCalculV1Question(): Question {
   const yB = randint(-9, 10);
 
   const question: Question = {
-    instruction: `Soit $d$ une droite passant par les points A(${xA},${yA}) et B(${xB},${yB}).$\\\\$Déterminer le coefficient directeur de $d$.`,
+    instruction: `Soit $d$ une droite passant par les points $A(${xA};${yA})$ et $B(${xB};${yB})$.$\\\\$Déterminer le coefficient directeur de $d$.`,
     answer: simplifyNode(new FractionNode(new NumberNode(yB - yA), new NumberNode(xB - xA))).toTex(),
   };
   return question;
