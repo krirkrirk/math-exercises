@@ -6,6 +6,11 @@
 
 export type GeneratorOptions = {};
 
+export type Proposition = {
+  id: string;
+  statement: string;
+  isRightAnswer: boolean;
+};
 export interface Question {
   instruction?: string;
   startStatement?: string;
@@ -14,6 +19,7 @@ export interface Question {
   commands?: string[];
   coords?: number[];
   options?: any;
+  getPropositions?: (n: number) => Proposition[];
 }
 
 export interface Exercise {

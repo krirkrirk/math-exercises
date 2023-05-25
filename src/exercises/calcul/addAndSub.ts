@@ -1,7 +1,7 @@
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { Exercise, Question } from '../exercise';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 /**
@@ -31,10 +31,23 @@ export function getAddAndSubQuestions(): Question {
     statementTree = new AddNode(statementTree, allNumbersNodes[i]);
   }
   const answer = numbers.reduce((a, b) => a + b) + '';
+
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+    for (let i = 0; i < n; i++)
+      res.push({
+        id: Math.random() + '',
+        statement: Math.random() + '',
+        isRightAnswer: false,
+      });
+    return res;
+  };
+
   const question: Question = {
     startStatement: statementTree.toTex(),
     answer: answer,
     keys: [],
+    getPropositions,
   };
   return question;
 }
