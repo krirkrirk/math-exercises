@@ -6,7 +6,7 @@ import { Power } from '#root/math/numbers/integer/power';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { Exercise, Question } from '../exercise';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 export const powersOfTenToDecimal: Exercise = {
@@ -27,10 +27,29 @@ export function getPowersOfTenDivisionQuestion(): Question {
   const statement = new PowerNode(new NumberNode(10), new NumberNode(randPower));
   const answerTree = new Power(10, randPower).toDecimalWriting().toTree();
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    for (let i = 0; i < n; i++) {
+      const wrongPower = randPower + randint(-3, 4, [0]);
+      const wrongAnswerTree = new Power(10, wrongPower).toDecimalWriting().toTree();
+      const wrongAnswer = wrongAnswerTree.toTex();
+
+      res.push({
+        id: Math.random() + '',
+        statement: wrongAnswer,
+        isRightAnswer: false,
+      });
+    }
+
+    return res;
+  };
+
   const question: Question = {
     startStatement: statement.toTex(),
     answer: answerTree.toTex(),
     keys: [],
+    getPropositions,
   };
   return question;
 }

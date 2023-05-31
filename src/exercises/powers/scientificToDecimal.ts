@@ -8,7 +8,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { Exercise, Question } from '../exercise';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 export const scientificToDecimal: Exercise = {
@@ -35,10 +35,28 @@ export function getScientificToDecimalQuestion(): Question {
   );
   const answerTree = randDecimal.multiplyByPowerOfTen(randPower).toTree();
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    for (let i = 0; i < n; i++) {
+      const wrongAnswerTree = randDecimal.multiplyByPowerOfTen(randint(-6, 8, [randPower])).toTree();
+      const wrongAnswer = wrongAnswerTree.toTex();
+
+      res.push({
+        id: Math.random() + '',
+        statement: wrongAnswer,
+        isRightAnswer: false,
+      });
+    }
+
+    return res;
+  };
+
   const question: Question = {
     startStatement: statement.toTex(),
     answer: answerTree.toTex(),
     keys: [],
+    getPropositions,
   };
   return question;
 }

@@ -1,6 +1,6 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from 'mathjs';
-import { Exercise, Question } from '../exercise';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 export const reciprocalPercentage: Exercise = {
@@ -24,10 +24,32 @@ export function getReciprocalPercentageQuestion(): Question {
 
   ans = a == 0 ? (1 / (1 + randPercent / 100) - 1) * 100 : (1 / (1 - randPercent / 100) - 1) * 100;
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    for (let i = 0; i < n; i++) {
+      let wrongAnswer = ans;
+      const deviation = Math.random() < 0.5 ? -1 : 1;
+      const percentDeviation = Math.random() * 20 + 1;
+
+      wrongAnswer += deviation * percentDeviation;
+      wrongAnswer = round(wrongAnswer, 2);
+
+      res.push({
+        id: Math.random() + '',
+        statement: `${wrongAnswer > 0 ? '+' + wrongAnswer : wrongAnswer} \\%`,
+        isRightAnswer: false,
+      });
+    }
+
+    return res;
+  };
+
   const question: Question = {
     instruction,
     answer: `${ans > 0 ? '+' + round(ans, 2) : round(ans, 2)} \\%`,
     keys: ['percent'],
+    getPropositions,
   };
 
   return question;

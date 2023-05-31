@@ -1,7 +1,7 @@
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { Exercise, Question } from '../exercise';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 /**
@@ -46,10 +46,26 @@ export function getAddAndSubWithoutRelatives(): Question {
     answer = numbers.reduce((a, b) => a + b);
   }
 
+  const getPropositions = (n: number) => {
+    const propositions: Proposition[] = [];
+    for (let i = 0; i < n; i++) {
+      let proposition = '';
+      const incorrectAnswer = answer + randint(-5, 6, [0]);
+      proposition = incorrectAnswer.toString();
+      propositions.push({
+        id: Math.random() + '',
+        statement: proposition,
+        isRightAnswer: false,
+      });
+    }
+    return propositions;
+  };
+
   const question: Question = {
     startStatement: statementTree.toTex(),
     answer: answer.toString(),
     keys: [],
+    getPropositions,
   };
   return question;
 }

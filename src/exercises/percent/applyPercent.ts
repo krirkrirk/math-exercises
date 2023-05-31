@@ -1,7 +1,7 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
 import { coinFlip } from '#root/utils/coinFlip';
-import { Exercise, Question } from '../exercise';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 export const applyPercent: Exercise = {
@@ -32,10 +32,31 @@ export function getApplyPercentQuestion(): Question {
     instruction = `Appliquer une baisse de $${randPercent}\\%$ à $${randNbr}$.`;
   }
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    for (let i = 0; i < n; i++) {
+      let wrongAnswer = ans;
+      const deviation = Math.random() < 0.5 ? -1 : 1;
+      const percentDeviation = Math.random() * 20 + 1;
+
+      wrongAnswer += deviation * (percentDeviation / 100) * ans;
+      wrongAnswer = round(wrongAnswer, 2);
+
+      res.push({
+        id: Math.random() + '',
+        statement: wrongAnswer.toString(),
+        isRightAnswer: false,
+      });
+    }
+
+    return res;
+  };
   const question: Question = {
     instruction,
     answer: ans.toString(),
     keys: ['percent'],
+    getPropositions,
   };
 
   return question;

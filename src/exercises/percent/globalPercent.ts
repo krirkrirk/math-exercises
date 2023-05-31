@@ -1,6 +1,6 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from 'mathjs';
-import { Exercise, Question } from '../exercise';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 export const globalPercent: Exercise = {
@@ -13,7 +13,6 @@ export const globalPercent: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getGlobalPercentQuestion, nb),
   keys: ['percent'],
-
 };
 
 export function getGlobalPercentQuestion(): Question {
@@ -38,10 +37,32 @@ export function getGlobalPercentQuestion(): Question {
   instruction += ". \nDéterminer le taux d'évolution global du prix de cet article.";
   const answer = `${ans} \\%`;
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    for (let i = 0; i < n; i++) {
+      let wrongAnswer = ans;
+      const deviation = Math.random() < 0.5 ? -1 : 1;
+      const percentDeviation = Math.random() * 20 + 1;
+
+      wrongAnswer += deviation * percentDeviation;
+      wrongAnswer = round(wrongAnswer, 2);
+
+      res.push({
+        id: Math.random() + '',
+        statement: `${wrongAnswer} \\%`,
+        isRightAnswer: false,
+      });
+    }
+
+    return res;
+  };
+
   const question: Question = {
     instruction,
     answer,
     keys: ['percent'],
+    getPropositions,
   };
 
   return question;

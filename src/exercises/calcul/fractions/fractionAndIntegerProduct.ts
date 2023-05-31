@@ -1,4 +1,4 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { RationalConstructor } from '#root/math/numbers/rationals/rational';
@@ -24,11 +24,26 @@ export function getFractionAndIntegerProduct(): Question {
   statementTree.shuffle();
 
   const answerTree = rational.multiply(integer).toTree();
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+    for (let i = 0; i < n; i++) {
+      const randomMultiplier = randint(-10, 10);
+      const wrongAnswerTree = rational.multiply(new Integer(randomMultiplier)).toTree();
+      res.push({
+        id: Math.random() + '',
+        statement: wrongAnswerTree.toTex(),
+        isRightAnswer: false,
+      });
+    }
+    return res;
+  };
+
   const question: Question = {
     instruction: '',
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: [],
+    getPropositions,
   };
   return question;
 }

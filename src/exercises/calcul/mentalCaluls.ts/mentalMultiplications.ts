@@ -1,4 +1,4 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
@@ -34,7 +34,7 @@ export function getMentalMultiplications(): Question {
   const allNumbersNodes = numbers.map((nb) => new NumberNode(nb));
 
   let statementTree;
-  let answer;
+  let answer: number;
 
   if (coinFlip()) {
     statementTree = new MultiplyNode(allNumbersNodes[0], allNumbersNodes[1]);
@@ -46,10 +46,26 @@ export function getMentalMultiplications(): Question {
 
   statementTree.shuffle();
 
+  const getPropositions = (n: number) => {
+    const propositions: Proposition[] = [];
+    for (let i = 0; i < n; i++) {
+      let proposition = '';
+      const incorrectAnswer = round(answer + (coinFlip() ? 1 : -1) * Math.random() * 10, 2);
+      proposition = `${incorrectAnswer}`;
+      propositions.push({
+        id: Math.random() + '',
+        statement: proposition,
+        isRightAnswer: false,
+      });
+    }
+    return propositions;
+  };
+
   const question: Question = {
     startStatement: statementTree.toTex(),
     answer: round(answer, 2) + '',
     keys: [],
+    getPropositions,
   };
 
   return question;

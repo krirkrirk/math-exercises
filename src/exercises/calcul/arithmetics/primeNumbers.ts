@@ -1,5 +1,5 @@
 import { randint } from '#root/math/utils/random/randint';
-import { Exercise, Question } from '../../exercise';
+import { Exercise, Proposition, Question } from '../../exercise';
 import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
 
 /**
@@ -20,7 +20,7 @@ export const primeNumbers: Exercise = {
 export function getPrimeNumbers(): Question {
   const primes = [2, 3, 5, 7, 11];
   const rand = randint(3, 5);
-  let choosenNumebrs = [];
+  let choosenNumebrs: number[] = [];
 
   let elevenCount = 0;
 
@@ -43,10 +43,41 @@ export function getPrimeNumbers(): Question {
     answer += `\\times` + choosenNumebrs[i];
   }
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+    for (let i = 0; i < n; i++) {
+      const wrongFactors = choosenNumebrs.slice(); // copier le tableau [...choosenNumbers]
+      const randomIndex = randint(0, wrongFactors.length - 1);
+      const wrongFactor = wrongFactors[randomIndex];
+
+      // je remplace les nombres premiers pour générer les fausses réponses
+      let newFactor = wrongFactor;
+      while (newFactor === wrongFactor) {
+        const temp = randint(0, primes.length - 1);
+        newFactor = primes[temp];
+      }
+
+      wrongFactors[randomIndex] = newFactor;
+
+      let wrongAnswer = `${prod} = ${wrongFactors[0]}`;
+      for (let j = 1; j < wrongFactors.length; j++) {
+        wrongAnswer += `\\times` + wrongFactors[j];
+      }
+
+      res.push({
+        id: Math.random() + '',
+        statement: wrongAnswer,
+        isRightAnswer: false,
+      });
+    }
+    return res;
+  };
+
   const question: Question = {
     startStatement: `${prod} = ?`,
     answer,
     keys: [],
+    getPropositions,
   };
   return question;
 }

@@ -1,4 +1,4 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
@@ -66,10 +66,26 @@ export function getMentalDivisions(): Question {
       : new DivideNode(allNumbersNodes[0], allNumbersNodes[1]);
   const answer = rand === 6 ? a / (b / c) : a / b;
 
+  const getPropositions = (n: number) => {
+    const propositions: Proposition[] = [];
+    for (let i = 0; i < n; i++) {
+      let proposition = '';
+      const incorrectAnswer = round(answer + (coinFlip() ? 1 : -1) * Math.random() * 10, 2);
+      proposition = `${incorrectAnswer}`;
+      propositions.push({
+        id: Math.random() + '',
+        statement: proposition,
+        isRightAnswer: false,
+      });
+    }
+    return propositions;
+  };
+
   const question: Question = {
     startStatement: statementTree.toTex(),
     answer: round(answer, 2) + '',
     keys: [],
+    getPropositions,
   };
 
   return question;

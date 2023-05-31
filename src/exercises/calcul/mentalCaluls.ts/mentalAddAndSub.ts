@@ -1,4 +1,4 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
@@ -40,10 +40,26 @@ export function getMentalAddAndSub(): Question {
   for (let i = 2; i < nbrOperations; i++) statementTree = new AddNode(statementTree, allNumbersNodes[i]);
   statementTree.shuffle();
 
+  const getPropositions = (n: number) => {
+    const propositions: Proposition[] = [];
+    for (let i = 0; i < n; i++) {
+      let proposition = '';
+      const incorrectSum = round(sum + (coinFlip() ? 1 : -1) * Math.random() * 10, 2);
+      proposition = `${incorrectSum}`;
+      propositions.push({
+        id: Math.random() + '',
+        statement: proposition,
+        isRightAnswer: false,
+      });
+    }
+    return propositions;
+  };
+
   const question: Question = {
     startStatement: statementTree.toTex(),
     answer: round(sum, 2) + '',
     keys: [],
+    getPropositions,
   };
   return question;
 }

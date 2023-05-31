@@ -1,4 +1,4 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { RationalConstructor } from '#root/math/numbers/rationals/rational';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
@@ -20,10 +20,26 @@ export function getFractionsProduct(): Question {
   const rational2 = RationalConstructor.randomIrreductible();
   const statementTree = new MultiplyNode(rational.toTree(), rational2.toTree());
   const answerTree = rational.multiply(rational2).toTree();
+
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+    for (let i = 0; i < n; i++) {
+      const randomRational = RationalConstructor.randomIrreductible();
+      const wrongAnswerTree = randomRational.multiply(rational2).toTree();
+      res.push({
+        id: Math.random() + '',
+        statement: wrongAnswerTree.toTex(),
+        isRightAnswer: false,
+      });
+    }
+    return res;
+  };
+
   const question: Question = {
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: [],
+    getPropositions,
   };
   return question;
 }

@@ -1,4 +1,4 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
@@ -62,11 +62,48 @@ export function getFractionToPercentToDecimal(): Question {
     }
   }
 
+  const getPropositions = (n: number) => {
+    const propositions: Proposition[] = [];
+    for (let i = 0; i < n; i++) {
+      let proposition = '';
+      switch (rand) {
+        case 1:
+          proposition = `${round(percent + Math.random() * 10, 2)}\\%`;
+          break;
+        case 2:
+          proposition = `${simplifyNode(
+            new FractionNode(new NumberNode(numerator * 2), new NumberNode(denominator * 2)),
+          ).toTex()}`;
+          break;
+        case 3:
+          proposition = `${round(decimal + Math.random() * 10, 2)}`;
+          break;
+        case 4:
+          proposition = `${simplifyNode(
+            new FractionNode(new NumberNode(numerator * 2), new NumberNode(denominator * 2)),
+          ).toTex()}`;
+          break;
+        case 5:
+          proposition = `${round(decimal + Math.random() * 10, 2)}`;
+          break;
+        case 6:
+          proposition = `${round(percent + Math.random() * 10, 2)}\\%`;
+          break;
+      }
+      propositions.push({
+        id: Math.random() + '',
+        statement: proposition,
+        isRightAnswer: false,
+      });
+    }
+    return propositions;
+  };
+
   const question: Question = {
     instruction,
-    //startStatement: `${numerator} et ${denominator}`,
     answer,
     keys: ['percent'],
+    getPropositions,
   };
 
   return question;

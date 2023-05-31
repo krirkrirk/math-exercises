@@ -1,6 +1,6 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
-import { Exercise, Question } from '../exercise';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 
 export const averageEvolutionRate: Exercise = {
@@ -20,12 +20,34 @@ export function getAverageEvolutionRate(): Question {
   const nbMois = randint(2, 13);
 
   const instruction = `Un prix augmente de $${rate}\\%$ en $${nbMois}$ mois. Quel est le taux d'évolution mensuel moyen ?`;
-  const answer = `${round((Math.pow(1 + rate / 100, 1 / nbMois) - 1) * 100, 2)}\\%`;
+  const answer = round((Math.pow(1 + rate / 100, 1 / nbMois) - 1) * 100, 2);
+
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    for (let i = 0; i < n; i++) {
+      let wrongAnswer = answer;
+      const deviation = Math.random() < 0.5 ? -1 : 1;
+      const percentDeviation = Math.random() * 10 + 1;
+
+      wrongAnswer += deviation * percentDeviation;
+      wrongAnswer = round(wrongAnswer, 2);
+
+      res.push({
+        id: Math.random() + '',
+        statement: `${wrongAnswer}\\%`,
+        isRightAnswer: false,
+      });
+    }
+
+    return res;
+  };
 
   const question: Question = {
     instruction,
-    answer,
+    answer: answer + `\\%`,
     keys: ['percent'],
+    getPropositions,
   };
 
   return question;

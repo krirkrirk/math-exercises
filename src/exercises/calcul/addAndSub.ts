@@ -30,22 +30,25 @@ export function getAddAndSubQuestions(): Question {
   for (let i = 2; i < allNumbersNodes.length; i++) {
     statementTree = new AddNode(statementTree, allNumbersNodes[i]);
   }
-  const answer = numbers.reduce((a, b) => a + b) + '';
+  const answer = numbers.reduce((a, b) => a + b);
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
-    for (let i = 0; i < n; i++)
+    for (let i = 0; i < n; i++) {
+      const randomOffset = randint(-9, 10, [0]); // Offset for generating wrong answers
+      const wrongAnswer = answer + randomOffset;
       res.push({
         id: Math.random() + '',
-        statement: Math.random() + '',
+        statement: wrongAnswer + '',
         isRightAnswer: false,
       });
+    }
     return res;
   };
 
   const question: Question = {
     startStatement: statementTree.toTex(),
-    answer: answer,
+    answer: answer + '',
     keys: [],
     getPropositions,
   };
