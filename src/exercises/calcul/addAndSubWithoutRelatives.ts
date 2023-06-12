@@ -1,8 +1,10 @@
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
+import { shuffle } from '#root/utils/shuffle';
 import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+import { v4 } from 'uuid';
 
 /**
  * a±b±c±d
@@ -48,17 +50,32 @@ export function getAddAndSubWithoutRelatives(): Question {
 
   const getPropositions = (n: number) => {
     const propositions: Proposition[] = [];
-    for (let i = 0; i < n; i++) {
-      let proposition = '';
-      const incorrectAnswer = answer + randint(-5, 6, [0]);
-      proposition = incorrectAnswer.toString();
-      propositions.push({
-        id: Math.random() + '',
-        statement: proposition,
-        isRightAnswer: false,
-      });
+
+    propositions.push({
+      id: v4() + '',
+      statement: answer.toString(),
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const incorrectAnswer = answer + randint(-5, 6, [0]);
+        proposition = {
+          id: v4() + '',
+          statement: incorrectAnswer.toString(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      propositions.push(proposition);
     }
-    return propositions;
+
+    return shuffle(propositions);
   };
 
   const question: Question = {

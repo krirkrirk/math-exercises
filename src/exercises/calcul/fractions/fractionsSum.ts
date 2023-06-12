@@ -2,6 +2,8 @@ import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { RationalConstructor } from '#root/math/numbers/rationals/rational';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 as uuidv4 } from 'uuid';
 
 export const fractionsSum: Exercise = {
   id: 'fractionsSum',
@@ -23,16 +25,33 @@ export function getFractionsSum(): Question {
 
   const getPropositions = (n: number) => {
     const propositions: Proposition[] = [];
-    for (let i = 0; i < n; i++) {
-      const incorrectRational = RationalConstructor.randomIrreductible();
-      const incorrectStatementTree = new AddNode(incorrectRational.toTree(), rational2.toTree());
-      propositions.push({
-        id: Math.random() + '',
-        statement: incorrectStatementTree.toTex(),
-        isRightAnswer: false,
-      });
+
+    propositions.push({
+      id: uuidv4(),
+      statement: answerTree.toTex(),
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const incorrectRational = RationalConstructor.randomIrreductible();
+        const incorrectStatementTree = new AddNode(incorrectRational.toTree(), rational2.toTree());
+        proposition = {
+          id: uuidv4(),
+          statement: incorrectStatementTree.toTex(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      propositions.push(proposition);
     }
-    return propositions;
+
+    return shuffle(propositions);
   };
 
   const question: Question = {

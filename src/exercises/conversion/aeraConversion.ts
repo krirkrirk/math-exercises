@@ -1,7 +1,9 @@
 import { DecimalConstructor } from '#root/math/numbers/decimals/decimal';
 import { randint } from '#root/math/utils/random/randint';
+import { shuffle } from '#root/utils/shuffle';
 import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+import { v4 } from 'uuid';
 
 export const aeraConversion: Exercise = {
   id: 'aeraConversion',
@@ -30,18 +32,33 @@ export function getAeraConversion(): Question {
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
-    for (let i = 0; i < n; i++) {
-      const wrongAnswer =
-        randomAera.multiplyByPowerOfTen(2 * randint(-4, 5, [randomUnitIndex - randomUnitInstructionIndex])).value + '';
+    res.push({
+      id: v4() + '',
+      statement: randomAera.multiplyByPowerOfTen(2 * (randomUnitIndex - randomUnitInstructionIndex)).value + '',
+      isRightAnswer: true,
+    });
 
-      res.push({
-        id: Math.random() + '',
-        statement: wrongAnswer,
-        isRightAnswer: false,
-      });
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const wrongAnswer =
+          randomAera.multiplyByPowerOfTen(2 * randint(-2, 4, [randomUnitIndex - randomUnitInstructionIndex])).value +
+          '';
+        proposition = {
+          id: v4() + '',
+          statement: wrongAnswer,
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
     }
 
-    return res;
+    return shuffle(res);
   };
 
   const question: Question = {

@@ -1,8 +1,10 @@
 import { DecimalConstructor } from '#root/math/numbers/decimals/decimal';
 import { randint } from '#root/math/utils/random/randint';
 import { coinFlip } from '#root/utils/coinFlip';
-import { Exercise, Question } from '../exercise';
+import { shuffle } from '#root/utils/shuffle';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+import { v4 } from 'uuid';
 
 export const volumeCapacityConversion: Exercise = {
   id: 'volumeCapacityConversion',
@@ -30,21 +32,51 @@ export function getVolumeCapacityConversion(): Question {
 
   let instructionUnit;
   let AsnwerUnit;
-  let answer;
+  let answer: number;
 
   if (coinFlip()) {
     instructionUnit = volumeUnits[randomUnitIndex];
     AsnwerUnit = capacityUnits[randomUnitInstructionIndex];
-    answer = random.multiplyByPowerOfTen(3 * (randomUnitIndex - 2) + 3 - randomUnitInstructionIndex).value + '';
+    answer = random.multiplyByPowerOfTen(3 * (randomUnitIndex - 2) + 3 - randomUnitInstructionIndex).value;
   } else {
     instructionUnit = capacityUnits[randomUnitIndex];
     AsnwerUnit = volumeUnits[randomUnitInstructionIndex];
-    answer = random.multiplyByPowerOfTen(randomUnitIndex - 3 + 3 * (2 - randomUnitInstructionIndex)).value + '';
+    answer = random.multiplyByPowerOfTen(randomUnitIndex - 3 + 3 * (2 - randomUnitInstructionIndex)).value;
   }
+
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: answer + '',
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const wrongAnswer = answer ** randint(-3, 4, [0, 1]);
+        proposition = {
+          id: v4() + '',
+          statement: wrongAnswer + '',
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
 
   const question: Question = {
     instruction: `$${random.value}$ $${instructionUnit}$ = ... $${AsnwerUnit}$`,
-    answer,
+    answer: answer + '',
     keys: [],
   };
 

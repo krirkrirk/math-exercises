@@ -5,6 +5,8 @@ import { RationalConstructor } from '#root/math/numbers/rationals/rational';
 import { randint } from '#root/math/utils/random/randint';
 import { DivideNode } from '#root/tree/nodes/operators/divideNode';
 import { coinFlip } from '#root/utils/coinFlip';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const fractionAndIntegerDivision: Exercise = {
   id: 'fractionAndIntegerDivision',
@@ -31,19 +33,36 @@ export function getFractionAndIntegerDivision(): Question {
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
-    for (let i = 0; i < n; i++) {
-      const wrongRational = RationalConstructor.randomIrreductible();
-      const wrongAnswerTree = integerFirst
-        ? integer.divide(wrongRational).toTree()
-        : wrongRational.divide(integer).toTree();
 
-      res.push({
-        id: Math.random() + '',
-        statement: wrongAnswerTree.toTex(),
-        isRightAnswer: false,
-      });
+    res.push({
+      id: v4() + '',
+      statement: answerTree.toTex(),
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const wrongRational = RationalConstructor.randomIrreductible();
+        const wrongAnswerTree = integerFirst
+          ? integer.divide(wrongRational).toTree()
+          : wrongRational.divide(integer).toTree();
+
+        proposition = {
+          id: v4() + '',
+          statement: wrongAnswerTree.toTex(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
     }
-    return res;
+
+    return shuffle(res);
   };
 
   const question: Question = {

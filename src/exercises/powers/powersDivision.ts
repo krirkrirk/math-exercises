@@ -7,8 +7,10 @@ import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
+import { shuffle } from '#root/utils/shuffle';
 import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+import { v4 } from 'uuid';
 
 export const powersDivision: Exercise = {
   id: 'powersDivision',
@@ -33,7 +35,7 @@ export const powersOfTenDivision: Exercise = {
 };
 
 export function getPowersDivisionQuestion(useOnlyPowersOfTen: boolean = false): Question {
-  const a = useOnlyPowersOfTen ? 10 : randint(-11, 11, [0]);
+  let a = useOnlyPowersOfTen ? 10 : randint(-11, 11, [0]);
   const [b, c] = [1, 2].map((el) => randint(-11, 11));
 
   const statement = new FractionNode(
@@ -45,19 +47,34 @@ export function getPowersDivisionQuestion(useOnlyPowersOfTen: boolean = false): 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
-    for (let i = 0; i < n; i++) {
-      const wrongPower = b - c + randint(-5, 6, [0]);
-      const wrongAnswerTree = new Power(a, wrongPower).simplify();
-      const wrongAnswer = wrongAnswerTree.toTex();
+    res.push({
+      id: v4() + '',
+      statement: answerTree.toTex(),
+      isRightAnswer: true,
+    });
 
-      res.push({
-        id: Math.random() + '',
-        statement: wrongAnswer,
-        isRightAnswer: false,
-      });
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const wrongPower = b - c + randint(-5, 6, [0, c - b]);
+        const wrongAnswerTree = new Power(a === 1 || a === -1 ? randint(-3, 4, [-1, 1]) : a, wrongPower).simplify(); // pour éviter les 1 1 -1 1 dans propositions
+        const wrongAnswer = wrongAnswerTree.toTex();
+
+        proposition = {
+          id: v4() + '',
+          statement: wrongAnswer,
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
     }
 
-    return res;
+    return shuffle(res);
   };
 
   const question: Question = {

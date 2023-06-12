@@ -5,6 +5,8 @@ import { round } from '#root/math/utils/round';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { coinFlip } from '#root/utils/coinFlip';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const mentalAddAndSub: Exercise = {
   id: 'mentalAddAndSub',
@@ -41,18 +43,37 @@ export function getMentalAddAndSub(): Question {
   statementTree.shuffle();
 
   const getPropositions = (n: number) => {
-    const propositions: Proposition[] = [];
-    for (let i = 0; i < n; i++) {
-      let proposition = '';
-      const incorrectSum = round(sum + (coinFlip() ? 1 : -1) * Math.random() * 10, 2);
-      proposition = `${incorrectSum}`;
-      propositions.push({
-        id: Math.random() + '',
-        statement: proposition,
-        isRightAnswer: false,
-      });
+    const res: Proposition[] = [];
+
+    // Ajout de la réponse correcte
+    const answer = round(sum, 2);
+    res.push({
+      id: v4() + '',
+      statement: answer.toString(),
+      isRightAnswer: true,
+    });
+
+    // Ajout des propositions incorrectes
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const incorrectSum = round(sum + (coinFlip() ? 1 : -1) * Math.random() * 10, 2);
+        proposition = {
+          id: v4() + '',
+          statement: incorrectSum.toString(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
     }
-    return propositions;
+
+    // Mélange des propositions
+    return shuffle(res);
   };
 
   const question: Question = {

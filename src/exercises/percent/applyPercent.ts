@@ -1,8 +1,10 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
 import { coinFlip } from '#root/utils/coinFlip';
+import { shuffle } from '#root/utils/shuffle';
 import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+import { v4 } from 'uuid';
 
 export const applyPercent: Exercise = {
   id: 'applyPercent',
@@ -35,23 +37,39 @@ export function getApplyPercentQuestion(): Question {
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
-    for (let i = 0; i < n; i++) {
-      let wrongAnswer = ans;
-      const deviation = Math.random() < 0.5 ? -1 : 1;
-      const percentDeviation = Math.random() * 20 + 1;
+    res.push({
+      id: v4() + '',
+      statement: ans.toString(),
+      isRightAnswer: true,
+    });
 
-      wrongAnswer += deviation * (percentDeviation / 100) * ans;
-      wrongAnswer = round(wrongAnswer, 2);
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
 
-      res.push({
-        id: Math.random() + '',
-        statement: wrongAnswer.toString(),
-        isRightAnswer: false,
-      });
+      do {
+        let wrongAnswer = ans;
+        const deviation = Math.random() < 0.5 ? -1 : 1;
+        const percentDeviation = Math.random() * 20 + 1;
+
+        wrongAnswer += deviation * (percentDeviation / 100) * ans;
+        wrongAnswer = round(wrongAnswer, 2);
+
+        proposition = {
+          id: v4() + '',
+          statement: wrongAnswer.toString(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
     }
 
-    return res;
+    return shuffle(res);
   };
+
   const question: Question = {
     instruction,
     answer: ans.toString(),

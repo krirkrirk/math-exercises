@@ -1,7 +1,9 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
+import { shuffle } from '#root/utils/shuffle';
 import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+import { v4 } from 'uuid';
 
 export const averageEvolutionRate: Exercise = {
   id: 'averageEvolutionRate',
@@ -25,22 +27,37 @@ export function getAverageEvolutionRate(): Question {
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
-    for (let i = 0; i < n; i++) {
-      let wrongAnswer = answer;
-      const deviation = Math.random() < 0.5 ? -1 : 1;
-      const percentDeviation = Math.random() * 10 + 1;
+    res.push({
+      id: v4() + '',
+      statement: `${answer}\\%`,
+      isRightAnswer: true,
+    });
 
-      wrongAnswer += deviation * percentDeviation;
-      wrongAnswer = round(wrongAnswer, 2);
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
 
-      res.push({
-        id: Math.random() + '',
-        statement: `${wrongAnswer}\\%`,
-        isRightAnswer: false,
-      });
+      do {
+        let wrongAnswer = answer;
+        const deviation = Math.random() < 0.5 ? -1 : 1;
+        const percentDeviation = Math.random() * 10 + 1;
+
+        wrongAnswer += deviation * percentDeviation;
+        wrongAnswer = round(wrongAnswer, 2);
+
+        proposition = {
+          id: v4() + '',
+          statement: `${wrongAnswer}\\%`,
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
     }
 
-    return res;
+    return shuffle(res);
   };
 
   const question: Question = {

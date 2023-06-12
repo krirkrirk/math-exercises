@@ -2,6 +2,8 @@ import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { RationalConstructor } from '#root/math/numbers/rationals/rational';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const fractionsProduct: Exercise = {
   id: 'fractionsProduct',
@@ -23,16 +25,33 @@ export function getFractionsProduct(): Question {
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
-    for (let i = 0; i < n; i++) {
-      const randomRational = RationalConstructor.randomIrreductible();
-      const wrongAnswerTree = randomRational.multiply(rational2).toTree();
-      res.push({
-        id: Math.random() + '',
-        statement: wrongAnswerTree.toTex(),
-        isRightAnswer: false,
-      });
+
+    res.push({
+      id: v4() + '',
+      statement: answerTree.toTex(),
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const randomRational = RationalConstructor.randomIrreductible();
+        const wrongAnswerTree = randomRational.multiply(rational2).toTree();
+        proposition = {
+          id: v4() + '',
+          statement: wrongAnswerTree.toTex(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
     }
-    return res;
+
+    return shuffle(res);
   };
 
   const question: Question = {
