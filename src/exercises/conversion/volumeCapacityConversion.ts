@@ -1,4 +1,4 @@
-import { DecimalConstructor } from '#root/math/numbers/decimals/decimal';
+import { Decimal, DecimalConstructor } from '#root/math/numbers/decimals/decimal';
 import { randint } from '#root/math/utils/random/randint';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
@@ -32,16 +32,16 @@ export function getVolumeCapacityConversion(): Question {
 
   let instructionUnit;
   let AsnwerUnit;
-  let answer: number;
+  let answer: Decimal;
 
   if (coinFlip()) {
     instructionUnit = volumeUnits[randomUnitIndex];
     AsnwerUnit = capacityUnits[randomUnitInstructionIndex];
-    answer = random.multiplyByPowerOfTen(3 * (randomUnitIndex - 2) + 3 - randomUnitInstructionIndex).value;
+    answer = random.multiplyByPowerOfTen(3 * (randomUnitIndex - 2) + 3 - randomUnitInstructionIndex);
   } else {
     instructionUnit = capacityUnits[randomUnitIndex];
     AsnwerUnit = volumeUnits[randomUnitInstructionIndex];
-    answer = random.multiplyByPowerOfTen(randomUnitIndex - 3 + 3 * (2 - randomUnitInstructionIndex)).value;
+    answer = random.multiplyByPowerOfTen(randomUnitIndex - 3 + 3 * (2 - randomUnitInstructionIndex));
   }
 
   const getPropositions = (n: number) => {
@@ -49,7 +49,7 @@ export function getVolumeCapacityConversion(): Question {
 
     res.push({
       id: v4() + '',
-      statement: answer + '',
+      statement: answer.value + '',
       isRightAnswer: true,
     });
 
@@ -58,10 +58,10 @@ export function getVolumeCapacityConversion(): Question {
       let proposition: Proposition;
 
       do {
-        const wrongAnswer = answer ** randint(-3, 4, [0, 1]);
+        const wrongAnswer = answer.multiplyByPowerOfTen(randint(-3, 4, [0]));
         proposition = {
           id: v4() + '',
-          statement: wrongAnswer + '',
+          statement: wrongAnswer.value + '',
           isRightAnswer: false,
         };
 
@@ -76,8 +76,9 @@ export function getVolumeCapacityConversion(): Question {
 
   const question: Question = {
     instruction: `$${random.value}$ $${instructionUnit}$ = ... $${AsnwerUnit}$`,
-    answer: answer + '',
+    answer: answer.value + '',
     keys: [],
+    getPropositions,
   };
 
   return question;

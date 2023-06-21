@@ -1,14 +1,9 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
-import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
-import { VariableNode } from '#root/tree/nodes/variables/variableNode';
-import { simplifyNode } from '#root/tree/parsers/simplify';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const arithmeticExplicitFormulaUsage: Exercise = {
   id: 'arithmeticExplicitFormulaUsage',
@@ -29,11 +24,41 @@ export function getArithmeticExplicitFormulaUsage(): Question {
 
   const polynomial = new Polynomial([firstValue, reason], 'n');
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: (firstValue + askedRank * reason).toString(),
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        proposition = {
+          id: v4() + '',
+          statement: (randint(-5, 6, [firstValue]) + askedRank * reason).toString(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     instruction: `$(u_n)$ est une suite arithmétique définie par $u_n = ${polynomial.toString()}$. Calculer :`,
     startStatement: `u_{${askedRank}}`,
     answer: (firstValue + askedRank * reason).toString(),
     keys: ['r', 'n', 'u', 'underscore'],
+    getPropositions,
   };
 
   return question;

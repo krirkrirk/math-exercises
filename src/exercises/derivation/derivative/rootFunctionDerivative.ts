@@ -1,7 +1,9 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const rootFunctionDerivative: Exercise = {
   id: 'rootFunctionDerivative',
@@ -28,11 +30,52 @@ export function getRootFunctionDerivative(): Question {
   if (a / 2 === round(a / 2, 0)) answer = `\\frac{${a / 2}}{\\sqrt{x}}`;
   else answer = `\\frac{${a}}{2\\sqrt{x}}`;
 
+  const getPropositions = (numOptions: number) => {
+    const propositions: Proposition[] = [];
+
+    propositions.push({
+      id: v4(),
+      statement: answer,
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < numOptions - 1; i++) {
+      let isDuplicate;
+      let proposition: Proposition;
+
+      do {
+        const randomA = randint(-9, 10, [0]);
+        const isEvenA = randomA / 2 === round(randomA / 2, 0);
+
+        if (isEvenA) {
+          proposition = {
+            id: v4(),
+            statement: `\\frac{${randomA / 2}}{\\sqrt{x}}`,
+            isRightAnswer: false,
+          };
+        } else {
+          proposition = {
+            id: 'wrong' + i,
+            statement: `\\frac{${randomA}}{2\\sqrt{x}}`,
+            isRightAnswer: false,
+          };
+        }
+
+        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      propositions.push(proposition);
+    }
+
+    return shuffle(propositions);
+  };
+
   const question: Question = {
     instruction,
     startStatement: `f'(x)`,
     answer,
     keys: ['x'],
+    getPropositions,
   };
 
   return question;
