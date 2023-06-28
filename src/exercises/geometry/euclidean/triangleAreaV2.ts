@@ -1,6 +1,8 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const triangleAreaV2: Exercise = {
   id: 'triangleAreaV2',
@@ -34,10 +36,47 @@ export function getTriangleAreaV2(): Question {
   ];
 
   const randomSide = randint(0, sides.length);
+  const area = (sides[randomSide][0] * sides[randomSide][1]) / 2;
+
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: area + '',
+      isRightAnswer: true,
+    });
+
+    res.push({
+      id: v4() + '',
+      statement: sides[randomSide][0] + sides[randomSide][1] + sides[randomSide][2] + '',
+      isRightAnswer: false,
+    });
+
+    for (let i = 0; i < n - 2; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        proposition = {
+          id: v4() + '',
+          statement: area + randint(-area + 1, 14, [0]) + '',
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
 
   const question: Question = {
     instruction: `Calculer l'aire du triangle rectangle qui a pour côtés: $${sides[randomSide][0]}$ cm, $${sides[randomSide][1]}$ cm et $${sides[randomSide][2]}$ cm.`,
-    answer: (sides[randomSide][0] * sides[randomSide][1]) / 2 + '',
+    answer: area + '',
+    getPropositions,
   };
 
   return question;

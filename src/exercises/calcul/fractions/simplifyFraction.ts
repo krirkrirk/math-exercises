@@ -36,7 +36,7 @@ export function getSimplifyFraction(): Question {
         const incorrectRational = RationalConstructor.randomSimplifiable(10);
         proposition = {
           id: uuidv4(),
-          statement: incorrectRational.toTree().toTex(),
+          statement: incorrectRational.simplify().toTree().toTex(),
           isRightAnswer: false,
         };
 

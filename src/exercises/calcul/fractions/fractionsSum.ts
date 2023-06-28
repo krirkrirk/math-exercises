@@ -38,10 +38,10 @@ export function getFractionsSum(): Question {
 
       do {
         const incorrectRational = RationalConstructor.randomIrreductible();
-        const incorrectStatementTree = new AddNode(incorrectRational.toTree(), rational2.toTree());
+        const incorrectRational2 = RationalConstructor.randomIrreductible();
         proposition = {
           id: uuidv4(),
-          statement: incorrectStatementTree.toTex(),
+          statement: incorrectRational.add(incorrectRational2).toTree().toTex(),
           isRightAnswer: false,
         };
 

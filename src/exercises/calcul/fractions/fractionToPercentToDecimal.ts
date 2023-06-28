@@ -82,19 +82,27 @@ export function getFractionToPercentToDecimal(): Question {
 
         switch (rand) {
           case 1:
-            statement = `${percent * 10 ** randint(-3, 4, [0])}\\%`;
+            const temp1 = randint(-5, 3, [0]);
+            statement = `${round(percent * 10 ** temp1, -temp1 + 2)}\\%`;
             break;
           case 2:
             statement = `${simplifyNode(
-              new FractionNode(new NumberNode(numerator * Math.random()), new NumberNode(denominator * Math.random())),
+              new FractionNode(
+                new NumberNode(numerator * randint(1, 20, [0, 1])),
+                new NumberNode(denominator * randint(1, 20, [0, 1])),
+              ),
             ).toTex()}`;
             break;
           case 3:
-            statement = `${decimal * 10 ** randint(-3, 4, [0])}`;
+            const temp3 = randint(-5, 3, [0]);
+            statement = `${round(percent * 10 ** temp3, -temp3 + 2)}`;
             break;
           case 4:
             statement = `${simplifyNode(
-              new FractionNode(new NumberNode(numerator * Math.random()), new NumberNode(denominator * Math.random())),
+              new FractionNode(
+                new NumberNode(numerator * randint(1, 20, [0, 1])),
+                new NumberNode(denominator * randint(1, 20, [0, 1])),
+              ),
             ).toTex()}`;
             break;
           case 5:

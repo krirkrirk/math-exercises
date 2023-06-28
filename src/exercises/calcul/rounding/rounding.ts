@@ -1,7 +1,10 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { DecimalConstructor } from '#root/math/numbers/decimals/decimal';
 import { randint } from '#root/math/utils/random/randint';
+import { round } from '#root/math/utils/round';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 /**
  * arrondi à l'unité
@@ -78,11 +81,69 @@ const instructions = [
 export function getRoundQuestions(precisionAsked: number = 0): Question {
   const precision = randint(precisionAsked + 1, precisionAsked + 5);
   const dec = DecimalConstructor.random(0, 1000, precision);
+
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: dec.round(precisionAsked).toTree().toTex(),
+      isRightAnswer: true,
+    });
+
+    res.push({
+      id: v4() + '',
+      statement:
+        round(dec.value, precisionAsked) === round(dec.value + 0.5 * 10 ** -precisionAsked, precisionAsked)
+          ? round(dec.value - 0.5 * 10 ** -precisionAsked, precisionAsked) + ''
+          : round(dec.value + 0.5 * 10 ** -precisionAsked, precisionAsked) + '',
+      isRightAnswer: false,
+    });
+
+    if (n > 2)
+      res.push({
+        id: v4() + '',
+        statement: dec.toTree().toTex(),
+        isRightAnswer: false,
+      });
+
+    if (n > 3 && dec.decimalPart.length !== precisionAsked + 1)
+      res.push({
+        id: v4() + '',
+        statement: dec
+          .round(precisionAsked + 1)
+          .toTree()
+          .toTex(),
+        isRightAnswer: false,
+      });
+
+    for (let i = 0; dec.decimalPart.length !== precisionAsked + 1 ? i < n - 4 : i < n - 3; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        proposition = {
+          id: v4() + '',
+          statement: DecimalConstructor.random(0, 1000, precision).toTree().toTex(),
+          isRightAnswer: false,
+        };
+        console.log(proposition);
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     instruction: instructions[precisionAsked],
     startStatement: dec.toTree().toTex(),
     answer: dec.round(precisionAsked).toTree().toTex(),
     keys: [],
+    getPropositions,
   };
   return question;
 }

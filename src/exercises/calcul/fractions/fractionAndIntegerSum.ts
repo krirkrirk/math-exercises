@@ -40,8 +40,8 @@ export function getFractionAndIntegerSum(): Question {
       let proposition: Proposition;
 
       do {
-        const randomAddend = new Integer(randint(-10, 10));
-        const wrongAnswerTree = rational.add(randomAddend).toTree();
+        const rational = RationalConstructor.randomIrreductible();
+        const wrongAnswerTree = rational.add(integer).toTree();
         proposition = {
           id: v4() + '',
           statement: wrongAnswerTree.toTex(),
