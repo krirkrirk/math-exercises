@@ -63,15 +63,18 @@ export function getThales(): Question {
     `ShowLabel(${vertices[4]}, true)`,
   ];
 
-  // getPropositions incomplet
-
-  /*const getPropositions = (n: number) => {
+  const getPropositions = (n: number) => {
     const res: Proposition[] = [];
-    const wrongQuotients = [''];
-
-    const temp1 = randint(0, 5);
-    const temp2 = randint(0, 5, [temp1]);
-
+    const wrongQuotients = [
+      vertices[0] + vertices[3],
+      vertices[0] + vertices[1],
+      vertices[0] + vertices[4],
+      vertices[0] + vertices[2],
+      vertices[3] + vertices[4],
+      vertices[1] + vertices[2],
+      vertices[1] + vertices[3],
+      vertices[2] + vertices[4],
+    ];
 
     res.push({
       id: v4() + '',
@@ -81,16 +84,20 @@ export function getThales(): Question {
       isRightAnswer: true,
     });
 
+    const indexRange = Array.from({ length: 8 }, (_, i) => i);
+
     for (let i = 0; i < n - 1; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 
       do {
+        const rands = shuffle(indexRange).slice(0, 6);
+
         proposition = {
           id: v4() + '',
-          statement: `\\frac{${vertices[0]}${vertices[3]}}{${vertices[0]}${vertices[1]}} = 
-          \\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}} = 
-          \\frac{${vertices[3]}${vertices[4]}}{${vertices[1]}${vertices[2]}}`,
+          statement: `\\frac{${wrongQuotients[rands[0]]}}{${wrongQuotients[rands[1]]}} = 
+          \\frac{${wrongQuotients[rands[2]]}}{${wrongQuotients[rands[3]]}} = 
+          \\frac{${wrongQuotients[rands[4]]}}{${wrongQuotients[rands[5]]}}`,
           isRightAnswer: false,
         };
 
@@ -101,7 +108,7 @@ export function getThales(): Question {
     }
 
     return shuffle(res);
-  };*/
+  };
 
   const question: Question = {
     instruction: `En utilisant le théoreme de Thalès, Écrire l'égalité des quotients sachant que :$\\\\$ (${vertices[3]}${vertices[4]})//(${vertices[1]}${vertices[2]})`,
@@ -111,7 +118,7 @@ export function getThales(): Question {
     keys: [...vertices, 'equal'],
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
-    //getPropositions,
+    getPropositions,
   };
 
   return question;
