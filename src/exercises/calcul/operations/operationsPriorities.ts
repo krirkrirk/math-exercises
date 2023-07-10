@@ -6,7 +6,7 @@
  * a/b ± c*d
  */
 
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -14,6 +14,8 @@ import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { DivideNode } from '#root/tree/nodes/operators/divideNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { coinFlip } from '#root/utils/coinFlip';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const operationsPriorities: Exercise = {
   id: 'operationsPriorities',
@@ -116,10 +118,40 @@ export function getPriorityQuestions(): Question {
       break;
   }
 
+  const getPropositions = (n: number) => {
+    const propositions: Proposition[] = [];
+
+    propositions.push({
+      id: v4(),
+      statement: answer,
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        proposition = {
+          id: v4(),
+          statement: randint(-100, 100) + '',
+          isRightAnswer: false,
+        };
+
+        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      propositions.push(proposition);
+    }
+
+    return shuffle(propositions);
+  };
+
   const question: Question = {
     startStatement,
     answer,
     keys: [],
+    getPropositions,
   };
   return question;
 }

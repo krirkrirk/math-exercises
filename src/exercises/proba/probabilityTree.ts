@@ -1,9 +1,13 @@
 import { randint } from '#root/math/utils/random/randint';
+import { Node } from '#root/tree/nodes/node';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
-import { Exercise, Question } from '../exercise';
+import { shuffle } from '#root/utils/shuffle';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+import { v4 } from 'uuid';
 
 export const probabilityTree: Exercise = {
   id: 'probabilityTree',
@@ -39,7 +43,7 @@ export function getProbabilityTree(): Question {
 
   let instruction = `En utilisant l'arbre de probabilité suivant, `;
   let startStatement = '';
-  let answer = '';
+  let answer: Node;
 
   const rand = randint(1, 5);
 
@@ -47,27 +51,29 @@ export function getProbabilityTree(): Question {
     case 1: {
       instruction += `$\\\\$ Calculer $P(A \\cap C)$`;
       startStatement = `P(A \\cap C)`;
-      answer = simplifyNode(new MultiplyNode(pA, pA_C)).toTex();
+      answer = simplifyNode(new MultiplyNode(pA, pA_C));
       break;
     }
     case 2: {
       instruction += `$\\\\$ Calculer $P(A \\cap D)$`;
       startStatement = `P(A \\cap D)`;
-      answer = simplifyNode(new MultiplyNode(pA, pA_D)).toTex();
+      answer = simplifyNode(new MultiplyNode(pA, pA_D));
       break;
     }
     case 3: {
       instruction += `$\\\\$ Calculer $P(B \\cap C)$`;
       startStatement = `P(B \\cap C)`;
-      answer = simplifyNode(new MultiplyNode(pB, pB_C)).toTex();
+      answer = simplifyNode(new MultiplyNode(pB, pB_C));
       break;
     }
     case 4: {
       instruction += `$\\\\$ Calculer $P(B \\cap D)$`;
       startStatement = `P(B \\cap D)`;
-      answer = simplifyNode(new MultiplyNode(pB, pB_D)).toTex();
+      answer = simplifyNode(new MultiplyNode(pB, pB_D));
       break;
     }
+    default:
+      answer = simplifyNode(new MultiplyNode(pB, pB_D)); // juste pour éviter l'erreur
   }
 
   let commands = [
@@ -99,13 +105,43 @@ export function getProbabilityTree(): Question {
     'Text("D", (5.5 , -3.1))',
   ];
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: answer.toTex(),
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        proposition = {
+          id: v4() + '',
+          statement: simplifyNode(new MultiplyNode(answer, new NumberNode(randint(2, 11)))).toTex(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     instruction,
     startStatement,
-    answer,
+    answer: answer.toTex(),
     keys: [],
     commands,
     coords: [-2, 8, -5, 5],
+    getPropositions,
   };
 
   return question;

@@ -1,8 +1,10 @@
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { Exercise, Question } from '../exercise';
+import { shuffle } from '#root/utils/shuffle';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+import { v4 } from 'uuid';
 
 /**
  * a±b±c±d
@@ -30,11 +32,44 @@ export function getAddAndSubQuestions(): Question {
   for (let i = 2; i < allNumbersNodes.length; i++) {
     statementTree = new AddNode(statementTree, allNumbersNodes[i]);
   }
-  const answer = numbers.reduce((a, b) => a + b) + '';
+  const answer = numbers.reduce((a, b) => a + b);
+
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: answer.toString(),
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const randomOffset = randint(-9, 10, [0]);
+        const wrongAnswer = answer + randomOffset;
+        proposition = {
+          id: v4() + '',
+          statement: wrongAnswer.toString(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     startStatement: statementTree.toTex(),
-    answer: answer,
+    answer: answer + '',
     keys: [],
+    getPropositions,
   };
   return question;
 }

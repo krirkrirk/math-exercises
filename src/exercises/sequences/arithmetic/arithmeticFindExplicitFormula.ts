@@ -1,14 +1,9 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
-import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
-import { VariableNode } from '#root/tree/nodes/variables/variableNode';
-import { simplifyNode } from '#root/tree/parsers/simplify';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const arithmeticFindExplicitFormula: Exercise = {
   id: 'arithmeticFindExplicitFormula',
@@ -29,11 +24,41 @@ export function getArithmeticFindExplicitFormula(): Question {
 
   const formula = new Polynomial([firstValue, reason], 'n');
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: formula.toString(),
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        proposition = {
+          id: v4() + '',
+          statement: new Polynomial([firstValue + randint(-3, 4), reason + randint(-3, 4)], 'n').toString(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     instruction: `$(u_n)$ est une suite arithmétique de premier terme $u_{${firstRank}} = ${firstValue}$ et de raison $r = ${reason}$. $\\\\$ Donner l'expression de $u_n$ en fonction de $n$.`,
     startStatement: 'u_n',
     answer: formula.toString(),
     keys: ['r', 'n', 'u', 'underscore'],
+    getPropositions,
   };
 
   return question;

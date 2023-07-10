@@ -1,7 +1,9 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
 import { randint } from '#root/math/utils/random/randint';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const rightTriangleArea: Exercise = {
   id: 'rightTriangleArea',
@@ -30,6 +32,35 @@ export function getRightTriangleArea(): Question {
     }),
   ];
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: (sidesLength[0] * sidesLength[1]) / 2 + '',
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        proposition = {
+          id: v4() + '',
+          statement: (randint(2, 12) * randint(2, 12)) / 2 + '',
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     instruction: `Calculer l'aire du triangle ${triangle.getTriangleName()} rectangle en ${triangle.getRightAngle()} sachant que ${triangle.getSideBName()} = $${
       sidesLength[0]
@@ -38,6 +69,7 @@ export function getRightTriangleArea(): Question {
     keys: [...vertices, 'equal', 'cm2'],
     commands,
     coords: triangle.generateCoords(),
+    getPropositions,
   };
 
   return question;

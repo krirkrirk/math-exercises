@@ -1,8 +1,10 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const trigonometrySideCalcul: Exercise = {
   id: 'trigonometrySideCalcul',
@@ -49,6 +51,35 @@ export function getTrigonometrySideCalcul(): Question {
     }),
   ];
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: `${round(sideLengths[randsideQuestion], 1)}`,
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        proposition = {
+          id: v4() + '',
+          statement: `${round(randint(11, 100) / 10, 1)}`,
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     instruction: `Le triangle ${triangle.getTriangleName()} rectangle en ${triangle.getRightAngle()} tel que ${
       sides[randside]
@@ -59,6 +90,7 @@ export function getTrigonometrySideCalcul(): Question {
     keys: [...vertices, 'equal', '°', 'cos', 'sin', 'tan', 'arccos', 'arcsin', 'arctan'],
     commands,
     coords: triangle.generateCoords(),
+    getPropositions,
   };
 
   return question;

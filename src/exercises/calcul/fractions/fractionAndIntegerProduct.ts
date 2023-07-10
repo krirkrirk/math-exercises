@@ -1,9 +1,11 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { RationalConstructor } from '#root/math/numbers/rationals/rational';
 import { randint } from '#root/math/utils/random/randint';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const fractionAndIntegerProduct: Exercise = {
   id: 'fractionAndIntegerProduct',
@@ -24,11 +26,42 @@ export function getFractionAndIntegerProduct(): Question {
   statementTree.shuffle();
 
   const answerTree = rational.multiply(integer).toTree();
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: answerTree.toTex(),
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const randomMultiplier = randint(-10, 10);
+        const wrongAnswerTree = rational.multiply(new Integer(randomMultiplier)).toTree();
+        proposition = {
+          id: v4() + '',
+          statement: wrongAnswerTree.toTex(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+    return shuffle(res);
+  };
+
   const question: Question = {
     instruction: '',
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: [],
+    getPropositions,
   };
   return question;
 }

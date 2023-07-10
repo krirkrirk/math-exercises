@@ -1,7 +1,9 @@
 import { randint } from '#root/math/utils/random/randint';
-import { Exercise, Question } from '../exercise';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { round } from '#root/math/utils/round';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const conditionalProbability: Exercise = {
   id: 'conditionalProbability',
@@ -85,11 +87,41 @@ export function getConditionalProbability(): Question {
     }
   }
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: answer,
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        proposition = {
+          id: v4() + '',
+          statement: Math.floor(Math.random() * 100) / 100 + '',
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     instruction,
     startStatement,
     answer,
     keys: ['p', 'cap', 'underscore'],
+    getPropositions,
   };
 
   return question;
