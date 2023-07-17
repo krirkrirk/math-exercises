@@ -1,7 +1,10 @@
+import { SqrtNode } from '#root/tree/nodes/functions/sqrtNode';
 import { Node } from '#root/tree/nodes/node';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
+import { PowerNode } from '#root/tree/nodes/operators/powerNode';
+import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { evaluate } from 'mathjs';
 
@@ -51,6 +54,13 @@ export class Point {
     const dx = this.getXnumber() - B.getXnumber();
     const dy = this.getYnumber() - B.getYnumber();
     return Math.sqrt(dx ** 2 + dy ** 2);
+  }
+
+  distanceToNode(B: Point): Node {
+    const dx = new SubstractNode(this.x, B.x);
+    const dy = new SubstractNode(this.y, B.y);
+    const sum = new AddNode(new PowerNode(dx, new NumberNode(2)), new PowerNode(dy, new NumberNode(2)));
+    return new SqrtNode(simplifyNode(sum));
   }
 
   equalTo(B: Point): boolean {

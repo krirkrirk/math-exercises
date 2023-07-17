@@ -104,6 +104,10 @@ import { triangleAreaV2 } from './geometry/euclidean/triangleAreaV2';
 import { circleArea } from './geometry/euclidean/circleArea';
 import { circleCircumference } from './geometry/euclidean/circleCircumference';
 import { triangleArea } from './geometry/euclidean/triangleArea';
+import { distanceBetweenTwoPoints } from './geometry/cartesian/distanceBetweenTwoPoints';
+import { reduceExpression } from './calculLitteral/simplifying/reduceExpression';
+import { evaluateExpression } from './calculLitteral/equation/evaluateExpression';
+import { proportionalityTable } from './calcul/proportionality/proportionalityTable';
 
 export const exercises = [
   /**
@@ -258,4 +262,8 @@ export const exercises = [
   trianglePerimeter,
   circleArea,
   circleCircumference,
+  distanceBetweenTwoPoints,
+  reduceExpression,
+  evaluateExpression,
+  proportionalityTable,
 ];
