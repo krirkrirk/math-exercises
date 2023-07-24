@@ -92,7 +92,7 @@ export function getPrimeNumbers(): Question {
   };
 
   const question: Question = {
-    startStatement: `${prod} = ?`,
+    startStatement: `${prod}`,
     answer,
     keys: [],
     getPropositions,

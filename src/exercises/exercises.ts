@@ -106,7 +106,7 @@ import { circleCircumference } from './geometry/euclidean/circleCircumference';
 import { triangleArea } from './geometry/euclidean/triangleArea';
 import { distanceBetweenTwoPoints } from './geometry/cartesian/distanceBetweenTwoPoints';
 import { reduceExpression } from './calculLitteral/simplifying/reduceExpression';
-import { evaluateExpression } from './calculLitteral/equation/evaluateExpression';
+import { evaluateExpression } from './calculLitteral/simplifying/evaluateExpression';
 import { proportionalityTable } from './calcul/proportionality/proportionalityTable';
 
 export const exercises = [

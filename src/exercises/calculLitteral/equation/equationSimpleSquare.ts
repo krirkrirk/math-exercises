@@ -9,7 +9,7 @@ export const equationSimpleSquare: Exercise = {
   id: 'equationSimpleSquare',
   connector: '=',
   instruction: '',
-  label: 'Résoudre une équation du second degré du type x² = a',
+  label: 'Résoudre une équation du second degré du type $x^2 = a$',
   levels: ['2', '1'],
   section: 'Équations',
   isSingleStep: false,

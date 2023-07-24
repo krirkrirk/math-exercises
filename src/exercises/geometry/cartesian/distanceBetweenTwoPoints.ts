@@ -105,7 +105,7 @@ export function getDistanceBetweenTwoPoints(): Question {
   };
 
   const question: Question = {
-    instruction: `Soit $${A.toTexWithCoords()}$ et $${B.toTexWithCoords()}$. Calculer la distance AB.`,
+    instruction: `Soit $${A.toTexWithCoords()}$ et $${B.toTexWithCoords()}$. Calculer la distance $AB$.`,
     startStatement: 'AB',
     answer,
     keys: [],

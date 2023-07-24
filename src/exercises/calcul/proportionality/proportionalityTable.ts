@@ -8,12 +8,12 @@ export const proportionalityTable: Exercise = {
   id: 'proportionalityTable',
   connector: '=',
   instruction: '',
-  label: 'Calculs de fréquences marginales et conditionnelles',
-  levels: ['1', '0'],
+  label: 'Calcul dans un tableau de proportionnalité',
+  levels: ['5', '4', '3'],
   isSingleStep: false,
-  section: 'Probabilités',
+  section: 'Proportionnalité',
   generator: (nb: number) => getDistinctQuestions(getProportionalityTable, nb),
-  keys: ['f', 'cap', 'underscore'],
+  keys: [],
 };
 
 export function getProportionalityTable(): Question {
@@ -74,12 +74,14 @@ export function getProportionalityTable(): Question {
   const question: Question = {
     instruction: `On considère le tableau de proportionnalité suivant : 
 
-| |A|B|
-|-|-|-|
-|C|${x1}|${x3}|
-|D|${x2}|${x4}|`,
+| | |
+|-|-|
+|${x1}|${x3}|
+|${x2}|${x4}|
+
+Déterminer le nombre manquant.`,
     answer: answer + '',
-    keys: ['f', 'cap', 'underscore'],
+    keys: [],
     getPropositions,
   };
 

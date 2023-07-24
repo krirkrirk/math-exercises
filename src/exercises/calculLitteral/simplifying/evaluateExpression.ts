@@ -12,10 +12,10 @@ export const evaluateExpression: Exercise = {
   instruction: '',
   label: 'Evaluer une expression',
   levels: ['4', '3', '2'],
-  section: 'Équations',
+  section: 'Calcul littéral',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getEvaluateExpression, nb),
-  keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
+  keys: ['x'],
 };
 
 export function getEvaluateExpression(): Question {
@@ -25,8 +25,8 @@ export function getEvaluateExpression(): Question {
   const xValue = randint(-9, 10);
 
   const statement = rand
-    ? `Calculer $${polynome1.toTree().toTex()}$ pour x = $${xValue}$`
-    : `Calculer $${polynome2.toTree().toTex()}$ pour x = $${xValue}$`;
+    ? `Calculer $${polynome1.toTree().toTex()}$ pour $x = ${xValue}$`
+    : `Calculer $${polynome2.toTree().toTex()}$ pour $x = ${xValue}$`;
 
   const answer = rand ? polynome1.calculate(xValue) : polynome2.calculate(xValue);
 
@@ -63,7 +63,7 @@ export function getEvaluateExpression(): Question {
   const question: Question = {
     instruction: statement,
     answer: answer + '',
-    keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
+    keys: ['x'],
     getPropositions,
   };
   return question;
