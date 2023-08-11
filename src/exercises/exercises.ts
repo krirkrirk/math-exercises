@@ -103,11 +103,23 @@ import { trianglePerimeter } from './geometry/euclidean/trianglePerimeter';
 import { triangleAreaV2 } from './geometry/euclidean/triangleAreaV2';
 import { circleArea } from './geometry/euclidean/circleArea';
 import { circleCircumference } from './geometry/euclidean/circleCircumference';
-import { triangleArea } from './geometry/euclidean/triangleArea';
 import { distanceBetweenTwoPoints } from './geometry/cartesian/distanceBetweenTwoPoints';
 import { reduceExpression } from './calculLitteral/simplifying/reduceExpression';
 import { evaluateExpression } from './calculLitteral/equation/evaluateExpression';
 import { proportionalityTable } from './calcul/proportionality/proportionalityTable';
+import { imageFunction } from './geometry/cartesian/imageFunction';
+import { inverseImageFunction } from './geometry/cartesian/inverseImageFunction';
+import { triangleArea } from './geometry/euclidean/TriangleArea';
+import { lnDerivativeOne } from './derivation/derivative/lnDerivativeOne';
+import { lnDerivativeTwo } from './derivation/derivative/lnDerivativeTwo';
+import { lnDerivativeThree } from './derivation/derivative/lnDerivativeThree';
+import { expDerivativeOne } from './derivation/derivative/expDerivativeOne';
+import { expDerivativeTwo } from './derivation/derivative/expDerivativeTwo';
+import { expDerivativeThree } from './derivation/derivative/expDerivativeThree';
+import { logEquation } from './calculLitteral/equation/logEquation';
+import { expEquation } from './calculLitteral/equation/expEquation';
+import { expSimplifiying } from './calculLitteral/simplifying/expSimplifiying';
+import { logSimplifiying } from './calculLitteral/simplifying/logSimplifiying';
 
 export const exercises = [
   /**
@@ -266,4 +278,16 @@ export const exercises = [
   reduceExpression,
   evaluateExpression,
   proportionalityTable,
+  imageFunction,
+  inverseImageFunction,
+  lnDerivativeOne,
+  lnDerivativeTwo,
+  lnDerivativeThree,
+  expDerivativeOne,
+  expDerivativeTwo,
+  expDerivativeThree,
+  logEquation,
+  expEquation,
+  expSimplifiying,
+  logSimplifiying,
 ];
