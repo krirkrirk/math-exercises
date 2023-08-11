@@ -1,10 +1,14 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { DroiteConstructor } from '#root/math/geometry/droite';
 import { Point } from '#root/math/geometry/point';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
+import { simplifyNode } from '#root/tree/parsers/simplify';
+import { shuffle } from '#root/utils/shuffle';
 import { evaluate } from 'mathjs';
+import { v4 } from 'uuid';
 
 export const leadingCoefficient: Exercise = {
   id: 'leadingCoefficient',
@@ -13,7 +17,7 @@ export const leadingCoefficient: Exercise = {
   label: 'Déterminer le coefficient directeur',
   levels: ['3', '2', '1'],
   isSingleStep: false,
-  section: 'Géométrie cartésienne',
+  section: 'Droites',
   generator: (nb: number) => getDistinctQuestions(getLeadingCoefficientQuestion, nb),
 };
 
@@ -53,11 +57,45 @@ export function getLeadingCoefficientQuestion(): Question {
     xmax = 1;
   }
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: droite.getLeadingCoefficient(),
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const wrongAnswer =
+          droite.getLeadingCoefficient() !== '0'
+            ? simplifyNode(new FractionNode(droite.a, new NumberNode(randint(-4, 5, [0, 1]))))
+            : new NumberNode(randint(-4, 5, [0]));
+        proposition = {
+          id: v4() + '',
+          statement: wrongAnswer.toTex(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     answer: droite.getLeadingCoefficient(),
     keys: [],
     commands: [`f(x) = (${a}) * x + (${b})`],
     coords: [xmin, xmax, ymin, ymax],
+    getPropositions,
   };
 
   return question;

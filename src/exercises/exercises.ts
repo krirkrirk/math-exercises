@@ -54,12 +54,11 @@ import { rootFunctionDerivative } from './derivation/derivative/rootFunctionDeri
 import { secondDegreeDerivative } from './derivation/derivative/secondDegreeDerivative';
 import { thirdDegreeDerivative } from './derivation/derivative/thirdDegreeDerivative';
 import { usualDerivative } from './derivation/derivative/usualderivative';
-import { derivativeNumberReading } from './geometry/cartesian/derivativeNumberReading';
+import { derivativeNumberReading } from './derivation/derivativeNumberReading';
 import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
 import { leadingCoefficientCalculV1 } from './geometry/cartesian/leadingCoefficientCalculV1';
 import { leadingCoefficientCalculV2 } from './geometry/cartesian/leadingCoefficientCalculV2';
 import { midpoint } from './geometry/cartesian/midpoint';
-import { triangleArea } from './geometry/euclidean/TriangleArea';
 import { pythagore } from './geometry/euclidean/pythagore';
 import { pythagoreCalcul } from './geometry/euclidean/pythagoreCalcul';
 import { rightTriangleArea } from './geometry/euclidean/rightTriangleArea';
@@ -96,6 +95,31 @@ import { geometricFindReason } from './sequences/geometric/geometricFindReason';
 import { geometricReasonUsage } from './sequences/geometric/geometricReasonUsage';
 import { geometricRecurrenceFormulaUsage } from './sequences/geometric/geometricRecurrenceFormulaUsage';
 import { simplifySquareRoot } from './squareRoots/simpifySquareRoot';
+import { rectangleArea } from './geometry/euclidean/rectangleArea';
+import { rectanglePerimeter } from './geometry/euclidean/rectanglePerimeter';
+import { squareArea } from './geometry/euclidean/squareArea';
+import { squarePerimeter } from './geometry/euclidean/squarePerimeter';
+import { trianglePerimeter } from './geometry/euclidean/trianglePerimeter';
+import { triangleAreaV2 } from './geometry/euclidean/triangleAreaV2';
+import { circleArea } from './geometry/euclidean/circleArea';
+import { circleCircumference } from './geometry/euclidean/circleCircumference';
+import { distanceBetweenTwoPoints } from './geometry/cartesian/distanceBetweenTwoPoints';
+import { reduceExpression } from './calculLitteral/simplifying/reduceExpression';
+import { evaluateExpression } from './calculLitteral/equation/evaluateExpression';
+import { proportionalityTable } from './calcul/proportionality/proportionalityTable';
+import { imageFunction } from './geometry/cartesian/imageFunction';
+import { inverseImageFunction } from './geometry/cartesian/inverseImageFunction';
+import { triangleArea } from './geometry/euclidean/TriangleArea';
+import { lnDerivativeOne } from './derivation/derivative/lnDerivativeOne';
+import { lnDerivativeTwo } from './derivation/derivative/lnDerivativeTwo';
+import { lnDerivativeThree } from './derivation/derivative/lnDerivativeThree';
+import { expDerivativeOne } from './derivation/derivative/expDerivativeOne';
+import { expDerivativeTwo } from './derivation/derivative/expDerivativeTwo';
+import { expDerivativeThree } from './derivation/derivative/expDerivativeThree';
+import { logEquation } from './calculLitteral/equation/logEquation';
+import { expEquation } from './calculLitteral/equation/expEquation';
+import { expSimplifiying } from './calculLitteral/simplifying/expSimplifiying';
+import { logSimplifiying } from './calculLitteral/simplifying/logSimplifiying';
 
 export const exercises = [
   /**
@@ -242,4 +266,28 @@ export const exercises = [
   fractionEquation,
   leadingCoefficientCalculV1,
   leadingCoefficientCalculV2,
+  rectangleArea,
+  rectanglePerimeter,
+  squareArea,
+  squarePerimeter,
+  triangleAreaV2,
+  trianglePerimeter,
+  circleArea,
+  circleCircumference,
+  distanceBetweenTwoPoints,
+  reduceExpression,
+  evaluateExpression,
+  proportionalityTable,
+  imageFunction,
+  inverseImageFunction,
+  lnDerivativeOne,
+  lnDerivativeTwo,
+  lnDerivativeThree,
+  expDerivativeOne,
+  expDerivativeTwo,
+  expDerivativeThree,
+  logEquation,
+  expEquation,
+  expSimplifiying,
+  logSimplifiying,
 ];

@@ -1,10 +1,12 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { DivideNode } from '#root/tree/nodes/operators/divideNode';
 import { coinFlip } from '#root/utils/coinFlip';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const mentalDivisions: Exercise = {
   id: 'mentalDivisions',
@@ -66,10 +68,44 @@ export function getMentalDivisions(): Question {
       : new DivideNode(allNumbersNodes[0], allNumbersNodes[1]);
   const answer = rand === 6 ? a / (b / c) : a / b;
 
+  const getPropositions = (n: number) => {
+    const propositions: Proposition[] = [];
+
+    // Ajout de la réponse correcte
+    propositions.push({
+      id: v4() + '',
+      statement: answer.toString(),
+      isRightAnswer: true,
+    });
+
+    // Ajout des propositions incorrectes
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const incorrectAnswer = round(answer + (coinFlip() ? 1 : -1) * Math.random() * 10, 2);
+        proposition = {
+          id: v4() + '',
+          statement: incorrectAnswer.toString(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      propositions.push(proposition);
+    }
+
+    // Mélange des propositions
+    return shuffle(propositions);
+  };
+
   const question: Question = {
     startStatement: statementTree.toTex(),
     answer: round(answer, 2) + '',
     keys: [],
+    getPropositions,
   };
 
   return question;

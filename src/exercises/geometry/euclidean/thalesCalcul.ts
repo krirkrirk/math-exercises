@@ -1,10 +1,13 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
+import { Node } from '#root/tree/nodes/node';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { coinFlip } from '#root/utils/coinFlip';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const thalesCalcul: Exercise = {
   id: 'thalesCalcul',
@@ -65,7 +68,7 @@ export function getThales(): Question {
   if (sideLengths[2 * rand] === sideLengths[2 * rand2]) rand2 = randint(0, 3, [rand, rand2]); // condition pour pas prendre 2 longueurs identiques
 
   let instruction = `Dans la figure ci-dessous, nous avons (${vertices[3]}${vertices[4]})//(${vertices[1]}${vertices[2]}), `;
-  let statement;
+  let statement: Node;
   let startStatement;
 
   if (coinFlip()) {
@@ -119,6 +122,37 @@ export function getThales(): Question {
     `ShowLabel(${vertices[4]}, true)`,
   ];
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: statement.toTex(),
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        proposition = {
+          id: v4() + '',
+          statement: simplifyNode(
+            new FractionNode(new NumberNode(randint(2, 30)), new NumberNode(randint(2, 30))),
+          ).toTex(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     instruction,
     startStatement,
@@ -126,6 +160,7 @@ export function getThales(): Question {
     keys: [],
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
+    getPropositions,
   };
 
   return question;

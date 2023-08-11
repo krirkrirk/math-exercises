@@ -43,7 +43,7 @@ export class Polynomial {
 
     const res: number[] = [];
     for (let i = 0; i < newDegree + 1; i++) {
-      res[i] = P.coefficients[i] + this.coefficients[i];
+      res[i] = (P.coefficients[i] ?? 0) + (this.coefficients[i] ?? 0);
     }
     return new Polynomial(res, this.variable);
   }
@@ -81,10 +81,15 @@ export class Polynomial {
   derivate(): Polynomial {
     const res: number[] = [];
 
-    for (let i = 1; i < this.coefficients.length; i++)
-      res.push(i * this.coefficients[i]);
+    for (let i = 1; i < this.coefficients.length; i++) res.push(i * this.coefficients[i]);
 
     return new Polynomial(res, this.variable);
+  }
+
+  calculate(x: number): number {
+    let res = 0;
+    for (let i = 0; i < this.coefficients.length; i++) res += x ** i * this.coefficients[i];
+    return res;
   }
 
   toTree(): Node {

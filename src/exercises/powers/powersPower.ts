@@ -6,8 +6,10 @@ import { Power } from '#root/math/numbers/integer/power';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { Exercise, Question } from '../exercise';
+import { shuffle } from '#root/utils/shuffle';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+import { v4 } from 'uuid';
 
 export const powersOfTenPower: Exercise = {
   id: 'powersOfTenPower',
@@ -39,10 +41,44 @@ export function getPowersPowerQuestion(useOnlyPowersOfTen: boolean = false): Que
   const statement = new PowerNode(new PowerNode(new NumberNode(a), new NumberNode(b)), new NumberNode(c));
   let answerTree = new Power(a, b * c).simplify();
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: answerTree.toTex(),
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const wrongExponent = b * c + randint(-11, 11, [0]);
+        const wrongAnswerTree = new Power(a, wrongExponent).simplify();
+        const wrongAnswer = wrongAnswerTree.toTex();
+
+        proposition = {
+          id: v4() + '',
+          statement: wrongAnswer,
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     startStatement: statement.toTex(),
     answer: answerTree.toTex(),
     keys: [],
+    getPropositions,
   };
   return question;
 }

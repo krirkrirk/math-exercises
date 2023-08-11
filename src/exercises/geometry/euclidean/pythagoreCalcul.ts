@@ -1,9 +1,11 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
+import { SquareRoot, SquareRootConstructor } from '#root/math/numbers/reals/squareRoot';
 import { randint } from '#root/math/utils/random/randint';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const pythagoreCalcul: Exercise = {
   id: 'pythagoreCalcul',
@@ -32,7 +34,7 @@ export function getPythagoreCalcul(): Question {
   const zeroOrOne = shuffle([0, 1]);
   const randoms = coinFlip() ? [...zeroOrOne, 2] : [2, ...zeroOrOne];
   // le but est d'avoir une chance sur 2 d'avoir un hépoténus et une 1 chance sur 2 d'avoir un a des 2 autres cote
-  let answer;
+  let answer: string | number;
 
   if (randoms[2] === 2) {
     // cas de l'hypoténus
@@ -55,6 +57,40 @@ export function getPythagoreCalcul(): Question {
     }),
   ];
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: answer + '',
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const temp = randint(2, 300);
+        const squareRoot = new SquareRoot(temp);
+        const wrongAnswer =
+          Math.sqrt(temp) === Math.floor(Math.sqrt(temp)) ? Math.sqrt(temp).toString() : squareRoot.toTree().toTex();
+
+        proposition = {
+          id: v4() + '',
+          statement: wrongAnswer,
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     instruction: `Dans le triangle ${triangle.getTriangleName()} ci-dessous rectangle en ${triangle.getRightAngle()}, on sait que ${
       sides[randoms[0]]
@@ -65,6 +101,7 @@ export function getPythagoreCalcul(): Question {
     keys: [...vertices, 'equal'],
     commands,
     coords: triangle.generateCoords(),
+    getPropositions,
   };
 
   return question;

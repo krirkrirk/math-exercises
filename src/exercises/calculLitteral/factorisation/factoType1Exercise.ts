@@ -2,7 +2,7 @@
  *  type (ax+b)(cx+d) ± (ax+b)(ex+f)
  */
 
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
@@ -10,6 +10,7 @@ import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
 import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const factoType1Exercise: Exercise = {
   id: 'facto1',
@@ -46,10 +47,74 @@ export function getFactoType1Question(): Question {
     affines[1].add(operation === 'add' ? affines[2] : affines[2].opposite()).toTree(),
   );
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: answerTree.toTex(),
+      isRightAnswer: true,
+    });
+
+    res.push({
+      id: v4() + '',
+      statement: new MultiplyNode(
+        affines[0].toTree(),
+        affines[1].add(operation !== 'add' ? affines[2] : affines[2].opposite()).toTree(),
+      ).toTex(),
+      isRightAnswer: false,
+    });
+
+    if (n > 2)
+      res.push({
+        id: v4() + '',
+        statement: new MultiplyNode(
+          affines[1].toTree(),
+          affines[0].add(operation === 'add' ? affines[2] : affines[2].opposite()).toTree(),
+        ).toTex(),
+        isRightAnswer: false,
+      });
+
+    if (n > 3)
+      res.push({
+        id: v4() + '',
+        statement: new MultiplyNode(
+          affines[2].toTree(),
+          affines[0].add(operation === 'add' ? affines[2] : affines[2].opposite()).toTree(),
+        ).toTex(),
+        isRightAnswer: false,
+      });
+
+    for (let i = 0; i < n - 4; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const wrongAnswer = new MultiplyNode(
+          affines[0].toTree(),
+          affines[1].add(AffineConstructor.differentRandoms(1)[0]).toTree(),
+        );
+
+        proposition = {
+          id: v4() + '',
+          statement: wrongAnswer.toTex(),
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: ['x'],
+    getPropositions,
   };
   return question;
 }

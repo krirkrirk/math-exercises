@@ -1,6 +1,8 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
+import { shuffle } from '#root/utils/shuffle';
+import { v4 } from 'uuid';
 
 export const thales: Exercise = {
   id: 'thales',
@@ -14,7 +16,7 @@ export const thales: Exercise = {
 };
 
 export function getThales(): Question {
-  const vertices = [];
+  const vertices: string[] = [];
   const code = 65 + randint(0, 22); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 5; i++) vertices.push(String.fromCharCode(code + i));
 
@@ -61,12 +63,62 @@ export function getThales(): Question {
     `ShowLabel(${vertices[4]}, true)`,
   ];
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+    const wrongQuotients = [
+      vertices[0] + vertices[3],
+      vertices[0] + vertices[1],
+      vertices[0] + vertices[4],
+      vertices[0] + vertices[2],
+      vertices[3] + vertices[4],
+      vertices[1] + vertices[2],
+      vertices[1] + vertices[3],
+      vertices[2] + vertices[4],
+    ];
+
+    res.push({
+      id: v4() + '',
+      statement: `\\frac{${vertices[0]}${vertices[3]}}{${vertices[0]}${vertices[1]}} = 
+      \\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}} = 
+      \\frac{${vertices[3]}${vertices[4]}}{${vertices[1]}${vertices[2]}}`,
+      isRightAnswer: true,
+    });
+
+    const indexRange = Array.from({ length: 8 }, (_, i) => i);
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        const rands = shuffle(indexRange).slice(0, 6);
+
+        proposition = {
+          id: v4() + '',
+          statement: `\\frac{${wrongQuotients[rands[0]]}}{${wrongQuotients[rands[1]]}} = 
+          \\frac{${wrongQuotients[rands[2]]}}{${wrongQuotients[rands[3]]}} = 
+          \\frac{${wrongQuotients[rands[4]]}}{${wrongQuotients[rands[5]]}}`,
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     instruction: `En utilisant le théoreme de Thalès, Écrire l'égalité des quotients sachant que :$\\\\$ (${vertices[3]}${vertices[4]})//(${vertices[1]}${vertices[2]})`,
-    answer: `\\frac{${vertices[0]}${vertices[3]}}{${vertices[0]}${vertices[1]}} = \\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}} = \\frac{${vertices[3]}${vertices[4]}}{${vertices[1]}${vertices[2]}}`,
+    answer: `\\frac{${vertices[0]}${vertices[3]}}{${vertices[0]}${vertices[1]}} = 
+    \\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}} = 
+    \\frac{${vertices[3]}${vertices[4]}}{${vertices[1]}${vertices[2]}}`,
     keys: [...vertices, 'equal'],
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
+    getPropositions,
   };
 
   return question;

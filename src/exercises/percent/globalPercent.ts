@@ -1,7 +1,9 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from 'mathjs';
-import { Exercise, Question } from '../exercise';
+import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+import { v4 } from 'uuid';
+import { shuffle } from '#root/utils/shuffle';
 
 export const globalPercent: Exercise = {
   id: 'globalPercent',
@@ -13,7 +15,6 @@ export const globalPercent: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getGlobalPercentQuestion, nb),
   keys: ['percent'],
-
 };
 
 export function getGlobalPercentQuestion(): Question {
@@ -38,10 +39,47 @@ export function getGlobalPercentQuestion(): Question {
   instruction += ". \nDéterminer le taux d'évolution global du prix de cet article.";
   const answer = `${ans} \\%`;
 
+  const getPropositions = (n: number) => {
+    const res: Proposition[] = [];
+
+    res.push({
+      id: v4() + '',
+      statement: answer,
+      isRightAnswer: true,
+    });
+
+    for (let i = 0; i < n - 1; i++) {
+      let isDuplicate: boolean;
+      let proposition: Proposition;
+
+      do {
+        let wrongAnswer = ans;
+        const deviation = Math.random() < 0.5 ? -1 : 1;
+        const percentDeviation = Math.random() * 20 + 1;
+
+        wrongAnswer += deviation * percentDeviation;
+        wrongAnswer = round(wrongAnswer, 2);
+
+        proposition = {
+          id: v4() + '',
+          statement: `${wrongAnswer} \\%`,
+          isRightAnswer: false,
+        };
+
+        isDuplicate = res.some((p) => p.statement === proposition.statement);
+      } while (isDuplicate);
+
+      res.push(proposition);
+    }
+
+    return shuffle(res);
+  };
+
   const question: Question = {
     instruction,
     answer,
     keys: ['percent'],
+    getPropositions,
   };
 
   return question;
