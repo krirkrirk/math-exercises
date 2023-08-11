@@ -10,6 +10,8 @@ import { MultiplyNode } from '../nodes/operators/multiplyNode';
 import { PowerNode } from '../nodes/operators/powerNode';
 import { SubstractNode } from '../nodes/operators/substractNode';
 import { VariableNode } from '../nodes/variables/variableNode';
+import { LogNode } from '../nodes/functions/logNode';
+import { ExpNode } from '../nodes/functions/expNode';
 
 interface MathjsNode {
   isSymbolNode: boolean;
@@ -52,6 +54,10 @@ const mathjsNodeToNode = (mathjsNode: MathjsNode): Node => {
     switch (fn.name) {
       case 'sqrt':
         return new SqrtNode(mathjsNodeToNode(mathjsNode.args![0]));
+      case 'log':
+        return new LogNode(mathjsNodeToNode(mathjsNode.args![0]));
+      case 'exp':
+        return new ExpNode(mathjsNodeToNode(mathjsNode.args![0]));
     }
   }
 
