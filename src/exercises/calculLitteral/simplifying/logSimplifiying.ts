@@ -14,12 +14,12 @@ export const logSimplifiying: Exercise = {
   id: 'logSimplifiying',
   connector: '\\iff',
   instruction: '',
-  label: 'Simplifier des expressions avec ln',
+  label: 'Simplifier des expressions avec $ln$',
   levels: ['1', '0'],
   section: 'Fonction Logarithme népérien',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExpSimplifiying, nb),
-  keys: ['x'],
+  keys: ['ln'],
 };
 
 export function getExpSimplifiying(): Question {
@@ -76,9 +76,8 @@ export function getExpSimplifiying(): Question {
 
   const question: Question = {
     instruction: `Simplifier l'expression $${expression.toTex()}$.`,
-    startStatement: '',
     answer: simplifiedExpression.toTex(),
-    keys: [],
+    keys: ['ln'],
     getPropositions,
   };
 

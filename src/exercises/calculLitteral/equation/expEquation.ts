@@ -11,17 +11,16 @@ import { VariableNode } from '#root/tree/nodes/variables/variableNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
-
 export const expEquation: Exercise = {
   id: 'expEquation',
   connector: '=',
   instruction: '',
-  label: 'Résoudre des équations de type a * exp(x) = k',
+  label: 'Résoudre des équations de type $a \\times exp(x) = k$',
   levels: ['1', '0'],
-  section: 'Fonctions Exponentielles',
+  section: 'Fonction Exponentielle',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExpEquation, nb),
-  keys: ['x'],
+  keys: ['exp', 'ln'],
 };
 
 export function getExpEquation(): Question {
@@ -70,9 +69,8 @@ export function getExpEquation(): Question {
 
   const question: Question = {
     instruction: `Résoudre l'équation $${equation.toTex()}$.`,
-    startStatement: 'x',
     answer: answer.toTex(),
-    keys: ['x'],
+    keys: ['exp', 'ln'],
     getPropositions,
   };
 

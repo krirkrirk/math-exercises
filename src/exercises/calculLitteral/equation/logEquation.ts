@@ -16,12 +16,12 @@ export const logEquation: Exercise = {
   id: 'logEquation',
   connector: '=',
   instruction: '',
-  label: 'Résoudre des équations de type a * Ln(x) = k',
+  label: 'Résoudre des équations de type $a \\times ln(x) = k$',
   levels: ['1', '0'],
   section: 'Fonction Logarithme népérien',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getLnEquation, nb),
-  keys: ['x'],
+  keys: ['ln', 'exp'],
 };
 
 export function getLnEquation(): Question {
@@ -70,9 +70,8 @@ export function getLnEquation(): Question {
 
   const question: Question = {
     instruction: `Résoudre l'équation $${equation.toTex()}$.`,
-    startStatement: 'x',
     answer: answer.toTex(),
-    keys: ['x'],
+    keys: ['ln', 'exp'],
     getPropositions,
   };
 

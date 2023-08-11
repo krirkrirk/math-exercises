@@ -16,12 +16,12 @@ export const expSimplifiying: Exercise = {
   id: 'expSimplifiying',
   connector: '\\iff',
   instruction: '',
-  label: "Simplifier des expressions avec l'exponentiel",
+  label: "Simplifier des expressions avec l'exponentielle",
   levels: ['1', '0'],
-  section: 'Fonctions Exponentielles',
+  section: 'Fonction Exponentielle',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExpSimplifiying, nb),
-  keys: ['x'],
+  keys: ['exp'],
 };
 
 export function getExpSimplifiying(): Question {
@@ -120,9 +120,8 @@ export function getExpSimplifiying(): Question {
 
   const question: Question = {
     instruction: `Simplifier l'expression $${expression.toTex()}$.`,
-    startStatement: '',
     answer: simplifiedExpression.toTex(),
-    keys: [],
+    keys: ['exp'],
     getPropositions,
   };
 

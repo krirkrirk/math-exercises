@@ -12,12 +12,12 @@ export const lnDerivativeOne: Exercise = {
   id: 'lnDerivativeOne',
   connector: '=',
   instruction: '',
-  label: 'Dérivée de Ln(ax + b)',
+  label: 'Dérivée de $ln(ax + b)$',
   levels: ['1', '0'],
   section: 'Fonction Logarithme népérien',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getLnDerivative, nb),
-  keys: ['x'],
+  keys: ['ln'],
 };
 
 export function getLnDerivative(): Question {
@@ -64,7 +64,7 @@ export function getLnDerivative(): Question {
     instruction: `Déterminer la dérivée de la fonction $f(x) = \\ln(${new Polynomial([b, a])})$.`,
     startStatement: "f'(x)",
     answer: derivative.toTex(),
-    keys: ['x'],
+    keys: ['ln'],
     getPropositions,
   };
 

@@ -14,12 +14,12 @@ export const expDerivativeTwo: Exercise = {
   id: 'expDerivativeTwo',
   connector: '=',
   instruction: '',
-  label: 'Dérivée de a*exp(x) + b',
+  label: 'Dérivée de $a \\times exp(x) + b$',
   levels: ['1', '0'],
-  section: 'Fonctions Exponentielles',
+  section: 'Fonction Exponentielle',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExpDerivative, nb),
-  keys: ['x'],
+  keys: ['exp'],
 };
 
 export function getExpDerivative(): Question {
@@ -68,7 +68,7 @@ export function getExpDerivative(): Question {
     instruction: `Déterminer la dérivée de la fonction $f(x) = ${myfunction.toTex()}$.`,
     startStatement: "f'(x)",
     answer: derivative.toTex(),
-    keys: ['x'],
+    keys: ['exp'],
     getPropositions,
   };
 

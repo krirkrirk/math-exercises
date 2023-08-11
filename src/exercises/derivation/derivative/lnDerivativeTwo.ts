@@ -1,6 +1,5 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { LogNode } from '#root/tree/nodes/functions/logNode';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -16,7 +15,7 @@ export const lnDerivativeTwo: Exercise = {
   id: 'lnDerivativeTwo',
   connector: '=',
   instruction: '',
-  label: 'Dérivée de a*Ln(x) + b',
+  label: 'Dérivée de $a \\times ln(x) + b$',
   levels: ['1', '0'],
   section: 'Fonction Logarithme népérien',
   isSingleStep: false,
@@ -68,7 +67,7 @@ export function getLnDerivative(): Question {
     instruction: `Déterminer la dérivée de la fonction $f(x) = ${myfunction.toTex()}$.`,
     startStatement: "f'(x)",
     answer: derivative.toTex(),
-    keys: ['x'],
+    keys: ['ln'],
     getPropositions,
   };
 

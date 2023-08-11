@@ -2,10 +2,7 @@ import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
-import { CosNode } from '#root/tree/nodes/functions/cosNode';
-import { ExpNode } from '#root/tree/nodes/functions/expNode';
 import { LogNode } from '#root/tree/nodes/functions/logNode';
-import { SqrtNode } from '#root/tree/nodes/functions/sqrtNode';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
@@ -19,12 +16,12 @@ export const lnDerivativeThree: Exercise = {
   id: 'lnDerivativeThree',
   connector: '=',
   instruction: '',
-  label: 'Dérivée de Ln(x)*(ax+b)',
+  label: 'Dérivée de $ln(x) \\times (ax+b)',
   levels: ['1', '0'],
   section: 'Fonction Logarithme népérien',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getLnDerivative, nb),
-  keys: ['x'],
+  keys: ['ln'],
 };
 
 export function getLnDerivative(): Question {
@@ -81,7 +78,7 @@ export function getLnDerivative(): Question {
     instruction: `Déterminer la dérivée de la fonction $f(x) = ${myfunction.toTex()} $.`,
     startStatement: "f'(x)",
     answer: derivative.toTex(),
-    keys: ['x'],
+    keys: ['ln'],
     getPropositions,
   };
 

@@ -3,11 +3,8 @@ import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { ExpNode } from '#root/tree/nodes/functions/expNode';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { VariableNode } from '#root/tree/nodes/variables/variableNode';
-import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
@@ -15,12 +12,12 @@ export const expDerivativeThree: Exercise = {
   id: 'expDerivativeThree',
   connector: '=',
   instruction: '',
-  label: 'Dérivée de (ax+b) * exp(x)',
+  label: 'Dérivée de $(ax+b) \\times exp(x)$',
   levels: ['1', '0'],
-  section: 'Fonctions Exponentielles',
+  section: 'Fonction Exponentielle',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExpDerivativeThree, nb),
-  keys: ['x'],
+  keys: ['exp'],
 };
 
 export function getExpDerivativeThree(): Question {
@@ -69,7 +66,7 @@ export function getExpDerivativeThree(): Question {
     instruction: `Déterminer la dérivée de la fonction $f(x) = ${myfunction.toTex()}$.`,
     startStatement: "f'(x)",
     answer: derivative.toTex(),
-    keys: ['x'],
+    keys: ['exp'],
     getPropositions,
   };
 
