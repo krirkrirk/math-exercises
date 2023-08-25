@@ -78,9 +78,9 @@ import { powersOfTenPower, powersPower } from './powers/powersPower';
 import { powersOfTenProduct, powersProduct } from './powers/powersProduct';
 import { scientificToDecimal } from './powers/scientificToDecimal';
 
-import { conditionalProbability } from './proba/conditionalProbability';
-import { marginalAndConditionalFrequency } from './proba/marginalAndConditionalFrequency';
-import { probabilityTree } from './proba/probabilityTree';
+import { conditionalProbability } from './probaStat/conditionalProbability';
+import { marginalAndConditionalFrequency } from './probaStat/marginalAndConditionalFrequency';
+import { probabilityTree } from './probaStat/probabilityTree';
 
 import { arithmeticExplicitFormulaUsage } from './sequences/arithmetic/arithmeticExplicitFormulaUsage';
 import { arithmeticFindExplicitFormula } from './sequences/arithmetic/arithmeticFindExplicitFormula';
@@ -120,6 +120,16 @@ import { logEquation } from './calculLitteral/equation/logEquation';
 import { expEquation } from './calculLitteral/equation/expEquation';
 import { expSimplifiying } from './calculLitteral/simplifying/expSimplifiying';
 import { logSimplifiying } from './calculLitteral/simplifying/logSimplifiying';
+import { imageFunctionGeogebra } from '#root/exercises/geometry/cartesian/imageFunctionGeogebra';
+import { inverseImageFunctionGeogebra } from '#root/exercises/geometry/cartesian/inverseImageFunctionGeogebra';
+import { frequencyTable } from '#root/exercises/probaStat/frequencyTable';
+import { median } from '#root/exercises/probaStat/median';
+import { quartiles } from '#root/exercises/probaStat/quartiles';
+import { medianList } from '#root/exercises/probaStat/medianList';
+import { quartilesList } from '#root/exercises/probaStat/quartilesList';
+import { euclideanDivision } from '#root/exercises/calcul/operations/euclideanDivision';
+import { signFunction } from '#root/exercises/geometry/cartesian/signFunction';
+import { thirdDegreeFunctionVariation } from '#root/exercises/geometry/cartesian/thirdDegreeFunctionVariation';
 
 export const exercises = [
   /**
@@ -290,4 +300,14 @@ export const exercises = [
   expEquation,
   expSimplifiying,
   logSimplifiying,
+  imageFunctionGeogebra,
+  inverseImageFunctionGeogebra,
+  frequencyTable,
+  median,
+  quartiles,
+  medianList,
+  quartilesList,
+  euclideanDivision,
+  signFunction,
+  thirdDegreeFunctionVariation,
 ];

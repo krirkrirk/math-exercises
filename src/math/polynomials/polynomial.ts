@@ -32,7 +32,36 @@ export class Polynomial {
   equals(P: Polynomial): boolean {
     return P.degree === this.degree && this.coefficients.every((coeff, i) => coeff === P.coefficients[i]);
   }
-  getRoots() {}
+  getRoots(): number[] {
+    const roots: number[] = [];
+
+    if (this.degree === 1) {
+      // Polynôme de degré 1 : ax + b = 0
+      const a = this.coefficients[1];
+      const b = this.coefficients[0];
+
+      if (a !== 0) {
+        roots.push(-b / a);
+      }
+    } else if (this.degree === 2) {
+      // Polynôme de degré 2 : ax^2 + bx + c = 0
+      const a = this.coefficients[2];
+      const b = this.coefficients[1];
+      const c = this.coefficients[0];
+      const delta = b * b - 4 * a * c;
+
+      if (delta > 0) {
+        roots.push((-b + Math.sqrt(delta)) / (2 * a));
+        roots.push((-b - Math.sqrt(delta)) / (2 * a));
+      } else if (delta === 0) {
+        roots.push(-b / (2 * a));
+      }
+    } else {
+      //méthode de Newton-Raphson ou des bibliothèques de calcul symbolique pour obtenir les racines.
+    }
+
+    return roots.sort((a, b) => a - b);
+  }
   add(P: Polynomial): Polynomial {
     if (P.variable !== this.variable) throw Error("Can't add two polynomials with different variables");
 
