@@ -13,7 +13,7 @@ export const primeNumbers: Exercise = {
   instruction: 'Donner la décomposition en nombre premiers',
   label: 'Décomposition en nombres premiers',
   levels: ['5', '4', '3', '2'],
-  section: 'Arithmétiques',
+  section: 'Arithmétique',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getPrimeNumbers, nb),
   keys: [],
