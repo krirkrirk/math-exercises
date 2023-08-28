@@ -6,6 +6,21 @@ import { OppositeNode } from '../../tree/nodes/functions/oppositeNode';
 import { PowerNode } from '../../tree/nodes/operators/powerNode';
 import { SubstractNode } from '../../tree/nodes/operators/substractNode';
 import { VariableNode } from '../../tree/nodes/variables/variableNode';
+import { randint } from '#root/math/utils/random/randint';
+
+export function createRandomPolynomialWithOrder(order: number, variable: string = 'x'): Polynomial {
+  if (order < 0) {
+    throw Error('Order must be a non-negative integer');
+  }
+
+  const coefficients = [];
+  for (let i = 0; i <= order - 1; i++) {
+    coefficients.push(randint(-9, 10));
+  }
+  coefficients.push(randint(-9, 10, [0]));
+
+  return new Polynomial(coefficients, variable);
+}
 
 export class Polynomial {
   degree: number;
