@@ -5,6 +5,8 @@ export enum FunctionsIds {
   sqrt,
   cos,
   sin,
+  log,
+  exp,
 }
 
 export abstract class FunctionNode {
