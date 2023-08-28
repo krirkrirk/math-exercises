@@ -10,11 +10,11 @@ import { v4 } from 'uuid';
 
 export const euclideanDivision: Exercise = {
   id: 'euclideanDivision',
-  connector: '\\iff',
+  connector: '=',
   instruction: '',
-  label: 'Division euclidienne',
+  label: 'Ecrire une division euclidienne',
   levels: ['6', '5', '4'],
-  section: 'Opérations',
+  section: 'Arithmétique',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getEuclideanDivisionQuestions, nb),
   keys: ['equal'],

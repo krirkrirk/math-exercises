@@ -10,7 +10,7 @@ export const imageFunctionGeogebra: Exercise = {
   id: 'imageFunctionGeogebra',
   connector: '=',
   instruction: '',
-  label: "Image d'une fonction sur un graphe",
+  label: "Lecture d'une image",
   levels: ['4', '3', '2'],
   section: 'Géométrie cartésienne',
   isSingleStep: true,
@@ -32,9 +32,7 @@ export function getImageFunctionGeogebra(): Question {
     polynome2 = new Polynomial([randint(-9, 10), randint(-9, 10), randint(-4, 5, [0])]);
   } while (polynome2.calculate(xValue) > 10 || polynome2.calculate(xValue) < -10);
 
-  const statement = rand
-    ? `Quelle est l'image de la fonction $f(x)$ lorsque $x$ = $${xValue}$.`
-    : `Quelle est l'image de la fonction $f(x)$ lorsque $x$ = $${xValue}$.`;
+  const statement = `Quelle est l'image de $${xValue}$ par la fonction $f$ représentée ci dessous ?`;
 
   const answer = rand ? polynome1.calculate(xValue) : polynome2.calculate(xValue);
 

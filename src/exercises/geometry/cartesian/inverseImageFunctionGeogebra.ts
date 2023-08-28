@@ -11,12 +11,12 @@ export const inverseImageFunctionGeogebra: Exercise = {
   id: 'inverseImageFunctionGeogebra',
   connector: '\\iff',
   instruction: '',
-  label: "Antécédent d'une fonction sur un graphe",
-  levels: ['4', '3', '2'],
-  section: 'Géométrie cartésienne',
+  label: "Lecture d'antécédents",
+  levels: ['3', '2', '1'],
+  section: 'Fonctions',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getInverseImageFunctionGeogebra, nb),
-  keys: ['emptyset'],
+  keys: ['S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
 };
 
 export function getInverseImageFunctionGeogebra(): Question {
@@ -45,8 +45,8 @@ export function getInverseImageFunctionGeogebra(): Question {
     }
 
   const statement = rand
-    ? `Pour quelles valeurs de $x$ la fonction $f(x) = ${polynome1.calculate(xValue)}$.`
-    : `Pour quelles valeurs de $x$ la fonction $f(x) = ${yValue}$.`;
+    ? `Déterminer le ou les antécédents de ${polynome1.calculate(xValue)}$ par la fonction $f$ représentée ci dessous.`
+    : `Déterminer le ou les antécédents de ${yValue}$ par la fonction $f$ représentée ci dessous.`;
 
   const answer = rand
     ? xValue
@@ -160,7 +160,7 @@ export function getInverseImageFunctionGeogebra(): Question {
   const question: Question = {
     instruction: statement,
     answer: answer + '',
-    keys: ['emptyset'],
+    keys: ['S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
     commands,
     coords: [xmin, xmax, ymin, ymax],
     getPropositions,

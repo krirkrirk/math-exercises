@@ -127,9 +127,9 @@ import { median } from '#root/exercises/probaStat/median';
 import { quartiles } from '#root/exercises/probaStat/quartiles';
 import { medianList } from '#root/exercises/probaStat/medianList';
 import { quartilesList } from '#root/exercises/probaStat/quartilesList';
-import { euclideanDivision } from '#root/exercises/calcul/operations/euclideanDivision';
+import { euclideanDivision } from '#root/exercises/calcul/arithmetics/euclideanDivision';
 import { signFunction } from '#root/exercises/geometry/cartesian/signFunction';
-import { thirdDegreeFunctionVariation } from '#root/exercises/geometry/cartesian/thirdDegreeFunctionVariation';
+import { thirdDegreeFunctionVariation } from '#root/exercises/derivation/derivative/thirdDegreeFunctionVariation';
 
 export const exercises = [
   /**

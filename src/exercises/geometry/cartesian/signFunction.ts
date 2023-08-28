@@ -12,12 +12,12 @@ export const signFunction: Exercise = {
   id: 'signFunction',
   connector: '=',
   instruction: '',
-  label: "Signe d'une fonction sur un intervalle",
+  label: "Signe d'une fonction affine",
   levels: ['4', '3', '2'],
-  section: 'Géométrie cartésienne',
+  section: 'Fonctions affines',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getSignFunction, nb),
-  keys: ['lbracket', 'rbracket', 'semicolon', 'infty'],
+  keys: ['S', 'equal', 'lbracket', 'rbracket', 'semicolon', 'infty'],
 };
 
 export function getSignFunction(): Question {
@@ -84,7 +84,7 @@ export function getSignFunction(): Question {
     instruction,
     startStatement: 'S',
     answer,
-    keys: ['lbracket', 'rbracket', 'semicolon', 'infty'],
+    keys: ['S', 'equal', 'lbracket', 'rbracket', 'semicolon', 'infty'],
     getPropositions,
   };
   return question;
