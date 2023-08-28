@@ -130,6 +130,7 @@ import { quartilesList } from '#root/exercises/probaStat/quartilesList';
 import { euclideanDivision } from '#root/exercises/calcul/arithmetics/euclideanDivision';
 import { signFunction } from '#root/exercises/geometry/cartesian/signFunction';
 import { thirdDegreeFunctionVariation } from '#root/exercises/derivation/derivative/thirdDegreeFunctionVariation';
+import { polynomeLimit } from '#root/exercises/limits/polynomeLimit';
 
 export const exercises = [
   /**
@@ -310,4 +311,5 @@ export const exercises = [
   euclideanDivision,
   signFunction,
   thirdDegreeFunctionVariation,
+  polynomeLimit,
 ];
