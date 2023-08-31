@@ -131,6 +131,14 @@ import { euclideanDivision } from '#root/exercises/calcul/arithmetics/euclideanD
 import { signFunction } from '#root/exercises/geometry/cartesian/signFunction';
 import { thirdDegreeFunctionVariation } from '#root/exercises/derivation/derivative/thirdDegreeFunctionVariation';
 import { polynomeLimit } from '#root/exercises/limits/polynomeLimit';
+import { constantPrimitive } from '#root/exercises/primitve/constantPrimitive';
+import { polynomialPrimitive } from '#root/exercises/primitve/polynomialPrimitive';
+import { sinCosPrimitive } from '#root/exercises/primitve/sinCosPrimitive';
+import { exponentialPrimitive } from '#root/exercises/primitve/exponentialPrimitive';
+import { logarithmePrimitive } from '#root/exercises/primitve/logarithmePrimitive';
+import { usualPrimitives } from '#root/exercises/primitve/usualPrimitives';
+import { exponentialDifferentialEquation } from '#root/exercises/equaDiff/equaDiffGeneralForme';
+import { exponentialDifferentialEquationWithIC } from '#root/exercises/equaDiff/equaDiffGeneralFormeWithIC';
 
 export const exercises = [
   /**
@@ -312,4 +320,12 @@ export const exercises = [
   signFunction,
   thirdDegreeFunctionVariation,
   polynomeLimit,
+  constantPrimitive,
+  polynomialPrimitive,
+  sinCosPrimitive,
+  exponentialPrimitive,
+  logarithmePrimitive,
+  usualPrimitives,
+  exponentialDifferentialEquation,
+  exponentialDifferentialEquationWithIC,
 ];
