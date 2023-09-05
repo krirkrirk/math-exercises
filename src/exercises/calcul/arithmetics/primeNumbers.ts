@@ -56,6 +56,7 @@ export function getPrimeNumbers(): Question {
       id: v4() + '',
       statement: answer,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     const wrongFactors = [...choosenNumbers];
@@ -85,6 +86,7 @@ export function getPrimeNumbers(): Question {
         id: v4() + '',
         statement: wrongAnswer,
         isRightAnswer: false,
+        format: 'tex',
       });
     }
 

@@ -10,6 +10,7 @@ export type Proposition = {
   id: string;
   statement: string;
   isRightAnswer: boolean;
+  format: 'tex' | 'raw';
 };
 export interface Question {
   instruction?: string;

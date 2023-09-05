@@ -56,6 +56,7 @@ export function getAddAndSubWithoutRelatives(): Question {
       id: v4() + '',
       statement: answer.toString(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -68,6 +69,7 @@ export function getAddAndSubWithoutRelatives(): Question {
           id: v4() + '',
           statement: incorrectAnswer.toString(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);

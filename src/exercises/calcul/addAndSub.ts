@@ -41,6 +41,7 @@ export function getAddAndSubQuestions(): Question {
       id: v4() + '',
       statement: answer.toString(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -54,6 +55,7 @@ export function getAddAndSubQuestions(): Question {
           id: v4() + '',
           statement: wrongAnswer.toString(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
