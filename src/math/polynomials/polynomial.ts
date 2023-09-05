@@ -130,6 +130,12 @@ export class Polynomial {
     return new Polynomial(res, this.variable);
   }
 
+  integrate(): Polynomial {
+    const newCoefficients = this.coefficients.map((coeff, exp) => coeff / (exp + 1));
+    newCoefficients.unshift(0);
+    return new Polynomial(newCoefficients, this.variable);
+  }
+
   calculate(x: number): number {
     let res = 0;
     for (let i = 0; i < this.coefficients.length; i++) res += x ** i * this.coefficients[i];

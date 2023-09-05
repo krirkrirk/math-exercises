@@ -4,19 +4,19 @@ import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const constanteDerivative: Exercise = {
-  id: 'constanteDerivative',
+export const constantPrimitive: Exercise = {
+  id: 'constantPrimitive',
   connector: '=',
   instruction: '',
-  label: "Dérivée d'une constante",
+  label: "Primitive d'une constante",
   levels: ['1', '0'],
-  section: 'Dérivation',
+  section: 'Intégration',
   isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getConstanteDerivative, nb),
-  keys: ['x'],
+  generator: (nb: number) => getDistinctQuestions(getConstantPrimitive, nb),
+  keys: ['x', 'C'],
 };
 
-export function getConstanteDerivative(): Question {
+export function getConstantPrimitive(): Question {
   const c = randint(-9, 10, [0]);
 
   const getPropositions = (n: number) => {
@@ -24,7 +24,7 @@ export function getConstanteDerivative(): Question {
 
     propositions.push({
       id: v4(),
-      statement: 0 + '',
+      statement: `${c}x + C`,
       isRightAnswer: true,
     });
 
@@ -33,10 +33,10 @@ export function getConstanteDerivative(): Question {
       let proposition: Proposition;
 
       do {
-        const wrongAnswer = randint(-9, 10);
+        const wrongAnswer = `${randint(-9, 10)}x + C`;
         proposition = {
           id: v4(),
-          statement: wrongAnswer + '',
+          statement: wrongAnswer,
           isRightAnswer: false,
         };
 
@@ -50,10 +50,10 @@ export function getConstanteDerivative(): Question {
   };
 
   const question: Question = {
-    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${c}$.`,
-    startStatement: `f'(x)`,
-    answer: '0',
-    keys: [],
+    instruction: `Déterminer la forme générale des primitives de la fonction constante $f$ définie par $f(x) = ${c}$.`,
+    startStatement: `F(x)`,
+    answer: `${c}x + C`,
+    keys: ['x', 'C'],
     getPropositions,
   };
 

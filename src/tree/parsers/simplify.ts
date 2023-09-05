@@ -12,6 +12,8 @@ import { SubstractNode } from '../nodes/operators/substractNode';
 import { VariableNode } from '../nodes/variables/variableNode';
 import { LogNode } from '../nodes/functions/logNode';
 import { ExpNode } from '../nodes/functions/expNode';
+import { CosNode } from '#root/tree/nodes/functions/cosNode';
+import { SinNode } from '#root/tree/nodes/functions/sinNode';
 
 interface MathjsNode {
   isSymbolNode: boolean;
@@ -58,6 +60,10 @@ const mathjsNodeToNode = (mathjsNode: MathjsNode): Node => {
         return new LogNode(mathjsNodeToNode(mathjsNode.args![0]));
       case 'exp':
         return new ExpNode(mathjsNodeToNode(mathjsNode.args![0]));
+      case 'cos':
+        return new CosNode(mathjsNodeToNode(mathjsNode.args![0]));
+      case 'sin':
+        return new SinNode(mathjsNodeToNode(mathjsNode.args![0]));
     }
   }
 
