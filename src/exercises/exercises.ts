@@ -109,7 +109,7 @@ import { evaluateExpression } from './calculLitteral/simplifying/evaluateExpress
 import { proportionalityTable } from './calcul/proportionality/proportionalityTable';
 import { imageFunction } from './geometry/cartesian/imageFunction';
 import { inverseImageFunction } from './geometry/cartesian/inverseImageFunction';
-import { triangleArea } from './geometry/euclidean/TriangleArea';
+import { triangleArea } from './geometry/euclidean/triangleArea';
 import { lnDerivativeOne } from './derivation/derivative/lnDerivativeOne';
 import { lnDerivativeTwo } from './derivation/derivative/lnDerivativeTwo';
 import { lnDerivativeThree } from './derivation/derivative/lnDerivativeThree';
