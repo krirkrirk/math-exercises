@@ -30,6 +30,7 @@ export function getFractionsSum(): Question {
       id: uuidv4(),
       statement: answerTree.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -43,6 +44,7 @@ export function getFractionsSum(): Question {
           id: uuidv4(),
           statement: incorrectRational.add(incorrectRational2).toTree().toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -59,6 +61,7 @@ export function getFractionsSum(): Question {
     answer: answerTree.toTex(),
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

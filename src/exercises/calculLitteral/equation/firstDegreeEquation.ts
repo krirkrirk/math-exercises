@@ -29,6 +29,7 @@ export function getFirstDegreeEquation(): Question {
       id: v4() + '',
       statement: simplifyNode(new NumberNode(a / b)).toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -40,6 +41,7 @@ export function getFirstDegreeEquation(): Question {
           id: v4() + '',
           statement: simplifyNode(new NumberNode((a + randint(-7, 8, [-a])) / (b + randint(-7, 8, [-b])))).toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -57,6 +59,7 @@ export function getFirstDegreeEquation(): Question {
     answer: simplifyNode(new NumberNode(a / b)).toTex(),
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

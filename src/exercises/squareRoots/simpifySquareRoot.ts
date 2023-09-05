@@ -29,6 +29,7 @@ export function getSimplifySquareRoot(): Question {
       id: v4() + '',
       statement: squareRoot.simplify().toTree().toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -45,6 +46,7 @@ export function getSimplifySquareRoot(): Question {
           id: v4() + '',
           statement: squareRoot.simplify().toTree().toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -61,6 +63,7 @@ export function getSimplifySquareRoot(): Question {
     answer: squareRoot.simplify().toTree().toTex(),
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

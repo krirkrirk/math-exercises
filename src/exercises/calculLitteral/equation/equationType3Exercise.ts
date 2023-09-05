@@ -46,6 +46,7 @@ export function getEquationType3ExerciseQuestion(): Question {
       id: v4() + '',
       statement: answerTree.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -62,6 +63,7 @@ export function getEquationType3ExerciseQuestion(): Question {
           id: v4() + '',
           statement: new EqualNode(new VariableNode('x'), wrongAnswer.toTree()).toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -78,6 +80,7 @@ export function getEquationType3ExerciseQuestion(): Question {
     answer: answerTree.toTex(),
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

@@ -51,6 +51,7 @@ export function solveExponentialEquationWithIC(): Question {
       id: v4(),
       statement: myAnswer.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -80,6 +81,7 @@ export function solveExponentialEquationWithIC(): Question {
           id: v4(),
           statement: myWrongAnswer.toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -97,6 +99,7 @@ export function solveExponentialEquationWithIC(): Question {
     answer: myAnswer.toTex(),
     keys: ['x', 'y', 'exp', 'equal'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

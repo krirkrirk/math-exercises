@@ -34,6 +34,7 @@ export function getExpDerivativeThree(): Question {
       id: v4(),
       statement: derivative.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < numOptions - 1; i++) {
@@ -51,6 +52,7 @@ export function getExpDerivativeThree(): Question {
             new ExpNode(new VariableNode('x')),
           ).toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -68,6 +70,7 @@ export function getExpDerivativeThree(): Question {
     answer: derivative.toTex(),
     keys: ['exp'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

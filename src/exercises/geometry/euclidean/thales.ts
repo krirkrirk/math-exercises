@@ -82,6 +82,7 @@ export function getThales(): Question {
       \\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}} = 
       \\frac{${vertices[3]}${vertices[4]}}{${vertices[1]}${vertices[2]}}`,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     const indexRange = Array.from({ length: 8 }, (_, i) => i);
@@ -99,6 +100,7 @@ export function getThales(): Question {
           \\frac{${wrongQuotients[rands[2]]}}{${wrongQuotients[rands[3]]}} = 
           \\frac{${wrongQuotients[rands[4]]}}{${wrongQuotients[rands[5]]}}`,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -119,6 +121,7 @@ export function getThales(): Question {
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

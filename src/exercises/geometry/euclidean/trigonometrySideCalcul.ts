@@ -58,6 +58,7 @@ export function getTrigonometrySideCalcul(): Question {
       id: v4() + '',
       statement: `${round(sideLengths[randsideQuestion], 1)}`,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -69,6 +70,7 @@ export function getTrigonometrySideCalcul(): Question {
           id: v4() + '',
           statement: `${round(randint(11, 100) / 10, 1)}`,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -91,6 +93,7 @@ export function getTrigonometrySideCalcul(): Question {
     commands,
     coords: triangle.generateCoords(),
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

@@ -42,6 +42,7 @@ export function getMedian(): Question {
       id: v4() + '',
       statement: median + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -53,6 +54,7 @@ export function getMedian(): Question {
           id: v4() + '',
           statement: randomValeurs[randint(0, randomValeurs.length)] + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -71,6 +73,7 @@ export function getMedian(): Question {
     answer: median + '',
     keys: ['f', 'cap', 'underscore'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

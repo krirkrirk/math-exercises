@@ -86,6 +86,7 @@ export function getAddAndSubWithoutRelatives(): Question {
     answer: answer.toString(),
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

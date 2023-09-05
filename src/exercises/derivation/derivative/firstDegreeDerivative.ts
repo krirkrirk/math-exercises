@@ -28,6 +28,7 @@ export function getFirstDegreeDerivative(): Question {
       id: v4(),
       statement: a + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -40,6 +41,7 @@ export function getFirstDegreeDerivative(): Question {
           id: v4(),
           statement: wrongAnswer + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -57,6 +59,7 @@ export function getFirstDegreeDerivative(): Question {
     answer: a + '',
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

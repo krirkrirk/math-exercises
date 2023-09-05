@@ -46,6 +46,7 @@ export function getFrequencyTable(): Question {
       id: v4() + '',
       statement: average + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -57,6 +58,7 @@ export function getFrequencyTable(): Question {
           id: v4() + '',
           statement: round(average + randint(-average, 20 - average, [0]) + randint(1, 100) / 100, 2) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -81,6 +83,7 @@ Calculer la moyenne de cette série de valeurs.`,
     answer: average + '',
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

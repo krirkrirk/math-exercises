@@ -80,6 +80,7 @@ export function getMarginalAndConditionalFrequency(): Question {
       id: v4() + '',
       statement: calculsNodes[rand].toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -91,6 +92,7 @@ export function getMarginalAndConditionalFrequency(): Question {
           id: v4() + '',
           statement: calculsNodes[randint(0, 12, [rand])].toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -115,6 +117,7 @@ Calculer la fréquence ${freqString[rand]}.`,
     answer: calculsNodes[rand].toTex(),
     keys: ['f', 'cap', 'underscore'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

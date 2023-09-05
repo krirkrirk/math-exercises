@@ -41,6 +41,7 @@ export function getArithmeticThresholdFind(): Question {
       id: v4() + '',
       statement: (Math.floor((randValue - firstValue) / reason) + 1).toString(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -52,6 +53,7 @@ export function getArithmeticThresholdFind(): Question {
           id: v4() + '',
           statement: (Math.floor((randValue - firstValue) / reason) + randint(-5, 6, [1])).toString(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -69,6 +71,7 @@ export function getArithmeticThresholdFind(): Question {
     answer: (Math.floor((randValue - firstValue) / reason) + 1).toString(),
     keys: ['r', 'n', 'u', 'underscore', 'inf', 'sup', 'approx'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

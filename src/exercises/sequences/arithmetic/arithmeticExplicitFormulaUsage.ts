@@ -31,6 +31,7 @@ export function getArithmeticExplicitFormulaUsage(): Question {
       id: v4() + '',
       statement: (firstValue + askedRank * reason).toString(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -42,6 +43,7 @@ export function getArithmeticExplicitFormulaUsage(): Question {
           id: v4() + '',
           statement: (randint(-5, 6, [firstValue]) + askedRank * reason).toString(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -59,6 +61,7 @@ export function getArithmeticExplicitFormulaUsage(): Question {
     answer: (firstValue + askedRank * reason).toString(),
     keys: ['r', 'n', 'u', 'underscore'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

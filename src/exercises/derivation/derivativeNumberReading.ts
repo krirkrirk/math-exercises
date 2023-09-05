@@ -56,6 +56,7 @@ export function getDerivativeNumberReading(): Question {
       id: v4() + '',
       statement: droite.getLeadingCoefficient(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -71,6 +72,7 @@ export function getDerivativeNumberReading(): Question {
           id: v4() + '',
           statement: wrongAnswer.toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -89,6 +91,7 @@ export function getDerivativeNumberReading(): Question {
     commands,
     coords: [xA - 5, xA + 5, yA - 5, yA + 5],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

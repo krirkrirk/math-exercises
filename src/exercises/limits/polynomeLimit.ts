@@ -61,6 +61,7 @@ export function getApplyPercentQuestion(): Question {
       id: v4() + '',
       statement: answer,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     wrongAnswer = `+\\infty`;
@@ -69,6 +70,7 @@ export function getApplyPercentQuestion(): Question {
         id: v4() + '',
         statement: wrongAnswer,
         isRightAnswer: false,
+        format: 'tex',
       });
       k--;
     }
@@ -79,6 +81,7 @@ export function getApplyPercentQuestion(): Question {
         id: v4() + '',
         statement: wrongAnswer,
         isRightAnswer: false,
+        format: 'tex',
       });
       k--;
     }
@@ -89,6 +92,7 @@ export function getApplyPercentQuestion(): Question {
         id: v4() + '',
         statement: wrongAnswer,
         isRightAnswer: false,
+        format: 'tex',
       });
       k--;
     }
@@ -99,6 +103,7 @@ export function getApplyPercentQuestion(): Question {
         id: v4() + '',
         statement: wrongAnswer,
         isRightAnswer: false,
+        format: 'tex',
       });
       k--;
     }
@@ -109,6 +114,7 @@ export function getApplyPercentQuestion(): Question {
         id: v4() + '',
         statement: wrongAnswer,
         isRightAnswer: false,
+        format: 'tex',
       });
       k--;
     }
@@ -122,6 +128,7 @@ export function getApplyPercentQuestion(): Question {
           id: v4() + '',
           statement: randint(-9, 10) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -138,6 +145,7 @@ export function getApplyPercentQuestion(): Question {
     answer,
     keys: ['infty'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

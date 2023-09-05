@@ -36,6 +36,7 @@ export function getAeraConversion(): Question {
       id: v4() + '',
       statement: randomAera.multiplyByPowerOfTen(2 * (randomUnitIndex - randomUnitInstructionIndex)).value + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -50,6 +51,7 @@ export function getAeraConversion(): Question {
           id: v4() + '',
           statement: wrongAnswer,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -66,6 +68,7 @@ export function getAeraConversion(): Question {
     answer: randomAera.multiplyByPowerOfTen(2 * (randomUnitIndex - randomUnitInstructionIndex)).value + '',
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

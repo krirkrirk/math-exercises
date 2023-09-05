@@ -25,6 +25,7 @@ export function getSquarePerimeter(): Question {
       id: v4() + '',
       statement: side * 4 + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -36,6 +37,7 @@ export function getSquarePerimeter(): Question {
           id: v4() + '',
           statement: side * 4 + randint(-side * 4 + 1, 14, [0]) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -51,6 +53,7 @@ export function getSquarePerimeter(): Question {
     instruction: `Calculer le périmètre d'un carré de $${side}$ cm de côté.`,
     answer: side * 4 + '',
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

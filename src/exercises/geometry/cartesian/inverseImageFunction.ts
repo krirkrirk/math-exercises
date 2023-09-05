@@ -33,6 +33,7 @@ export function getInverseImageFunction(): Question {
       id: v4() + '',
       statement: xValue + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -45,6 +46,7 @@ export function getInverseImageFunction(): Question {
           id: v4() + '',
           statement: wrongAnswer + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -62,6 +64,7 @@ export function getInverseImageFunction(): Question {
     answer: xValue + '',
     keys: ['x', 'equal'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

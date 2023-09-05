@@ -35,6 +35,7 @@ export function getDoubleDistributivityQuestion(): Question {
       id: v4() + '',
       statement: answerTree.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     res.push({
@@ -44,6 +45,7 @@ export function getDoubleDistributivityQuestion(): Question {
         .toTree()
         .toTex(),
       isRightAnswer: false,
+      format: 'tex',
     });
 
     if (n > 2)
@@ -54,6 +56,7 @@ export function getDoubleDistributivityQuestion(): Question {
           .toTree()
           .toTex(),
         isRightAnswer: false,
+        format: 'tex',
       });
 
     for (let i = 0; i < n - 3; i++) {
@@ -68,6 +71,7 @@ export function getDoubleDistributivityQuestion(): Question {
           id: v4() + '',
           statement: wrongAnswer.toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -84,5 +88,6 @@ export function getDoubleDistributivityQuestion(): Question {
     answer: answerTree.toTex(),
     keys: ['x'],
     getPropositions,
+    answerFormat: 'tex',
   };
 }

@@ -29,6 +29,7 @@ export function getArithmeticReasonUsage(): Question {
       id: v4() + '',
       statement: (startValue + reason).toString(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -40,6 +41,7 @@ export function getArithmeticReasonUsage(): Question {
           id: v4() + '',
           statement: startValue + reason + randint(-5, 6, [0]) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -51,12 +53,13 @@ export function getArithmeticReasonUsage(): Question {
     return shuffle(res);
   };
 
-  const question = {
+  const question: Question = {
     instruction: `$(u_n)$ est une suite arithmétique de raison $r = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : `,
     startStatement: `u_{${askedRank}}`,
     answer: (startValue + reason).toString(),
     keys: ['r', 'n', 'u', 'underscore'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

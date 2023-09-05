@@ -37,6 +37,7 @@ export function getRootFunctionDerivative(): Question {
       id: v4(),
       statement: answer,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < numOptions - 1; i++) {
@@ -52,12 +53,14 @@ export function getRootFunctionDerivative(): Question {
             id: v4(),
             statement: `\\frac{${randomA / 2}}{\\sqrt{x}}`,
             isRightAnswer: false,
+            format: 'tex',
           };
         } else {
           proposition = {
             id: 'wrong' + i,
             statement: `\\frac{${randomA}}{2\\sqrt{x}}`,
             isRightAnswer: false,
+            format: 'tex',
           };
         }
 
@@ -76,6 +79,7 @@ export function getRootFunctionDerivative(): Question {
     answer,
     keys: ['x'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

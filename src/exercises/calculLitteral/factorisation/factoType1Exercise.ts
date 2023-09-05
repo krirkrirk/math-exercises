@@ -54,6 +54,7 @@ export function getFactoType1Question(): Question {
       id: v4() + '',
       statement: answerTree.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     res.push({
@@ -63,6 +64,7 @@ export function getFactoType1Question(): Question {
         affines[1].add(operation !== 'add' ? affines[2] : affines[2].opposite()).toTree(),
       ).toTex(),
       isRightAnswer: false,
+      format: 'tex',
     });
 
     if (n > 2)
@@ -73,6 +75,7 @@ export function getFactoType1Question(): Question {
           affines[0].add(operation === 'add' ? affines[2] : affines[2].opposite()).toTree(),
         ).toTex(),
         isRightAnswer: false,
+        format: 'tex',
       });
 
     if (n > 3)
@@ -83,6 +86,7 @@ export function getFactoType1Question(): Question {
           affines[0].add(operation === 'add' ? affines[2] : affines[2].opposite()).toTree(),
         ).toTex(),
         isRightAnswer: false,
+        format: 'tex',
       });
 
     for (let i = 0; i < n - 4; i++) {
@@ -99,6 +103,7 @@ export function getFactoType1Question(): Question {
           id: v4() + '',
           statement: wrongAnswer.toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -115,6 +120,7 @@ export function getFactoType1Question(): Question {
     answer: answerTree.toTex(),
     keys: ['x'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

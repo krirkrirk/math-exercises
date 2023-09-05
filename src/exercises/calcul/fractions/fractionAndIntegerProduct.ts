@@ -64,6 +64,7 @@ export function getFractionAndIntegerProduct(): Question {
     answer: answerTree.toTex(),
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

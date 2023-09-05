@@ -44,12 +44,14 @@ export function getThirdDegreeFunctionVariation(): Question {
       id: v4() + '',
       statement: answer,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     res.push({
       id: v4() + '',
       statement: `\\left[${racine2};+\\infty\\right[`,
       isRightAnswer: false,
+      format: 'tex',
     });
 
     if (n > 2)
@@ -57,6 +59,7 @@ export function getThirdDegreeFunctionVariation(): Question {
         id: v4() + '',
         statement: `\\left]-\\infty;${racine1}\\right]`,
         isRightAnswer: false,
+        format: 'tex',
       });
 
     if (n > 3)
@@ -64,6 +67,7 @@ export function getThirdDegreeFunctionVariation(): Question {
         id: v4() + '',
         statement: `\\left]-\\infty;${racine1}\\right] \\cup \\left[${racine2};+\\infty\\right[`,
         isRightAnswer: false,
+        format: 'tex',
       });
 
     for (let i = 0; i < n - 4; i++) {
@@ -78,6 +82,7 @@ export function getThirdDegreeFunctionVariation(): Question {
           id: v4() + '',
           statement: wrongAnswer,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -100,6 +105,7 @@ export function getThirdDegreeFunctionVariation(): Question {
     answer,
     keys: ['lbracket', 'rbracket', 'semicolon', 'infty'],
     getPropositions,
+    answerFormat: 'tex',
     coords: [
       racine1 - (randint(7, 20) / 10) * (racine2 - racine1),
       racine2 + (randint(7, 20) / 10) * (racine2 - racine1),

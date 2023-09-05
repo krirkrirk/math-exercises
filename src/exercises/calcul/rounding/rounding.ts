@@ -89,6 +89,7 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
       id: v4() + '',
       statement: dec.round(precisionAsked).toTree().toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     res.push({
@@ -98,6 +99,7 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
           ? round(dec.value - 0.5 * 10 ** -precisionAsked, precisionAsked) + ''
           : round(dec.value + 0.5 * 10 ** -precisionAsked, precisionAsked) + '',
       isRightAnswer: false,
+      format: 'tex',
     });
 
     if (n > 2)
@@ -105,6 +107,7 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
         id: v4() + '',
         statement: dec.toTree().toTex(),
         isRightAnswer: false,
+        format: 'tex',
       });
 
     if (n > 3 && dec.decimalPart.length !== precisionAsked + 1)
@@ -115,6 +118,7 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
           .toTree()
           .toTex(),
         isRightAnswer: false,
+        format: 'tex',
       });
 
     for (let i = 0; dec.decimalPart.length !== precisionAsked + 1 ? i < n - 4 : i < n - 3; i++) {
@@ -126,6 +130,7 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
           id: v4() + '',
           statement: DecimalConstructor.random(0, 1000, precision).toTree().toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
         console.log(proposition);
 
@@ -144,6 +149,7 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
     answer: dec.round(precisionAsked).toTree().toTex(),
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

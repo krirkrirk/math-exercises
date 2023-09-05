@@ -16,6 +16,7 @@ export interface Question {
   instruction?: string;
   startStatement?: string;
   answer: string;
+  answerFormat?: 'tex' | 'raw';
   keys?: string[];
   commands?: string[];
   coords?: number[];

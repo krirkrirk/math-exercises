@@ -35,12 +35,14 @@ export function getThirdIdentityQuestion(): Question {
       id: v4() + '',
       statement: answerTree.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     res.push({
       id: v4() + '',
       statement: affine.multiply(affine2.opposite()).toTree().toTex(),
       isRightAnswer: false,
+      format: 'tex',
     });
 
     if (n > 2)
@@ -48,6 +50,7 @@ export function getThirdIdentityQuestion(): Question {
         id: v4() + '',
         statement: affine.multiply(affine).toTree().toTex(),
         isRightAnswer: false,
+        format: 'tex',
       });
 
     if (n > 3)
@@ -55,6 +58,7 @@ export function getThirdIdentityQuestion(): Question {
         id: v4() + '',
         statement: affine2.multiply(affine2.opposite()).toTree().toTex(),
         isRightAnswer: false,
+        format: 'tex',
       });
 
     for (let i = 0; i < n - 4; i++) {
@@ -70,6 +74,7 @@ export function getThirdIdentityQuestion(): Question {
           id: v4() + '',
           statement: wrongAnswer.toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -86,5 +91,6 @@ export function getThirdIdentityQuestion(): Question {
     answer: answerTree.toTex(),
     keys: ['x'],
     getPropositions,
+    answerFormat: 'tex',
   };
 }

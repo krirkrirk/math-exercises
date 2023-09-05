@@ -36,6 +36,7 @@ export function getVolumeConversion(): Question {
       id: v4() + '',
       statement: randomVolume.multiplyByPowerOfTen(3 * (randomUnitIndex - randomUnitInstructionIndex)).value + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -49,6 +50,7 @@ export function getVolumeConversion(): Question {
           id: v4() + '',
           statement: wrongAnswer,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -65,6 +67,7 @@ export function getVolumeConversion(): Question {
     answer: randomVolume.multiplyByPowerOfTen(3 * (randomUnitIndex - randomUnitInstructionIndex)).value + '',
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

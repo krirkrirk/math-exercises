@@ -43,6 +43,7 @@ export function getExponentialEquation(): Question {
       id: v4(),
       statement: myAnswer.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -62,6 +63,7 @@ export function getExponentialEquation(): Question {
           id: v4(),
           statement: myWrongAnswer.toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -79,6 +81,7 @@ export function getExponentialEquation(): Question {
     answer: myAnswer.toTex(),
     keys: ['x', 'y', 'exp', 'C', 'equal'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

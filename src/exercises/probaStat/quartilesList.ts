@@ -61,6 +61,7 @@ export function getQuartiles(): Question {
       id: v4() + '',
       statement: choosenQuartile + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -72,6 +73,7 @@ export function getQuartiles(): Question {
           id: v4() + '',
           statement: randomValeurs[randint(0, randomValeurs.length)] + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -90,6 +92,7 @@ export function getQuartiles(): Question {
     answer: choosenQuartile + '',
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

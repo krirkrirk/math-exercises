@@ -39,6 +39,7 @@ export function getGeometricExplicitFormulaUsage(): Question {
       id: v4() + '',
       statement: (firstValue * Math.pow(reason, askedRank)).toString(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -50,6 +51,7 @@ export function getGeometricExplicitFormulaUsage(): Question {
           id: v4() + '',
           statement: (firstValue * Math.pow(reason, randint(0, 9, [askedRank]))).toString(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -67,6 +69,7 @@ export function getGeometricExplicitFormulaUsage(): Question {
     answer: (firstValue * Math.pow(reason, askedRank)).toString(),
     keys: ['n', 'u', 'underscore'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

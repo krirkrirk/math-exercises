@@ -26,6 +26,7 @@ export function getRectanglePerimeter(): Question {
       id: v4() + '',
       statement: (length + width) * 2 + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -37,6 +38,7 @@ export function getRectanglePerimeter(): Question {
           id: v4() + '',
           statement: (randint(3, 13) + randint(1, 13)) * 2 + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -52,6 +54,7 @@ export function getRectanglePerimeter(): Question {
     instruction: `Calculer le périmètre d'un rectangle de $${length}$ cm de longueur et de $${width}$ cm de largeur.`,
     answer: (length + width) * 2 + '',
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

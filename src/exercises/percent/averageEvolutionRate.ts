@@ -31,6 +31,7 @@ export function getAverageEvolutionRate(): Question {
       id: v4() + '',
       statement: `${answer}\\%`,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -49,6 +50,7 @@ export function getAverageEvolutionRate(): Question {
           id: v4() + '',
           statement: `${wrongAnswer}\\%`,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -65,6 +67,7 @@ export function getAverageEvolutionRate(): Question {
     answer: answer + `\\%`,
     keys: ['percent'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

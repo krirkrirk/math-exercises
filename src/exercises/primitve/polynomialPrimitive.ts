@@ -55,6 +55,7 @@ export function getPolynomialPrimitive(): Question {
       id: v4(),
       statement: `${integralPolynomial.toTex()}`,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -68,6 +69,7 @@ export function getPolynomialPrimitive(): Question {
           id: v4(),
           statement: wrongIntegral.toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -85,6 +87,7 @@ export function getPolynomialPrimitive(): Question {
     answer: `${integralPolynomial.toTex()}`,
     keys: ['x', 'C'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

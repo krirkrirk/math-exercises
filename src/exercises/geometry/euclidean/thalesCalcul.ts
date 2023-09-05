@@ -129,6 +129,7 @@ export function getThales(): Question {
       id: v4() + '',
       statement: statement.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -142,6 +143,7 @@ export function getThales(): Question {
             new FractionNode(new NumberNode(randint(2, 30)), new NumberNode(randint(2, 30))),
           ).toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -161,6 +163,7 @@ export function getThales(): Question {
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

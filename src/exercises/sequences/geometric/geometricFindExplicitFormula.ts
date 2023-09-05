@@ -38,6 +38,7 @@ export function getGeometricFindExplicitFormula(): Question {
       id: v4() + '',
       statement: simplifyNode(formula).toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     res.push({
@@ -46,6 +47,7 @@ export function getGeometricFindExplicitFormula(): Question {
         new MultiplyNode(new NumberNode(reason), new PowerNode(new NumberNode(firstValue), new VariableNode('n'))),
       ).toTex(),
       isRightAnswer: false,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 2; i++) {
@@ -61,6 +63,7 @@ export function getGeometricFindExplicitFormula(): Question {
           id: v4() + '',
           statement: simplifyNode(wrongAnswer).toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -78,6 +81,7 @@ export function getGeometricFindExplicitFormula(): Question {
     answer: simplifyNode(formula).toTex(),
     keys: ['q', 'n', 'u', 'underscore'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

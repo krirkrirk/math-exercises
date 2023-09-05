@@ -65,6 +65,7 @@ export function getFractionAndIntegerSum(): Question {
     answer: answerTree.toTex(),
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

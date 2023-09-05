@@ -56,6 +56,7 @@ export function getTriangleArea(): Question {
       id: v4() + '',
       statement: (sidesLength[randoms[0]] * height) / 2 + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -67,6 +68,7 @@ export function getTriangleArea(): Question {
           id: v4() + '',
           statement: (randint(2, 12) * randint(2, 12)) / 2 + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -87,6 +89,7 @@ export function getTriangleArea(): Question {
     commands,
     coords: triangle.generateCoords(),
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

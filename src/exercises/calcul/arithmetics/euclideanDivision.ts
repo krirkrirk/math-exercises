@@ -44,6 +44,7 @@ export function getEuclideanDivisionQuestions(): Question {
       id: v4() + '',
       statement: answer.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -63,6 +64,7 @@ export function getEuclideanDivisionQuestions(): Question {
           id: v4() + '',
           statement: wrongAnswer.toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -79,6 +81,7 @@ export function getEuclideanDivisionQuestions(): Question {
     answer: answer.toTex(),
     keys: ['equal'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

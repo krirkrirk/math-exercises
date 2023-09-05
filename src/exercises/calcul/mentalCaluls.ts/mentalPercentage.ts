@@ -78,6 +78,7 @@ export function getMentalPercentage(): Question {
       id: v4() + '',
       statement: (a * b) / 100 + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -137,6 +138,7 @@ export function getMentalPercentage(): Question {
           id: v4() + '',
           statement: incorrectAnswer.toString(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -153,6 +155,7 @@ export function getMentalPercentage(): Question {
     answer: (a * b) / 100 + '',
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

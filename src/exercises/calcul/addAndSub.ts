@@ -72,6 +72,7 @@ export function getAddAndSubQuestions(): Question {
     answer: answer + '',
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

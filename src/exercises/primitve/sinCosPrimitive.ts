@@ -63,6 +63,7 @@ export function getSinCosPrimitive(): Question {
       id: v4(),
       statement: `${simplifyNode(integratedFuction).toTex()} + C`,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -98,6 +99,7 @@ export function getSinCosPrimitive(): Question {
           id: v4(),
           statement: `${simplifyNode(wrongIntegral).toTex()} + C`,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -117,6 +119,7 @@ export function getSinCosPrimitive(): Question {
     answer: `${simplifyNode(integratedFuction).toTex()} + C`,
     keys: ['x', 'C', 'sin', 'cos'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

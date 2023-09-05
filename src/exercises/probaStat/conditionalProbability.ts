@@ -94,6 +94,7 @@ export function getConditionalProbability(): Question {
       id: v4() + '',
       statement: answer,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -105,6 +106,7 @@ export function getConditionalProbability(): Question {
           id: v4() + '',
           statement: Math.floor(Math.random() * 100) / 100 + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -122,6 +124,7 @@ export function getConditionalProbability(): Question {
     answer,
     keys: ['p', 'cap', 'underscore'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

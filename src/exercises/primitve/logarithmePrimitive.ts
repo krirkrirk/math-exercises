@@ -34,6 +34,7 @@ export function getLogarithmePrimitive(): Question {
       id: v4(),
       statement: `${integratedFuction} + C`,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -61,6 +62,7 @@ export function getLogarithmePrimitive(): Question {
           id: v4(),
           statement: `${wrongIntegral} + C`,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -80,6 +82,7 @@ export function getLogarithmePrimitive(): Question {
     answer: `${integratedFuction} + C`,
     keys: ['x', 'C', 'ln', 'abs'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

@@ -112,6 +112,7 @@ export function getProbabilityTree(): Question {
       id: v4() + '',
       statement: answer.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -123,6 +124,7 @@ export function getProbabilityTree(): Question {
           id: v4() + '',
           statement: simplifyNode(new MultiplyNode(answer, new NumberNode(randint(2, 11)))).toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -142,6 +144,7 @@ export function getProbabilityTree(): Question {
     commands,
     coords: [-2, 8, -5, 5],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

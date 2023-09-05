@@ -54,6 +54,7 @@ export function getExponentialPrimitive(): Question {
       id: v4(),
       statement: `${simplifyNode(integratedFuction).toTex()} + C`,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -93,6 +94,7 @@ export function getExponentialPrimitive(): Question {
           id: v4(),
           statement: `${wrongIntegral.toTex()} + C`,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -110,6 +112,7 @@ export function getExponentialPrimitive(): Question {
     answer: `${simplifyNode(integratedFuction).toTex()} + C`,
     keys: ['x', 'C', 'exp'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

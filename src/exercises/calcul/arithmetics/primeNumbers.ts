@@ -98,6 +98,7 @@ export function getPrimeNumbers(): Question {
     answer,
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

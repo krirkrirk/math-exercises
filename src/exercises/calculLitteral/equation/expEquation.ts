@@ -40,6 +40,7 @@ export function getExpEquation(): Question {
       id: v4(),
       statement: answer.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < numOptions - 1; i++) {
@@ -56,6 +57,7 @@ export function getExpEquation(): Question {
             simplifyNode(new FractionNode(new NumberNode(randomK), new NumberNode(randomA))),
           ).toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -72,6 +74,7 @@ export function getExpEquation(): Question {
     answer: answer.toTex(),
     keys: ['exp', 'ln'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;
