@@ -2,9 +2,12 @@ import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { coinFlip } from '#root/utils/coinFlip';
+import { diceFlip } from '#root/utils/diceFlip';
+import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
+const squares = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((el) => el ** 2);
 export const equationSimpleSquare: Exercise = {
   id: 'equationSimpleSquare',
   connector: '=',
@@ -23,22 +26,26 @@ const higherFactor = (n: number): number => {
 };
 
 export function getEquationSimpleSquare(): Question {
-  let randNbr = randint(-20, 100);
+  let randNbr = randint(-20, 101);
   let answer: string;
 
-  if (randNbr >= 0) while (higherFactor(randNbr) === 1) randNbr = randint(1, 100);
+  const rand = diceFlip(3);
+  if (rand === 0) randNbr = randint(-20, 0);
+  else if (rand === 1) randNbr = random(squares);
+  else randNbr = randint(2, 100);
 
-  const instruction = `Résoudre l'équation suivante : $x^2 = ${randNbr}$`;
+  const instruction = `Résoudre l'équation : $x^2 = ${randNbr}$`;
   const ans = Math.sqrt(randNbr);
 
-  if (ans === Math.floor(ans)) answer = `\\{${ans}\\ ; -${ans}\\}`;
+  if (randNbr < 0) answer = `S=\\emptyset`;
+  else if (ans === Math.floor(ans)) answer = `S=\\left\\{${ans}\\ ; -${ans}\\right\\}`;
   else {
     const factor = higherFactor(randNbr);
     const radicand = randNbr / factor ** 2;
-    answer = `\\{${factor}\\sqrt{${radicand}}\\ ; -${factor}\\sqrt{${radicand}} \\}`;
+    answer = `S=\\left\\{${factor === 1 ? '' : factor}\\sqrt{${radicand}}\\ ; -${
+      factor === 1 ? '' : factor
+    }\\sqrt{${radicand}} \\right\\}`;
   }
-
-  if (randNbr < 0) answer = `\\emptyset`;
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
@@ -53,20 +60,12 @@ export function getEquationSimpleSquare(): Question {
     if (ans === Math.floor(ans)) {
       res.push({
         id: v4() + '',
-        statement: `${ans}`,
+        statement: `S=\\left\\{${ans}\\right\\}`,
         isRightAnswer: false,
         format: 'tex',
       });
 
-      if (n > 2)
-        res.push({
-          id: v4() + '',
-          statement: `${ans + randint(-ans + 1, 7, [0])}`,
-          isRightAnswer: false,
-          format: 'tex',
-        });
-
-      for (let i = 0; i < n - 3; i++) {
+      for (let i = 0; i < n - 2; i++) {
         let isDuplicate: boolean;
         let proposition: Proposition;
 
@@ -74,7 +73,7 @@ export function getEquationSimpleSquare(): Question {
           const tempAns = ans + randint(-ans + 1, 7, [0]);
           proposition = {
             id: v4() + '',
-            statement: coinFlip() ? `\\{${tempAns}\\ ; -${tempAns}\\}` : `\\emptyset`,
+            statement: coinFlip() ? `S=\\left\\{${tempAns}\\ ; -${tempAns}\\right\\}` : `S=\\emptyset`,
             isRightAnswer: false,
             format: 'tex',
           };
@@ -135,7 +134,7 @@ export function getEquationSimpleSquare(): Question {
     } else {
       res.push({
         id: v4() + '',
-        statement: `-\\sqrt${-randNbr}`,
+        statement: `-\\sqrt{${-randNbr}}`,
         isRightAnswer: false,
         format: 'tex',
       });

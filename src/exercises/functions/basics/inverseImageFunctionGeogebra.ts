@@ -45,8 +45,8 @@ export function getInverseImageFunctionGeogebra(): Question {
     }
 
   const statement = rand
-    ? `Déterminer le ou les antécédents de ${polynome1.calculate(xValue)}$ par la fonction $f$ représentée ci dessous.`
-    : `Déterminer le ou les antécédents de ${yValue}$ par la fonction $f$ représentée ci dessous.`;
+    ? `Déterminer le ou les antécédents de $${polynome1.calculate(xValue)}$ par la fonction $f$ représentée ci dessous.`
+    : `Déterminer le ou les antécédents de $${yValue}$ par la fonction $f$ représentée ci dessous.`;
 
   const answer = rand
     ? xValue

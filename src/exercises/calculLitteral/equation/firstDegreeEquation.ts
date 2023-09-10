@@ -27,19 +27,26 @@ export function getFirstDegreeEquation(): Question {
 
     res.push({
       id: v4() + '',
-      statement: simplifyNode(new NumberNode(a / b)).toTex(),
+      statement: `x=${simplifyNode(new NumberNode(a / b)).toTex()}`,
       isRightAnswer: true,
       format: 'tex',
     });
-
-    for (let i = 0; i < n - 1; i++) {
+    res.push({
+      id: v4() + '',
+      statement: `x=${simplifyNode(new NumberNode(b / a)).toTex()}`,
+      isRightAnswer: false,
+      format: 'tex',
+    });
+    for (let i = 0; i < n - 2; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 
       do {
         proposition = {
           id: v4() + '',
-          statement: simplifyNode(new NumberNode((a + randint(-7, 8, [-a])) / (b + randint(-7, 8, [-b])))).toTex(),
+          statement: `x=${simplifyNode(
+            new NumberNode((a + randint(-7, 8, [-a])) / (b + randint(-7, 8, [-b]))),
+          ).toTex()}`,
           isRightAnswer: false,
           format: 'tex',
         };
@@ -56,7 +63,7 @@ export function getFirstDegreeEquation(): Question {
   const question: Question = {
     instruction: `Résoudre l'équation suivante : $\\frac{${a}}{x} = ${b}$`,
     startStatement: `x`,
-    answer: simplifyNode(new NumberNode(a / b)).toTex(),
+    answer: `x=${simplifyNode(new NumberNode(a / b)).toTex()}`,
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
     getPropositions,
     answerFormat: 'tex',

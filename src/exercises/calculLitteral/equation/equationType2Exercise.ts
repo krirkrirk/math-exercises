@@ -28,11 +28,10 @@ export const equationType2Exercise: Exercise = {
 
 export function getEquationType2ExerciseQuestion(): Question {
   const interval = new Interval('[[-10; 10]]');
-  const intervalStar = new Interval('[[-10; 10]]').difference(new DiscreteSet([new Integer(0)]));
   const b = interval.getRandomElement();
-  const a = intervalStar.getRandomElement();
-  const solution = new Rational(b.value, a.value).simplify();
-  const affine = new Affine(a.value, 0).toTree();
+  const a = randint(-9, 10, [0, 1]);
+  const solution = new Rational(b.value, a).simplify();
+  const affine = new Affine(a, 0).toTree();
   const tree = new EqualNode(affine, b.toTree());
   const answer = new EqualNode(new VariableNode('x'), solution.toTree());
 
@@ -53,7 +52,7 @@ export function getEquationType2ExerciseQuestion(): Question {
       do {
         const wrongAnswer = new Rational(
           b.value + randint(-7, 8, [0, -b.value]),
-          a.value + randint(-7, 8, [-a.value, 0]),
+          a + randint(-7, 8, [-a, 0]),
         ).simplify();
         proposition = {
           id: v4() + '',
