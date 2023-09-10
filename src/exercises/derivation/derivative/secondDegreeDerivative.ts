@@ -30,6 +30,7 @@ export function getSecondDegreeDerivative(): Question {
       id: v4(),
       statement: derivative.toString(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < numOptions - 1; i++) {
@@ -47,6 +48,7 @@ export function getSecondDegreeDerivative(): Question {
           id: v4(),
           statement: randomPolynomial.derivate().toString(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -64,6 +66,7 @@ export function getSecondDegreeDerivative(): Question {
     answer: derivative.toString(),
     keys: ['x'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

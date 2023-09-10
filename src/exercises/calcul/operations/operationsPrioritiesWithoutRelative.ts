@@ -255,6 +255,7 @@ export function getOperationsPrioritiesWithoutRelative(): Question {
       id: v4(),
       statement: answer,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -266,6 +267,7 @@ export function getOperationsPrioritiesWithoutRelative(): Question {
           id: v4(),
           statement: randint(1, 50) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -282,6 +284,7 @@ export function getOperationsPrioritiesWithoutRelative(): Question {
     answer,
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

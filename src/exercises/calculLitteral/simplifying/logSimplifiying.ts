@@ -47,6 +47,7 @@ export function getExpSimplifiying(): Question {
       id: v4(),
       statement: simplifiedExpression.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < numOptions - 1; i++) {
@@ -63,6 +64,7 @@ export function getExpSimplifiying(): Question {
               ? new LogNode(new NumberNode(a * b)).toTex()
               : new LogNode(simplifyNode(new NumberNode(a / b))).toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -79,6 +81,7 @@ export function getExpSimplifiying(): Question {
     answer: simplifiedExpression.toTex(),
     keys: ['ln'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

@@ -30,12 +30,14 @@ export function getPythagore(): Question {
       id: v4() + '',
       statement: `${triangle.getSideAName()}^2 = ${triangle.getSideBName()}^2 + ${triangle.getSideCName()}^2`,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     res.push({
       id: v4() + '',
       statement: `${triangle.getSideAName()} = ${triangle.getSideBName()} + ${triangle.getSideCName()}`,
       isRightAnswer: false,
+      format: 'tex',
     });
 
     if (n > 2)
@@ -43,6 +45,7 @@ export function getPythagore(): Question {
         id: v4() + '',
         statement: `${triangle.getSideAName()}^2 = ${triangle.getSideBName()}^2 - ${triangle.getSideCName()}^2`,
         isRightAnswer: false,
+        format: 'tex',
       });
 
     if (n > 3)
@@ -50,6 +53,7 @@ export function getPythagore(): Question {
         id: v4() + '',
         statement: `${triangle.getSideBName()}^2 = ${triangle.getSideAName()}^2 + ${triangle.getSideCName()}^2`,
         isRightAnswer: false,
+        format: 'tex',
       });
 
     if (n > 4)
@@ -57,6 +61,7 @@ export function getPythagore(): Question {
         id: v4() + '',
         statement: `${triangle.getSideCName()}^2 = ${triangle.getSideAName()}^2 + ${triangle.getSideBName()}^2`,
         isRightAnswer: false,
+        format: 'tex',
       });
 
     if (n > 5)
@@ -64,6 +69,7 @@ export function getPythagore(): Question {
         id: v4() + '',
         statement: `${triangle.getSideAName()}^2 = ${triangle.getSideBName()} + ${triangle.getSideCName()}^2`,
         isRightAnswer: false,
+        format: 'tex',
       });
 
     if (n > 6)
@@ -71,6 +77,7 @@ export function getPythagore(): Question {
         id: v4() + '',
         statement: `${triangle.getSideAName()}^2 = ${triangle.getSideBName()}^2 + ${triangle.getSideCName()}`,
         isRightAnswer: false,
+        format: 'tex',
       });
 
     return shuffle(res);
@@ -82,6 +89,7 @@ export function getPythagore(): Question {
     commands: triangle.generateCommands({}),
     coords: triangle.generateCoords(),
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

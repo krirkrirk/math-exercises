@@ -125,6 +125,7 @@ export function getPriorityQuestions(): Question {
       id: v4(),
       statement: answer,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -136,6 +137,7 @@ export function getPriorityQuestions(): Question {
           id: v4(),
           statement: randint(-100, 100) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -152,6 +154,7 @@ export function getPriorityQuestions(): Question {
     answer,
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

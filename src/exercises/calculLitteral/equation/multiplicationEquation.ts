@@ -44,6 +44,7 @@ export function getMultiplicationEquation(): Question {
       id: v4() + '',
       statement: answer,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -69,6 +70,7 @@ export function getMultiplicationEquation(): Question {
           id: v4() + '',
           statement: wrongAnswer,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -87,6 +89,7 @@ export function getMultiplicationEquation(): Question {
     ).toTex()};${simplifyNode(new FractionNode(new NumberNode(-d), new NumberNode(c))).toTex()}\\right\\}`,
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

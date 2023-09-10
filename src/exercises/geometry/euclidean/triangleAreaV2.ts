@@ -45,12 +45,14 @@ export function getTriangleAreaV2(): Question {
       id: v4() + '',
       statement: area + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     res.push({
       id: v4() + '',
       statement: sides[randomSide][0] + sides[randomSide][1] + sides[randomSide][2] + '',
       isRightAnswer: false,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 2; i++) {
@@ -62,6 +64,7 @@ export function getTriangleAreaV2(): Question {
           id: v4() + '',
           statement: area + randint(-area + 1, 14, [0]) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -77,6 +80,7 @@ export function getTriangleAreaV2(): Question {
     instruction: `Calculer l'aire du triangle rectangle qui a pour côtés: $${sides[randomSide][0]}$ cm, $${sides[randomSide][1]}$ cm et $${sides[randomSide][2]}$ cm.`,
     answer: area + '',
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

@@ -40,6 +40,7 @@ export function getPowerFunctionDerivative(): Question {
       id: v4(),
       statement: answerStatement.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < numOptions - 1; i++) {
@@ -57,6 +58,7 @@ export function getPowerFunctionDerivative(): Question {
             ),
           ).toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -74,6 +76,7 @@ export function getPowerFunctionDerivative(): Question {
     answer: answerStatement.toTex(),
     keys: ['x'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

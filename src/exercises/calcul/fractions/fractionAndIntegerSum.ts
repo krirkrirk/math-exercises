@@ -33,6 +33,7 @@ export function getFractionAndIntegerSum(): Question {
       id: v4() + '',
       statement: answerTree.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -46,6 +47,7 @@ export function getFractionAndIntegerSum(): Question {
           id: v4() + '',
           statement: wrongAnswerTree.toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -63,6 +65,7 @@ export function getFractionAndIntegerSum(): Question {
     answer: answerTree.toTex(),
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

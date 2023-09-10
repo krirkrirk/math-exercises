@@ -36,6 +36,7 @@ export function getDistanceBetweenTwoPoints(): Question {
       id: v4() + '',
       statement: answer,
       isRightAnswer: true,
+      format: 'tex',
     });
     temp--;
 
@@ -49,6 +50,7 @@ export function getDistanceBetweenTwoPoints(): Question {
         id: v4() + '',
         statement: wrongStatement,
         isRightAnswer: false,
+        format: 'tex',
       });
       temp--;
     }
@@ -63,6 +65,7 @@ export function getDistanceBetweenTwoPoints(): Question {
         id: v4() + '',
         statement: wrongStatement,
         isRightAnswer: false,
+        format: 'tex',
       });
       temp--;
     }
@@ -77,6 +80,7 @@ export function getDistanceBetweenTwoPoints(): Question {
         id: v4() + '',
         statement: wrongStatement,
         isRightAnswer: false,
+        format: 'tex',
       });
       temp--;
     }
@@ -92,6 +96,7 @@ export function getDistanceBetweenTwoPoints(): Question {
           id: v4() + '',
           statement: new SquareRoot(round(A.distanceTo(B) ** 2, 0)).simplify().toTree().toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -110,6 +115,7 @@ export function getDistanceBetweenTwoPoints(): Question {
     answer,
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

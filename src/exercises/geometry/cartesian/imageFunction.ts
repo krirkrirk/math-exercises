@@ -15,7 +15,7 @@ export const imageFunction: Exercise = {
   section: 'Géométrie cartésienne',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getImageFunction, nb),
-  keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
+  keys: [],
 };
 
 export function getImageFunction(): Question {
@@ -37,6 +37,7 @@ export function getImageFunction(): Question {
       id: v4() + '',
       statement: answer + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -49,6 +50,7 @@ export function getImageFunction(): Question {
           id: v4() + '',
           statement: wrongAnswer + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -64,8 +66,9 @@ export function getImageFunction(): Question {
     instruction: statement,
     startStatement: `f(${xValue})`,
     answer: answer + '',
-    keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
+    keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

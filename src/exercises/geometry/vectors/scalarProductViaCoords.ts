@@ -33,6 +33,7 @@ export function getScalarProductViaCoordsQuestion(): Question {
       id: v4() + '',
       statement: correctAnswer,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -44,6 +45,7 @@ export function getScalarProductViaCoordsQuestion(): Question {
           id: v4() + '',
           statement: randint(-100, 100, [0]) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -61,5 +63,6 @@ export function getScalarProductViaCoordsQuestion(): Question {
     answer: correctAnswer,
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
 }

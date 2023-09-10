@@ -35,6 +35,7 @@ export function getGeometricRecurrenceFormulaUsage(options: GeometricRecurrenceF
       id: v4() + '',
       statement: (firstValue * reason).toString(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     if (firstValue + reason !== 4)
@@ -42,6 +43,7 @@ export function getGeometricRecurrenceFormulaUsage(options: GeometricRecurrenceF
         id: v4() + '',
         statement: (firstValue + reason).toString(),
         isRightAnswer: false,
+        format: 'tex',
       });
 
     for (let i = 0; i < (firstValue + reason === 4 ? n - 1 : n - 2); i++) {
@@ -53,6 +55,7 @@ export function getGeometricRecurrenceFormulaUsage(options: GeometricRecurrenceF
           id: v4() + '',
           statement: firstValue * (reason + randint(-reason + 1, 6, [0])) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -70,6 +73,7 @@ export function getGeometricRecurrenceFormulaUsage(options: GeometricRecurrenceF
     answer: (firstValue * reason).toString(),
     keys: ['q', 'n', 'u', 'underscore'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

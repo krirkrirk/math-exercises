@@ -44,6 +44,7 @@ export function getLnDerivative(): Question {
       id: v4(),
       statement: derivative.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < numOptions - 1; i++) {
@@ -63,6 +64,7 @@ export function getLnDerivative(): Question {
             ),
           ).toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -80,6 +82,7 @@ export function getLnDerivative(): Question {
     answer: derivative.toTex(),
     keys: ['ln'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

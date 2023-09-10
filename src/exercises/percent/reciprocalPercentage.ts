@@ -33,6 +33,7 @@ export function getReciprocalPercentageQuestion(): Question {
       id: v4() + '',
       statement: `${ans > 0 ? '+' + round(ans, 2) : round(ans, 2)} \\%`,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -51,6 +52,7 @@ export function getReciprocalPercentageQuestion(): Question {
           id: v4() + '',
           statement: `${wrongAnswer > 0 ? '+' + wrongAnswer : wrongAnswer} \\%`,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -67,6 +69,7 @@ export function getReciprocalPercentageQuestion(): Question {
     answer: `${ans > 0 ? '+' + round(ans, 2) : round(ans, 2)} \\%`,
     keys: ['percent'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

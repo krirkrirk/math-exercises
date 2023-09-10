@@ -51,6 +51,7 @@ export function getVolumeCapacityConversion(): Question {
       id: v4() + '',
       statement: answer.value + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -63,6 +64,7 @@ export function getVolumeCapacityConversion(): Question {
           id: v4() + '',
           statement: wrongAnswer.value + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -79,6 +81,7 @@ export function getVolumeCapacityConversion(): Question {
     answer: answer.value + '',
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

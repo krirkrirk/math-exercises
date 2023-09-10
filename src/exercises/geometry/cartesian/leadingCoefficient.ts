@@ -64,6 +64,7 @@ export function getLeadingCoefficientQuestion(): Question {
       id: v4() + '',
       statement: droite.getLeadingCoefficient(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -79,6 +80,7 @@ export function getLeadingCoefficientQuestion(): Question {
           id: v4() + '',
           statement: wrongAnswer.toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -96,6 +98,7 @@ export function getLeadingCoefficientQuestion(): Question {
     commands: [`f(x) = (${a}) * x + (${b})`],
     coords: [xmin, xmax, ymin, ymax],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

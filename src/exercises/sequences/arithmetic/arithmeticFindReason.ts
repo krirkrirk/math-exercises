@@ -31,6 +31,7 @@ export function getArithmeticFindReason(): Question {
       id: v4() + '',
       statement: reason + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -42,6 +43,7 @@ export function getArithmeticFindReason(): Question {
           id: v4() + '',
           statement: reason + randint(-5, 6, [0]) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -59,6 +61,7 @@ export function getArithmeticFindReason(): Question {
     answer: reason.toString(),
     keys: ['r', 'n', 'u', 'underscore'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

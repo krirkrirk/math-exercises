@@ -35,6 +35,7 @@ export function getExpDerivative(): Question {
       id: v4(),
       statement: derivative.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < numOptions - 1; i++) {
@@ -51,6 +52,7 @@ export function getExpDerivative(): Question {
             new MultiplyNode(new NumberNode(randomA), new ExpNode(new Polynomial([randomB, randomA]).toTree())),
           ).toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -68,6 +70,7 @@ export function getExpDerivative(): Question {
     answer: derivative.toTex(),
     keys: ['exp'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

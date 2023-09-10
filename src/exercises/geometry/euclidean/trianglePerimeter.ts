@@ -26,6 +26,7 @@ export function getTrianglePerimeter(): Question {
       id: v4() + '',
       statement: perimeter + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -37,6 +38,7 @@ export function getTrianglePerimeter(): Question {
           id: v4() + '',
           statement: perimeter + randint(-perimeter + 1, 14, [0]) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -52,6 +54,7 @@ export function getTrianglePerimeter(): Question {
     instruction: `Calculer le périmètre d'un triangle qui a pour côtés: $${sides[0]}$ cm, $${sides[1]}$ cm et $${sides[2]}$ cm.`,
     answer: sides[0] + sides[1] + sides[2] + '',
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

@@ -26,6 +26,7 @@ export function getRectangleArea(): Question {
       id: v4() + '',
       statement: length * width + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -37,6 +38,7 @@ export function getRectangleArea(): Question {
           id: v4() + '',
           statement: randint(3, 13) * randint(3, 13) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -52,6 +54,7 @@ export function getRectangleArea(): Question {
     instruction: `Calculer l'aire d'un rectangle de $${length}$ cm de longueur et de $${width}$ cm de largeur.`,
     answer: length * width + '',
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

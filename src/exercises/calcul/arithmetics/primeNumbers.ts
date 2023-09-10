@@ -13,7 +13,7 @@ export const primeNumbers: Exercise = {
   instruction: 'Donner la décomposition en nombre premiers',
   label: 'Décomposition en nombres premiers',
   levels: ['5', '4', '3', '2'],
-  section: 'Arithmétiques',
+  section: 'Arithmétique',
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getPrimeNumbers, nb),
   keys: [],
@@ -56,6 +56,7 @@ export function getPrimeNumbers(): Question {
       id: v4() + '',
       statement: answer,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     const wrongFactors = [...choosenNumbers];
@@ -85,6 +86,7 @@ export function getPrimeNumbers(): Question {
         id: v4() + '',
         statement: wrongAnswer,
         isRightAnswer: false,
+        format: 'tex',
       });
     }
 
@@ -96,6 +98,7 @@ export function getPrimeNumbers(): Question {
     answer,
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

@@ -39,12 +39,14 @@ export function getFactoType1Question(): Question {
       id: v4() + '',
       statement: answerTree.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     res.push({
       id: v4() + '',
       statement: new PowerNode(new Affine(affine.b, affine.a).toTree(), new NumberNode(2)).toTex(),
       isRightAnswer: false,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 2; i++) {
@@ -63,6 +65,7 @@ export function getFactoType1Question(): Question {
           id: v4() + '',
           statement: wrongAnswer.toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -79,6 +82,7 @@ export function getFactoType1Question(): Question {
     answer: answerTree.toTex(),
     keys: ['x'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

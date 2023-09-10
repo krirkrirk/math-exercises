@@ -71,6 +71,7 @@ export function getFractionToPercentToDecimal(): Question {
       id: uuidv4(),
       statement: answer,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -117,6 +118,7 @@ export function getFractionToPercentToDecimal(): Question {
           id: uuidv4(),
           statement,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -133,6 +135,7 @@ export function getFractionToPercentToDecimal(): Question {
     answer,
     keys: ['percent'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

@@ -25,6 +25,7 @@ export function getSquareArea(): Question {
       id: v4() + '',
       statement: side ** 2 + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -36,6 +37,7 @@ export function getSquareArea(): Question {
           id: v4() + '',
           statement: randint(1, 13) ** 2 + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -51,6 +53,7 @@ export function getSquareArea(): Question {
     instruction: `Calculer l'aire d'un carré de $${side}$ cm de côté.`,
     answer: side ** 2 + '',
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

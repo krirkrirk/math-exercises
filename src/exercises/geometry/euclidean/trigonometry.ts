@@ -71,6 +71,7 @@ export function getTrigonometry(): Question {
       id: v4() + '',
       statement: quotient[randTrigo],
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -82,6 +83,7 @@ export function getTrigonometry(): Question {
           id: v4() + '',
           statement: wrongQuotients[randint(0, 12)],
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -100,6 +102,7 @@ export function getTrigonometry(): Question {
     commands: [...triangle.generateCommands({ highlightedAngle: angle[randAngle] })],
     coords: triangle.generateCoords(),
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

@@ -29,6 +29,7 @@ export function getGeometricReasonUsage(): Question {
       id: v4() + '',
       statement: (startValue * reason).toString(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     if (startValue + reason !== 4)
@@ -36,6 +37,7 @@ export function getGeometricReasonUsage(): Question {
         id: v4() + '',
         statement: (startValue + reason).toString(),
         isRightAnswer: false,
+        format: 'tex',
       });
 
     for (let i = 0; i < (startValue + reason === 4 ? n - 1 : n - 2); i++) {
@@ -47,6 +49,7 @@ export function getGeometricReasonUsage(): Question {
           id: v4() + '',
           statement: startValue * (reason + randint(-reason + 1, 6, [0])) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -58,12 +61,13 @@ export function getGeometricReasonUsage(): Question {
     return shuffle(res);
   };
 
-  const question = {
+  const question: Question = {
     instruction: `$(u_n)$ est une suite géométrique de raison $q = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : `,
     startStatement: `u_{${askedRank}}`,
     answer: (startValue * reason).toString(),
     keys: ['q', 'n', 'u', 'underscore'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

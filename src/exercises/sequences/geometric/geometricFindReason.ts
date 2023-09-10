@@ -30,6 +30,7 @@ export function getGeometricFindReason(): Question {
       id: v4() + '',
       statement: reason + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     if (value2 - value1 !== 2)
@@ -37,6 +38,7 @@ export function getGeometricFindReason(): Question {
         id: v4() + '',
         statement: value2 - value1 + '',
         isRightAnswer: false,
+        format: 'tex',
       });
 
     for (let i = 0; i < (value2 - value1 === 2 ? n - 1 : n - 2); i++) {
@@ -48,6 +50,7 @@ export function getGeometricFindReason(): Question {
           id: v4() + '',
           statement: reason + randint(1, 10) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -65,6 +68,7 @@ export function getGeometricFindReason(): Question {
     answer: reason.toString(),
     keys: ['q', 'n', 'u', 'underscore'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

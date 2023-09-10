@@ -2,6 +2,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { shuffle } from '#root/utils/shuffle';
+
 import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
@@ -55,6 +56,7 @@ export function getAddAndSubWithoutRelatives(): Question {
       id: v4() + '',
       statement: answer.toString(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -67,6 +69,7 @@ export function getAddAndSubWithoutRelatives(): Question {
           id: v4() + '',
           statement: incorrectAnswer.toString(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -83,6 +86,7 @@ export function getAddAndSubWithoutRelatives(): Question {
     answer: answer.toString(),
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

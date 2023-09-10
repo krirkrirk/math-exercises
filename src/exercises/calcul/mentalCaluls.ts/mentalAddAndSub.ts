@@ -51,6 +51,7 @@ export function getMentalAddAndSub(): Question {
       id: v4() + '',
       statement: answer.toString(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     // Ajout des propositions incorrectes
@@ -64,6 +65,7 @@ export function getMentalAddAndSub(): Question {
           id: v4() + '',
           statement: incorrectSum.toString(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -81,6 +83,7 @@ export function getMentalAddAndSub(): Question {
     answer: round(sum, 2) + '',
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

@@ -47,6 +47,7 @@ export function getEquationSimpleSquare(): Question {
       id: v4() + '',
       statement: answer,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     if (ans === Math.floor(ans)) {
@@ -54,6 +55,7 @@ export function getEquationSimpleSquare(): Question {
         id: v4() + '',
         statement: `${ans}`,
         isRightAnswer: false,
+        format: 'tex',
       });
 
       if (n > 2)
@@ -61,6 +63,7 @@ export function getEquationSimpleSquare(): Question {
           id: v4() + '',
           statement: `${ans + randint(-ans + 1, 7, [0])}`,
           isRightAnswer: false,
+          format: 'tex',
         });
 
       for (let i = 0; i < n - 3; i++) {
@@ -73,6 +76,7 @@ export function getEquationSimpleSquare(): Question {
             id: v4() + '',
             statement: coinFlip() ? `\\{${tempAns}\\ ; -${tempAns}\\}` : `\\emptyset`,
             isRightAnswer: false,
+            format: 'tex',
           };
 
           isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -88,6 +92,7 @@ export function getEquationSimpleSquare(): Question {
         id: v4() + '',
         statement: `${factor}\\sqrt{${radicand}}`,
         isRightAnswer: false,
+        format: 'tex',
       });
 
       if (n > 2)
@@ -95,6 +100,7 @@ export function getEquationSimpleSquare(): Question {
           id: v4() + '',
           statement: `${radicand}\\sqrt{${factor}}`,
           isRightAnswer: false,
+          format: 'tex',
         });
 
       if (n > 3)
@@ -102,6 +108,7 @@ export function getEquationSimpleSquare(): Question {
           id: v4() + '',
           statement: `${Math.floor(ans)}`,
           isRightAnswer: false,
+          format: 'tex',
         });
 
       for (let i = 0; i < n - 4; i++) {
@@ -117,6 +124,7 @@ export function getEquationSimpleSquare(): Question {
               ? `\\{${tempFactor}\\sqrt{${tempRadicand}}\\ ; -${tempFactor}\\sqrt{${tempRadicand}} \\}`
               : `\\emptyset`,
             isRightAnswer: false,
+            format: 'tex',
           };
 
           isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -129,6 +137,7 @@ export function getEquationSimpleSquare(): Question {
         id: v4() + '',
         statement: `-\\sqrt${-randNbr}`,
         isRightAnswer: false,
+        format: 'tex',
       });
 
       if (n > 2)
@@ -136,6 +145,7 @@ export function getEquationSimpleSquare(): Question {
           id: v4() + '',
           statement: `${Math.floor(Math.sqrt(-randNbr))}`,
           isRightAnswer: false,
+          format: 'tex',
         });
 
       for (let i = 0; i < n - 3; i++) {
@@ -149,6 +159,7 @@ export function getEquationSimpleSquare(): Question {
             id: v4() + '',
             statement: `\\{${factor}\\sqrt{${radicand}}\\ ; -${factor}\\sqrt{${radicand}} \\}`,
             isRightAnswer: false,
+            format: 'tex',
           };
 
           isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -166,6 +177,7 @@ export function getEquationSimpleSquare(): Question {
     answer,
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

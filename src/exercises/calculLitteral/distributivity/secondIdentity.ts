@@ -37,12 +37,14 @@ export function getSecondIdentityQuestion(): Question {
       id: v4() + '',
       statement: answerTree.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     res.push({
       id: v4() + '',
       statement: new Polynomial([-(affine.b ** 2), 0, affine.a ** 2]).toTree().toTex(),
       isRightAnswer: false,
+      format: 'tex',
     });
 
     if (n > 2)
@@ -50,6 +52,7 @@ export function getSecondIdentityQuestion(): Question {
         id: v4() + '',
         statement: new Polynomial([affine.b ** 2, affine.a * affine.b, affine.a ** 2]).toTree().toTex(),
         isRightAnswer: false,
+        format: 'tex',
       });
 
     if (n > 3)
@@ -57,6 +60,7 @@ export function getSecondIdentityQuestion(): Question {
         id: v4() + '',
         statement: new Polynomial([-(affine.b ** 2), -(affine.a ** 2 + affine.b ** 2), affine.a ** 2]).toTree().toTex(),
         isRightAnswer: false,
+        format: 'tex',
       });
 
     for (let i = 0; i < n - 4; i++) {
@@ -70,6 +74,7 @@ export function getSecondIdentityQuestion(): Question {
           id: v4() + '',
           statement: wrongAnswer.toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -86,5 +91,6 @@ export function getSecondIdentityQuestion(): Question {
     answer: answerTree.toTex(),
     keys: ['x'],
     getPropositions,
+    answerFormat: 'tex',
   };
 }

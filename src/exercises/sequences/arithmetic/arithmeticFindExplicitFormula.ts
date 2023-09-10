@@ -31,6 +31,7 @@ export function getArithmeticFindExplicitFormula(): Question {
       id: v4() + '',
       statement: formula.toString(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -42,6 +43,7 @@ export function getArithmeticFindExplicitFormula(): Question {
           id: v4() + '',
           statement: new Polynomial([firstValue + randint(-3, 4), reason + randint(-3, 4)], 'n').toString(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -59,6 +61,7 @@ export function getArithmeticFindExplicitFormula(): Question {
     answer: formula.toString(),
     keys: ['r', 'n', 'u', 'underscore'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

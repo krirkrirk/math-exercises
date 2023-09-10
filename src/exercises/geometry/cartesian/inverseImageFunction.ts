@@ -9,12 +9,12 @@ export const inverseImageFunction: Exercise = {
   id: 'inverseImageFunction',
   connector: '\\iff',
   instruction: '',
-  label: "Image d'une fonction",
+  label: 'Calculer des antécédents',
   levels: ['4', '3', '2'],
   section: 'Géométrie cartésienne',
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getInverseImageFunction, nb),
-  keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
+  keys: [],
 };
 
 export function getInverseImageFunction(): Question {
@@ -22,7 +22,9 @@ export function getInverseImageFunction(): Question {
   const xValue = randint(-9, 10);
 
   const answer = polynome1.calculate(xValue);
-  const statement = `Soit $f(x) = ${polynome1.toTree().toTex()}$. Calculer x pour $f(x) = ${answer}$.`;
+  const statement = `Soit $f(x) = ${polynome1
+    .toTree()
+    .toTex()}$. Déterminer le ou les antécédents de $${answer}$ par $f$.`;
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
@@ -31,6 +33,7 @@ export function getInverseImageFunction(): Question {
       id: v4() + '',
       statement: xValue + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -43,6 +46,7 @@ export function getInverseImageFunction(): Question {
           id: v4() + '',
           statement: wrongAnswer + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -58,8 +62,9 @@ export function getInverseImageFunction(): Question {
     instruction: statement,
     startStatement: `f(x) = ${answer}`,
     answer: xValue + '',
-    keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
+    keys: ['x', 'equal'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

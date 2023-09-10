@@ -6,6 +6,21 @@ import { OppositeNode } from '../../tree/nodes/functions/oppositeNode';
 import { PowerNode } from '../../tree/nodes/operators/powerNode';
 import { SubstractNode } from '../../tree/nodes/operators/substractNode';
 import { VariableNode } from '../../tree/nodes/variables/variableNode';
+import { randint } from '#root/math/utils/random/randint';
+
+export function createRandomPolynomialWithOrder(order: number, variable: string = 'x'): Polynomial {
+  if (order < 0) {
+    throw Error('Order must be a non-negative integer');
+  }
+
+  const coefficients = [];
+  for (let i = 0; i <= order - 1; i++) {
+    coefficients.push(randint(-9, 10));
+  }
+  coefficients.push(randint(-9, 10, [0]));
+
+  return new Polynomial(coefficients, variable);
+}
 
 export class Polynomial {
   degree: number;
@@ -32,7 +47,36 @@ export class Polynomial {
   equals(P: Polynomial): boolean {
     return P.degree === this.degree && this.coefficients.every((coeff, i) => coeff === P.coefficients[i]);
   }
-  getRoots() {}
+  getRoots(): number[] {
+    const roots: number[] = [];
+
+    if (this.degree === 1) {
+      // Polynôme de degré 1 : ax + b = 0
+      const a = this.coefficients[1];
+      const b = this.coefficients[0];
+
+      if (a !== 0) {
+        roots.push(-b / a);
+      }
+    } else if (this.degree === 2) {
+      // Polynôme de degré 2 : ax^2 + bx + c = 0
+      const a = this.coefficients[2];
+      const b = this.coefficients[1];
+      const c = this.coefficients[0];
+      const delta = b * b - 4 * a * c;
+
+      if (delta > 0) {
+        roots.push((-b + Math.sqrt(delta)) / (2 * a));
+        roots.push((-b - Math.sqrt(delta)) / (2 * a));
+      } else if (delta === 0) {
+        roots.push(-b / (2 * a));
+      }
+    } else {
+      //méthode de Newton-Raphson ou des bibliothèques de calcul symbolique pour obtenir les racines.
+    }
+
+    return roots.sort((a, b) => a - b);
+  }
   add(P: Polynomial): Polynomial {
     if (P.variable !== this.variable) throw Error("Can't add two polynomials with different variables");
 
@@ -84,6 +128,12 @@ export class Polynomial {
     for (let i = 1; i < this.coefficients.length; i++) res.push(i * this.coefficients[i]);
 
     return new Polynomial(res, this.variable);
+  }
+
+  integrate(): Polynomial {
+    const newCoefficients = this.coefficients.map((coeff, exp) => coeff / (exp + 1));
+    newCoefficients.unshift(0);
+    return new Polynomial(newCoefficients, this.variable);
   }
 
   calculate(x: number): number {

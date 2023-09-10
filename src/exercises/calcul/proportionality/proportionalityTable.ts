@@ -50,6 +50,7 @@ export function getProportionalityTable(): Question {
       id: v4() + '',
       statement: answer + '',
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -61,6 +62,7 @@ export function getProportionalityTable(): Question {
           id: v4() + '',
           statement: answer + randint(-answer + 1, 20, [0]) + '',
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -83,6 +85,7 @@ Déterminer le nombre manquant.`,
     answer: answer + '',
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

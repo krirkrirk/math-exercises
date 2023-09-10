@@ -30,6 +30,7 @@ export function getLeadingCoefficientCalculV1Question(): Question {
       id: v4() + '',
       statement: simplifyNode(new FractionNode(new NumberNode(yB - yA), new NumberNode(xB - xA))).toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -48,6 +49,7 @@ export function getLeadingCoefficientCalculV1Question(): Question {
           id: v4() + '',
           statement: wrongAnswer,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -63,6 +65,7 @@ export function getLeadingCoefficientCalculV1Question(): Question {
     instruction: `Soit $d$ une droite passant par les points $A(${xA};${yA})$ et $B(${xB};${yB})$.$\\\\$Déterminer le coefficient directeur de $d$.`,
     answer: simplifyNode(new FractionNode(new NumberNode(yB - yA), new NumberNode(xB - xA))).toTex(),
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

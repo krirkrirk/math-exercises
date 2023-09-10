@@ -37,12 +37,14 @@ export function getSimpleDistributivityQuestion(): Question {
       id: v4() + '',
       statement: answerTree.toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     res.push({
       id: v4() + '',
       statement: new Affine(coeff.value * affine.a, affine.b).toTree().toTex(),
       isRightAnswer: false,
+      format: 'tex',
     });
 
     if (n > 2)
@@ -50,6 +52,7 @@ export function getSimpleDistributivityQuestion(): Question {
         id: v4() + '',
         statement: new Affine(affine.a, coeff.value * affine.b).toTree().toTex(),
         isRightAnswer: false,
+        format: 'tex',
       });
 
     if (n > 3)
@@ -57,6 +60,7 @@ export function getSimpleDistributivityQuestion(): Question {
         id: v4() + '',
         statement: affine.times(-coeff.value).toTree().toTex(),
         isRightAnswer: false,
+        format: 'tex',
       });
 
     for (let i = 0; i < n - 4; i++) {
@@ -70,6 +74,7 @@ export function getSimpleDistributivityQuestion(): Question {
           id: v4() + '',
           statement: wrongAnswer.toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -86,5 +91,6 @@ export function getSimpleDistributivityQuestion(): Question {
     answer: answerTree.toTex(),
     keys: ['x'],
     getPropositions,
+    answerFormat: 'tex',
   };
 }

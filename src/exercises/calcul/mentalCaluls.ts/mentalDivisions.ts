@@ -76,6 +76,7 @@ export function getMentalDivisions(): Question {
       id: v4() + '',
       statement: answer.toString(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     // Ajout des propositions incorrectes
@@ -89,6 +90,7 @@ export function getMentalDivisions(): Question {
           id: v4() + '',
           statement: incorrectAnswer.toString(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -106,6 +108,7 @@ export function getMentalDivisions(): Question {
     answer: round(answer, 2) + '',
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

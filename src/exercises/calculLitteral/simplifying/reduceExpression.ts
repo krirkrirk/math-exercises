@@ -112,6 +112,7 @@ export function getReduceExpression(): Question {
       id: v4() + '',
       statement: answer,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -128,6 +129,7 @@ export function getReduceExpression(): Question {
           id: v4() + '',
           statement: polynome1.add(polynome2).toTree().toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
@@ -144,6 +146,7 @@ export function getReduceExpression(): Question {
     answer,
     keys: ['x'],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }

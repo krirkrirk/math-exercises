@@ -26,6 +26,7 @@ export function getInverseFunctionDerivative(): Question {
       id: v4(),
       statement: `\\frac{${-a}}{x^2}`,
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -38,6 +39,7 @@ export function getInverseFunctionDerivative(): Question {
           id: v4(),
           statement: wrongAnswer,
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -55,6 +57,7 @@ export function getInverseFunctionDerivative(): Question {
     answer: `\\frac{${-a}}{x^2}`,
     keys: ['x'],
     getPropositions,
+    answerFormat: 'tex',
   };
 
   return question;

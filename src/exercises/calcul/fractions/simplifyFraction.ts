@@ -26,6 +26,7 @@ export function getSimplifyFraction(): Question {
       id: uuidv4(),
       statement: rational.simplify().toTree().toTex(),
       isRightAnswer: true,
+      format: 'tex',
     });
 
     for (let i = 0; i < n - 1; i++) {
@@ -38,6 +39,7 @@ export function getSimplifyFraction(): Question {
           id: uuidv4(),
           statement: incorrectRational.simplify().toTree().toTex(),
           isRightAnswer: false,
+          format: 'tex',
         };
 
         isDuplicate = propositions.some((p) => p.statement === proposition.statement);
@@ -54,6 +56,7 @@ export function getSimplifyFraction(): Question {
     answer: rational.simplify().toTree().toTex(),
     keys: [],
     getPropositions,
+    answerFormat: 'tex',
   };
   return question;
 }
