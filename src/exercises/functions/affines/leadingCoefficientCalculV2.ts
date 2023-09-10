@@ -7,14 +7,14 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const leadingCoefficientCalculV1: Exercise = {
-  id: 'leadingCoefficientCalculV1',
+export const leadingCoefficientCalculV2: Exercise = {
+  id: 'leadingCoefficientCalculV2',
   connector: '=',
   instruction: '',
-  label: "Calculer le coefficient directeur d'une fonction affine",
-  levels: ['3', '2', '1'],
-  isSingleStep: true,
-  section: 'Fonctions affines',
+  label: "Coefficient directeur à l'aide de deux points",
+  levels: ['3ème', '2nde'],
+  isSingleStep: false,
+  sections: ['Droites'],
   generator: (nb: number) => getDistinctQuestions(getLeadingCoefficientCalculV1Question, nb),
 };
 
@@ -62,8 +62,7 @@ export function getLeadingCoefficientCalculV1Question(): Question {
   };
 
   const question: Question = {
-    instruction: `Soit $f$ une fonction affine telle que $f(${xA})$ = $${yA}$ et $f(${xB})$ = $${yB}$.$\\\\$Quel est le coefficient directeur de $f$ ?`,
-    startStatement: 'a',
+    instruction: `Soit $d$ une droite passant par les points $A(${xA};${yA})$ et $B(${xB};${yB})$.$\\\\$Déterminer le coefficient directeur de $d$.`,
     answer: simplifyNode(new FractionNode(new NumberNode(yB - yA), new NumberNode(xB - xA))).toTex(),
     getPropositions,
     answerFormat: 'tex',

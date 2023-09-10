@@ -9,10 +9,10 @@ export const pythagore: Exercise = {
   id: 'pythagore',
   connector: '=',
   instruction: "Écrire l'égalité de Pythagore pour la figure suivante : ",
-  label: "Ecrire l'égalité de Pythagore",
-  levels: ['4', '3', '2'],
+  label: "Écrire l'égalité de Pythagore",
+  levels: ['4ème', '3ème', '2nde'],
   isSingleStep: false,
-  section: 'Géométrie euclidienne',
+  sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getPythagore, nb),
 };
 

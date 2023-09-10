@@ -13,9 +13,9 @@ export const distanceBetweenTwoPoints: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Distance entre deux points',
-  levels: ['2', '1'],
+  levels: ['2nde', '1reESM'],
+  sections: ['Géométrie cartésienne'],
   isSingleStep: false,
-  section: 'Géométrie cartésienne',
   generator: (nb: number) => getDistinctQuestions(getDistanceBetweenTwoPoints, nb),
   keys: [],
 };

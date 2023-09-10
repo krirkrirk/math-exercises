@@ -9,9 +9,9 @@ export const triangleAreaV2: Exercise = {
   connector: '=',
   instruction: '',
   label: "Calculer l'aire d'un triangle (sans figure)",
-  levels: ['4', '3', '2'],
+  levels: ['5ème', '4ème', '3ème', '2nde'],
   isSingleStep: false,
-  section: 'Géométrie euclidienne',
+  sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getTriangleAreaV2, nb),
 };
 

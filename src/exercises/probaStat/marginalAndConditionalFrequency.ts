@@ -14,9 +14,9 @@ export const marginalAndConditionalFrequency: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Calculs de fréquences marginales et conditionnelles',
-  levels: ['1', '0'],
+  levels: ['1reESM', '1reSpé', '1reTech'],
   isSingleStep: false,
-  section: 'Probabilités',
+  sections: ['Statistiques'],
   generator: (nb: number) => getDistinctQuestions(getMarginalAndConditionalFrequency, nb),
   keys: ['f', 'cap', 'underscore'],
 };

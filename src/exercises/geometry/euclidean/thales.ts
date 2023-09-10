@@ -9,9 +9,9 @@ export const thales: Exercise = {
   connector: '=',
   instruction: '',
   label: "Ecrire l'égalité de Thalès",
-  levels: ['5', '4', '3', '2'],
+  levels: ['5ème', '4ème', '3ème', '2nde'],
   isSingleStep: false,
-  section: 'Géométrie euclidienne',
+  sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getThales, nb),
 };
 

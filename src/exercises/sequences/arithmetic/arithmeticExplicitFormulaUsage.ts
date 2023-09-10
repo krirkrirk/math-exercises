@@ -10,9 +10,9 @@ export const arithmeticExplicitFormulaUsage: Exercise = {
   connector: '=',
   instruction: '',
   label: "Utiliser la formule générale d'une suite arithmétique",
-  levels: ['1', '0'],
+  levels: ['1reESM', '1reSpé', '1reTech'],
+  sections: ['Suites'],
   isSingleStep: false,
-  section: 'Suites',
   generator: (nb: number) => getDistinctQuestions(getArithmeticExplicitFormulaUsage, nb),
   keys: ['r', 'n', 'u', 'underscore'],
 };

@@ -9,9 +9,9 @@ export const arithmeticRecurrenceFormulaUsage: Exercise = {
   connector: '=',
   instruction: '',
   label: "Utiliser la formule de récurrence d'une suite arithmétique",
-  levels: ['1', '0'],
+  levels: ['1reESM', '1reSpé', '1reTech'],
+  sections: ['Suites'],
   isSingleStep: false,
-  section: 'Suites',
   generator: (nb: number) => getDistinctQuestions(getArithmeticRecurrenceFormulaUsage, nb),
   keys: ['r', 'n', 'u', 'underscore'],
 };

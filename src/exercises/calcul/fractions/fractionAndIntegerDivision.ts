@@ -13,9 +13,9 @@ export const fractionAndIntegerDivision: Exercise = {
   connector: '=',
   instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
   label: "Division d'un entier et d'une fraction",
-  levels: ['4', '3', '2', '1'],
+  levels: ['4ème', '3ème', '2nde'],
   isSingleStep: false,
-  section: 'Fractions',
+  sections: ['Fractions'],
   generator: (nb: number) => getDistinctQuestions(getFractionAndIntegerDivision, nb),
   keys: [],
 };

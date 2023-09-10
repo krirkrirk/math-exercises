@@ -11,9 +11,9 @@ export const trigonometryAngleCalcul: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Utiliser la trigonométrie pour calculer un angle',
-  levels: ['4', '3', '2'],
+  levels: ['4ème', '3ème', '2nde'],
   isSingleStep: false,
-  section: 'Géométrie euclidienne',
+  sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getTrigonometryAngleCalcul, nb),
 };
 

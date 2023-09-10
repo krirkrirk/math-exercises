@@ -10,9 +10,9 @@ export const frequencyTable: Exercise = {
   connector: '=',
   instruction: '',
   label: "Calcul de la moyenne d'une série de valeurs",
-  levels: ['1', '0'],
+  levels: ['3ème', '2nde'],
   isSingleStep: false,
-  section: 'Statistiques',
+  sections: ['Statistiques'],
   generator: (nb: number) => getDistinctQuestions(getFrequencyTable, nb),
   keys: [],
 };

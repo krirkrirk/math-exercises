@@ -10,9 +10,9 @@ export const allIdentities: Exercise = {
   connector: '=',
   instruction: 'Développer et réduire :',
   label: 'Identités remarquables (toutes)',
-  levels: ['3', '2'],
+  levels: ['3ème', '2nde'],
+  sections: ['Calcul littéral'],
   isSingleStep: false,
-  section: 'Calcul littéral',
   generator: (nb: number) => getDistinctQuestions(getAllIdentitiesQuestion, nb),
 };
 

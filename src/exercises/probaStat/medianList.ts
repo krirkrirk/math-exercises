@@ -10,9 +10,9 @@ export const medianList: Exercise = {
   connector: '=',
   instruction: '',
   label: "Calcul de la médiane d'une liste de valeurs",
-  levels: ['1', '0'],
+  levels: ['3ème', '2nde'],
   isSingleStep: false,
-  section: 'Probabilités',
+  sections: ['Probabilités'],
   generator: (nb: number) => getDistinctQuestions(getMedian, nb),
   keys: ['f', 'cap', 'underscore'],
 };

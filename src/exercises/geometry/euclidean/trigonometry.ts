@@ -10,9 +10,9 @@ export const trigonometry: Exercise = {
   connector: '=',
   instruction: '',
   label: "Écrire le quotient égal au cosinus, au sinus ou à la tangente d'un angle dans un triangle rectangle",
-  levels: ['4', '3', '2'],
+  levels: ['4ème', '3ème', '2nde'],
   isSingleStep: false,
-  section: 'Géométrie euclidienne',
+  sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getTrigonometry, nb),
 };
 

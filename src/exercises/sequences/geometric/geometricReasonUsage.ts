@@ -9,9 +9,9 @@ export const geometricReasonUsage: Exercise = {
   connector: '=',
   instruction: '',
   label: "Utiliser la raison d'une suite géométrique",
-  levels: ['1', '0'],
+  levels: ['1reESM', '1reSpé', '1reTech'],
+  sections: ['Suites'],
   isSingleStep: false,
-  section: 'Suites',
   generator: (nb: number) => getDistinctQuestions(getGeometricReasonUsage, nb),
   keys: ['q', 'n', 'u', 'underscore'],
 };

@@ -9,9 +9,9 @@ export const simplifySquareRoot: Exercise = {
   connector: '=',
   instruction: 'Simplifier :',
   label: 'Simplification de racines carrées',
-  levels: ['3', '2', '1'],
   isSingleStep: false,
-  section: 'Racines carrées',
+  levels: ['3ème', '2nde', '1reESM'],
+  sections: ['Racines carrées'],
   generator: (nb: number) => getDistinctQuestions(getSimplifySquareRoot, nb),
   keys: [],
 };

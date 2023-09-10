@@ -16,9 +16,9 @@ export const derivativeNumberReading: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Lecture de nombre dérivé',
-  levels: ['3', '2', '1'],
+  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp'],
+  sections: ['Dérivation'],
   isSingleStep: false,
-  section: 'Dérivation',
   generator: (nb: number) => getDistinctQuestions(getDerivativeNumberReading, nb),
 };
 

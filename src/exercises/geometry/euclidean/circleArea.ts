@@ -11,9 +11,9 @@ export const circleArea: Exercise = {
   connector: '=',
   instruction: '',
   label: "Calculer l'aire d'un cercle",
-  levels: ['4', '3', '2'],
+  levels: ['4ème', '3ème', '2nde'],
   isSingleStep: false,
-  section: 'Géométrie euclidienne',
+  sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getCircleArea, nb),
 };
 

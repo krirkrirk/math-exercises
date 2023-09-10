@@ -12,8 +12,8 @@ export const reduceExpression: Exercise = {
   instruction: "Réduire l'expression suivante :",
   isSingleStep: false,
   label: 'Réduire une expression',
-  levels: ['4', '3', '2'],
-  section: 'Calcul littéral',
+  levels: ['4ème', '3ème', '2nde'],
+  sections: ['Calcul littéral'],
   generator: (nb: number) => getDistinctQuestions(getReduceExpression, nb),
   keys: ['x'],
 };

@@ -6,11 +6,7 @@ import { DiscreteSet } from '#root/math/sets/discreteSet';
 import { Interval } from '#root/math/sets/intervals/intervals';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
-import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
@@ -20,8 +16,8 @@ export const factoIdRmq2: Exercise = {
   instruction: 'Factoriser :',
   isSingleStep: false,
   label: 'Factorisation du type $a^2 - 2ab + b^2$',
-  levels: ['3', '2'],
-  section: 'Calcul littéral',
+  levels: ['3ème', '2nde'],
+  sections: ['Calcul littéral'],
   generator: (nb: number) => getDistinctQuestions(getFactoType1Question, nb),
   keys: ['x'],
 };
