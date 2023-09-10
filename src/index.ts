@@ -1,11 +1,26 @@
+import { Exercise, Section } from './exercises/exercise';
 import { exercises } from './exercises/exercises';
 
 const allMathExercises = [...exercises];
 
-// allExercises.forEach((exo) => {
-//   console.log(exo);
-//   console.log(exo.generator(10));
-// });
-// import('./server');
+const getAllMathExercisesBySection = () => {
+  const data: { section: Section; exos: Exercise[] }[] = [];
 
-export { allMathExercises };
+  allMathExercises.forEach((exo) => {
+    const sectionsData = data.filter((el) => exo.sections.includes(el.section));
+    if (!sectionsData.length) {
+      exo.sections.forEach((section) =>
+        data.push({
+          section,
+          exos: [exo],
+        }),
+      );
+    } else {
+      sectionsData.forEach((sectionData) => {
+        data.find((d) => d.section === sectionData.section)?.exos.push(exo);
+      });
+    }
+  });
+  return data;
+};
+export { allMathExercises, getAllMathExercisesBySection };
