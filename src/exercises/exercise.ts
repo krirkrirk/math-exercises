@@ -16,12 +16,12 @@ export interface Question {
   instruction?: string;
   startStatement?: string;
   answer: string;
-  answerFormat?: 'tex' | 'raw';
+  answerFormat: 'tex' | 'raw';
   keys?: string[];
   commands?: string[];
   coords?: number[];
   options?: any;
-  getPropositions?: (n: number) => Proposition[];
+  getPropositions: (n: number) => Proposition[];
 }
 
 export interface Exercise {
@@ -29,14 +29,14 @@ export interface Exercise {
   instruction: string;
   isSingleStep: boolean;
   label: string;
-  sections: Section[];
-  levels: Level[];
+  sections: MathSection[];
+  levels: MathLevel[];
   connector: '=' | '\\iff' | '\\approx';
   keys?: string[];
   generator(nb: number, options?: GeneratorOptions): Question[];
 }
 
-export type Level =
+export type MathLevel =
   | '6ème'
   | '5ème'
   | '4ème'
@@ -50,7 +50,7 @@ export type Level =
   | 'MathExp'
   | 'MathComp';
 
-export type Section =
+export type MathSection =
   | 'Calcul littéral'
   | 'Équations'
   | 'Racines carrées'

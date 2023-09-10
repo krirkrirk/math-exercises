@@ -1,10 +1,10 @@
-import { Exercise, Section } from './exercises/exercise';
+import { Exercise, MathSection } from './exercises/exercise';
 import { exercises } from './exercises/exercises';
 
 const allMathExercises = [...exercises];
 
 const getAllMathExercisesBySection = () => {
-  const data: { section: Section; exos: Exercise[] }[] = [];
+  const data: { section: MathSection; exos: Exercise[] }[] = [];
 
   allMathExercises.forEach((exo) => {
     const sectionsData = data.filter((el) => exo.sections.includes(el.section));
