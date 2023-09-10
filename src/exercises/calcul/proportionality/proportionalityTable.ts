@@ -9,9 +9,9 @@ export const proportionalityTable: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Calcul dans un tableau de proportionnalité',
-  levels: ['5', '4', '3'],
+  levels: ['5ème', '4ème', '3ème'],
   isSingleStep: false,
-  section: 'Proportionnalité',
+  sections: ['Proportionnalité'],
   generator: (nb: number) => getDistinctQuestions(getProportionalityTable, nb),
   keys: [],
 };

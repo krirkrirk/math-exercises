@@ -20,8 +20,8 @@ export const factoIdRmq1: Exercise = {
   instruction: 'Factoriser :',
   isSingleStep: false,
   label: 'Factorisation du type $a^2 + 2ab + b^2$',
-  levels: ['3', '2'],
-  section: 'Calcul littéral',
+  levels: ['3ème', '2nde'],
+  sections: ['Calcul littéral'],
   generator: (nb: number) => getDistinctQuestions(getFactoType1Question, nb),
   keys: ['x'],
 };

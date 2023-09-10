@@ -15,9 +15,9 @@ export const leadingCoefficient: Exercise = {
   connector: '=',
   instruction: 'Déterminer le coefficient directeur de la droite représentée ci-dessous :',
   label: 'Déterminer le coefficient directeur',
-  levels: ['3', '2', '1'],
+  levels: ['3ème', '2nde', '1reESM'],
   isSingleStep: false,
-  section: 'Droites',
+  sections: ['Droites'],
   generator: (nb: number) => getDistinctQuestions(getLeadingCoefficientQuestion, nb),
 };
 

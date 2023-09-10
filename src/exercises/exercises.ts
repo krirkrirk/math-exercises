@@ -55,9 +55,7 @@ import { secondDegreeDerivative } from './derivation/derivative/secondDegreeDeri
 import { thirdDegreeDerivative } from './derivation/derivative/thirdDegreeDerivative';
 import { usualDerivative } from './derivation/derivative/usualderivative';
 import { derivativeNumberReading } from './derivation/derivativeNumberReading';
-import { leadingCoefficient } from './geometry/cartesian/leadingCoefficient';
-import { leadingCoefficientCalculV1 } from './geometry/cartesian/leadingCoefficientCalculV1';
-import { leadingCoefficientCalculV2 } from './geometry/cartesian/leadingCoefficientCalculV2';
+import { leadingCoefficient } from './functions/affines/leadingCoefficient';
 import { midpoint } from './geometry/cartesian/midpoint';
 import { pythagore } from './geometry/euclidean/pythagore';
 import { pythagoreCalcul } from './geometry/euclidean/pythagoreCalcul';
@@ -107,8 +105,7 @@ import { distanceBetweenTwoPoints } from './geometry/cartesian/distanceBetweenTw
 import { reduceExpression } from './calculLitteral/simplifying/reduceExpression';
 import { evaluateExpression } from './calculLitteral/simplifying/evaluateExpression';
 import { proportionalityTable } from './calcul/proportionality/proportionalityTable';
-import { imageFunction } from './geometry/cartesian/imageFunction';
-import { inverseImageFunction } from './geometry/cartesian/inverseImageFunction';
+import { imageFunction } from './functions/basics/imageFunction';
 import { triangleArea } from './geometry/euclidean/triangleArea';
 import { lnDerivativeOne } from './derivation/derivative/lnDerivativeOne';
 import { lnDerivativeTwo } from './derivation/derivative/lnDerivativeTwo';
@@ -120,15 +117,12 @@ import { logEquation } from './calculLitteral/equation/logEquation';
 import { expEquation } from './calculLitteral/equation/expEquation';
 import { expSimplifiying } from './calculLitteral/simplifying/expSimplifiying';
 import { logSimplifiying } from './calculLitteral/simplifying/logSimplifiying';
-import { imageFunctionGeogebra } from '#root/exercises/geometry/cartesian/imageFunctionGeogebra';
-import { inverseImageFunctionGeogebra } from '#root/exercises/geometry/cartesian/inverseImageFunctionGeogebra';
 import { frequencyTable } from '#root/exercises/probaStat/frequencyTable';
 import { median } from '#root/exercises/probaStat/median';
 import { quartiles } from '#root/exercises/probaStat/quartiles';
 import { medianList } from '#root/exercises/probaStat/medianList';
 import { quartilesList } from '#root/exercises/probaStat/quartilesList';
 import { euclideanDivision } from '#root/exercises/calcul/arithmetics/euclideanDivision';
-import { signFunction } from '#root/exercises/geometry/cartesian/signFunction';
 import { thirdDegreeFunctionVariation } from '#root/exercises/derivation/derivative/thirdDegreeFunctionVariation';
 import { polynomeLimit } from '#root/exercises/limits/polynomeLimit';
 import { constantPrimitive } from '#root/exercises/primitve/constantPrimitive';
@@ -139,6 +133,14 @@ import { logarithmePrimitive } from '#root/exercises/primitve/logarithmePrimitiv
 import { usualPrimitives } from '#root/exercises/primitve/usualPrimitives';
 import { exponentialDifferentialEquation } from '#root/exercises/equaDiff/equaDiffGeneralForme';
 import { exponentialDifferentialEquationWithIC } from '#root/exercises/equaDiff/equaDiffGeneralFormeWithIC';
+import { mainRemarkableValuesExercise } from './trigonometry/mainRemarkableValues';
+import { remarkableValuesExercise } from './trigonometry/remarkableValues';
+import { leadingCoefficientCalculV1 } from './functions/affines/leadingCoefficientCalculV1';
+import { leadingCoefficientCalculV2 } from './functions/affines/leadingCoefficientCalculV2';
+import { inverseImageFunction } from './functions/basics/inverseImageFunction';
+import { imageFunctionGeogebra } from './functions/basics/imageFunctionGeogebra';
+import { inverseImageFunctionGeogebra } from './functions/basics/inverseImageFunctionGeogebra';
+import { signFunction } from './functions/affines/signFunction';
 
 export const exercises = [
   /**
@@ -202,6 +204,8 @@ export const exercises = [
    * geometry
    */
   midpoint,
+  mainRemarkableValuesExercise,
+  remarkableValuesExercise,
 
   /**
    * vectors

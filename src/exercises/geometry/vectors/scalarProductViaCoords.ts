@@ -13,8 +13,8 @@ export const scalarProductViaCoords: Exercise = {
   instruction: '',
   isSingleStep: false,
   label: "Calculer un produit scalaire à l'aide des coordonnées",
-  levels: ['1, 0'],
-  section: 'Vecteurs',
+  levels: ['1reSpé', 'TermSpé'],
+  sections: ['Vecteurs'],
   generator: (nb: number) => getDistinctQuestions(getScalarProductViaCoordsQuestion, nb),
   keys: [],
 };

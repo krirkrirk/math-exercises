@@ -12,9 +12,9 @@ export const pythagoreCalcul: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Utiliser le théoreme de Pythagore pour faire des calculs',
-  levels: ['3', '2'],
+  levels: ['4ème', '3ème', '2nde'],
   isSingleStep: false,
-  section: 'Géométrie euclidienne',
+  sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getPythagoreCalcul, nb),
 };
 

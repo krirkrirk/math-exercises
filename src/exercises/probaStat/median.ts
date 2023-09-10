@@ -9,9 +9,9 @@ export const median: Exercise = {
   connector: '=',
   instruction: '',
   label: "Calcul de la moyenne d'une série de valeurs",
-  levels: ['1', '0'],
+  levels: ['3ème', '2nde'],
   isSingleStep: false,
-  section: 'Probabilités',
+  sections: ['Statistiques'],
   generator: (nb: number) => getDistinctQuestions(getMedian, nb),
   keys: [],
 };

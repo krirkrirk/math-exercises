@@ -13,9 +13,9 @@ export const geometricRecurrenceFormulaUsage: Exercise = {
   connector: '=',
   instruction: '',
   label: "Utiliser la formule de récurrence d'une suite géométrique",
-  levels: ['1', '0'],
+  levels: ['1reESM', '1reSpé', '1reTech'],
+  sections: ['Suites'],
   isSingleStep: false,
-  section: 'Suites',
   keys: ['q', 'n', 'u', 'underscore'],
 
   generator: (nb: number, options: GeometricRecurrenceFormulaUsageOptions) =>

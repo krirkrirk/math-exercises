@@ -17,8 +17,8 @@ export const factoIdRmq3: Exercise = {
   instruction: 'Factoriser :',
   isSingleStep: false,
   label: 'Factorisation du type $a^2 - b^2$',
-  levels: ['3', '2'],
-  section: 'Calcul littéral',
+  levels: ['3ème', '2nde'],
+  sections: ['Calcul littéral'],
   generator: (nb: number) => getDistinctQuestions(getFactoType1Question, nb),
   keys: ['x'],
 };

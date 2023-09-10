@@ -13,8 +13,8 @@ export const fractionToPercentToDecimal: Exercise = {
   connector: '\\iff',
   instruction: '',
   label: "Passer d'une écriture d'un nombre à une autre",
-  levels: ['2', '1'],
-  section: 'Fractions',
+  levels: ['3ème', '2nde', '1reESM'],
+  sections: ['Fractions'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionToPercentToDecimal, nb),
 };

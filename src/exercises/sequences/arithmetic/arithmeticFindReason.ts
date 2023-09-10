@@ -9,9 +9,9 @@ export const arithmeticFindReason: Exercise = {
   connector: '=',
   instruction: '',
   label: "Déterminer la raison d'une suite arithmétique",
-  levels: ['1', '0'],
+  levels: ['1reESM', '1reSpé', '1reTech'],
+  sections: ['Suites'],
   isSingleStep: false,
-  section: 'Suites',
   keys: ['r', 'n', 'u', 'underscore'],
 
   generator: (nb: number) => getDistinctQuestions(getArithmeticFindReason, nb),

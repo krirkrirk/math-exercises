@@ -14,9 +14,9 @@ export const thalesCalcul: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Utiliser le théoreme de Thalès pour faire des calculs',
-  levels: ['5', '4', '3', '2'],
+  levels: ['5ème', '4ème', '3ème', '2nde'],
   isSingleStep: false,
-  section: 'Géométrie euclidienne',
+  sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getThales, nb),
 };
 

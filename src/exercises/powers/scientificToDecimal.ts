@@ -18,8 +18,8 @@ export const scientificToDecimal: Exercise = {
   connector: '=',
   instruction: "Donner l'écriture décimale de :",
   label: 'Ecriture décimale de $a\\times 10^x$',
-  levels: ['5', '4', '3', '2'],
-  section: 'Puissances',
+  levels: ['5ème', '4ème', '3ème', '2nde'],
+  sections: ['Puissances'],
   isSingleStep: true,
   keys: [],
 

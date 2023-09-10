@@ -9,9 +9,9 @@ export const rectangleArea: Exercise = {
   connector: '=',
   instruction: '',
   label: "Calculer l'aire d'un rectangle",
-  levels: ['4', '3', '2'],
+  levels: ['4ème', '3ème', '2nde'],
   isSingleStep: false,
-  section: 'Géométrie euclidienne',
+  sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getRectangleArea, nb),
 };
 

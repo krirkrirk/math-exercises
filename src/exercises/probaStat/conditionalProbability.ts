@@ -10,9 +10,9 @@ export const conditionalProbability: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Calcul de probabilité conditionnelle avec la formule de Bayes',
-  levels: ['1', '0'],
+  levels: ['1reESM', '1reSpé', '1reTech'],
   isSingleStep: false,
-  section: 'Probabilités',
+  sections: ['Probabilités'],
   generator: (nb: number) => getDistinctQuestions(getConditionalProbability, nb),
   keys: ['p', 'cap', 'underscore'],
 };
