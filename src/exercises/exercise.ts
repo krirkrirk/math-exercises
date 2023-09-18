@@ -1,9 +1,3 @@
-// export enum Connector {
-//   equal = "=",
-//   equiv = "\\iff",
-//   implies = "\\Rightarrow",
-// }
-
 export type GeneratorOptions = {};
 
 export type Proposition = {
