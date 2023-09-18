@@ -41,7 +41,7 @@ export function getSignFunction(): Question {
       answer =
         a > 0
           ? `\\left]-\\infty;${simplifyNode(new NumberNode(-b / a)).toTex()}\\right]`
-          : `\\left[${simplifyNode(new NumberNode(-b / a)).toTex()};+\\infty\\left[`;
+          : `\\left[${simplifyNode(new NumberNode(-b / a)).toTex()};+\\infty\\right[`;
       break;
   }
 
