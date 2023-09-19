@@ -1,5 +1,6 @@
 import { Exercise, MathSection } from './exercises/exercise';
 import { exercises } from './exercises/exercises';
+import { TrinomConstructor } from './math/polynomials/trinom';
 
 const allMathExercises = [...exercises];
 
@@ -23,4 +24,8 @@ const getAllMathExercisesBySection = () => {
   });
   return data;
 };
+
+const trinom = TrinomConstructor.randomCanonical();
+const answer = trinom.getSommet();
+console.log(answer);
 export { allMathExercises, getAllMathExercisesBySection };

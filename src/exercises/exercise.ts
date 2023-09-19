@@ -71,4 +71,5 @@ export type MathSection =
   | 'Intégration'
   | 'Primitives'
   | 'Équations différentielles'
-  | 'Trigonométrie';
+  | 'Trigonométrie'
+  | 'Second degré';
