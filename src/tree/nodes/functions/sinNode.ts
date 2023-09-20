@@ -1,3 +1,4 @@
+import { sin } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { FunctionNode, FunctionsIds } from './functionNode';
 
@@ -15,7 +16,9 @@ export class SinNode extends FunctionNode implements Node {
   toTex(): string {
     return `\\sin\\left(${this.child.toTex()}\\right)`;
   }
-
+  toMathjs() {
+    return sin(this.child.toMathjs());
+  }
   simplify(): Node {
     return this;
   }

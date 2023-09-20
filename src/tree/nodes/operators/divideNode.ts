@@ -1,3 +1,4 @@
+import { divide } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from './operatorNode';
 
@@ -34,5 +35,8 @@ export class DivideNode extends OperatorNode implements Node {
     if (needBrackets) rightTex = `(${rightTex})`;
 
     return `${leftTex} \\div ${rightTex}`;
+  }
+  toMathjs() {
+    return divide(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   }
 }

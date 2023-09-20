@@ -147,6 +147,7 @@ import { alphaBetaFromDevForm } from './functions/trinoms/alphaBetaFromDevForm';
 import { extremumFromCanonicalForm } from './functions/trinoms/extremumFromCanonicalForm';
 import { extremumTypeFromAlgebricForm } from './functions/trinoms/extremumTypeFromAlgebricForm';
 import { variationsFromAlgebricForm } from './functions/trinoms/variationsFromAlgebricForm';
+import { mutiplyComplex } from './complex/mutiplyComplex';
 
 export const exercises = [
   /**
@@ -346,4 +347,7 @@ export const exercises = [
   extremumFromCanonicalForm,
   extremumTypeFromAlgebricForm,
   variationsFromAlgebricForm,
+
+  /**Complexes */
+  mutiplyComplex,
 ];

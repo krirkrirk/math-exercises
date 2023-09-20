@@ -1,3 +1,4 @@
+import { fraction } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from './operatorNode';
 
@@ -15,5 +16,9 @@ export class FractionNode extends OperatorNode implements Node {
   }
   toTex(): string {
     return `\\frac{${this.leftChild.toTex()}}{${this.rightChild.toTex()}}`;
+  }
+
+  toMathjs() {
+    return fraction(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   }
 }

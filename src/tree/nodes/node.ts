@@ -10,5 +10,6 @@ export interface Node {
   type: NodeType;
   toMathString: () => string;
   toTex: () => string;
+  toMathjs: () => any;
   // simplify: () => Node;
 }

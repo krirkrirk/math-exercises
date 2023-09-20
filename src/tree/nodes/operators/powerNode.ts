@@ -1,3 +1,4 @@
+import { pow } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from './operatorNode';
 
@@ -27,5 +28,9 @@ export class PowerNode extends OperatorNode implements Node {
     }
     if (needBrackets) leftTex = `(${leftTex})`;
     return `${leftTex}^{${rightTex}}`;
+  }
+
+  toMathjs() {
+    return pow(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   }
 }

@@ -1,3 +1,4 @@
+import { cos } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { FunctionNode, FunctionsIds } from './functionNode';
 
@@ -14,6 +15,10 @@ export class CosNode extends FunctionNode implements Node {
 
   toTex(): string {
     return `\\cos\\left(${this.child.toTex()}\\right)`;
+  }
+
+  toMathjs() {
+    return cos(this.child.toMathjs());
   }
 
   simplify(): Node {

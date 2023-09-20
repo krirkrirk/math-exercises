@@ -1,3 +1,4 @@
+import { add } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from './operatorNode';
 
@@ -14,5 +15,8 @@ export class AddNode extends OperatorNode implements Node {
   toTex(): string {
     const rightTex = this.rightChild.toTex();
     return `${this.leftChild.toTex()} ${rightTex[0] === '-' ? '' : '+ '}${rightTex}`;
+  }
+  toMathjs() {
+    return add(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   }
 }

@@ -1,4 +1,4 @@
-import { simplify as mathsimplify } from 'mathjs';
+import { Complex, complex, simplify as mathsimplify } from 'mathjs';
 import { OppositeNode } from '../nodes/functions/oppositeNode';
 import { SqrtNode } from '../nodes/functions/sqrtNode';
 import { Node } from '../nodes/node';
@@ -14,6 +14,7 @@ import { LogNode } from '../nodes/functions/logNode';
 import { ExpNode } from '../nodes/functions/expNode';
 import { CosNode } from '#root/tree/nodes/functions/cosNode';
 import { SinNode } from '#root/tree/nodes/functions/sinNode';
+import { ComplexNode } from '../nodes/complex/complexNode';
 
 interface MathjsNode {
   isSymbolNode: boolean;
@@ -25,6 +26,14 @@ interface MathjsNode {
   value?: any;
   args?: MathjsNode[];
 }
+
+export const simplifyComplex = (node: Node): Node => {
+  return mathjsComplexToNode(complex(node.toMathjs()));
+};
+
+const mathjsComplexToNode = (complex: Complex) => {
+  return new ComplexNode(complex.re, complex.im);
+};
 
 export const simplifyNode = (node: Node): Node => {
   return mathjsNodeToNode(mathsimplify(node.toMathString()) as unknown as MathjsNode);

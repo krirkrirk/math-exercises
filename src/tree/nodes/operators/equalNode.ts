@@ -1,3 +1,4 @@
+import { equal } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from './operatorNode';
 
@@ -10,5 +11,9 @@ export class EqualNode extends OperatorNode implements Node {
   }
   toTex(): string {
     return `${this.leftChild.toTex()} = ${this.rightChild.toTex()}`;
+  }
+
+  toMathjs() {
+    return equal(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   }
 }

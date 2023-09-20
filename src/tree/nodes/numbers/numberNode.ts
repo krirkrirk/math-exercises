@@ -1,3 +1,4 @@
+import { parse } from 'mathjs';
 import { Node, NodeType } from '../node';
 
 export class NumberNode implements Node {
@@ -17,6 +18,9 @@ export class NumberNode implements Node {
   }
   toTex(): string {
     return `${this.tex}`;
+  }
+  toMathjs() {
+    return parse(this.toMathString());
   }
   // simplify(): Node {
   //   return this;

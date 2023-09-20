@@ -73,4 +73,5 @@ export type MathSection =
   | 'Primitives'
   | 'Équations différentielles'
   | 'Trigonométrie'
-  | 'Second degré';
+  | 'Second degré'
+  | 'Nombres complexes';

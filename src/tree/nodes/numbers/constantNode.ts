@@ -1,3 +1,4 @@
+import { parse } from 'mathjs';
 import { Node, NodeType } from '../node';
 
 export class ConstantNode implements Node {
@@ -15,5 +16,8 @@ export class ConstantNode implements Node {
   }
   toTex(): string {
     return `${this.tex}`;
+  }
+  toMathjs() {
+    return parse(this.mathString);
   }
 }

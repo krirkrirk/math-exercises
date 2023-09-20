@@ -1,3 +1,4 @@
+import { subtract } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from './operatorNode';
 
@@ -20,5 +21,8 @@ export class SubstractNode extends OperatorNode implements Node {
     if (needBrackets) rightTex = `(${rightTex})`;
 
     return `${leftTex} - ${rightTex}`;
+  }
+  toMathjs() {
+    return subtract(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   }
 }

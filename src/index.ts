@@ -1,6 +1,11 @@
 import { Exercise, MathSection } from './exercises/exercise';
 import { exercises } from './exercises/exercises';
+import { Complex } from './math/complex/complex';
 import { TrinomConstructor } from './math/polynomials/trinom';
+import { ComplexNode } from './tree/nodes/complex/complexNode';
+import { AddNode } from './tree/nodes/operators/addNode';
+import { MultiplyNode } from './tree/nodes/operators/multiplyNode';
+import { simplifyComplex } from './tree/parsers/simplify';
 
 const allMathExercises = [...exercises];
 
@@ -25,7 +30,7 @@ const getAllMathExercisesBySection = () => {
   return data;
 };
 
-const trinom = TrinomConstructor.randomCanonical();
-const answer = trinom.getSommet();
-console.log(answer);
+const complex = new Complex(-1, 4);
+const complex2 = new Complex(-5, 3);
+console.log(simplifyComplex(new MultiplyNode(complex.toTree(), complex2.toTree())).toTex());
 export { allMathExercises, getAllMathExercisesBySection };

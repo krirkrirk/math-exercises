@@ -1,3 +1,4 @@
+import { parse } from 'mathjs';
 import { Node, NodeType } from '../node';
 
 export class VariableNode implements Node {
@@ -14,6 +15,9 @@ export class VariableNode implements Node {
   }
   toMathString(): string {
     return `${this.name}`;
+  }
+  toMathjs() {
+    return parse(this.name);
   }
   // simplify(): Node {
   //   return this;

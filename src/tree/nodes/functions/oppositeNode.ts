@@ -1,3 +1,4 @@
+import { unaryMinus } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from '../operators/operatorNode';
 import { FunctionNode, FunctionsIds } from './functionNode';
@@ -18,5 +19,9 @@ export class OppositeNode extends FunctionNode implements Node {
     }
     if (needBrackets) childTex = `(${childTex})`;
     return `-${childTex}`;
+  }
+
+  toMathjs() {
+    return unaryMinus(this.child.toMathjs());
   }
 }

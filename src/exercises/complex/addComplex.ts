@@ -1,26 +1,34 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Complex, ComplexConstructor } from '#root/math/complex/complex';
+import { AddNode } from '#root/tree/nodes/operators/addNode';
+import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
+import { simplifyComplex } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const {{name}}: Exercise = {
-  id: '{{name}}',
-  connector: "",
-  instruction: "",
-  label: "",
-  levels: [],
+export const addComplex: Exercise = {
+  id: 'addComplex',
+  connector: '=',
+  instruction: '',
+  label: 'Ajouter deux nombres complexes',
+  levels: ['MathExp'],
   isSingleStep: true,
-  sections: [],
-  generator: (nb: number) => getDistinctQuestions(get{{namePascal}}Question, nb),
+  sections: ['Nombres complexes'],
+  generator: (nb: number) => getDistinctQuestions(getAddComplexQuestion, nb),
 };
 
-export function get{{namePascal}}Question(): Question {
+export function getAddComplexQuestion(): Question {
+  const z1 = ComplexConstructor.random();
+  const z2 = ComplexConstructor.random();
+
+  const answer = simplifyComplex(new AddNode(z1.toTree(), z2.toTree()));
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
     res.push({
-      id: v4(),
-      statement: ``,
+      id: v4() + '',
+      statement: '',
       isRightAnswer: true,
       format: 'tex',
     });
@@ -33,7 +41,7 @@ export function get{{namePascal}}Question(): Question {
       do {
         const wrongAnswer = '';
         proposition = {
-          id: v4() + ``,
+          id: v4() + '',
           statement: wrongAnswer,
           isRightAnswer: false,
           format: 'tex',
@@ -49,9 +57,9 @@ export function get{{namePascal}}Question(): Question {
   };
 
   const question: Question = {
-    answer: ``,
-    instruction: ``,
-    keys: [],
+    answer: answer.toTex(),
+    instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2.toTree().toTex()}$. Calculer $z + z'$.`,
+    keys: ['i', 'z', 'quote'],
     getPropositions,
     answerFormat: 'tex',
   };

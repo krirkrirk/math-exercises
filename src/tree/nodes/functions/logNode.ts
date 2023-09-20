@@ -1,3 +1,4 @@
+import { log } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { FunctionNode, FunctionsIds } from './functionNode';
 
@@ -15,7 +16,9 @@ export class LogNode extends FunctionNode implements Node {
   toTex(): string {
     return `\\ln\\left(${this.child.toTex()}\\right)`;
   }
-
+  toMathjs() {
+    return log(this.child.toMathjs());
+  }
   simplify(): Node {
     return this;
   }

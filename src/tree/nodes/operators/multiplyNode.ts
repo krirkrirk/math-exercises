@@ -1,3 +1,4 @@
+import { multiply } from 'mathjs';
 import { FunctionNode, FunctionsIds } from '../functions/functionNode';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from './operatorNode';
@@ -47,5 +48,9 @@ export class MultiplyNode extends OperatorNode implements Node {
     }
 
     return `${leftTex}${showTimesSign ? '\\times ' : ''}${rightTex}`;
+  }
+
+  toMathjs() {
+    return multiply(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   }
 }
