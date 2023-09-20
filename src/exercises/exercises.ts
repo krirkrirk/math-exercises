@@ -148,6 +148,8 @@ import { extremumFromCanonicalForm } from './functions/trinoms/extremumFromCanon
 import { extremumTypeFromAlgebricForm } from './functions/trinoms/extremumTypeFromAlgebricForm';
 import { variationsFromAlgebricForm } from './functions/trinoms/variationsFromAlgebricForm';
 import { mutiplyComplex } from './complex/mutiplyComplex';
+import { reAndIm } from './complex/reAndIm';
+import { addComplex } from './complex/addComplex';
 
 export const exercises = [
   /**
@@ -350,4 +352,6 @@ export const exercises = [
 
   /**Complexes */
   mutiplyComplex,
+  reAndIm,
+  addComplex,
 ];

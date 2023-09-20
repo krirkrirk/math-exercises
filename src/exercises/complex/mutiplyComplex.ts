@@ -48,10 +48,10 @@ export function getMutiplyComplexQuestion(): Question {
       let proposition: Proposition;
 
       do {
-        const wrongAnswer = randint(1, 9);
+        const wrongAnswer = ComplexConstructor.random();
         proposition = {
           id: v4() + '',
-          statement: wrongAnswer.toString(),
+          statement: wrongAnswer.toTree().toTex(),
           isRightAnswer: false,
           format: 'tex',
         };

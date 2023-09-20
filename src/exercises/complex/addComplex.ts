@@ -3,6 +3,7 @@ import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions
 import { Complex, ComplexConstructor } from '#root/math/complex/complex';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
+import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
 import { simplifyComplex } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
@@ -28,8 +29,14 @@ export function getAddComplexQuestion(): Question {
 
     res.push({
       id: v4() + '',
-      statement: '',
+      statement: answer.toTex(),
       isRightAnswer: true,
+      format: 'tex',
+    });
+    res.push({
+      id: v4(),
+      statement: simplifyComplex(new SubstractNode(z1.toTree(), z2.toTree())).toTex(),
+      isRightAnswer: false,
       format: 'tex',
     });
 
@@ -39,10 +46,10 @@ export function getAddComplexQuestion(): Question {
       let proposition: Proposition;
 
       do {
-        const wrongAnswer = '';
+        const wrongAnswer = ComplexConstructor.random();
         proposition = {
           id: v4() + '',
-          statement: wrongAnswer,
+          statement: wrongAnswer.toTree().toTex(),
           isRightAnswer: false,
           format: 'tex',
         };

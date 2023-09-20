@@ -1,9 +1,11 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Complex, ComplexConstructor } from '#root/math/complex/complex';
+import { randint } from '#root/math/utils/random/randint';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { simplifyComplex } from '#root/tree/parsers/simplify';
+import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
@@ -20,18 +22,38 @@ export const reAndIm: Exercise = {
 
 export function getReAndImQuestion(): Question {
   const z1 = ComplexConstructor.random();
-  const z2 = ComplexConstructor.random();
-
-  const answer = simplifyComplex(new AddNode(z1.toTree(), z2.toTree()));
+  const isRe = coinFlip();
+  const answer = isRe ? z1.re : z1.im;
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
     res.push({
       id: v4() + '',
-      statement: '',
+      statement: answer.toString(),
       isRightAnswer: true,
       format: 'tex',
     });
+    res.push({
+      id: v4() + '',
+      statement: z1.im + 'i',
+      isRightAnswer: false,
+      format: 'tex',
+    });
+
+    if (!res.some((prop) => prop.statement === (isRe ? z1.im.toString() : z1.re.toString())))
+      res.push({
+        id: v4() + '',
+        statement: isRe ? z1.im.toString() : z1.re.toString(),
+        isRightAnswer: false,
+        format: 'tex',
+      });
+    if (!res.some((prop) => prop.statement === (-z1.im).toString()))
+      res.push({
+        id: v4() + '',
+        statement: (-z1.im).toString(),
+        isRightAnswer: false,
+        format: 'tex',
+      });
 
     const missing = n - res.length;
     for (let i = 0; i < missing; i++) {
@@ -39,7 +61,7 @@ export function getReAndImQuestion(): Question {
       let proposition: Proposition;
 
       do {
-        const wrongAnswer = '';
+        const wrongAnswer = randint(-10, 11) + '';
         proposition = {
           id: v4() + '',
           statement: wrongAnswer,
@@ -57,9 +79,9 @@ export function getReAndImQuestion(): Question {
   };
 
   const question: Question = {
-    answer: answer.toTex(),
-    instruction: `Soit $z=${z1.toTree().toTex()}$. Quelle.`,
-    keys: ['i', 'z', 'quote'],
+    answer: answer.toString(),
+    instruction: `Soit $z=${z1.toTree().toTex()}$. Quelle est la partie ${isRe ? 'réelle' : 'imaginaire'} de $z$ ?`,
+    keys: ['i', 'z'],
     getPropositions,
     answerFormat: 'tex',
   };
