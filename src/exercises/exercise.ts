@@ -11,6 +11,7 @@ export interface Question {
   startStatement?: string;
   answer: string;
   answerFormat: 'tex' | 'raw';
+  questionType?: 'QCM' | 'free';
   keys?: string[];
   commands?: string[];
   coords?: number[];
@@ -25,7 +26,7 @@ export interface Exercise {
   label: string;
   sections: MathSection[];
   levels: MathLevel[];
-  connector: '=' | '\\iff' | '\\approx';
+  connector?: '=' | '\\iff' | '\\approx';
   keys?: string[];
   generator(nb: number, options?: GeneratorOptions): Question[];
 }
@@ -71,4 +72,5 @@ export type MathSection =
   | 'Intégration'
   | 'Primitives'
   | 'Équations différentielles'
-  | 'Trigonométrie';
+  | 'Trigonométrie'
+  | 'Second degré';

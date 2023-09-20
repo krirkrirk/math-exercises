@@ -91,7 +91,7 @@ export function getProbabilityTree(): Question {
     'Segment(B,BD)',
     'ShowAxes(false)',
     'ShowGrid(false)',
-    `Text("\\scriptsize fgd${A / pgcd(A, A + B)}/${(A + B) / pgcd(A, A + B)}", (0.3, 2.1), true, true)`,
+    `Text("\\scriptsize ${A / pgcd(A, A + B)}/${(A + B) / pgcd(A, A + B)}", (0.3, 2.1), true, true)`,
     `Text("\\scriptsize ${AC / pgcd(AC, AC + AD)}/${(AC + AD) / pgcd(AC, AC + AD)}", (2.8, 3.5), true, true)`,
     `Text("\\scriptsize ${AD / pgcd(AD, AC + AD)}/${(AC + AD) / pgcd(AD, AC + AD)}", (2.8, 1.4), true, true)`,
     `Text("\\scriptsize ${B / pgcd(B, A + B)}/${(A + B) / pgcd(B, A + B)}", (0.3, -1.2), true, true)`,

@@ -141,6 +141,12 @@ import { inverseImageFunction } from './functions/basics/inverseImageFunction';
 import { imageFunctionGeogebra } from './functions/basics/imageFunctionGeogebra';
 import { inverseImageFunctionGeogebra } from './functions/basics/inverseImageFunctionGeogebra';
 import { signFunction } from './functions/affines/signFunction';
+import { alphaBetaInCanonicalForm } from './functions/trinoms/alphaBetaInCanonicalForm';
+import { canonicalFromDevForm } from './functions/trinoms/canonicalFromDevForm';
+import { alphaBetaFromDevForm } from './functions/trinoms/alphaBetaFromDevForm';
+import { extremumFromCanonicalForm } from './functions/trinoms/extremumFromCanonicalForm';
+import { extremumTypeFromAlgebricForm } from './functions/trinoms/extremumTypeFromAlgebricForm';
+import { variationsFromAlgebricForm } from './functions/trinoms/variationsFromAlgebricForm';
 
 export const exercises = [
   /**
@@ -332,4 +338,12 @@ export const exercises = [
   usualPrimitives,
   exponentialDifferentialEquation,
   exponentialDifferentialEquationWithIC,
+
+  /**Trinomes */
+  alphaBetaInCanonicalForm,
+  canonicalFromDevForm,
+  alphaBetaFromDevForm,
+  extremumFromCanonicalForm,
+  extremumTypeFromAlgebricForm,
+  variationsFromAlgebricForm,
 ];

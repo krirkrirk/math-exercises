@@ -5,6 +5,7 @@ import { Affine } from '#root/math/polynomials/affine';
 import { DiscreteSet } from '#root/math/sets/discreteSet';
 import { Interval } from '#root/math/sets/intervals/intervals';
 import { randint } from '#root/math/utils/random/randint';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { EqualNode } from '#root/tree/nodes/operators/equalNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
@@ -25,13 +26,11 @@ export const equationType1Exercise: Exercise = {
 };
 
 export function getEquationType1ExerciseQuestion(): Question {
-  const interval = new Interval('[[-10; 10]]');
-  const intervalStar = new Interval('[[-10; 10]]').difference(new DiscreteSet([new Integer(0)]));
-  const b = interval.getRandomElement();
-  const a = intervalStar.getRandomElement();
-  const solution = b.value - a.value;
-  const affine = new Affine(1, a.value).toTree();
-  const tree = new EqualNode(affine, b.toTree());
+  const b = randint(-10, 11);
+  const a = randint(-10, 11, [0]);
+  const solution = b - a;
+  const affine = new Affine(1, a).toTree();
+  const tree = new EqualNode(affine, new NumberNode(b));
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
@@ -42,8 +41,13 @@ export function getEquationType1ExerciseQuestion(): Question {
       isRightAnswer: true,
       format: 'tex',
     });
-
-    for (let i = 0; i < n - 1; i++) {
+    res.push({
+      id: v4() + '',
+      statement: `x = ${b + a}`,
+      isRightAnswer: false,
+      format: 'tex',
+    });
+    for (let i = 0; i < n - 2; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 
