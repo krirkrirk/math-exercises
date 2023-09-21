@@ -30,7 +30,4 @@ const getAllMathExercisesBySection = () => {
   return data;
 };
 
-const complex = new Complex(-1, 4);
-const complex2 = new Complex(-5, 3);
-console.log(simplifyComplex(new MultiplyNode(complex.toTree(), complex2.toTree())).toTex());
 export { allMathExercises, getAllMathExercisesBySection };
