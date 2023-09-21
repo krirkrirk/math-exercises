@@ -150,6 +150,8 @@ import { variationsFromAlgebricForm } from './functions/trinoms/variationsFromAl
 import { mutiplyComplex } from './complex/mutiplyComplex';
 import { reAndIm } from './complex/reAndIm';
 import { addComplex } from './complex/addComplex';
+import { divideComplex } from './complex/divideCompex';
+import { linearCombinaisonComplex } from './complex/linearCombinaisonComplex';
 
 export const exercises = [
   /**
@@ -354,4 +356,6 @@ export const exercises = [
   mutiplyComplex,
   reAndIm,
   addComplex,
+  divideComplex,
+  linearCombinaisonComplex,
 ];
