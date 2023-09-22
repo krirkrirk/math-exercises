@@ -5,19 +5,19 @@ import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const medianList: Exercise = {
-  id: 'medianList',
+export const medianWithList: Exercise = {
+  id: 'medianWithList',
   connector: '=',
   instruction: '',
   label: "Calcul de la médiane d'une liste de valeurs",
   levels: ['3ème', '2nde'],
   isSingleStep: false,
   sections: ['Statistiques'],
-  generator: (nb: number) => getDistinctQuestions(getMedian, nb),
+  generator: (nb: number) => getDistinctQuestions(getMedianList, nb),
   keys: ['f', 'cap', 'underscore'],
 };
 
-export function getMedian(): Question {
+export function getMedianList(): Question {
   let randomValeurs: number[] = [];
   const length = randint(6, 10);
 

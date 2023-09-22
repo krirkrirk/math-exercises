@@ -1,11 +1,6 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Complex, ComplexConstructor } from '#root/math/complex/complex';
-import { randint } from '#root/math/utils/random/randint';
-import { ComplexNode } from '#root/tree/nodes/complex/complexNode';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
-import { simplifyComplex } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
@@ -22,9 +17,12 @@ export const mutiplyComplex: Exercise = {
 
 export function getMutiplyComplexQuestion(): Question {
   const z1 = ComplexConstructor.random();
-  const z2 = ComplexConstructor.random();
+  let z2: Complex;
+  do {
+    z2 = ComplexConstructor.random();
+  } while (z1.im === 0 && z2.im === 0);
 
-  const answer = simplifyComplex(new MultiplyNode(z1.toTree(), z2.toTree())) as ComplexNode;
+  const answer = z1.multiply(z2).toTree();
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
@@ -71,6 +69,7 @@ export function getMutiplyComplexQuestion(): Question {
     keys: ['i', 'z', 'quote'],
     getPropositions,
     answerFormat: 'tex',
+    startStatement: "z\\times z'",
   };
 
   return question;

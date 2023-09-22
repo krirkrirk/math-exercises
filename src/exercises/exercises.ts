@@ -117,10 +117,7 @@ import { logEquation } from './calculLitteral/equation/logEquation';
 import { expEquation } from './calculLitteral/equation/expEquation';
 import { expSimplifiying } from './calculLitteral/simplifying/expSimplifiying';
 import { logSimplifiying } from './calculLitteral/simplifying/logSimplifiying';
-import { frequencyTable } from '#root/exercises/probaStat/frequencyTable';
-import { median } from '#root/exercises/probaStat/median';
 import { quartiles } from '#root/exercises/probaStat/quartiles';
-import { medianList } from '#root/exercises/probaStat/medianList';
 import { quartilesList } from '#root/exercises/probaStat/quartilesList';
 import { euclideanDivision } from '#root/exercises/calcul/arithmetics/euclideanDivision';
 import { thirdDegreeFunctionVariation } from '#root/exercises/derivation/derivative/thirdDegreeFunctionVariation';
@@ -150,6 +147,14 @@ import { variationsFromAlgebricForm } from './functions/trinoms/variationsFromAl
 import { mutiplyComplex } from './complex/mutiplyComplex';
 import { reAndIm } from './complex/reAndIm';
 import { addComplex } from './complex/addComplex';
+import { averageWithTable } from './probaStat/averageWithTable';
+import { medianWithList } from './probaStat/medianList';
+import { medianWithTable } from './probaStat/median';
+import { conjugateComplex } from './complex/conjugateComplex.ts';
+import { conjugateMultiplyComplex } from './complex/conjugateMultiplyComplex';
+import { inverseComplex } from './complex/inverseComplex';
+import { divideComplex } from './complex/divideComplex';
+import { conjugateDivideComplex } from './complex/conjugateDivideComplex';
 
 export const exercises = [
   /**
@@ -324,11 +329,7 @@ export const exercises = [
   logSimplifiying,
   imageFunctionGeogebra,
   inverseImageFunctionGeogebra,
-  frequencyTable,
-  median,
-  quartiles,
-  medianList,
-  quartilesList,
+
   euclideanDivision,
   signFunction,
   thirdDegreeFunctionVariation,
@@ -342,6 +343,13 @@ export const exercises = [
   exponentialDifferentialEquation,
   exponentialDifferentialEquationWithIC,
 
+  /**Stats */
+  averageWithTable,
+  medianWithList,
+  quartiles,
+  medianWithTable,
+  quartilesList,
+
   /**Trinomes */
   alphaBetaInCanonicalForm,
   canonicalFromDevForm,
@@ -354,4 +362,9 @@ export const exercises = [
   mutiplyComplex,
   reAndIm,
   addComplex,
+  conjugateComplex,
+  conjugateMultiplyComplex,
+  inverseComplex,
+  divideComplex,
+  conjugateDivideComplex,
 ];

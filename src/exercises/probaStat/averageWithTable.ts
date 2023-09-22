@@ -5,19 +5,19 @@ import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const frequencyTable: Exercise = {
-  id: 'frequencyTable',
+export const averageWithTable: Exercise = {
+  id: 'averageWithTable',
   connector: '=',
   instruction: '',
-  label: "Calcul de la moyenne d'une série de valeurs",
+  label: "Calcul de la moyenne d'un tableau d'effectifs",
   levels: ['3ème', '2nde'],
   isSingleStep: false,
   sections: ['Statistiques'],
-  generator: (nb: number) => getDistinctQuestions(getFrequencyTable, nb),
+  generator: (nb: number) => getDistinctQuestions(getAverageWithTableQuestion, nb),
   keys: [],
 };
 
-export function getFrequencyTable(): Question {
+export function getAverageWithTableQuestion(): Question {
   const getRandomUniqueValues = (count: number, min: number, max: number): number[] => {
     const uniqueValues: Set<number> = new Set();
 

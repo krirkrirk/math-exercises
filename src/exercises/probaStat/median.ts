@@ -4,19 +4,19 @@ import { Exercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const median: Exercise = {
-  id: 'median',
+export const medianWithTable: Exercise = {
+  id: 'medianWithTable',
   connector: '=',
   instruction: '',
-  label: "Calcul de la moyenne d'une série de valeurs",
+  label: "Calcul de la médiane d'un tableau d'effectifs",
   levels: ['3ème', '2nde'],
   isSingleStep: false,
   sections: ['Statistiques'],
-  generator: (nb: number) => getDistinctQuestions(getMedian, nb),
+  generator: (nb: number) => getDistinctQuestions(getMedianWithTable, nb),
   keys: [],
 };
 
-export function getMedian(): Question {
+export function getMedianWithTable(): Question {
   const getRandomUniqueValues = (count: number, min: number, max: number): number[] => {
     const uniqueValues: Set<number> = new Set();
 

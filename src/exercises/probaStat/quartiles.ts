@@ -9,7 +9,7 @@ export const quartiles: Exercise = {
   id: 'quartiles',
   connector: '=',
   instruction: '',
-  label: "Calcul des quartiles d'une série de valeurs",
+  label: "Calcul des quartiles d'un tableau d'effectifs",
   levels: ['3ème', '2nde'],
   isSingleStep: false,
   sections: ['Statistiques'],

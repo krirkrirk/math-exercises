@@ -1,45 +1,44 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Complex, ComplexConstructor } from '#root/math/complex/complex';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
-import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
-import { simplifyComplex } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const addComplex: Exercise = {
-  id: 'addComplex',
+export const conjugateMultiplyComplex: Exercise = {
+  id: 'conjugateMultiplyComplex',
   connector: '=',
   instruction: '',
-  label: 'Additionner deux nombres complexes',
+  label: "Conjugué d'un produit de nombres complexes",
   levels: ['MathExp'],
   isSingleStep: true,
   sections: ['Nombres complexes'],
-  generator: (nb: number) => getDistinctQuestions(getAddComplexQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getConjugateMultiplyComplexQuestion, nb),
 };
 
-export function getAddComplexQuestion(): Question {
+export function getConjugateMultiplyComplexQuestion(): Question {
   const z1 = ComplexConstructor.random();
   let z2: Complex;
   do {
     z2 = ComplexConstructor.random();
   } while (z1.im === 0 && z2.im === 0);
 
-  const answer = simplifyComplex(new AddNode(z1.toTree(), z2.toTree()));
+  const prod = z1.multiply(z2);
+  const conj = prod.conjugate();
+  const answer = conj.toTree();
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
     res.push({
-      id: v4() + '',
+      id: v4(),
       statement: answer.toTex(),
       isRightAnswer: true,
       format: 'tex',
     });
+
     res.push({
       id: v4(),
-      statement: simplifyComplex(new SubstractNode(z1.toTree(), z2.toTree())).toTex(),
-      isRightAnswer: false,
+      statement: prod.toTree().toTex(),
+      isRightAnswer: true,
       format: 'tex',
     });
 
@@ -51,7 +50,7 @@ export function getAddComplexQuestion(): Question {
       do {
         const wrongAnswer = ComplexConstructor.random();
         proposition = {
-          id: v4() + '',
+          id: v4(),
           statement: wrongAnswer.toTree().toTex(),
           isRightAnswer: false,
           format: 'tex',
@@ -68,11 +67,11 @@ export function getAddComplexQuestion(): Question {
 
   const question: Question = {
     answer: answer.toTex(),
-    instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2.toTree().toTex()}$. Calculer $z + z'$.`,
+    instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2.toTree().toTex()}$. Calculer $\\overline{z\\times z'}$.`,
     keys: ['i', 'z', 'quote'],
     getPropositions,
     answerFormat: 'tex',
-    startStatement: "z+z'",
+    startStatement: "\\overline{z\\times z'}",
   };
 
   return question;

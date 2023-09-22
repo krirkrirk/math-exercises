@@ -24,6 +24,12 @@ export class MultiplyNode extends OperatorNode implements Node {
     let leftTex = this.leftChild.toTex();
     let rightTex = this.rightChild.toTex();
 
+    if (this.rightChild.type === NodeType.variable) {
+      if (leftTex === '1') {
+        return rightTex;
+      }
+    }
+
     if (this.leftChild.type === NodeType.operator) {
       if (
         [OperatorIds.add, OperatorIds.substract, OperatorIds.divide].includes(
