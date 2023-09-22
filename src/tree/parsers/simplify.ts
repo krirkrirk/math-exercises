@@ -75,6 +75,6 @@ const mathjsNodeToNode = (mathjsNode: MathjsNode): Node => {
         return new SinNode(mathjsNodeToNode(mathjsNode.args![0]));
     }
   }
-
+  console.log(mathjsNode);
   throw Error('unrecognized mathjs node');
 };

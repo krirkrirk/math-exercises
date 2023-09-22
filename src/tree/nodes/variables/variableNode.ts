@@ -6,7 +6,6 @@ export class VariableNode implements Node {
   type = NodeType.variable;
 
   constructor(name: string) {
-    if (name.length !== 1 || !name.match('[a-zA-Z]')) throw Error('variable must be a letter');
     this.name = name;
   }
 
@@ -17,7 +16,7 @@ export class VariableNode implements Node {
     return `${this.name}`;
   }
   toMathjs() {
-    return parse(this.name);
+    return this.name;
   }
   // simplify(): Node {
   //   return this;

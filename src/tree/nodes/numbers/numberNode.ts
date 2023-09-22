@@ -20,7 +20,7 @@ export class NumberNode implements Node {
     return `${this.tex}`;
   }
   toMathjs() {
-    return parse(this.toMathString());
+    return this.toMathString();
   }
   // simplify(): Node {
   //   return this;
