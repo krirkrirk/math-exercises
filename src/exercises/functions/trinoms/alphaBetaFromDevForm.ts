@@ -62,7 +62,7 @@ export function getAlphaBetaFromDevFormQuestion(): Question {
 
   const question: Question = {
     answer: answer,
-    keys: ['x', '\\alpha', '\\beta'],
+    keys: ['x', 'alpha', 'beta'],
     instruction: `Soit $f$ la fonction définie par $f(x) = ${trinom.toTree().toTex()}$. Que vaut $${param}$ ?`,
     getPropositions,
     answerFormat: 'tex',

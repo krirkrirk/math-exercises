@@ -89,7 +89,7 @@ export function getAlphaBetaInCanonicalFormQuestion(): Question {
       .getCanonicalForm()
       .toTex()}$. Que vaut $${param}$ ?`,
     answer: answer,
-    keys: ['x', '\\alpha', '\\beta'],
+    keys: ['x', 'alpha', 'beta'],
     getPropositions,
     answerFormat: 'tex',
     startStatement: param,
