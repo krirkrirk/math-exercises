@@ -77,7 +77,7 @@ export function getExtremumFromCanonicalFormQuestion(): Question {
     instruction: `Soit $f$ la fonction définie par $${trinom
       .getCanonicalForm()
       .toTex()}$. Quelles sont les coordonnées du sommet $S$ de la parabole représentative de $f$ ?`,
-    keys: ['S', '=', 'semicolon'],
+    keys: ['S', 'equal', 'semicolon'],
     getPropositions,
     answerFormat: 'tex',
   };
