@@ -68,7 +68,7 @@ export function getConjugateMultiplyComplexQuestion(): Question {
   const question: Question = {
     answer: answer.toTex(),
     instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2.toTree().toTex()}$. Calculer $\\overline{z\\times z'}$.`,
-    keys: ['i', 'z', 'quote'],
+    keys: ['i', 'z', 'overline', 'quote'],
     getPropositions,
     answerFormat: 'tex',
     startStatement: "\\overline{z\\times z'}",

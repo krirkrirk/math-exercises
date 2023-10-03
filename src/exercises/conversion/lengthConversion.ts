@@ -10,7 +10,7 @@ export const lengthConversion: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Conversion de longueurs',
-  levels: ['6ème', '5ème'],
+  levels: ['6ème', '5ème', 'CAP', '2ndPro'],
   sections: ['Conversions'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getLengthConversion, nb),

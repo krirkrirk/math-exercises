@@ -9,7 +9,7 @@ export const geometricFindReason: Exercise = {
   connector: '=',
   instruction: '',
   label: "Déterminer la raison d'une suite géométrique",
-  levels: ['1reESM', '1reSpé', '1reTech'],
+  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
   sections: ['Suites'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getGeometricFindReason, nb),

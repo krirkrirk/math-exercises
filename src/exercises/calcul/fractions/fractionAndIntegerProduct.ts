@@ -12,7 +12,7 @@ export const fractionAndIntegerProduct: Exercise = {
   connector: '=',
   instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
   label: "Produit d'un entier et d'une fraction",
-  levels: ['4ème', '3ème', '2nde'],
+  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
   isSingleStep: false,
   sections: ['Fractions'],
   generator: (nb: number) => getDistinctQuestions(getFractionAndIntegerProduct, nb),

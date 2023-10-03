@@ -9,7 +9,7 @@ export const proportionalityTable: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Calcul dans un tableau de proportionnalité',
-  levels: ['5ème', '4ème', '3ème'],
+  levels: ['5ème', '4ème', '3ème', 'CAP', '2ndPro', '1rePro'],
   isSingleStep: false,
   sections: ['Proportionnalité'],
   generator: (nb: number) => getDistinctQuestions(getProportionalityTable, nb),

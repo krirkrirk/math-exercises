@@ -10,7 +10,7 @@ export const inverseImageFunction: Exercise = {
   connector: '\\iff',
   instruction: '',
   label: 'Calculer des antécédents',
-  levels: ['3ème', '2nde'],
+  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
   sections: ['Fonctions'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getInverseImageFunction, nb),

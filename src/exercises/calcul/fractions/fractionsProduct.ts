@@ -10,7 +10,7 @@ export const fractionsProduct: Exercise = {
   connector: '=',
   instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
   label: 'Produits de fractions',
-  levels: ['4ème', '3ème', '2nde'],
+  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
   sections: ['Fractions'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionsProduct, nb),

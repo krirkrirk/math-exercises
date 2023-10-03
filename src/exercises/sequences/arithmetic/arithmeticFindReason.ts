@@ -9,7 +9,7 @@ export const arithmeticFindReason: Exercise = {
   connector: '=',
   instruction: '',
   label: "Déterminer la raison d'une suite arithmétique",
-  levels: ['1reESM', '1reSpé', '1reTech'],
+  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
   sections: ['Suites'],
   isSingleStep: false,
   keys: ['r', 'n', 'u', 'underscore'],

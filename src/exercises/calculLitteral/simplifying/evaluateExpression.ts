@@ -11,7 +11,7 @@ export const evaluateExpression: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Evaluer une expression',
-  levels: ['4ème', '3ème', '2nde'],
+  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro'],
   sections: ['Calcul littéral'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getEvaluateExpression, nb),

@@ -69,7 +69,7 @@ export function getConjugateComplexQuestion(): Question {
   const question: Question = {
     answer,
     instruction: `Déterminer le conjugué de $z=${complex.toTree().toTex()}$.`,
-    keys: ['i'],
+    keys: ['i', 'overline'],
     getPropositions,
     answerFormat: 'tex',
     startStatement: '\\overline z',

@@ -19,7 +19,7 @@ export const equationType2Exercise: Exercise = {
   connector: '\\iff',
   instruction: 'Résoudre : ',
   label: 'Équations $ax=b$',
-  levels: ['4ème', '3ème', '2nde'],
+  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
   sections: ['Équations'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getEquationType2ExerciseQuestion, nb),

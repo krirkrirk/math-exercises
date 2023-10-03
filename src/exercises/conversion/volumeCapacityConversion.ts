@@ -11,7 +11,7 @@ export const volumeCapacityConversion: Exercise = {
   connector: '=',
   instruction: '',
   label: "Conversion d'un volume vers une contenance et vice versa",
-  levels: ['6ème', '5ème'],
+  levels: ['6ème', '5ème', 'CAP', '2ndPro'],
   sections: ['Conversions'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getVolumeCapacityConversion, nb),

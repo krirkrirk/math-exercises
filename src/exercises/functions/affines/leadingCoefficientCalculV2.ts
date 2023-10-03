@@ -12,7 +12,7 @@ export const leadingCoefficientCalculV2: Exercise = {
   connector: '=',
   instruction: '',
   label: "Coefficient directeur à l'aide de deux points",
-  levels: ['3ème', '2nde'],
+  levels: ['3ème', '2nde', '2ndPro', '1rePro', '1reTech'],
   isSingleStep: false,
   sections: ['Droites'],
   generator: (nb: number) => getDistinctQuestions(getLeadingCoefficientCalculV1Question, nb),

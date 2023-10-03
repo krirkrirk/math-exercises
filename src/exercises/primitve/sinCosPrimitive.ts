@@ -18,7 +18,7 @@ export const sinCosPrimitive: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Primitive de sin et cos',
-  levels: ['TermSpé'],
+  levels: ['TermSpé', 'MathComp'],
   sections: ['Primitives', 'Trigonométrie'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getSinCosPrimitive, nb),

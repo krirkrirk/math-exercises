@@ -12,7 +12,7 @@ export const usualPrimitives: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Primitives des fonctions de référence',
-  levels: ['TermSpé'],
+  levels: ['TermSpé', 'MathComp'],
   sections: ['Primitives'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getUsualPrimitives, nb),

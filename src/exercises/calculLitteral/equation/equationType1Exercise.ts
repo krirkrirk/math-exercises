@@ -18,7 +18,7 @@ export const equationType1Exercise: Exercise = {
   connector: '\\iff',
   instruction: 'Résoudre : ',
   label: 'Équations $x+a = b$',
-  levels: ['4ème', '3ème', '2nde'],
+  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
   sections: ['Équations'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getEquationType1ExerciseQuestion, nb),

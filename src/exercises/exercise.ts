@@ -1,3 +1,5 @@
+import { KeyId } from 'react-math-keyboard';
+
 export type GeneratorOptions = {};
 
 export type Proposition = {
@@ -12,7 +14,7 @@ export interface Question {
   answer: string;
   answerFormat: 'tex' | 'raw';
   questionType?: 'QCM' | 'free';
-  keys?: string[];
+  keys?: KeyId[];
   commands?: string[];
   coords?: number[];
   options?: any;
@@ -43,7 +45,11 @@ export type MathLevel =
   | 'TermSpé'
   | 'TermTech'
   | 'MathExp'
-  | 'MathComp';
+  | 'MathComp'
+  | 'CAP'
+  | '2ndPro'
+  | '1rePro'
+  | 'TermPro';
 
 export type MathSection =
   | 'Calcul littéral'
@@ -74,4 +80,5 @@ export type MathSection =
   | 'Équations différentielles'
   | 'Trigonométrie'
   | 'Second degré'
-  | 'Nombres complexes';
+  | 'Nombres complexes'
+  | 'Fonction inverse';

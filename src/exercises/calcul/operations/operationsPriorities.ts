@@ -22,7 +22,7 @@ export const operationsPriorities: Exercise = {
   connector: '=',
   instruction: 'Calculer :',
   label: 'Priorités opératoires',
-  levels: ['6ème', '5ème', '4ème'],
+  levels: ['5ème', '4ème'],
   sections: ['Calculs'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getPriorityQuestions, nb),

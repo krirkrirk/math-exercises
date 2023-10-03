@@ -14,7 +14,7 @@ export const doubleDistributivity: Exercise = {
   connector: '=',
   instruction: 'Développer et réduire :',
   label: 'Distributivité double',
-  levels: ['3ème', '2nde'],
+  levels: ['3ème', '2nde', '1reTech'],
   sections: ['Calcul littéral'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getDoubleDistributivityQuestion, nb),

@@ -14,7 +14,7 @@ export const probabilityTree: Exercise = {
   connector: '=',
   instruction: '',
   label: "Calculs de probabilités à l'aide d'un arbre pondéré",
-  levels: ['2nde', '1reESM', '1reSpé', '1reTech'],
+  levels: ['2nde', '1reESM', '1reSpé', '1reTech', '1rePro', 'TermPro', 'TermTech'],
   isSingleStep: false,
   sections: ['Probabilités'],
   generator: (nb: number) => getDistinctQuestions(getProbabilityTree, nb),

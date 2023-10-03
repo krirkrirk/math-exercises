@@ -19,7 +19,7 @@ export const polynomialPrimitive: Exercise = {
   connector: '=',
   instruction: '',
   label: "Primitive d'une fonction polynomiale",
-  levels: ['TermSpé'],
+  levels: ['TermSpé', 'MathComp'],
   sections: ['Primitives'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getPolynomialPrimitive, nb),

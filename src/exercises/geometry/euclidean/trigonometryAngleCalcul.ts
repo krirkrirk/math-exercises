@@ -78,7 +78,7 @@ export function getTrigonometryAngleCalcul(): Question {
       sideLengths[randSides[1]]
     }$ cm.$\\\\$ Calculer $\\widehat{${angle[randAngle]}}$ à 1° près.`,
     answer: answer + '°',
-    keys: [...vertices, 'equal', '°', 'cos', 'sin', 'tan', 'arccos', 'arcsin', 'arctan'],
+    keys: [...vertices, 'equal', 'degree', 'cos', 'sin', 'tan', 'arccos', 'arcsin', 'arctan'],
     commands: [...triangle.generateCommands({ highlightedAngle: angle[randAngle] })],
     coords: triangle.generateCoords(),
     getPropositions,
