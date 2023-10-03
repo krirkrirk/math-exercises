@@ -56,7 +56,7 @@ export function getCanonicalFromDevFormQuestion(): Question {
 
   const question: Question = {
     answer: trinom.getCanonicalForm().toTex(),
-    keys: ['x', '=', '\\alpha', '\\beta'],
+    keys: ['x', 'equal', 'alpha', 'beta'],
     instruction: `Déterminer la forme canonique de la fonction $f$ définie par $f(x) = ${trinom.toTree().toTex()}$`,
     getPropositions,
     answerFormat: 'tex',
