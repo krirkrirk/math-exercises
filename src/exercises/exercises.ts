@@ -155,6 +155,8 @@ import { conjugateMultiplyComplex } from './complex/conjugateMultiplyComplex';
 import { inverseComplex } from './complex/inverseComplex';
 import { divideComplex } from './complex/divideComplex';
 import { conjugateDivideComplex } from './complex/conjugateDivideComplex';
+import { firstIntegersSum } from './sequences/arithmetic/firstIntegersSum';
+import { geometricFirstTermsSum } from './sequences/geometric/geometricFirstTermsSum';
 
 export const exercises = [
   /**
@@ -252,7 +254,8 @@ export const exercises = [
   arithmeticReasonUsage,
   arithmeticRecurrenceFormulaUsage,
   arithmeticThresholdFind,
-
+  firstIntegersSum,
+  geometricFirstTermsSum,
   /**
    * islam
    */
