@@ -10,7 +10,7 @@ export const mentalPercentage: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Effectuer mentalement des calculs de pourcentages simples',
-  levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1reESM'],
+  levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro', 'TermPro'],
   sections: ['Pourcentages'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getMentalPercentage, nb),

@@ -9,7 +9,7 @@ export const constantPrimitive: Exercise = {
   connector: '=',
   instruction: '',
   label: "Primitive d'une constante",
-  levels: ['TermSpé'],
+  levels: ['TermSpé', 'MathComp'],
   sections: ['Primitives'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getConstantPrimitive, nb),

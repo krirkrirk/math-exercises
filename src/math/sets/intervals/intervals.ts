@@ -2,6 +2,7 @@ import { EPSILON } from '#root/math/numbers/epsilon';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { Nombre, NumberType } from '#root/math/numbers/nombre';
 import { Real } from '#root/math/numbers/reals/real';
+import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
 import { DiscreteSet } from '../discreteSet';
 import { MathSet } from '../mathSet';

@@ -13,7 +13,7 @@ export const equationSimpleSquare: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Résoudre une équation du second degré du type $x^2 = a$',
-  levels: ['2nde', '1reESM', '1reSpé'],
+  levels: ['2nde', '1reESM', '1reSpé', '1reTech'],
   sections: ['Équations'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getEquationSimpleSquare, nb),

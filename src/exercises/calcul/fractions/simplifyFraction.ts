@@ -9,7 +9,7 @@ export const simplifyFraction: Exercise = {
   connector: '=',
   instruction: 'Simplifier :',
   label: 'Simplification de fractions',
-  levels: ['4ème', '3ème', '2nde'],
+  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
   sections: ['Fractions'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getSimplifyFraction, nb),

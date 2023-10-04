@@ -9,7 +9,7 @@ export const constanteDerivative: Exercise = {
   connector: '=',
   instruction: '',
   label: "Dérivée d'une constante",
-  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp'],
+  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp', '1rePro'],
   sections: ['Dérivation'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getConstanteDerivative, nb),

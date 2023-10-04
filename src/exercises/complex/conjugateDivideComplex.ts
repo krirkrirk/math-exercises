@@ -64,7 +64,7 @@ export function getConjugateDivideComplexQuestion(): Question {
     instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2
       .toTree()
       .toTex()}$. Calculer le conjugué de $\\frac{z}{z'}$.`,
-    keys: ['i', 'z', 'quote'],
+    keys: ['i', 'z', 'overline', "'"],
     getPropositions,
     answerFormat: 'tex',
     startStatement: "\\overline{\\frac{z}{z'}}",

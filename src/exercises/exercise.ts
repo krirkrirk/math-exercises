@@ -1,3 +1,5 @@
+import { KeyId } from 'react-math-keyboard';
+
 export type GeneratorOptions = {};
 
 export type Proposition = {
@@ -12,7 +14,7 @@ export interface Question {
   answer: string;
   answerFormat: 'tex' | 'raw';
   questionType?: 'QCM' | 'free';
-  keys?: string[];
+  keys?: KeyId[];
   commands?: string[];
   coords?: number[];
   options?: any;
@@ -43,35 +45,44 @@ export type MathLevel =
   | 'TermSpé'
   | 'TermTech'
   | 'MathExp'
-  | 'MathComp';
+  | 'MathComp'
+  | 'CAP'
+  | '2ndPro'
+  | '1rePro'
+  | 'TermPro';
 
 export type MathSection =
-  | 'Calcul littéral'
-  | 'Équations'
-  | 'Racines carrées'
-  | 'Fractions'
-  | 'Calculs'
-  | 'Géométrie cartésienne'
-  | 'Vecteurs'
-  | 'Puissances'
-  | 'Suites'
-  | 'Pourcentages'
-  | 'Dérivation'
-  | 'Probabilités'
-  | 'Droites'
-  | 'Géométrie euclidienne'
-  | 'Conversions'
   | 'Arithmétique'
-  | 'Fonctions affines'
-  | 'Proportionnalité'
-  | 'Logarithme népérien'
-  | 'Exponentielle'
-  | 'Fonctions'
-  | 'Statistiques'
-  | 'Limites'
-  | 'Intégration'
-  | 'Primitives'
+  | 'Calcul littéral'
+  | 'Calculs'
+  | 'Conversions'
+  | 'Dérivation'
+  | 'Droites'
+  | 'Équations'
   | 'Équations différentielles'
-  | 'Trigonométrie'
+  | 'Exponentielle'
+  | 'Fonction cube'
+  | 'Fonction inverse'
+  | 'Fonctions'
+  | 'Fonctions affines'
+  | 'Fonctions de référence'
+  | 'Fractions'
+  | 'Géométrie cartésienne'
+  | 'Géométrie euclidienne'
+  | 'Inéquations'
+  | 'Intégration'
+  | 'Intervalles'
+  | 'Limites'
+  | 'Logarithme népérien'
+  | 'Nombres complexes'
+  | 'Pourcentages'
+  | 'Primitives'
+  | 'Probabilités'
+  | 'Proportionnalité'
+  | 'Puissances'
+  | 'Racines carrées'
   | 'Second degré'
-  | 'Nombres complexes';
+  | 'Statistiques'
+  | 'Suites'
+  | 'Trigonométrie'
+  | 'Vecteurs';

@@ -10,7 +10,7 @@ export const medianWithList: Exercise = {
   connector: '=',
   instruction: '',
   label: "Calcul de la médiane d'une liste de valeurs",
-  levels: ['3ème', '2nde'],
+  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
   isSingleStep: false,
   sections: ['Statistiques'],
   generator: (nb: number) => getDistinctQuestions(getMedianList, nb),

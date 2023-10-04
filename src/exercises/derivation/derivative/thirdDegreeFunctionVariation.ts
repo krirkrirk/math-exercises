@@ -11,7 +11,7 @@ export const thirdDegreeFunctionVariation: Exercise = {
   connector: '=',
   instruction: '',
   label: "Lecture du signe de la dérivée via les variations d'une fonction",
-  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp'],
+  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp', '1rePro', 'TermPro', 'TermTech'],
   sections: ['Dérivation'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getThirdDegreeFunctionVariation, nb),

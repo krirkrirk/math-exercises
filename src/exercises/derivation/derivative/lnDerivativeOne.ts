@@ -13,7 +13,7 @@ export const lnDerivativeOne: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Dérivée de $\\ln(ax + b)$',
-  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp'],
+  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp', 'TermSpé'],
   sections: ['Dérivation', 'Logarithme népérien'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getLnDerivative, nb),

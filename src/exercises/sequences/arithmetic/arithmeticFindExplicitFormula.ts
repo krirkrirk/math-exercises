@@ -10,7 +10,7 @@ export const arithmeticFindExplicitFormula: Exercise = {
   connector: '=',
   instruction: '',
   label: "Déterminer la formule générale d'une suite arithmétique",
-  levels: ['1reESM', '1reSpé', '1reTech'],
+  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
   sections: ['Suites'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getArithmeticFindExplicitFormula, nb),

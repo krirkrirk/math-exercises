@@ -17,7 +17,7 @@ export const lnDerivativeThree: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Dérivée de $\\ln(x) \\times (ax+b)$',
-  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp'],
+  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp', 'TermSpé'],
   sections: ['Dérivation', 'Logarithme népérien'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getLnDerivative, nb),

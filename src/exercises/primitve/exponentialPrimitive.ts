@@ -20,7 +20,7 @@ export const exponentialPrimitive: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Primitive de la fonction exponentielle',
-  levels: ['TermSpé'],
+  levels: ['TermSpé', 'MathComp'],
   sections: ['Primitives', 'Exponentielle'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExponentialPrimitive, nb),

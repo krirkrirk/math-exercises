@@ -10,7 +10,7 @@ export const secondDegreeDerivative: Exercise = {
   connector: '=',
   instruction: '',
   label: "Dérivée d'un polynôme de degré 2",
-  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp'],
+  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp', '1rePro', 'TermPro', 'TermTech'],
   sections: ['Dérivation'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getSecondDegreeDerivative, nb),

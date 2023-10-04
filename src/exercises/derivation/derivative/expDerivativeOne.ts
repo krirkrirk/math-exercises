@@ -14,7 +14,7 @@ export const expDerivativeOne: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Dérivée de $\\exp(ax + b)$',
-  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp'],
+  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp', 'TermSpé'],
   sections: ['Dérivation', 'Exponentielle'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExpDerivative, nb),

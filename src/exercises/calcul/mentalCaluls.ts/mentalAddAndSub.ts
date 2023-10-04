@@ -13,7 +13,7 @@ export const mentalAddAndSub: Exercise = {
   connector: '=',
   instruction: 'Calculer.',
   label: 'Effectuer mentalement des additions et des soustractions simples',
-  levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1reESM'],
+  levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro'],
   sections: ['Calculs'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getMentalAddAndSub, nb),

@@ -10,7 +10,7 @@ export const aeraConversion: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Conversion des aires',
-  levels: ['6ème', '5ème'],
+  levels: ['6ème', '5ème', 'CAP', '2ndPro'],
   sections: ['Conversions'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getAeraConversion, nb),

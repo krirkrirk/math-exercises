@@ -12,7 +12,7 @@ export const inverseImageFunctionGeogebra: Exercise = {
   connector: '\\iff',
   instruction: '',
   label: "Lecture d'antécédents",
-  levels: ['3ème', '2nde'],
+  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
   sections: ['Fonctions'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getInverseImageFunctionGeogebra, nb),

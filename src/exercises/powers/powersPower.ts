@@ -16,7 +16,7 @@ export const powersOfTenPower: Exercise = {
   connector: '=',
   instruction: 'Calculer :',
   label: "Puissance d'une puissance de 10 ",
-  levels: ['4ème', '3ème', '2nde'],
+  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1reESM', '1rePro', '1reSpé', '1reTech', 'TermPro', 'TermTech'],
   sections: ['Puissances'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(() => getPowersPowerQuestion(true), nb),

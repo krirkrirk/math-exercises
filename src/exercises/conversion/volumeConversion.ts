@@ -10,7 +10,7 @@ export const volumeConversion: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Conversion de volumes',
-  levels: ['6ème', '5ème'],
+  levels: ['6ème', '5ème', 'CAP', '2ndPro'],
   sections: ['Conversions'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getVolumeConversion, nb),

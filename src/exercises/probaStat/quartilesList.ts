@@ -9,7 +9,7 @@ export const quartilesList: Exercise = {
   connector: '=',
   instruction: '',
   label: "Calcul des quartiles d'une liste",
-  levels: ['3ème', '2nde'],
+  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
   isSingleStep: false,
   sections: ['Statistiques'],
   generator: (nb: number) => getDistinctQuestions(getQuartiles, nb),

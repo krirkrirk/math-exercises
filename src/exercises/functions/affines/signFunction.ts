@@ -13,7 +13,7 @@ export const signFunction: Exercise = {
   connector: '=',
   instruction: '',
   label: "Signe d'une fonction affine",
-  levels: ['3ème', '2nde'],
+  levels: ['3ème', '2nde', '2ndPro', '1rePro', '1reTech'],
   sections: ['Fonctions affines'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getSignFunction, nb),

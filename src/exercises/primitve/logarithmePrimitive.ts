@@ -14,7 +14,7 @@ export const logarithmePrimitive: Exercise = {
   connector: '=',
   instruction: '',
   label: 'Primitive de la fonction logarithme',
-  levels: ['TermSpé'],
+  levels: ['TermSpé', 'MathComp'],
   sections: ['Primitives', 'Logarithme népérien'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getLogarithmePrimitive, nb),

@@ -11,7 +11,7 @@ export const applyPercent: Exercise = {
   connector: '=',
   instruction: '',
   label: "Appliquer un pourcentage d'augmentation ou de diminution.",
-  levels: ['4ème', '3ème', '2nde'],
+  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', 'TermPro', '1reTech', 'TermTech'],
   sections: ['Pourcentages'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getApplyPercentQuestion, nb),

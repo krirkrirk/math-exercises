@@ -10,7 +10,7 @@ export const arithmeticThresholdFind: Exercise = {
   connector: '=',
   instruction: '',
   label: "Calculer un seuil à l'aide d'une suite arithmétique",
-  levels: ['1reESM', '1reSpé', '1reTech'],
+  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
   sections: ['Suites'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getArithmeticThresholdFind, nb),

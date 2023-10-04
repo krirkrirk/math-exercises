@@ -12,7 +12,7 @@ export const reduceExpression: Exercise = {
   instruction: "Réduire l'expression suivante :",
   isSingleStep: false,
   label: 'Réduire une expression',
-  levels: ['4ème', '3ème', '2nde'],
+  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro'],
   sections: ['Calcul littéral'],
   generator: (nb: number) => getDistinctQuestions(getReduceExpression, nb),
   keys: ['x'],
