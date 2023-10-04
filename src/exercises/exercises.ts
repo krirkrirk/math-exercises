@@ -157,6 +157,14 @@ import { divideComplex } from './complex/divideComplex';
 import { conjugateDivideComplex } from './complex/conjugateDivideComplex';
 import { firstIntegersSum } from './sequences/arithmetic/firstIntegersSum';
 import { geometricFirstTermsSum } from './sequences/geometric/geometricFirstTermsSum';
+import { squareRootEquation } from './squareRoots/squareRootEquation';
+import { cubicEquation } from './functions/cube/cubicEquation';
+import { determinant } from './geometry/vectors/determinant';
+import { firstDegreeInequationsType1 } from './calculLitteral/inequations/firstDegreeInequationsType1';
+import { firstDegreeInequationsType2 } from './calculLitteral/inequations/firstDegreeInequationsType2';
+import { firstDegreeInequationsType3 } from './calculLitteral/inequations/firstDegreeInequationsType3';
+import { firstDegreeInequationsType0 } from './calculLitteral/inequations/firstDegreeInequationsType0';
+import { chasles } from './geometry/vectors/chasles';
 
 export const exercises = [
   /**
@@ -184,9 +192,17 @@ export const exercises = [
   equationSimpleSquare,
 
   /**
+   * inequations
+   */
+  firstDegreeInequationsType0,
+  firstDegreeInequationsType1,
+  firstDegreeInequationsType2,
+  firstDegreeInequationsType3,
+  /**
    * square roots
    */
   simplifySquareRoot,
+  squareRootEquation,
 
   /**
    * fractions
@@ -217,17 +233,35 @@ export const exercises = [
   allRoundings,
 
   /**
+   * pourcentages
+   */
+  applyPercent,
+  globalPercent,
+  reciprocalPercentage,
+  averageEvolutionRate,
+
+  /**
    * geometry
    */
   midpoint,
   mainRemarkableValuesExercise,
   remarkableValuesExercise,
+  thales,
+  thalesCalcul,
+  pythagore,
+  pythagoreCalcul,
+  trigonometry,
+  trigonometryAngleCalcul,
+  trigonometrySideCalcul,
+  rightTriangleArea,
+  triangleArea,
 
   /**
    * vectors
    */
   scalarProductViaCoords,
-
+  determinant,
+  chasles,
   /**
    * puissances
    */
@@ -256,13 +290,19 @@ export const exercises = [
   arithmeticThresholdFind,
   firstIntegersSum,
   geometricFirstTermsSum,
+
   /**
-   * islam
+   * fonctions
    */
-  applyPercent,
-  globalPercent,
-  reciprocalPercentage,
-  averageEvolutionRate,
+  cubicEquation,
+  imageFunction,
+  inverseImageFunction,
+  imageFunctionGeogebra,
+  inverseImageFunctionGeogebra,
+
+  /**
+   * derivation
+   */
   usualDerivative,
   constanteDerivative,
   firstDegreeDerivative,
@@ -271,25 +311,41 @@ export const exercises = [
   inverseFunctionDerivative,
   rootFunctionDerivative,
   powerFunctionDerivative,
-  conditionalProbability,
-  leadingCoefficient,
   derivativeNumberReading,
+  lnDerivativeOne,
+  lnDerivativeTwo,
+  lnDerivativeThree,
+  expDerivativeOne,
+  expDerivativeTwo,
+  expDerivativeThree,
+
+  /**
+   * primitive
+   */
+  constantPrimitive,
+  polynomialPrimitive,
+  sinCosPrimitive,
+  exponentialPrimitive,
+  logarithmePrimitive,
+  usualPrimitives,
+
+  /**
+   * probabilités
+   */
   probabilityTree,
+  conditionalProbability,
+
+  /**
+   * islam
+   */
+
+  leadingCoefficient,
   fractionToPercentToDecimal,
   marginalAndConditionalFrequency,
   mentalAddAndSub,
   mentalMultiplications,
   mentalDivisions,
   mentalPercentage,
-  thales,
-  thalesCalcul,
-  pythagore,
-  pythagoreCalcul,
-  trigonometry,
-  trigonometryAngleCalcul,
-  trigonometrySideCalcul,
-  rightTriangleArea,
-  triangleArea,
 
   /**
    * nv generateurs
@@ -318,31 +374,16 @@ export const exercises = [
   reduceExpression,
   evaluateExpression,
   proportionalityTable,
-  imageFunction,
-  inverseImageFunction,
-  lnDerivativeOne,
-  lnDerivativeTwo,
-  lnDerivativeThree,
-  expDerivativeOne,
-  expDerivativeTwo,
-  expDerivativeThree,
+
   logEquation,
   expEquation,
   expSimplifiying,
   logSimplifiying,
-  imageFunctionGeogebra,
-  inverseImageFunctionGeogebra,
 
   euclideanDivision,
   signFunction,
   thirdDegreeFunctionVariation,
   polynomeLimit,
-  constantPrimitive,
-  polynomialPrimitive,
-  sinCosPrimitive,
-  exponentialPrimitive,
-  logarithmePrimitive,
-  usualPrimitives,
   exponentialDifferentialEquation,
   exponentialDifferentialEquationWithIC,
 
