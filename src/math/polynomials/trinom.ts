@@ -1,3 +1,4 @@
+import { SqrtNode } from '#root/tree/nodes/functions/sqrtNode';
 import { Node } from '#root/tree/nodes/node';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
@@ -10,6 +11,8 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { Point } from '../geometry/point';
 import { Integer } from '../numbers/integer/integer';
 import { Nombre } from '../numbers/nombre';
+import { Rational } from '../numbers/rationals/rational';
+import { SquareRoot } from '../numbers/reals/squareRoot';
 import { DiscreteSet } from '../sets/discreteSet';
 import { Interval } from '../sets/intervals/intervals';
 import { MathSet } from '../sets/mathSet';
@@ -39,6 +42,17 @@ export abstract class TrinomConstructor {
     const c = a.value * alpha.value ** 2 + beta.value;
     return new Trinom(a.value, b, c);
   }
+  static randomFactorized(
+    domainA: MathSet = new Interval('[[-10; 10]]').difference(new DiscreteSet([new Integer(0)])),
+    domainX1: MathSet = new Interval('[[-10; 10]]'),
+    domainX2: MathSet = new Interval('[[-10; 10]]'),
+  ): Trinom {
+    const a = domainA.getRandomElement();
+    const x1 = domainX1.getRandomElement();
+    const x2 = domainX2.getRandomElement();
+    //a*x^2 + ax*-x2 + a*-x1*x + a*-x1*-x2
+    return new Trinom(a.value, -a.value * (x1.value + x2.value), a.value * x1.value * x2.value);
+  }
 }
 
 export class Trinom extends Polynomial {
@@ -61,6 +75,41 @@ export class Trinom extends Polynomial {
     return new NumberNode(this.getDelta());
   }
 
+  getRoots() {
+    const delta = this.getDelta();
+    if (delta < 0) return [];
+    if (delta === 0) return [-this.b / (2 * this.a)];
+    return [(-this.b - Math.sqrt(delta)) / (2 * this.a), (-this.b + Math.sqrt(delta)) / (2 * this.a)];
+  }
+
+  //! la simplification de mathjs est foireuse, exemple (4+4sqrt(3))/16 est simplifiée mais pas (4-4sqrt(3))/16 ??
+  getRootsNode(): Node[] {
+    const delta = this.getDelta();
+    if (delta < 0) return [];
+    if (delta === 0) return [new Rational(-this.b, 2 * this.a).simplify().toTree()];
+    return [
+      simplifyNode(
+        new FractionNode(
+          new SubstractNode(new NumberNode(-this.b), new SquareRoot(delta).simplify().toTree()),
+          new NumberNode(2 * this.a),
+        ),
+      ),
+      simplifyNode(
+        new FractionNode(
+          new AddNode(new NumberNode(-this.b), new SquareRoot(delta).simplify().toTree()),
+          new NumberNode(2 * this.a),
+        ),
+      ),
+    ];
+  }
+
+  getRootsEquationSolutionTex() {
+    const roots = this.getRootsNode();
+    if (!roots.length) return `S = \\emptyset`;
+    if (roots.length === 1) return `S = \\left\\lbrace ${roots[0].toTex()} \\right\\rbrace`;
+    return `S = \\left\\lbrace ${roots[0].toTex()} ; ${roots[1].toTex()} \\right\\rbrace`;
+  }
+
   getAlpha() {
     return -this.b / (2 * this.a);
   }
@@ -74,6 +123,27 @@ export class Trinom extends Polynomial {
 
   getBetaNode(): Node {
     return simplifyNode(new FractionNode(new NumberNode(-this.getDelta()), new NumberNode(4 * this.a)));
+  }
+
+  getFactorizedForm(): Node {
+    const roots = this.getRootsNode();
+    if (!roots.length) return this.toTree();
+    if (roots.length === 1)
+      return simplifyNode(
+        new MultiplyNode(
+          new NumberNode(this.a),
+          new PowerNode(new SubstractNode(new VariableNode('x'), roots[0]), new NumberNode(2)),
+        ),
+      );
+    return simplifyNode(
+      new MultiplyNode(
+        new NumberNode(this.a),
+        new MultiplyNode(
+          new SubstractNode(new VariableNode('x'), roots[0]),
+          new SubstractNode(new VariableNode('x'), roots[1]),
+        ),
+      ),
+    );
   }
 
   getCanonicalForm(): Node {

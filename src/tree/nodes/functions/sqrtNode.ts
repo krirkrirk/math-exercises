@@ -8,7 +8,7 @@ export class SqrtNode extends FunctionNode implements Node {
     super(FunctionsIds.sqrt, child, '\\sqrt');
   }
   toMathString(): string {
-    return `sqrt(${this.child.toMathString()})`;
+    return `sqr(${this.child.toMathString()})`;
   }
   toMathjs() {
     return sqrt(this.child.toMathjs());

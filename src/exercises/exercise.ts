@@ -31,6 +31,7 @@ export interface Exercise {
   connector?: '=' | '\\iff' | '\\approx';
   keys?: string[];
   generator(nb: number, options?: GeneratorOptions): Question[];
+  answerType?: 'QCM' | 'free';
 }
 
 export type MathLevel =

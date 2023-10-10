@@ -2,6 +2,7 @@ import { unaryMinus } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from '../operators/operatorNode';
 import { FunctionNode, FunctionsIds } from './functionNode';
+import { NumberNode } from '../numbers/numberNode';
 
 export class OppositeNode extends FunctionNode implements Node {
   constructor(child: Node) {
@@ -16,6 +17,9 @@ export class OppositeNode extends FunctionNode implements Node {
     if (this.child.type === NodeType.operator) {
       const operatorChild = this.child as unknown as OperatorNode;
       needBrackets ||= [OperatorIds.add, OperatorIds.substract].includes(operatorChild.id);
+    }
+    if (this.child.type === NodeType.number && childTex[0] === '-') {
+      return childTex.substring(1);
     }
     if (needBrackets) childTex = `(${childTex})`;
     return `-${childTex}`;

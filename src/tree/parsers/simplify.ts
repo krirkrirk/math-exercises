@@ -63,6 +63,9 @@ const mathjsNodeToNode = (mathjsNode: MathjsNode): Node => {
   } else if (mathjsNode.isFunctionNode) {
     const fn = mathjsNode.fn as MathjsNode;
     switch (fn.name) {
+      //mathjs arrondit les racines carrées, on truc avec sqr pour bypass
+      case 'sqr':
+        return new SqrtNode(mathjsNodeToNode(mathjsNode.args![0]));
       case 'sqrt':
         return new SqrtNode(mathjsNodeToNode(mathjsNode.args![0]));
       case 'log':

@@ -165,6 +165,9 @@ import { firstDegreeInequationsType2 } from './calculLitteral/inequations/firstD
 import { firstDegreeInequationsType3 } from './calculLitteral/inequations/firstDegreeInequationsType3';
 import { firstDegreeInequationsType0 } from './calculLitteral/inequations/firstDegreeInequationsType0';
 import { chasles } from './geometry/vectors/chasles';
+import { deltaTrinom } from './functions/trinoms/deltaTrinom';
+import { rootsFromFactorizedForm } from './functions/trinoms/rootsFromFactorizedForm';
+import { rootsFromDevForm } from './functions/trinoms/rootsFromDevForm';
 
 export const exercises = [
   /**
@@ -401,6 +404,9 @@ export const exercises = [
   extremumFromCanonicalForm,
   extremumTypeFromAlgebricForm,
   variationsFromAlgebricForm,
+  // deltaTrinom,
+  rootsFromFactorizedForm,
+  rootsFromDevForm,
 
   /**Complexes */
   mutiplyComplex,

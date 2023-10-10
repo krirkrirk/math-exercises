@@ -13,6 +13,7 @@ export const extremumTypeFromAlgebricForm: Exercise = {
   isSingleStep: true,
   sections: ['Second degré'],
   generator: (nb: number) => getDistinctQuestions(getExtremumTypeFromAlgebricFormQuestion, nb),
+  answerType: 'QCM',
 };
 
 export function getExtremumTypeFromAlgebricFormQuestion(): Question {
