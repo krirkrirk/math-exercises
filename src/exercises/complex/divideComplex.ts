@@ -62,6 +62,8 @@ export function getDivideComplexQuestion(): Question {
     keys: ['i', 'z', 'quote'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
     startStatement: "\\frac{z}{z'}",
   };
 

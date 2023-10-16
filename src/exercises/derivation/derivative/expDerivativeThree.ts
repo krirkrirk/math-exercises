@@ -71,6 +71,8 @@ export function getExpDerivativeThree(): Question {
     keys: ['exp'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

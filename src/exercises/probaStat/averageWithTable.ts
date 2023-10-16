@@ -84,6 +84,8 @@ Calculer la moyenne de cette série de valeurs.`,
     keys: [],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

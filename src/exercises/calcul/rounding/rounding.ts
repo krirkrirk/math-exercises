@@ -150,6 +150,8 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
   return question;
 }

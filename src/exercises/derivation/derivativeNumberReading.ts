@@ -92,6 +92,8 @@ export function getDerivativeNumberReading(): Question {
     coords: [xA - 5, xA + 5, yA - 5, yA + 5],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

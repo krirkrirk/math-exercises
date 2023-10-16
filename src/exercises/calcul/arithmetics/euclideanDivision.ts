@@ -82,6 +82,8 @@ export function getEuclideanDivisionQuestions(): Question {
     keys: ['equal'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 45,
+    freeTimer: 60,
   };
   return question;
 }

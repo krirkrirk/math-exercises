@@ -125,6 +125,8 @@ export function getConditionalProbability(): Question {
     keys: ['p', 'cap', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

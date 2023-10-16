@@ -69,6 +69,8 @@ export function getLnDerivative(): Question {
     keys: ['ln'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

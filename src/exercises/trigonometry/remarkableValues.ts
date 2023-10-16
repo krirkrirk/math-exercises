@@ -63,6 +63,8 @@ export function getRemarkableValues(): Question {
     answer: answer,
     keys: ['pi', 'cos', 'sin'],
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
     getPropositions,
   };
   return question;

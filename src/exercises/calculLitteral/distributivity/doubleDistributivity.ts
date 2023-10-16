@@ -89,5 +89,7 @@ export function getDoubleDistributivityQuestion(): Question {
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 }

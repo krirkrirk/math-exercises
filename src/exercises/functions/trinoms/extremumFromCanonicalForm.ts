@@ -80,6 +80,8 @@ export function getExtremumFromCanonicalFormQuestion(): Question {
     keys: ['S', 'equal', 'semicolon'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

@@ -76,6 +76,8 @@ export function getLnEquation(): Question {
     keys: ['ln', 'exp'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

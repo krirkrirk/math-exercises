@@ -60,6 +60,8 @@ export function getArithmeticRecurrenceFormulaUsage(): Question {
     keys: ['r', 'n', 'u', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
   return question;
 }

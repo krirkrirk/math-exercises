@@ -71,6 +71,8 @@ export function getConjugateMultiplyComplexQuestion(): Question {
     keys: ['i', 'z', 'overline', 'quote'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
     startStatement: "\\overline{z\\times z'}",
   };
 

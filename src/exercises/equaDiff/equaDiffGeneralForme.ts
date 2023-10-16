@@ -82,6 +82,8 @@ export function getExponentialEquation(): Question {
     keys: ['x', 'y', 'exp', 'C', 'equal'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

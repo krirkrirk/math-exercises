@@ -75,6 +75,8 @@ export function getExpEquation(): Question {
     keys: ['exp', 'ln'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

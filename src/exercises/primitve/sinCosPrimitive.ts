@@ -120,6 +120,8 @@ export function getSinCosPrimitive(): Question {
     keys: ['x', 'C', 'sin', 'cos'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

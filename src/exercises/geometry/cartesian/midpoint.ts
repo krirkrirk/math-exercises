@@ -65,6 +65,8 @@ export function getMidpointQuestion(): Question {
     keys: ['semicolon'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
   return question;
 }

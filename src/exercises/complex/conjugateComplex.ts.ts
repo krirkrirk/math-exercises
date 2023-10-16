@@ -72,6 +72,8 @@ export function getConjugateComplexQuestion(): Question {
     keys: ['i', 'overline'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
     startStatement: '\\overline z',
   };
 

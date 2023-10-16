@@ -55,9 +55,10 @@ export function getExtremumTypeFromAlgebricFormQuestion(): Question {
     instruction: `La fonction $f$ définie par $f(x) = ${
       isDevForm ? trinom.toTree().toTex() : trinom.getCanonicalForm().toTex()
     }$ admet-elle un maximum ou un minimum ?`,
-    questionType: 'QCM',
     getPropositions,
     answerFormat: 'raw',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

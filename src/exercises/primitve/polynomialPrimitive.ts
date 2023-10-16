@@ -88,6 +88,8 @@ export function getPolynomialPrimitive(): Question {
     keys: ['x', 'C'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

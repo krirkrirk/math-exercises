@@ -65,6 +65,8 @@ export function getInverseImageFunction(): Question {
     keys: ['x', 'equal'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
   return question;
 }

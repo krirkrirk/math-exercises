@@ -67,6 +67,8 @@ export function getConjugateDivideComplexQuestion(): Question {
     keys: ['i', 'z', 'overline', "'"],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
     startStatement: "\\overline{\\frac{z}{z'}}",
   };
 

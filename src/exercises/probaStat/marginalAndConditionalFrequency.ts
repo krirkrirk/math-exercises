@@ -118,6 +118,8 @@ Calculer la fréquence ${freqString[rand]}.`,
     keys: ['f', 'cap', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

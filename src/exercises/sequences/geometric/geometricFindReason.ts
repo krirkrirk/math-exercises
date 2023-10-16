@@ -69,6 +69,8 @@ export function getGeometricFindReason(): Question {
     keys: ['q', 'n', 'u', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
   return question;
 }

@@ -70,6 +70,8 @@ export function getReciprocalPercentageQuestion(): Question {
     keys: ['percent'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

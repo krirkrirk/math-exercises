@@ -61,6 +61,8 @@ export function getCircleArea(): Question {
     answer: correctAnswer,
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

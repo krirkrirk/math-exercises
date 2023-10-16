@@ -72,6 +72,8 @@ export function getInverseComplexQuestion(): Question {
     keys: ['i'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
     startStatement: '\\frac{1}{z}',
   };
 

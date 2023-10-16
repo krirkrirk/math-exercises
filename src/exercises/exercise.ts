@@ -13,12 +13,13 @@ export interface Question {
   startStatement?: string;
   answer: string;
   answerFormat: 'tex' | 'raw';
-  questionType?: 'QCM' | 'free';
   keys?: KeyId[];
   commands?: string[];
   coords?: number[];
   options?: any;
   getPropositions: (n: number) => Proposition[];
+  qcmTimer?: number;
+  freeTimer?: number;
 }
 
 export interface Exercise {

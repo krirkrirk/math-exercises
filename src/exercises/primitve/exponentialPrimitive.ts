@@ -113,6 +113,8 @@ export function getExponentialPrimitive(): Question {
     keys: ['x', 'C', 'exp'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

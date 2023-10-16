@@ -90,6 +90,8 @@ export function getPythagore(): Question {
     coords: triangle.generateCoords(),
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

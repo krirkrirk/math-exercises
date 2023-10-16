@@ -69,6 +69,8 @@ export function getImageFunction(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
   return question;
 }

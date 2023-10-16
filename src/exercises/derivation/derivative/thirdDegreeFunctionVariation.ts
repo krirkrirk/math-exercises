@@ -106,6 +106,8 @@ export function getThirdDegreeFunctionVariation(): Question {
     keys: ['lbracket', 'rbracket', 'semicolon', 'infty'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
     coords: [
       racine1 - (randint(7, 20) / 10) * (racine2 - racine1),
       racine2 + (randint(7, 20) / 10) * (racine2 - racine1),

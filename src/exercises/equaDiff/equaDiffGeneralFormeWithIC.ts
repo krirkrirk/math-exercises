@@ -100,6 +100,8 @@ export function solveExponentialEquationWithIC(): Question {
     keys: ['x', 'y', 'exp', 'equal'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

@@ -112,6 +112,8 @@ Calculer le ${quartileToString} de cette série de valeurs.`,
     keys: ['f', 'cap', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

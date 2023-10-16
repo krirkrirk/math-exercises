@@ -72,6 +72,8 @@ export function getArithmeticThresholdFind(): Question {
     keys: ['r', 'n', 'u', 'underscore', 'inf', 'sup', 'approx'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

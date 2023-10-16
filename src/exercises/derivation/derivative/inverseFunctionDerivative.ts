@@ -58,6 +58,8 @@ export function getInverseFunctionDerivative(): Question {
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

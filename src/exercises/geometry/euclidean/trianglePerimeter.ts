@@ -55,6 +55,8 @@ export function getTrianglePerimeter(): Question {
     answer: sides[0] + sides[1] + sides[2] + '',
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

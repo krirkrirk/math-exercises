@@ -96,6 +96,8 @@ export function getRootsFromFactorizedFormQuestion(): Question {
     keys: ['S', 'equal', 'lbrace', 'semicolon', 'rbrace', 'emptyset'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

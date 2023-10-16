@@ -13,6 +13,7 @@ export const variationsFromAlgebricForm: Exercise = {
   isSingleStep: true,
   sections: ['Second degré'],
   generator: (nb: number) => getDistinctQuestions(getVariationsFromAlgebricFormQuestion, nb),
+  answerType: 'QCM',
 };
 
 export function getVariationsFromAlgebricFormQuestion(): Question {
@@ -54,9 +55,10 @@ export function getVariationsFromAlgebricFormQuestion(): Question {
     instruction: `Quelles sont les variations de la fonction $f$ définie par $f(x) = ${
       isDevForm ? trinom.toTree().toTex() : trinom.getCanonicalForm().toTex()
     }$ ?`,
-    questionType: 'QCM',
     getPropositions,
     answerFormat: 'raw',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

@@ -89,6 +89,8 @@ export function getSignFunction(): Question {
     keys: ['S', 'equal', 'lbracket', 'rbracket', 'semicolon', 'infty'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
   return question;
 }

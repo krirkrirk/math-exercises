@@ -145,6 +145,8 @@ export function getProbabilityTree(): Question {
     coords: [-2, 8, -5, 5],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

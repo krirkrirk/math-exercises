@@ -54,6 +54,8 @@ export function getIntervalsUnionQuestion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

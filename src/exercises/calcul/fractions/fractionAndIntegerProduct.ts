@@ -65,6 +65,8 @@ export function getFractionAndIntegerProduct(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
   return question;
 }

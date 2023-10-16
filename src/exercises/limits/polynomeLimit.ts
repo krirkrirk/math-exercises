@@ -146,6 +146,8 @@ export function getApplyPercentQuestion(): Question {
     keys: ['infty'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

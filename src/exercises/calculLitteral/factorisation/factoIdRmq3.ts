@@ -96,6 +96,8 @@ export function getFactoType1Question(): Question {
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
   return question;
 }

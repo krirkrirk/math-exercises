@@ -75,6 +75,8 @@ export function getFirstDegreeInequationsQuestion(): Question {
     keys: ['x', 'sup', 'inf', 'geq', 'leq'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

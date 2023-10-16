@@ -82,6 +82,8 @@ export function getExpSimplifiying(): Question {
     keys: ['ln'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

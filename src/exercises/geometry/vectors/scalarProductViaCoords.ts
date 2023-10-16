@@ -64,5 +64,7 @@ export function getScalarProductViaCoordsQuestion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 }

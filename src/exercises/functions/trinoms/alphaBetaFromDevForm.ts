@@ -67,6 +67,8 @@ export function getAlphaBetaFromDevFormQuestion(): Question {
     getPropositions,
     answerFormat: 'tex',
     startStatement: param,
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

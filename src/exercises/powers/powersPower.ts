@@ -82,6 +82,8 @@ export function getPowersPowerQuestion(useOnlyPowersOfTen: boolean = false): Que
     keys: [],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
   return question;
 }

@@ -73,6 +73,8 @@ export function getChaslesQuestion(): Question {
     keys: ['overrightarrow', ...randLetters.sort((a, b) => a.localeCompare(b))],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

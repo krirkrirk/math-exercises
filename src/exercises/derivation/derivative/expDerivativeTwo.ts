@@ -73,6 +73,8 @@ export function getExpDerivative(): Question {
     keys: ['exp'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

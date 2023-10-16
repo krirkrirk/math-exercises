@@ -85,6 +85,8 @@ export function getPowersDivisionQuestion(useOnlyPowersOfTen: boolean = false): 
     keys: [],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
   return question;
 }

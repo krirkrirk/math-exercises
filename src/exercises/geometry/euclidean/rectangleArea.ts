@@ -55,6 +55,8 @@ export function getRectangleArea(): Question {
     answer: length * width + '',
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

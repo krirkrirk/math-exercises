@@ -83,6 +83,8 @@ export function getLogarithmePrimitive(): Question {
     keys: ['x', 'C', 'ln', 'abs'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

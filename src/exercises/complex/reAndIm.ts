@@ -84,6 +84,8 @@ export function getReAndImQuestion(): Question {
     keys: ['i', 'z'],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

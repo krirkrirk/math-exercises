@@ -99,6 +99,8 @@ export function getLeadingCoefficientQuestion(): Question {
     coords: [xmin, xmax, ymin, ymax],
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;

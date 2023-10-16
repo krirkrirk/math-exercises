@@ -81,6 +81,8 @@ export function getTriangleAreaV2(): Question {
     answer: area + '',
     getPropositions,
     answerFormat: 'tex',
+    qcmTimer: 60,
+    freeTimer: 60,
   };
 
   return question;
