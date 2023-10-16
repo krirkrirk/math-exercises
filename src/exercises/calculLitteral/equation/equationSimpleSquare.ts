@@ -18,6 +18,8 @@ export const equationSimpleSquare: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getEquationSimpleSquare, nb),
   keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 const higherFactor = (n: number): number => {
@@ -177,8 +179,6 @@ export function getEquationSimpleSquare(): Question {
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

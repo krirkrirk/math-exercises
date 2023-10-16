@@ -16,6 +16,8 @@ export const midpoint: Exercise = {
   sections: ['Géométrie cartésienne'],
   generator: (nb: number) => getDistinctQuestions(getMidpointQuestion, nb),
   keys: ['semicolon'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getMidpointQuestion(): Question {
@@ -65,8 +67,6 @@ export function getMidpointQuestion(): Question {
     keys: ['semicolon'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

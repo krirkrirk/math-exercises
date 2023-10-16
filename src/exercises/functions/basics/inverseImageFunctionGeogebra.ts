@@ -17,6 +17,8 @@ export const inverseImageFunctionGeogebra: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getInverseImageFunctionGeogebra, nb),
   keys: ['S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getInverseImageFunctionGeogebra(): Question {
@@ -167,8 +169,6 @@ export function getInverseImageFunctionGeogebra(): Question {
     coords: [xmin, xmax, ymin, ymax],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

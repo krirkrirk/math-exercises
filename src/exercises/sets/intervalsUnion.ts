@@ -12,6 +12,8 @@ export const intervalsUnion: Exercise = {
   isSingleStep: true,
   sections: ['Intervalles'],
   generator: (nb: number) => getDistinctQuestions(getIntervalsUnionQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getIntervalsUnionQuestion(): Question {
@@ -54,8 +56,6 @@ export function getIntervalsUnionQuestion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

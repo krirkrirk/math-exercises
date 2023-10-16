@@ -18,6 +18,8 @@ export const euclideanDivision: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getEuclideanDivisionQuestions, nb),
   keys: ['equal'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getEuclideanDivisionQuestions(): Question {
@@ -82,8 +84,6 @@ export function getEuclideanDivisionQuestions(): Question {
     keys: ['equal'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 45,
-    freeTimer: 60,
   };
   return question;
 }

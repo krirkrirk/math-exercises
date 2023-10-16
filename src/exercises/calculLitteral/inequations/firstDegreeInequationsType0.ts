@@ -19,6 +19,8 @@ export const firstDegreeInequationsType0: Exercise = {
   isSingleStep: true,
   sections: ['Inéquations'],
   generator: (nb: number) => getDistinctQuestions(getFirstDegreeInequationsQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getFirstDegreeInequationsQuestion(): Question {
@@ -75,8 +77,6 @@ export function getFirstDegreeInequationsQuestion(): Question {
     keys: ['x', 'sup', 'inf', 'geq', 'leq'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

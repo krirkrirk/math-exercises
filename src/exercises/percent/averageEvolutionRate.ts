@@ -15,6 +15,8 @@ export const averageEvolutionRate: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getAverageEvolutionRate, nb),
   keys: ['percent'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getAverageEvolutionRate(): Question {
@@ -68,8 +70,6 @@ export function getAverageEvolutionRate(): Question {
     keys: ['percent'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

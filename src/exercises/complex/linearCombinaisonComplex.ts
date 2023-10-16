@@ -21,6 +21,8 @@ export const linearCombinaisonComplex: Exercise = {
   isSingleStep: true,
   sections: ['Nombres complexes'],
   generator: (nb: number) => getDistinctQuestions(getLinearCombinaisonComplexQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getLinearCombinaisonComplexQuestion(): Question {
@@ -78,8 +80,6 @@ export function getLinearCombinaisonComplexQuestion(): Question {
     keys: ['i', 'z', 'quote'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

@@ -14,6 +14,8 @@ export const inverseFunctionDerivative: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getInverseFunctionDerivative, nb),
   keys: ['x'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getInverseFunctionDerivative(): Question {
@@ -58,8 +60,6 @@ export function getInverseFunctionDerivative(): Question {
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

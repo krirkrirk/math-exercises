@@ -13,6 +13,8 @@ export const squareArea: Exercise = {
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getSquareArea, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getSquareArea(): Question {
@@ -54,8 +56,6 @@ export function getSquareArea(): Question {
     answer: side ** 2 + '',
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

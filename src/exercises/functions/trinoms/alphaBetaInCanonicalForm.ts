@@ -18,6 +18,8 @@ export const alphaBetaInCanonicalForm: Exercise = {
   isSingleStep: true,
   sections: ['Second degré'],
   generator: (nb: number) => getDistinctQuestions(getAlphaBetaInCanonicalFormQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getAlphaBetaInCanonicalFormQuestion(): Question {
@@ -93,8 +95,6 @@ export function getAlphaBetaInCanonicalFormQuestion(): Question {
     getPropositions,
     answerFormat: 'tex',
     startStatement: param,
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

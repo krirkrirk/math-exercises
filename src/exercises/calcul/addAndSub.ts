@@ -19,6 +19,8 @@ export const addAndSubExercise: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getAddAndSubQuestions, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getAddAndSubQuestions(): Question {
@@ -73,8 +75,6 @@ export function getAddAndSubQuestions(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

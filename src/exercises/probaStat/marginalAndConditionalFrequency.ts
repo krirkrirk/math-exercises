@@ -19,6 +19,8 @@ export const marginalAndConditionalFrequency: Exercise = {
   sections: ['Statistiques'],
   generator: (nb: number) => getDistinctQuestions(getMarginalAndConditionalFrequency, nb),
   keys: ['f', 'cap', 'underscore'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getMarginalAndConditionalFrequency(): Question {
@@ -118,8 +120,6 @@ Calculer la fréquence ${freqString[rand]}.`,
     keys: ['f', 'cap', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

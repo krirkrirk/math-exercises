@@ -15,6 +15,8 @@ export const canonicalFromDevForm: Exercise = {
   isSingleStep: false,
   sections: ['Second degré'],
   generator: (nb: number) => getDistinctQuestions(getCanonicalFromDevFormQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getCanonicalFromDevFormQuestion(): Question {
@@ -60,8 +62,6 @@ export function getCanonicalFromDevFormQuestion(): Question {
     instruction: `Déterminer la forme canonique de la fonction $f$ définie par $f(x) = ${trinom.toTree().toTex()}$`,
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

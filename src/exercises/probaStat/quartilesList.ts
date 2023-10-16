@@ -14,6 +14,8 @@ export const quartilesList: Exercise = {
   sections: ['Statistiques'],
   generator: (nb: number) => getDistinctQuestions(getQuartiles, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getQuartiles(): Question {
@@ -93,8 +95,6 @@ export function getQuartiles(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

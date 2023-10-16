@@ -23,6 +23,8 @@ export const sinCosPrimitive: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getSinCosPrimitive, nb),
   keys: ['x', 'C', 'sin', 'cos'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getSinCosPrimitive(): Question {
@@ -120,8 +122,6 @@ export function getSinCosPrimitive(): Question {
     keys: ['x', 'C', 'sin', 'cos'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

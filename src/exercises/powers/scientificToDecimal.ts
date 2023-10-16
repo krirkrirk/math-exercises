@@ -37,6 +37,8 @@ export const scientificToDecimal: Exercise = {
   keys: [],
 
   generator: (nb: number) => getDistinctQuestions(getScientificToDecimalQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getScientificToDecimalQuestion(): Question {
@@ -90,8 +92,6 @@ export function getScientificToDecimalQuestion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

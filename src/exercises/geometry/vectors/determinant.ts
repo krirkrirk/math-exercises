@@ -14,6 +14,8 @@ export const determinant: Exercise = {
   isSingleStep: true,
   sections: ['Vecteurs'],
   generator: (nb: number) => getDistinctQuestions(getDeterminantQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getDeterminantQuestion(): Question {
@@ -68,8 +70,6 @@ export function getDeterminantQuestion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

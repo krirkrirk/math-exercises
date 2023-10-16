@@ -14,6 +14,8 @@ export const simplifySquareRoot: Exercise = {
   sections: ['Racines carrées'],
   generator: (nb: number) => getDistinctQuestions(getSimplifySquareRoot, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getSimplifySquareRoot(): Question {
@@ -64,8 +66,6 @@ export function getSimplifySquareRoot(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

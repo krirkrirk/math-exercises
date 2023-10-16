@@ -21,6 +21,8 @@ export const exponentialDifferentialEquation: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExponentialEquation, nb),
   keys: ['x', 'y', 'exp', 'C', 'equal'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getExponentialEquation(): Question {
@@ -82,8 +84,6 @@ export function getExponentialEquation(): Question {
     keys: ['x', 'y', 'exp', 'C', 'equal'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

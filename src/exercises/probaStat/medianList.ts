@@ -15,6 +15,8 @@ export const medianWithList: Exercise = {
   sections: ['Statistiques'],
   generator: (nb: number) => getDistinctQuestions(getMedianList, nb),
   keys: ['f', 'cap', 'underscore'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getMedianList(): Question {
@@ -74,8 +76,6 @@ export function getMedianList(): Question {
     keys: ['f', 'cap', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

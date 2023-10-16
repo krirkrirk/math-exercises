@@ -18,6 +18,8 @@ export const probabilityTree: Exercise = {
   isSingleStep: false,
   sections: ['Probabilités'],
   generator: (nb: number) => getDistinctQuestions(getProbabilityTree, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 function pgcd(a: number, b: number): number {
@@ -145,8 +147,6 @@ export function getProbabilityTree(): Question {
     coords: [-2, 8, -5, 5],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

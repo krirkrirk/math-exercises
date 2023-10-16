@@ -17,6 +17,8 @@ export const fractionAndIntegerSum: Exercise = {
   sections: ['Fractions'],
   generator: (nb: number) => getDistinctQuestions(getFractionAndIntegerSum, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getFractionAndIntegerSum(): Question {
@@ -66,8 +68,6 @@ export function getFractionAndIntegerSum(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

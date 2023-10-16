@@ -13,6 +13,8 @@ export const conjugateDivideComplex: Exercise = {
   isSingleStep: true,
   sections: ['Nombres complexes'],
   generator: (nb: number) => getDistinctQuestions(getConjugateDivideComplexQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getConjugateDivideComplexQuestion(): Question {
@@ -67,8 +69,7 @@ export function getConjugateDivideComplexQuestion(): Question {
     keys: ['i', 'z', 'overline', "'"],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
+
     startStatement: "\\overline{\\frac{z}{z'}}",
   };
 

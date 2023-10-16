@@ -16,6 +16,8 @@ export const thirdDegreeFunctionVariation: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getThirdDegreeFunctionVariation, nb),
   keys: ['lbracket', 'rbracket', 'semicolon', 'infty'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getThirdDegreeFunctionVariation(): Question {
@@ -106,8 +108,7 @@ export function getThirdDegreeFunctionVariation(): Question {
     keys: ['lbracket', 'rbracket', 'semicolon', 'infty'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
+
     coords: [
       racine1 - (randint(7, 20) / 10) * (racine2 - racine1),
       racine2 + (randint(7, 20) / 10) * (racine2 - racine1),

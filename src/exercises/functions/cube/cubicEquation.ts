@@ -13,6 +13,8 @@ export const cubicEquation: Exercise = {
   isSingleStep: true,
   sections: ['Fonctions de référence', 'Fonction cube', 'Équations'],
   generator: (nb: number) => getDistinctQuestions(getCubicEquationQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getCubicEquationQuestion(): Question {
@@ -68,8 +70,6 @@ export function getCubicEquationQuestion(): Question {
 
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

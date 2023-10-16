@@ -13,6 +13,8 @@ export const rootsFromDevForm: Exercise = {
   isSingleStep: true,
   sections: [],
   generator: (nb: number) => getDistinctQuestions(getRootsFromDevFormQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getRootsFromDevFormQuestion(): Question {
@@ -57,8 +59,6 @@ export function getRootsFromDevFormQuestion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

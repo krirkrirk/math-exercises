@@ -20,6 +20,8 @@ export const firstIdentity: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFirstIdentityQuestion, nb),
   keys: ['x'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getFirstIdentityQuestion(): Question {
@@ -91,7 +93,5 @@ export function getFirstIdentityQuestion(): Question {
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 }

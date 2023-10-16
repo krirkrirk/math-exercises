@@ -16,6 +16,8 @@ export const applyPercent: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getApplyPercentQuestion, nb),
   keys: ['percent'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getApplyPercentQuestion(): Question {
@@ -78,8 +80,6 @@ export function getApplyPercentQuestion(): Question {
     keys: ['percent'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

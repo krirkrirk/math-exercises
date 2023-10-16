@@ -18,6 +18,8 @@ export const fractionEquation: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionEquation, nb),
   keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou', 'emptyset'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getFractionEquation(): Question {
@@ -82,8 +84,6 @@ export function getFractionEquation(): Question {
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou', 'emptyset'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

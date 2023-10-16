@@ -21,6 +21,8 @@ export const powersDivision: Exercise = {
   sections: ['Puissances'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getPowersDivisionQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 export const powersOfTenDivision: Exercise = {
   id: 'powersOfTenDivision',
@@ -32,6 +34,8 @@ export const powersOfTenDivision: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(() => getPowersDivisionQuestion(true), nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getPowersDivisionQuestion(useOnlyPowersOfTen: boolean = false): Question {
@@ -85,8 +89,6 @@ export function getPowersDivisionQuestion(useOnlyPowersOfTen: boolean = false): 
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

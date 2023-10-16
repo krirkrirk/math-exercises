@@ -15,6 +15,8 @@ export const quartiles: Exercise = {
   sections: ['Statistiques'],
   generator: (nb: number) => getDistinctQuestions(getQuartiles, nb),
   keys: ['cap', 'underscore'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getQuartiles(): Question {
@@ -112,8 +114,6 @@ Calculer le ${quartileToString} de cette série de valeurs.`,
     keys: ['f', 'cap', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

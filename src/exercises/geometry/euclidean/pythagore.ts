@@ -14,6 +14,8 @@ export const pythagore: Exercise = {
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getPythagore, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getPythagore(): Question {
@@ -90,8 +92,6 @@ export function getPythagore(): Question {
     coords: triangle.generateCoords(),
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

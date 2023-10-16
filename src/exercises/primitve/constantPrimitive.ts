@@ -14,6 +14,8 @@ export const constantPrimitive: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getConstantPrimitive, nb),
   keys: ['x', 'C'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getConstantPrimitive(): Question {
@@ -58,8 +60,6 @@ export function getConstantPrimitive(): Question {
     keys: ['x', 'C'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

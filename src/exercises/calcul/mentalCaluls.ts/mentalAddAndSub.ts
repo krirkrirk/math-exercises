@@ -18,6 +18,8 @@ export const mentalAddAndSub: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getMentalAddAndSub, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getMentalAddAndSub(): Question {
@@ -84,8 +86,6 @@ export function getMentalAddAndSub(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

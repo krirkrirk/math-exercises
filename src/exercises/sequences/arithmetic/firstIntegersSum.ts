@@ -13,6 +13,8 @@ export const firstIntegersSum: Exercise = {
   isSingleStep: true,
   sections: ['Suites'],
   generator: (nb: number) => getDistinctQuestions(getFirstIntegersSumQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getFirstIntegersSumQuestion(): Question {
@@ -67,8 +69,6 @@ export function getFirstIntegersSumQuestion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

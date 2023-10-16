@@ -15,6 +15,8 @@ export const massConversion: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getMassConversion, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getMassConversion(): Question {
@@ -63,8 +65,6 @@ export function getMassConversion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

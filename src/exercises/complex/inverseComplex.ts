@@ -13,6 +13,8 @@ export const inverseComplex: Exercise = {
   isSingleStep: true,
   sections: ['Nombres complexes'],
   generator: (nb: number) => getDistinctQuestions(getInverseComplexQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getInverseComplexQuestion(): Question {
@@ -72,8 +74,7 @@ export function getInverseComplexQuestion(): Question {
     keys: ['i'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
+
     startStatement: '\\frac{1}{z}',
   };
 

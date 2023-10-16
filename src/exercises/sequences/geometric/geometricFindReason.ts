@@ -14,6 +14,8 @@ export const geometricFindReason: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getGeometricFindReason, nb),
   keys: ['q', 'n', 'u', 'underscore'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getGeometricFindReason(): Question {
@@ -69,8 +71,6 @@ export function getGeometricFindReason(): Question {
     keys: ['q', 'n', 'u', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

@@ -21,6 +21,8 @@ export const expEquation: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExpEquation, nb),
   keys: ['exp', 'ln'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getExpEquation(): Question {
@@ -75,8 +77,6 @@ export function getExpEquation(): Question {
     keys: ['exp', 'ln'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

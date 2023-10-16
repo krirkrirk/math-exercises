@@ -25,6 +25,8 @@ export const exponentialPrimitive: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExponentialPrimitive, nb),
   keys: ['x', 'C', 'exp'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getExponentialPrimitive(): Question {
@@ -113,8 +115,6 @@ export function getExponentialPrimitive(): Question {
     keys: ['x', 'C', 'exp'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

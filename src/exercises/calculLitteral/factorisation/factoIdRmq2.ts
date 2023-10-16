@@ -20,6 +20,8 @@ export const factoIdRmq2: Exercise = {
   sections: ['Calcul littéral'],
   generator: (nb: number) => getDistinctQuestions(getFactoType1Question, nb),
   keys: ['x'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getFactoType1Question(): Question {
@@ -89,8 +91,6 @@ export function getFactoType1Question(): Question {
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

@@ -15,6 +15,8 @@ export const mentalPercentage: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getMentalPercentage, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getMentalPercentage(): Question {
@@ -156,8 +158,6 @@ export function getMentalPercentage(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

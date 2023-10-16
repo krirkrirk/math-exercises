@@ -13,6 +13,8 @@ export const rectangleArea: Exercise = {
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getRectangleArea, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getRectangleArea(): Question {
@@ -55,8 +57,6 @@ export function getRectangleArea(): Question {
     answer: length * width + '',
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

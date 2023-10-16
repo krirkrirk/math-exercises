@@ -19,6 +19,8 @@ export const thirdIdentity: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getThirdIdentityQuestion, nb),
   keys: ['x'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getThirdIdentityQuestion(): Question {
@@ -92,7 +94,5 @@ export function getThirdIdentityQuestion(): Question {
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 }

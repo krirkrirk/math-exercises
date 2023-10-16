@@ -15,6 +15,8 @@ export const inverseImageFunction: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getInverseImageFunction, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getInverseImageFunction(): Question {
@@ -65,8 +67,6 @@ export function getInverseImageFunction(): Question {
     keys: ['x', 'equal'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

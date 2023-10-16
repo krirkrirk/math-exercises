@@ -15,6 +15,8 @@ export const globalPercent: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getGlobalPercentQuestion, nb),
   keys: ['percent'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getGlobalPercentQuestion(): Question {
@@ -83,8 +85,6 @@ export function getGlobalPercentQuestion(): Question {
     keys: ['percent'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

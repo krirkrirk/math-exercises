@@ -19,6 +19,8 @@ export const roundToUnit: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions(0), nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 /**
  * arrondi à l'unité
@@ -32,6 +34,8 @@ export const roundToDixieme: Exercise = {
   sections: ['Calculs'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions(1), nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 /**
  * arrondi à l'unité
@@ -45,6 +49,8 @@ export const roundToCentieme: Exercise = {
   sections: ['Calculs'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions(2), nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 /**
  * arrondi à l'unité
@@ -58,6 +64,8 @@ export const roundToMillieme: Exercise = {
   sections: ['Calculs'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions(3), nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export const allRoundings: Exercise = {
@@ -69,6 +77,8 @@ export const allRoundings: Exercise = {
   sections: ['Calculs'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions(randint(0, 4)), nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 const instructions = [
@@ -150,8 +160,6 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

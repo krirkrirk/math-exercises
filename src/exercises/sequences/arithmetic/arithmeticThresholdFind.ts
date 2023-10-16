@@ -15,6 +15,8 @@ export const arithmeticThresholdFind: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getArithmeticThresholdFind, nb),
   keys: ['r', 'n', 'u', 'underscore', 'inf', 'sup', 'approx'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getArithmeticThresholdFind(): Question {
@@ -72,8 +74,6 @@ export function getArithmeticThresholdFind(): Question {
     keys: ['r', 'n', 'u', 'underscore', 'inf', 'sup', 'approx'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

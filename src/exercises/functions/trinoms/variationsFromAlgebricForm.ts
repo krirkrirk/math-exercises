@@ -14,6 +14,8 @@ export const variationsFromAlgebricForm: Exercise = {
   sections: ['Second degré'],
   generator: (nb: number) => getDistinctQuestions(getVariationsFromAlgebricFormQuestion, nb),
   answerType: 'QCM',
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getVariationsFromAlgebricFormQuestion(): Question {
@@ -57,8 +59,6 @@ export function getVariationsFromAlgebricFormQuestion(): Question {
     }$ ?`,
     getPropositions,
     answerFormat: 'raw',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

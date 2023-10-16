@@ -16,6 +16,8 @@ export const imageFunctionGeogebra: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getImageFunctionGeogebra, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getImageFunctionGeogebra(): Question {
@@ -97,8 +99,6 @@ export function getImageFunctionGeogebra(): Question {
     coords: [xmin, xmax, ymin, ymax],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

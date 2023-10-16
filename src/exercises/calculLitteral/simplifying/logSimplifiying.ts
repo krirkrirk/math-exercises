@@ -20,6 +20,8 @@ export const logSimplifiying: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExpSimplifiying, nb),
   keys: ['ln'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getExpSimplifiying(): Question {
@@ -82,8 +84,6 @@ export function getExpSimplifiying(): Question {
     keys: ['ln'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

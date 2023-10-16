@@ -22,6 +22,8 @@ export const logEquation: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getLnEquation, nb),
   keys: ['ln', 'exp'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getLnEquation(): Question {
@@ -76,8 +78,6 @@ export function getLnEquation(): Question {
     keys: ['ln', 'exp'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

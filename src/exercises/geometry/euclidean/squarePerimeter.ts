@@ -13,6 +13,8 @@ export const squarePerimeter: Exercise = {
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getSquarePerimeter, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getSquarePerimeter(): Question {
@@ -54,8 +56,6 @@ export function getSquarePerimeter(): Question {
     answer: side * 4 + '',
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

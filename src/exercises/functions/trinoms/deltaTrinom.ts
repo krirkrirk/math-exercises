@@ -14,6 +14,8 @@ export const deltaTrinom: Exercise = {
   isSingleStep: true,
   sections: ['Second degré'],
   generator: (nb: number) => getDistinctQuestions(getDeltaTrinomQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getDeltaTrinomQuestion(): Question {
@@ -73,8 +75,6 @@ export function getDeltaTrinomQuestion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

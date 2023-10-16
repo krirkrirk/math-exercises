@@ -18,6 +18,8 @@ export const multiplicationEquation: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getMultiplicationEquation, nb),
   keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getMultiplicationEquation(): Question {
@@ -90,8 +92,6 @@ export function getMultiplicationEquation(): Question {
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

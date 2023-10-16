@@ -22,6 +22,8 @@ export const exponentialDifferentialEquationWithIC: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(solveExponentialEquationWithIC, nb),
   keys: ['x', 'y', 'exp', 'equal'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function solveExponentialEquationWithIC(): Question {
@@ -100,8 +102,6 @@ export function solveExponentialEquationWithIC(): Question {
     keys: ['x', 'y', 'exp', 'equal'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

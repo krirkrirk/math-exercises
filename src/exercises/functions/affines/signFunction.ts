@@ -18,6 +18,8 @@ export const signFunction: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getSignFunction, nb),
   keys: ['S', 'equal', 'lbracket', 'rbracket', 'semicolon', 'infty'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getSignFunction(): Question {
@@ -89,8 +91,6 @@ export function getSignFunction(): Question {
     keys: ['S', 'equal', 'lbracket', 'rbracket', 'semicolon', 'infty'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

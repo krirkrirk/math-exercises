@@ -17,6 +17,8 @@ export const usualPrimitives: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getUsualPrimitives, nb),
   keys: ['x'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getUsualPrimitives(): Question {

@@ -18,6 +18,8 @@ export const reAndIm: Exercise = {
   isSingleStep: true,
   sections: ['Nombres complexes'],
   generator: (nb: number) => getDistinctQuestions(getReAndImQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getReAndImQuestion(): Question {
@@ -84,8 +86,6 @@ export function getReAndImQuestion(): Question {
     keys: ['i', 'z'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

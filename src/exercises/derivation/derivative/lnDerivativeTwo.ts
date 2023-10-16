@@ -21,6 +21,8 @@ export const lnDerivativeTwo: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getLnDerivative, nb),
   keys: ['x'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getLnDerivative(): Question {
@@ -72,8 +74,6 @@ export function getLnDerivative(): Question {
     keys: ['ln'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

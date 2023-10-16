@@ -17,6 +17,8 @@ export const fractionToPercentToDecimal: Exercise = {
   sections: ['Fractions'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionToPercentToDecimal, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getFractionToPercentToDecimal(): Question {
@@ -136,8 +138,6 @@ export function getFractionToPercentToDecimal(): Question {
     keys: ['percent'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

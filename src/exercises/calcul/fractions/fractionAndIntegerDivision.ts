@@ -18,6 +18,8 @@ export const fractionAndIntegerDivision: Exercise = {
   sections: ['Fractions'],
   generator: (nb: number) => getDistinctQuestions(getFractionAndIntegerDivision, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getFractionAndIntegerDivision(): Question {
@@ -74,8 +76,6 @@ export function getFractionAndIntegerDivision(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

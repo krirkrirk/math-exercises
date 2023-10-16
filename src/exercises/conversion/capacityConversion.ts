@@ -15,6 +15,8 @@ export const capacityConversion: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getCapacityConversion, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getCapacityConversion(): Question {
@@ -64,8 +66,6 @@ export function getCapacityConversion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

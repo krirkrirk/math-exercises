@@ -14,6 +14,8 @@ export const extremumFromCanonicalForm: Exercise = {
   isSingleStep: true,
   sections: ['Second degré'],
   generator: (nb: number) => getDistinctQuestions(getExtremumFromCanonicalFormQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getExtremumFromCanonicalFormQuestion(): Question {
@@ -80,8 +82,6 @@ export function getExtremumFromCanonicalFormQuestion(): Question {
     keys: ['S', 'equal', 'semicolon'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

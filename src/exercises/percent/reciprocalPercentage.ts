@@ -15,6 +15,8 @@ export const reciprocalPercentage: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getReciprocalPercentageQuestion, nb),
   keys: ['percent'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getReciprocalPercentageQuestion(): Question {
@@ -70,8 +72,6 @@ export function getReciprocalPercentageQuestion(): Question {
     keys: ['percent'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

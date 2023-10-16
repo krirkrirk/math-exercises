@@ -14,6 +14,8 @@ export const rightTriangleArea: Exercise = {
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getRightTriangleArea, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getRightTriangleArea(): Question {
@@ -73,8 +75,6 @@ export function getRightTriangleArea(): Question {
     coords: triangle.generateCoords(),
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

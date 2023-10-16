@@ -34,6 +34,8 @@ export const powersOfTenToDecimal: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getPowersOfTenDivisionQuestion, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getPowersOfTenDivisionQuestion(): Question {
@@ -83,8 +85,6 @@ export function getPowersOfTenDivisionQuestion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

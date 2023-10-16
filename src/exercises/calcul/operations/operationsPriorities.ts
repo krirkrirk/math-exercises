@@ -27,6 +27,8 @@ export const operationsPriorities: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getPriorityQuestions, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getPriorityQuestions(): Question {
@@ -155,8 +157,6 @@ export function getPriorityQuestions(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

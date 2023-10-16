@@ -16,6 +16,8 @@ export const volumeCapacityConversion: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getVolumeCapacityConversion, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getVolumeCapacityConversion(): Question {
@@ -82,8 +84,6 @@ export function getVolumeCapacityConversion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

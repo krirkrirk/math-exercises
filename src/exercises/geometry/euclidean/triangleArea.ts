@@ -14,6 +14,8 @@ export const triangleArea: Exercise = {
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getTriangleArea, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getTriangleArea(): Question {
@@ -90,8 +92,6 @@ export function getTriangleArea(): Question {
     coords: triangle.generateCoords(),
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

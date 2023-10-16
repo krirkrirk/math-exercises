@@ -23,6 +23,8 @@ export const equationType1Exercise: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getEquationType1ExerciseQuestion, nb),
   keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getEquationType1ExerciseQuestion(): Question {
@@ -75,8 +77,6 @@ export function getEquationType1ExerciseQuestion(): Question {
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

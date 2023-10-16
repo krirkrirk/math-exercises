@@ -16,6 +16,8 @@ export const evaluateExpression: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getEvaluateExpression, nb),
   keys: ['x'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getEvaluateExpression(): Question {
@@ -68,8 +70,6 @@ export function getEvaluateExpression(): Question {
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

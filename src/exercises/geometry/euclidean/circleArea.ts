@@ -15,6 +15,8 @@ export const circleArea: Exercise = {
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getCircleArea, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getCircleArea(): Question {
@@ -61,8 +63,6 @@ export function getCircleArea(): Question {
     answer: correctAnswer,
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

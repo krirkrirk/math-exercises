@@ -13,6 +13,8 @@ export const triangleAreaV2: Exercise = {
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getTriangleAreaV2, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getTriangleAreaV2(): Question {
@@ -81,8 +83,6 @@ export function getTriangleAreaV2(): Question {
     answer: area + '',
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

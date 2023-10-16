@@ -15,6 +15,8 @@ export const rootFunctionDerivative: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getRootFunctionDerivative, nb),
   keys: ['x'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getRootFunctionDerivative(): Question {
@@ -80,8 +82,6 @@ export function getRootFunctionDerivative(): Question {
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

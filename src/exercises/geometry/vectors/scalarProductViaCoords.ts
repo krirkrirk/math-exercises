@@ -17,6 +17,8 @@ export const scalarProductViaCoords: Exercise = {
   sections: ['Vecteurs'],
   generator: (nb: number) => getDistinctQuestions(getScalarProductViaCoordsQuestion, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getScalarProductViaCoordsQuestion(): Question {
@@ -64,7 +66,5 @@ export function getScalarProductViaCoordsQuestion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 }

@@ -14,6 +14,8 @@ export const chasles: Exercise = {
   isSingleStep: true,
   sections: ['Vecteurs'],
   generator: (nb: number) => getDistinctQuestions(getChaslesQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 const letters = 'ABCDEFGHIJKLMNPQRSTUVWXYZ';
@@ -73,8 +75,6 @@ export function getChaslesQuestion(): Question {
     keys: ['overrightarrow', ...randLetters.sort((a, b) => a.localeCompare(b))],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

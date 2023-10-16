@@ -14,6 +14,8 @@ export const simplifyFraction: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getSimplifyFraction, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getSimplifyFraction(): Question {
@@ -57,8 +59,6 @@ export function getSimplifyFraction(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

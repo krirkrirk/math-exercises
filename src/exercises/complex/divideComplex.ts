@@ -13,6 +13,8 @@ export const divideComplex: Exercise = {
   isSingleStep: true,
   sections: ['Nombres complexes'],
   generator: (nb: number) => getDistinctQuestions(getDivideComplexQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getDivideComplexQuestion(): Question {
@@ -62,8 +64,7 @@ export function getDivideComplexQuestion(): Question {
     keys: ['i', 'z', 'quote'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
+
     startStatement: "\\frac{z}{z'}",
   };
 

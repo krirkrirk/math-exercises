@@ -15,6 +15,8 @@ export const averageWithTable: Exercise = {
   sections: ['Statistiques'],
   generator: (nb: number) => getDistinctQuestions(getAverageWithTableQuestion, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getAverageWithTableQuestion(): Question {
@@ -84,8 +86,6 @@ Calculer la moyenne de cette série de valeurs.`,
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

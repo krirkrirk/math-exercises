@@ -21,6 +21,8 @@ export const powersOfTenProduct: Exercise = {
   sections: ['Puissances'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(() => getPowersProductQuestion(true), nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export const powersProduct: Exercise = {
@@ -33,6 +35,8 @@ export const powersProduct: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getPowersProductQuestion, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getPowersProductQuestion(useOnlyPowersOfTen: boolean = false): Question {
@@ -86,8 +90,6 @@ export function getPowersProductQuestion(useOnlyPowersOfTen: boolean = false): Q
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

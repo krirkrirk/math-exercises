@@ -14,6 +14,8 @@ export const proportionalityTable: Exercise = {
   sections: ['Proportionnalité'],
   generator: (nb: number) => getDistinctQuestions(getProportionalityTable, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getProportionalityTable(): Question {
@@ -86,8 +88,6 @@ Déterminer le nombre manquant.`,
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

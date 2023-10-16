@@ -13,6 +13,8 @@ export const geometricFirstTermsSum: Exercise = {
   isSingleStep: true,
   sections: ['Suites'],
   generator: (nb: number) => getDistinctQuestions(getGeometricFirstTermsSumQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getGeometricFirstTermsSumQuestion(): Question {
@@ -69,8 +71,6 @@ export function getGeometricFirstTermsSumQuestion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

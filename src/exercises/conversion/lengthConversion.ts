@@ -15,6 +15,8 @@ export const lengthConversion: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getLengthConversion, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getLengthConversion(): Question {
@@ -63,8 +65,6 @@ export function getLengthConversion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

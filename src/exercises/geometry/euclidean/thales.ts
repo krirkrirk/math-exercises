@@ -13,6 +13,8 @@ export const thales: Exercise = {
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getThales, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getThales(): Question {
@@ -122,8 +124,6 @@ export function getThales(): Question {
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

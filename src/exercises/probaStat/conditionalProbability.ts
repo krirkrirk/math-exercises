@@ -15,6 +15,8 @@ export const conditionalProbability: Exercise = {
   sections: ['Probabilités'],
   generator: (nb: number) => getDistinctQuestions(getConditionalProbability, nb),
   keys: ['p', 'cap', 'underscore'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getConditionalProbability(): Question {
@@ -125,8 +127,6 @@ export function getConditionalProbability(): Question {
     keys: ['p', 'cap', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

@@ -19,6 +19,8 @@ export const polynomeLimit: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getApplyPercentQuestion, nb),
   keys: ['infty'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getApplyPercentQuestion(): Question {
@@ -146,8 +148,6 @@ export function getApplyPercentQuestion(): Question {
     keys: ['infty'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

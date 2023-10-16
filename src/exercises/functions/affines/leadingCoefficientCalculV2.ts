@@ -16,6 +16,8 @@ export const leadingCoefficientCalculV2: Exercise = {
   isSingleStep: false,
   sections: ['Droites'],
   generator: (nb: number) => getDistinctQuestions(getLeadingCoefficientCalculV1Question, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getLeadingCoefficientCalculV1Question(): Question {
@@ -66,8 +68,6 @@ export function getLeadingCoefficientCalculV1Question(): Question {
     answer: simplifyNode(new FractionNode(new NumberNode(yB - yA), new NumberNode(xB - xA))).toTex(),
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

@@ -18,6 +18,8 @@ export const mentalMultiplications: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getMentalMultiplications, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getMentalMultiplications(): Question {
@@ -86,8 +88,6 @@ export function getMentalMultiplications(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

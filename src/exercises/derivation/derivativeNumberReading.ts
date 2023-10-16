@@ -20,6 +20,8 @@ export const derivativeNumberReading: Exercise = {
   sections: ['Dérivation'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getDerivativeNumberReading, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getDerivativeNumberReading(): Question {
@@ -92,8 +94,6 @@ export function getDerivativeNumberReading(): Question {
     coords: [xA - 5, xA + 5, yA - 5, yA + 5],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

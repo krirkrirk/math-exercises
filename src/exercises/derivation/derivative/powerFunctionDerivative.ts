@@ -19,6 +19,8 @@ export const powerFunctionDerivative: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getPowerFunctionDerivative, nb),
   keys: ['x'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getPowerFunctionDerivative(): Question {
@@ -77,8 +79,6 @@ export function getPowerFunctionDerivative(): Question {
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

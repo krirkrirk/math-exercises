@@ -15,6 +15,8 @@ export const aeraConversion: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getAeraConversion, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getAeraConversion(): Question {
@@ -69,8 +71,6 @@ export function getAeraConversion(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

@@ -18,6 +18,8 @@ export const distanceBetweenTwoPoints: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getDistanceBetweenTwoPoints, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getDistanceBetweenTwoPoints(): Question {
@@ -116,8 +118,6 @@ export function getDistanceBetweenTwoPoints(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

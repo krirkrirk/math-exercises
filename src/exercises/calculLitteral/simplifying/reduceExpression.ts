@@ -16,6 +16,8 @@ export const reduceExpression: Exercise = {
   sections: ['Calcul littéral'],
   generator: (nb: number) => getDistinctQuestions(getReduceExpression, nb),
   keys: ['x'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getReduceExpression(): Question {
@@ -147,8 +149,6 @@ export function getReduceExpression(): Question {
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

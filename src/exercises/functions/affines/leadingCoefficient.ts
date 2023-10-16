@@ -19,6 +19,8 @@ export const leadingCoefficient: Exercise = {
   isSingleStep: false,
   sections: ['Droites'],
   generator: (nb: number) => getDistinctQuestions(getLeadingCoefficientQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getLeadingCoefficientQuestion(): Question {
@@ -99,8 +101,6 @@ export function getLeadingCoefficientQuestion(): Question {
     coords: [xmin, xmax, ymin, ymax],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

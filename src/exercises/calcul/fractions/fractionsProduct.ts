@@ -15,6 +15,8 @@ export const fractionsProduct: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionsProduct, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getFractionsProduct(): Question {
@@ -62,8 +64,6 @@ export function getFractionsProduct(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

@@ -14,6 +14,8 @@ export const allIdentities: Exercise = {
   sections: ['Calcul littéral'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getAllIdentitiesQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getAllIdentitiesQuestion(): Question {

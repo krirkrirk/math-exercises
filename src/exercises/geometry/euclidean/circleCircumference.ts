@@ -15,6 +15,8 @@ export const circleCircumference: Exercise = {
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getCircleCircumference, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getCircleCircumference(): Question {
@@ -61,8 +63,6 @@ export function getCircleCircumference(): Question {
     answer: correctAnswer,
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

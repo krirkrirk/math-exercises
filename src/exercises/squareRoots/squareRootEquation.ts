@@ -13,6 +13,8 @@ export const squareRootEquation: Exercise = {
   isSingleStep: true,
   sections: ['Racines carrées', 'Équations', 'Fonctions de référence'],
   generator: (nb: number) => getDistinctQuestions(getSquareRootEquationQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getSquareRootEquationQuestion(): Question {
@@ -71,8 +73,6 @@ export function getSquareRootEquationQuestion(): Question {
     keys: ['S', 'equal', 'lbrace', 'semicolon', 'rbrace', 'emptyset'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

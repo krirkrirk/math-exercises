@@ -13,6 +13,8 @@ export const conjugateMultiplyComplex: Exercise = {
   isSingleStep: true,
   sections: ['Nombres complexes'],
   generator: (nb: number) => getDistinctQuestions(getConjugateMultiplyComplexQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getConjugateMultiplyComplexQuestion(): Question {
@@ -71,8 +73,7 @@ export function getConjugateMultiplyComplexQuestion(): Question {
     keys: ['i', 'z', 'overline', 'quote'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
+
     startStatement: "\\overline{z\\times z'}",
   };
 

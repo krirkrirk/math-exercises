@@ -15,6 +15,8 @@ export const thirdDegreeDerivative: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getThirdDegreeDerivative, nb),
   keys: ['x'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getThirdDegreeDerivative(): Question {
@@ -70,8 +72,6 @@ export function getThirdDegreeDerivative(): Question {
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

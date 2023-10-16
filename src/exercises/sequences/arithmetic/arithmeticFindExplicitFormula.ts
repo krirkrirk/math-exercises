@@ -15,6 +15,8 @@ export const arithmeticFindExplicitFormula: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getArithmeticFindExplicitFormula, nb),
   keys: ['r', 'n', 'u', 'underscore'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getArithmeticFindExplicitFormula(): Question {
@@ -62,8 +64,6 @@ export function getArithmeticFindExplicitFormula(): Question {
     keys: ['r', 'n', 'u', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

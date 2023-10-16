@@ -19,6 +19,8 @@ export const logarithmePrimitive: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getLogarithmePrimitive, nb),
   keys: ['x', 'C', 'ln', 'abs'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getLogarithmePrimitive(): Question {
@@ -83,8 +85,6 @@ export function getLogarithmePrimitive(): Question {
     keys: ['x', 'C', 'ln', 'abs'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

@@ -22,6 +22,8 @@ export const expSimplifiying: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExpSimplifiying, nb),
   keys: ['exp'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getExpSimplifiying(): Question {
@@ -126,8 +128,6 @@ export function getExpSimplifiying(): Question {
     keys: ['exp'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

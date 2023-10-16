@@ -18,6 +18,8 @@ export const mentalDivisions: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getMentalDivisions, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getMentalDivisions(): Question {
@@ -109,8 +111,6 @@ export function getMentalDivisions(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

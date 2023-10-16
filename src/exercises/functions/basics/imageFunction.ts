@@ -16,6 +16,8 @@ export const imageFunction: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getImageFunction, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getImageFunction(): Question {
@@ -69,8 +71,6 @@ export function getImageFunction(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

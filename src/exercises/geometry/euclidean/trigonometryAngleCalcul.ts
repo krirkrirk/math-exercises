@@ -15,6 +15,8 @@ export const trigonometryAngleCalcul: Exercise = {
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getTrigonometryAngleCalcul, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getTrigonometryAngleCalcul(): Question {
@@ -83,8 +85,6 @@ export function getTrigonometryAngleCalcul(): Question {
     coords: triangle.generateCoords(),
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

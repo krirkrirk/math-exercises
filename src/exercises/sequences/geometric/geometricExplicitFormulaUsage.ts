@@ -19,6 +19,8 @@ export const geometricExplicitFormulaUsage: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getGeometricExplicitFormulaUsage, nb),
   keys: ['n', 'u', 'underscore'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getGeometricExplicitFormulaUsage(): Question {
@@ -70,8 +72,6 @@ export function getGeometricExplicitFormulaUsage(): Question {
     keys: ['n', 'u', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

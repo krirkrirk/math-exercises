@@ -16,6 +16,8 @@ export const rootsFromFactorizedForm: Exercise = {
   isSingleStep: true,
   sections: ['Second degré'],
   generator: (nb: number) => getDistinctQuestions(getRootsFromFactorizedFormQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getRootsFromFactorizedFormQuestion(): Question {
@@ -96,8 +98,6 @@ export function getRootsFromFactorizedFormQuestion(): Question {
     keys: ['S', 'equal', 'lbrace', 'semicolon', 'rbrace', 'emptyset'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

@@ -18,6 +18,8 @@ export const geometricRecurrenceFormulaUsage: Exercise = {
   isSingleStep: false,
   keys: ['q', 'n', 'u', 'underscore'],
 
+  qcmTimer: 60,
+  freeTimer: 60,
   generator: (nb: number, options: GeometricRecurrenceFormulaUsageOptions) =>
     getDistinctQuestions(getGeometricRecurrenceFormulaUsage, nb),
 };
@@ -74,8 +76,6 @@ export function getGeometricRecurrenceFormulaUsage(options: GeometricRecurrenceF
     keys: ['q', 'n', 'u', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

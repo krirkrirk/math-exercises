@@ -16,6 +16,8 @@ export const firstDegreeEquation: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFirstDegreeEquation, nb),
   keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getFirstDegreeEquation(): Question {
@@ -67,8 +69,6 @@ export function getFirstDegreeEquation(): Question {
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

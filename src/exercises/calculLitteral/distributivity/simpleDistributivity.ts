@@ -19,6 +19,8 @@ export const simpleDistributivity: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getSimpleDistributivityQuestion, nb),
   keys: ['x'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getSimpleDistributivityQuestion(): Question {
@@ -92,7 +94,5 @@ export function getSimpleDistributivityQuestion(): Question {
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 }

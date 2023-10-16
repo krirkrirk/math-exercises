@@ -15,6 +15,8 @@ export const trigonometrySideCalcul: Exercise = {
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getTrigonometrySideCalcul, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getTrigonometrySideCalcul(): Question {
@@ -94,8 +96,6 @@ export function getTrigonometrySideCalcul(): Question {
     coords: triangle.generateCoords(),
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

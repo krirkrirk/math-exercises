@@ -14,6 +14,8 @@ export const extremumTypeFromAlgebricForm: Exercise = {
   sections: ['Second degré'],
   generator: (nb: number) => getDistinctQuestions(getExtremumTypeFromAlgebricFormQuestion, nb),
   answerType: 'QCM',
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getExtremumTypeFromAlgebricFormQuestion(): Question {
@@ -57,8 +59,6 @@ export function getExtremumTypeFromAlgebricFormQuestion(): Question {
     }$ admet-elle un maximum ou un minimum ?`,
     getPropositions,
     answerFormat: 'raw',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

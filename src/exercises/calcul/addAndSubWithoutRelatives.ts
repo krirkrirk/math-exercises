@@ -20,6 +20,8 @@ export const addAndSubWithoutRelatives: Exercise = {
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getAddAndSubWithoutRelatives, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getAddAndSubWithoutRelatives(): Question {
@@ -87,8 +89,6 @@ export function getAddAndSubWithoutRelatives(): Question {
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

@@ -13,6 +13,8 @@ export const mutiplyComplex: Exercise = {
   isSingleStep: true,
   sections: ['Nombres complexes'],
   generator: (nb: number) => getDistinctQuestions(getMutiplyComplexQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getMutiplyComplexQuestion(): Question {
@@ -69,8 +71,7 @@ export function getMutiplyComplexQuestion(): Question {
     keys: ['i', 'z', 'quote'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
+
     startStatement: "z\\times z'",
   };
 

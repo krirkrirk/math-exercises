@@ -15,6 +15,8 @@ export const remarkableValuesExercise: Exercise = {
   sections: ['Trigonométrie'],
   generator: (nb: number) => getDistinctQuestions(getRemarkableValues, nb),
   keys: ['pi', 'cos', 'sin'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getRemarkableValues(): Question {
@@ -63,8 +65,7 @@ export function getRemarkableValues(): Question {
     answer: answer,
     keys: ['pi', 'cos', 'sin'],
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
+
     getPropositions,
   };
   return question;

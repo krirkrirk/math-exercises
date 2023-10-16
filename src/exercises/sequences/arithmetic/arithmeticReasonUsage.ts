@@ -14,6 +14,8 @@ export const arithmeticReasonUsage: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getArithmeticReasonUsage, nb),
   keys: ['r', 'n', 'u', 'underscore'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getArithmeticReasonUsage(): Question {
@@ -60,8 +62,6 @@ export function getArithmeticReasonUsage(): Question {
     keys: ['r', 'n', 'u', 'underscore'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
   return question;
 }

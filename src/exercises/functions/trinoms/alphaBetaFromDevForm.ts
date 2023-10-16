@@ -17,6 +17,8 @@ export const alphaBetaFromDevForm: Exercise = {
   isSingleStep: false,
   sections: ['Second degré'],
   generator: (nb: number) => getDistinctQuestions(getAlphaBetaFromDevFormQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getAlphaBetaFromDevFormQuestion(): Question {
@@ -67,8 +69,6 @@ export function getAlphaBetaFromDevFormQuestion(): Question {
     getPropositions,
     answerFormat: 'tex',
     startStatement: param,
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

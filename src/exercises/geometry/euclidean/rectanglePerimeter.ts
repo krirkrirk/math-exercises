@@ -13,6 +13,8 @@ export const rectanglePerimeter: Exercise = {
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
   generator: (nb: number) => getDistinctQuestions(getRectanglePerimeter, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getRectanglePerimeter(): Question {
@@ -55,8 +57,6 @@ export function getRectanglePerimeter(): Question {
     answer: (length + width) * 2 + '',
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

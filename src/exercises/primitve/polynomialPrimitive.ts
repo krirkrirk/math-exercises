@@ -24,6 +24,8 @@ export const polynomialPrimitive: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getPolynomialPrimitive, nb),
   keys: ['x', 'C'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 function getIntegratedPolynomialNode(polynomial: Polynomial) {
@@ -88,8 +90,6 @@ export function getPolynomialPrimitive(): Question {
     keys: ['x', 'C'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

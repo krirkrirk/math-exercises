@@ -14,6 +14,8 @@ export const medianWithTable: Exercise = {
   sections: ['Statistiques'],
   generator: (nb: number) => getDistinctQuestions(getMedianWithTable, nb),
   keys: [],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getMedianWithTable(): Question {
@@ -91,8 +93,6 @@ Calculer la médiane de cette série de valeurs.`,
     keys: [],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;

@@ -18,6 +18,8 @@ export const expDerivativeThree: Exercise = {
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExpDerivativeThree, nb),
   keys: ['exp'],
+  qcmTimer: 60,
+  freeTimer: 60,
 };
 
 export function getExpDerivativeThree(): Question {
@@ -71,8 +73,6 @@ export function getExpDerivativeThree(): Question {
     keys: ['exp'],
     getPropositions,
     answerFormat: 'tex',
-    qcmTimer: 60,
-    freeTimer: 60,
   };
 
   return question;
