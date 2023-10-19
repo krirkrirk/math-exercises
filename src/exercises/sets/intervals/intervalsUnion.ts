@@ -10,7 +10,7 @@ export const intervalsUnion: Exercise = {
   label: "Déterminer l'union de deux intervalles",
   levels: ['2nde', '2ndPro', '1reTech', 'CAP'],
   isSingleStep: true,
-  sections: ['Intervalles'],
+  sections: ['Ensembles et intervalles'],
   generator: (nb: number) => getDistinctQuestions(getIntervalsUnionQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
