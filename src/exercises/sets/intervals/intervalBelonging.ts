@@ -3,20 +3,20 @@ import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const {{name}}: Exercise = {
-  id: '{{name}}',
-  connector: "",
-  instruction: "",
-  label: "",
-  levels: [],
+export const intervalBelonging: Exercise = {
+  id: 'intervalBelonging',
+  connector: '=',
+  instruction: '',
+  label: '=',
+  levels: ['2nde', '2ndPro', '1reESM'],
   isSingleStep: true,
-  sections: [],
-  generator: (nb: number) => getDistinctQuestions(get{{namePascal}}Question, nb),
+  sections: ['Ensembles et intervalles'],
+  generator: (nb: number) => getDistinctQuestions(getIntervalBelongingQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
 };
 
-export function get{{namePascal}}Question(): Question {
+export function getIntervalBelongingQuestion(): Question {
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 

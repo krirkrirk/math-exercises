@@ -4,10 +4,57 @@ import { Nombre, NumberType } from '#root/math/numbers/nombre';
 import { Real } from '#root/math/numbers/reals/real';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
+import { coinFlip } from '#root/utils/coinFlip';
+import { diceFlip } from '#root/utils/diceFlip';
 import { DiscreteSet } from '../discreteSet';
 import { MathSet } from '../mathSet';
 import { MathSetInterface } from '../mathSetInterface';
 
+export abstract class IntervalConstructor {
+  static random() {
+    let tex = '';
+    const randType = randint(0, 6);
+    let a: number, b: number;
+    switch (randType) {
+      case 0:
+        b = randint(-10, 10);
+        tex = `]-\\infty;${b}${coinFlip() ? ']' : '['}`;
+        break;
+      case 1:
+        a = randint(-10, 10);
+        tex = `${coinFlip() ? ']' : '['}${a};+\\infty[`;
+        break;
+      case 2:
+        a = randint(-10, 10);
+        b = randint(a + 1, a + 10);
+        tex = `[${a};${b}]`;
+        break;
+      case 3:
+        a = randint(-10, 10);
+        b = randint(a + 1, a + 10);
+        tex = `]${a};${b}]`;
+        break;
+      case 4:
+        a = randint(-10, 10);
+        b = randint(a + 1, a + 10);
+        tex = `[${a};${b}[`;
+        break;
+      case 5:
+        a = randint(-10, 10);
+        b = randint(a + 1, a + 10);
+        tex = `]${a};${b}[`;
+        break;
+    }
+    //-inf; x[
+    //[x; inf
+
+    //[a,b]
+    //[ [
+    //] ]
+    //] [
+    return new Interval(tex);
+  }
+}
 enum BoundType {
   OO = ']a;b[',
   OF = ']a;b]',
@@ -17,8 +64,15 @@ enum BoundType {
 
 export class Interval implements MathSetInterface {
   min: number;
+  minTex: string;
   max: number;
+  maxTex: string;
   boundType: BoundType;
+  leftBracket: '[' | ']';
+  rightBracket: '[' | ']';
+  leftInequalitySymbol: '\\leq' | '<' | '\\geq' | '>';
+  rightInequalitySymbol: '\\leq' | '<' | '\\geq' | '>';
+
   type: NumberType;
   tex: string;
   /**
@@ -32,18 +86,35 @@ export class Interval implements MathSetInterface {
     const left = tex[0];
     const right = tex[tex.length - 1];
     const [a, b] = tex.slice(isInt ? 2 : 1, isInt ? tex.length - 2 : tex.length - 1).split(';');
-
+    this.minTex = a;
+    this.maxTex = b;
     switch (`${left}a;b${right}`) {
       case '[a;b]':
+        this.leftBracket = '[';
+        this.leftInequalitySymbol = '\\leq';
+        this.rightInequalitySymbol = '\\leq';
+        this.rightBracket = ']';
         this.boundType = BoundType.FF;
         break;
       case ']a;b[':
+        this.leftBracket = ']';
+        this.rightBracket = '[';
+        this.leftInequalitySymbol = '<';
+        this.rightInequalitySymbol = '<';
         this.boundType = BoundType.OO;
         break;
       case '[a;b[':
+        this.leftBracket = '[';
+        this.rightBracket = '[';
+        this.leftInequalitySymbol = '\\leq';
+        this.rightInequalitySymbol = '<';
         this.boundType = BoundType.FO;
         break;
       case ']a;b]':
+        this.leftBracket = ']';
+        this.rightBracket = ']';
+        this.leftInequalitySymbol = '<';
+        this.rightInequalitySymbol = '\\leq';
         this.boundType = BoundType.OF;
         break;
       default:
@@ -96,6 +167,24 @@ export class Interval implements MathSetInterface {
 
   toTex(): string {
     return this.tex;
+  }
+  insideToTex(): string {
+    return this.tex.replaceAll('[', '').replaceAll(']', '');
+  }
+
+  toInequality(): string {
+    const isLeftClosed = this.boundType === BoundType.FO || this.boundType === BoundType.FF;
+    const isRightClosed = this.boundType === BoundType.FF || this.boundType === BoundType.OF;
+    if (this.max === Infinity) {
+      if (isLeftClosed) {
+        return `x \\geq ${this.min}`;
+      } else return `x > ${this.min}`;
+    } else if (this.min === -Infinity) {
+      if (this.boundType === BoundType.OF) {
+        return `x \\leq ${this.max}`;
+      } else return `x < ${this.max}`;
+    }
+    return `${this.min} ${isLeftClosed ? '\\leq' : '<'} x ${isRightClosed ? '\\leq' : '<'} ${this.max}`;
   }
 
   getRandomElement(precision: number = this.type === NumberType.Integer ? 0 : 2): Nombre {

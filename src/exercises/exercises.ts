@@ -168,6 +168,8 @@ import { chasles } from './geometry/vectors/chasles';
 import { deltaTrinom } from './functions/trinoms/deltaTrinom';
 import { rootsFromFactorizedForm } from './functions/trinoms/rootsFromFactorizedForm';
 import { rootsFromDevForm } from './functions/trinoms/rootsFromDevForm';
+import { inequalityToInterval } from './sets/intervals/inequalityToInterval';
+import { setBelonging } from './sets/setBelonging';
 
 export const exercises = [
   /**
@@ -417,4 +419,8 @@ export const exercises = [
   inverseComplex,
   divideComplex,
   conjugateDivideComplex,
+
+  /**sets */
+  inequalityToInterval,
+  setBelonging,
 ];
