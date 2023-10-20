@@ -1,5 +1,7 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { IntervalConstructor } from '#root/math/sets/intervals/intervals';
+import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
@@ -17,6 +19,19 @@ export const intervalBelonging: Exercise = {
 };
 
 export function getIntervalBelongingQuestion(): Question {
+  const interval = IntervalConstructor.random();
+  const isIn = coinFlip();
+  
+  let nb = '';
+  let answer = '';
+  if(isIn){
+    answer = "\\in";
+    nb = interval.getRandomElement().toTree().toTex();
+  }
+  else {
+    answer = "\\notin";
+    nb = 
+  }
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
@@ -51,9 +66,9 @@ export function getIntervalBelongingQuestion(): Question {
   };
 
   const question: Question = {
-    answer: ``,
-    instruction: ``,
-    keys: [],
+    answer,
+    instruction: `Compléter par $\\in$ ou $\\notin$ : $\\ ${nb} \\ldots ${interval.toTex()}$`,
+    keys: ["belongs", "notin"],
     getPropositions,
     answerFormat: 'tex',
   };
