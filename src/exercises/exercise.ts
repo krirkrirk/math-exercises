@@ -17,6 +17,7 @@ export interface Question {
   commands?: string[];
   coords?: number[];
   options?: any;
+  divisionFormat?: 'fraction' | 'obelus';
   getPropositions: (n: number) => Proposition[];
 }
 

@@ -21,16 +21,15 @@ export const intervalBelonging: Exercise = {
 export function getIntervalBelongingQuestion(): Question {
   const interval = IntervalConstructor.random();
   const isIn = coinFlip();
-  
+
   let nb = '';
   let answer = '';
-  if(isIn){
-    answer = "\\in";
+  if (isIn) {
+    answer = '\\in';
     nb = interval.getRandomElement().toTree().toTex();
-  }
-  else {
-    answer = "\\notin";
-    nb = 
+  } else {
+    answer = '\\notin';
+    nb = '2';
   }
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
@@ -68,7 +67,7 @@ export function getIntervalBelongingQuestion(): Question {
   const question: Question = {
     answer,
     instruction: `Compléter par $\\in$ ou $\\notin$ : $\\ ${nb} \\ldots ${interval.toTex()}$`,
-    keys: ["belongs", "notin"],
+    keys: ['belongs', 'notin'],
     getPropositions,
     answerFormat: 'tex',
   };
