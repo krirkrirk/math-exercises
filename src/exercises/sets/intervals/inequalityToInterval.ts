@@ -133,7 +133,7 @@ export function getInequalityToIntervalQuestion(): Question {
   const question: Question = {
     answer,
     instruction: instruction,
-    keys: ['x', 'belongs', 'inf', 'sup', 'geq', 'leq', 'lbracket', 'rbracket', 'semicolon'],
+    keys: ['x', 'belongs', 'inf', 'sup', 'geq', 'leq', 'lbracket', 'rbracket', 'semicolon', 'infty'],
     getPropositions,
     answerFormat: 'tex',
   };

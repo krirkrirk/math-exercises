@@ -159,7 +159,13 @@ export function getInverseImageFunctionGeogebra(): Question {
     return shuffle(res);
   };
 
-  const commands = [rand ? polynome1.toString() : polynome2.add(new Polynomial([yValue])).toString()];
+  const commands = [
+    rand
+      ? polynome1.toString()
+      : yValue !== 0
+      ? polynome2.add(new Polynomial([yValue])).toString()
+      : polynome2.toString(),
+  ];
 
   const question: Question = {
     instruction: statement,
