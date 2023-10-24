@@ -248,14 +248,14 @@ export class Interval implements MathSetInterface {
     const isRightClosed = this.boundType === BoundType.FF || this.boundType === BoundType.OF;
     if (this.max === Infinity) {
       if (isLeftClosed) {
-        return `x \\ge ${this.min}`;
-      } else return `x > ${this.min}`;
+        return `x\\ge${this.min}`;
+      } else return `x>${this.min}`;
     } else if (this.min === -Infinity) {
       if (this.boundType === BoundType.OF) {
-        return `x \\le ${this.max}`;
-      } else return `x < ${this.max}`;
+        return `x\\le${this.max}`;
+      } else return `x<${this.max}`;
     }
-    return `${this.min} ${isLeftClosed ? '\\le' : '<'} x ${isRightClosed ? '\\le' : '<'} ${this.max}`;
+    return `${this.min}${isLeftClosed ? '\\le x' : '<x'}${isRightClosed ? '\\le' : '<'}${this.max}`;
   }
 
   getRandomElement(precision: number = this.type === NumberType.Integer ? 0 : 2): Nombre {
