@@ -32,9 +32,9 @@ export const equationType3Exercise: Exercise = {
 export function getEquationType3ExerciseQuestion(): Question {
   const interval = new Interval('[[-10; 10]]');
   const intervalStar = new Interval('[[-10; 10]]').difference(new DiscreteSet([new Integer(0)]));
-  const b = intervalStar.getRandomElement();
-  const a = intervalStar.getRandomElement();
-  const c = interval.getRandomElement();
+  const b = intervalStar.getRandomElement()!;
+  const a = intervalStar.getRandomElement()!;
+  const c = interval.getRandomElement()!;
 
   const affine = new Affine(a.value, b.value).toTree();
   const solution = new Rational(c.value - b.value, a.value).simplify();

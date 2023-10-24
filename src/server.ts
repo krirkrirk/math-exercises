@@ -2,6 +2,7 @@ import { exercises } from './exercises/exercises';
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import { IntervalConstructor } from './math/sets/intervals/intervals';
 
 const allExercises = [...exercises];
 

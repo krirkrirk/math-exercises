@@ -45,7 +45,7 @@ export class Droite {
   }
 
   toEquationForm(): string {
-    return `${this.a.toTex()}x + ${this.b.toTex()}`;
+    return `${this.a.toTex()}x+${this.b.toTex()}`;
   }
 
   toEquationExpression(): string {

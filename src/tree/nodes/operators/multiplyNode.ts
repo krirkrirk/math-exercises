@@ -52,8 +52,8 @@ export class MultiplyNode extends OperatorNode implements Node {
       const operatorRightChild = this.rightChild as unknown as OperatorNode;
       showTimesSign ||= [OperatorIds.fraction].includes(operatorRightChild.id);
     }
-
-    return `${leftTex}${showTimesSign ? '\\times ' : ''}${rightTex}`;
+    const nextIsLetter = rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
+    return `${leftTex}${showTimesSign ? `\\times${nextIsLetter ? ' ' : ''}` : ''}${rightTex}`;
   }
 
   toMathjs() {

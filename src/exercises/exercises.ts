@@ -170,6 +170,8 @@ import { rootsFromFactorizedForm } from './functions/trinoms/rootsFromFactorized
 import { rootsFromDevForm } from './functions/trinoms/rootsFromDevForm';
 import { inequalityToInterval } from './sets/intervals/inequalityToInterval';
 import { setBelonging } from './sets/setBelonging';
+import { intervalsUnion } from './sets/intervals/intervalsUnion';
+import { intervalsIntersection } from './sets/intervals/intervalsIntersection';
 
 export const exercises = [
   /**
@@ -423,4 +425,6 @@ export const exercises = [
   /**sets */
   inequalityToInterval,
   setBelonging,
+  intervalsUnion,
+  intervalsIntersection,
 ];

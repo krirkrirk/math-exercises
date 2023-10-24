@@ -33,8 +33,8 @@ export class DivideNode extends OperatorNode implements Node {
       needBrackets ||= [OperatorIds.add, OperatorIds.substract, OperatorIds.divide].includes(operatorRightChild.id);
     }
     if (needBrackets) rightTex = `(${rightTex})`;
-
-    return `${leftTex} \\div ${rightTex}`;
+    const nextIsLetter = rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
+    return `${leftTex}\\div${nextIsLetter ? ' ' : ''}${rightTex}`;
   }
   toMathjs() {
     return divide(this.leftChild.toMathjs(), this.rightChild.toMathjs());

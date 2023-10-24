@@ -29,9 +29,9 @@ export function getFirstDegreeInequationsQuestion(): Question {
 
   const result = c - affine.b;
 
-  const ineqType = random(['\\leq', '<', '\\geq', '>']);
-  const invIneqType = ineqType === '<' ? '>' : ineqType === '>' ? '<' : ineqType === '\\leq' ? '\\geq' : '\\leq';
-  const answer = `x ${ineqType} ${result}`;
+  const ineqType = random(['\\le', '<', '\\ge', '>']);
+  const invIneqType = ineqType === '<' ? '>' : ineqType === '>' ? '<' : ineqType === '\\le' ? '\\ge' : '\\le';
+  const answer = `x${ineqType}${result}`;
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 

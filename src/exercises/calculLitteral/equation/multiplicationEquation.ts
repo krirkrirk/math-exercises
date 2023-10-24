@@ -35,7 +35,7 @@ export function getMultiplicationEquation(): Question {
   const polynome1 = new Polynomial([b, a]);
   const polynome2 = new Polynomial([d, c]);
 
-  const answer = `S = \\left\\{${simplifyNode(
+  const answer = `S=\\left\\{${simplifyNode(
     new FractionNode(new NumberNode(-b), new NumberNode(a)),
   ).toTex()};${simplifyNode(new FractionNode(new NumberNode(-d), new NumberNode(c))).toTex()}\\right\\}`;
 
@@ -64,7 +64,7 @@ export function getMultiplicationEquation(): Question {
         const polynome1 = new Polynomial([b, a]);
         const polynome2 = new Polynomial([d, c]);
 
-        const wrongAnswer = `S = \\left\\{${simplifyNode(
+        const wrongAnswer = `S=\\left\\{${simplifyNode(
           new FractionNode(new NumberNode(-b), new NumberNode(a)),
         ).toTex()};${simplifyNode(new FractionNode(new NumberNode(-d), new NumberNode(c))).toTex()}\\right\\}`;
 
@@ -86,9 +86,9 @@ export function getMultiplicationEquation(): Question {
 
   const question: Question = {
     startStatement: `(${polynome1.toTex()})(${polynome2.toTex()}) = 0`,
-    answer: `S = \\left\\{${simplifyNode(
-      new FractionNode(new NumberNode(-b), new NumberNode(a)),
-    ).toTex()};${simplifyNode(new FractionNode(new NumberNode(-d), new NumberNode(c))).toTex()}\\right\\}`,
+    answer: `S=\\left\\{${simplifyNode(new FractionNode(new NumberNode(-b), new NumberNode(a))).toTex()};${simplifyNode(
+      new FractionNode(new NumberNode(-d), new NumberNode(c)),
+    ).toTex()}\\right\\}`,
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou'],
     getPropositions,
     answerFormat: 'tex',

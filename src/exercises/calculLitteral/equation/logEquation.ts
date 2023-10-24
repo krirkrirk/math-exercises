@@ -21,7 +21,7 @@ export const logEquation: Exercise = {
   sections: ['Logarithme népérien'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getLnEquation, nb),
-  keys: ['ln', 'exp'],
+  keys: ['x', 'equal', 'ln', 'epower', 'exp'],
   qcmTimer: 60,
   freeTimer: 60,
 };
@@ -75,7 +75,7 @@ export function getLnEquation(): Question {
   const question: Question = {
     instruction: `Résoudre l'équation $${equation.toTex()}$.`,
     answer: answer.toTex(),
-    keys: ['ln', 'exp'],
+    keys: ['x', 'equal', 'ln', 'epower', 'exp'],
     getPropositions,
     answerFormat: 'tex',
   };

@@ -1,56 +1,53 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { randint } from '#root/math/utils/random/randint';
+import { IntervalConstructor } from '#root/math/sets/intervals/intervals';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const squareRootEquation: Exercise = {
-  id: 'squareRootEquation',
-  connector: '\\iff',
+export const intervalsIntersection: Exercise = {
+  id: 'intervalsIntersection',
+  connector: '=',
   instruction: '',
-  label: 'Résoudre une équation du type $\\sqrt x = k$',
-  levels: ['2nde', '1reESM', '1reSpé'],
+  label: "Déterminer l'intersection de deux intervalles",
+  levels: ['2nde', '1reESM'],
   isSingleStep: true,
-  sections: ['Racines carrées', 'Équations', 'Fonctions de référence'],
-  generator: (nb: number) => getDistinctQuestions(getSquareRootEquationQuestion, nb),
+  sections: ['Ensembles et intervalles'],
+  generator: (nb: number) => getDistinctQuestions(getIntervalsIntersectionQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
 };
 
-export function getSquareRootEquationQuestion(): Question {
-  const k = Math.random() < 0.2 ? randint(-20, 0) : randint(0, 11);
-  const answer = k < 0 ? 'S=\\emptyset' : `S=\\{${k ** 2}\\}`;
+export function getIntervalsIntersectionQuestion(): Question {
+  const [int1, int2] = IntervalConstructor.differentRandoms(2);
+  const inter = int1.intersection(int2);
+
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
     res.push({
       id: v4(),
-      statement: answer,
+      statement: inter.toTex(),
       isRightAnswer: true,
       format: 'tex',
     });
 
-    if (k >= 0)
+    const unionTex = int1.union(int2).tex;
+    if (unionTex !== inter.tex) {
       res.push({
         id: v4(),
-        statement: 'S=\\emptyset',
+        statement: unionTex,
         isRightAnswer: false,
         format: 'tex',
       });
-    if (Math.sqrt(k) !== k ** 2)
-      res.push({
-        id: v4(),
-        statement: `S=\\{\\sqrt{${k}}\\}`,
-        isRightAnswer: false,
-        format: 'tex',
-      });
+    }
+
     const missing = n - res.length;
     for (let i = 0; i < missing; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 
       do {
-        const wrongAnswer = `S=\\{${randint(1, 100)}\\}`;
+        const wrongAnswer = IntervalConstructor.random().tex;
         proposition = {
           id: v4() + ``,
           statement: wrongAnswer,
@@ -68,9 +65,9 @@ export function getSquareRootEquationQuestion(): Question {
   };
 
   const question: Question = {
-    answer: answer,
-    instruction: `Résoudre l'équation suivante : $\\sqrt x = ${k}$`,
-    keys: ['S', 'equal', 'lbrace', 'semicolon', 'rbrace', 'emptyset'],
+    answer: inter.tex,
+    instruction: `Soit $I = ${int1.toTex()}$ et $J = ${int2.toTex()}$. Déterminer $I\\cap J$.`,
+    keys: ['infty', 'emptyset', 'lbracket', 'rbracket', 'semicolon', 'cup', 'cap'],
     getPropositions,
     answerFormat: 'tex',
   };

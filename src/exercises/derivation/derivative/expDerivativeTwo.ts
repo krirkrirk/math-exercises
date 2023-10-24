@@ -19,7 +19,7 @@ export const expDerivativeTwo: Exercise = {
   sections: ['Dérivation', 'Exponentielle'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExpDerivative, nb),
-  keys: ['exp'],
+  keys: ['x', 'epower', 'exp'],
   qcmTimer: 60,
   freeTimer: 60,
 };
@@ -72,7 +72,7 @@ export function getExpDerivative(): Question {
     instruction: `Déterminer la dérivée de la fonction $f(x) = ${myfunction.toTex()}$.`,
     startStatement: "f'(x)",
     answer: derivative.toTex(),
-    keys: ['exp'],
+    keys: ['x', 'epower', 'exp'],
     getPropositions,
     answerFormat: 'tex',
   };

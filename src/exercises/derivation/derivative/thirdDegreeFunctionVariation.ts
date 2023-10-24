@@ -37,7 +37,7 @@ export function getThirdDegreeFunctionVariation(): Question {
   const answer =
     coin * a < 0
       ? `\\left[${racine1};${racine2}\\right]`
-      : `\\left]-\\infty;${racine1}\\right] \\cup \\left[${racine2};+\\infty\\right[`;
+      : `\\left]-\\infty;${racine1}\\right]\\cup\\left[${racine2};+\\infty\\right[`;
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];

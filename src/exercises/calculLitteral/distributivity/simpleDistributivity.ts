@@ -27,7 +27,7 @@ export function getSimpleDistributivityQuestion(): Question {
   const excludeNbrs = [new Integer(-1), new Integer(0), new Integer(1)];
   const interval = new Interval('[[-10; 10]]').difference(new DiscreteSet(excludeNbrs));
   const affine = AffineConstructor.random(interval, interval);
-  const coeff = interval.getRandomElement();
+  const coeff = interval.getRandomElement()!;
 
   const statementTree = new MultiplyNode(new NumberNode(coeff.value), affine.toTree());
   const answerTree = affine.times(coeff.value).toTree();

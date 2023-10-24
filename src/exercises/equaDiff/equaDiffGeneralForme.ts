@@ -20,7 +20,7 @@ export const exponentialDifferentialEquation: Exercise = {
   sections: ['Équations différentielles'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExponentialEquation, nb),
-  keys: ['x', 'y', 'exp', 'C', 'equal'],
+  keys: ['x', 'y', 'epower', 'exp', 'C', 'equal'],
   qcmTimer: 60,
   freeTimer: 60,
 };
@@ -81,7 +81,7 @@ export function getExponentialEquation(): Question {
     instruction: `Résoudre l'équation différentielle suivante : $y' = ${myEquation.toTex()}$.`,
     startStatement: `y(x)`,
     answer: myAnswer.toTex(),
-    keys: ['x', 'y', 'exp', 'C', 'equal'],
+    keys: ['x', 'y', 'epower', 'exp', 'C', 'equal'],
     getPropositions,
     answerFormat: 'tex',
   };

@@ -20,7 +20,7 @@ export class SubstractNode extends OperatorNode implements Node {
 
     if (needBrackets) rightTex = `(${rightTex})`;
 
-    return `${leftTex} - ${rightTex}`;
+    return `${leftTex}-${rightTex}`;
   }
   toMathjs() {
     return subtract(this.leftChild.toMathjs(), this.rightChild.toMathjs());

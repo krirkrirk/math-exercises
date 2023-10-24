@@ -40,13 +40,13 @@ export function getEquationSimpleSquare(): Question {
   const ans = Math.sqrt(randNbr);
 
   if (randNbr < 0) answer = `S=\\emptyset`;
-  else if (ans === Math.floor(ans)) answer = `S=\\left\\{${ans}\\ ; -${ans}\\right\\}`;
+  else if (ans === Math.floor(ans)) answer = `S=\\left\\{-${ans};${ans}\\right\\}`;
   else {
     const factor = higherFactor(randNbr);
     const radicand = randNbr / factor ** 2;
-    answer = `S=\\left\\{${factor === 1 ? '' : factor}\\sqrt{${radicand}}\\ ; -${
+    answer = `S=\\left\\{-${factor === 1 ? '' : factor}\\sqrt{${radicand}};${
       factor === 1 ? '' : factor
-    }\\sqrt{${radicand}} \\right\\}`;
+    }\\sqrt{${radicand}}\\right\\}`;
   }
 
   const getPropositions = (n: number) => {

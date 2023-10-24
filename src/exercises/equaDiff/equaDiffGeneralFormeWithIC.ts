@@ -21,7 +21,7 @@ export const exponentialDifferentialEquationWithIC: Exercise = {
   sections: ['Équations différentielles'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(solveExponentialEquationWithIC, nb),
-  keys: ['x', 'y', 'exp', 'equal'],
+  keys: ['x', 'y', 'epower', 'exp', 'equal'],
   qcmTimer: 60,
   freeTimer: 60,
 };
@@ -99,7 +99,7 @@ export function solveExponentialEquationWithIC(): Question {
     instruction: `Résoudre l'équation différentielle suivante avec la condition initiale $y(0) = ${initialY}$ : $y' = ${myEquation.toTex()}$.`,
     startStatement: `y(x)`,
     answer: myAnswer.toTex(),
-    keys: ['x', 'y', 'exp', 'equal'],
+    keys: ['x', 'y', 'epower', 'exp', 'equal'],
     getPropositions,
     answerFormat: 'tex',
   };

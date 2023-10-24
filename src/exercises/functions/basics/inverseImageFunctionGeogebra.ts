@@ -53,7 +53,7 @@ export function getInverseImageFunctionGeogebra(): Question {
   const answer = rand
     ? xValue
     : roots.length === 2
-    ? `\\{${round(roots[0], 1)};${round(roots[1], 1)} \\}`
+    ? `\\{${round(roots[0], 1)};${round(roots[1], 1)}\\}`
     : roots.length === 1
     ? roots[0]
     : `\\emptyset`;

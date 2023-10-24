@@ -118,7 +118,7 @@ export function getSinCosPrimitive(): Question {
       selectedFunction,
     ).toTex()}$.`,
     startStatement: `F(x)`,
-    answer: `${simplifyNode(integratedFuction).toTex()} + C`,
+    answer: `${simplifyNode(integratedFuction).toTex()}+C`,
     keys: ['x', 'C', 'sin', 'cos'],
     getPropositions,
     answerFormat: 'tex',

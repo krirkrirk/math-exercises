@@ -37,7 +37,7 @@ export function getRootsFromFactorizedFormQuestion(): Question {
     if (roots.length === 1 && roots[0] !== 0) {
       res.push({
         id: v4(),
-        statement: `S = \\lbrace ${new OppositeNode(new NumberNode(roots[0]))} \\rbrace`,
+        statement: `S=\\{${new OppositeNode(new NumberNode(roots[0]))}\\}`,
         isRightAnswer: false,
         format: 'tex',
       });
@@ -45,7 +45,7 @@ export function getRootsFromFactorizedFormQuestion(): Question {
     if (roots.length === 2 && roots[0] !== 0) {
       res.push({
         id: v4(),
-        statement: `S = \\lbrace ${new OppositeNode(new NumberNode(roots[0])).toTex()} ; ${roots[1]} \\rbrace`,
+        statement: `S=\\{${new OppositeNode(new NumberNode(roots[0])).toTex()};${roots[1]}\\}`,
         isRightAnswer: false,
         format: 'tex',
       });
@@ -53,7 +53,7 @@ export function getRootsFromFactorizedFormQuestion(): Question {
     if (roots.length === 2 && roots[1] !== 0) {
       res.push({
         id: v4(),
-        statement: `S = \\lbrace ${roots[0]} ; ${new OppositeNode(new NumberNode(roots[1])).toTex()} \\rbrace`,
+        statement: `S=\\{${roots[0]};${new OppositeNode(new NumberNode(roots[1])).toTex()}\\}`,
         isRightAnswer: false,
         format: 'tex',
       });
@@ -61,9 +61,9 @@ export function getRootsFromFactorizedFormQuestion(): Question {
     if (roots.length === 2 && roots[0] !== 0 && roots[1] !== 0) {
       res.push({
         id: v4(),
-        statement: `S = \\lbrace ${new OppositeNode(new NumberNode(roots[0])).toTex()} ; ${new OppositeNode(
+        statement: `S=\\{${new OppositeNode(new NumberNode(roots[0])).toTex()};${new OppositeNode(
           new NumberNode(roots[1]),
-        ).toTex()} \\rbrace`,
+        ).toTex()}\\}`,
         isRightAnswer: false,
         format: 'tex',
       });
@@ -75,7 +75,7 @@ export function getRootsFromFactorizedFormQuestion(): Question {
       let proposition: Proposition;
 
       do {
-        const wrongAnswer = `S = \\lbrace ${randint(-10, 11)}; ${randint(-10, 11)} \\rbrace`;
+        const wrongAnswer = `S=\\{${randint(-10, 11)};${randint(-10, 11)}\\}`;
         proposition = {
           id: v4() + ``,
           statement: wrongAnswer,

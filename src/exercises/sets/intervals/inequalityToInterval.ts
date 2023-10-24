@@ -22,22 +22,22 @@ export function getInequalityToIntervalQuestion(): Question {
   const reverseBracket = (bracket: ']' | '[') => {
     return bracket === '[' ? ']' : '[';
   };
-  const switchInequality = (symbol: '\\leq' | '<' | '\\geq' | '>') => {
-    if (symbol === '\\leq') return '<';
-    if (symbol === '<') return '\\leq';
-    if (symbol === '>') return '\\geq';
+  const switchInequality = (symbol: '\\le' | '<' | '\\ge' | '>') => {
+    if (symbol === '\\le') return '<';
+    if (symbol === '<') return '\\le';
+    if (symbol === '>') return '\\ge';
     return '>';
   };
-  const reverseInequality = (symbol: '\\leq' | '<' | '\\geq' | '>') => {
-    if (symbol === '\\leq') return '\\geq';
+  const reverseInequality = (symbol: '\\le' | '<' | '\\ge' | '>') => {
+    if (symbol === '\\le') return '\\ge';
     if (symbol === '<') return '>';
     if (symbol === '>') return '<';
-    return '\\leq';
+    return '\\le';
   };
   const isIntervalToInequality = coinFlip();
   const interval = IntervalConstructor.random();
   const inequalityString = interval.toInequality();
-  const answer = isIntervalToInequality ? inequalityString : `x \\in ${interval.toTex()}`;
+  const answer = isIntervalToInequality ? inequalityString : `x\\in${interval.toTex()}`;
   const instruction = isIntervalToInequality
     ? `Soit $x \\in ${interval.toTex()}$. Traduire cette appartenance en une inégalité.`
     : `Soit $${inequalityString}$. Traduire cette inégalité en appartenance à un intervalle.`;
@@ -54,7 +54,7 @@ export function getInequalityToIntervalQuestion(): Question {
       if (interval.min === -Infinity) {
         const wrongStatements = [
           `x ${switchInequality(interval.rightInequalitySymbol)} ${interval.maxTex}`,
-          `-\\infty \\leq x ${switchInequality(interval.rightInequalitySymbol)} ${interval.maxTex}`,
+          `-\\infty \\le x ${switchInequality(interval.rightInequalitySymbol)} ${interval.maxTex}`,
           `-\\infty < x ${switchInequality(interval.rightInequalitySymbol)} ${interval.maxTex}`,
         ];
         wrongStatements.forEach((statement) => {
@@ -68,8 +68,8 @@ export function getInequalityToIntervalQuestion(): Question {
       } else if (interval.max === Infinity) {
         const wrongStatements = [
           `x ${switchInequality(reverseInequality(interval.leftInequalitySymbol))} ${interval.minTex}`,
-          `${interval.minTex} ${switchInequality(interval.leftInequalitySymbol)} x \\leq +\\infty`,
-          `${interval.minTex} ${switchInequality(interval.leftInequalitySymbol)} x \\leq +\\infty`,
+          `${interval.minTex} ${switchInequality(interval.leftInequalitySymbol)} x \\le +\\infty`,
+          `${interval.minTex} ${switchInequality(interval.leftInequalitySymbol)} x \\le +\\infty`,
         ];
         wrongStatements.forEach((statement) => {
           res.push({
@@ -106,7 +106,7 @@ export function getInequalityToIntervalQuestion(): Question {
         statement: `x \\in \\left${reverseBracket(interval.leftBracket)}${interval.insideToTex()}\\right${
           interval.rightBracket
         }`,
-        isRightAnswer: true,
+        isRightAnswer: false,
         format: 'tex',
       });
       res.push({
@@ -114,7 +114,7 @@ export function getInequalityToIntervalQuestion(): Question {
         statement: `x \\in \\left${interval.leftBracket}${interval.insideToTex()}\\right${reverseBracket(
           interval.rightBracket,
         )}`,
-        isRightAnswer: true,
+        isRightAnswer: false,
         format: 'tex',
       });
       res.push({
@@ -122,7 +122,7 @@ export function getInequalityToIntervalQuestion(): Question {
         statement: `x \\in \\left${reverseBracket(
           interval.leftBracket,
         )}${interval.insideToTex()}\\right${reverseBracket(interval.rightBracket)}`,
-        isRightAnswer: true,
+        isRightAnswer: false,
         format: 'tex',
       });
     }

@@ -56,7 +56,7 @@ export function getConstantPrimitive(): Question {
   const question: Question = {
     instruction: `Déterminer la forme générale des primitives de la fonction constante $f$ définie par $f(x) = ${c}$.`,
     startStatement: `F(x)`,
-    answer: `${c}x + C`,
+    answer: `${c}x+C`,
     keys: ['x', 'C'],
     getPropositions,
     answerFormat: 'tex',

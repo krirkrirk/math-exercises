@@ -21,7 +21,7 @@ export const expSimplifiying: Exercise = {
   sections: ['Exponentielle'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExpSimplifiying, nb),
-  keys: ['exp'],
+  keys: ['x', 'epower', 'exp'],
   qcmTimer: 60,
   freeTimer: 60,
 };
@@ -125,7 +125,7 @@ export function getExpSimplifiying(): Question {
   const question: Question = {
     instruction: `Simplifier l'expression $${expression.toTex()}$.`,
     answer: simplifiedExpression.toTex(),
-    keys: ['exp'],
+    keys: ['x', 'epower', 'exp'],
     getPropositions,
     answerFormat: 'tex',
   };

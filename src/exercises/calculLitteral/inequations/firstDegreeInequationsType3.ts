@@ -29,9 +29,9 @@ export function getFirstDegreeInequationsQuestion(): Question {
 
   const result = new Rational(affine2.b - affine1.b, affine1.a - affine2.a).simplify().toTree().toTex();
   const coeff = affine1.a - affine2.a;
-  const ineqType = random(['\\leq', '<', '\\geq', '>']);
-  const invIneqType = ineqType === '<' ? '>' : ineqType === '>' ? '<' : ineqType === '\\leq' ? '\\geq' : '\\leq';
-  const answer = `x ${coeff > 0 ? ineqType : invIneqType} ${result}`;
+  const ineqType = random(['\\le', '<', '\\ge', '>']);
+  const invIneqType = ineqType === '<' ? '>' : ineqType === '>' ? '<' : ineqType === '\\le' ? '\\ge' : '\\le';
+  const answer = `x${coeff > 0 ? ineqType : invIneqType}${result}`;
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 

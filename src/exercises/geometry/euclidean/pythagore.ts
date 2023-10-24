@@ -86,7 +86,7 @@ export function getPythagore(): Question {
   };
 
   const question: Question = {
-    answer: `${triangle.getSideAName()}^2 = ${triangle.getSideBName()}^2 + ${triangle.getSideCName()}^2`,
+    answer: `${triangle.getSideAName()}^2=${triangle.getSideBName()}^2+${triangle.getSideCName()}^2`,
     keys: [...vertices, 'equal'],
     commands: triangle.generateCommands({}),
     coords: triangle.generateCoords(),

@@ -45,14 +45,18 @@ export abstract class IntervalConstructor {
         tex = `]${a};${b}[`;
         break;
     }
-    //-inf; x[
-    //[x; inf
-
-    //[a,b]
-    //[ [
-    //] ]
-    //] [
     return new Interval(tex);
+  }
+  static differentRandoms(nb: number) {
+    const res: Interval[] = [];
+    for (let i = 0; i < nb; i++) {
+      let interval: Interval;
+      do {
+        interval = this.random();
+      } while (res.some((int) => int.tex === interval.tex));
+      res.push(this.random());
+    }
+    return res;
   }
 }
 enum BoundType {
@@ -70,8 +74,8 @@ export class Interval implements MathSetInterface {
   boundType: BoundType;
   leftBracket: '[' | ']';
   rightBracket: '[' | ']';
-  leftInequalitySymbol: '\\leq' | '<' | '\\geq' | '>';
-  rightInequalitySymbol: '\\leq' | '<' | '\\geq' | '>';
+  leftInequalitySymbol: '\\le' | '<' | '\\ge' | '>';
+  rightInequalitySymbol: '\\le' | '<' | '\\ge' | '>';
 
   type: NumberType;
   tex: string;
@@ -91,8 +95,8 @@ export class Interval implements MathSetInterface {
     switch (`${left}a;b${right}`) {
       case '[a;b]':
         this.leftBracket = '[';
-        this.leftInequalitySymbol = '\\leq';
-        this.rightInequalitySymbol = '\\leq';
+        this.leftInequalitySymbol = '\\le';
+        this.rightInequalitySymbol = '\\le';
         this.rightBracket = ']';
         this.boundType = BoundType.FF;
         break;
@@ -106,7 +110,7 @@ export class Interval implements MathSetInterface {
       case '[a;b[':
         this.leftBracket = '[';
         this.rightBracket = '[';
-        this.leftInequalitySymbol = '\\leq';
+        this.leftInequalitySymbol = '\\le';
         this.rightInequalitySymbol = '<';
         this.boundType = BoundType.FO;
         break;
@@ -114,7 +118,7 @@ export class Interval implements MathSetInterface {
         this.leftBracket = ']';
         this.rightBracket = ']';
         this.leftInequalitySymbol = '<';
-        this.rightInequalitySymbol = '\\leq';
+        this.rightInequalitySymbol = '\\le';
         this.boundType = BoundType.OF;
         break;
       default:
@@ -131,17 +135,85 @@ export class Interval implements MathSetInterface {
     this.max = getBound(b);
   }
 
-  // union(interval: Interval): MathSet {
-  //[a,b] [c,d]
-  //si a=c return a, max(b,d)
-  //si si b = d return min(a,c), b
-  //si a=d return c,b sauf si  OXXO
-  //si b=c return a,d sauf si XOOX
-  //si c > b ou d < a alors union disjointe avec plus petit en 1er
-  //sinon return min(a,c), max(b,d)
-  //res = a
-  // return new MathSet();
-  // }
+  union(interval: Interval): MathSet {
+    let unionRightBracket =
+      this.max > interval.max
+        ? this.rightBracket
+        : this.max === interval.max
+        ? this.rightBracket === ']' || interval.rightBracket === ']'
+          ? ']'
+          : '['
+        : interval.rightBracket;
+    let unionLeftBracket =
+      this.min < interval.min
+        ? this.leftBracket
+        : this.max === interval.max
+        ? this.leftBracket === '[' || interval.leftBracket === '['
+          ? '['
+          : ']'
+        : interval.leftBracket;
+    let min = Math.min(this.min, interval.min);
+    let minTex = this.min < interval.min ? this.minTex : interval.minTex;
+    let max = Math.max(this.max, interval.max);
+    let maxTex = this.max > interval.max ? this.maxTex : interval.maxTex;
+
+    if (
+      this.max < interval.min ||
+      this.min > interval.max ||
+      (this.max === interval.min && this.rightBracket === '[' && interval.leftBracket === ']') ||
+      (this.min === interval.max && this.leftBracket === ']' && interval.rightBracket === '[')
+    ) {
+      const firstInterval = this.min < interval.min ? this : interval;
+      const secondInterval = this.min < interval.min ? interval : this;
+      return new MathSet(
+        `\\left${unionLeftBracket}${firstInterval.minTex};${firstInterval.maxTex}\\right${firstInterval.rightBracket}\\cup\\left${secondInterval.leftBracket}${secondInterval.minTex};${secondInterval.maxTex}\\right${unionRightBracket}`,
+        () => (coinFlip() ? firstInterval.getRandomElement() : secondInterval.getRandomElement()),
+      );
+    } else {
+      return new Interval(`${unionLeftBracket}${minTex};${maxTex}${unionRightBracket}`);
+    }
+  }
+
+  intersection(interval: Interval): MathSet {
+    const a = this.min;
+    const b = this.max;
+    const c = interval.min;
+    const d = interval.max;
+    //[a,b] n [c,d]
+
+    const isDisjoint =
+      b < c ||
+      d < a ||
+      (b === c && (this.rightBracket === '[' || interval.leftBracket === ']')) ||
+      (a === d && (interval.rightBracket === '[' || this.leftBracket === ']'));
+    if (isDisjoint) {
+      return new MathSet('\\emptyset', () => null);
+    }
+    const winningLeftBracket = (brack1: ']' | '[', brack2: ']' | '[') => (brack1 === ']' || brack2 === ']' ? ']' : '[');
+    const winningRightBracket = (brack1: ']' | '[', brack2: ']' | '[') =>
+      brack1 === '[' || brack2 === '[' ? '[' : ']';
+    let min = Math.max(a, c);
+    let minTex = a >= c ? this.minTex : interval.minTex;
+    let leftBracket =
+      a === c
+        ? winningLeftBracket(this.leftBracket, interval.leftBracket)
+        : a > c
+        ? this.leftBracket
+        : interval.leftBracket;
+
+    const max = Math.min(b, d);
+    let maxTex = b <= d ? this.maxTex : interval.maxTex;
+
+    let rightBracket =
+      b === d
+        ? winningRightBracket(this.rightBracket, interval.rightBracket)
+        : b < d
+        ? this.rightBracket
+        : interval.rightBracket;
+
+    return new Interval(`${leftBracket}${minTex};${maxTex}${rightBracket}`);
+  }
+
   exclude(nb: number) {
     const rand = () => {
       let x;
@@ -164,12 +236,11 @@ export class Interval implements MathSetInterface {
 
     return new MathSet(this.toTex() + `\\ ${set.toTex()}`, rand);
   }
-
-  toTex(): string {
-    return this.tex;
-  }
   insideToTex(): string {
     return this.tex.replaceAll('[', '').replaceAll(']', '');
+  }
+  toTex(): string {
+    return `\\left${this.leftBracket}${this.insideToTex()}\\right${this.rightBracket}`;
   }
 
   toInequality(): string {
@@ -177,14 +248,14 @@ export class Interval implements MathSetInterface {
     const isRightClosed = this.boundType === BoundType.FF || this.boundType === BoundType.OF;
     if (this.max === Infinity) {
       if (isLeftClosed) {
-        return `x \\geq ${this.min}`;
+        return `x \\ge ${this.min}`;
       } else return `x > ${this.min}`;
     } else if (this.min === -Infinity) {
       if (this.boundType === BoundType.OF) {
-        return `x \\leq ${this.max}`;
+        return `x \\le ${this.max}`;
       } else return `x < ${this.max}`;
     }
-    return `${this.min} ${isLeftClosed ? '\\leq' : '<'} x ${isRightClosed ? '\\leq' : '<'} ${this.max}`;
+    return `${this.min} ${isLeftClosed ? '\\le' : '<'} x ${isRightClosed ? '\\le' : '<'} ${this.max}`;
   }
 
   getRandomElement(precision: number = this.type === NumberType.Integer ? 0 : 2): Nombre {

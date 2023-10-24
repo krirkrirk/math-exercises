@@ -32,10 +32,10 @@ export const equationType4Exercise: Exercise = {
 export function getEquationType4ExerciseQuestion(): Question {
   const interval = new Interval('[[-10; 10]]');
   const intervalStar = new Interval('[[-10; 10]]').difference(new DiscreteSet([new Integer(0)]));
-  const a = intervalStar.getRandomElement();
+  const a = intervalStar.getRandomElement()!;
   const b = interval.getRandomElement();
   const intervalC = new Interval('[[-10; 10]]').difference(new DiscreteSet([new Integer(0), new Integer(a.value)]));
-  const c = intervalC.getRandomElement();
+  const c = intervalC.getRandomElement()!;
   const d = interval.getRandomElement();
 
   const affines = [new Affine(a.value, b.value), new Affine(c.value, d.value)];

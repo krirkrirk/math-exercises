@@ -1,6 +1,6 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { RationalConstructor } from '#root/math/numbers/rationals/rational';
+import { Rational, RationalConstructor } from '#root/math/numbers/rationals/rational';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 as uuidv4 } from 'uuid';
@@ -35,7 +35,14 @@ export function getFractionsSum(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < n - 1; i++) {
+    propositions.push({
+      id: uuidv4(),
+      statement: new Rational(rational.num + rational2.num, rational.denum + rational2.denum).toTex(),
+      isRightAnswer: false,
+      format: 'tex',
+    });
+
+    for (let i = 0; i < n - 2; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 

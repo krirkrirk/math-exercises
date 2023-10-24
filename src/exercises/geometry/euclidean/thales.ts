@@ -116,8 +116,8 @@ export function getThales(): Question {
 
   const question: Question = {
     instruction: `En utilisant le théoreme de Thalès, Écrire l'égalité des quotients sachant que :$\\\\$ (${vertices[3]}${vertices[4]})//(${vertices[1]}${vertices[2]})`,
-    answer: `\\frac{${vertices[0]}${vertices[3]}}{${vertices[0]}${vertices[1]}} = 
-    \\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}} = 
+    answer: `\\frac{${vertices[0]}${vertices[3]}}{${vertices[0]}${vertices[1]}}=
+    \\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}}=
     \\frac{${vertices[3]}${vertices[4]}}{${vertices[1]}${vertices[2]}}`,
     keys: [...vertices, 'equal'],
     commands,

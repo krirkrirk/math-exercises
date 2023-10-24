@@ -20,7 +20,7 @@ export const cubicEquation: Exercise = {
 export function getCubicEquationQuestion(): Question {
   const x = randint(-10, 11);
   const k = x ** 3;
-  const answer = `S = \\lbrace ${x} \\rbrace`;
+  const answer = `S=\\{${x}\\}`;
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
@@ -35,7 +35,7 @@ export function getCubicEquationQuestion(): Question {
     if (x ** 3 !== k ** 3) {
       res.push({
         id: v4(),
-        statement: `S = \\lbrace ${k ** 3} \\rbrace`,
+        statement: `S=\\{${k ** 3}\\}`,
         isRightAnswer: true,
         format: 'tex',
       });
@@ -49,7 +49,7 @@ export function getCubicEquationQuestion(): Question {
         const wrongAnswer = randint(-10, 11) + '';
         proposition = {
           id: v4() + ``,
-          statement: `S = \\lbrace ${wrongAnswer} \\rbrace`,
+          statement: `S=\\{${wrongAnswer}\\}`,
           isRightAnswer: false,
           format: 'tex',
         };

@@ -13,6 +13,7 @@ export abstract class AffineConstructor {
   ): Affine {
     const a = domainA.getRandomElement();
     const b = domainB.getRandomElement();
+    if (a === null || b === null) throw Error('received null in AffineConstructor');
     return new Affine(a.value, b.value);
   }
 

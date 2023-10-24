@@ -35,8 +35,8 @@ export function getFractionEquation(): Question {
 
   const answer =
     -d / c === -b / a
-      ? `S = \\emptyset`
-      : `S = \\left\\{${simplifyNode(new FractionNode(new NumberNode(-b), new NumberNode(a))).toTex()}\\right\\}`;
+      ? `S=\\emptyset`
+      : `S=\\left\\{${simplifyNode(new FractionNode(new NumberNode(-b), new NumberNode(a))).toTex()}\\right\\}`;
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
@@ -59,8 +59,8 @@ export function getFractionEquation(): Question {
         const d = randint(-9, 10, [0]);
         const wrongAnswer =
           -d / c === -b / a
-            ? `S = \\emptyset`
-            : `S = \\left\\{${simplifyNode(new FractionNode(new NumberNode(-b), new NumberNode(a))).toTex()}\\right\\}`;
+            ? `S=\\emptyset`
+            : `S=\\left\\{${simplifyNode(new FractionNode(new NumberNode(-b), new NumberNode(a))).toTex()}\\right\\}`;
 
         proposition = {
           id: v4() + '',

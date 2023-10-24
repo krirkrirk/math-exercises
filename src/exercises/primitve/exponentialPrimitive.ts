@@ -24,7 +24,7 @@ export const exponentialPrimitive: Exercise = {
   sections: ['Primitives', 'Exponentielle'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExponentialPrimitive, nb),
-  keys: ['x', 'C', 'exp'],
+  keys: ['x', 'C', 'epower', 'exp'],
   qcmTimer: 60,
   freeTimer: 60,
 };
@@ -111,8 +111,8 @@ export function getExponentialPrimitive(): Question {
   const question: Question = {
     instruction: `Déterminer la forme générale des primitives de la fonction f définie par $f(x) = ${selectedFunction.toTex()}$.`,
     startStatement: `F(x)`,
-    answer: `${simplifyNode(integratedFuction).toTex()} + C`,
-    keys: ['x', 'C', 'exp'],
+    answer: `${simplifyNode(integratedFuction).toTex()}+C`,
+    keys: ['x', 'C', 'epower', 'exp'],
     getPropositions,
     answerFormat: 'tex',
   };

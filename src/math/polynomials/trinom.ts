@@ -27,6 +27,7 @@ export abstract class TrinomConstructor {
     const a = domainA.getRandomElement();
     const b = domainB.getRandomElement();
     const c = domainC.getRandomElement();
+    if (a === null || b === null || c === null) throw Error('received null in random trinom');
 
     return new Trinom(a.value, b.value, c.value);
   }
@@ -38,6 +39,7 @@ export abstract class TrinomConstructor {
     const a = domainA.getRandomElement();
     const alpha = domainAlpha.getRandomElement();
     const beta = domainBeta.getRandomElement();
+    if (a === null || alpha === null || beta === null) throw Error('received null in random canonical');
     const b = -2 * a.value * alpha.value;
     const c = a.value * alpha.value ** 2 + beta.value;
     return new Trinom(a.value, b, c);
@@ -50,6 +52,8 @@ export abstract class TrinomConstructor {
     const a = domainA.getRandomElement();
     const x1 = domainX1.getRandomElement();
     const x2 = domainX2.getRandomElement();
+    if (a === null || x1 === null || x2 === null) throw Error('received null in random factorized');
+
     //a*x^2 + ax*-x2 + a*-x1*x + a*-x1*-x2
     return new Trinom(a.value, -a.value * (x1.value + x2.value), a.value * x1.value * x2.value);
   }
@@ -105,9 +109,9 @@ export class Trinom extends Polynomial {
 
   getRootsEquationSolutionTex() {
     const roots = this.getRootsNode();
-    if (!roots.length) return `S = \\emptyset`;
-    if (roots.length === 1) return `S = \\left\\lbrace ${roots[0].toTex()} \\right\\rbrace`;
-    return `S = \\left\\lbrace ${roots[0].toTex()} ; ${roots[1].toTex()} \\right\\rbrace`;
+    if (!roots.length) return `S=\\emptyset`;
+    if (roots.length === 1) return `S=\\left\\{${roots[0].toTex()}\\right\\}`;
+    return `S=\\left\\{${roots[0].toTex()};${roots[1].toTex()}\\right\\}`;
   }
 
   getAlpha() {

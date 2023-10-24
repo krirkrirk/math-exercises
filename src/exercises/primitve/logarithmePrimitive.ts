@@ -81,7 +81,7 @@ export function getLogarithmePrimitive(): Question {
       selectedFunction,
     ).toTex()}$.`,
     startStatement: `F(x)`,
-    answer: `${integratedFuction} + C`,
+    answer: `${integratedFuction}+C`,
     keys: ['x', 'C', 'ln', 'abs'],
     getPropositions,
     answerFormat: 'tex',

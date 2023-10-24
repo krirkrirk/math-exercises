@@ -31,7 +31,7 @@ export class Point {
   }
 
   toTexWithCoords(): string {
-    return `${this.name}\\left(${this.x.toTex()}; ${this.y.toTex()}\\right)`;
+    return `${this.name}\\left(${this.x.toTex()};${this.y.toTex()}\\right)`;
   }
 
   getXnumber(): number {

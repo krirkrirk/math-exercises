@@ -1,5 +1,6 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { IntervalConstructor } from '#root/math/sets/intervals/intervals';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
@@ -17,15 +18,25 @@ export const intervalsUnion: Exercise = {
 };
 
 export function getIntervalsUnionQuestion(): Question {
+  const [int1, int2] = IntervalConstructor.differentRandoms(2);
+  const set = int1.union(int2);
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
     res.push({
       id: v4(),
-      statement: ``,
+      statement: set.tex,
       isRightAnswer: true,
       format: 'tex',
     });
+    const interTex = int1.intersection(int2).tex;
+    if (interTex !== set.tex)
+      res.push({
+        id: v4(),
+        statement: int1.intersection(int2).tex,
+        isRightAnswer: false,
+        format: 'tex',
+      });
 
     const missing = n - res.length;
     for (let i = 0; i < missing; i++) {
@@ -33,9 +44,9 @@ export function getIntervalsUnionQuestion(): Question {
       let proposition: Proposition;
 
       do {
-        const wrongAnswer = '';
+        const wrongAnswer = IntervalConstructor.random().tex;
         proposition = {
-          id: v4() + ``,
+          id: v4(),
           statement: wrongAnswer,
           isRightAnswer: false,
           format: 'tex',
@@ -51,9 +62,9 @@ export function getIntervalsUnionQuestion(): Question {
   };
 
   const question: Question = {
-    answer: ``,
-    instruction: ``,
-    keys: [],
+    answer: set.tex,
+    instruction: `Soit $I = ${int1.tex}$ et $J = ${int2.tex}$. Déterminer $I\\cup J$.`,
+    keys: ['infty', 'lbracket', 'rbracket', 'semicolon', 'cup', 'cap'],
     getPropositions,
     answerFormat: 'tex',
   };

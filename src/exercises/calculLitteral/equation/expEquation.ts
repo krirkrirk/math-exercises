@@ -20,7 +20,7 @@ export const expEquation: Exercise = {
   sections: ['Exponentielle'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getExpEquation, nb),
-  keys: ['exp', 'ln'],
+  keys: ['x', 'equal', 'epower', 'exp', 'ln'],
   qcmTimer: 60,
   freeTimer: 60,
 };
@@ -74,7 +74,7 @@ export function getExpEquation(): Question {
   const question: Question = {
     instruction: `Résoudre l'équation $${equation.toTex()}$.`,
     answer: answer.toTex(),
-    keys: ['exp', 'ln'],
+    keys: ['x', 'equal', 'epower', 'exp', 'ln'],
     getPropositions,
     answerFormat: 'tex',
   };

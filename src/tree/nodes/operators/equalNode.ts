@@ -10,7 +10,7 @@ export class EqualNode extends OperatorNode implements Node {
     return `${this.leftChild.toMathString()} = ${this.rightChild.toMathString()}`;
   }
   toTex(): string {
-    return `${this.leftChild.toTex()} = ${this.rightChild.toTex()}`;
+    return `${this.leftChild.toTex()}=${this.rightChild.toTex()}`;
   }
 
   toMathjs() {
