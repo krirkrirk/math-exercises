@@ -172,6 +172,8 @@ import { inequalityToInterval } from './sets/intervals/inequalityToInterval';
 import { setBelonging } from './sets/setBelonging';
 import { intervalsUnion } from './sets/intervals/intervalsUnion';
 import { intervalsIntersection } from './sets/intervals/intervalsIntersection';
+import { sequencePolynomLimit } from './limits/sequencePolynomLimit';
+import { sequenceRationalFracLimit } from './limits/sequenceRationalFracLimit';
 
 export const exercises = [
   /**
@@ -390,7 +392,7 @@ export const exercises = [
   euclideanDivision,
   signFunction,
   thirdDegreeFunctionVariation,
-  polynomeLimit,
+
   exponentialDifferentialEquation,
   exponentialDifferentialEquationWithIC,
 
@@ -427,4 +429,9 @@ export const exercises = [
   setBelonging,
   intervalsUnion,
   intervalsIntersection,
+
+  /**limites */
+  polynomeLimit,
+  sequencePolynomLimit,
+  sequenceRationalFracLimit,
 ];

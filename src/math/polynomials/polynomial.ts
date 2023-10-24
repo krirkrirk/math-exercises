@@ -22,6 +22,35 @@ export function createRandomPolynomialWithOrder(order: number, variable: string 
   return new Polynomial(coefficients, variable);
 }
 
+export abstract class PolynomialConstructor {
+  static randomWithOrder(order: number, variable: string = 'x') {
+    if (order < 0) {
+      throw Error('Order must be a non-negative integer');
+    }
+
+    const coefficients = [];
+    for (let i = 0; i <= order - 1; i++) {
+      coefficients.push(randint(-9, 10));
+    }
+    coefficients.push(randint(-9, 10, [0]));
+
+    return new Polynomial(coefficients, variable);
+  }
+  static random(maxOrder: number, variable: string = 'x') {
+    if (maxOrder < 0) {
+      throw Error('Order must be a non-negative integer');
+    }
+    const order = randint(1, maxOrder + 1);
+    const coefficients = [];
+    for (let i = 0; i <= order - 1; i++) {
+      coefficients.push(randint(-9, 10));
+    }
+    coefficients.push(randint(-9, 10, [0]));
+
+    return new Polynomial(coefficients, variable);
+  }
+}
+
 export class Polynomial {
   degree: number;
   variable: string;
@@ -140,6 +169,23 @@ export class Polynomial {
     let res = 0;
     for (let i = 0; i < this.coefficients.length; i++) res += x ** i * this.coefficients[i];
     return res;
+  }
+
+  getLimit(to: '+\\infty' | '-\\infty'): string {
+    const leadingCoeff = this.coefficients[this.coefficients.length - 1];
+    if (this.degree === 0) return leadingCoeff + '';
+    if (to === '+\\infty') {
+      if (leadingCoeff > 0) return '+\\infty';
+      return '-\\infty';
+    } else {
+      if (leadingCoeff > 0) {
+        if (this.degree % 2 === 0) return '+\\infty';
+        return '-\\infty';
+      } else {
+        if (this.degree % 2 === 0) return '-\\infty';
+        return '+\\infty';
+      }
+    }
   }
 
   toTree(): Node {
