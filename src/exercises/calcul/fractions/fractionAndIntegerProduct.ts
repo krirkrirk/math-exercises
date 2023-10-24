@@ -1,7 +1,7 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
-import { RationalConstructor } from '#root/math/numbers/rationals/rational';
+import { Rational, RationalConstructor } from '#root/math/numbers/rationals/rational';
 import { randint } from '#root/math/utils/random/randint';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { shuffle } from '#root/utils/shuffle';
@@ -23,7 +23,7 @@ export const fractionAndIntegerProduct: Exercise = {
 
 export function getFractionAndIntegerProduct(): Question {
   const rational = RationalConstructor.randomIrreductible();
-  const integer = new Integer(randint(-10, 11, [0]));
+  const integer = new Integer(randint(-10, 11, [0, 1]));
   const statementTree = new MultiplyNode(rational.toTree(), integer.toTree());
   statementTree.shuffle();
 
@@ -38,7 +38,14 @@ export function getFractionAndIntegerProduct(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < n - 1; i++) {
+    res.push({
+      id: v4() + '',
+      statement: new Rational(integer.value * rational.num, integer.value * rational.denum).toTex(),
+      isRightAnswer: false,
+      format: 'tex',
+    });
+
+    for (let i = 0; i < n - 2; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 

@@ -34,8 +34,13 @@ export function getFractionsDivision(): Question {
       isRightAnswer: true,
       format: 'tex',
     });
-
-    for (let i = 0; i < n - 1; i++) {
+    res.push({
+      id: v4() + '',
+      statement: rational.multiply(rational2).toTree().toTex(),
+      isRightAnswer: false,
+      format: 'tex',
+    });
+    for (let i = 0; i < n - 2; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 

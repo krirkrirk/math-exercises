@@ -27,7 +27,6 @@ export function getFractionsProduct(): Question {
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
-
     res.push({
       id: v4() + '',
       statement: answerTree.toTex(),

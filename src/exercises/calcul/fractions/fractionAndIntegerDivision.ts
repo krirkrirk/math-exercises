@@ -24,9 +24,10 @@ export const fractionAndIntegerDivision: Exercise = {
 
 export function getFractionAndIntegerDivision(): Question {
   const rational = RationalConstructor.randomIrreductible();
-  const integer = new Integer(randint(-10, 11, [0]));
-
   const integerFirst = coinFlip();
+
+  const integer = integerFirst ? new Integer(randint(-10, 11, [0])) : new Integer(randint(-10, 11, [0, 1]));
+
   const statementTree = integerFirst
     ? new DivideNode(integer.toTree(), rational.toTree())
     : new DivideNode(rational.toTree(), integer.toTree());
@@ -42,8 +43,14 @@ export function getFractionAndIntegerDivision(): Question {
       isRightAnswer: true,
       format: 'tex',
     });
+    res.push({
+      id: v4() + '',
+      statement: !integerFirst ? integer.divide(rational).toTree().toTex() : rational.divide(integer).toTree().toTex(),
+      isRightAnswer: false,
+      format: 'tex',
+    });
 
-    for (let i = 0; i < n - 1; i++) {
+    for (let i = 0; i < n - 2; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 

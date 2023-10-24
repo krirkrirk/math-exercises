@@ -1,7 +1,7 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
-import { RationalConstructor } from '#root/math/numbers/rationals/rational';
+import { Rational, RationalConstructor } from '#root/math/numbers/rationals/rational';
 import { randint } from '#root/math/utils/random/randint';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { shuffle } from '#root/utils/shuffle';
@@ -38,7 +38,19 @@ export function getFractionAndIntegerSum(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < n - 1; i++) {
+    res.push({
+      id: v4() + '',
+      statement: new Rational(integer.value + rational.num, rational.denum).toTex(),
+      isRightAnswer: false,
+      format: 'tex',
+    });
+    res.push({
+      id: v4() + '',
+      statement: new Rational(integer.value + rational.num, integer.value + rational.denum).toTex(),
+      isRightAnswer: false,
+      format: 'tex',
+    });
+    for (let i = 0; i < n - 3; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 
