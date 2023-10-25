@@ -73,7 +73,7 @@ export function getFractionAndIntegerDivision(): Question {
       res.push(proposition);
     }
 
-    return shuffle(res);
+    return shuffle(res).slice(0, n);
   };
 
   const question: Question = {

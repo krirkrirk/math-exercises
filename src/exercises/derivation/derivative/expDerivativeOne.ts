@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -27,7 +27,8 @@ export function getExpDerivative(): Question {
   const a = randint(-9, 10, [0]);
   const b = randint(-9, 10);
 
-  const myfunction = new ExpNode(new Polynomial([b, a]).toTree());
+  const affine = new Polynomial([b, a]);
+  const myfunction = new ExpNode(affine.toTree());
   const derivative = simplifyNode(new MultiplyNode(new NumberNode(a), myfunction));
 
   const getPropositions = (numOptions: number) => {
@@ -39,8 +40,17 @@ export function getExpDerivative(): Question {
       isRightAnswer: true,
       format: 'tex',
     });
+    tryToAddWrongProp(propositions, myfunction.toTex());
+    tryToAddWrongProp(propositions, simplifyNode(new MultiplyNode(affine.toTree(), myfunction)).toTex());
+    tryToAddWrongProp(propositions, new ExpNode(new NumberNode(affine.coefficients[1])).toTex());
+    tryToAddWrongProp(
+      propositions,
+      simplifyNode(new MultiplyNode(new NumberNode(affine.coefficients[0]), myfunction)).toTex(),
+    );
 
-    for (let i = 0; i < numOptions - 1; i++) {
+    const missing = numOptions - propositions.length;
+
+    for (let i = 0; i < missing; i++) {
       let isDuplicate;
       let proposition: Proposition;
 
@@ -63,7 +73,7 @@ export function getExpDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions);
+    return shuffle(propositions).slice(0, numOptions);
   };
 
   const question: Question = {

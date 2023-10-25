@@ -1,5 +1,16 @@
 import { KeyId } from 'react-math-keyboard';
+import { uuid } from 'uuidv4';
 
+export const tryToAddWrongProp = (props: Proposition[], statement: string, format: 'tex' | 'raw' = 'tex') => {
+  if (!props.some((prop) => prop.statement === statement)) {
+    props.push({
+      id: uuid(),
+      statement,
+      isRightAnswer: false,
+      format: format,
+    });
+  }
+};
 export type GeneratorOptions = {};
 
 export type Proposition = {

@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
@@ -31,7 +31,14 @@ export function getInverseFunctionDerivative(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < n - 1; i++) {
+    tryToAddWrongProp(propositions, `\\frac{${a}}{x^2}`);
+    tryToAddWrongProp(propositions, `\\frac{${a}}{x}`);
+    tryToAddWrongProp(propositions, `${a}`);
+    tryToAddWrongProp(propositions, `\\frac{${2 * a}}{x}`);
+
+    const missing = n - propositions.length;
+
+    for (let i = 0; i < missing; i++) {
       let isDuplicate;
       let proposition: Proposition;
 
@@ -50,7 +57,7 @@ export function getInverseFunctionDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions);
+    return shuffle(propositions).slice(0, n);
   };
 
   const question: Question = {

@@ -1,48 +1,29 @@
 import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Rational } from '#root/math/numbers/rationals/rational';
-import { Monom } from '#root/math/polynomials/monom';
-import { Polynomial, PolynomialConstructor } from '#root/math/polynomials/polynomial';
+import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const sequenceRationalFracLimit: Exercise = {
-  id: 'sequenceRationalFracLimit',
+export const sequencePolynomNoFILimit: Exercise = {
+  id: 'sequencePolynomNoFILimit',
   connector: '=',
   instruction: '',
-  label: "Limite d'une suite rationnelle",
+  label: "Limite d'une suite polynomiale (sans F.I.)",
   levels: ['TermSpé', 'MathComp'],
   isSingleStep: true,
   sections: ['Limites'],
-  generator: (nb: number) => getDistinctQuestions(getSequenceRationalFracLimitQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getSequencePolynomNoFILimitQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
 };
 
-export function getSequenceRationalFracLimitQuestion(): Question {
-  const polyNum = PolynomialConstructor.random(4, 'n');
-  const polyDenum = PolynomialConstructor.random(4, 'n');
-  const numLeadingCoeff = polyNum.coefficients[polyNum.degree];
-  const denumLeadingCoeff = polyDenum.coefficients[polyDenum.degree];
-
+export function getSequencePolynomNoFILimitQuestion(): Question {
+  const length = randint(2, 5);
+  const poly = PolynomialConstructor.randomWithLengthAndSameSigns(4, length, 'n');
   const to = '+\\infty';
-  let answer: string;
-  let leadingCoeffsRational = new Rational(numLeadingCoeff, denumLeadingCoeff).simplify().toTree().toTex();
-  if (polyDenum.degree === polyNum.degree) {
-    answer = leadingCoeffsRational;
-  } else if (polyDenum.degree > polyNum.degree) {
-    answer = '0';
-  } else {
-    const tempPoly = new Monom(
-      polyNum.degree - polyDenum.degree,
-      numLeadingCoeff * denumLeadingCoeff > 0 ? 1 : -1,
-      'n',
-    );
-    answer = tempPoly.getLimit(to);
-  }
-
+  const answer = poly.getLimit(to);
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
@@ -52,11 +33,10 @@ export function getSequenceRationalFracLimitQuestion(): Question {
       isRightAnswer: true,
       format: 'tex',
     });
-
     tryToAddWrongProp(res, '+\\infty');
     tryToAddWrongProp(res, '-\\infty');
     tryToAddWrongProp(res, '0');
-    tryToAddWrongProp(res, leadingCoeffsRational);
+    tryToAddWrongProp(res, poly.coefficients[poly.degree] + '');
 
     const missing = n - res.length;
     for (let i = 0; i < missing; i++) {
@@ -82,10 +62,8 @@ export function getSequenceRationalFracLimitQuestion(): Question {
   };
 
   const question: Question = {
-    answer,
-    instruction: `Déterminer la limite de la suite $u$ définie par : $u_n = \\dfrac{${polyNum
-      .toTree()
-      .toTex()}}{${polyDenum.toTree().toTex()}}$.`,
+    answer: answer,
+    instruction: `Déterminer la limite de la suite $u$ définie par : $u_n = ${poly.toTree().toTex()}$.`,
     keys: ['infty'],
     getPropositions,
     answerFormat: 'tex',

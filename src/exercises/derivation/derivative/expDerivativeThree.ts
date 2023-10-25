@@ -1,10 +1,12 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { ExpNode } from '#root/tree/nodes/functions/expNode';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { VariableNode } from '#root/tree/nodes/variables/variableNode';
+import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
@@ -39,7 +41,25 @@ export function getExpDerivativeThree(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < numOptions - 1; i++) {
+    tryToAddWrongProp(propositions, new MultiplyNode(new NumberNode(a), new ExpNode(new VariableNode('x'))).toTex());
+    tryToAddWrongProp(
+      propositions,
+      new MultiplyNode(new Polynomial([b + a, -a]).toTree(), new ExpNode(new VariableNode('x'))).toTex(),
+    );
+    tryToAddWrongProp(propositions, a + '');
+    tryToAddWrongProp(
+      propositions,
+      simplifyNode(
+        new MultiplyNode(
+          new MultiplyNode(new NumberNode(a), new VariableNode('x')),
+          new ExpNode(new VariableNode('x')),
+        ),
+      ).toTex(),
+    );
+
+    const missing = numOptions - propositions.length;
+
+    for (let i = 0; i < missing; i++) {
       let isDuplicate;
       let proposition: Proposition;
 
@@ -63,7 +83,7 @@ export function getExpDerivativeThree(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions);
+    return shuffle(propositions).slice(0, numOptions);
   };
 
   const question: Question = {

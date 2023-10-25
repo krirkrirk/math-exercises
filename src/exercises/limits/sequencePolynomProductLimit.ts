@@ -8,40 +8,29 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const sequenceRationalFracLimit: Exercise = {
-  id: 'sequenceRationalFracLimit',
+export const sequencePolynomProductLimit: Exercise = {
+  id: 'sequencePolynomProductLimit',
   connector: '=',
   instruction: '',
-  label: "Limite d'une suite rationnelle",
+  label: "Limite d'un produit de suites polynomiales)",
   levels: ['TermSpé', 'MathComp'],
   isSingleStep: true,
   sections: ['Limites'],
-  generator: (nb: number) => getDistinctQuestions(getSequenceRationalFracLimitQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getSequencePolynomProductLimitQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
 };
 
-export function getSequenceRationalFracLimitQuestion(): Question {
-  const polyNum = PolynomialConstructor.random(4, 'n');
-  const polyDenum = PolynomialConstructor.random(4, 'n');
+export function getSequencePolynomProductLimitQuestion(): Question {
+  const polyNum = PolynomialConstructor.randomWithLength(3, 2, 'n');
+  const polyDenum = PolynomialConstructor.randomWithLength(3, 2, 'n');
   const numLeadingCoeff = polyNum.coefficients[polyNum.degree];
   const denumLeadingCoeff = polyDenum.coefficients[polyDenum.degree];
 
+  const product = new Monom(polyNum.degree + polyDenum.degree, numLeadingCoeff * denumLeadingCoeff, 'n');
   const to = '+\\infty';
-  let answer: string;
+  let answer = product.getLimit(to);
   let leadingCoeffsRational = new Rational(numLeadingCoeff, denumLeadingCoeff).simplify().toTree().toTex();
-  if (polyDenum.degree === polyNum.degree) {
-    answer = leadingCoeffsRational;
-  } else if (polyDenum.degree > polyNum.degree) {
-    answer = '0';
-  } else {
-    const tempPoly = new Monom(
-      polyNum.degree - polyDenum.degree,
-      numLeadingCoeff * denumLeadingCoeff > 0 ? 1 : -1,
-      'n',
-    );
-    answer = tempPoly.getLimit(to);
-  }
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
@@ -83,9 +72,9 @@ export function getSequenceRationalFracLimitQuestion(): Question {
 
   const question: Question = {
     answer,
-    instruction: `Déterminer la limite de la suite $u$ définie par : $u_n = \\dfrac{${polyNum
+    instruction: `Déterminer la limite de la suite $u$ définie par : $u_n = (${polyNum.toTree().toTex()})(${polyDenum
       .toTree()
-      .toTex()}}{${polyDenum.toTree().toTex()}}$.`,
+      .toTex()})$.`,
     keys: ['infty'],
     getPropositions,
     answerFormat: 'tex',
