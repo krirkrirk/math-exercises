@@ -42,7 +42,6 @@ export function getQuartiles(): Question {
 
   const firstQuartileIndex = Math.round(n / 4 + 0.49);
   const thirdQuartileIndex = Math.round((3 * n) / 4 + 0.49);
-  console.log(thirdQuartileIndex + '///' + (3 * n) / 4);
 
   const firstQuartile = sortedValues[firstQuartileIndex - 1];
   const thirdQuartile = sortedValues[thirdQuartileIndex - 1];

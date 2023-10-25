@@ -50,31 +50,6 @@ export function getLnDerivative(): Question {
     tryToAddWrongProp(propositions, `\\frac{${a}}{${logTree.toTex()}}`);
     tryToAddWrongProp(propositions, `\\frac{1}{${polynom.toTree().toTex()}}`);
 
-    const missing = numOptions - propositions.length;
-
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate;
-      let proposition: Proposition;
-
-      do {
-        const randomA = randint(-9, 10, [0]);
-        const randomB = randint(-9, 10);
-
-        proposition = {
-          id: v4(),
-          statement: simplifyNode(
-            new FractionNode(new NumberNode(randomA), new Polynomial([randomB, randomA]).toTree()),
-          ).toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
     return shuffle(propositions).slice(0, numOptions);
   };
 
@@ -82,7 +57,7 @@ export function getLnDerivative(): Question {
     instruction: `Déterminer la dérivée de la fonction $f(x) = ${logTree.toTex()}$.`,
     startStatement: "f'(x)",
     answer: derivative.toTex(),
-    keys: ['ln'],
+    keys: ['x', 'ln', 'epower'],
     getPropositions,
     answerFormat: 'tex',
   };

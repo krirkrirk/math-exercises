@@ -5,6 +5,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { Node } from '#root/tree/nodes/node';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
+import { coinFlip } from '#root/utils/coinFlip';
 import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
 import { Integer } from '../integer/integer';
@@ -32,6 +33,14 @@ export abstract class RationalConstructor {
     if (b === 1) return new Rational(b, a);
     const [num, denum] = shuffle([a, b]);
     return new Rational(num, denum);
+  }
+  static randomIrreductibleWithSign(max: number = 11) {
+    const sign = coinFlip() ? 1 : -1;
+    const a = randint(2, max);
+    const b = random([...coprimesOf(a), 1]);
+    if (b === 1) return new Rational(sign * b, a);
+    const [num, denum] = shuffle([a, b]);
+    return new Rational(sign * num, denum);
   }
 }
 

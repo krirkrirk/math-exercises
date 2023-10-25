@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -45,7 +45,20 @@ export function getPowerFunctionDerivative(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < numOptions - 1; i++) {
+    tryToAddWrongProp(
+      propositions,
+      new MultiplyNode(new NumberNode(a), new PowerNode(new VariableNode('x'), new NumberNode(n - 1))).toTex(),
+    );
+    tryToAddWrongProp(
+      propositions,
+      new MultiplyNode(new NumberNode(a * n), new PowerNode(new VariableNode('x'), new NumberNode(n))).toTex(),
+    );
+    tryToAddWrongProp(
+      propositions,
+      new MultiplyNode(new NumberNode(a - 1), new PowerNode(new VariableNode('x'), new NumberNode(n))).toTex(),
+    );
+    const missing = n - propositions.length;
+    for (let i = 0; i < missing; i++) {
       let isDuplicate;
       let proposition: Proposition;
 
@@ -69,7 +82,7 @@ export function getPowerFunctionDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions);
+    return shuffle(propositions).slice(0, n);
   };
 
   const question: Question = {

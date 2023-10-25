@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
@@ -29,7 +29,7 @@ export function getRootFunctionDerivative(): Question {
   else if (a === -1) instruction += `$-\\sqrt{x}$.`;
   else instruction += `$${a}\\sqrt{x}$.`;
 
-  if (a / 2 === round(a / 2, 0)) answer = `\\frac{${a / 2}}{\\sqrt{x}}`;
+  if (a % 2 === 0) answer = `\\frac{${a / 2}}{\\sqrt{x}}`;
   else answer = `\\frac{${a}}{2\\sqrt{x}}`;
 
   const getPropositions = (numOptions: number) => {
@@ -42,7 +42,12 @@ export function getRootFunctionDerivative(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < numOptions - 1; i++) {
+    tryToAddWrongProp(propositions, `\\frac{${a}}{\\sqrt(x)}`);
+    tryToAddWrongProp(propositions, `${a}`);
+    tryToAddWrongProp(propositions, `\\frac{${a}}{x}`);
+
+    const missing = numOptions - propositions.length;
+    for (let i = 0; i < missing; i++) {
       let isDuplicate;
       let proposition: Proposition;
 

@@ -57,32 +57,6 @@ export function getExpDerivativeThree(): Question {
       ).toTex(),
     );
 
-    const missing = numOptions - propositions.length;
-
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate;
-      let proposition: Proposition;
-
-      do {
-        const randomA = randint(-9, 10, [0]);
-        const randomB = randint(-9, 10);
-
-        proposition = {
-          id: v4(),
-          statement: new MultiplyNode(
-            new Polynomial([randomB + randomA, randomA]).toTree(),
-            new ExpNode(new VariableNode('x')),
-          ).toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
     return shuffle(propositions).slice(0, numOptions);
   };
 

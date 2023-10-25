@@ -2,6 +2,7 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { VariableNode } from '#root/tree/nodes/variables/variableNode';
+import { coinFlip } from '#root/utils/coinFlip';
 import { random } from '#root/utils/random';
 import { DecimalConstructor } from '../numbers/decimals/decimal';
 import { Integer } from '../numbers/integer/integer';
@@ -26,17 +27,18 @@ export abstract class GeometricSequenceConstructor {
       case NumberType.Real:
         throw Error('real geometric reason not supported yet');
     }
-    return new GeometricSequence(new Integer(randint(-9, 10, [0])), reason);
+    return new GeometricSequence(new Integer(randint(-9, 10, [0, 1])), reason);
   }
-  static randomWithLimit(reasonType: NumberType = NumberType.Integer) {
+  static randomWithLimit(reasonType?: NumberType) {
     let reason: Nombre;
     const type = reasonType ?? random([NumberType.Decimal, NumberType.Integer, NumberType.Rational]);
+
     switch (type) {
       case NumberType.Decimal:
-        reason = DecimalConstructor.random(-1, 3);
+        reason = coinFlip() ? DecimalConstructor.random(-1, 1) : DecimalConstructor.random(1, 10);
         break;
       case NumberType.Integer:
-        reason = new Integer(randint(-9, 10, [0, 1]));
+        reason = new Integer(randint(2, 10, [0, 1]));
         break;
       case NumberType.Rational:
         reason = RationalConstructor.randomIrreductible();
@@ -44,7 +46,7 @@ export abstract class GeometricSequenceConstructor {
       case NumberType.Real:
         throw Error('real geometric reason not supported yet');
     }
-    return new GeometricSequence(new Integer(randint(-9, 10, [0])), reason);
+    return new GeometricSequence(new Integer(randint(-9, 10, [0, 1])), reason);
   }
 }
 

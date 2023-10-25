@@ -22,9 +22,10 @@ export const sequenceGeometricLimit: Exercise = {
 };
 
 export function getSequenceGeometricLimitQuestion(): Question {
-  const sequence = GeometricSequenceConstructor.random();
+  const sequence = GeometricSequenceConstructor.randomWithLimit();
   const to = '+\\infty';
   const answer = sequence.getLimit();
+  if (!answer) throw Error('received geometric sequence with no limit');
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
@@ -37,29 +38,10 @@ export function getSequenceGeometricLimitQuestion(): Question {
     tryToAddWrongProp(res, '+\\infty');
     tryToAddWrongProp(res, '-\\infty');
     tryToAddWrongProp(res, '0');
-    tryToAddWrongProp(res, poly.coefficients[poly.degree] + '');
+    tryToAddWrongProp(res, sequence.reason.tex + '');
+    tryToAddWrongProp(res, sequence.firstTerm.tex + '');
 
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = randint(-10, 10) + '';
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
+    return shuffle(res).slice(0, n);
   };
 
   const question: Question = {

@@ -82,8 +82,6 @@ export function getInverseImageFunctionGeogebra(): Question {
       xmax = 1;
     }
   } else {
-    console.log(optimum);
-
     if (roots.length === 2) {
       if (yValue > polynome2.calculate(optimum) + yValue) {
         ymax = yValue + 2;

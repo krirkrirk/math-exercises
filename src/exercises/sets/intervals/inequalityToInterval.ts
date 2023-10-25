@@ -53,9 +53,9 @@ export function getInequalityToIntervalQuestion(): Question {
     if (isIntervalToInequality) {
       if (interval.min === -Infinity) {
         const wrongStatements = [
-          `x ${switchInequality(interval.rightInequalitySymbol)} ${interval.maxTex}`,
-          `-\\infty \\le x ${switchInequality(interval.rightInequalitySymbol)} ${interval.maxTex}`,
-          `-\\infty < x ${switchInequality(interval.rightInequalitySymbol)} ${interval.maxTex}`,
+          `x${switchInequality(interval.rightInequalitySymbol)}${interval.maxTex}`,
+          `-\\infty\\le x${switchInequality(interval.rightInequalitySymbol)}${interval.maxTex}`,
+          `-\\infty <x${switchInequality(interval.rightInequalitySymbol)}${interval.maxTex}`,
         ];
         wrongStatements.forEach((statement) => {
           res.push({

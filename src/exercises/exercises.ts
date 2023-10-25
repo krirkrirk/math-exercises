@@ -176,6 +176,7 @@ import { sequencePolynomLimit } from './limits/sequencePolynomLimit';
 import { sequenceRationalFracLimit } from './limits/sequenceRationalFracLimit';
 import { sequencePolynomProductLimit } from './limits/sequencePolynomProductLimit';
 import { sequencePolynomNoFILimit } from './limits/sequencePolynomNoFILimit';
+import { sequenceGeometricLimit } from './limits/sequenceGeometricLimit';
 
 export const exercises = [
   /**
@@ -438,4 +439,5 @@ export const exercises = [
   sequencePolynomNoFILimit,
   sequenceRationalFracLimit,
   sequencePolynomProductLimit,
+  sequenceGeometricLimit,
 ];

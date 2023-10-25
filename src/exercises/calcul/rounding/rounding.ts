@@ -142,7 +142,6 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
           isRightAnswer: false,
           format: 'tex',
         };
-        console.log(proposition);
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
       } while (isDuplicate);
