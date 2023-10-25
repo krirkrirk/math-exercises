@@ -35,7 +35,10 @@ export abstract class GeometricSequenceConstructor {
 
     switch (type) {
       case NumberType.Decimal:
-        reason = coinFlip() ? DecimalConstructor.random(-1, 1) : DecimalConstructor.random(1, 10);
+        const precision = randint(1, 4);
+        reason = coinFlip()
+          ? DecimalConstructor.fromParts(coinFlip() ? '0' : '-0', DecimalConstructor.randomFracPart(precision))
+          : DecimalConstructor.random(1, 10);
         break;
       case NumberType.Integer:
         reason = new Integer(randint(2, 10, [0, 1]));
@@ -60,12 +63,12 @@ export class GeometricSequence {
   }
 
   getLimit() {
-    if (this.reason.value < -1) return null;
-    if (this.reason.value === 1 || this.reason.value === -1) return this.firstTerm + '';
+    if (this.reason.value <= -1) return null;
+    if (this.reason.value === 1) return this.firstTerm + '';
     if (this.reason.value > 1) return this.firstTerm.value > 0 ? '+\\infty' : '-\\infty';
     return '0';
   }
   toTree() {
-    return new MultiplyNode(this.firstTerm.toTree(), new PowerNode(this.reason.toTree(), new VariableNode('n')));
+    return new MultiplyNode(this.firstTerm.toTree(), new PowerNode(this.reason.toTree(), new VariableNode('n')), true);
   }
 }
