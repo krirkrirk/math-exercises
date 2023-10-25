@@ -50,7 +50,7 @@ export function getLnDerivative(): Question {
     tryToAddWrongProp(propositions, `\\frac{${a}}{${logTree.toTex()}}`);
     tryToAddWrongProp(propositions, `\\frac{1}{${polynom.toTree().toTex()}}`);
 
-    return shuffle(propositions).slice(0, numOptions);
+    return shuffle([propositions[0], ...propositions.slice(1, numOptions - 1)]);
   };
 
   const question: Question = {

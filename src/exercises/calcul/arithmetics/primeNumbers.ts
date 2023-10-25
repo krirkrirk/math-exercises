@@ -91,8 +91,7 @@ export function getPrimeNumbers(): Question {
         format: 'tex',
       });
     }
-
-    return shuffle(res).slice(0, n);
+    return shuffle([res[0], ...res.slice(1, n - 1)]);
   };
 
   const question: Question = {

@@ -57,7 +57,7 @@ export function getPowerFunctionDerivative(): Question {
       propositions,
       new MultiplyNode(new NumberNode(a - 1), new PowerNode(new VariableNode('x'), new NumberNode(n))).toTex(),
     );
-    const missing = n - propositions.length;
+    const missing = numOptions - propositions.length;
     for (let i = 0; i < missing; i++) {
       let isDuplicate;
       let proposition: Proposition;
@@ -82,7 +82,7 @@ export function getPowerFunctionDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions).slice(0, n);
+    return shuffle([propositions[0], ...propositions.slice(1, numOptions - 1)]);
   };
 
   const question: Question = {

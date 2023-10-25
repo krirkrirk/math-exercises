@@ -57,7 +57,7 @@ export function getInverseFunctionDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions).slice(0, n);
+    return shuffle([propositions[0], ...propositions.slice(1, n - 1)]);
   };
 
   const question: Question = {

@@ -57,7 +57,7 @@ export function getExpDerivativeThree(): Question {
       ).toTex(),
     );
 
-    return shuffle(propositions).slice(0, numOptions);
+    return shuffle([propositions[0], ...propositions.slice(1, numOptions - 1)]);
   };
 
   const question: Question = {
