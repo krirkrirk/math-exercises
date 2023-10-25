@@ -47,7 +47,9 @@ export function getExpDerivative(): Question {
     tryToAddWrongProp(propositions, myfunction.toTex());
     tryToAddWrongProp(propositions, a + '');
 
-    for (let i = 0; i < numOptions - 1; i++) {
+    const missing = numOptions - propositions.length;
+
+    for (let i = 0; i < missing; i++) {
       let isDuplicate;
       let proposition: Proposition;
 

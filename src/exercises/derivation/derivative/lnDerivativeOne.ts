@@ -1,9 +1,13 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
+import { ExpNode } from '#root/tree/nodes/functions/expNode';
+import { LogNode } from '#root/tree/nodes/functions/logNode';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
+import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
+import { VariableNode } from '#root/tree/nodes/variables/variableNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
@@ -26,8 +30,9 @@ export function getLnDerivative(): Question {
   const a = randint(-9, 10, [0]);
   const b = randint(-9, 10);
 
-  const derivative = simplifyNode(new FractionNode(new NumberNode(a), new Polynomial([b, a]).toTree()));
-
+  const polynom = new Polynomial([b, a]);
+  const derivative = simplifyNode(new FractionNode(new NumberNode(a), polynom.toTree()));
+  const logTree = new LogNode(polynom.toTree());
   const getPropositions = (numOptions: number) => {
     const propositions: Proposition[] = [];
 
@@ -38,7 +43,16 @@ export function getLnDerivative(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < numOptions - 1; i++) {
+    tryToAddWrongProp(propositions, simplifyNode(new MultiplyNode(new NumberNode(a), logTree)).toTex());
+    tryToAddWrongProp(propositions, a + '');
+    tryToAddWrongProp(propositions, new ExpNode(polynom.toTree()).toTex());
+    tryToAddWrongProp(propositions, polynom.toTree().toTex());
+    tryToAddWrongProp(propositions, `\\frac{${a}}{${logTree.toTex()}}`);
+    tryToAddWrongProp(propositions, `\\frac{1}{${polynom.toTree().toTex()}}`);
+
+    const missing = numOptions - propositions.length;
+
+    for (let i = 0; i < missing; i++) {
       let isDuplicate;
       let proposition: Proposition;
 
@@ -61,11 +75,11 @@ export function getLnDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions);
+    return shuffle(propositions).slice(0, numOptions);
   };
 
   const question: Question = {
-    instruction: `Déterminer la dérivée de la fonction $f(x) = \\ln(${new Polynomial([b, a])})$.`,
+    instruction: `Déterminer la dérivée de la fonction $f(x) = ${logTree.toTex()}$.`,
     startStatement: "f'(x)",
     answer: derivative.toTex(),
     keys: ['ln'],

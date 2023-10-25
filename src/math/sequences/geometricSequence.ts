@@ -18,14 +18,31 @@ export abstract class GeometricSequenceConstructor {
         reason = DecimalConstructor.random(-9, 10);
         break;
       case NumberType.Integer:
-        reason = new Integer(randint(-9, 10));
+        reason = new Integer(randint(-9, 10, [0, 1]));
         break;
       case NumberType.Rational:
         reason = RationalConstructor.randomIrreductible();
         break;
       case NumberType.Real:
         throw Error('real geometric reason not supported yet');
+    }
+    return new GeometricSequence(new Integer(randint(-9, 10, [0])), reason);
+  }
+  static randomWithLimit(reasonType: NumberType = NumberType.Integer) {
+    let reason: Nombre;
+    const type = reasonType ?? random([NumberType.Decimal, NumberType.Integer, NumberType.Rational]);
+    switch (type) {
+      case NumberType.Decimal:
+        reason = DecimalConstructor.random(-1, 3);
         break;
+      case NumberType.Integer:
+        reason = new Integer(randint(-9, 10, [0, 1]));
+        break;
+      case NumberType.Rational:
+        reason = RationalConstructor.randomIrreductible();
+        break;
+      case NumberType.Real:
+        throw Error('real geometric reason not supported yet');
     }
     return new GeometricSequence(new Integer(randint(-9, 10, [0])), reason);
   }
