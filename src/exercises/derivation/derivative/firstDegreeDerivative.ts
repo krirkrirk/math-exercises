@@ -58,7 +58,7 @@ export function getFirstDegreeDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle([propositions[0], ...propositions.slice(1, n - 1)]);
+    return shuffle([propositions[0], ...propositions.slice(1, n)]);
   };
 
   const question: Question = {

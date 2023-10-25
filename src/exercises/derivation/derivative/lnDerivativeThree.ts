@@ -82,7 +82,7 @@ export function getLnDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle([propositions[0], ...propositions.slice(1, numOptions - 1)]);
+    return shuffle([propositions[0], ...propositions.slice(1, numOptions)]);
   };
 
   const question: Question = {

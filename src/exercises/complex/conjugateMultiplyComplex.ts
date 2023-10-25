@@ -40,7 +40,7 @@ export function getConjugateMultiplyComplexQuestion(): Question {
     res.push({
       id: v4(),
       statement: prod.toTree().toTex(),
-      isRightAnswer: true,
+      isRightAnswer: false,
       format: 'tex',
     });
 

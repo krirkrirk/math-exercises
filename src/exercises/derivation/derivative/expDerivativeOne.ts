@@ -48,7 +48,7 @@ export function getExpDerivative(): Question {
       simplifyNode(new MultiplyNode(new NumberNode(affine.coefficients[0]), myfunction)).toTex(),
     );
 
-    return shuffle(propositions).slice(0, numOptions);
+    return shuffle([propositions[0], ...propositions.slice(1, numOptions)]);
   };
 
   const question: Question = {

@@ -38,7 +38,7 @@ export function getMutiplyComplexQuestion(): Question {
     res.push({
       id: v4(),
       statement: answer.toComplex().conjugate().toTree().toTex(),
-      isRightAnswer: true,
+      isRightAnswer: false,
       format: 'tex',
     });
 

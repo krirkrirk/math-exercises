@@ -36,7 +36,7 @@ export function getCubicEquationQuestion(): Question {
       res.push({
         id: v4(),
         statement: `S=\\{${k ** 3}\\}`,
-        isRightAnswer: true,
+        isRightAnswer: false,
         format: 'tex',
       });
     }

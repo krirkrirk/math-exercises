@@ -41,7 +41,7 @@ export function getSequenceGeometricLimitQuestion(): Question {
     tryToAddWrongProp(res, sequence.reason.tex + '');
     tryToAddWrongProp(res, sequence.firstTerm.tex + '');
 
-    return shuffle([res[0], ...res.slice(1, n - 1)]);
+    return shuffle([res[0], ...res.slice(1, n)]);
   };
 
   const question: Question = {
