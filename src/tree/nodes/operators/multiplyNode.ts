@@ -50,7 +50,7 @@ export class MultiplyNode extends OperatorNode implements Node {
     let showTimesSign = !isNaN(+rightTex[0]) || this.rightChild.type === NodeType.number;
     if (this.rightChild.type === NodeType.operator) {
       const operatorRightChild = this.rightChild as unknown as OperatorNode;
-      showTimesSign ||= [OperatorIds.fraction, OperatorIds.power].includes(operatorRightChild.id);
+      showTimesSign ||= [OperatorIds.fraction].includes(operatorRightChild.id);
     }
     const nextIsLetter = rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
     return `${leftTex}${showTimesSign ? `\\times${nextIsLetter ? ' ' : ''}` : ''}${rightTex}`;
