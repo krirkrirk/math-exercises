@@ -7,20 +7,7 @@ import { PowerNode } from '../../tree/nodes/operators/powerNode';
 import { SubstractNode } from '../../tree/nodes/operators/substractNode';
 import { VariableNode } from '../../tree/nodes/variables/variableNode';
 import { randint } from '#root/math/utils/random/randint';
-
-export function createRandomPolynomialWithOrder(order: number, variable: string = 'x'): Polynomial {
-  if (order < 0) {
-    throw Error('Order must be a non-negative integer');
-  }
-
-  const coefficients = [];
-  for (let i = 0; i <= order - 1; i++) {
-    coefficients.push(randint(-9, 10));
-  }
-  coefficients.push(randint(-9, 10, [0]));
-
-  return new Polynomial(coefficients, variable);
-}
+import { coinFlip } from '#root/utils/coinFlip';
 
 export abstract class PolynomialConstructor {
   static randomWithOrder(order: number, variable: string = 'x') {
@@ -46,6 +33,45 @@ export abstract class PolynomialConstructor {
       coefficients.push(randint(-9, 10));
     }
     coefficients.push(randint(-9, 10, [0]));
+
+    return new Polynomial(coefficients, variable);
+  }
+
+  static randomWithLength(maxOrder: number, length: number, variable: string = 'x') {
+    if (maxOrder < 0) {
+      throw Error('Order must be a non-negative integer');
+    }
+    const order = randint(1, maxOrder + 1);
+    const coefficients = [];
+    const otherTermDegrees: number[] = [];
+    for (let i = 0; i < length - 1; i++) {
+      otherTermDegrees.push(randint(0, order));
+    }
+    for (let i = 0; i <= order - 1; i++) {
+      if (otherTermDegrees.includes(i)) coefficients.push(randint(-9, 10, [0]));
+      else coefficients.push(0);
+    }
+    coefficients.push(randint(-9, 10, [0]));
+
+    return new Polynomial(coefficients, variable);
+  }
+
+  static randomWithLengthAndSameSigns(maxOrder: number, length: number, variable: string = 'x') {
+    if (maxOrder < 0) {
+      throw Error('Order must be a non-negative integer');
+    }
+    const order = randint(1, maxOrder + 1);
+    const coefficients = [];
+    const otherTermDegrees: number[] = [];
+    const sign = coinFlip() ? 1 : -1;
+    for (let i = 0; i < length - 1; i++) {
+      otherTermDegrees.push(randint(0, order));
+    }
+    for (let i = 0; i <= order - 1; i++) {
+      if (otherTermDegrees.includes(i)) coefficients.push(sign * randint(0, 10, [0]));
+      else coefficients.push(0);
+    }
+    coefficients.push(sign * randint(0, 10, [0]));
 
     return new Polynomial(coefficients, variable);
   }

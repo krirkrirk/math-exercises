@@ -1,4 +1,4 @@
-import { createRandomPolynomialWithOrder } from '#root/math/polynomials/polynomial';
+import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
@@ -24,8 +24,8 @@ export const polynomeLimit: Exercise = {
 };
 
 export function getApplyPercentQuestion(): Question {
-  const polynome1 = createRandomPolynomialWithOrder(randint(2, 6));
-  const polynome2 = createRandomPolynomialWithOrder(randint(2, 6));
+  const polynome1 = PolynomialConstructor.randomWithOrder(randint(2, 6));
+  const polynome2 = PolynomialConstructor.randomWithOrder(randint(2, 6));
 
   // a_1x^n + b_2x^(n-1) + ...
   const a1 = polynome1.coefficients[polynome1.coefficients.length - 1];

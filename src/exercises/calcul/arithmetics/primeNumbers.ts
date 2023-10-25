@@ -92,7 +92,7 @@ export function getPrimeNumbers(): Question {
       });
     }
 
-    return shuffle(res);
+    return shuffle(res).slice(0, n);
   };
 
   const question: Question = {

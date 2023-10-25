@@ -1,6 +1,6 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Polynomial, createRandomPolynomialWithOrder } from '#root/math/polynomials/polynomial';
+import { Polynomial, PolynomialConstructor } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
@@ -24,7 +24,7 @@ export const logarithmePrimitive: Exercise = {
 };
 
 export function getLogarithmePrimitive(): Question {
-  const u = createRandomPolynomialWithOrder(randint(1, 3));
+  const u = PolynomialConstructor.randomWithOrder(randint(1, 3));
 
   const selectedFunction = new FractionNode(u.derivate().toTree(), u.toTree());
   const integratedFuction = `ln\|${u.toTex()}\|`;
@@ -56,7 +56,7 @@ export function getLogarithmePrimitive(): Question {
           ).toTex(),
           `ln(${new PowerNode(u.toTree(), new NumberNode(2)).toTex()})`,
           new PowerNode(u.toTree(), new NumberNode(2)).toTex(),
-          `ln\|${createRandomPolynomialWithOrder(randint(1, 3)).toTex()}\|`,
+          `ln\|${PolynomialConstructor.randomWithOrder(randint(1, 3)).toTex()}\|`,
         ];
         wrongIntegral = wrongIntegrals[randint(0, wrongIntegrals.length)];
 

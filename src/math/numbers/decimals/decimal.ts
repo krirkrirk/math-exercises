@@ -13,9 +13,10 @@ export abstract class DecimalConstructor {
     return decimals;
   }
 
-  static random(min: number, max: number, precision: number): Decimal {
+  static random(min: number, max: number, precision?: number): Decimal {
+    let prec = precision ?? randint(1, 4);
     const int = randint(min, max) + '';
-    const decimals = DecimalConstructor.randomFracPart(precision);
+    const decimals = DecimalConstructor.randomFracPart(prec);
     return DecimalConstructor.fromParts(int, decimals);
   }
   static fromParts(intPart: string, decimalPart: string): Decimal {

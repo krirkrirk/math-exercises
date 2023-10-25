@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -33,7 +33,13 @@ export function getFirstDegreeDerivative(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < n - 1; i++) {
+    tryToAddWrongProp(propositions, new Polynomial([0, a]).toTree().toTex());
+    tryToAddWrongProp(propositions, 'x');
+    tryToAddWrongProp(propositions, b + '');
+
+    const missing = n - propositions.length;
+
+    for (let i = 0; i < missing; i++) {
       let isDuplicate;
       let proposition: Proposition;
 
@@ -52,7 +58,7 @@ export function getFirstDegreeDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions);
+    return shuffle(propositions).slice(0, n);
   };
 
   const question: Question = {

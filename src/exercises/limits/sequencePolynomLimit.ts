@@ -1,6 +1,7 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
+import { randint } from '#root/math/utils/random/randint';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
@@ -20,8 +21,7 @@ export const sequencePolynomLimit: Exercise = {
 
 export function getSequencePolynomLimitQuestion(): Question {
   const poly = PolynomialConstructor.random(4, 'n');
-  const isPositiveInfinite = coinFlip();
-  const to = isPositiveInfinite ? '+\\infty' : '-\\infty';
+  const to = '+\\infty';
   const answer = poly.getLimit(to);
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
@@ -32,6 +32,10 @@ export function getSequencePolynomLimitQuestion(): Question {
       isRightAnswer: true,
       format: 'tex',
     });
+    tryToAddWrongProp(res, '+\\infty');
+    tryToAddWrongProp(res, '-\\infty');
+    tryToAddWrongProp(res, '0');
+    tryToAddWrongProp(res, poly.coefficients[poly.degree] + '');
 
     const missing = n - res.length;
     for (let i = 0; i < missing; i++) {
@@ -39,7 +43,7 @@ export function getSequencePolynomLimitQuestion(): Question {
       let proposition: Proposition;
 
       do {
-        const wrongAnswer = '';
+        const wrongAnswer = randint(-10, 10) + '';
         proposition = {
           id: v4() + ``,
           statement: wrongAnswer,
@@ -58,9 +62,7 @@ export function getSequencePolynomLimitQuestion(): Question {
 
   const question: Question = {
     answer: answer,
-    instruction: `Soit $u$ la suite définie par $u_n = ${poly
-      .toTree()
-      .toTex()}$. Déterminer $$\\lim_{n\\to ${to}}u_n$$.`,
+    instruction: `Déterminer la limite de la suite $u$ définie par : $u_n = ${poly.toTree().toTex()}$.`,
     keys: ['infty'],
     getPropositions,
     answerFormat: 'tex',

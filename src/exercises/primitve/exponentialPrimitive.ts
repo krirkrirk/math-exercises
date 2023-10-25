@@ -1,6 +1,6 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { createRandomPolynomialWithOrder } from '#root/math/polynomials/polynomial';
+import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { ExpNode } from '#root/tree/nodes/functions/expNode';
 import { Node } from '#root/tree/nodes/node';
@@ -33,7 +33,7 @@ export function getExponentialPrimitive(): Question {
   const rand = coinFlip();
 
   const a = randint(-9, 10);
-  const u = createRandomPolynomialWithOrder(randint(1, 3));
+  const u = PolynomialConstructor.randomWithOrder(randint(1, 3));
 
   let selectedFunction: Node;
   let integratedFuction: Node;

@@ -174,6 +174,8 @@ import { intervalsUnion } from './sets/intervals/intervalsUnion';
 import { intervalsIntersection } from './sets/intervals/intervalsIntersection';
 import { sequencePolynomLimit } from './limits/sequencePolynomLimit';
 import { sequenceRationalFracLimit } from './limits/sequenceRationalFracLimit';
+import { sequencePolynomProductLimit } from './limits/sequencePolynomProductLimit';
+import { sequencePolynomNoFILimit } from './limits/sequencePolynomNoFILimit';
 
 export const exercises = [
   /**
@@ -433,5 +435,7 @@ export const exercises = [
   /**limites */
   polynomeLimit,
   sequencePolynomLimit,
+  sequencePolynomNoFILimit,
   sequenceRationalFracLimit,
+  sequencePolynomProductLimit,
 ];

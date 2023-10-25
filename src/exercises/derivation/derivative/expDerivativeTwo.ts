@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { ExpNode } from '#root/tree/nodes/functions/expNode'; // Importer le nœud d'exponentielle
@@ -44,6 +44,9 @@ export function getExpDerivative(): Question {
       format: 'tex',
     });
 
+    tryToAddWrongProp(propositions, myfunction.toTex());
+    tryToAddWrongProp(propositions, a + '');
+
     for (let i = 0; i < numOptions - 1; i++) {
       let isDuplicate;
       let proposition: Proposition;
@@ -65,7 +68,7 @@ export function getExpDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions);
+    return shuffle(propositions).slice(0, numOptions);
   };
 
   const question: Question = {

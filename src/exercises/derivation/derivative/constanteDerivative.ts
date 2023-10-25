@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
@@ -31,7 +31,13 @@ export function getConstanteDerivative(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < n - 1; i++) {
+    tryToAddWrongProp(propositions, c + '');
+    tryToAddWrongProp(propositions, '1');
+    tryToAddWrongProp(propositions, -c + '');
+
+    const missing = n - propositions.length;
+
+    for (let i = 0; i < missing; i++) {
       let isDuplicate;
       let proposition: Proposition;
 
@@ -57,7 +63,7 @@ export function getConstanteDerivative(): Question {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${c}$.`,
     startStatement: `f'(x)`,
     answer: '0',
-    keys: [],
+    keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
   };

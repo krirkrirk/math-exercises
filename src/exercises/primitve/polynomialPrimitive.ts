@@ -1,6 +1,6 @@
 import { Exercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Polynomial, createRandomPolynomialWithOrder } from '#root/math/polynomials/polynomial';
+import { Polynomial, PolynomialConstructor } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { Node } from '#root/tree/nodes/node';
 import { ConstantNode } from '#root/tree/nodes/numbers/constantNode';
@@ -46,7 +46,7 @@ function getIntegratedPolynomialNode(polynomial: Polynomial) {
 
 export function getPolynomialPrimitive(): Question {
   const degree = randint(1, 4);
-  const polynomial = createRandomPolynomialWithOrder(degree);
+  const polynomial = PolynomialConstructor.randomWithOrder(degree);
 
   const integralPolynomial: Node = getIntegratedPolynomialNode(polynomial);
 
@@ -65,7 +65,7 @@ export function getPolynomialPrimitive(): Question {
       let proposition: Proposition;
 
       do {
-        const wrongPolynomial = createRandomPolynomialWithOrder(degree);
+        const wrongPolynomial = PolynomialConstructor.randomWithOrder(degree);
         const wrongIntegral = getIntegratedPolynomialNode(wrongPolynomial);
         proposition = {
           id: v4(),
