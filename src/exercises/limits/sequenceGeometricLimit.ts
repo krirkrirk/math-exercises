@@ -1,4 +1,4 @@
-import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { NumberType } from '#root/math/numbers/nombre';
 import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
@@ -41,7 +41,7 @@ export function getSequenceGeometricLimitQuestion(): Question {
     tryToAddWrongProp(res, sequence.reason.tex + '');
     tryToAddWrongProp(res, sequence.firstTerm.tex + '');
 
-    return shuffle([res[0], ...res.slice(1, n)]);
+    return shuffleProps(res, n);
   };
 
   const question: Question = {

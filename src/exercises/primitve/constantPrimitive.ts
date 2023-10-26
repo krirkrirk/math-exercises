@@ -1,5 +1,6 @@
 import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Monom } from '#root/math/polynomials/monom';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
@@ -19,14 +20,14 @@ export const constantPrimitive: MathExercise = {
 };
 
 export function getConstantPrimitive(): Question {
-  const c = randint(-9, 10, [0]);
-
+  const c = randint(-19, 20, [0]);
+  const monom = new Monom(1, c);
   const getPropositions = (n: number) => {
     const propositions: Proposition[] = [];
 
     propositions.push({
       id: v4(),
-      statement: `${c}x + C`,
+      statement: `${monom.toTex()} + C`,
       isRightAnswer: true,
       format: 'tex',
     });
@@ -36,7 +37,7 @@ export function getConstantPrimitive(): Question {
       let proposition: Proposition;
 
       do {
-        const wrongAnswer = `${randint(-9, 10)}x + C`;
+        const wrongAnswer = `${randint(-9, 10, [-1, 0, 1])}x + C`;
         proposition = {
           id: v4(),
           statement: wrongAnswer,
@@ -56,7 +57,7 @@ export function getConstantPrimitive(): Question {
   const question: Question = {
     instruction: `Déterminer la forme générale des primitives de la fonction constante $f$ définie par $f(x) = ${c}$.`,
     startStatement: `F(x)`,
-    answer: `${c}x+C`,
+    answer: `${monom.toTex()}+C`,
     keys: ['x', 'C'],
     getPropositions,
     answerFormat: 'tex',

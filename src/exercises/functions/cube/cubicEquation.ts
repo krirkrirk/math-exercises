@@ -12,9 +12,10 @@ export const cubicEquation: MathExercise = {
   levels: ['2nde', '1reESM', '1reSpé', '1reTech'],
   isSingleStep: true,
   sections: ['Fonctions de référence', 'Fonction cube', 'Équations'],
-  generator: (nb: number) => getDistinctQuestions(getCubicEquationQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getCubicEquationQuestion, nb, 20),
   qcmTimer: 60,
   freeTimer: 60,
+  maxAllowedQuestions: 20,
 };
 
 export function getCubicEquationQuestion(): Question {

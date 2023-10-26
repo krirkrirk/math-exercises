@@ -20,11 +20,10 @@ export const geometricRecurrenceFormulaUsage: MathExercise = {
 
   qcmTimer: 60,
   freeTimer: 60,
-  generator: (nb: number, options: GeometricRecurrenceFormulaUsageOptions) =>
-    getDistinctQuestions(getGeometricRecurrenceFormulaUsage, nb),
+  generator: (nb: number) => getDistinctQuestions(getGeometricRecurrenceFormulaUsage, nb),
 };
 
-export function getGeometricRecurrenceFormulaUsage(options: GeometricRecurrenceFormulaUsageOptions): Question {
+export function getGeometricRecurrenceFormulaUsage(): Question {
   const firstRank = randint(1, 20);
   const firstValue = randint(1, 10);
   const reason = randint(2, 10);

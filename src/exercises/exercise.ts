@@ -1,4 +1,5 @@
 import { KeyId } from '#root/types/keyIds';
+import { shuffle } from '#root/utils/shuffle';
 import { uuid } from 'uuidv4';
 
 export const tryToAddWrongProp = (props: Proposition[], statement: string, format: 'tex' | 'raw' = 'tex') => {
@@ -10,6 +11,10 @@ export const tryToAddWrongProp = (props: Proposition[], statement: string, forma
       format: format,
     });
   }
+};
+
+export const shuffleProps = (props: Proposition[], n: number) => {
+  return shuffle([props[0], ...shuffle(props.slice(1)).slice(0, n - 1)]);
 };
 export type GeneratorOptions = {};
 
@@ -42,6 +47,7 @@ export interface MathExercise {
   connector?: '=' | '\\iff' | '\\approx';
   keys?: KeyId[];
   generator(nb: number, options?: GeneratorOptions): Question[];
+  maxAllowedQuestions?: number;
   answerType?: 'QCM' | 'free';
   qcmTimer: number;
   freeTimer: number;

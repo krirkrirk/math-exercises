@@ -12,7 +12,7 @@ import { Point } from '../geometry/point';
 import { Integer } from '../numbers/integer/integer';
 import { Nombre } from '../numbers/nombre';
 import { Rational } from '../numbers/rationals/rational';
-import { SquareRoot } from '../numbers/reals/squareRoot';
+import { SquareRoot } from '../numbers/reals/real';
 import { DiscreteSet } from '../sets/discreteSet';
 import { Interval } from '../sets/intervals/intervals';
 import { MathSet } from '../sets/mathSet';

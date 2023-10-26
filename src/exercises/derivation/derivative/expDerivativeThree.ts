@@ -1,4 +1,4 @@
-import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -57,7 +57,7 @@ export function getExpDerivativeThree(): Question {
       ).toTex(),
     );
 
-    return shuffle([propositions[0], ...propositions.slice(1, numOptions)]);
+    return shuffleProps(propositions, numOptions);
   };
 
   const question: Question = {

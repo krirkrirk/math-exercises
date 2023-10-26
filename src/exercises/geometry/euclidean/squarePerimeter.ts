@@ -12,13 +12,14 @@ export const squarePerimeter: MathExercise = {
   levels: ['4ème', '3ème', '2nde'],
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
-  generator: (nb: number) => getDistinctQuestions(getSquarePerimeter, nb),
+  generator: (nb: number) => getDistinctQuestions(getSquarePerimeter, nb, 20),
   qcmTimer: 60,
   freeTimer: 60,
+  maxAllowedQuestions: 20,
 };
 
 export function getSquarePerimeter(): Question {
-  const side = randint(1, 13);
+  const side = randint(1, 21);
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];

@@ -1,4 +1,4 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -75,7 +75,7 @@ export function getEuclideanDivisionQuestions(): Question {
       res.push(proposition);
     }
 
-    return shuffle([res[0], ...res.slice(1, n)]);
+    return shuffleProps(res, n);
   };
 
   const question: Question = {

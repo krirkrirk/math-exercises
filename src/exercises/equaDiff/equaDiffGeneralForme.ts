@@ -26,7 +26,7 @@ export const exponentialDifferentialEquation: MathExercise = {
 };
 
 export function getExponentialEquation(): Question {
-  const a = randint(-9, 10, [0]);
+  const a = randint(-19, 20, [0]);
 
   const myEquation = simplifyNode(new MultiplyNode(new NumberNode(a), new VariableNode('y')));
 

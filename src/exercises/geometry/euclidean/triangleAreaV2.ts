@@ -12,9 +12,10 @@ export const triangleAreaV2: MathExercise = {
   levels: ['5ème', '4ème', '3ème', '2nde'],
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
-  generator: (nb: number) => getDistinctQuestions(getTriangleAreaV2, nb),
+  generator: (nb: number) => getDistinctQuestions(getTriangleAreaV2, nb, 16),
   qcmTimer: 60,
   freeTimer: 60,
+  maxAllowedQuestions: 16,
 };
 
 export function getTriangleAreaV2(): Question {

@@ -7,7 +7,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question, tryToAddWrongProp } from '../exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
@@ -85,7 +85,7 @@ export function getPowersPowerQuestion(useOnlyPowersOfTen: boolean = false): Que
       res.push(proposition);
     }
 
-    return shuffle([res[0], ...res.slice(1, n)]);
+    return shuffleProps(res, n);
   };
 
   const question: Question = {

@@ -8,7 +8,7 @@ test('all exos', () => {
       expect(exo.sections.length).not.toBe(0);
       expect(exo.levels.length).not.toBe(0);
 
-      const questions = exo.generator(10);
+      const questions = exo.generator(30);
       questions.forEach((question) => {
         const props = question.getPropositions(4);
         expect(props.length).toBe(4);
@@ -19,5 +19,3 @@ test('all exos', () => {
     }
   });
 });
-//40-*60
-//100-120

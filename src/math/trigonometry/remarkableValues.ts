@@ -43,6 +43,11 @@ export const remarkableTrigoValues: RemarkableValue[] = [
     sin: new FractionNode(new SqrtNode(new NumberNode(2)), new NumberNode(2)),
   },
   {
+    angle: new FractionNode(new MultiplyNode(new NumberNode(5), PiNode), new NumberNode(6)),
+    cos: new OppositeNode(new FractionNode(new NumberNode(1), new NumberNode(2))),
+    sin: new OppositeNode(new FractionNode(new SqrtNode(new NumberNode(3)), new NumberNode(2))),
+  },
+  {
     angle: PiNode,
     cos: new NumberNode(-1),
     sin: new NumberNode(0),

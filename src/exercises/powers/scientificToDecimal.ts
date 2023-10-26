@@ -43,7 +43,7 @@ export const scientificToDecimal: MathExercise = {
 
 export function getScientificToDecimalQuestion(): Question {
   const randPower = randint(-6, 8);
-  const int = IntegerConstructor.random(randint(1, 4, [0]));
+  const int = IntegerConstructor.random(randint(1, 4), [0]);
   const fracPart = DecimalConstructor.randomFracPart(randint(0, 4));
   const randDecimal = DecimalConstructor.fromParts(int + '', fracPart);
   const statement = new MultiplyNode(
@@ -69,7 +69,6 @@ export function getScientificToDecimalQuestion(): Question {
       do {
         const wrongAnswerTree = randDecimal.multiplyByPowerOfTen(randint(-6, 8, [randPower])).toTree();
         const wrongAnswer = wrongAnswerTree.toTex();
-        console.log(randPower, int, wrongAnswer);
         proposition = {
           id: v4() + '',
           statement: wrongAnswer,

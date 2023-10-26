@@ -1,6 +1,6 @@
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
@@ -66,18 +66,24 @@ export function getQuartiles(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < n - 1; i++) {
+    randomValeurs.forEach((value) => {
+      tryToAddWrongProp(res, value + '');
+    });
+
+    const missing = n - res.length;
+    for (let i = 0; i < missing; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 
       do {
+        const randValue = randint(0, 100);
         proposition = {
           id: v4() + '',
-          statement: randomValeurs[randint(0, randomValeurs.length)] + '',
+          statement: randValue + '',
           isRightAnswer: false,
           format: 'tex',
         };
-
+        console.log('iter', randomValeurs);
         isDuplicate = res.some((p) => p.statement === proposition.statement);
       } while (isDuplicate);
 

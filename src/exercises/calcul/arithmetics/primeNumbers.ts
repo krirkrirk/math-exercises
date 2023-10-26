@@ -1,7 +1,7 @@
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
-import { MathExercise, Proposition, Question } from '../../exercise';
+import { MathExercise, Proposition, Question, shuffleProps } from '../../exercise';
 import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
 
 /**
@@ -91,7 +91,7 @@ export function getPrimeNumbers(): Question {
         format: 'tex',
       });
     }
-    return shuffle([res[0], ...res.slice(1, n)]);
+    return shuffleProps(res, n);
   };
 
   const question: Question = {
