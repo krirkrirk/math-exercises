@@ -1,11 +1,11 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const quartiles: Exercise = {
+export const quartiles: MathExercise = {
   id: 'quartiles',
   connector: '=',
   instruction: '',

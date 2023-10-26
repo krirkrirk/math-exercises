@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { AffineConstructor } from '#root/math/polynomials/affine';
 import { Polynomial } from '#root/math/polynomials/polynomial';
@@ -12,7 +12,7 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const expSimplifiying: Exercise = {
+export const expSimplifiying: MathExercise = {
   id: 'expSimplifiying',
   connector: '\\iff',
   instruction: '',

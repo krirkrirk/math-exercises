@@ -1,11 +1,11 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { RationalConstructor } from '#root/math/numbers/rationals/rational';
 import { DivideNode } from '#root/tree/nodes/operators/divideNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const fractionsDivision: Exercise = {
+export const fractionsDivision: MathExercise = {
   id: 'fractionsDivision',
   connector: '=',
   instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",

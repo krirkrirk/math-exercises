@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -6,14 +6,14 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const sequencePolynomNoFILimit: Exercise = {
+export const sequencePolynomNoFILimit: MathExercise = {
   id: 'sequencePolynomNoFILimit',
   connector: '=',
   instruction: '',
   label: "Limite d'une suite polynomiale (sans F.I.)",
   levels: ['TermSpé', 'MathComp'],
   isSingleStep: true,
-  sections: ['Limites'],
+  sections: ['Limites', 'Suites'],
   generator: (nb: number) => getDistinctQuestions(getSequencePolynomNoFILimitQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,

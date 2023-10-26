@@ -22,7 +22,7 @@ Incoming improvements :
 
 ## Exercises format
 
-Each Exercise has a `generator` that will return distinct questions for this exercise.
+Each MathExercise has a `generator` that will return distinct questions for this exercise.
 
 The Question in itself has an `instruction`, a `startStatement` and an `answer` (which are all tex strings).
 

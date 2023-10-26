@@ -1,11 +1,12 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
+import { KeyId } from '#root/types/keyIds';
 import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const chasles: Exercise = {
+export const chasles: MathExercise = {
   id: 'chasles',
   connector: '=',
   instruction: '',
@@ -72,7 +73,7 @@ export function getChaslesQuestion(): Question {
   const question: Question = {
     answer: answer,
     instruction: `Simplifier : $${statement}$`,
-    keys: ['overrightarrow', ...randLetters.sort((a, b) => a.localeCompare(b))],
+    keys: ['overrightarrow', ...(randLetters.sort((a, b) => a.localeCompare(b)) as KeyId[])],
     getPropositions,
     answerFormat: 'tex',
   };

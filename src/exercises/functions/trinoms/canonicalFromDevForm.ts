@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { TrinomConstructor } from '#root/math/polynomials/trinom';
@@ -6,7 +6,7 @@ import { DiscreteSet } from '#root/math/sets/discreteSet';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const canonicalFromDevForm: Exercise = {
+export const canonicalFromDevForm: MathExercise = {
   id: 'canonicalFromDevForm',
   connector: '\\iff',
   instruction: '',

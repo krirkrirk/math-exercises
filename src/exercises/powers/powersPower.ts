@@ -7,11 +7,11 @@ import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const powersOfTenPower: Exercise = {
+export const powersOfTenPower: MathExercise = {
   id: 'powersOfTenPower',
   connector: '=',
   instruction: 'Calculer :',
@@ -24,7 +24,7 @@ export const powersOfTenPower: Exercise = {
   freeTimer: 60,
 };
 
-export const powersPower: Exercise = {
+export const powersPower: MathExercise = {
   id: 'powersPower',
   connector: '=',
   instruction: 'Calculer :',
@@ -55,7 +55,16 @@ export function getPowersPowerQuestion(useOnlyPowersOfTen: boolean = false): Que
       format: 'tex',
     });
 
-    for (let i = 0; i < n - 1; i++) {
+    if (a === 1 || a === 0 || a === -1) {
+      tryToAddWrongProp(res, '1');
+      tryToAddWrongProp(res, '-1');
+      tryToAddWrongProp(res, '0');
+      tryToAddWrongProp(res, b * c + '');
+      tryToAddWrongProp(res, b + c + '');
+    }
+
+    const missing = n - res.length;
+    for (let i = 0; i < missing; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 
@@ -70,14 +79,13 @@ export function getPowersPowerQuestion(useOnlyPowersOfTen: boolean = false): Que
           isRightAnswer: false,
           format: 'tex',
         };
-
         isDuplicate = res.some((p) => p.statement === proposition.statement);
       } while (isDuplicate);
 
       res.push(proposition);
     }
 
-    return shuffle(res);
+    return shuffle([res[0], ...res.slice(1, n)]);
   };
 
   const question: Question = {

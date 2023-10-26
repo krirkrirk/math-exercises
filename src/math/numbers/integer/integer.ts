@@ -5,8 +5,8 @@ import { Nombre, NumberType } from '../nombre';
 import { Rational } from '../rationals/rational';
 
 export abstract class IntegerConstructor {
-  static random(nbOfDigits: number) {
-    return randint(0, 10 ** nbOfDigits);
+  static random(nbOfDigits: number, excludes?: number[]) {
+    return randint(0, 10 ** nbOfDigits, excludes);
   }
 }
 

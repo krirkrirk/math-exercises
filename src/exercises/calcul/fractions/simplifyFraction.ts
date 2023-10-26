@@ -1,10 +1,10 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { RationalConstructor } from '#root/math/numbers/rationals/rational';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 as uuidv4 } from 'uuid';
 
-export const simplifyFraction: Exercise = {
+export const simplifyFraction: MathExercise = {
   id: 'simplifyFrac',
   connector: '=',
   instruction: 'Simplifier :',

@@ -1,11 +1,11 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const arithmeticFindExplicitFormula: Exercise = {
+export const arithmeticFindExplicitFormula: MathExercise = {
   id: 'arithmeticFindExplicitFormula',
   connector: '=',
   instruction: '',
@@ -43,7 +43,7 @@ export function getArithmeticFindExplicitFormula(): Question {
       do {
         proposition = {
           id: v4() + '',
-          statement: new Polynomial([firstValue + randint(-3, 4), reason + randint(-3, 4)], 'n').toString(),
+          statement: new Polynomial([firstValue + randint(-3, 4), reason + randint(-3, 4, [-reason])], 'n').toString(),
           isRightAnswer: false,
           format: 'tex',
         };

@@ -1,10 +1,10 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Complex, ComplexConstructor } from '#root/math/complex/complex';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const conjugateDivideComplex: Exercise = {
+export const conjugateDivideComplex: MathExercise = {
   id: 'conjugateDivideComplex',
   connector: '=',
   instruction: '',
@@ -66,7 +66,7 @@ export function getConjugateDivideComplexQuestion(): Question {
     instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2
       .toTree()
       .toTex()}$. Calculer le conjugué de $\\frac{z}{z'}$.`,
-    keys: ['i', 'z', 'overline', "'"],
+    keys: ['i', 'z', 'overline', 'quote'],
     getPropositions,
     answerFormat: 'tex',
 

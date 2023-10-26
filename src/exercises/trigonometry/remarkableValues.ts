@@ -1,11 +1,11 @@
 import { RemarkableValueConstructor } from '#root/math/trigonometry/remarkableValue';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const remarkableValuesExercise: Exercise = {
+export const remarkableValuesExercise: MathExercise = {
   id: 'remarkableValues',
   connector: '=',
   instruction: 'Donner la valeur exacte :',

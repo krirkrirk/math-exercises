@@ -1,12 +1,12 @@
 import { randint } from '#root/math/utils/random/randint';
-import { Exercise, Question } from '../../exercise';
+import { MathExercise, Question } from '../../exercise';
 import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
 import { getConstanteDerivative } from './constanteDerivative';
 import { getFirstDegreeDerivative } from './firstDegreeDerivative';
 import { getSecondDegreeDerivative } from './secondDegreeDerivative';
 import { getThirdDegreeDerivative } from './thirdDegreeDerivative';
 
-export const usualDerivative: Exercise = {
+export const usualDerivative: MathExercise = {
   id: 'usualDerivative',
   connector: '=',
   instruction: '',

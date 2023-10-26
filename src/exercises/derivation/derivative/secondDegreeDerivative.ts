@@ -1,11 +1,11 @@
-import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const secondDegreeDerivative: Exercise = {
+export const secondDegreeDerivative: MathExercise = {
   id: 'secondDegreeDerivative',
   connector: '=',
   instruction: '',
@@ -35,11 +35,13 @@ export function getSecondDegreeDerivative(): Question {
       format: 'tex',
     });
 
-    tryToAddWrongProp(propositions, new Polynomial([coefficients[0], coefficients[1]]).toTree().toTex());
-    tryToAddWrongProp(
-      propositions,
-      new Polynomial([coefficients[0] + coefficients[1], coefficients[1]]).toTree().toTex(),
-    );
+    if (coefficients[1] !== 0)
+      tryToAddWrongProp(propositions, new Polynomial([coefficients[0], coefficients[1]]).toTree().toTex());
+    if (coefficients[1] !== 0)
+      tryToAddWrongProp(
+        propositions,
+        new Polynomial([coefficients[0] + coefficients[1], coefficients[1]]).toTree().toTex(),
+      );
 
     const missing = numOptions - propositions.length;
     for (let i = 0; i < missing; i++) {
@@ -50,7 +52,7 @@ export function getSecondDegreeDerivative(): Question {
         const randomCoefficients = [
           randint(-9, 10),
           coefficients[1] + randint(-3, 4),
-          coefficients[2] + randint(-3, 4, [0]),
+          coefficients[2] + randint(-3, 4, [0, -coefficients[2]]),
         ];
         const randomPolynomial = new Polynomial(randomCoefficients);
         proposition = {

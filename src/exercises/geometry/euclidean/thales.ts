@@ -1,10 +1,11 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
+import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const thales: Exercise = {
+export const thales: MathExercise = {
   id: 'thales',
   connector: '=',
   instruction: '',
@@ -119,7 +120,7 @@ export function getThales(): Question {
     answer: `\\frac{${vertices[0]}${vertices[3]}}{${vertices[0]}${vertices[1]}}=
     \\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}}=
     \\frac{${vertices[3]}${vertices[4]}}{${vertices[1]}${vertices[2]}}`,
-    keys: [...vertices, 'equal'],
+    keys: [...(vertices as KeyId[]), 'equal'],
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
     getPropositions,

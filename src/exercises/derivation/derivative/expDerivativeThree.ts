@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -10,7 +10,7 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const expDerivativeThree: Exercise = {
+export const expDerivativeThree: MathExercise = {
   id: 'expDerivativeThree',
   connector: '=',
   instruction: '',

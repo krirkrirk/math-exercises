@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TrinomConstructor } from '#root/math/polynomials/trinom';
 import { randint } from '#root/math/utils/random/randint';
@@ -7,7 +7,7 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const rootsFromFactorizedForm: Exercise = {
+export const rootsFromFactorizedForm: MathExercise = {
   id: 'rootsFromFactorizedForm',
   connector: '=',
   instruction: '',

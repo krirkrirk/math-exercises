@@ -1,4 +1,4 @@
-import { Exercise, GeneratorOptions, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, GeneratorOptions, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
@@ -8,7 +8,7 @@ interface GeometricRecurrenceFormulaUsageOptions extends GeneratorOptions {
   test: boolean;
 }
 
-export const geometricRecurrenceFormulaUsage: Exercise = {
+export const geometricRecurrenceFormulaUsage: MathExercise = {
   id: 'geometricRecurrenceFormulaUsage',
   connector: '=',
   instruction: '',

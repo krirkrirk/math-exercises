@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
@@ -9,7 +9,7 @@ import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const doubleDistributivity: Exercise = {
+export const doubleDistributivity: MathExercise = {
   id: 'doubleDistri',
   connector: '=',
   instruction: 'Développer et réduire :',
@@ -54,7 +54,7 @@ export function getDoubleDistributivityQuestion(): Question {
       res.push({
         id: v4() + '',
         statement: affines[1]
-          .multiply(new Affine(randint(-9, 10, [affines[0].a]), affines[0].b))
+          .multiply(new Affine(randint(-9, 10, [affines[0].a, 0]), affines[0].b))
           .toTree()
           .toTex(),
         isRightAnswer: false,

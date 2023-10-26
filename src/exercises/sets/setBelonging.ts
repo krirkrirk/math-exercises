@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { DecimalConstructor } from '#root/math/numbers/decimals/decimal';
 import { RationalConstructor } from '#root/math/numbers/rationals/rational';
@@ -7,7 +7,7 @@ import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const setBelonging: Exercise = {
+export const setBelonging: MathExercise = {
   id: 'setBelonging',
   connector: '\\iff',
   instruction: '',

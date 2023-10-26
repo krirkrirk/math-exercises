@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { DecimalConstructor } from '#root/math/numbers/decimals/decimal';
 import { randint } from '#root/math/utils/random/randint';
@@ -9,7 +9,7 @@ import { v4 } from 'uuid';
 /**
  * arrondi à l'unité
  */
-export const roundToUnit: Exercise = {
+export const roundToUnit: MathExercise = {
   id: 'roundToUnit',
   connector: '\\approx',
   instruction: "Arrondir à l'unité :",
@@ -25,7 +25,7 @@ export const roundToUnit: Exercise = {
 /**
  * arrondi à l'unité
  */
-export const roundToDixieme: Exercise = {
+export const roundToDixieme: MathExercise = {
   id: 'roundToDixieme',
   connector: '\\approx',
   instruction: 'Arrondir au dixième :',
@@ -40,7 +40,7 @@ export const roundToDixieme: Exercise = {
 /**
  * arrondi à l'unité
  */
-export const roundToCentieme: Exercise = {
+export const roundToCentieme: MathExercise = {
   id: 'roundToCentieme',
   connector: '\\approx',
   instruction: 'Arrondir au centième :',
@@ -55,7 +55,7 @@ export const roundToCentieme: Exercise = {
 /**
  * arrondi à l'unité
  */
-export const roundToMillieme: Exercise = {
+export const roundToMillieme: MathExercise = {
   id: 'roundToMillieme',
   connector: '\\approx',
   instruction: 'Arrondir au millième :',
@@ -68,7 +68,7 @@ export const roundToMillieme: Exercise = {
   freeTimer: 60,
 };
 
-export const allRoundings: Exercise = {
+export const allRoundings: MathExercise = {
   id: 'allRoundings',
   connector: '\\approx',
   instruction: '',

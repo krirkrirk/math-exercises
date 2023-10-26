@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
@@ -9,7 +9,7 @@ import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const thirdIdentity: Exercise = {
+export const thirdIdentity: MathExercise = {
   id: 'idRmq3',
   connector: '=',
   instruction: 'Développer et réduire :',

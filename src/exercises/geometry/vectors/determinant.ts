@@ -1,11 +1,11 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Vector, VectorConstructor } from '#root/math/geometry/vector';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const determinant: Exercise = {
+export const determinant: MathExercise = {
   id: 'determinant',
   connector: '=',
   instruction: '',

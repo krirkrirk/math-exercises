@@ -1,4 +1,4 @@
-import { KeyId } from 'react-math-keyboard';
+import { KeyId } from '#root/types/keyIds';
 import { uuid } from 'uuidv4';
 
 export const tryToAddWrongProp = (props: Proposition[], statement: string, format: 'tex' | 'raw' = 'tex') => {
@@ -32,7 +32,7 @@ export interface Question {
   getPropositions: (n: number) => Proposition[];
 }
 
-export interface Exercise {
+export interface MathExercise {
   id: string;
   instruction: string;
   isSingleStep: boolean;

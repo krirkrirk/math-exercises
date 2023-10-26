@@ -1,10 +1,10 @@
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const quartilesList: Exercise = {
+export const quartilesList: MathExercise = {
   id: 'quartilesList',
   connector: '=',
   instruction: '',

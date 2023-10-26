@@ -5,11 +5,11 @@ import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const polynomeLimit: Exercise = {
+export const polynomeLimit: MathExercise = {
   id: 'polynomeLimit',
   connector: '=',
   instruction: '',

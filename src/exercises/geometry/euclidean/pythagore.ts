@@ -1,11 +1,12 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
 import { randint } from '#root/math/utils/random/randint';
+import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const pythagore: Exercise = {
+export const pythagore: MathExercise = {
   id: 'pythagore',
   connector: '=',
   instruction: "Écrire l'égalité de Pythagore pour la figure suivante : ",
@@ -19,9 +20,9 @@ export const pythagore: Exercise = {
 };
 
 export function getPythagore(): Question {
-  const vertices: string[] = [];
+  const vertices: KeyId[] = [];
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
-  for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i));
+  for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i) as KeyId);
 
   const triangle = TriangleConstructor.createRandomRightTriangle({ minRapport: 0.7, maxRapport: 1.3, names: vertices });
 

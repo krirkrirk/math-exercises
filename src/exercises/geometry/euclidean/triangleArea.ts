@@ -1,11 +1,12 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
 import { randint } from '#root/math/utils/random/randint';
+import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const triangleArea: Exercise = {
+export const triangleArea: MathExercise = {
   id: 'triangleArea',
   connector: '=',
   instruction: '',
@@ -87,7 +88,7 @@ export function getTriangleArea(): Question {
       sidesLength[randoms[0]]
     }$ cm et la hauteur ${vertices[randoms[0]]}${String.fromCharCode(code + 3)} = $${height}$ cm.`,
     answer: (sidesLength[randoms[0]] * height) / 2 + '',
-    keys: [...vertices, 'equal', 'cm2'],
+    keys: [...(vertices as KeyId[]), 'equal', 'cm2'],
     commands,
     coords: triangle.generateCoords(),
     getPropositions,

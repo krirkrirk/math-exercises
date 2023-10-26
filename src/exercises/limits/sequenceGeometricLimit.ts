@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { NumberType } from '#root/math/numbers/nombre';
 import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
@@ -8,14 +8,14 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const sequenceGeometricLimit: Exercise = {
+export const sequenceGeometricLimit: MathExercise = {
   id: 'sequenceGeometricLimit',
   connector: '=',
   instruction: '',
   label: "Limite d'une suite géométrique",
   levels: ['TermSpé', 'MathComp'],
   isSingleStep: true,
-  sections: ['Limites'],
+  sections: ['Limites', 'Suites'],
   generator: (nb: number) => getDistinctQuestions(getSequenceGeometricLimitQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,

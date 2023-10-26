@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -15,7 +15,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const exponentialPrimitive: Exercise = {
+export const exponentialPrimitive: MathExercise = {
   id: 'exponentialPrimitive',
   connector: '=',
   instruction: '',
@@ -59,42 +59,38 @@ export function getExponentialPrimitive(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < n - 1; i++) {
+    if (rand) {
+      const wrongIntegrals = [
+        new MultiplyNode(new NumberNode(-a), new ExpNode(new VariableNode('x'))),
+        new MultiplyNode(new NumberNode(a), new ExpNode(new MultiplyNode(new NumberNode(a), new VariableNode('x')))),
+        new MultiplyNode(new NumberNode(a), new ExpNode(new FractionNode(new VariableNode('x'), new NumberNode(a)))),
+        new MultiplyNode(new NumberNode(a), new ExpNode(new AddNode(new VariableNode('x'), new NumberNode(a)))),
+        new MultiplyNode(new NumberNode(a), new ExpNode(new PowerNode(new VariableNode('x'), new NumberNode(a)))),
+        new ExpNode(new VariableNode('x')),
+      ];
+      wrongIntegrals.forEach((node) => tryToAddWrongProp(propositions, simplifyNode(node).toTex()));
+    } else {
+      const wrongIntegrals = [
+        new MultiplyNode(u.toTree(), new ExpNode(u.toTree())),
+        new MultiplyNode(u.derivate().toTree(), new ExpNode(u.toTree())),
+        new MultiplyNode(u.toTree(), new ExpNode(new VariableNode('x'))),
+        new MultiplyNode(new FractionNode(new NumberNode(1), u.toTree()), new ExpNode(new VariableNode('x'))),
+        new MultiplyNode(new FractionNode(new NumberNode(1), u.toTree()), new ExpNode(u.toTree())),
+        new MultiplyNode(new NumberNode(randint(-9, 10, [0])), new ExpNode(u.toTree())),
+      ];
+      wrongIntegrals.forEach((node) => tryToAddWrongProp(propositions, simplifyNode(node).toTex()));
+    }
+
+    const missing = n - propositions.length;
+    for (let i = 0; i < missing; i++) {
       let isDuplicate;
       let proposition: Proposition;
-      let wrongIntegral;
+      let wrongIntegral = randint(-10, 10) + 'e^x';
 
       do {
-        if (rand) {
-          const wrongIntegrals = [
-            new MultiplyNode(new NumberNode(-a), new ExpNode(new VariableNode('x'))),
-            new MultiplyNode(
-              new NumberNode(a),
-              new ExpNode(new MultiplyNode(new NumberNode(a), new VariableNode('x'))),
-            ),
-            new MultiplyNode(
-              new NumberNode(a),
-              new ExpNode(new FractionNode(new VariableNode('x'), new NumberNode(a))),
-            ),
-            new MultiplyNode(new NumberNode(a), new ExpNode(new AddNode(new VariableNode('x'), new NumberNode(a)))),
-            new MultiplyNode(new NumberNode(a), new ExpNode(new PowerNode(new VariableNode('x'), new NumberNode(a)))),
-            new ExpNode(new VariableNode('x')),
-          ];
-          wrongIntegral = simplifyNode(wrongIntegrals[randint(0, wrongIntegrals.length)]);
-        } else {
-          const wrongIntegrals = [
-            new MultiplyNode(u.toTree(), new ExpNode(u.toTree())),
-            new MultiplyNode(u.derivate().toTree(), new ExpNode(u.toTree())),
-            new MultiplyNode(u.toTree(), new ExpNode(new VariableNode('x'))),
-            new MultiplyNode(new FractionNode(new NumberNode(1), u.toTree()), new ExpNode(new VariableNode('x'))),
-            new MultiplyNode(new FractionNode(new NumberNode(1), u.toTree()), new ExpNode(u.toTree())),
-            new MultiplyNode(new NumberNode(randint(-9, 10, [0])), new ExpNode(u.toTree())),
-          ];
-          wrongIntegral = wrongIntegrals[randint(0, wrongIntegrals.length)];
-        }
         proposition = {
           id: v4(),
-          statement: `${wrongIntegral.toTex()} + C`,
+          statement: `${wrongIntegral} + C`,
           isRightAnswer: false,
           format: 'tex',
         };
@@ -105,7 +101,7 @@ export function getExponentialPrimitive(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions);
+    return shuffle([propositions[0], ...propositions.slice(1, n)]);
   };
 
   const question: Question = {

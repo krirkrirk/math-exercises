@@ -7,11 +7,11 @@ import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const powersOfTenToDecimal: Exercise = {
+export const powersOfTenToDecimal: MathExercise = {
   id: 'powersOfTenToDecimal',
   connector: '=',
   instruction: "Donner l'écriture décimale de :",

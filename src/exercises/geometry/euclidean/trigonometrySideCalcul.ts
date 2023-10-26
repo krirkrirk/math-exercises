@@ -1,12 +1,13 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
+import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const trigonometrySideCalcul: Exercise = {
+export const trigonometrySideCalcul: MathExercise = {
   id: 'trigonometrySideCalcul',
   connector: '=',
   instruction: '',
@@ -91,7 +92,7 @@ export function getTrigonometrySideCalcul(): Question {
       angleValue[randAngle]
     }$°.$\\\\$ Calculer ${sides[randsideQuestion]} à $0,1$ cm près.`,
     answer: `${round(sideLengths[randsideQuestion], 1)}`,
-    keys: [...vertices, 'equal', 'degree', 'cos', 'sin', 'tan', 'arccos', 'arcsin', 'arctan'],
+    keys: [...(vertices as KeyId[]), 'equal', 'degree', 'cos', 'sin', 'tan', 'arccos', 'arcsin', 'arctan'],
     commands,
     coords: triangle.generateCoords(),
     getPropositions,

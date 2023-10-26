@@ -1,4 +1,4 @@
-import { Exercise, MathSection } from './exercises/exercise';
+import { MathExercise, MathSection } from './exercises/exercise';
 import { exercises } from './exercises/exercises';
 import { Complex } from './math/complex/complex';
 import { TrinomConstructor } from './math/polynomials/trinom';
@@ -11,7 +11,7 @@ import { simplifyComplex } from './tree/parsers/simplify';
 const allMathExercises = [...exercises];
 
 const getAllMathExercisesBySection = () => {
-  const data: { section: MathSection; exos: Exercise[] }[] = [];
+  const data: { section: MathSection; exos: MathExercise[] }[] = [];
 
   allMathExercises.forEach((exo) => {
     const sectionsData = data.filter((el) => exo.sections.includes(el.section));

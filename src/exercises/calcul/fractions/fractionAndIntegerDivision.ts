@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { RationalConstructor } from '#root/math/numbers/rationals/rational';
@@ -8,7 +8,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const fractionAndIntegerDivision: Exercise = {
+export const fractionAndIntegerDivision: MathExercise = {
   id: 'fractionAndIntegerDivision',
   connector: '=',
   instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",

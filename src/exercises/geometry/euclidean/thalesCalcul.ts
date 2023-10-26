@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { Node } from '#root/tree/nodes/node';
@@ -9,7 +9,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const thalesCalcul: Exercise = {
+export const thalesCalcul: MathExercise = {
   id: 'thalesCalcul',
   connector: '=',
   instruction: '',

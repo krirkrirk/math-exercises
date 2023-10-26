@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { Rational, RationalConstructor } from '#root/math/numbers/rationals/rational';
@@ -7,7 +7,7 @@ import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const fractionAndIntegerSum: Exercise = {
+export const fractionAndIntegerSum: MathExercise = {
   id: 'fractionAndIntegerSum',
   connector: '=',
   instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
@@ -44,13 +44,16 @@ export function getFractionAndIntegerSum(): Question {
       isRightAnswer: false,
       format: 'tex',
     });
-    res.push({
-      id: v4() + '',
-      statement: new Rational(integer.value + rational.num, integer.value + rational.denum).toTex(),
-      isRightAnswer: false,
-      format: 'tex',
-    });
-    for (let i = 0; i < n - 3; i++) {
+    if (integer.value + rational.denum !== 0)
+      res.push({
+        id: v4() + '',
+        statement: new Rational(integer.value + rational.num, integer.value + rational.denum).toTex(),
+        isRightAnswer: false,
+        format: 'tex',
+      });
+
+    const missing = n - res.length;
+    for (let i = 0; i < missing; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 

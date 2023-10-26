@@ -9,11 +9,11 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const scientificToDecimal: Exercise = {
+export const scientificToDecimal: MathExercise = {
   id: 'scientificToDecimal',
   connector: '=',
   instruction: "Donner l'écriture décimale de :",
@@ -43,7 +43,7 @@ export const scientificToDecimal: Exercise = {
 
 export function getScientificToDecimalQuestion(): Question {
   const randPower = randint(-6, 8);
-  const int = IntegerConstructor.random(randint(1, 4));
+  const int = IntegerConstructor.random(randint(1, 4, [0]));
   const fracPart = DecimalConstructor.randomFracPart(randint(0, 4));
   const randDecimal = DecimalConstructor.fromParts(int + '', fracPart);
   const statement = new MultiplyNode(
@@ -69,7 +69,7 @@ export function getScientificToDecimalQuestion(): Question {
       do {
         const wrongAnswerTree = randDecimal.multiplyByPowerOfTen(randint(-6, 8, [randPower])).toTree();
         const wrongAnswer = wrongAnswerTree.toTex();
-
+        console.log(randPower, int, wrongAnswer);
         proposition = {
           id: v4() + '',
           statement: wrongAnswer,

@@ -1,11 +1,11 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { MathExercise, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { random } from '#root/utils/random';
 import { getFirstIdentityQuestion } from './firstIdentity';
 import { getSecondIdentityQuestion } from './secondIdentity';
 import { getThirdIdentityQuestion } from './thirdIdentity';
 
-export const allIdentities: Exercise = {
+export const allIdentities: MathExercise = {
   id: 'allIdRmq',
   connector: '=',
   instruction: 'Développer et réduire :',

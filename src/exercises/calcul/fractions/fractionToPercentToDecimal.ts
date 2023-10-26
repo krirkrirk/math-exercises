@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
@@ -8,7 +8,7 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 as uuidv4 } from 'uuid';
 
-export const fractionToPercentToDecimal: Exercise = {
+export const fractionToPercentToDecimal: MathExercise = {
   id: 'fractionToPercentToDecimal',
   connector: '\\iff',
   instruction: '',

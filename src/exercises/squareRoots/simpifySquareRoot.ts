@@ -1,10 +1,10 @@
 import { SquareRootConstructor } from '#root/math/numbers/reals/squareRoot';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const simplifySquareRoot: Exercise = {
+export const simplifySquareRoot: MathExercise = {
   id: 'simplifySqrt',
   connector: '=',
   instruction: 'Simplifier :',

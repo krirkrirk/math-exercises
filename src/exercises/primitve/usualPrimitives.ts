@@ -1,4 +1,4 @@
-import { Exercise, Question } from '#root/exercises/exercise';
+import { MathExercise, Question } from '#root/exercises/exercise';
 import { getConstantPrimitive } from '#root/exercises/primitve/constantPrimitive';
 import { getExponentialPrimitive } from '#root/exercises/primitve/exponentialPrimitive';
 import { getLogarithmePrimitive } from '#root/exercises/primitve/logarithmePrimitive';
@@ -7,7 +7,7 @@ import { getSinCosPrimitive } from '#root/exercises/primitve/sinCosPrimitive';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 
-export const usualPrimitives: Exercise = {
+export const usualPrimitives: MathExercise = {
   id: 'usualPrimitives',
   connector: '=',
   instruction: '',

@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { ExpNode } from '#root/tree/nodes/functions/expNode';
@@ -12,7 +12,7 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const lnDerivativeTwo: Exercise = {
+export const lnDerivativeTwo: MathExercise = {
   id: 'lnDerivativeTwo',
   connector: '=',
   instruction: '',

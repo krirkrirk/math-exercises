@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { Rational } from '#root/math/numbers/rationals/rational';
@@ -14,7 +14,7 @@ import { v4 } from 'uuid';
 /**
  *  type ax+b=cx+d
  */
-export const equationType4Exercise: Exercise = {
+export const equationType4Exercise: MathExercise = {
   id: 'equa4',
 
   connector: '\\iff',

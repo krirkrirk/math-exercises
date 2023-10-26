@@ -8,11 +8,11 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const powersDivision: Exercise = {
+export const powersDivision: MathExercise = {
   id: 'powersDivision',
   connector: '=',
   instruction: 'Calculer :',
@@ -24,7 +24,7 @@ export const powersDivision: Exercise = {
   qcmTimer: 60,
   freeTimer: 60,
 };
-export const powersOfTenDivision: Exercise = {
+export const powersOfTenDivision: MathExercise = {
   id: 'powersOfTenDivision',
   connector: '=',
   instruction: 'Calculer :',
