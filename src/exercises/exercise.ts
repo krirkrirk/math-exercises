@@ -40,7 +40,7 @@ export interface MathExercise {
   sections: MathSection[];
   levels: MathLevel[];
   connector?: '=' | '\\iff' | '\\approx';
-  keys?: string[];
+  keys?: KeyId[];
   generator(nb: number, options?: GeneratorOptions): Question[];
   answerType?: 'QCM' | 'free';
   qcmTimer: number;
