@@ -90,6 +90,7 @@ export type KeyId =
   | 'overlineProba'
   | 'majProba'
   | 'minProba'
+  | 'binom'
 
   /**complex */
   | 'overline'
