@@ -18,7 +18,7 @@ export const equationType3Exercise: MathExercise = {
   id: 'equa3',
 
   connector: '\\iff',
-  instruction: 'Résoudre : ',
+  instruction: '',
   label: 'Équations $ax+b=c$',
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
   sections: ['Équations'],
@@ -78,6 +78,7 @@ export function getEquationType3ExerciseQuestion(): Question {
   };
 
   const question: Question = {
+    instruction: `Résoudre : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],

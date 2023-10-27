@@ -8,7 +8,7 @@ import { v4 } from 'uuid';
 export const mainRemarkableValuesExercise: MathExercise = {
   id: 'mainRemarkableValues',
   connector: '=',
-  instruction: 'Donner la valeur exacte :',
+  instruction: '',
   label: 'Valeurs remarquables de $\\cos$ et $\\sin$ sur $[-\\pi, \\pi]$',
   levels: ['1reSpé', 'TermSpé', 'MathComp'],
   isSingleStep: true,
@@ -55,10 +55,13 @@ export function getMainRemarkableValues(): Question {
     return shuffleProps(props, n);
   };
 
+  const statement = isCos
+    ? `\\cos\\left(${remarkableValue.angle.toTex()}\\right)`
+    : `\\sin\\left(${remarkableValue.angle.toTex()}\\right)`;
+
   const question: Question = {
-    startStatement: isCos
-      ? `\\cos\\left(${remarkableValue.angle.toTex()}\\right)`
-      : `\\sin\\left(${remarkableValue.angle.toTex()}\\right)`,
+    instruction: `Donner la valeur exacte de : $${statement}$`,
+    startStatement: statement,
     answer: answer,
     keys: ['pi', 'cos', 'sin'],
     answerFormat: 'tex',

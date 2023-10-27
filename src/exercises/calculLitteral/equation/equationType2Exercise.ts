@@ -17,7 +17,7 @@ import { v4 } from 'uuid';
 export const equationType2Exercise: MathExercise = {
   id: 'equa2',
   connector: '\\iff',
-  instruction: 'Résoudre : ',
+  instruction: '',
   label: 'Équations $ax=b$',
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
   sections: ['Équations'],
@@ -73,6 +73,7 @@ export function getEquationType2ExerciseQuestion(): Question {
   };
 
   const question: Question = {
+    instruction: `Résoudre : $${tree.toTex()}$`,
     startStatement: tree.toTex(),
     answer: answer.toTex(),
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],

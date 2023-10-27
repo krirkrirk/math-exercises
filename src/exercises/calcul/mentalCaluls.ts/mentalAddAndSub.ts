@@ -11,7 +11,7 @@ import { v4 } from 'uuid';
 export const mentalAddAndSub: MathExercise = {
   id: 'mentalAddAndSub',
   connector: '=',
-  instruction: 'Calculer.',
+  instruction: '',
   label: 'Effectuer mentalement des additions et des soustractions simples',
   levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro'],
   sections: ['Calculs'],
@@ -81,6 +81,7 @@ export function getMentalAddAndSub(): Question {
   };
 
   const question: Question = {
+    instruction: `Calculer : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: round(sum, 2) + '',
     keys: [],

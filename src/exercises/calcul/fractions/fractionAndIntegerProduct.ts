@@ -10,7 +10,7 @@ import { v4 } from 'uuid';
 export const fractionAndIntegerProduct: MathExercise = {
   id: 'fractionAndIntegerProduct',
   connector: '=',
-  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
+  instruction: '',
   label: "Produit d'un entier et d'une fraction",
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
   isSingleStep: false,
@@ -68,7 +68,7 @@ export function getFractionAndIntegerProduct(): Question {
   };
 
   const question: Question = {
-    instruction: '',
+    instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: [],

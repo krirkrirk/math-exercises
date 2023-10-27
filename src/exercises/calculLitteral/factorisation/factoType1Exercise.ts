@@ -15,7 +15,7 @@ import { v4 } from 'uuid';
 export const factoType1Exercise: MathExercise = {
   id: 'facto1',
   connector: '=',
-  instruction: 'Factoriser :',
+  instruction: '',
   isSingleStep: false,
   label: 'Factorisation du type $(ax+b)(cx+d) \\pm (ax+b)(ex+f)$',
   levels: ['3ème', '2nde'],
@@ -118,6 +118,8 @@ export function getFactoType1Question(): Question {
   };
 
   const question: Question = {
+    instruction: `Factoriser : $${statementTree.toTex()}$`,
+
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: ['x'],

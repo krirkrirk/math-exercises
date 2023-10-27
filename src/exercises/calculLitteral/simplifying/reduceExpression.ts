@@ -9,7 +9,7 @@ import { v4 } from 'uuid';
 export const reduceExpression: MathExercise = {
   id: 'reduceExpression',
   connector: '=',
-  instruction: "Réduire l'expression suivante :",
+  instruction: '',
   isSingleStep: false,
   label: 'Réduire une expression',
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro'],
@@ -144,6 +144,7 @@ export function getReduceExpression(): Question {
   };
 
   const question: Question = {
+    instruction: `Réduire l'expression suivante : $${statement.toTex()}$`,
     startStatement: statement.toTex(),
     answer,
     keys: ['x'],

@@ -14,7 +14,7 @@ import { v4 } from 'uuid';
 export const powersOfTenToDecimal: MathExercise = {
   id: 'powersOfTenToDecimal',
   connector: '=',
-  instruction: "Donner l'écriture décimale de :",
+  instruction: '',
   label: "Ecriture décimale d'une puissance de 10",
   levels: [
     '5ème',
@@ -81,6 +81,8 @@ export function getPowersOfTenToDecimalQuestion(): Question {
   };
 
   const question: Question = {
+    instruction: `Donner l'écriture décimale de : $${statement.toTex()}$`,
+
     startStatement: statement.toTex(),
     answer: answerTree.toTex(),
     keys: [],

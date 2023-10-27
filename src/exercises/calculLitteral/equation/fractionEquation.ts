@@ -11,7 +11,7 @@ import { v4 } from 'uuid';
 export const fractionEquation: MathExercise = {
   id: 'fractionEquation',
   connector: '\\iff',
-  instruction: 'Résoudre :',
+  instruction: '',
   label: 'Résoudre une équation quotient nul',
   levels: ['2nde', '1reESM', '1reSpé', '1reTech'],
   sections: ['Équations'],
@@ -79,6 +79,8 @@ export function getFractionEquation(): Question {
   };
 
   const question: Question = {
+    instruction: `Résoudre : $\\frac{${polynome1.toTex()}}{${polynome2.toTex()}} = 0$`,
+
     startStatement: `\\frac{${polynome1.toTex()}}{${polynome2.toTex()}} = 0`,
     answer,
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou', 'emptyset'],

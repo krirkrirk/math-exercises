@@ -12,7 +12,7 @@ export const sequencePolynomProductLimit: MathExercise = {
   id: 'sequencePolynomProductLimit',
   connector: '=',
   instruction: '',
-  label: "Limite d'un produit de suites polynomiales)",
+  label: "Limite d'un produit de suites polynomiales",
   levels: ['TermSpé', 'MathComp'],
   isSingleStep: true,
   sections: ['Limites', 'Suites'],

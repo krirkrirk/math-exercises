@@ -12,7 +12,7 @@ import { v4 } from 'uuid';
 export const addAndSubExercise: MathExercise = {
   id: 'addAndSub',
   connector: '=',
-  instruction: 'Calculer :',
+  instruction: '',
   label: 'Additions et soustractions',
   levels: ['6ème', '5ème'],
   sections: ['Calculs'],
@@ -70,6 +70,7 @@ export function getAddAndSubQuestions(): Question {
   };
 
   const question: Question = {
+    instruction: `Calculer : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answer + '',
     keys: [],

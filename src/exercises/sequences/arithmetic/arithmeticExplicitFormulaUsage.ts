@@ -58,7 +58,7 @@ export function getArithmeticExplicitFormulaUsage(): Question {
   };
 
   const question: Question = {
-    instruction: `$(u_n)$ est une suite arithmétique définie par $u_n = ${polynomial.toString()}$. Calculer :`,
+    instruction: `$(u_n)$ est une suite arithmétique définie par $u_n = ${polynomial.toString()}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer: (firstValue + askedRank * reason).toString(),
     keys: ['r', 'n', 'u', 'underscore'],

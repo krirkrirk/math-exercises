@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const simplifyFraction: MathExercise = {
   id: 'simplifyFrac',
   connector: '=',
-  instruction: 'Simplifier :',
+  instruction: '',
   label: 'Simplification de fractions',
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
   sections: ['Fractions'],
@@ -54,6 +54,7 @@ export function getSimplifyFraction(): Question {
   };
 
   const question: Question = {
+    instruction: `Simplifier : $${rational.toTree().toTex()}$`,
     startStatement: rational.toTree().toTex(),
     answer: rational.simplify().toTree().toTex(),
     keys: [],

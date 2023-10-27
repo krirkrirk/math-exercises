@@ -56,7 +56,7 @@ export function getArithmeticReasonUsage(): Question {
   };
 
   const question: Question = {
-    instruction: `$(u_n)$ est une suite arithmétique de raison $r = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : `,
+    instruction: `$(u_n)$ est une suite arithmétique de raison $r = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer: (startValue + reason).toString(),
     keys: ['r', 'n', 'u', 'underscore'],

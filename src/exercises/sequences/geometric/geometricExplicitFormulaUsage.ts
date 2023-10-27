@@ -66,7 +66,7 @@ export function getGeometricExplicitFormulaUsage(): Question {
   };
 
   const question: Question = {
-    instruction: `$(u_n)$ est une suite géométrique définie par $u_n = ${formulaTex}$. Calculer :`,
+    instruction: `$(u_n)$ est une suite géométrique définie par $u_n = ${formulaTex}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer: (firstValue * Math.pow(reason, askedRank)).toString(),
     keys: ['n', 'u', 'underscore'],

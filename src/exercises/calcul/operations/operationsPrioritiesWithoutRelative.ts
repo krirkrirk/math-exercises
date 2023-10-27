@@ -20,7 +20,7 @@ import { v4 } from 'uuid';
 export const operationsPrioritiesWithoutRelative: MathExercise = {
   id: 'operationsPrioritiesWithoutRelative',
   connector: '=',
-  instruction: 'Calculer :',
+  instruction: '',
   label: 'Priorités opératoires sans les nombres relatifs',
   levels: ['6ème', '5ème', '4ème'],
   sections: ['Calculs'],
@@ -282,6 +282,7 @@ export function getOperationsPrioritiesWithoutRelative(): Question {
   };
 
   const question: Question = {
+    instruction: `Calculer : $${startStatement}$`,
     startStatement,
     answer,
     keys: [],

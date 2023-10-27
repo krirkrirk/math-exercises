@@ -12,7 +12,7 @@ import { v4 } from 'uuid';
 export const doubleDistributivity: MathExercise = {
   id: 'doubleDistri',
   connector: '=',
-  instruction: 'Développer et réduire :',
+  instruction: '',
   label: 'Distributivité double',
   levels: ['3ème', '2nde', '1reTech'],
   sections: ['Calcul littéral'],
@@ -86,6 +86,7 @@ export function getDoubleDistributivityQuestion(): Question {
   };
 
   return {
+    instruction: `Développer et réduire : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: ['x'],

@@ -12,7 +12,7 @@ import { v4 } from 'uuid';
 export const thirdIdentity: MathExercise = {
   id: 'idRmq3',
   connector: '=',
-  instruction: 'Développer et réduire :',
+  instruction: '',
   label: 'Identité remarquable $(a+b)(a-b)$',
   levels: ['3ème', '2nde'],
   sections: ['Calcul littéral'],
@@ -89,6 +89,7 @@ export function getThirdIdentityQuestion(): Question {
   };
 
   return {
+    instruction: `Développer et réduire : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: ['x'],

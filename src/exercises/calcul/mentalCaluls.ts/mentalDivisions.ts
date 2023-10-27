@@ -11,7 +11,7 @@ import { v4 } from 'uuid';
 export const mentalDivisions: MathExercise = {
   id: 'mentalDivisions',
   connector: '=',
-  instruction: 'Calculer.',
+  instruction: '',
   label: 'Effectuer mentalement des divisions simples',
   levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro'],
   sections: ['Calculs'],
@@ -106,6 +106,7 @@ export function getMentalDivisions(): Question {
   };
 
   const question: Question = {
+    instruction: `Calculer : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: round(answer, 2) + '',
     keys: [],

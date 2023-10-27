@@ -64,7 +64,7 @@ export function getGeometricReasonUsage(): Question {
   };
 
   const question: Question = {
-    instruction: `$(u_n)$ est une suite géométrique de raison $q = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : `,
+    instruction: `$(u_n)$ est une suite géométrique de raison $q = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer: (startValue * reason).toString(),
     keys: ['q', 'n', 'u', 'underscore'],

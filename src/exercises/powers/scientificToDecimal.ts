@@ -16,7 +16,7 @@ import { v4 } from 'uuid';
 export const scientificToDecimal: MathExercise = {
   id: 'scientificToDecimal',
   connector: '=',
-  instruction: "Donner l'écriture décimale de :",
+  instruction: '',
   label: 'Ecriture décimale de $a\\times 10^x$',
   levels: [
     '5ème',
@@ -86,6 +86,8 @@ export function getScientificToDecimalQuestion(): Question {
   };
 
   const question: Question = {
+    instruction: `Donner l'écriture décimale de : $${statement.toTex()}$`,
+
     startStatement: statement.toTex(),
     answer: answerTree.toTex(),
     keys: [],

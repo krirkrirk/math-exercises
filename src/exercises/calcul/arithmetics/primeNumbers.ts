@@ -10,7 +10,7 @@ import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
 export const primeNumbers: MathExercise = {
   id: 'primeNumbers',
   connector: '=',
-  instruction: 'Donner la décomposition en nombre premiers',
+  instruction: '',
   label: 'Décomposition en nombres premiers',
   levels: ['5ème', '4ème', '3ème', '2nde'],
   sections: ['Arithmétique'],
@@ -95,6 +95,7 @@ export function getPrimeNumbers(): Question {
   };
 
   const question: Question = {
+    instruction: `Donner la décomposition en nombres premiers de : $${prod}$`,
     startStatement: `${prod}`,
     answer,
     keys: [],

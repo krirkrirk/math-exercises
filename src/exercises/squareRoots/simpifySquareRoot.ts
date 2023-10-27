@@ -7,7 +7,7 @@ import { v4 } from 'uuid';
 export const simplifySquareRoot: MathExercise = {
   id: 'simplifySqrt',
   connector: '=',
-  instruction: 'Simplifier :',
+  instruction: '',
   label: 'Simplification de racines carrées',
   isSingleStep: false,
   levels: ['3ème', '2nde', '1reESM'],
@@ -61,6 +61,7 @@ export function getSimplifySquareRoot(): Question {
   };
 
   const question: Question = {
+    instruction: `Simplifier : $${squareRoot.toTree().toTex()}$`,
     startStatement: squareRoot.toTree().toTex(),
     answer: squareRoot.simplify().toTree().toTex(),
     keys: [],

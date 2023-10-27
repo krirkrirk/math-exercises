@@ -13,7 +13,7 @@ import { v4 } from 'uuid';
 export const addAndSubWithoutRelatives: MathExercise = {
   id: 'addAndSubWithoutRelatives',
   connector: '=',
-  instruction: 'Calculer :',
+  instruction: '',
   label: 'Additions et soustractions sans les nombres relatifs',
   levels: ['6ème', '5ème'],
   sections: ['Calculs'],
@@ -84,6 +84,7 @@ export function getAddAndSubWithoutRelatives(): Question {
   };
 
   const question: Question = {
+    instruction: `Calculer : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answer.toString(),
     keys: [],

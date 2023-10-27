@@ -15,7 +15,7 @@ import { v4 } from 'uuid';
 export const powersOfTenProduct: MathExercise = {
   id: 'powersOfTenProduct',
   connector: '=',
-  instruction: 'Calculer :',
+  instruction: '',
   label: 'Multiplication de puissances de 10',
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1reESM', '1rePro', '1reSpé', '1reTech', 'TermPro', 'TermTech'],
   sections: ['Puissances'],
@@ -28,7 +28,7 @@ export const powersOfTenProduct: MathExercise = {
 export const powersProduct: MathExercise = {
   id: 'powersProduct',
   connector: '=',
-  instruction: 'Calculer :',
+  instruction: '',
   label: 'Multiplication de puissances',
   levels: ['4ème', '3ème', '2nde'],
   sections: ['Puissances'],
@@ -85,6 +85,8 @@ export function getPowersProductQuestion(useOnlyPowersOfTen: boolean = false): Q
   };
 
   const question: Question = {
+    instruction: `Calculer : $${statement.toTex()}$`,
+
     startStatement: statement.toTex(),
     answer: answerTree.toTex(),
     keys: [],

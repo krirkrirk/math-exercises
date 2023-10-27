@@ -20,7 +20,7 @@ import { v4 } from 'uuid';
 export const operationsPriorities: MathExercise = {
   id: 'operationsPriorities',
   connector: '=',
-  instruction: 'Calculer :',
+  instruction: '',
   label: 'Priorités opératoires',
   levels: ['5ème', '4ème'],
   sections: ['Calculs'],
@@ -152,6 +152,7 @@ export function getPriorityQuestions(): Question {
   };
 
   const question: Question = {
+    instruction: `Calculer : $${startStatement}$`,
     startStatement,
     answer,
     keys: [],

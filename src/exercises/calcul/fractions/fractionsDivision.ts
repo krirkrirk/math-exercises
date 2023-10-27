@@ -8,7 +8,7 @@ import { v4 } from 'uuid';
 export const fractionsDivision: MathExercise = {
   id: 'fractionsDivision',
   connector: '=',
-  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
+  instruction: '',
   label: 'Divisions de fractions',
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
   sections: ['Fractions'],
@@ -64,7 +64,7 @@ export function getFractionsDivision(): Question {
   };
 
   const question: Question = {
-    instruction: '',
+    instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: [],

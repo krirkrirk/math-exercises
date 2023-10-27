@@ -11,7 +11,7 @@ import { v4 } from 'uuid';
 export const fractionAndIntegerDivision: MathExercise = {
   id: 'fractionAndIntegerDivision',
   connector: '=',
-  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
+  instruction: '',
   label: "Division d'un entier et d'une fraction",
   levels: ['4ème', '3ème', '2nde', '2ndPro', '1rePro', 'CAP'],
   isSingleStep: false,
@@ -77,7 +77,7 @@ export function getFractionAndIntegerDivision(): Question {
   };
 
   const question: Question = {
-    instruction: '',
+    instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: [],

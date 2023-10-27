@@ -12,7 +12,7 @@ import { v4 } from 'uuid';
 export const roundToUnit: MathExercise = {
   id: 'roundToUnit',
   connector: '\\approx',
-  instruction: "Arrondir à l'unité :",
+  instruction: '',
   label: "Arrondir à l'unité",
   levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
   sections: ['Calculs'],
@@ -28,7 +28,7 @@ export const roundToUnit: MathExercise = {
 export const roundToDixieme: MathExercise = {
   id: 'roundToDixieme',
   connector: '\\approx',
-  instruction: 'Arrondir au dixième :',
+  instruction: '',
   label: 'Arrondir au dixième',
   levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
   sections: ['Calculs'],
@@ -43,7 +43,7 @@ export const roundToDixieme: MathExercise = {
 export const roundToCentieme: MathExercise = {
   id: 'roundToCentieme',
   connector: '\\approx',
-  instruction: 'Arrondir au centième :',
+  instruction: '',
   label: 'Arrondir au centième',
   levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
   sections: ['Calculs'],
@@ -58,7 +58,7 @@ export const roundToCentieme: MathExercise = {
 export const roundToMillieme: MathExercise = {
   id: 'roundToMillieme',
   connector: '\\approx',
-  instruction: 'Arrondir au millième :',
+  instruction: '',
   label: 'Arrondir au millième',
   levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
   sections: ['Calculs'],
@@ -153,7 +153,7 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
   };
 
   const question: Question = {
-    instruction: instructions[precisionAsked],
+    instruction: `${instructions[precisionAsked]} ${dec.toTree().toTex()}`,
     startStatement: dec.toTree().toTex(),
     answer: dec.round(precisionAsked).toTree().toTex(),
     keys: [],

@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const fractionsSum: MathExercise = {
   id: 'fractionsSum',
   connector: '=',
-  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
+  instruction: '',
   label: 'Sommes de fractions',
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
   sections: ['Fractions'],
@@ -66,6 +66,7 @@ export function getFractionsSum(): Question {
   };
 
   const question: Question = {
+    instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: [],

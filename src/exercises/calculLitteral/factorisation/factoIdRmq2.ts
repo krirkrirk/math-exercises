@@ -13,7 +13,7 @@ import { v4 } from 'uuid';
 export const factoIdRmq2: MathExercise = {
   id: 'factoIdRmq2',
   connector: '=',
-  instruction: 'Factoriser :',
+  instruction: '',
   isSingleStep: false,
   label: 'Factorisation du type $a^2 - 2ab + b^2$',
   levels: ['3ème', '2nde'],
@@ -86,6 +86,8 @@ export function getFactoType1Question(): Question {
   };
 
   const question: Question = {
+    instruction: `Factoriser : $${statementTree.toTex()}$`,
+
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: ['x'],

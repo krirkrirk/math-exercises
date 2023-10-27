@@ -10,7 +10,7 @@ import { v4 } from 'uuid';
 export const fractionAndIntegerSum: MathExercise = {
   id: 'fractionAndIntegerSum',
   connector: '=',
-  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
+  instruction: '',
   label: "Somme d'un entier et d'une fraction",
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
   isSingleStep: false,
@@ -77,7 +77,7 @@ export function getFractionAndIntegerSum(): Question {
   };
 
   const question: Question = {
-    instruction: '',
+    instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: [],
