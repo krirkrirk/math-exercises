@@ -14,7 +14,7 @@ export const calculateNegativePower: MathExercise = {
   connector: '=',
   instruction: '',
   label: 'Calculer une puissance négative',
-  levels: [],
+  levels: ['4ème', '3ème', '2ndPro', '2nde', 'CAP'],
   isSingleStep: true,
   sections: ['Puissances'],
   generator: (nb: number) => getDistinctQuestions(getCalculatePowerQuestion, nb),
