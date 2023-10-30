@@ -75,6 +75,31 @@ export abstract class PolynomialConstructor {
 
     return new Polynomial(coefficients, variable);
   }
+  static randomNoFI(maxOrder: number, to: '+\\infty' | '-\\infty', length?: number, variable: string = 'x') {
+    if (maxOrder < 0) {
+      throw Error('Order must be a non-negative integer');
+    }
+    const order = randint(1, maxOrder + 1);
+
+    const fixedLength = length ?? order;
+    if (to === '+\\infty') {
+      return PolynomialConstructor.randomWithLengthAndSameSigns(maxOrder, fixedLength, variable);
+    }
+    //en -infini les degrés de parité différentes doivent avoir un signe différent
+    const coefficients = [];
+    const otherTermDegrees: number[] = [];
+    const signEven = coinFlip() ? 1 : -1;
+    for (let i = 0; i < fixedLength - 1; i++) {
+      otherTermDegrees.push(randint(0, order));
+    }
+    for (let i = 0; i <= order - 1; i++) {
+      if (otherTermDegrees.includes(i)) coefficients.push((i % 2 === 0 ? signEven : -signEven) * randint(0, 10, [0]));
+      else coefficients.push(0);
+    }
+    coefficients.push((order % 2 === 0 ? signEven : -signEven) * randint(0, 10, [0]));
+
+    return new Polynomial(coefficients, variable);
+  }
 }
 
 export class Polynomial {

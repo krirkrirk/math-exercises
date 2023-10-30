@@ -121,7 +121,7 @@ import { quartiles } from '#root/exercises/probaStat/quartiles';
 import { quartilesList } from '#root/exercises/probaStat/quartilesList';
 import { euclideanDivision } from '#root/exercises/calcul/arithmetics/euclideanDivision';
 import { thirdDegreeFunctionVariation } from '#root/exercises/derivation/derivative/thirdDegreeFunctionVariation';
-import { polynomeLimit } from '#root/exercises/limits/polynomeLimit';
+import { polynomLimit } from '#root/exercises/limits/polynomLimit';
 import { constantPrimitive } from '#root/exercises/primitve/constantPrimitive';
 import { polynomialPrimitive } from '#root/exercises/primitve/polynomialPrimitive';
 import { sinCosPrimitive } from '#root/exercises/primitve/sinCosPrimitive';
@@ -176,8 +176,12 @@ import { sequencePolynomLimit } from './limits/sequencePolynomLimit';
 import { sequenceRationalFracLimit } from './limits/sequenceRationalFracLimit';
 import { sequencePolynomProductLimit } from './limits/sequencePolynomProductLimit';
 import { sequencePolynomNoFILimit } from './limits/sequencePolynomNoFILimit';
+import { Exercise } from './exercise';
+import { polynomLimitNoFI } from './limits/polynomLimitNoFI';
+import { rationalFracLimit } from './limits/rationalFracLimit';
+import { rationalFracForbiddenValueLimit } from './limits/rationalFracForbiddenValueLimit';
 
-export const exercises = [
+export const exercises: Exercise[] = [
   /**
    * calcul litteral
    */
@@ -433,7 +437,10 @@ export const exercises = [
   intervalsIntersection,
 
   /**limites */
-  polynomeLimit,
+  polynomLimit,
+  polynomLimitNoFI,
+  rationalFracLimit,
+  rationalFracForbiddenValueLimit,
   sequencePolynomLimit,
   sequencePolynomNoFILimit,
   sequenceRationalFracLimit,
