@@ -7,14 +7,14 @@ import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const powersOfTenToDecimal: Exercise = {
+export const powersOfTenToDecimal: MathExercise = {
   id: 'powersOfTenToDecimal',
   connector: '=',
-  instruction: "Donner l'écriture décimale de :",
+  instruction: '',
   label: "Ecriture décimale d'une puissance de 10",
   levels: [
     '5ème',
@@ -32,14 +32,15 @@ export const powersOfTenToDecimal: Exercise = {
   ],
   sections: ['Puissances'],
   isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getPowersOfTenDivisionQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getPowersOfTenToDecimalQuestion, nb, 19),
   keys: [],
   qcmTimer: 60,
   freeTimer: 60,
+  maxAllowedQuestions: 19,
 };
 
-export function getPowersOfTenDivisionQuestion(): Question {
-  const randPower = randint(-6, 8);
+export function getPowersOfTenToDecimalQuestion(): Question {
+  const randPower = randint(-9, 10);
 
   const statement = new PowerNode(new NumberNode(10), new NumberNode(randPower));
   const answerTree = new Power(10, randPower).toDecimalWriting().toTree();
@@ -62,7 +63,7 @@ export function getPowersOfTenDivisionQuestion(): Question {
         const wrongPower = randPower + randint(-3, 4, [0]);
         const wrongAnswerTree = new Power(10, wrongPower).toDecimalWriting().toTree();
         const wrongAnswer = wrongAnswerTree.toTex();
-
+        console.log(wrongPower, wrongAnswer);
         proposition = {
           id: v4() + '',
           statement: wrongAnswer,
@@ -80,6 +81,8 @@ export function getPowersOfTenDivisionQuestion(): Question {
   };
 
   const question: Question = {
+    instruction: `Donner l'écriture décimale de : $${statement.toTex()}$`,
+
     startStatement: statement.toTex(),
     answer: answerTree.toTex(),
     keys: [],

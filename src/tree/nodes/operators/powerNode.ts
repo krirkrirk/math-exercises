@@ -26,7 +26,7 @@ export class PowerNode extends OperatorNode implements Node {
         OperatorIds.power,
       ].includes(childOperator.id);
     }
-    if (needBrackets) leftTex = `(${leftTex})`;
+    if (needBrackets) leftTex = `\\left(${leftTex}\\right)`;
     const needBrace = rightTex.length > 1;
     if (needBrace) return `${leftTex}^{${rightTex}}`;
     else return `${leftTex}^${rightTex}`;

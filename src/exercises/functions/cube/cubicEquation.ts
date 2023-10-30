@@ -1,10 +1,10 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const cubicEquation: Exercise = {
+export const cubicEquation: MathExercise = {
   id: 'cubicEquation',
   connector: '\\iff',
   instruction: '',
@@ -12,9 +12,10 @@ export const cubicEquation: Exercise = {
   levels: ['2nde', '1reESM', '1reSpé', '1reTech'],
   isSingleStep: true,
   sections: ['Fonctions de référence', 'Fonction cube', 'Équations'],
-  generator: (nb: number) => getDistinctQuestions(getCubicEquationQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getCubicEquationQuestion, nb, 20),
   qcmTimer: 60,
   freeTimer: 60,
+  maxAllowedQuestions: 20,
 };
 
 export function getCubicEquationQuestion(): Question {
@@ -36,7 +37,7 @@ export function getCubicEquationQuestion(): Question {
       res.push({
         id: v4(),
         statement: `S=\\{${k ** 3}\\}`,
-        isRightAnswer: true,
+        isRightAnswer: false,
         format: 'tex',
       });
     }

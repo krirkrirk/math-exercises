@@ -1,11 +1,11 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from 'mathjs';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 import { shuffle } from '#root/utils/shuffle';
 
-export const globalPercent: Exercise = {
+export const globalPercent: MathExercise = {
   id: 'globalPercent',
   connector: '=',
   instruction: '',

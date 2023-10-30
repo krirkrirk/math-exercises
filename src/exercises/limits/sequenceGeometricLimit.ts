@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { NumberType } from '#root/math/numbers/nombre';
 import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
@@ -8,23 +8,24 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const sequenceGeometricLimit: Exercise = {
+export const sequenceGeometricLimit: MathExercise = {
   id: 'sequenceGeometricLimit',
   connector: '=',
   instruction: '',
   label: "Limite d'une suite géométrique",
   levels: ['TermSpé', 'MathComp'],
   isSingleStep: true,
-  sections: ['Limites'],
+  sections: ['Limites', 'Suites'],
   generator: (nb: number) => getDistinctQuestions(getSequenceGeometricLimitQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
 };
 
 export function getSequenceGeometricLimitQuestion(): Question {
-  const sequence = GeometricSequenceConstructor.random();
+  const sequence = GeometricSequenceConstructor.randomWithLimit();
   const to = '+\\infty';
   const answer = sequence.getLimit();
+  if (!answer) throw Error('received geometric sequence with no limit');
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
@@ -37,29 +38,10 @@ export function getSequenceGeometricLimitQuestion(): Question {
     tryToAddWrongProp(res, '+\\infty');
     tryToAddWrongProp(res, '-\\infty');
     tryToAddWrongProp(res, '0');
-    tryToAddWrongProp(res, poly.coefficients[poly.degree] + '');
+    tryToAddWrongProp(res, sequence.reason.tex + '');
+    tryToAddWrongProp(res, sequence.firstTerm.tex + '');
 
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = randint(-10, 10) + '';
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
+    return shuffleProps(res, n);
   };
 
   const question: Question = {

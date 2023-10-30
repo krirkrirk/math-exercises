@@ -1,10 +1,10 @@
-import { Exercise, GeneratorOptions, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, GeneratorOptions, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const arithmeticRecurrenceFormulaUsage: Exercise = {
+export const arithmeticRecurrenceFormulaUsage: MathExercise = {
   id: 'arithmeticRecurrenceFormulaUsage',
   connector: '=',
   instruction: '',
@@ -56,7 +56,7 @@ export function getArithmeticRecurrenceFormulaUsage(): Question {
   };
 
   const question: Question = {
-    instruction: `$(u_n)$ est une suite définie par $u_{n+1} = ${reason} + u_n$ et $u_{${firstRank}} = ${firstValue}$. Calculer :`,
+    instruction: `$(u_n)$ est une suite définie par $u_{n+1} = ${reason} + u_n$ et $u_{${firstRank}} = ${firstValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer: (firstValue + reason).toString(),
     keys: ['r', 'n', 'u', 'underscore'],

@@ -2,10 +2,10 @@
 // import { distinctRandTupleInt } from "../../../mathutils/random/randTupleInt";
 // import { NumberNode } from "../../../tree/nodes/numbers/numberNode";
 // import { latexParser } from "../../../tree/parsers/latexParser";
-// import { Exercise, Question } from "../../exercise";
+// import { MathExercise, Question } from "../../exercise";
 // import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
-// export const scalarProductViaNorms : Exercise = {
+// export const scalarProductViaNorms : MathExercise = {
 //     id: 'scalarProductViaNorms',
 //     connector: "=",
 //     instruction: "",

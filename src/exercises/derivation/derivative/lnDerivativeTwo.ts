@@ -1,6 +1,7 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
+import { ExpNode } from '#root/tree/nodes/functions/expNode';
 import { LogNode } from '#root/tree/nodes/functions/logNode';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
@@ -11,7 +12,7 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const lnDerivativeTwo: Exercise = {
+export const lnDerivativeTwo: MathExercise = {
   id: 'lnDerivativeTwo',
   connector: '=',
   instruction: '',
@@ -45,7 +46,15 @@ export function getLnDerivative(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < numOptions - 1; i++) {
+    tryToAddWrongProp(
+      propositions,
+      new AddNode(new FractionNode(new NumberNode(a), new VariableNode('x')), new NumberNode(b)).toTex(),
+    );
+    tryToAddWrongProp(propositions, a + '');
+    tryToAddWrongProp(propositions, new MultiplyNode(new NumberNode(a), new ExpNode(new VariableNode('x'))).toTex());
+
+    const missing = numOptions - propositions.length;
+    for (let i = 0; i < missing; i++) {
       let isDuplicate;
       let proposition: Proposition;
 
@@ -71,7 +80,7 @@ export function getLnDerivative(): Question {
     instruction: `Déterminer la dérivée de la fonction $f(x) = ${myfunction.toTex()}$.`,
     startStatement: "f'(x)",
     answer: derivative.toTex(),
-    keys: ['ln'],
+    keys: ['x', 'ln', 'epower'],
     getPropositions,
     answerFormat: 'tex',
   };

@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { Rational, RationalConstructor } from '#root/math/numbers/rationals/rational';
@@ -7,10 +7,10 @@ import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const fractionAndIntegerProduct: Exercise = {
+export const fractionAndIntegerProduct: MathExercise = {
   id: 'fractionAndIntegerProduct',
   connector: '=',
-  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
+  instruction: '',
   label: "Produit d'un entier et d'une fraction",
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
   isSingleStep: false,
@@ -68,7 +68,7 @@ export function getFractionAndIntegerProduct(): Question {
   };
 
   const question: Question = {
-    instruction: '',
+    instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: [],

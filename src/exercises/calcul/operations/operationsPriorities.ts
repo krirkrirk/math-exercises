@@ -6,7 +6,7 @@
  * a/b ± c*d
  */
 
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -17,10 +17,10 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const operationsPriorities: Exercise = {
+export const operationsPriorities: MathExercise = {
   id: 'operationsPriorities',
   connector: '=',
-  instruction: 'Calculer :',
+  instruction: '',
   label: 'Priorités opératoires',
   levels: ['5ème', '4ème'],
   sections: ['Calculs'],
@@ -152,6 +152,7 @@ export function getPriorityQuestions(): Question {
   };
 
   const question: Question = {
+    instruction: `Calculer : $${startStatement}$`,
     startStatement,
     answer,
     keys: [],

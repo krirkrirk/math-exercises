@@ -2,11 +2,11 @@ import { Decimal, DecimalConstructor } from '#root/math/numbers/decimals/decimal
 import { randint } from '#root/math/utils/random/randint';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const volumeCapacityConversion: Exercise = {
+export const volumeCapacityConversion: MathExercise = {
   id: 'volumeCapacityConversion',
   connector: '=',
   instruction: '',

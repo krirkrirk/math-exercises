@@ -1,11 +1,11 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const rootFunctionDerivative: Exercise = {
+export const rootFunctionDerivative: MathExercise = {
   id: 'rootFunctionDerivative',
   connector: '=',
   instruction: '',
@@ -20,7 +20,7 @@ export const rootFunctionDerivative: Exercise = {
 };
 
 export function getRootFunctionDerivative(): Question {
-  const a = randint(-9, 10, [0]);
+  const a = randint(-19, 20, [0]);
 
   let instruction = `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =$ `;
   let answer = '';
@@ -29,7 +29,7 @@ export function getRootFunctionDerivative(): Question {
   else if (a === -1) instruction += `$-\\sqrt{x}$.`;
   else instruction += `$${a}\\sqrt{x}$.`;
 
-  if (a / 2 === round(a / 2, 0)) answer = `\\frac{${a / 2}}{\\sqrt{x}}`;
+  if (a % 2 === 0) answer = `\\frac{${a / 2}}{\\sqrt{x}}`;
   else answer = `\\frac{${a}}{2\\sqrt{x}}`;
 
   const getPropositions = (numOptions: number) => {
@@ -42,7 +42,12 @@ export function getRootFunctionDerivative(): Question {
       format: 'tex',
     });
 
-    for (let i = 0; i < numOptions - 1; i++) {
+    tryToAddWrongProp(propositions, `\\frac{${a}}{\\sqrt(x)}`);
+    tryToAddWrongProp(propositions, `${a}`);
+    tryToAddWrongProp(propositions, `\\frac{${a}}{x}`);
+
+    const missing = numOptions - propositions.length;
+    for (let i = 0; i < missing; i++) {
       let isDuplicate;
       let proposition: Proposition;
 

@@ -1,16 +1,16 @@
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
-import { Exercise, Proposition, Question } from '../../exercise';
+import { MathExercise, Proposition, Question, shuffleProps } from '../../exercise';
 import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
 
 /**
  * a±b±c±d
  */
-export const primeNumbers: Exercise = {
+export const primeNumbers: MathExercise = {
   id: 'primeNumbers',
   connector: '=',
-  instruction: 'Donner la décomposition en nombre premiers',
+  instruction: '',
   label: 'Décomposition en nombres premiers',
   levels: ['5ème', '4ème', '3ème', '2nde'],
   sections: ['Arithmétique'],
@@ -91,11 +91,11 @@ export function getPrimeNumbers(): Question {
         format: 'tex',
       });
     }
-
-    return shuffle(res).slice(0, n);
+    return shuffleProps(res, n);
   };
 
   const question: Question = {
+    instruction: `Donner la décomposition en nombres premiers de : $${prod}$`,
     startStatement: `${prod}`,
     answer,
     keys: [],

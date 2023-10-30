@@ -1,10 +1,10 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const geometricReasonUsage: Exercise = {
+export const geometricReasonUsage: MathExercise = {
   id: 'geometricReasonUsage',
   connector: '=',
   instruction: '',
@@ -64,7 +64,7 @@ export function getGeometricReasonUsage(): Question {
   };
 
   const question: Question = {
-    instruction: `$(u_n)$ est une suite géométrique de raison $q = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : `,
+    instruction: `$(u_n)$ est une suite géométrique de raison $q = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer: (startValue * reason).toString(),
     keys: ['q', 'n', 'u', 'underscore'],

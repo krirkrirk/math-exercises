@@ -1,11 +1,12 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
 import { randint } from '#root/math/utils/random/randint';
+import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const trigonometry: Exercise = {
+export const trigonometry: MathExercise = {
   id: 'trigonometry',
   connector: '=',
   instruction: '',
@@ -100,7 +101,7 @@ export function getTrigonometry(): Question {
   const question: Question = {
     instruction: `À quel quotient est égal ${trigo[randTrigo]} de l'angle $\\widehat{${angle[randAngle]}}$?`,
     answer: quotient[randTrigo],
-    keys: [...vertices, 'equal'],
+    keys: [...(vertices as KeyId[]), 'equal'],
     commands: [...triangle.generateCommands({ highlightedAngle: angle[randAngle] })],
     coords: triangle.generateCoords(),
     getPropositions,

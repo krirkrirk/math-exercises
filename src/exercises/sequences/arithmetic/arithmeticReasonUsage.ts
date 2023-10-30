@@ -1,10 +1,10 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const arithmeticReasonUsage: Exercise = {
+export const arithmeticReasonUsage: MathExercise = {
   id: 'arithmeticReasonUsage',
   connector: '=',
   instruction: '',
@@ -56,7 +56,7 @@ export function getArithmeticReasonUsage(): Question {
   };
 
   const question: Question = {
-    instruction: `$(u_n)$ est une suite arithmétique de raison $r = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : `,
+    instruction: `$(u_n)$ est une suite arithmétique de raison $r = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer: (startValue + reason).toString(),
     keys: ['r', 'n', 'u', 'underscore'],

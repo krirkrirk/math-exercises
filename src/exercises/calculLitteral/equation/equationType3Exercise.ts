@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { Rational } from '#root/math/numbers/rationals/rational';
@@ -14,11 +14,11 @@ import { v4 } from 'uuid';
 /**
  *  type ax+b=c
  */
-export const equationType3Exercise: Exercise = {
+export const equationType3Exercise: MathExercise = {
   id: 'equa3',
 
   connector: '\\iff',
-  instruction: 'Résoudre : ',
+  instruction: '',
   label: 'Équations $ax+b=c$',
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
   sections: ['Équations'],
@@ -78,6 +78,7 @@ export function getEquationType3ExerciseQuestion(): Question {
   };
 
   const question: Question = {
+    instruction: `Résoudre : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],

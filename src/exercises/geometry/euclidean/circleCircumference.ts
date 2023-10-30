@@ -1,4 +1,4 @@
-import { Exercise, Question, Proposition } from '#root/exercises/exercise';
+import { MathExercise, Question, Proposition } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
@@ -6,7 +6,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const circleCircumference: Exercise = {
+export const circleCircumference: MathExercise = {
   id: 'circleCircumference',
   connector: '=',
   instruction: '',

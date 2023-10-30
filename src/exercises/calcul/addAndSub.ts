@@ -2,17 +2,17 @@ import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
 /**
  * a±b±c±d
  */
-export const addAndSubExercise: Exercise = {
+export const addAndSubExercise: MathExercise = {
   id: 'addAndSub',
   connector: '=',
-  instruction: 'Calculer :',
+  instruction: '',
   label: 'Additions et soustractions',
   levels: ['6ème', '5ème'],
   sections: ['Calculs'],
@@ -70,6 +70,7 @@ export function getAddAndSubQuestions(): Question {
   };
 
   const question: Question = {
+    instruction: `Calculer : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answer + '',
     keys: [],

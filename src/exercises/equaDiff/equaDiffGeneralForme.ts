@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { ExpNode } from '#root/tree/nodes/functions/expNode';
@@ -11,7 +11,7 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const exponentialDifferentialEquation: Exercise = {
+export const exponentialDifferentialEquation: MathExercise = {
   id: 'exponentialDifferentialEquation',
   connector: '=',
   instruction: '',
@@ -26,7 +26,7 @@ export const exponentialDifferentialEquation: Exercise = {
 };
 
 export function getExponentialEquation(): Question {
-  const a = randint(-9, 10, [0]);
+  const a = randint(-19, 20, [0]);
 
   const myEquation = simplifyNode(new MultiplyNode(new NumberNode(a), new VariableNode('y')));
 

@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -9,7 +9,7 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const geometricExplicitFormulaUsage: Exercise = {
+export const geometricExplicitFormulaUsage: MathExercise = {
   id: 'geometricExplicitFormulaUsage',
   connector: '=',
   instruction: '',
@@ -66,7 +66,7 @@ export function getGeometricExplicitFormulaUsage(): Question {
   };
 
   const question: Question = {
-    instruction: `$(u_n)$ est une suite géométrique définie par $u_n = ${formulaTex}$. Calculer :`,
+    instruction: `$(u_n)$ est une suite géométrique définie par $u_n = ${formulaTex}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer: (firstValue * Math.pow(reason, askedRank)).toString(),
     keys: ['n', 'u', 'underscore'],

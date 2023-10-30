@@ -1,11 +1,11 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TrinomConstructor } from '#root/math/polynomials/trinom';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const extremumFromCanonicalForm: Exercise = {
+export const extremumFromCanonicalForm: MathExercise = {
   id: 'extremumFromCanonicalForm',
   connector: '=',
   instruction: '',

@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -8,10 +8,10 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const fractionEquation: Exercise = {
+export const fractionEquation: MathExercise = {
   id: 'fractionEquation',
   connector: '\\iff',
-  instruction: 'Résoudre :',
+  instruction: '',
   label: 'Résoudre une équation quotient nul',
   levels: ['2nde', '1reESM', '1reSpé', '1reTech'],
   sections: ['Équations'],
@@ -79,6 +79,8 @@ export function getFractionEquation(): Question {
   };
 
   const question: Question = {
+    instruction: `Résoudre : $\\frac{${polynome1.toTex()}}{${polynome2.toTex()}} = 0$`,
+
     startStatement: `\\frac{${polynome1.toTex()}}{${polynome2.toTex()}} = 0`,
     answer,
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou', 'emptyset'],

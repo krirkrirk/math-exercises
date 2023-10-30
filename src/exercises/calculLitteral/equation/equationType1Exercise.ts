@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { Affine } from '#root/math/polynomials/affine';
@@ -13,10 +13,10 @@ import { v4 } from 'uuid';
 /**
  *  type x+a=b
  */
-export const equationType1Exercise: Exercise = {
+export const equationType1Exercise: MathExercise = {
   id: 'equa1',
   connector: '\\iff',
-  instruction: 'Résoudre : ',
+  instruction: '',
   label: 'Équations $x+a = b$',
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
   sections: ['Équations'],
@@ -72,8 +72,9 @@ export function getEquationType1ExerciseQuestion(): Question {
   };
 
   const question: Question = {
+    instruction: `Résoudre : $${tree.toTex()}$`,
     startStatement: tree.toTex(),
-    answer: `x = ${solution}`,
+    answer: `x=${solution}`,
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
     getPropositions,
     answerFormat: 'tex',

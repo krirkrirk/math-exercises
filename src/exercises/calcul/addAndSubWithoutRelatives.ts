@@ -3,17 +3,17 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { shuffle } from '#root/utils/shuffle';
 
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
 /**
  * a±b±c±d
  */
-export const addAndSubWithoutRelatives: Exercise = {
+export const addAndSubWithoutRelatives: MathExercise = {
   id: 'addAndSubWithoutRelatives',
   connector: '=',
-  instruction: 'Calculer :',
+  instruction: '',
   label: 'Additions et soustractions sans les nombres relatifs',
   levels: ['6ème', '5ème'],
   sections: ['Calculs'],
@@ -84,6 +84,7 @@ export function getAddAndSubWithoutRelatives(): Question {
   };
 
   const question: Question = {
+    instruction: `Calculer : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answer.toString(),
     keys: [],

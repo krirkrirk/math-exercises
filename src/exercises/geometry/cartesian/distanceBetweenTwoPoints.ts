@@ -1,14 +1,14 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Point } from '#root/math/geometry/point';
-import { SquareRoot } from '#root/math/numbers/reals/squareRoot';
+import { SquareRoot } from '#root/math/numbers/reals/real';
 import { distinctRandTupleInt } from '#root/math/utils/random/randTupleInt';
 import { round } from '#root/math/utils/round';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const distanceBetweenTwoPoints: Exercise = {
+export const distanceBetweenTwoPoints: MathExercise = {
   id: 'distanceBetweenTwoPoints',
   connector: '=',
   instruction: '',

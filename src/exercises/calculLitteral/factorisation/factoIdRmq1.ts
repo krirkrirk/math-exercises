@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
@@ -14,10 +14,10 @@ import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const factoIdRmq1: Exercise = {
+export const factoIdRmq1: MathExercise = {
   id: 'factoIdRmq1',
   connector: '=',
-  instruction: 'Factoriser :',
+  instruction: '',
   isSingleStep: false,
   label: 'Factorisation du type $a^2 + 2ab + b^2$',
   levels: ['3ème', '2nde'],
@@ -80,6 +80,7 @@ export function getFactoType1Question(): Question {
   };
 
   const question: Question = {
+    instruction: `Factoriser : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: ['x'],

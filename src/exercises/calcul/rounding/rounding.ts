@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { DecimalConstructor } from '#root/math/numbers/decimals/decimal';
 import { randint } from '#root/math/utils/random/randint';
@@ -9,10 +9,10 @@ import { v4 } from 'uuid';
 /**
  * arrondi à l'unité
  */
-export const roundToUnit: Exercise = {
+export const roundToUnit: MathExercise = {
   id: 'roundToUnit',
   connector: '\\approx',
-  instruction: "Arrondir à l'unité :",
+  instruction: '',
   label: "Arrondir à l'unité",
   levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
   sections: ['Calculs'],
@@ -25,10 +25,10 @@ export const roundToUnit: Exercise = {
 /**
  * arrondi à l'unité
  */
-export const roundToDixieme: Exercise = {
+export const roundToDixieme: MathExercise = {
   id: 'roundToDixieme',
   connector: '\\approx',
-  instruction: 'Arrondir au dixième :',
+  instruction: '',
   label: 'Arrondir au dixième',
   levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
   sections: ['Calculs'],
@@ -40,10 +40,10 @@ export const roundToDixieme: Exercise = {
 /**
  * arrondi à l'unité
  */
-export const roundToCentieme: Exercise = {
+export const roundToCentieme: MathExercise = {
   id: 'roundToCentieme',
   connector: '\\approx',
-  instruction: 'Arrondir au centième :',
+  instruction: '',
   label: 'Arrondir au centième',
   levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
   sections: ['Calculs'],
@@ -55,10 +55,10 @@ export const roundToCentieme: Exercise = {
 /**
  * arrondi à l'unité
  */
-export const roundToMillieme: Exercise = {
+export const roundToMillieme: MathExercise = {
   id: 'roundToMillieme',
   connector: '\\approx',
-  instruction: 'Arrondir au millième :',
+  instruction: '',
   label: 'Arrondir au millième',
   levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
   sections: ['Calculs'],
@@ -68,7 +68,7 @@ export const roundToMillieme: Exercise = {
   freeTimer: 60,
 };
 
-export const allRoundings: Exercise = {
+export const allRoundings: MathExercise = {
   id: 'allRoundings',
   connector: '\\approx',
   instruction: '',
@@ -142,7 +142,6 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
           isRightAnswer: false,
           format: 'tex',
         };
-        console.log(proposition);
 
         isDuplicate = res.some((p) => p.statement === proposition.statement);
       } while (isDuplicate);
@@ -154,7 +153,7 @@ export function getRoundQuestions(precisionAsked: number = 0): Question {
   };
 
   const question: Question = {
-    instruction: instructions[precisionAsked],
+    instruction: `${instructions[precisionAsked]} ${dec.toTree().toTex()}`,
     startStatement: dec.toTree().toTex(),
     answer: dec.round(precisionAsked).toTree().toTex(),
     keys: [],

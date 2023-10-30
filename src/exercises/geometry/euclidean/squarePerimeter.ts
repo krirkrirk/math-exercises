@@ -1,10 +1,10 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const squarePerimeter: Exercise = {
+export const squarePerimeter: MathExercise = {
   id: 'squarePerimeter',
   connector: '=',
   instruction: '',
@@ -12,13 +12,14 @@ export const squarePerimeter: Exercise = {
   levels: ['4ème', '3ème', '2nde'],
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
-  generator: (nb: number) => getDistinctQuestions(getSquarePerimeter, nb),
+  generator: (nb: number) => getDistinctQuestions(getSquarePerimeter, nb, 20),
   qcmTimer: 60,
   freeTimer: 60,
+  maxAllowedQuestions: 20,
 };
 
 export function getSquarePerimeter(): Question {
-  const side = randint(1, 13);
+  const side = randint(1, 21);
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];

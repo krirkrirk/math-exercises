@@ -9,15 +9,15 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const scientificToDecimal: Exercise = {
+export const scientificToDecimal: MathExercise = {
   id: 'scientificToDecimal',
   connector: '=',
-  instruction: "Donner l'écriture décimale de :",
-  label: 'Ecriture décimale de $a\\times 10^x$',
+  instruction: '',
+  label: "Passer d'écriture scientifique à écriture décimal",
   levels: [
     '5ème',
     '4ème',
@@ -42,34 +42,32 @@ export const scientificToDecimal: Exercise = {
 };
 
 export function getScientificToDecimalQuestion(): Question {
-  const randPower = randint(-6, 8);
-  const int = IntegerConstructor.random(randint(1, 4));
-  const fracPart = DecimalConstructor.randomFracPart(randint(0, 4));
-  const randDecimal = DecimalConstructor.fromParts(int + '', fracPart);
-  const statement = new MultiplyNode(
-    new NumberNode(randDecimal.value),
-    new PowerNode(new NumberNode(10), new NumberNode(randPower)),
-  );
-  const answerTree = randDecimal.multiplyByPowerOfTen(randPower).toTree();
+  const decScientific = DecimalConstructor.randomScientific(randint(1, 4));
+  const tenPower = randint(-5, 6, [0, 1]);
+  const answer = decScientific.multiplyByPowerOfTen(tenPower).toTree().toTex();
 
+  const statement = new MultiplyNode(
+    new NumberNode(decScientific.value),
+    new PowerNode(new NumberNode(10), new NumberNode(tenPower)),
+  );
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
     res.push({
       id: v4() + '',
-      statement: answerTree.toTex(),
+      statement: answer,
       isRightAnswer: true,
       format: 'tex',
     });
 
+    tryToAddWrongProp(res, decScientific.multiplyByPowerOfTen(-tenPower).toTree().toTex());
     for (let i = 0; i < n - 1; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 
       do {
-        const wrongAnswerTree = randDecimal.multiplyByPowerOfTen(randint(-6, 8, [randPower])).toTree();
+        const wrongAnswerTree = decScientific.multiplyByPowerOfTen(randint(-6, 6, [tenPower])).toTree();
         const wrongAnswer = wrongAnswerTree.toTex();
-
         proposition = {
           id: v4() + '',
           statement: wrongAnswer,
@@ -87,8 +85,9 @@ export function getScientificToDecimalQuestion(): Question {
   };
 
   const question: Question = {
+    instruction: `Donner l'écriture décimale de : $${statement.toTex()}$`,
     startStatement: statement.toTex(),
-    answer: answerTree.toTex(),
+    answer: answer,
     keys: [],
     getPropositions,
     answerFormat: 'tex',

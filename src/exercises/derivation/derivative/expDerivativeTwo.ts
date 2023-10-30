@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { ExpNode } from '#root/tree/nodes/functions/expNode'; // Importer le nœud d'exponentielle
@@ -10,7 +10,7 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const expDerivativeTwo: Exercise = {
+export const expDerivativeTwo: MathExercise = {
   id: 'expDerivativeTwo',
   connector: '=',
   instruction: '',
@@ -70,7 +70,7 @@ export function getExpDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions).slice(0, numOptions);
+    return shuffleProps(propositions, numOptions);
   };
 
   const question: Question = {

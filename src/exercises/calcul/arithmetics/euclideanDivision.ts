@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -8,7 +8,7 @@ import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const euclideanDivision: Exercise = {
+export const euclideanDivision: MathExercise = {
   id: 'euclideanDivision',
   connector: '=',
   instruction: '',
@@ -75,7 +75,7 @@ export function getEuclideanDivisionQuestions(): Question {
       res.push(proposition);
     }
 
-    return shuffle(res).slice(0, n);
+    return shuffleProps(res, n);
   };
 
   const question: Question = {

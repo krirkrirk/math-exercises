@@ -2,7 +2,7 @@
  *  type (ax+b)(cx+d) ± (ax+b)(ex+f)
  */
 
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
@@ -12,10 +12,10 @@ import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const factoType1Exercise: Exercise = {
+export const factoType1Exercise: MathExercise = {
   id: 'facto1',
   connector: '=',
-  instruction: 'Factoriser :',
+  instruction: '',
   isSingleStep: false,
   label: 'Factorisation du type $(ax+b)(cx+d) \\pm (ax+b)(ex+f)$',
   levels: ['3ème', '2nde'],
@@ -118,6 +118,8 @@ export function getFactoType1Question(): Question {
   };
 
   const question: Question = {
+    instruction: `Factoriser : $${statementTree.toTex()}$`,
+
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: ['x'],

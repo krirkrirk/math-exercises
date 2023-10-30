@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Complex, ComplexConstructor } from '#root/math/complex/complex';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
@@ -8,7 +8,7 @@ import { simplifyComplex } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const addComplex: Exercise = {
+export const addComplex: MathExercise = {
   id: 'addComplex',
   connector: '=',
   instruction: '',

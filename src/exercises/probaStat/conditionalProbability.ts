@@ -1,11 +1,11 @@
 import { randint } from '#root/math/utils/random/randint';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { round } from '#root/math/utils/round';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const conditionalProbability: Exercise = {
+export const conditionalProbability: MathExercise = {
   id: 'conditionalProbability',
   connector: '=',
   instruction: '',

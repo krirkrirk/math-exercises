@@ -1,11 +1,12 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
 import { randint } from '#root/math/utils/random/randint';
+import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const rightTriangleArea: Exercise = {
+export const rightTriangleArea: MathExercise = {
   id: 'rightTriangleArea',
   connector: '=',
   instruction: '',
@@ -70,7 +71,7 @@ export function getRightTriangleArea(): Question {
       sidesLength[0]
     }$ cm et ${triangle.getSideCName()} = $${sidesLength[1]}$ cm.`,
     answer: (sidesLength[0] * sidesLength[1]) / 2 + '',
-    keys: [...vertices, 'equal', 'cm2'],
+    keys: [...(vertices as KeyId[]), 'equal', 'cm2'],
     commands,
     coords: triangle.generateCoords(),
     getPropositions,

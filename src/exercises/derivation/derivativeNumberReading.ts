@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { DroiteConstructor } from '#root/math/geometry/droite';
 import { Point } from '#root/math/geometry/point';
@@ -11,7 +11,7 @@ import { shuffle } from '#root/utils/shuffle';
 import { evaluate } from 'mathjs';
 import { v4 } from 'uuid';
 
-export const derivativeNumberReading: Exercise = {
+export const derivativeNumberReading: MathExercise = {
   id: 'derivativeNumberReading',
   connector: '=',
   instruction: '',

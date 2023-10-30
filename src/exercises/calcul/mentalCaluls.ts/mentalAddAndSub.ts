@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
@@ -8,10 +8,10 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const mentalAddAndSub: Exercise = {
+export const mentalAddAndSub: MathExercise = {
   id: 'mentalAddAndSub',
   connector: '=',
-  instruction: 'Calculer.',
+  instruction: '',
   label: 'Effectuer mentalement des additions et des soustractions simples',
   levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro'],
   sections: ['Calculs'],
@@ -81,6 +81,7 @@ export function getMentalAddAndSub(): Question {
   };
 
   const question: Question = {
+    instruction: `Calculer : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: round(sum, 2) + '',
     keys: [],

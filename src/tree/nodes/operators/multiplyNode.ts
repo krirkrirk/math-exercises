@@ -4,7 +4,8 @@ import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from './operatorNode';
 
 export class MultiplyNode extends OperatorNode implements Node {
-  constructor(leftChild: Node, rightChild: Node) {
+  forceTimesSign?: boolean;
+  constructor(leftChild: Node, rightChild: Node, forceTimesSign?: boolean) {
     let [left, right] = [leftChild, rightChild];
     const shouldSwitch =
       (rightChild.type === NodeType.function && (rightChild as unknown as FunctionNode).id === FunctionsIds.opposite) ||
@@ -14,6 +15,7 @@ export class MultiplyNode extends OperatorNode implements Node {
     }
 
     super(OperatorIds.multiply, left, right, true, '\\times');
+    this.forceTimesSign = forceTimesSign;
   }
 
   toMathString(): string {
@@ -47,7 +49,7 @@ export class MultiplyNode extends OperatorNode implements Node {
     if (needBrackets) rightTex = `(${rightTex})`;
 
     //  permet de gérer le cas 3*2^x par ex
-    let showTimesSign = !isNaN(+rightTex[0]) || this.rightChild.type === NodeType.number;
+    let showTimesSign = this.forceTimesSign || !isNaN(+rightTex[0]) || this.rightChild.type === NodeType.number;
     if (this.rightChild.type === NodeType.operator) {
       const operatorRightChild = this.rightChild as unknown as OperatorNode;
       showTimesSign ||= [OperatorIds.fraction].includes(operatorRightChild.id);

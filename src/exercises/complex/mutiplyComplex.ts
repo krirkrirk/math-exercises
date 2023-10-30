@@ -1,10 +1,10 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Complex, ComplexConstructor } from '#root/math/complex/complex';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const mutiplyComplex: Exercise = {
+export const mutiplyComplex: MathExercise = {
   id: 'mutiplyComplex',
   connector: '=',
   instruction: '',
@@ -38,7 +38,7 @@ export function getMutiplyComplexQuestion(): Question {
     res.push({
       id: v4(),
       statement: answer.toComplex().conjugate().toTree().toTex(),
-      isRightAnswer: true,
+      isRightAnswer: false,
       format: 'tex',
     });
 

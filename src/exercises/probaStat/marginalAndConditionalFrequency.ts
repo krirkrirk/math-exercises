@@ -5,11 +5,11 @@ import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const marginalAndConditionalFrequency: Exercise = {
+export const marginalAndConditionalFrequency: MathExercise = {
   id: 'marginalAndConditionalFrequency',
   connector: '=',
   instruction: '',

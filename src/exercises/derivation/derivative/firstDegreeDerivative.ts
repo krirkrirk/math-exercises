@@ -1,11 +1,11 @@
-import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const firstDegreeDerivative: Exercise = {
+export const firstDegreeDerivative: MathExercise = {
   id: 'firstDegreeDerivative',
   connector: '=',
   instruction: '',
@@ -58,7 +58,7 @@ export function getFirstDegreeDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions).slice(0, n);
+    return shuffleProps(propositions, n);
   };
 
   const question: Question = {

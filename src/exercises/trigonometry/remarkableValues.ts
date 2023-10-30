@@ -1,14 +1,14 @@
 import { RemarkableValueConstructor } from '#root/math/trigonometry/remarkableValue';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const remarkableValuesExercise: Exercise = {
+export const remarkableValuesExercise: MathExercise = {
   id: 'remarkableValues',
   connector: '=',
-  instruction: 'Donner la valeur exacte :',
+  instruction: '',
   label: 'Valeurs remarquables de $\\cos$ et $\\sin$',
   levels: ['1reSpé', 'TermSpé', 'MathComp'],
   isSingleStep: true,
@@ -58,10 +58,12 @@ export function getRemarkableValues(): Question {
     return props;
   };
 
+  const statement = isCos
+    ? `\\cos\\left(${remarkableValue.angle.toTex()}\\right)`
+    : `\\sin\\left(${remarkableValue.angle.toTex()}\\right)`;
   const question: Question = {
-    startStatement: isCos
-      ? `\\cos\\left(${remarkableValue.angle.toTex()}\\right)`
-      : `\\sin\\left(${remarkableValue.angle.toTex()}\\right)`,
+    instruction: `Donner la valeur exacte de : $${statement}$`,
+    startStatement: statement,
     answer: answer,
     keys: ['pi', 'cos', 'sin'],
     answerFormat: 'tex',

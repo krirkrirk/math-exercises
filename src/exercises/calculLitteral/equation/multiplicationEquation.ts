@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -8,10 +8,10 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const multiplicationEquation: Exercise = {
+export const multiplicationEquation: MathExercise = {
   id: 'multiplicationEquation',
   connector: '\\iff',
-  instruction: 'Résoudre :',
+  instruction: '',
   label: 'Résoudre une équation produit nul',
   levels: ['2nde', '1reESM', '1reSpé', '1reTech'],
   sections: ['Équations'],
@@ -85,6 +85,7 @@ export function getMultiplicationEquation(): Question {
   };
 
   const question: Question = {
+    instruction: `Résoudre : $(${polynome1.toTex()})(${polynome2.toTex()}) = 0$`,
     startStatement: `(${polynome1.toTex()})(${polynome2.toTex()}) = 0`,
     answer: `S=\\left\\{${simplifyNode(new FractionNode(new NumberNode(-b), new NumberNode(a))).toTex()};${simplifyNode(
       new FractionNode(new NumberNode(-d), new NumberNode(c)),

@@ -8,14 +8,14 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const powersDivision: Exercise = {
+export const powersDivision: MathExercise = {
   id: 'powersDivision',
   connector: '=',
-  instruction: 'Calculer :',
+  instruction: '',
   label: 'Division de puissances',
   levels: ['4ème', '3ème', '2nde', '2ndPro', '1reESM', '1rePro', '1reSpé', '1reTech', 'TermPro', 'TermTech'],
   sections: ['Puissances'],
@@ -24,7 +24,7 @@ export const powersDivision: Exercise = {
   qcmTimer: 60,
   freeTimer: 60,
 };
-export const powersOfTenDivision: Exercise = {
+export const powersOfTenDivision: MathExercise = {
   id: 'powersOfTenDivision',
   connector: '=',
   instruction: 'Calculer :',
@@ -84,6 +84,7 @@ export function getPowersDivisionQuestion(useOnlyPowersOfTen: boolean = false): 
   };
 
   const question: Question = {
+    instruction: `Calculer : $${statement.toTex()}$`,
     startStatement: statement.toTex(),
     answer: answerTree.toTex(),
     keys: [],

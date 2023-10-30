@@ -1,4 +1,4 @@
-import { Exercise, GeneratorOptions, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, GeneratorOptions, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
@@ -8,7 +8,7 @@ interface GeometricRecurrenceFormulaUsageOptions extends GeneratorOptions {
   test: boolean;
 }
 
-export const geometricRecurrenceFormulaUsage: Exercise = {
+export const geometricRecurrenceFormulaUsage: MathExercise = {
   id: 'geometricRecurrenceFormulaUsage',
   connector: '=',
   instruction: '',
@@ -20,11 +20,10 @@ export const geometricRecurrenceFormulaUsage: Exercise = {
 
   qcmTimer: 60,
   freeTimer: 60,
-  generator: (nb: number, options: GeometricRecurrenceFormulaUsageOptions) =>
-    getDistinctQuestions(getGeometricRecurrenceFormulaUsage, nb),
+  generator: (nb: number) => getDistinctQuestions(getGeometricRecurrenceFormulaUsage, nb),
 };
 
-export function getGeometricRecurrenceFormulaUsage(options: GeometricRecurrenceFormulaUsageOptions): Question {
+export function getGeometricRecurrenceFormulaUsage(): Question {
   const firstRank = randint(1, 20);
   const firstValue = randint(1, 10);
   const reason = randint(2, 10);
@@ -70,7 +69,7 @@ export function getGeometricRecurrenceFormulaUsage(options: GeometricRecurrenceF
   };
 
   const question: Question = {
-    instruction: `$(u_n)$ est une suite définie par $u_{n+1} = ${reason}\\times u_n$ et $u_{${firstRank}} = ${firstValue}$. Calculer :`,
+    instruction: `$(u_n)$ est une suite définie par $u_{n+1} = ${reason}\\times u_n$ et $u_{${firstRank}} = ${firstValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer: (firstValue * reason).toString(),
     keys: ['q', 'n', 'u', 'underscore'],

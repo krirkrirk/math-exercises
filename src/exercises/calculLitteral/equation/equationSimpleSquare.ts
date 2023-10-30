@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { coinFlip } from '#root/utils/coinFlip';
@@ -8,7 +8,7 @@ import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
 const squares = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((el) => el ** 2);
-export const equationSimpleSquare: Exercise = {
+export const equationSimpleSquare: MathExercise = {
   id: 'equationSimpleSquare',
   connector: '=',
   instruction: '',

@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Rational } from '#root/math/numbers/rationals/rational';
 import { Monom } from '#root/math/polynomials/monom';
@@ -8,14 +8,14 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const sequencePolynomProductLimit: Exercise = {
+export const sequencePolynomProductLimit: MathExercise = {
   id: 'sequencePolynomProductLimit',
   connector: '=',
   instruction: '',
-  label: "Limite d'un produit de suites polynomiales)",
+  label: "Limite d'un produit de suites polynomiales",
   levels: ['TermSpé', 'MathComp'],
   isSingleStep: true,
-  sections: ['Limites'],
+  sections: ['Limites', 'Suites'],
   generator: (nb: number) => getDistinctQuestions(getSequencePolynomProductLimitQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,

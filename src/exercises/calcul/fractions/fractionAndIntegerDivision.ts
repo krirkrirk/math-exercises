@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { RationalConstructor } from '#root/math/numbers/rationals/rational';
@@ -8,10 +8,10 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const fractionAndIntegerDivision: Exercise = {
+export const fractionAndIntegerDivision: MathExercise = {
   id: 'fractionAndIntegerDivision',
   connector: '=',
-  instruction: "Calculer et donner le résultat sous la forme d'une fraction irréductible.",
+  instruction: '',
   label: "Division d'un entier et d'une fraction",
   levels: ['4ème', '3ème', '2nde', '2ndPro', '1rePro', 'CAP'],
   isSingleStep: false,
@@ -73,11 +73,11 @@ export function getFractionAndIntegerDivision(): Question {
       res.push(proposition);
     }
 
-    return shuffle(res).slice(0, n);
+    return shuffleProps(res, n);
   };
 
   const question: Question = {
-    instruction: '',
+    instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: [],

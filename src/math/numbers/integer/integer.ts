@@ -1,12 +1,18 @@
+import { primeNumbers } from '#root/exercises/calcul/arithmetics/primeNumbers';
 import { randint } from '#root/math/utils/random/randint';
 import { Node } from '#root/tree/nodes/node';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { random } from '#root/utils/random';
 import { Nombre, NumberType } from '../nombre';
 import { Rational } from '../rationals/rational';
+import { primes } from './primes';
 
 export abstract class IntegerConstructor {
-  static random(nbOfDigits: number) {
-    return randint(0, 10 ** nbOfDigits);
+  static random(nbOfDigits: number, excludes?: number[]) {
+    return randint(10 ** (nbOfDigits - 1), 10 ** nbOfDigits, excludes);
+  }
+  static randomPrime(max: number = 20) {
+    return random(primes.filter((p) => p < 20));
   }
 }
 

@@ -1,11 +1,11 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const medianWithList: Exercise = {
+export const medianWithList: MathExercise = {
   id: 'medianWithList',
   connector: '=',
   instruction: '',
@@ -46,15 +46,17 @@ export function getMedianList(): Question {
       isRightAnswer: true,
       format: 'tex',
     });
+    sortedValues.forEach((value) => tryToAddWrongProp(res, value + ''));
 
-    for (let i = 0; i < n - 1; i++) {
+    const missing = n - res.length;
+    for (let i = 0; i < missing; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 
       do {
         proposition = {
           id: v4() + '',
-          statement: randomValeurs[randint(0, randomValeurs.length)] + '',
+          statement: randint(0, 20) + '',
           isRightAnswer: false,
           format: 'tex',
         };

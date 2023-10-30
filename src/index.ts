@@ -1,17 +1,11 @@
-import { Exercise, MathSection } from './exercises/exercise';
+import { MathExercise, MathSection } from './exercises/exercise';
 import { exercises } from './exercises/exercises';
-import { Complex } from './math/complex/complex';
-import { TrinomConstructor } from './math/polynomials/trinom';
-import { IntervalConstructor } from './math/sets/intervals/intervals';
-import { ComplexNode } from './tree/nodes/complex/complexNode';
-import { AddNode } from './tree/nodes/operators/addNode';
-import { MultiplyNode } from './tree/nodes/operators/multiplyNode';
-import { simplifyComplex } from './tree/parsers/simplify';
+import { decimalToScientific } from './exercises/powers/decimalToScientific';
 
 const allMathExercises = [...exercises];
 
 const getAllMathExercisesBySection = () => {
-  const data: { section: MathSection; exos: Exercise[] }[] = [];
+  const data: { section: MathSection; exos: MathExercise[] }[] = [];
 
   allMathExercises.forEach((exo) => {
     const sectionsData = data.filter((el) => exo.sections.includes(el.section));
@@ -30,5 +24,7 @@ const getAllMathExercisesBySection = () => {
   });
   return data;
 };
+
+console.log(decimalToScientific.generator(10).forEach((q) => q.getPropositions(4)));
 
 export { allMathExercises, getAllMathExercisesBySection };

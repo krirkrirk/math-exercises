@@ -1,4 +1,4 @@
-import { Exercise, Question, Proposition } from '#root/exercises/exercise';
+import { MathExercise, Question, Proposition } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Vector } from '#root/math/geometry/vector';
 import { distinctRandTupleInt } from '#root/math/utils/random/randTupleInt';
@@ -7,7 +7,7 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const scalarProductViaCoords: Exercise = {
+export const scalarProductViaCoords: MathExercise = {
   id: 'scalarProductViaCoords',
   connector: '=',
   instruction: '',

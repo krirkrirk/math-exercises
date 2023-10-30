@@ -1,10 +1,12 @@
-import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { NombreConstructor } from '#root/math/numbers/nombre';
 import { randint } from '#root/math/utils/random/randint';
+import { OppositeNode } from '#root/tree/nodes/functions/oppositeNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const constanteDerivative: Exercise = {
+export const constanteDerivative: MathExercise = {
   id: 'constanteDerivative',
   connector: '=',
   instruction: '',
@@ -19,8 +21,8 @@ export const constanteDerivative: Exercise = {
 };
 
 export function getConstanteDerivative(): Question {
-  const c = randint(-9, 10, [0]);
-
+  const c = NombreConstructor.random();
+  const tex = c.toTree().toTex();
   const getPropositions = (n: number) => {
     const propositions: Proposition[] = [];
 
@@ -31,9 +33,10 @@ export function getConstanteDerivative(): Question {
       format: 'tex',
     });
 
-    tryToAddWrongProp(propositions, c + '');
+    tryToAddWrongProp(propositions, tex + '');
     tryToAddWrongProp(propositions, '1');
-    tryToAddWrongProp(propositions, -c + '');
+    tryToAddWrongProp(propositions, new OppositeNode(c.toTree()).toTex());
+    tryToAddWrongProp(propositions, 'x');
 
     const missing = n - propositions.length;
 
@@ -56,11 +59,11 @@ export function getConstanteDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions);
+    return shuffleProps(propositions, n);
   };
 
   const question: Question = {
-    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${c}$.`,
+    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${tex}$.`,
     startStatement: `f'(x)`,
     answer: '0',
     keys: ['x'],

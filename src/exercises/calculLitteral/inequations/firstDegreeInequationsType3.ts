@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Rational } from '#root/math/numbers/rationals/rational';
 import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
@@ -10,7 +10,7 @@ import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const firstDegreeInequationsType3: Exercise = {
+export const firstDegreeInequationsType3: MathExercise = {
   id: 'firstDegreeInequationsType3',
   connector: '\\iff',
   instruction: '',

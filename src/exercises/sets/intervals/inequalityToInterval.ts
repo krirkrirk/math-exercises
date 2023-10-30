@@ -1,11 +1,11 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { IntervalConstructor } from '#root/math/sets/intervals/intervals';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const inequalityToInterval: Exercise = {
+export const inequalityToInterval: MathExercise = {
   id: 'inequalityToInterval',
   connector: '=',
   instruction: '',
@@ -53,9 +53,9 @@ export function getInequalityToIntervalQuestion(): Question {
     if (isIntervalToInequality) {
       if (interval.min === -Infinity) {
         const wrongStatements = [
-          `x ${switchInequality(interval.rightInequalitySymbol)} ${interval.maxTex}`,
-          `-\\infty \\le x ${switchInequality(interval.rightInequalitySymbol)} ${interval.maxTex}`,
-          `-\\infty < x ${switchInequality(interval.rightInequalitySymbol)} ${interval.maxTex}`,
+          `x${switchInequality(interval.rightInequalitySymbol)}${interval.maxTex}`,
+          `-\\infty\\le x${switchInequality(interval.rightInequalitySymbol)}${interval.maxTex}`,
+          `-\\infty <x${switchInequality(interval.rightInequalitySymbol)}${interval.maxTex}`,
         ];
         wrongStatements.forEach((statement) => {
           res.push({

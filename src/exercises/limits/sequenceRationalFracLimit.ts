@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Rational } from '#root/math/numbers/rationals/rational';
 import { Monom } from '#root/math/polynomials/monom';
@@ -8,14 +8,14 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const sequenceRationalFracLimit: Exercise = {
+export const sequenceRationalFracLimit: MathExercise = {
   id: 'sequenceRationalFracLimit',
   connector: '=',
   instruction: '',
   label: "Limite d'une suite rationnelle",
   levels: ['TermSpé', 'MathComp'],
   isSingleStep: true,
-  sections: ['Limites'],
+  sections: ['Limites', 'Suites'],
   generator: (nb: number) => getDistinctQuestions(getSequenceRationalFracLimitQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,

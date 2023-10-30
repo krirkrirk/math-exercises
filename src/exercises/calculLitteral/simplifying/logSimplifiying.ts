@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { LogNode } from '#root/tree/nodes/functions/logNode';
@@ -10,7 +10,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const logSimplifiying: Exercise = {
+export const logSimplifiying: MathExercise = {
   id: 'logSimplifiying',
   connector: '\\iff',
   instruction: '',

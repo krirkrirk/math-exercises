@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { AffineConstructor } from '#root/math/polynomials/affine';
@@ -10,10 +10,10 @@ import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const secondIdentity: Exercise = {
+export const secondIdentity: MathExercise = {
   id: 'idRmq2',
   connector: '=',
-  instruction: 'Développer et réduire :',
+  instruction: '',
   label: 'Identité remarquable $(a-b)^2$',
   levels: ['3ème', '2nde'],
   sections: ['Calcul littéral'],
@@ -89,6 +89,7 @@ export function getSecondIdentityQuestion(): Question {
   };
 
   return {
+    instruction: `Développer et réduire : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: ['x'],

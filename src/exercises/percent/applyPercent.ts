@@ -2,11 +2,11 @@ import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const applyPercent: Exercise = {
+export const applyPercent: MathExercise = {
   id: 'applyPercent',
   connector: '=',
   instruction: '',

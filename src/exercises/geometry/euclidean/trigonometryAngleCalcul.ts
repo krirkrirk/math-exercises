@@ -1,12 +1,13 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
+import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const trigonometryAngleCalcul: Exercise = {
+export const trigonometryAngleCalcul: MathExercise = {
   id: 'trigonometryAngleCalcul',
   connector: '=',
   instruction: '',
@@ -80,7 +81,7 @@ export function getTrigonometryAngleCalcul(): Question {
       sideLengths[randSides[1]]
     }$ cm.$\\\\$ Calculer $\\widehat{${angle[randAngle]}}$ à 1° près.`,
     answer: answer + '°',
-    keys: [...vertices, 'equal', 'degree', 'cos', 'sin', 'tan', 'arccos', 'arcsin', 'arctan'],
+    keys: [...(vertices as KeyId[]), 'equal', 'degree', 'cos', 'sin', 'tan', 'arccos', 'arcsin', 'arctan'],
     commands: [...triangle.generateCommands({ highlightedAngle: angle[randAngle] })],
     coords: triangle.generateCoords(),
     getPropositions,

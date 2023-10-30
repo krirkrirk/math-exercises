@@ -1,10 +1,10 @@
-import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const inverseFunctionDerivative: Exercise = {
+export const inverseFunctionDerivative: MathExercise = {
   id: 'inverseFunctionDerivative',
   connector: '=',
   instruction: '',
@@ -19,7 +19,7 @@ export const inverseFunctionDerivative: Exercise = {
 };
 
 export function getInverseFunctionDerivative(): Question {
-  const a = randint(-9, 10, [0]);
+  const a = randint(-19, 20, [0]);
 
   const getPropositions = (n: number) => {
     const propositions: Proposition[] = [];
@@ -57,7 +57,7 @@ export function getInverseFunctionDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions).slice(0, n);
+    return shuffleProps(propositions, n);
   };
 
   const question: Question = {

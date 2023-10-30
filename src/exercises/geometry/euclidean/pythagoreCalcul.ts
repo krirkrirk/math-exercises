@@ -1,13 +1,14 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
-import { SquareRoot, SquareRootConstructor } from '#root/math/numbers/reals/squareRoot';
+import { SquareRoot, SquareRootConstructor } from '#root/math/numbers/reals/real';
 import { randint } from '#root/math/utils/random/randint';
+import { KeyId } from '#root/types/keyIds';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const pythagoreCalcul: Exercise = {
+export const pythagoreCalcul: MathExercise = {
   id: 'pythagoreCalcul',
   connector: '=',
   instruction: '',
@@ -102,7 +103,7 @@ export function getPythagoreCalcul(): Question {
       sideLengths[randoms[1]]
     }$.$\\\\$Calculer la longueur exacte ${sides[randoms[2]]}`,
     answer: answer + '',
-    keys: [...vertices, 'equal'],
+    keys: [...(vertices as KeyId[]), 'equal'],
     commands,
     coords: triangle.generateCoords(),
     getPropositions,

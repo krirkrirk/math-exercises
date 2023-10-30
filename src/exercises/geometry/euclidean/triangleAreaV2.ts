@@ -1,10 +1,10 @@
-import { Exercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const triangleAreaV2: Exercise = {
+export const triangleAreaV2: MathExercise = {
   id: 'triangleAreaV2',
   connector: '=',
   instruction: '',
@@ -12,9 +12,10 @@ export const triangleAreaV2: Exercise = {
   levels: ['5ème', '4ème', '3ème', '2nde'],
   isSingleStep: false,
   sections: ['Géométrie euclidienne'],
-  generator: (nb: number) => getDistinctQuestions(getTriangleAreaV2, nb),
+  generator: (nb: number) => getDistinctQuestions(getTriangleAreaV2, nb, 16),
   qcmTimer: 60,
   freeTimer: 60,
+  maxAllowedQuestions: 16,
 };
 
 export function getTriangleAreaV2(): Question {

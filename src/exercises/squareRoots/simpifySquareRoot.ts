@@ -1,13 +1,13 @@
-import { SquareRootConstructor } from '#root/math/numbers/reals/squareRoot';
+import { SquareRootConstructor } from '#root/math/numbers/reals/real';
 import { shuffle } from '#root/utils/shuffle';
-import { Exercise, Proposition, Question } from '../exercise';
+import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const simplifySquareRoot: Exercise = {
+export const simplifySquareRoot: MathExercise = {
   id: 'simplifySqrt',
   connector: '=',
-  instruction: 'Simplifier :',
+  instruction: '',
   label: 'Simplification de racines carrées',
   isSingleStep: false,
   levels: ['3ème', '2nde', '1reESM'],
@@ -61,6 +61,7 @@ export function getSimplifySquareRoot(): Question {
   };
 
   const question: Question = {
+    instruction: `Simplifier : $${squareRoot.toTree().toTex()}$`,
     startStatement: squareRoot.toTree().toTex(),
     answer: squareRoot.simplify().toTree().toTex(),
     keys: [],

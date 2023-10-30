@@ -1,4 +1,4 @@
-import { Exercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -9,7 +9,7 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const expDerivativeOne: Exercise = {
+export const expDerivativeOne: MathExercise = {
   id: 'expDerivativeOne',
   connector: '=',
   instruction: '',
@@ -48,32 +48,7 @@ export function getExpDerivative(): Question {
       simplifyNode(new MultiplyNode(new NumberNode(affine.coefficients[0]), myfunction)).toTex(),
     );
 
-    const missing = numOptions - propositions.length;
-
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate;
-      let proposition: Proposition;
-
-      do {
-        const randomA = randint(-9, 10, [0]);
-        const randomB = randint(-9, 10);
-
-        proposition = {
-          id: v4(),
-          statement: simplifyNode(
-            new MultiplyNode(new NumberNode(randomA), new ExpNode(new Polynomial([randomB, randomA]).toTree())),
-          ).toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffle(propositions).slice(0, numOptions);
+    return shuffleProps(propositions, numOptions);
   };
 
   const question: Question = {

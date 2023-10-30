@@ -176,12 +176,17 @@ import { sequencePolynomLimit } from './limits/sequencePolynomLimit';
 import { sequenceRationalFracLimit } from './limits/sequenceRationalFracLimit';
 import { sequencePolynomProductLimit } from './limits/sequencePolynomProductLimit';
 import { sequencePolynomNoFILimit } from './limits/sequencePolynomNoFILimit';
-import { Exercise } from './exercise';
+import { MathExercise } from './exercise';
 import { polynomLimitNoFI } from './limits/polynomLimitNoFI';
 import { rationalFracLimit } from './limits/rationalFracLimit';
 import { rationalFracForbiddenValueLimit } from './limits/rationalFracForbiddenValueLimit';
+import { sequenceGeometricLimit } from './limits/sequenceGeometricLimit';
+import { calculatePower } from './powers/calculatePower';
+import { calculateNegativePower } from './powers/calculateNegativePower';
+import { decimalToScientific } from './powers/decimalToScientific';
+import { powerDefinition } from './powers/powerDefinition';
 
-export const exercises: Exercise[] = [
+export const exercises: MathExercise[] = [
   /**
    * calcul litteral
    */
@@ -287,8 +292,11 @@ export const exercises: Exercise[] = [
   powersOfTenPower,
   powersOfTenProduct,
   scientificToDecimal,
+  decimalToScientific,
   powersOfTenToDecimal,
-
+  calculatePower,
+  calculateNegativePower,
+  powerDefinition,
   /**
    * suites
    */
@@ -445,4 +453,5 @@ export const exercises: Exercise[] = [
   sequencePolynomNoFILimit,
   sequenceRationalFracLimit,
   sequencePolynomProductLimit,
+  sequenceGeometricLimit,
 ];
