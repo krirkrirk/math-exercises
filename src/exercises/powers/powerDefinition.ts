@@ -1,17 +1,15 @@
 import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Integer } from '#root/math/numbers/integer/integer';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
 export const powerDefinition: MathExercise = {
   id: 'powerDefinition',
   connector: '=',
   instruction: '',
-  label: 'Ecrire un produit sous forme de puissance',
+  label: 'Écrire un produit sous forme de puissance',
   levels: ['4ème', '3ème', '2ndPro', 'CAP'],
   isSingleStep: true,
   sections: ['Puissances'],
@@ -66,7 +64,7 @@ export function getPowerDefinitionQuestion(): Question {
 
   const question: Question = {
     answer,
-    instruction: `Ecrire sous forme de puissance : $${statement}$`,
+    instruction: `Écrire sous forme de puissance : $${statement}$`,
     keys: [],
     getPropositions,
     answerFormat: 'tex',
