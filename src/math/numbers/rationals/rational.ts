@@ -2,6 +2,7 @@ import { coprimesOf } from '#root/math/utils/arithmetic/coprimesOf';
 import { gcd } from '#root/math/utils/arithmetic/gcd';
 import { lcd } from '#root/math/utils/arithmetic/lcd';
 import { randint } from '#root/math/utils/random/randint';
+import { OppositeNode } from '#root/tree/nodes/functions/oppositeNode';
 import { Node } from '#root/tree/nodes/node';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
@@ -58,12 +59,12 @@ export class Rational implements Nombre {
     this.denum = denumerator;
     this.value = numerator / denumerator;
     this.isSimplified = Math.abs(gcd(numerator, denumerator)) === 1;
-    this.tex = `\\frac{${this.num}}{${this.denum}}`;
+    this.tex = `${this.num < 0 ? '-' : ''}\\frac{${this.num < 0 ? -this.num : this.num}}{${this.denum}}`;
     this.type = NumberType.Rational;
   }
 
   toTex() {
-    return `\\frac{${this.num}}{${this.denum}}`;
+    return `${this.num < 0 ? '-' : ''}\\frac{${this.num < 0 ? -this.num : this.num}}{${this.denum}}`;
   }
 
   add(nb: Nombre): Nombre {
@@ -119,6 +120,7 @@ export class Rational implements Nombre {
   }
 
   toTree(): Node {
+    if (this.num < 0) return new OppositeNode(new FractionNode(new NumberNode(-this.num), new NumberNode(this.denum)));
     return new FractionNode(new NumberNode(this.num), new NumberNode(this.denum));
   }
 

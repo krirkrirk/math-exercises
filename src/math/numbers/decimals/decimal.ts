@@ -1,14 +1,18 @@
 import { randint } from '#root/math/utils/random/randint';
 import { Node } from '#root/tree/nodes/node';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
+import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
+import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { Integer } from '../integer/integer';
 import { Nombre, NumberType } from '../nombre';
 
 export abstract class DecimalConstructor {
-  static randomFracPart(precision: number): string {
+  static randomFracPart(precision: number, leadingZeros: number = 0): string {
     let decimals = '';
     for (let i = 0; i < precision; i++) {
-      decimals += randint(i === precision - 1 ? 1 : 0, 10);
+      if (i < leadingZeros) decimals += '0';
+      if (i === precision - 1 || (i === 0 && !leadingZeros)) decimals += randint(1, 10);
+      else decimals += randint(0, 10);
     }
     return decimals;
   }
@@ -21,6 +25,13 @@ export abstract class DecimalConstructor {
   }
   static fromParts(intPart: string, decimalPart: string): Decimal {
     return new Decimal(Number('' + intPart + '.' + decimalPart));
+  }
+  //returns X.YYYY where X € [0, 9] and first Y is not zero if X is zero
+  static randomScientific(precision?: number): Decimal {
+    let prec = precision ?? randint(1, 4);
+    const int = randint(0, 10) + '';
+    const decimals = DecimalConstructor.randomFracPart(prec, 0);
+    return DecimalConstructor.fromParts(int, decimals);
   }
 }
 
@@ -133,6 +144,32 @@ export class Decimal implements Nombre {
       else newIntPart = intPartString.slice(0, power + intPartString.length);
     }
     return DecimalConstructor.fromParts(newIntPart, newFracPart);
+  }
+
+  toScientificPart(): Node {
+    const intString = this.intPart.toString();
+    const intSize = intString.length;
+    if (intSize === 0 && this.intPart !== 0) return this.toTree();
+    if (this.intPart === 0) {
+      const firstNonZeroIndex = this.decimalPart.split('').findIndex((el) => Number(el) !== 0);
+      return new NumberNode(Number('0.' + this.decimalPart.slice(firstNonZeroIndex)));
+    }
+    return new NumberNode(Number(intString[0] + '.' + intString.slice(1) + this.decimalPart));
+  }
+  toScientificNotation(): Node {
+    const intString = this.intPart.toString();
+    const intSize = intString.length;
+    if (intSize === 0) return this.toTree();
+    const decNode = this.toScientificPart();
+    let leadingZeros = 0;
+    const nbs = this.decimalPart.split('').map(Number);
+    for (let i = 0; i < nbs.length; i++) {
+      if (nbs[i] !== 0) break;
+      leadingZeros++;
+    }
+    const power = this.intPart === 0 ? -leadingZeros : intSize - 1;
+    if (power === 1) return new MultiplyNode(decNode, new NumberNode(10));
+    return new MultiplyNode(decNode, new PowerNode(new NumberNode(10), new NumberNode(power)));
   }
 
   toTree(): Node {
