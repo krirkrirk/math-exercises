@@ -1,4 +1,4 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Point } from '#root/math/geometry/point';
 import { SquareRoot } from '#root/math/numbers/reals/real';
@@ -32,7 +32,6 @@ export function getDistanceBetweenTwoPoints(): Question {
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
     let isDuplicate: boolean;
-    let temp = n;
 
     res.push({
       id: v4() + '',
@@ -40,54 +39,24 @@ export function getDistanceBetweenTwoPoints(): Question {
       isRightAnswer: true,
       format: 'tex',
     });
-    temp--;
 
     A = new Point('A', new NumberNode(coords1[0]), new NumberNode(coords1[1]));
     B = new Point('B', new NumberNode(-coords2[0]), new NumberNode(-coords2[1]));
     let wrongStatement = new SquareRoot(round(A.distanceTo(B) ** 2, 0)).simplify().toTree().toTex();
-    isDuplicate = res.some((p) => p.statement === wrongStatement);
-
-    if (!isDuplicate) {
-      res.push({
-        id: v4() + '',
-        statement: wrongStatement,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-      temp--;
-    }
+    tryToAddWrongProp(res, wrongStatement);
 
     A = new Point('A', new NumberNode(coords1[1]), new NumberNode(coords1[0]));
     B = new Point('B', new NumberNode(coords2[0]), new NumberNode(coords2[1]));
     wrongStatement = new SquareRoot(round(A.distanceTo(B) ** 2, 0)).simplify().toTree().toTex();
-    isDuplicate = res.some((p) => p.statement === wrongStatement);
-
-    if (n > 0 && !isDuplicate) {
-      res.push({
-        id: v4() + '',
-        statement: wrongStatement,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-      temp--;
-    }
+    tryToAddWrongProp(res, wrongStatement);
 
     A = new Point('A', new NumberNode(coords1[0]), new NumberNode(coords2[0]));
     B = new Point('B', new NumberNode(coords1[1]), new NumberNode(coords2[1]));
     wrongStatement = new SquareRoot(round(A.distanceTo(B) ** 2, 0)).simplify().toTree().toTex();
-    isDuplicate = res.some((p) => p.statement === wrongStatement);
+    tryToAddWrongProp(res, wrongStatement);
 
-    if (n > 0 && !isDuplicate) {
-      res.push({
-        id: v4() + '',
-        statement: wrongStatement,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-      temp--;
-    }
-
-    for (let i = 0; i < temp; i++) {
+    const missing = n - res.length;
+    for (let i = 0; i < missing; i++) {
       let proposition: Proposition;
 
       do {
@@ -105,10 +74,9 @@ export function getDistanceBetweenTwoPoints(): Question {
       } while (isDuplicate);
 
       res.push(proposition);
-      temp--;
     }
 
-    return shuffle(res);
+    return shuffleProps(res, n);
   };
 
   const question: Question = {

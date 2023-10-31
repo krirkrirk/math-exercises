@@ -5,11 +5,11 @@ import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const rootsFromDevForm: MathExercise = {
-  id: 'rootsFromDevForm',
+export const niceRootsFromDevForm: MathExercise = {
+  id: 'niceRootsFromDevForm',
   connector: '\\iff',
   instruction: '',
-  label: 'Résoudre une équation du second degré',
+  label: 'Résoudre une équation du second degré (solutions entières)',
   levels: ['1reSpé', 'TermSpé', 'MathComp'],
   isSingleStep: true,
   sections: ['Second degré'],
@@ -19,7 +19,7 @@ export const rootsFromDevForm: MathExercise = {
 };
 
 export function getRootsFromDevFormQuestion(): Question {
-  const trinom = TrinomConstructor.random();
+  const trinom = TrinomConstructor.randomFactorized();
   const answer = trinom.getRootsEquationSolutionTex();
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
@@ -60,6 +60,7 @@ export function getRootsFromDevFormQuestion(): Question {
     answer: answer,
     instruction: `Soit $f(x) = ${trinom.toTree().toTex()}$. Résoudre l'équation $f(x) = 0$.`,
     keys: ['S', 'equal', 'lbrace', 'semicolon', 'rbrace', 'emptyset'],
+
     getPropositions,
     answerFormat: 'tex',
   };

@@ -26,7 +26,7 @@ export function getCalculatePowerQuestion(): Question {
   const int = randint(0, 11);
   const power = randint(-5, 0);
   const statement = new PowerNode(new NumberNode(int), new NumberNode(power)).toTex();
-  const answer = new Rational(1, int ** Math.abs(power)).simplify().toTree().toTex();
+  const answer = int === 0 ? '0' : new Rational(1, int ** Math.abs(power)).simplify().toTree().toTex();
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 

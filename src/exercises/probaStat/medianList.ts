@@ -1,7 +1,7 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question, tryToAddWrongProp } from '../exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
@@ -67,7 +67,7 @@ export function getMedianList(): Question {
       res.push(proposition);
     }
 
-    return shuffle(res);
+    return shuffleProps(res, n);
   };
 
   const question: Question = {

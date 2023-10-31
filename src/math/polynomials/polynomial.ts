@@ -117,7 +117,7 @@ export class Polynomial {
    */
   constructor(coefficients: number[], variable: string = 'x') {
     if (coefficients.length === 0) throw Error('coeffs must be not null');
-    if (coefficients[coefficients.length - 1] === 0) {
+    if (coefficients.length > 1 && coefficients[coefficients.length - 1] === 0) {
       throw Error('n-th coeff must be not null');
     }
     this.coefficients = coefficients;
@@ -130,6 +130,9 @@ export class Polynomial {
   getRoots(): number[] {
     const roots: number[] = [];
 
+    if (this.degree === 0) {
+      return this.coefficients[0] === 0 ? [0] : [];
+    }
     if (this.degree === 1) {
       // Polynôme de degré 1 : ax + b = 0
       const a = this.coefficients[1];
@@ -153,6 +156,7 @@ export class Polynomial {
       }
     } else {
       //méthode de Newton-Raphson ou des bibliothèques de calcul symbolique pour obtenir les racines.
+      throw Error('general roots not implemented yet');
     }
 
     return roots.sort((a, b) => a - b);
@@ -160,18 +164,23 @@ export class Polynomial {
   add(P: Polynomial): Polynomial {
     if (P.variable !== this.variable) throw Error("Can't add two polynomials with different variables");
 
-    const newDegree =
-      P.degree === this.degree && P.coefficients[P.degree] === -this.coefficients[this.degree]
-        ? P.degree - 1
-        : Math.max(P.degree, this.degree);
+    const maxDegree = Math.max(P.degree, this.degree);
 
     const res: number[] = [];
-    for (let i = 0; i < newDegree + 1; i++) {
+    for (let i = 0; i < maxDegree + 1; i++) {
       res[i] = (P.coefficients[i] ?? 0) + (this.coefficients[i] ?? 0);
     }
-    return new Polynomial(res, this.variable);
+    let firstNonZeroIndex = res.length;
+    for (let i = res.length - 1; i > -1; i--) {
+      if (res[i] !== 0) break;
+      firstNonZeroIndex = i;
+    }
+    let coeffs = res.slice(0, firstNonZeroIndex);
+    if (!coeffs.length) coeffs = [0];
+    return new Polynomial(coeffs, this.variable);
   }
   times(nb: number): Polynomial {
+    if (nb === 0) return new Polynomial([0], this.variable);
     return new Polynomial(
       this.coefficients.map((coeff) => coeff * nb),
       this.variable,
@@ -191,8 +200,12 @@ export class Polynomial {
       }
       res[k] = sum;
     }
-
-    return new Polynomial(res, this.variable);
+    let firstNonZeroIndex = res.length;
+    for (let i = res.length - 1; i > -1; i--) {
+      if (res[i] !== 0) break;
+      firstNonZeroIndex = i;
+    }
+    return new Polynomial(res.slice(0, firstNonZeroIndex), this.variable);
   }
 
   opposite(): Polynomial {

@@ -6,8 +6,7 @@ test('all exos', () => {
     try {
       expect(exo.sections.length).not.toBe(0);
       expect(exo.levels.length).not.toBe(0);
-      expect(exo.instruction.length).toBe(0);
-      const questions = exo.generator(5);
+      const questions = exo.generator(30);
       questions.forEach((question) => {
         expect(question.instruction?.length).not.toBe(0);
         const props = question.getPropositions(4);
@@ -16,6 +15,7 @@ test('all exos', () => {
       });
     } catch (err) {
       console.log(exo.id);
+      throw err;
     }
   });
 });

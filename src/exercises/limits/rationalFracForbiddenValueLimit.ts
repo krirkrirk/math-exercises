@@ -1,4 +1,4 @@
-import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { Rational } from '#root/math/numbers/rationals/rational';
@@ -30,8 +30,9 @@ export function getSequenceRationalFracLimitQuestion(): Question {
 
   const forbiddenValue = -polyDenum.b;
   const interval = new Interval('[[-10;10]]').difference(new DiscreteSet([new Integer(forbiddenValue)]));
+  const intervalStar = new Interval('[[-10;10]]').difference(new DiscreteSet([new Integer(0)]));
 
-  const polyNum = TrinomConstructor.randomFactorized(new Interval('[[-10;10]]'), interval, interval);
+  const polyNum = TrinomConstructor.randomFactorized(intervalStar, interval, interval);
 
   const numLimit = polyNum.calculate(-polyDenum.b);
   const getSign = (nb: number) => {
@@ -39,7 +40,7 @@ export function getSequenceRationalFracLimitQuestion(): Question {
   };
   const isRight = coinFlip();
   const to = isRight ? `${forbiddenValue}` : `${forbiddenValue}`;
-  const from = isRight ? `x > ${forbiddenValue}` : `x<${forbiddenValue}`;
+  const from = isRight ? `x>${forbiddenValue}` : `x<${forbiddenValue}`;
   const answer = isRight ? `${getSign(numLimit)}\\infty` : `${getSign(-numLimit)}\\infty`;
 
   const getPropositions = (n: number) => {
@@ -77,14 +78,14 @@ export function getSequenceRationalFracLimitQuestion(): Question {
       res.push(proposition);
     }
 
-    return shuffle(res);
+    return shuffleProps(res, n);
   };
 
   const question: Question = {
     answer,
     instruction: `Soit $f$ la fonction définie par : $f(x) = \\dfrac{${polyNum.toTree().toTex()}}{${polyDenum
       .toTree()
-      .toTex()}}$. Déterminer $\\lim\\limits_{x \\to ${to}, ${from}}f(x).$
+      .toTex()}}$. Déterminer $\\lim\\limits_{x \\to ${to}, \\ ${from}}f(x).$
       `,
     keys: ['infty'],
     getPropositions,

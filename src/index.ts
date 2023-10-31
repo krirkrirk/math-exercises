@@ -25,6 +25,4 @@ const getAllMathExercisesBySection = () => {
   return data;
 };
 
-console.log(decimalToScientific.generator(10).forEach((q) => q.getPropositions(4)));
-
 export { allMathExercises, getAllMathExercisesBySection };

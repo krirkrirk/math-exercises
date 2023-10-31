@@ -9,7 +9,7 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question, tryToAddWrongProp } from '../exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
@@ -17,7 +17,7 @@ export const scientificToDecimal: MathExercise = {
   id: 'scientificToDecimal',
   connector: '=',
   instruction: '',
-  label: "Passer d'écriture scientifique à écriture décimal",
+  label: "Passer d'écriture scientifique à écriture décimale",
   levels: [
     '5ème',
     '4ème',
@@ -61,7 +61,8 @@ export function getScientificToDecimalQuestion(): Question {
     });
 
     tryToAddWrongProp(res, decScientific.multiplyByPowerOfTen(-tenPower).toTree().toTex());
-    for (let i = 0; i < n - 1; i++) {
+    const missing = n - res.length;
+    for (let i = 0; i < missing; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
 
@@ -81,7 +82,7 @@ export function getScientificToDecimalQuestion(): Question {
       res.push(proposition);
     }
 
-    return shuffle(res);
+    return shuffleProps(res, n);
   };
 
   const question: Question = {
