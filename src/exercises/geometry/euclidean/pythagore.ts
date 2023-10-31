@@ -9,7 +9,7 @@ import { v4 } from 'uuid';
 export const pythagore: MathExercise = {
   id: 'pythagore',
   connector: '=',
-  instruction: "Écrire l'égalité de Pythagore pour la figure suivante : ",
+  instruction: '',
   label: "Écrire l'égalité de Pythagore",
   levels: ['4ème', '3ème', '2nde'],
   isSingleStep: false,
@@ -87,6 +87,7 @@ export function getPythagore(): Question {
   };
 
   const question: Question = {
+    instruction: "Écrire l'égalité de Pythagore pour la figure suivante : ",
     answer: `${triangle.getSideAName()}^2=${triangle.getSideBName()}^2+${triangle.getSideCName()}^2`,
     keys: [...vertices, 'equal'],
     commands: triangle.generateCommands({}),

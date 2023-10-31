@@ -25,7 +25,7 @@ export type Proposition = {
   format: 'tex' | 'raw';
 };
 export interface Question {
-  instruction?: string;
+  instruction: string;
   startStatement?: string;
   answer: string;
   answerFormat: 'tex' | 'raw';
@@ -39,7 +39,7 @@ export interface Question {
 
 export interface MathExercise {
   id: string;
-  instruction: string;
+  instruction?: string;
   isSingleStep: boolean;
   label: string;
   sections: MathSection[];

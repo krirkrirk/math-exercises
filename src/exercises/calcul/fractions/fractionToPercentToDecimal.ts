@@ -30,7 +30,7 @@ export function getFractionToPercentToDecimal(): Question {
   const percent = round((numerator / denominator) * 100, 2);
 
   const rand = randint(1, 7);
-  let instruction;
+  let instruction = '';
   let answer = '';
 
   switch (rand) {

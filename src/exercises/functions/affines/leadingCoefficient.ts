@@ -13,7 +13,7 @@ import { v4 } from 'uuid';
 export const leadingCoefficient: MathExercise = {
   id: 'leadingCoefficient',
   connector: '=',
-  instruction: 'Déterminer le coefficient directeur de la droite représentée ci-dessous :',
+  instruction: '',
   label: 'Lire le coefficient directeur',
   levels: ['3ème', '2nde', '1reESM', '2ndPro', '1rePro', '1reTech'],
   isSingleStep: false,
@@ -95,6 +95,7 @@ export function getLeadingCoefficientQuestion(): Question {
   };
 
   const question: Question = {
+    instruction: 'Déterminer le coefficient directeur de la droite représentée ci-dessous : ',
     answer: droite.getLeadingCoefficient(),
     keys: [],
     commands: [`f(x) = (${a}) * x + (${b})`],
