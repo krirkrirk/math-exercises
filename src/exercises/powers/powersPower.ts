@@ -39,7 +39,7 @@ export const powersPower: MathExercise = {
 };
 
 export function getPowersPowerQuestion(useOnlyPowersOfTen: boolean = false): Question {
-  const a = useOnlyPowersOfTen ? 10 : randint(-11, 11);
+  const a = useOnlyPowersOfTen ? 10 : randint(-11, 11, [0, 1]);
   const [b, c] = [1, 2].map((el) => randint(-11, 11));
 
   const statement = new PowerNode(new PowerNode(new NumberNode(a), new NumberNode(b)), new NumberNode(c));

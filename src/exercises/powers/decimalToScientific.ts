@@ -13,7 +13,7 @@ export const decimalToScientific: MathExercise = {
   id: 'decimalToScientific',
   connector: '=',
   instruction: '',
-  label: "Passer d'écriture décimal à écriture scientifique",
+  label: "Passer d'écriture décimale à écriture scientifique",
   levels: [
     '5ème',
     '4ème',
@@ -38,7 +38,6 @@ export const decimalToScientific: MathExercise = {
 };
 
 export function getDecimalToScientificQuestion(): Question {
-  //! manque le cas 0.000
   const isZero = probaFlip(0.2);
   let intPart: number, dec: Decimal;
   if (isZero) {

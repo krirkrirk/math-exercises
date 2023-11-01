@@ -14,6 +14,17 @@ export abstract class IntegerConstructor {
   static randomPrime(max: number = 20) {
     return random(primes.filter((p) => p < 20));
   }
+  static randomDifferents(min: number, max: number, nb: number, excludes?: number[]) {
+    const res: number[] = [];
+    for (let i = 0; i < nb; i++) {
+      let newNb: number;
+      do {
+        newNb = randint(min, max, excludes);
+      } while (res.includes(newNb));
+      res.push(newNb);
+    }
+    return res;
+  }
 }
 
 export class Integer implements Nombre {

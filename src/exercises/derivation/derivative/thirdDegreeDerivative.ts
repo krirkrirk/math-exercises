@@ -1,4 +1,4 @@
-import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -37,14 +37,16 @@ export function getThirdDegreeDerivative(): Question {
       isRightAnswer: true,
       format: 'tex',
     });
-    tryToAddWrongProp(
-      propositions,
-      new Polynomial([coefficients[0], coefficients[1], coefficients[2]]).toTree().toTex(),
-    );
-    tryToAddWrongProp(
-      propositions,
-      new Polynomial([coefficients[0] + coefficients[1], coefficients[1], coefficients[2]]).toTree().toTex(),
-    );
+    if (coefficients[2] !== 0)
+      tryToAddWrongProp(
+        propositions,
+        new Polynomial([coefficients[0], coefficients[1], coefficients[2]]).toTree().toTex(),
+      );
+    if (coefficients[2] !== 0)
+      tryToAddWrongProp(
+        propositions,
+        new Polynomial([coefficients[0] + coefficients[1], coefficients[1], coefficients[2]]).toTree().toTex(),
+      );
 
     const missing = numOptions - propositions.length;
     for (let i = 0; i < missing; i++) {
@@ -71,7 +73,7 @@ export function getThirdDegreeDerivative(): Question {
       propositions.push(proposition);
     }
 
-    return shuffle(propositions);
+    return shuffleProps(propositions, numOptions);
   };
 
   const question: Question = {

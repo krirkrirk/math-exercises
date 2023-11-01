@@ -63,7 +63,6 @@ export function getPowersOfTenToDecimalQuestion(): Question {
         const wrongPower = randPower + randint(-3, 4, [0]);
         const wrongAnswerTree = new Power(10, wrongPower).toDecimalWriting().toTree();
         const wrongAnswer = wrongAnswerTree.toTex();
-        console.log(wrongPower, wrongAnswer);
         proposition = {
           id: v4() + '',
           statement: wrongAnswer,

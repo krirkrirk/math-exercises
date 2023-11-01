@@ -1,5 +1,6 @@
 import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { IntegerConstructor } from '#root/math/numbers/integer/integer';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
@@ -20,27 +21,27 @@ export const proportionalityTable: MathExercise = {
 
 export function getProportionalityTable(): Question {
   const fact = randint(2, 10);
-  let [x1, x2]: any = [1, 2].map((el) => randint(1, 100 / fact));
-  let [x3, x4]: any = [x1 * fact, x2 * fact];
-  let answer: any;
+  let [x1, x2]: (string | number)[] = IntegerConstructor.randomDifferents(1, 100 / fact, 2);
+  let [x3, x4]: (string | number)[] = [x1 * fact, x2 * fact];
+  let answer = '';
 
   const randQuation = randint(0, 4);
 
   switch (randQuation) {
     case 0:
-      answer = x1;
+      answer = x1 + '';
       x1 = '?';
       break;
     case 1:
-      answer = x2;
+      answer = +x2 + '';
       x2 = '?';
       break;
     case 2:
-      answer = x3;
+      answer = x3 + '';
       x3 = '?';
       break;
     case 3:
-      answer = x4;
+      answer = x4 + '';
       x4 = '?';
       break;
   }
@@ -84,7 +85,7 @@ export function getProportionalityTable(): Question {
 |${x2}|${x4}|
 
 Déterminer le nombre manquant.`,
-    answer: answer + '',
+    answer: answer,
     keys: [],
     getPropositions,
     answerFormat: 'tex',

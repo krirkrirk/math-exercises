@@ -8,6 +8,7 @@ import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
 import { VariableNode } from '#root/tree/nodes/variables/variableNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
+import { gcd } from 'mathjs';
 import { Point } from '../geometry/point';
 import { Integer } from '../numbers/integer/integer';
 import { Nombre } from '../numbers/nombre';
@@ -17,6 +18,7 @@ import { DiscreteSet } from '../sets/discreteSet';
 import { Interval } from '../sets/intervals/intervals';
 import { MathSet } from '../sets/mathSet';
 import { Polynomial } from './polynomial';
+import { OppositeNode } from '#root/tree/nodes/functions/oppositeNode';
 
 export abstract class TrinomConstructor {
   static random(
@@ -86,25 +88,37 @@ export class Trinom extends Polynomial {
     return [(-this.b - Math.sqrt(delta)) / (2 * this.a), (-this.b + Math.sqrt(delta)) / (2 * this.a)];
   }
 
-  //! la simplification de mathjs est foireuse, exemple (4+4sqrt(3))/16 est simplifiée mais pas (4-4sqrt(3))/16 ??
   getRootsNode(): Node[] {
     const delta = this.getDelta();
     if (delta < 0) return [];
     if (delta === 0) return [new Rational(-this.b, 2 * this.a).simplify().toTree()];
-    return [
-      simplifyNode(
-        new FractionNode(
-          new SubstractNode(new NumberNode(-this.b), new SquareRoot(delta).simplify().toTree()),
-          new NumberNode(2 * this.a),
-        ),
-      ),
-      simplifyNode(
-        new FractionNode(
-          new AddNode(new NumberNode(-this.b), new SquareRoot(delta).simplify().toTree()),
-          new NumberNode(2 * this.a),
-        ),
-      ),
-    ];
+    const sqrtDelta = Math.sqrt(delta);
+    const isDeltaPerfectSquare = Math.sqrt(delta) === Math.floor(Math.sqrt(delta));
+    if (isDeltaPerfectSquare) {
+      const addNode = new Rational(-this.b + sqrtDelta, 2 * this.a).simplify().toTree();
+      const subNode = new Rational(-this.b - sqrtDelta, 2 * this.a).simplify().toTree();
+      return this.a > 0 ? [subNode, addNode] : [addNode, subNode];
+    }
+    let [sqrtA, sqrtB] = new SquareRoot(delta).getSimplifiedCoeffs();
+    let denum = 2 * this.a;
+    let trueB = this.b;
+    const pgcd = gcd(sqrtA, trueB, denum);
+
+    [sqrtA, trueB, denum] = [sqrtA, trueB, denum].map((n) => n / pgcd);
+
+    const sqrtNode =
+      sqrtA === 1
+        ? new SqrtNode(new NumberNode(sqrtB))
+        : new MultiplyNode(new NumberNode(sqrtA), new SqrtNode(new NumberNode(sqrtB)));
+    const subNode = trueB === 0 ? new OppositeNode(sqrtNode) : new SubstractNode(new NumberNode(-trueB), sqrtNode);
+    const addNode = trueB === 0 ? sqrtNode : new AddNode(new NumberNode(-trueB), sqrtNode);
+    if (denum === 1) {
+      return this.a > 0 ? [subNode, addNode] : [addNode, subNode];
+    } else {
+      return this.a > 0
+        ? [new FractionNode(subNode, new NumberNode(denum)), new FractionNode(addNode, new NumberNode(denum))]
+        : [new FractionNode(addNode, new NumberNode(denum)), new FractionNode(subNode, new NumberNode(denum))];
+    }
   }
 
   getRootsEquationSolutionTex() {

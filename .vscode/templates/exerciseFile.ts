@@ -1,6 +1,5 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import { shuffleProps, MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
 export const {{name}}: MathExercise = {
@@ -47,7 +46,7 @@ export function get{{namePascal}}Question(): Question {
       res.push(proposition);
     }
 
-    return shuffle(res);
+    return shuffleProps(res, n);
   };
 
   const question: Question = {

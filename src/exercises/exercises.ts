@@ -185,6 +185,7 @@ import { calculatePower } from './powers/calculatePower';
 import { calculateNegativePower } from './powers/calculateNegativePower';
 import { decimalToScientific } from './powers/decimalToScientific';
 import { powerDefinition } from './powers/powerDefinition';
+import { niceRootsFromDevForm } from './functions/trinoms/niceRootsFromDevForm';
 
 export const exercises: MathExercise[] = [
   /**
@@ -424,9 +425,10 @@ export const exercises: MathExercise[] = [
   extremumFromCanonicalForm,
   extremumTypeFromAlgebricForm,
   variationsFromAlgebricForm,
-  // deltaTrinom,
+  deltaTrinom,
   rootsFromFactorizedForm,
   rootsFromDevForm,
+  niceRootsFromDevForm,
 
   /**Complexes */
   mutiplyComplex,
