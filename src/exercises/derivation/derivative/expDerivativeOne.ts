@@ -42,11 +42,13 @@ export function getExpDerivative(): Question {
     });
     tryToAddWrongProp(propositions, myfunction.toTex());
     tryToAddWrongProp(propositions, simplifyNode(new MultiplyNode(affine.toTree(), myfunction)).toTex());
-    tryToAddWrongProp(propositions, new ExpNode(new NumberNode(affine.coefficients[1])).toTex());
-    tryToAddWrongProp(
-      propositions,
-      simplifyNode(new MultiplyNode(new NumberNode(affine.coefficients[0]), myfunction)).toTex(),
-    );
+    tryToAddWrongProp(propositions, new ExpNode(new NumberNode(a)).toTex());
+    tryToAddWrongProp(propositions, simplifyNode(new MultiplyNode(new NumberNode(b), myfunction)).toTex());
+    while (propositions.length < numOptions)
+      tryToAddWrongProp(
+        propositions,
+        simplifyNode(new MultiplyNode(new NumberNode(randint(-9, 10)), myfunction)).toTex(),
+      );
 
     return shuffleProps(propositions, numOptions);
   };

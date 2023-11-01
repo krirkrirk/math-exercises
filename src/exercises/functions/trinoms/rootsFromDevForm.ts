@@ -36,9 +36,9 @@ export function getRootsFromDevFormQuestion(): Question {
     for (let i = 0; i < missing; i++) {
       let isDuplicate: boolean;
       let proposition: Proposition;
-      let wrongX1 = randint(-19, 0);
-      let wrongX2 = randint(0, 20);
       do {
+        let wrongX1 = randint(-19, 0);
+        let wrongX2 = randint(0, 20);
         const wrongAnswer = `S=\\left\\{${wrongX1};${wrongX2}\\right\\}`;
         proposition = {
           id: v4() + ``,

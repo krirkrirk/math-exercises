@@ -2,6 +2,14 @@ import { MathExercise, MathSection } from './exercises/exercise';
 import { exercises } from './exercises/exercises';
 import { decimalToScientific } from './exercises/powers/decimalToScientific';
 
+/**
+ * TODO
+ * Décimal : permettre facilement -0.xxx
+ * Tree shaking export
+ * 
+ * 
+
+*/
 const allMathExercises = [...exercises];
 
 const getAllMathExercisesBySection = () => {
