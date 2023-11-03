@@ -63,6 +63,7 @@ export function getCircleArea(): Question {
     answer: correctAnswer,
     getPropositions,
     answerFormat: 'tex',
+    keys: [],
   };
 
   return question;

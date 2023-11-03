@@ -57,6 +57,7 @@ export function getRectanglePerimeter(): Question {
     answer: (length + width) * 2 + '',
     getPropositions,
     answerFormat: 'tex',
+    keys: [],
   };
 
   return question;

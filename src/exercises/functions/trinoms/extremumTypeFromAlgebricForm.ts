@@ -59,6 +59,7 @@ export function getExtremumTypeFromAlgebricFormQuestion(): Question {
     }$ admet-elle un maximum ou un minimum ?`,
     getPropositions,
     answerFormat: 'raw',
+    keys: [],
   };
 
   return question;

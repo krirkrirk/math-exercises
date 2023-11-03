@@ -63,6 +63,7 @@ export function getCircleCircumference(): Question {
     answer: correctAnswer,
     getPropositions,
     answerFormat: 'tex',
+    keys: [],
   };
 
   return question;

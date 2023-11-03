@@ -9,7 +9,9 @@ test('all exos', () => {
       const questions = exo.generator(30);
       questions.forEach((question) => {
         expect(question.instruction?.length).not.toBe(0);
+        if (exo.answerType !== 'QCM') expect(question.keys).not.toBe(undefined);
         const props = question.getPropositions(4);
+
         expect(props.length).toBe(4);
         expect(props.filter((prop) => prop.isRightAnswer).length).toBe(1);
       });

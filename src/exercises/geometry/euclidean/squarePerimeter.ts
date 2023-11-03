@@ -57,6 +57,7 @@ export function getSquarePerimeter(): Question {
     answer: side * 4 + '',
     getPropositions,
     answerFormat: 'tex',
+    keys: [],
   };
 
   return question;

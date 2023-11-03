@@ -69,6 +69,7 @@ export function getLeadingCoefficientCalculV1Question(): Question {
     answer: simplifyNode(new FractionNode(new NumberNode(yB - yA), new NumberNode(xB - xA))).toTex(),
     getPropositions,
     answerFormat: 'tex',
+    keys: [],
   };
   return question;
 }

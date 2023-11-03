@@ -57,6 +57,7 @@ export function getSquareArea(): Question {
     answer: side ** 2 + '',
     getPropositions,
     answerFormat: 'tex',
+    keys: [],
   };
 
   return question;
