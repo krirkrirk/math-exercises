@@ -27,7 +27,7 @@ export function getDiceBasicProbasQuestion(): Question {
   const target = isParityQuestion ? `un nombre ${isEvenQuestion ? 'pair' : 'impair'}` : `la face ${faceAsked}`;
   const answer = isParityQuestion
     ? isEvenQuestion
-      ? `\\frac{1}{2}`
+      ? new Rational((nbFaces - 1) / 2, nbFaces).simplify().tex
       : new Rational((nbFaces + 1) / 2, nbFaces).simplify().tex
     : `\\frac{1}{${nbFaces}}`;
 
