@@ -35,18 +35,19 @@ export function getCardBasicProbasQuestion(): Question {
   ]);
   let answer = '';
   let target = '';
-  let value: CardsValues;
+  let value: string;
   let color: CardsColor;
   switch (questionType) {
     case 'oneCard':
       value = randomEnumValue(CardsValues);
       color = randomEnumValue(CardsColor);
-      target = `${value === CardsValues.dame ? 'une' : 'un'} ${value} de ${color}`;
+      console.log(value);
+      target = `${value === 'dame' ? 'une' : 'un'} ${value} de ${color}`;
       answer = `\\frac{1}{52}`;
       break;
     case 'valueCard':
       value = randomEnumValue(CardsValues);
-      target = `${value === CardsValues.dame ? 'une' : 'un'} ${value}`;
+      target = `${value === 'dame' ? 'une' : 'un'} ${value}`;
       answer = '\\frac{1}{13}';
       break;
     case 'colorCard':

@@ -6,7 +6,7 @@ export const probaLawFlip = <T>(arr: [T, number][]) => {
   let i = 0;
   while (i < arr.length - 1) {
     probaAcc += sorted[i][1];
-    if (rand < arr[i][1]) return arr[i][0];
+    if (rand < probaAcc) return arr[i][0];
     i++;
   }
   return arr[arr.length - 1][0];
