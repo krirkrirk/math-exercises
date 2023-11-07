@@ -27,8 +27,8 @@ export function getDiceBasicProbasQuestion(): Question {
   const target = isParityQuestion ? `un nombre ${isEvenQuestion ? 'pair' : 'impair'}` : `la face ${faceAsked}`;
   const answer = isParityQuestion
     ? isEvenQuestion
-      ? new Rational((nbFaces - 1) / 2, nbFaces).simplify().tex
-      : new Rational((nbFaces + 1) / 2, nbFaces).simplify().tex
+      ? new Rational(Math.floor(nbFaces / 2), nbFaces).simplify().tex
+      : new Rational(Math.ceil(nbFaces / 2), nbFaces).simplify().tex
     : `\\frac{1}{${nbFaces}}`;
 
   const getPropositions = (n: number) => {
@@ -42,7 +42,8 @@ export function getDiceBasicProbasQuestion(): Question {
     });
     if (isParityQuestion) {
       tryToAddWrongProp(res, '\\frac{1}{2}');
-      tryToAddWrongProp(res, Math.ceil(nbFaces / 2) + '');
+      if (isEvenQuestion) tryToAddWrongProp(res, new Rational(Math.ceil(nbFaces / 2), nbFaces).simplify().tex);
+      else tryToAddWrongProp(res, new Rational(Math.floor(nbFaces / 2), nbFaces).simplify().tex);
     } else {
       tryToAddWrongProp(res, '1');
       tryToAddWrongProp(res, '\\frac{1}{6}');
