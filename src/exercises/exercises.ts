@@ -186,6 +186,9 @@ import { calculateNegativePower } from './powers/calculateNegativePower';
 import { decimalToScientific } from './powers/decimalToScientific';
 import { powerDefinition } from './powers/powerDefinition';
 import { niceRootsFromDevForm } from './functions/trinoms/niceRootsFromDevForm';
+import { diceBasicProbas } from './probaStat/diceBasicProbas';
+import { cardBasicProbas } from './probaStat/cardBasicProbas';
+import { ballsBasicProbas } from './probaStat/ballsBasicProbas';
 
 export const exercises: MathExercise[] = [
   /**
@@ -358,7 +361,9 @@ export const exercises: MathExercise[] = [
    */
   probabilityTree,
   conditionalProbability,
-
+  diceBasicProbas,
+  cardBasicProbas,
+  ballsBasicProbas,
   /**
    * islam
    */
