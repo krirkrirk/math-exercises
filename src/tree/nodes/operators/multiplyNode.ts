@@ -38,7 +38,7 @@ export class MultiplyNode extends OperatorNode implements Node {
           (this.leftChild as unknown as OperatorNode).id,
         )
       )
-        leftTex = `(${leftTex})`;
+        leftTex = `\\left(${leftTex}\\right)`;
     }
 
     let needBrackets = rightTex[0] === '-';
@@ -46,7 +46,7 @@ export class MultiplyNode extends OperatorNode implements Node {
       const operatorRightChild = this.rightChild as unknown as OperatorNode;
       needBrackets ||= [OperatorIds.add, OperatorIds.substract].includes(operatorRightChild.id);
     }
-    if (needBrackets) rightTex = `(${rightTex})`;
+    if (needBrackets) rightTex = `\\left(${rightTex}\\right)`;
 
     //  permet de gérer le cas 3*2^x par ex
     let showTimesSign = this.forceTimesSign || !isNaN(+rightTex[0]) || this.rightChild.type === NodeType.number;
