@@ -103,25 +103,21 @@ export function getInequalityToIntervalQuestion(): Question {
     } else {
       res.push({
         id: v4(),
-        statement: `x \\in \\left${reverseBracket(interval.leftBracket)}${interval.insideToTex()}\\right${
-          interval.rightBracket
-        }`,
+        statement: `x \\in ${reverseBracket(interval.leftBracket)}${interval.insideToTex()}${interval.rightBracket}`,
         isRightAnswer: false,
         format: 'tex',
       });
       res.push({
         id: v4(),
-        statement: `x \\in \\left${interval.leftBracket}${interval.insideToTex()}\\right${reverseBracket(
+        statement: `x \\in ${interval.leftBracket}${interval.insideToTex()}${reverseBracket(interval.rightBracket)}`,
+        isRightAnswer: false,
+        format: 'tex',
+      });
+      res.push({
+        id: v4(),
+        statement: `x \\in ${reverseBracket(interval.leftBracket)}${interval.insideToTex()}${reverseBracket(
           interval.rightBracket,
         )}`,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-      res.push({
-        id: v4(),
-        statement: `x \\in \\left${reverseBracket(
-          interval.leftBracket,
-        )}${interval.insideToTex()}\\right${reverseBracket(interval.rightBracket)}`,
         isRightAnswer: false,
         format: 'tex',
       });

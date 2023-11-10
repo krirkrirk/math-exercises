@@ -34,10 +34,7 @@ export function getThirdDegreeFunctionVariation(): Question {
   const instruction =
     `Soit $f$ la fonction représentée ci-dessous. Sur quel intervalle la dérivée de $f$ est-elle ` +
     (coin < 0 ? 'négative ?' : 'positive ?');
-  const answer =
-    coin * a < 0
-      ? `\\left[${racine1};${racine2}\\right]`
-      : `\\left]-\\infty;${racine1}\\right]\\cup\\left[${racine2};+\\infty\\right[`;
+  const answer = coin * a < 0 ? `[${racine1};${racine2}]` : `]-\\infty;${racine1}]\\cup[${racine2};+\\infty[`;
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
@@ -51,7 +48,7 @@ export function getThirdDegreeFunctionVariation(): Question {
 
     res.push({
       id: v4() + '',
-      statement: `\\left[${racine2};+\\infty\\right[`,
+      statement: `[${racine2};+\\infty[`,
       isRightAnswer: false,
       format: 'tex',
     });
@@ -59,7 +56,7 @@ export function getThirdDegreeFunctionVariation(): Question {
     if (n > 2)
       res.push({
         id: v4() + '',
-        statement: `\\left]-\\infty;${racine1}\\right]`,
+        statement: `]-\\infty;${racine1}]`,
         isRightAnswer: false,
         format: 'tex',
       });
@@ -67,7 +64,7 @@ export function getThirdDegreeFunctionVariation(): Question {
     if (n > 3)
       res.push({
         id: v4() + '',
-        statement: `\\left]-\\infty;${racine1}\\right] \\cup \\left[${racine2};+\\infty\\right[`,
+        statement: `]-\\infty;${racine1}] \\cup [${racine2};+\\infty[`,
         isRightAnswer: false,
         format: 'tex',
       });
@@ -79,7 +76,7 @@ export function getThirdDegreeFunctionVariation(): Question {
       do {
         const racine1 = randint(-5, 4);
         const racine2 = randint(racine1 + 1, 6);
-        const wrongAnswer = `\\left[${racine1};${racine2}\\right]`;
+        const wrongAnswer = `[${racine1};${racine2}]`;
         proposition = {
           id: v4() + '',
           statement: wrongAnswer,

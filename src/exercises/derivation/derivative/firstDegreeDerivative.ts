@@ -65,7 +65,7 @@ export function getFirstDegreeDerivative(): Question {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
     startStatement: `f'(x)`,
     answer: a + '',
-    keys: [],
+    keys: ['x'],
     getPropositions,
     answerFormat: 'tex',
   };

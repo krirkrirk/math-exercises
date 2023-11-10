@@ -35,15 +35,15 @@ export function getSignFunction(): Question {
       instruction += 'positive ?';
       answer =
         a > 0
-          ? `\\left[${simplifyNode(new NumberNode(-b / a)).toTex()};+\\infty\\right[`
-          : `\\left]-\\infty;${simplifyNode(new NumberNode(-b / a)).toTex()}\\right]`;
+          ? `[${simplifyNode(new NumberNode(-b / a)).toTex()};+\\infty[`
+          : `]-\\infty;${simplifyNode(new NumberNode(-b / a)).toTex()}]`;
       break;
     case false:
       instruction += 'négative ?';
       answer =
         a > 0
-          ? `\\left]-\\infty;${simplifyNode(new NumberNode(-b / a)).toTex()}\\right]`
-          : `\\left[${simplifyNode(new NumberNode(-b / a)).toTex()};+\\infty\\right[`;
+          ? `]-\\infty;${simplifyNode(new NumberNode(-b / a)).toTex()}]`
+          : `[${simplifyNode(new NumberNode(-b / a)).toTex()};+\\infty[`;
       break;
   }
 
@@ -65,8 +65,8 @@ export function getSignFunction(): Question {
         const a = randint(-9, 10, [0]);
         const b = randint(-9, 10);
         const wrongAnswer = coinFlip()
-          ? `\\left[${simplifyNode(new NumberNode(-b / a)).toTex()};+\\infty\\right[`
-          : `\\left]-\\infty;${simplifyNode(new NumberNode(-b / a)).toTex()}\\right]`;
+          ? `[${simplifyNode(new NumberNode(-b / a)).toTex()};+\\infty[`
+          : `]-\\infty;${simplifyNode(new NumberNode(-b / a)).toTex()}]`;
 
         proposition = {
           id: v4() + '',
