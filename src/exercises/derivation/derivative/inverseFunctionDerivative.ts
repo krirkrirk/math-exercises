@@ -63,7 +63,7 @@ export function getInverseFunctionDerivative(): Question {
   const question: Question = {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =\\frac{${a}}{x}$.`,
     startStatement: `f'(x)`,
-    answer: `\\frac{${-a}}{x^2}`,
+    answer: `${a > 0 ? '-' : ''}\\frac{${Math.abs(a)}}{x^2}`,
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',

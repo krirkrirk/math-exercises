@@ -64,7 +64,7 @@ export function getMidpointQuestion(): Question {
     instruction: `Soit $${A.toTexWithCoords()}$ et $${B.toTexWithCoords()}$. Quelles sont les coordonnées du milieu $I$ de $[AB]$ ?`,
     startStatement: 'I',
     answer: A.midpoint(B).toTexWithCoords(),
-    keys: ['semicolon'],
+    keys: ['I', 'semicolon'],
     getPropositions,
     answerFormat: 'tex',
   };

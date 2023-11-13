@@ -41,7 +41,6 @@ export function getCardBasicProbasQuestion(): Question {
     case 'oneCard':
       value = randomEnumValue(CardsValues);
       color = randomEnumValue(CardsColor);
-      console.log(value);
       target = `${value === 'dame' ? 'une' : 'un'} ${value} de ${color}`;
       answer = `\\frac{1}{52}`;
       break;

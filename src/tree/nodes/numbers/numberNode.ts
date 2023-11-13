@@ -9,12 +9,12 @@ export class NumberNode implements Node {
 
   constructor(value: number, tex?: string, mathString?: string) {
     this.value = value;
-    this.tex = tex || value + '';
-    this.mathString = mathString || this.tex;
+    this.tex = tex || (value + '').replace('.', ',');
+    this.mathString = mathString || this.value + '';
   }
 
   toMathString(): string {
-    return `${this.mathString ? this.mathString : this.tex}`;
+    return `${this.mathString}`;
   }
   toTex(): string {
     return `${this.tex}`;

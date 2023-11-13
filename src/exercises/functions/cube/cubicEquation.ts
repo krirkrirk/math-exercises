@@ -21,7 +21,7 @@ export const cubicEquation: MathExercise = {
 export function getCubicEquationQuestion(): Question {
   const x = randint(-10, 11);
   const k = x ** 3;
-  const answer = `S=\\{${x}\\}`;
+  const answer = `S=\\left\\{${x}\\right\\}`;
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];

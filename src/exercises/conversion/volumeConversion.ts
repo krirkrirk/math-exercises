@@ -66,7 +66,10 @@ export function getVolumeConversion(): Question {
 
   const question: Question = {
     instruction: `$${randomVolume.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
-    answer: randomVolume.multiplyByPowerOfTen(3 * (randomUnitIndex - randomUnitInstructionIndex)).value + '',
+    answer: (randomVolume.multiplyByPowerOfTen(3 * (randomUnitIndex - randomUnitInstructionIndex)).value + '').replace(
+      '.',
+      ',',
+    ),
     keys: [],
     getPropositions,
     answerFormat: 'tex',

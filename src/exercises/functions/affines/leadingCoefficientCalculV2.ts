@@ -1,5 +1,6 @@
 import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Rational } from '#root/math/numbers/rationals/rational';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
@@ -24,13 +25,13 @@ export function getLeadingCoefficientCalculV1Question(): Question {
   const [xA, yA] = [1, 2].map((el) => randint(-9, 10));
   const xB = randint(-9, 10, [xA]);
   const yB = randint(-9, 10);
-
+  const answer = new Rational(yB - yA, xB - xA).simplify().toTree().toTex();
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
     res.push({
       id: v4() + '',
-      statement: simplifyNode(new FractionNode(new NumberNode(yB - yA), new NumberNode(xB - xA))).toTex(),
+      statement: answer,
       isRightAnswer: true,
       format: 'tex',
     });
@@ -65,7 +66,7 @@ export function getLeadingCoefficientCalculV1Question(): Question {
 
   const question: Question = {
     instruction: `Soit $d$ une droite passant par les points $A(${xA};${yA})$ et $B(${xB};${yB})$.$\\\\$Déterminer le coefficient directeur de $d$.`,
-    answer: simplifyNode(new FractionNode(new NumberNode(yB - yA), new NumberNode(xB - xA))).toTex(),
+    answer: answer,
     getPropositions,
     answerFormat: 'tex',
     keys: [],

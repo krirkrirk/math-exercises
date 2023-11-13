@@ -39,7 +39,7 @@ export function getEquationSimpleSquare(): Question {
   const instruction = `Résoudre l'équation : $x^2 = ${randNbr}$`;
   const ans = Math.sqrt(randNbr);
 
-  if (randNbr < 0) answer = `S=\\emptyset`;
+  if (randNbr < 0) answer = `S=\\varnothing`;
   else if (ans === Math.floor(ans)) answer = `S=\\left\\{-${ans};${ans}\\right\\}`;
   else {
     const factor = higherFactor(randNbr);

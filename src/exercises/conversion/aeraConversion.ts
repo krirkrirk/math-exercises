@@ -67,7 +67,10 @@ export function getAeraConversion(): Question {
 
   const question: Question = {
     instruction: `$${randomAera.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
-    answer: randomAera.multiplyByPowerOfTen(2 * (randomUnitIndex - randomUnitInstructionIndex)).value + '',
+    answer: (randomAera.multiplyByPowerOfTen(2 * (randomUnitIndex - randomUnitInstructionIndex)).value + '').replace(
+      '.',
+      ',',
+    ),
     keys: [],
     getPropositions,
     answerFormat: 'tex',

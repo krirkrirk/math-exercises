@@ -70,7 +70,7 @@ export function getRightTriangleArea(): Question {
     instruction: `Calculer l'aire du triangle ${triangle.getTriangleName()} rectangle en ${triangle.getRightAngle()} sachant que ${triangle.getSideBName()} = $${
       sidesLength[0]
     }$ cm et ${triangle.getSideCName()} = $${sidesLength[1]}$ cm.`,
-    answer: (sidesLength[0] * sidesLength[1]) / 2 + '',
+    answer: ((sidesLength[0] * sidesLength[1]) / 2 + '').replace('.', ','),
     keys: [...(vertices as KeyId[]), 'equal', 'cm2'],
     commands,
     coords: triangle.generateCoords(),

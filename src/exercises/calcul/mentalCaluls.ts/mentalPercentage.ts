@@ -154,7 +154,7 @@ export function getMentalPercentage(): Question {
 
   const question: Question = {
     instruction: `Calculer : $${String(a).replace('.', ',')}\\%$ de $${b}$.`,
-    answer: (a * b) / 100 + '',
+    answer: ((a * b) / 100 + '').replace('.', ','),
     keys: [],
     getPropositions,
     answerFormat: 'tex',

@@ -74,7 +74,7 @@ export function getSecondDegreeDerivative(): Question {
   const question: Question = {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
     startStatement: `f'(x)`,
-    answer: derivative.toString(),
+    answer: derivative.toTree().toTex(),
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',

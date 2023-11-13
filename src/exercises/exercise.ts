@@ -16,6 +16,7 @@ export const tryToAddWrongProp = (props: Proposition[], statement: string, forma
 export const shuffleProps = (props: Proposition[], n: number) => {
   return shuffle([props[0], ...shuffle(props.slice(1)).slice(0, n - 1)]);
 };
+
 export type GeneratorOptions = {};
 
 export type Proposition = {

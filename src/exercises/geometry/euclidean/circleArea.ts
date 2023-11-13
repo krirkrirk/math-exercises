@@ -60,7 +60,7 @@ export function getCircleArea(): Question {
 
   const question: Question = {
     instruction: `Calculer l'aire d'un cercle de ${coin ? 'rayon ' + radius : 'diamètre ' + diametre} cm.`,
-    answer: correctAnswer,
+    answer: correctAnswer.replace('.', ','),
     getPropositions,
     answerFormat: 'tex',
     keys: [],

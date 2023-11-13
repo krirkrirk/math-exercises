@@ -1,5 +1,6 @@
 import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Rational } from '#root/math/numbers/rationals/rational';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
@@ -65,7 +66,7 @@ export function getFirstDegreeEquation(): Question {
   const question: Question = {
     instruction: `Résoudre l'équation suivante : $\\frac{${a}}{x} = ${b}$`,
     startStatement: `x`,
-    answer: `x=${simplifyNode(new NumberNode(a / b)).toTex()}`,
+    answer: `x=${new Rational(a, b).simplify().toTree().toTex()}`,
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
     getPropositions,
     answerFormat: 'tex',

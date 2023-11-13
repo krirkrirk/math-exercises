@@ -47,6 +47,11 @@ export class Complex {
     const moduleSq = z.moduleSquared();
     const newRe = new Rational(this.re * z.re + this.im * z.im, moduleSq).simplify().toTree();
     const newIm = new Rational(this.im * z.re - z.im * this.re, moduleSq).simplify().toTree();
+    let imNode;
+    if (newIm.toTex() === '0') return newRe;
+    if (newIm.toTex() === '1') imNode = new VariableNode('i');
+    else imNode = new MultiplyNode(newIm, new VariableNode('i'));
+    if (newRe.toTex() === '0') return imNode;
     return new AddNode(newRe, new MultiplyNode(newIm, new VariableNode('i')));
   }
 

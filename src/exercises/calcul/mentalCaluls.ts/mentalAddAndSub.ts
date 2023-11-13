@@ -83,7 +83,7 @@ export function getMentalAddAndSub(): Question {
   const question: Question = {
     instruction: `Calculer : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
-    answer: round(sum, 2) + '',
+    answer: (round(sum, 2) + '').replace('.', ','),
     keys: [],
     getPropositions,
     answerFormat: 'tex',

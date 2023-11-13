@@ -91,7 +91,7 @@ export function getTrigonometrySideCalcul(): Question {
     } = $${sideLengths[randside]}$ cm et $\\widehat{${angle[randAngle]}}$ = $${
       angleValue[randAngle]
     }$°.$\\\\$ Calculer ${sides[randsideQuestion]} à $0,1$ cm près.`,
-    answer: `${round(sideLengths[randsideQuestion], 1)}`,
+    answer: `${(round(sideLengths[randsideQuestion], 1) + '').replace('.', ',')}`,
     keys: [...(vertices as KeyId[]), 'equal', 'degree', 'cos', 'sin', 'tan', 'arccos', 'arcsin', 'arctan'],
     commands,
     coords: triangle.generateCoords(),

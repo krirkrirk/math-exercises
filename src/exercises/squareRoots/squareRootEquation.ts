@@ -19,7 +19,7 @@ export const squareRootEquation: MathExercise = {
 
 export function getSquareRootEquationQuestion(): Question {
   const k = Math.random() < 0.2 ? randint(-20, 0) : randint(0, 11);
-  const answer = k < 0 ? 'S=\\emptyset' : `S=\\{${k ** 2}\\}`;
+  const answer = k < 0 ? 'S=\\emptyset' : `S=\\left\\{${k ** 2}\\right\\}`;
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 

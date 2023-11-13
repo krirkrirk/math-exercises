@@ -25,7 +25,6 @@ export function getPythagore(): Question {
   for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i) as KeyId);
 
   const triangle = TriangleConstructor.createRandomRightTriangle({ minRapport: 0.7, maxRapport: 1.3, names: vertices });
-
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
@@ -88,6 +87,7 @@ export function getPythagore(): Question {
 
   const question: Question = {
     instruction: "Écrire l'égalité de Pythagore pour la figure suivante : ",
+
     answer: `${triangle.getSideAName()}^2=${triangle.getSideBName()}^2+${triangle.getSideCName()}^2`,
     keys: [...vertices, 'equal'],
     commands: triangle.generateCommands({}),

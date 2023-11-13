@@ -85,7 +85,7 @@ export function getMentalMultiplications(): Question {
   const question: Question = {
     instruction: `Calculer : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
-    answer: round(answer, 2) + '',
+    answer: (round(answer, 2) + '').replace('.', ','),
     keys: [],
     getPropositions,
     answerFormat: 'tex',

@@ -27,13 +27,13 @@ export function getThirdDegreeDerivative(): Question {
 
   const polynomial = new Polynomial(coefficients);
   const derivative = polynomial.derivate();
-
+  const answer = derivative.toTree().toTex();
   const getPropositions = (numOptions: number) => {
     const propositions: Proposition[] = [];
 
     propositions.push({
       id: v4(),
-      statement: derivative.toString(),
+      statement: answer,
       isRightAnswer: true,
       format: 'tex',
     });
@@ -79,7 +79,7 @@ export function getThirdDegreeDerivative(): Question {
   const question: Question = {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
     startStatement: `f'(x)`,
-    answer: derivative.toString(),
+    answer: answer,
     keys: ['x'],
     getPropositions,
     answerFormat: 'tex',

@@ -82,7 +82,7 @@ export function getAverageWithTableQuestion(): Question {
 
 Calculer la moyenne de cette série de valeurs.`,
 
-    answer: average + '',
+    answer: (average + '').replace('.', ','),
     keys: [],
     getPropositions,
     answerFormat: 'tex',

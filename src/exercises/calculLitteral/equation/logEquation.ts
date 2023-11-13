@@ -1,5 +1,6 @@
 import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Rational } from '#root/math/numbers/rationals/rational';
 import { randint } from '#root/math/utils/random/randint';
 import { ExpNode } from '#root/tree/nodes/functions/expNode';
 import { LogNode } from '#root/tree/nodes/functions/logNode';
@@ -34,7 +35,7 @@ export function getLnEquation(): Question {
     simplifyNode(new MultiplyNode(new NumberNode(a), new LogNode(new VariableNode('x')))),
     new NumberNode(k),
   );
-  const answer = new ExpNode(simplifyNode(new FractionNode(new NumberNode(k), new NumberNode(a))));
+  const answer = new ExpNode(new Rational(k, a).simplify().toTree());
 
   const getPropositions = (numOptions: number) => {
     const propositions: Proposition[] = [];

@@ -62,7 +62,10 @@ export function getCapacityConversion(): Question {
 
   const question: Question = {
     instruction: `$${randomCapacity.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
-    answer: randomCapacity.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '',
+    answer: (randomCapacity.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '').replace(
+      '.',
+      ',',
+    ),
     keys: [],
     getPropositions,
     answerFormat: 'tex',

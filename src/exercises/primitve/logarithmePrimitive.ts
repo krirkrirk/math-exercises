@@ -27,7 +27,7 @@ export function getLogarithmePrimitive(): Question {
   const u = PolynomialConstructor.randomWithOrder(randint(1, 3));
 
   const selectedFunction = new FractionNode(u.derivate().toTree(), u.toTree());
-  const integratedFuction = `ln\|${u.toTex()}\|`;
+  const integratedFuction = `\\ln\\left|${u.toTex()}\\right|`;
 
   const getPropositions = (n: number) => {
     const propositions: Proposition[] = [];

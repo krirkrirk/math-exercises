@@ -74,7 +74,7 @@ export function getMedianList(): Question {
     instruction: `On considère la liste suivante : $${randomValeurs.join(';\\ ')}.$
     $\\\\$Calculer la médiane de cette liste de valeurs.`,
 
-    answer: median + '',
+    answer: (median + '').replace('.', ','),
     keys: ['f', 'cap', 'underscore'],
     getPropositions,
     answerFormat: 'tex',

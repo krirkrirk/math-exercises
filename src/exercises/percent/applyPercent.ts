@@ -24,15 +24,15 @@ export function getApplyPercentQuestion(): Question {
   const randNbr = randint(1, 500);
   const randPercent = randint(1, 100);
   let instruction = '';
-  let ans = 0;
-
+  let ans = '';
+  let ansNb = 0;
   if (coinFlip()) {
-    ans = randNbr * (1 + randPercent / 100);
-    ans = round(ans, 2);
+    ansNb = round(randNbr * (1 + randPercent / 100), 2);
+    ans = (ansNb + '').replace('.', ',');
     instruction = `Appliquer une hausse de $${randPercent}\\%$ à $${randNbr}$.`;
   } else {
-    ans = randNbr * (1 - randPercent / 100);
-    ans = round(ans, 2);
+    ansNb = round(randNbr * (1 - randPercent / 100), 2);
+    ans = (ansNb + '').replace('.', ',');
     instruction = `Appliquer une baisse de $${randPercent}\\%$ à $${randNbr}$.`;
   }
 
@@ -51,11 +51,11 @@ export function getApplyPercentQuestion(): Question {
       let proposition: Proposition;
 
       do {
-        let wrongAnswer = ans;
+        let wrongAnswer = ansNb;
         const deviation = Math.random() < 0.5 ? -1 : 1;
         const percentDeviation = Math.random() * 20 + 1;
 
-        wrongAnswer += deviation * (percentDeviation / 100) * ans;
+        wrongAnswer += deviation * (percentDeviation / 100) * ansNb;
         wrongAnswer = round(wrongAnswer, 2);
 
         proposition = {

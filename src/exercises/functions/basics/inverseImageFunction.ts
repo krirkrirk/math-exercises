@@ -63,7 +63,7 @@ export function getInverseImageFunction(): Question {
   const question: Question = {
     instruction: statement,
     startStatement: `f(x) = ${answer}`,
-    answer: xValue + '',
+    answer: 'x=' + xValue,
     keys: ['x', 'equal'],
     getPropositions,
     answerFormat: 'tex',

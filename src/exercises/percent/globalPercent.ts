@@ -39,7 +39,7 @@ export function getGlobalPercentQuestion(): Question {
   ans = round((ans - 1) * 100, 2);
 
   instruction += ". \nDéterminer le taux d'évolution global du prix de cet article.";
-  const answer = `${ans}\\%`;
+  const answer = `${(ans + '').replace('.', ',')}\\%`;
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];

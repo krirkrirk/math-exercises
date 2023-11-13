@@ -1,5 +1,6 @@
 import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Rational } from '#root/math/numbers/rationals/rational';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -35,9 +36,10 @@ export function getMultiplicationEquation(): Question {
   const polynome1 = new Polynomial([b, a]);
   const polynome2 = new Polynomial([d, c]);
 
-  const answer = `S=\\left\\{${simplifyNode(
-    new FractionNode(new NumberNode(-b), new NumberNode(a)),
-  ).toTex()};${simplifyNode(new FractionNode(new NumberNode(-d), new NumberNode(c))).toTex()}\\right\\}`;
+  const answer = `S=\\left\\{${new Rational(-b, a).simplify().toTree().toTex()};${new Rational(-d, c)
+    .simplify()
+    .toTree()
+    .toTex()}\\right\\}`;
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
@@ -87,9 +89,7 @@ export function getMultiplicationEquation(): Question {
   const question: Question = {
     instruction: `Résoudre : $(${polynome1.toTex()})(${polynome2.toTex()}) = 0$`,
     startStatement: `(${polynome1.toTex()})(${polynome2.toTex()}) = 0`,
-    answer: `S=\\left\\{${simplifyNode(new FractionNode(new NumberNode(-b), new NumberNode(a))).toTex()};${simplifyNode(
-      new FractionNode(new NumberNode(-d), new NumberNode(c)),
-    ).toTex()}\\right\\}`,
+    answer,
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou'],
     getPropositions,
     answerFormat: 'tex',

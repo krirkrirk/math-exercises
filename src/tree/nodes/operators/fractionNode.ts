@@ -1,6 +1,8 @@
 import { fraction } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from './operatorNode';
+import { NumberNode } from '../numbers/numberNode';
+import { FunctionNode, FunctionsIds } from '../functions/functionNode';
 
 export class FractionNode extends OperatorNode implements Node {
   /**
@@ -15,6 +17,14 @@ export class FractionNode extends OperatorNode implements Node {
     return `(${this.leftChild.toMathString()}) / (${this.rightChild.toMathString()})`;
   }
   toTex(): string {
+    if (
+      (this.leftChild.type === NodeType.function &&
+        (this.leftChild as unknown as FunctionNode).id === FunctionsIds.opposite) ||
+      (this.leftChild.type === NodeType.number && (this.leftChild as NumberNode).value < 0)
+    ) {
+      return `-\\frac{${this.leftChild.toTex().slice(1)}}{${this.rightChild.toTex()}}`;
+    }
+
     return `\\frac{${this.leftChild.toTex()}}{${this.rightChild.toTex()}}`;
   }
 

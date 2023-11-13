@@ -60,7 +60,7 @@ export function getCircleCircumference(): Question {
 
   const question: Question = {
     instruction: `Calculer la circonférence d'un cercle de ${coin ? 'rayon ' + radius : 'diamètre ' + diametre} cm.`,
-    answer: correctAnswer,
+    answer: correctAnswer.replace('.', ','),
     getPropositions,
     answerFormat: 'tex',
     keys: [],

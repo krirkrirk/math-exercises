@@ -66,7 +66,7 @@ export function getAverageEvolutionRate(): Question {
 
   const question: Question = {
     instruction,
-    answer: answer + `\\%`,
+    answer: (answer + '').replace('.', ',') + `\\%`,
     keys: ['percent'],
     getPropositions,
     answerFormat: 'tex',

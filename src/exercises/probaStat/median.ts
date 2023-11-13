@@ -89,7 +89,7 @@ export function getMedianWithTable(): Question {
 
 Calculer la médiane de cette série de valeurs.`,
 
-    answer: median + '',
+    answer: (median + '').replace('.', ','),
     keys: [],
     getPropositions,
     answerFormat: 'tex',

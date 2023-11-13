@@ -61,7 +61,10 @@ export function getMassConversion(): Question {
 
   const question: Question = {
     instruction: `$${randomMass.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
-    answer: randomMass.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '',
+    answer: (randomMass.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '').replace(
+      '.',
+      ',',
+    ),
     keys: [],
     getPropositions,
     answerFormat: 'tex',

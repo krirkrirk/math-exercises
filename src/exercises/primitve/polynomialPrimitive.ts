@@ -1,7 +1,9 @@
 import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Rational } from '#root/math/numbers/rationals/rational';
 import { Polynomial, PolynomialConstructor } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
+import { OppositeNode } from '#root/tree/nodes/functions/oppositeNode';
 import { Node } from '#root/tree/nodes/node';
 import { ConstantNode } from '#root/tree/nodes/numbers/constantNode';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -34,11 +36,19 @@ function getIntegratedPolynomialNode(polynomial: Polynomial) {
   for (let i = 0; i < polynomial.degree + 1; i++) {
     const coeff = polynomial.coefficients[i];
     if (coeff === 0) continue;
-    const nodeCoeff = new FractionNode(new NumberNode(coeff), new NumberNode(i + 1));
-    const terme = new MultiplyNode(
-      simplifyNode(nodeCoeff),
-      i + 1 === 1 ? new VariableNode('x') : new PowerNode(new VariableNode('x'), new NumberNode(i + 1)),
-    );
+    const nodeCoeff = new Rational(coeff, i + 1).simplify().toTree();
+    const powerNode = i + 1 === 1 ? new VariableNode('x') : new PowerNode(new VariableNode('x'), new NumberNode(i + 1));
+
+    let terme;
+    if (nodeCoeff.toTex() === '1') terme = powerNode;
+    else if (nodeCoeff.toTex() === '-1') terme = new OppositeNode(powerNode);
+    else {
+      terme = new MultiplyNode(
+        nodeCoeff,
+        i + 1 === 1 ? new VariableNode('x') : new PowerNode(new VariableNode('x'), new NumberNode(i + 1)),
+      );
+    }
+
     integralPolynomial = new AddNode(terme, integralPolynomial);
   }
   return integralPolynomial;

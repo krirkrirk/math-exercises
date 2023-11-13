@@ -83,7 +83,7 @@ export function getPowersOfTenToDecimalQuestion(): Question {
     instruction: `Donner l'écriture décimale de : $${statement.toTex()}$`,
 
     startStatement: statement.toTex(),
-    answer: answerTree.toTex(),
+    answer: answerTree.toTex().replace('.', ','),
     keys: [],
     getPropositions,
     answerFormat: 'tex',

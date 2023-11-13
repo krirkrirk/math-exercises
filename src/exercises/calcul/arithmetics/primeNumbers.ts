@@ -45,7 +45,7 @@ export function getPrimeNumbers(): Question {
 
   choosenNumbers = choosenNumbers.sort((a, b) => a - b);
 
-  let answer = `${prod}=${choosenNumbers[0]}`;
+  let answer = `${choosenNumbers[0]}`;
 
   for (let i = 1; i < choosenNumbers.length; i++) {
     answer += `\\times` + choosenNumbers[i];

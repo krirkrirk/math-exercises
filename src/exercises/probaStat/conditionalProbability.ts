@@ -123,7 +123,7 @@ export function getConditionalProbability(): Question {
   const question: Question = {
     instruction,
     startStatement,
-    answer,
+    answer: answer.replace('.', ','),
     keys: ['p', 'cap', 'underscore'],
     getPropositions,
     answerFormat: 'tex',

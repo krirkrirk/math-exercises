@@ -134,7 +134,7 @@ export function getFractionToPercentToDecimal(): Question {
 
   const question: Question = {
     instruction,
-    answer,
+    answer: answer.replace('.', ','),
     keys: ['percent'],
     getPropositions,
     answerFormat: 'tex',

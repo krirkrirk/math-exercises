@@ -39,7 +39,7 @@ export function getSetBelongingQuestion(): Question {
       break;
     case 2:
       nb = DecimalConstructor.random(-50, 50, randint(1, 4)).toTree().toTex();
-      answer = '\\mathbb{D}';
+      answer = '\\mathrm{D}';
       break;
     case 3:
       nb = RationalConstructor.randomIrreductible().toTree().toTex();

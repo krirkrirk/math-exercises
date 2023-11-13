@@ -87,7 +87,7 @@ export function getTriangleArea(): Question {
     instruction: `Calculer l'aire du triangle ${triangle.getTriangleName()} sachant que ${sides[randoms[0]]} = $${
       sidesLength[randoms[0]]
     }$ cm et la hauteur ${vertices[randoms[0]]}${String.fromCharCode(code + 3)} = $${height}$ cm.`,
-    answer: (sidesLength[randoms[0]] * height) / 2 + '',
+    answer: ((sidesLength[randoms[0]] * height) / 2 + '').replace('.', ','),
     keys: [...(vertices as KeyId[]), 'equal', 'cm2'],
     commands,
     coords: triangle.generateCoords(),

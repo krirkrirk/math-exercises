@@ -61,7 +61,10 @@ export function getLengthConversion(): Question {
 
   const question: Question = {
     instruction: `$${randomlength.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
-    answer: randomlength.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '',
+    answer: (randomlength.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '').replace(
+      '.',
+      ',',
+    ),
     keys: [],
     getPropositions,
     answerFormat: 'tex',

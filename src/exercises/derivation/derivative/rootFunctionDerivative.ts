@@ -29,8 +29,8 @@ export function getRootFunctionDerivative(): Question {
   else if (a === -1) instruction += `$-\\sqrt{x}$.`;
   else instruction += `$${a}\\sqrt{x}$.`;
 
-  if (a % 2 === 0) answer = `\\frac{${a / 2}}{\\sqrt{x}}`;
-  else answer = `\\frac{${a}}{2\\sqrt{x}}`;
+  if (a % 2 === 0) answer = `${a < 0 ? '-' : ''}\\frac{${Math.abs(a / 2)}}{\\sqrt{x}}`;
+  else answer = `${a < 0 ? '-' : ''}\\frac{${Math.abs(a)}}{2\\sqrt{x}}`;
 
   const getPropositions = (numOptions: number) => {
     const propositions: Proposition[] = [];

@@ -1,5 +1,6 @@
 import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Rational } from '#root/math/numbers/rationals/rational';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -34,9 +35,7 @@ export function getFractionEquation(): Question {
   const polynome2 = new Polynomial([d, c]);
 
   const answer =
-    -d / c === -b / a
-      ? `S=\\emptyset`
-      : `S=\\left\\{${simplifyNode(new FractionNode(new NumberNode(-b), new NumberNode(a))).toTex()}\\right\\}`;
+    -d / c === -b / a ? `S=\\emptyset` : `S=\\left\\{${new Rational(-b, a).simplify().toTree().toTex()}\\right\\}`;
 
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];

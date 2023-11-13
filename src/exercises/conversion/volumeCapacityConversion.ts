@@ -80,7 +80,7 @@ export function getVolumeCapacityConversion(): Question {
 
   const question: Question = {
     instruction: `$${random.value}$ $${instructionUnit}$ = ... $${AsnwerUnit}$`,
-    answer: answer.value + '',
+    answer: (answer.value + '').replace('.', ','),
     keys: [],
     getPropositions,
     answerFormat: 'tex',

@@ -1,5 +1,6 @@
 import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { Rational } from '#root/math/numbers/rationals/rational';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
@@ -66,7 +67,7 @@ export function getLeadingCoefficientCalculV1Question(): Question {
   const question: Question = {
     instruction: `Soit $f$ une fonction affine telle que $f(${xA})$ = $${yA}$ et $f(${xB})$ = $${yB}$.$\\\\$Quel est le coefficient directeur de $f$ ?`,
     startStatement: 'a',
-    answer: simplifyNode(new FractionNode(new NumberNode(yB - yA), new NumberNode(xB - xA))).toTex(),
+    answer: new Rational(yB - yA, xB - xA).simplify().toTree().toTex(),
     getPropositions,
     answerFormat: 'tex',
     keys: [],
