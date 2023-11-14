@@ -76,6 +76,7 @@ export type MathSection =
   | 'Arithmétique'
   | 'Calcul littéral'
   | 'Calculs'
+  | 'Combinatoire et dénombrement'
   | 'Conversions'
   | 'Dérivation'
   | 'Droites'

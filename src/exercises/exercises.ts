@@ -189,6 +189,11 @@ import { niceRootsFromDevForm } from './functions/trinoms/niceRootsFromDevForm';
 import { diceBasicProbas } from './probaStat/diceBasicProbas';
 import { cardBasicProbas } from './probaStat/cardBasicProbas';
 import { ballsBasicProbas } from './probaStat/ballsBasicProbas';
+import { coordinatesReading } from './geometry/vectors/coordinatesReading';
+import { anagrams } from './combinatory/anagrams';
+import { ballsCounting } from './combinatory/ballsCounting';
+import { diceCounting } from './combinatory/diceCounting';
+import { paritySumsAndProducts } from './calcul/arithmetics/paritySumsAndProducts';
 
 export const exercises: MathExercise[] = [
   /**
@@ -214,7 +219,8 @@ export const exercises: MathExercise[] = [
   equationType4Exercise,
   firstDegreeEquation,
   equationSimpleSquare,
-
+  multiplicationEquation,
+  fractionEquation,
   /**
    * inequations
    */
@@ -246,7 +252,10 @@ export const exercises: MathExercise[] = [
   addAndSubWithoutRelatives,
   operationsPriorities,
   operationsPrioritiesWithoutRelative,
-
+  mentalAddAndSub,
+  mentalMultiplications,
+  mentalDivisions,
+  mentalPercentage,
   /**
    * rounding
    */
@@ -279,13 +288,22 @@ export const exercises: MathExercise[] = [
   trigonometrySideCalcul,
   rightTriangleArea,
   triangleArea,
-
+  rectangleArea,
+  rectanglePerimeter,
+  squareArea,
+  squarePerimeter,
+  triangleAreaV2,
+  trianglePerimeter,
+  circleArea,
+  circleCircumference,
+  distanceBetweenTwoPoints,
   /**
    * vectors
    */
   scalarProductViaCoords,
   determinant,
   chasles,
+  coordinatesReading,
   /**
    * puissances
    */
@@ -347,7 +365,7 @@ export const exercises: MathExercise[] = [
   expDerivativeThree,
 
   /**
-   * primitive
+   * primitive and equa diff
    */
   constantPrimitive,
   polynomialPrimitive,
@@ -356,6 +374,8 @@ export const exercises: MathExercise[] = [
   logarithmePrimitive,
   usualPrimitives,
 
+  exponentialDifferentialEquation,
+  exponentialDifferentialEquationWithIC,
   /**
    * probabilités
    */
@@ -364,6 +384,12 @@ export const exercises: MathExercise[] = [
   diceBasicProbas,
   cardBasicProbas,
   ballsBasicProbas,
+
+  /**arithmetic */
+  primeNumbers,
+  paritySumsAndProducts,
+  euclideanDivision,
+
   /**
    * islam
    */
@@ -371,35 +397,14 @@ export const exercises: MathExercise[] = [
   leadingCoefficient,
   fractionToPercentToDecimal,
   marginalAndConditionalFrequency,
-  mentalAddAndSub,
-  mentalMultiplications,
-  mentalDivisions,
-  mentalPercentage,
 
   /**
    * nv generateurs
    */
 
-  capacityConversion,
-  lengthConversion,
-  massConversion,
-  aeraConversion,
-  volumeConversion,
-  volumeCapacityConversion,
-  primeNumbers,
-  multiplicationEquation,
-  fractionEquation,
   leadingCoefficientCalculV1,
   leadingCoefficientCalculV2,
-  rectangleArea,
-  rectanglePerimeter,
-  squareArea,
-  squarePerimeter,
-  triangleAreaV2,
-  trianglePerimeter,
-  circleArea,
-  circleCircumference,
-  distanceBetweenTwoPoints,
+
   reduceExpression,
   evaluateExpression,
   proportionalityTable,
@@ -409,12 +414,16 @@ export const exercises: MathExercise[] = [
   expSimplifiying,
   logSimplifiying,
 
-  euclideanDivision,
   signFunction,
   thirdDegreeFunctionVariation,
 
-  exponentialDifferentialEquation,
-  exponentialDifferentialEquationWithIC,
+  /**conversions */
+  capacityConversion,
+  lengthConversion,
+  massConversion,
+  aeraConversion,
+  volumeConversion,
+  volumeCapacityConversion,
 
   /**Stats */
   averageWithTable,
@@ -461,4 +470,9 @@ export const exercises: MathExercise[] = [
   sequenceRationalFracLimit,
   sequencePolynomProductLimit,
   sequenceGeometricLimit,
+
+  /**combinatory */
+  anagrams,
+  ballsCounting,
+  diceCounting,
 ];
