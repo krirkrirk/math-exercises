@@ -194,6 +194,9 @@ import { anagrams } from './combinatory/anagrams';
 import { ballsCounting } from './combinatory/ballsCounting';
 import { diceCounting } from './combinatory/diceCounting';
 import { paritySumsAndProducts } from './calcul/arithmetics/paritySumsAndProducts';
+import { recurrenceFormulaUsage } from './sequences/recurrenceFormulaUsage';
+import { explicitFormulaUsage } from './sequences/explicitFormulaUsage';
+import { genericSequenceVariations } from './sequences/genericSequenceVariations';
 
 export const exercises: MathExercise[] = [
   /**
@@ -335,7 +338,9 @@ export const exercises: MathExercise[] = [
   arithmeticThresholdFind,
   firstIntegersSum,
   geometricFirstTermsSum,
-
+  recurrenceFormulaUsage,
+  explicitFormulaUsage,
+  genericSequenceVariations,
   /**
    * fonctions
    */

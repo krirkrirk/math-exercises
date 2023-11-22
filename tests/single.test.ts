@@ -1,8 +1,4 @@
-import { rationalFracForbiddenValueLimit } from '../src/exercises/limits/rationalFracForbiddenValueLimit';
-import { rationalFracLimit } from '../src/exercises/limits/rationalFracLimit';
 import { ballsBasicProbas } from '../src/exercises/probaStat/ballsBasicProbas';
-import { cardBasicProbas } from '../src/exercises/probaStat/cardBasicProbas';
-import { diceBasicProbas } from '../src/exercises/probaStat/diceBasicProbas';
 test.only('one exo', () => {
   const exo = ballsBasicProbas;
 
