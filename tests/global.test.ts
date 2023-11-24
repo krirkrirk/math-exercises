@@ -10,6 +10,10 @@ test('all exos', () => {
       questions.forEach((question) => {
         expect(question.instruction?.length).not.toBe(0);
         if (exo.answerType !== 'QCM') expect(question.keys).not.toBe(undefined);
+
+        const dotDecimalPattern = /\d+\.\d+/;
+        expect(question.answer.match(dotDecimalPattern)).toBe(null);
+
         const props = question.getPropositions(4);
 
         expect(props.length).toBe(4);

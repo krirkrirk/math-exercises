@@ -7,13 +7,17 @@ import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { evaluate } from 'mathjs';
+import { MathSet } from '../sets/mathSet';
+import { Interval } from '../sets/intervals/intervals';
 
 export abstract class PointConstructor {
-  // static random(domainX: MathSet = new Interval('[[-10; 10]]'), domainY: MathSet = new Interval('[[-10; 10]]')): Point {
-  //   const x = domainX.getRandomElement();
-  //   const y = domainY.getRandomElement();
-  //   return new Point('A', new NumberNode(x.value), new NumberNode(y.value));
-  // }
+  static random(domainX: MathSet = new Interval('[[-10; 10]]'), domainY: MathSet = new Interval('[[-10; 10]]')): Point {
+    const x = domainX.getRandomElement();
+    const y = domainY.getRandomElement();
+    if (x === null || y === null) throw Error("can't build point with thoses sets");
+    return new Point('A', new NumberNode(x.value), new NumberNode(y.value));
+  }
+
 }
 
 export class Point {

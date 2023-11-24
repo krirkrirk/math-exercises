@@ -197,6 +197,12 @@ import { paritySumsAndProducts } from './calcul/arithmetics/paritySumsAndProduct
 import { recurrenceFormulaUsage } from './sequences/recurrenceFormulaUsage';
 import { explicitFormulaUsage } from './sequences/explicitFormulaUsage';
 import { genericSequenceVariations } from './sequences/genericSequenceVariations';
+import { vectorCoordinatesFromTwoPoints } from './geometry/vectors/vectorCoordinatesFromTwoPoints';
+import { evolutionToCM } from './percent/evolutionToCM';
+import { absoluteValueEquations } from './functions/absolute/absoluteValueEquations';
+import { absoluteValueInequations } from './functions/absolute/absoluteValueInequations';
+import { productDerivative } from './derivation/derivative/productDerivative';
+import { quotientDerivative } from './derivation/derivative/quotientDerivative';
 
 export const exercises: MathExercise[] = [
   /**
@@ -275,7 +281,7 @@ export const exercises: MathExercise[] = [
   globalPercent,
   reciprocalPercentage,
   averageEvolutionRate,
-
+  evolutionToCM,
   /**
    * geometry
    */
@@ -307,6 +313,7 @@ export const exercises: MathExercise[] = [
   determinant,
   chasles,
   coordinatesReading,
+  vectorCoordinatesFromTwoPoints,
   /**
    * puissances
    */
@@ -368,7 +375,8 @@ export const exercises: MathExercise[] = [
   expDerivativeOne,
   expDerivativeTwo,
   expDerivativeThree,
-
+  productDerivative,
+  quotientDerivative,
   /**
    * primitive and equa diff
    */
@@ -480,4 +488,8 @@ export const exercises: MathExercise[] = [
   anagrams,
   ballsCounting,
   diceCounting,
+
+  /**valeur absolue */
+  absoluteValueEquations,
+  absoluteValueInequations,
 ];

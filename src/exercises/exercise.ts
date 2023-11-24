@@ -107,4 +107,5 @@ export type MathSection =
   | 'Statistiques'
   | 'Suites'
   | 'Trigonométrie'
+  | 'Valeur absolue'
   | 'Vecteurs';

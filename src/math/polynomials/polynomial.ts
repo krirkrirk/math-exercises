@@ -37,6 +37,13 @@ export abstract class PolynomialConstructor {
     return new Polynomial(coefficients, variable);
   }
 
+  /**
+   *
+   * @param maxOrder included
+   * @param length
+   * @param variable
+   * @returns
+   */
   static randomWithLength(maxOrder: number, length: number, variable: string = 'x') {
     if (maxOrder < 0) {
       throw Error('Order must be a non-negative integer');

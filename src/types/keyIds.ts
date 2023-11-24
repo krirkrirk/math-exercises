@@ -2,23 +2,27 @@ export type KeyId =
   /**units */
   | 'cm'
   | 'cm2'
-  | 'degree'
+  | 'celsius'
   | 'Hz'
   | 'mol'
   | 'kJ'
   | 'mL'
+
   /**utility */
   | 'custom'
   | 'right'
   | 'left'
   | 'rightarrow'
-  | 'overrightarrow'
   | 'del'
   | 'close'
   | 'switch'
   | 'ou'
   | 'et'
   | 'maj'
+
+  /**geometry */
+  | 'overrightarrow'
+  | 'degree'
 
   /**operations */
   | 'plus'
@@ -43,6 +47,8 @@ export type KeyId =
   | 'geq'
   | 'leq'
   | 'approx'
+  | 'xsquare'
+  | 'xcube'
 
   /**sets */
   | 'belongs'
@@ -61,7 +67,6 @@ export type KeyId =
   | 'reals'
   | 'complex'
   | 'ast'
-  | 'degree'
   | 'del'
   | 'right'
   | 'left'
