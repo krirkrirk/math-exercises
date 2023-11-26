@@ -80,12 +80,61 @@ export const anagrams: MathExercise = {
   freeTimer: 60,
 };
 
+const letters = [
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g',
+  'h',
+  'i',
+  'j',
+  'k',
+  'l',
+  'm',
+  'n',
+  'o',
+  'p',
+  'q',
+  'r',
+  's',
+  't',
+  'u',
+  'v',
+  'w',
+  'x',
+  'y',
+  'z',
+  'é',
+  'è',
+  'à',
+  'ç',
+];
 export function getAnagramsQuestion(): Question {
   const word = random(words);
-  const answer = word
+  const repeats: number[] = [];
+  const wordLetters = word.split('');
+  letters.forEach((letter) => {
+    const nbOfRepeats = wordLetters.filter((l) => l === letter).length;
+    if (nbOfRepeats > 1) repeats.push(nbOfRepeats);
+  });
+
+  const getFacto = (n: number): number => {
+    if (n === 1) return 1;
+    return n * getFacto(n - 1);
+  };
+
+  const facto = word
     .split('')
     .map((el, index) => index + 1)
     .reduce((acc, curr) => acc * curr, 1);
+  let arrangements = 1;
+  repeats.forEach((nbOfRepeats) => {
+    arrangements *= getFacto(nbOfRepeats);
+  });
+  const answer = facto / arrangements;
   const getPropositions = (n: number) => {
     const res: Proposition[] = [];
 
