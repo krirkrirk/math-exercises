@@ -78,7 +78,7 @@ export function getPrimeNumbers(): Question {
 
         wrongFactors[randomIndex] = newFactor;
 
-        wrongAnswer = `${prod} = ${wrongFactors[0]}`;
+        wrongAnswer = `${wrongFactors[0]}`;
         for (let j = 1; j < wrongFactors.length; j++) {
           wrongAnswer += `\\times` + wrongFactors[j];
         }
