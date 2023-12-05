@@ -203,6 +203,8 @@ import { absoluteValueEquations } from './functions/absolute/absoluteValueEquati
 import { absoluteValueInequations } from './functions/absolute/absoluteValueInequations';
 import { productDerivative } from './derivation/derivative/productDerivative';
 import { quotientDerivative } from './derivation/derivative/quotientDerivative';
+import { derivativeNumberCalcul } from './derivation/derivativeNumberCalcul';
+import { averagePoint } from './probaStat/stats2var/averagePoint';
 
 export const exercises: MathExercise[] = [
   /**
@@ -377,6 +379,7 @@ export const exercises: MathExercise[] = [
   expDerivativeThree,
   productDerivative,
   quotientDerivative,
+  derivativeNumberCalcul,
   /**
    * primitive and equa diff
    */
@@ -444,6 +447,7 @@ export const exercises: MathExercise[] = [
   quartiles,
   medianWithTable,
   quartilesList,
+  averagePoint,
 
   /**Trinomes */
   alphaBetaInCanonicalForm,
