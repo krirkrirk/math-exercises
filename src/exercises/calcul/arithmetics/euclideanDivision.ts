@@ -1,28 +1,23 @@
-import { MathExercise, Proposition, Question, shuffleProps } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  VEA,
+  addValidProp,
+  shuffleProps,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
+import { Node } from '#root/tree/nodes/node';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { EqualNode } from '#root/tree/nodes/operators/equalNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const euclideanDivision: MathExercise = {
-  id: 'euclideanDivision',
-  connector: '=',
-  instruction: '',
-  label: 'Ecrire une division euclidienne',
-  levels: ['6ème', '5ème', '4ème'],
-  sections: ['Arithmétique'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getEuclideanDivisionQuestions, nb),
-  keys: ['equal'],
-  qcmTimer: 60,
-  freeTimer: 60,
-};
-
-export function getEuclideanDivisionQuestions(): Question {
+const getEuclideanDivisionQuestions: QuestionGenerator<QCMProps, VEAProps> = () => {
   let dividend = randint(5, 100);
   let divisor = randint(2, 11);
 
@@ -38,52 +33,64 @@ export function getEuclideanDivisionQuestions(): Question {
     new NumberNode(dividend),
     new AddNode(new MultiplyNode(new NumberNode(divisor), new NumberNode(quotient)), new NumberNode(remainder)),
   );
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const divisor = randint(2, 11);
-        const quotient = Math.floor(randint(5, 100) / divisor);
-        const remainder = randint(5, 100) % divisor;
-        const wrongAnswer = new EqualNode(
-          new NumberNode(dividend),
-          new AddNode(new MultiplyNode(new NumberNode(divisor), new NumberNode(quotient)), new NumberNode(remainder)),
-        );
-
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer.toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffleProps(res, n);
-  };
-
-  const question: Question = {
-    instruction: `Ecrire la division euclidienne de ${dividend} par ${divisor}`,
-    answer: answer.toTex(),
+  const answerTex = answer.toTex();
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Ecrire la division euclidienne de ${dividend} par ${divisor}.`,
+    answer: answerTex,
     keys: ['equal'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer: answerTex, dividend },
+    veaProps: { dividend, divisor, quotient, remainder },
   };
   return question;
-}
+};
+
+type VEAProps = {
+  dividend: number;
+  divisor: number;
+  quotient: number;
+  remainder: number;
+};
+const isAnswerValid: VEA<VEAProps> = (ans, { dividend, divisor, quotient, remainder }) => {
+  const tree = new EqualNode(
+    new NumberNode(dividend),
+    new AddNode(new MultiplyNode(new NumberNode(divisor), new NumberNode(quotient)), new NumberNode(remainder)),
+    { isRightChildOnlyValid: true },
+  );
+  const validLatexs = tree.toAllValidTexs();
+  return validLatexs.includes(ans);
+};
+
+type QCMProps = {
+  answer: string;
+  dividend: number;
+};
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, dividend }) => {
+  const res: Proposition[] = [];
+  addValidProp(res, answer);
+  while (res.length < n) {
+    const divisor = randint(2, 11);
+    const quotient = Math.floor(randint(5, 100) / divisor);
+    const remainder = randint(5, 100) % divisor;
+    const wrongAnswer = new EqualNode(
+      new NumberNode(dividend),
+      new AddNode(new MultiplyNode(new NumberNode(divisor), new NumberNode(quotient)), new NumberNode(remainder)),
+    );
+    tryToAddWrongProp(res, wrongAnswer.toTex());
+  }
+  return shuffleProps(res, n);
+};
+
+export const euclideanDivision: MathExercise<QCMProps, VEAProps> = {
+  id: 'euclideanDivision',
+  connector: '=',
+  label: 'Ecrire une division euclidienne',
+  levels: ['6ème', '5ème', '4ème'],
+  sections: ['Arithmétique'],
+  isSingleStep: true,
+  generator: (nb) => getDistinctQuestions(getEuclideanDivisionQuestions, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+  isAnswerValid,
+};

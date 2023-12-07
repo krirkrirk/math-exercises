@@ -2,6 +2,22 @@ import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { uuid } from 'uuidv4';
 
+export const addValidProp = (props: Proposition[], statement: string, format: 'tex' | 'raw' = 'tex') => {
+  props.push({
+    id: uuid(),
+    statement,
+    isRightAnswer: true,
+    format: format,
+  });
+};
+export const addWrongProp = (props: Proposition[], statement: string, format: 'tex' | 'raw' = 'tex') => {
+  props.push({
+    id: uuid(),
+    statement,
+    isRightAnswer: false,
+    format: format,
+  });
+};
 export const tryToAddWrongProp = (props: Proposition[], statement: string, format: 'tex' | 'raw' = 'tex') => {
   if (!props.some((prop) => prop.statement === statement)) {
     props.push({
@@ -25,7 +41,7 @@ export type Proposition = {
   isRightAnswer: boolean;
   format: 'tex' | 'raw';
 };
-export interface Question {
+export interface Question<TQCMProps = any, TVEAProps = any> {
   instruction: string;
   startStatement?: string;
   answer: string;
@@ -35,23 +51,32 @@ export interface Question {
   coords?: number[];
   options?: any;
   divisionFormat?: 'fraction' | 'obelus';
-  getPropositions: (n: number) => Proposition[];
+  qcmGeneratorProps?: TQCMProps;
+  veaProps?: TVEAProps;
+  //!! à virer apres refonte
+  // getPropositions?: any;
 }
 
-export interface MathExercise {
+export type QCMGenerator<T> = (n: number, args: T) => Proposition[];
+export type VEA<T> = (studentAnswer: string, args: T) => boolean;
+export type QuestionGenerator<TQCMProps = any, TVEAProps = any> = () => Question<TQCMProps, TVEAProps>;
+export interface MathExercise<TQCMProps = any, TVEAProps = any> {
   id: string;
-  instruction?: string;
   isSingleStep: boolean;
   label: string;
   sections: MathSection[];
   levels: MathLevel[];
   connector?: '=' | '\\iff' | '\\approx';
-  keys?: KeyId[];
-  generator(nb: number, options?: GeneratorOptions): Question[];
+  generator: (n: number) => Question<TQCMProps, TVEAProps>[];
   maxAllowedQuestions?: number;
   answerType?: 'QCM' | 'free';
   qcmTimer: number;
   freeTimer: number;
+  getPropositions?: QCMGenerator<TQCMProps>;
+  isAnswerValid?: VEA<TVEAProps>;
+  //!! à virer apres refonte
+  // instruction?: any;
+  // keys?: any;
 }
 
 export type MathLevel =

@@ -11,7 +11,6 @@ import { v4 as uuidv4 } from 'uuid';
 export const fractionToPercentToDecimal: MathExercise = {
   id: 'fractionToPercentToDecimal',
   connector: '\\iff',
-  instruction: '',
   label: "Passer d'une écriture d'un nombre à une autre",
   levels: ['3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro'],
   sections: ['Fractions'],
@@ -136,7 +135,6 @@ export function getFractionToPercentToDecimal(): Question {
     instruction,
     answer: answer.replace('.', ','),
     keys: ['percent'],
-    getPropositions,
     answerFormat: 'tex',
   };
 

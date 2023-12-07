@@ -1,6 +1,11 @@
 import { complex } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { Complex } from '#root/math/complex/complex';
+import { NumberNode } from '../numbers/numberNode';
+import { VariableNode } from '../variables/variableNode';
+import { OppositeNode } from '../functions/oppositeNode';
+import { MultiplyNode } from '../operators/multiplyNode';
+import { AddNode } from '../operators/addNode';
 
 export class ComplexNode implements Node {
   tex: string;
@@ -33,7 +38,30 @@ export class ComplexNode implements Node {
     this.tex = tex || formatedTex;
     this.mathString = mathString || this.tex;
   }
+  toEquivalentNodes(): Node[] {
+    const res: Node[] = [];
+    if (this.im === 0) {
+      return [new NumberNode(this.re)];
+    }
+    if (this.re === 0) {
+      if (this.im === 1) {
+        return [new VariableNode('i')];
+      }
+      if (this.im === -1) {
+        return [new OppositeNode(new VariableNode('i'))];
+      }
+      return new MultiplyNode(new NumberNode(this.im), new VariableNode('i')).toEquivalentNodes();
+    }
 
+    return new AddNode(
+      new NumberNode(this.re),
+      new MultiplyNode(new NumberNode(this.im), new VariableNode('i')),
+    ).toEquivalentNodes();
+  }
+
+  toAllValidTexs(): string[] {
+    return this.toEquivalentNodes().map((node) => node.toTex());
+  }
   toMathString(): string {
     return `${this.mathString ? this.mathString : this.tex}`;
   }

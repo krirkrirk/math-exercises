@@ -20,4 +20,10 @@ export class ConstantNode implements Node {
   toMathjs() {
     return parse(this.mathString);
   }
+  toAllValidTexs() {
+    return this.toEquivalentNodes().map((node) => node.toTex());
+  }
+  toEquivalentNodes() {
+    return [this];
+  }
 }

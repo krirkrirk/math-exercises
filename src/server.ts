@@ -1,8 +1,10 @@
 import { exercises } from './exercises/exercises';
 import express, { Express, Request, Response } from 'express';
+import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { IntervalConstructor } from './math/sets/intervals/intervals';
+const jsonParser = bodyParser.json();
 
 const allExercises = [...exercises];
 
@@ -37,7 +39,7 @@ const runServer = () => {
     if (!exo) res.send('Exo not found');
     const questions = exo?.generator(10);
     const populatedQuestions = questions?.map((q) => {
-      return { ...q, propositions: q.getPropositions?.(4) };
+      return { ...q, propositions: exo.getPropositions?.(4, q.qcmGeneratorProps) };
     });
     res.json({
       exercise: exo,
@@ -45,6 +47,19 @@ const runServer = () => {
 
       nextId: allExercises[(exoIndex + 1) % allExercises.length].id,
       prevId: allExercises[(exoIndex - 1 + allExercises.length) % allExercises.length].id,
+    });
+  });
+
+  app.post('/vea', jsonParser, (req: Request, res: Response) => {
+    const exoId = req.query.exoId;
+
+    const { ans, veaProps } = req.body;
+    const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
+    const exo = allExercises[exoIndex];
+    if (!exo) res.send('Exo not found');
+    const result = exo.isAnswerValid?.(ans as string, veaProps) ?? false;
+    res.json({
+      result,
     });
   });
 

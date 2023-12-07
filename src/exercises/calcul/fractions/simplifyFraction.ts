@@ -7,13 +7,11 @@ import { v4 as uuidv4 } from 'uuid';
 export const simplifyFraction: MathExercise = {
   id: 'simplifyFrac',
   connector: '=',
-  instruction: '',
   label: 'Simplification de fractions',
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
   sections: ['Fractions'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getSimplifyFraction, nb),
-  keys: [],
   qcmTimer: 60,
   freeTimer: 60,
 };
@@ -58,7 +56,6 @@ export function getSimplifyFraction(): Question {
     startStatement: rational.toTree().toTex(),
     answer: rational.simplify().toTree().toTex(),
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
   };
   return question;

@@ -13,6 +13,19 @@ export class CosNode extends FunctionNode implements Node {
     return `cos(${this.child.toMathString()})`;
   }
 
+  toEquivalentNodes(): Node[] {
+    const res: Node[] = [];
+    const childNodes = this.child.toEquivalentNodes();
+    childNodes.forEach((childNode) => {
+      res.push(new CosNode(childNode));
+    });
+    return res;
+  }
+
+  toAllValidTexs(): string[] {
+    return this.toEquivalentNodes().map((node) => node.toTex());
+  }
+
   toTex(): string {
     return `\\cos\\left(${this.child.toTex()}\\right)`;
   }

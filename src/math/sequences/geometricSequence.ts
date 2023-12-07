@@ -69,6 +69,8 @@ export class GeometricSequence {
     return '0';
   }
   toTree() {
-    return new MultiplyNode(this.firstTerm.toTree(), new PowerNode(this.reason.toTree(), new VariableNode('n')), true);
+    return new MultiplyNode(this.firstTerm.toTree(), new PowerNode(this.reason.toTree(), new VariableNode('n')), {
+      forceTimesSign: true,
+    });
   }
 }

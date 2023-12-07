@@ -8,7 +8,10 @@ export enum NodeType {
 
 export interface Node {
   type: NodeType;
+
   toMathString: () => string;
+  toEquivalentNodes: () => Node[];
+  toAllValidTexs: () => string[];
   toTex: () => string;
   toMathjs: () => any;
   // simplify: () => Node;

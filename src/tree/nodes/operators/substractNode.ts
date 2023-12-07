@@ -9,6 +9,22 @@ export class SubstractNode extends OperatorNode implements Node {
   toMathString(): string {
     return `${this.leftChild.toMathString()}-(${this.rightChild.toMathString()})`;
   }
+
+  toEquivalentNodes(): Node[] {
+    const res: Node[] = [];
+    const rightNodes = this.rightChild.toEquivalentNodes();
+    const leftNodes = this.leftChild.toEquivalentNodes();
+    rightNodes.forEach((rightNode) => {
+      leftNodes.forEach((leftNode) => {
+        res.push(new SubstractNode(leftNode, rightNode));
+      });
+    });
+    return res;
+  }
+
+  toAllValidTexs(): string[] {
+    return this.toEquivalentNodes().map((node) => node.toTex());
+  }
   toTex(): string {
     let rightTex = this.rightChild.toTex();
     let leftTex = this.leftChild.toTex();
