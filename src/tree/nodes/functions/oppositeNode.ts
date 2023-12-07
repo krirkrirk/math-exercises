@@ -25,6 +25,19 @@ export class OppositeNode extends FunctionNode implements Node {
     return `-${childTex}`;
   }
 
+  toEquivalentNodes(): Node[] {
+    const res: Node[] = [];
+    const childNodes = this.child.toEquivalentNodes();
+    childNodes.forEach((childNode) => {
+      res.push(new OppositeNode(childNode));
+    });
+    return res;
+  }
+
+  toAllValidTexs(): string[] {
+    return this.toEquivalentNodes().map((node) => node.toTex());
+  }
+
   toMathjs() {
     return unaryMinus(this.child.toMathjs());
   }

@@ -206,7 +206,7 @@ import { quotientDerivative } from './derivation/derivative/quotientDerivative';
 import { derivativeNumberCalcul } from './derivation/derivativeNumberCalcul';
 import { averagePoint } from './probaStat/stats2var/averagePoint';
 
-export const exercises: MathExercise[] = [
+export const exercises: MathExercise<any, any>[] = [
   /**
    * calcul litteral
    */

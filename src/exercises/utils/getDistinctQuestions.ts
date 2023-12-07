@@ -15,12 +15,16 @@ export function equalTab<T>(array1: T[], array2: T[]) {
  * @param max included
  * @returns
  */
-export const getDistinctQuestions = (generator: () => Question, nb: number, max?: number): Question[] => {
-  const res: Question[] = [];
+export const getDistinctQuestions = (
+  generator: () => Question<any, any>,
+  nb: number,
+  max?: number,
+): Question<any, any>[] => {
+  const res: Question<any, any>[] = [];
   const trueStop = max === undefined ? nb : nb > max ? max : nb;
 
   for (let i = 0; i < trueStop ?? nb; i++) {
-    let question: Question;
+    let question: Question<any, any>;
     do {
       question = generator();
     } while (

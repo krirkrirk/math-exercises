@@ -8,13 +8,11 @@ import { v4 as uuidv4 } from 'uuid';
 export const fractionsSum: MathExercise = {
   id: 'fractionsSum',
   connector: '=',
-  instruction: '',
   label: 'Sommes de fractions',
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
   sections: ['Fractions'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionsSum, nb),
-  keys: [],
   qcmTimer: 60,
   freeTimer: 60,
 };
@@ -70,7 +68,6 @@ export function getFractionsSum(): Question {
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
   };
   return question;

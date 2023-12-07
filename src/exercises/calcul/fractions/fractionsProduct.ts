@@ -8,13 +8,11 @@ import { v4 } from 'uuid';
 export const fractionsProduct: MathExercise = {
   id: 'fractionsProduct',
   connector: '=',
-  instruction: '',
   label: 'Produits de fractions',
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
   sections: ['Fractions'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionsProduct, nb),
-  keys: [],
   qcmTimer: 60,
   freeTimer: 60,
 };
@@ -62,7 +60,6 @@ export function getFractionsProduct(): Question {
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
   };
   return question;

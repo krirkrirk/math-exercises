@@ -18,6 +18,12 @@ export class VariableNode implements Node {
   toMathjs() {
     return this.name;
   }
+  toAllValidTexs() {
+    return this.toEquivalentNodes().map((node) => node.toTex());
+  }
+  toEquivalentNodes() {
+    return [this];
+  }
   // simplify(): Node {
   //   return this;
   // }

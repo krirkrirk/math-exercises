@@ -1,28 +1,20 @@
-import { shuffleProps, MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  shuffleProps,
+  MathExercise,
+  Proposition,
+  Question,
+  QCMGenerator,
+  QuestionGenerator,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const paritySumsAndProducts: MathExercise = {
-  id: 'paritySumsAndProducts',
-  connector: '=',
-  instruction: '',
-  label: 'Parité de sommes et de produits',
-  levels: ['2nde'],
-  isSingleStep: true,
-  sections: ['Arithmétique'],
-  generator: (nb: number) => getDistinctQuestions(getParitySumsAndProductsQuestion, nb, 12),
-  qcmTimer: 60,
-  freeTimer: 60,
-  answerType: 'QCM',
-  maxAllowedQuestions: 12,
-};
-
-export function getParitySumsAndProductsQuestion(): Question {
+const getParitySumsAndProductsQuestion: QuestionGenerator = () => {
   const type = randint(0, 12);
   let instruction = '';
-  let answer: 'Pair' | 'Impair' | 'Parfois pair, parfois impair' | 'Premier';
+  let answer: 'Pair' | 'Impair' | 'Parfois pair, parfois impair' | 'Premier' = 'Pair';
   switch (type) {
     case 0:
       instruction = 'La somme de deux nombres pairs est un nombre...';
@@ -73,44 +65,61 @@ export function getParitySumsAndProductsQuestion(): Question {
       answer = 'Pair';
       break;
   }
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
+  const question: Question<QCMProps> = {
+    answer: answer!,
+    instruction,
+    keys: [],
+    answerFormat: 'raw',
+    qcmGeneratorProps: { answer },
+  };
+  return question;
+};
 
-    res.push({
+type QCMProps = {
+  answer: string;
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const res: Proposition[] = [
+    {
       id: v4(),
       statement: `Pair`,
       isRightAnswer: answer === 'Pair',
       format: 'raw',
-    });
-    res.push({
+    },
+    {
       id: v4(),
       statement: `Impair`,
       isRightAnswer: answer === 'Impair',
       format: 'raw',
-    });
-    res.push({
+    },
+    {
       id: v4(),
       statement: `Parfois pair, parfois impair`,
       isRightAnswer: answer === 'Parfois pair, parfois impair',
       format: 'raw',
-    });
-    res.push({
+    },
+    {
       id: v4(),
       statement: `Premier`,
       isRightAnswer: answer === 'Premier',
       format: 'raw',
-    });
+    },
+  ];
+  return shuffle(res);
+};
 
-    return shuffle(res);
-  };
-
-  const question: Question = {
-    answer: answer!,
-    instruction,
-    keys: [],
-    getPropositions,
-    answerFormat: 'raw',
-  };
-
-  return question;
-}
+export const paritySumsAndProducts: MathExercise = {
+  id: 'paritySumsAndProducts',
+  connector: '=',
+  label: 'Parité de sommes et de produits',
+  levels: ['2nde'],
+  isSingleStep: true,
+  sections: ['Arithmétique'],
+  generator: (nb: number) => getDistinctQuestions(getParitySumsAndProductsQuestion, nb, 12),
+  qcmTimer: 60,
+  freeTimer: 60,
+  answerType: 'QCM',
+  maxAllowedQuestions: 12,
+  getPropositions,
+};

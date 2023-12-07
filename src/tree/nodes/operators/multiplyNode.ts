@@ -3,9 +3,12 @@ import { FunctionNode, FunctionsIds } from '../functions/functionNode';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from './operatorNode';
 
-export class MultiplyNode extends OperatorNode implements Node {
+type MultiplyNodeOptions = {
   forceTimesSign?: boolean;
-  constructor(leftChild: Node, rightChild: Node, forceTimesSign?: boolean) {
+};
+export class MultiplyNode extends OperatorNode implements Node {
+  opts?: MultiplyNodeOptions | undefined;
+  constructor(leftChild: Node, rightChild: Node, opts?: MultiplyNodeOptions) {
     let [left, right] = [leftChild, rightChild];
     const shouldSwitch =
       (rightChild.type === NodeType.function && (rightChild as unknown as FunctionNode).id === FunctionsIds.opposite) ||
@@ -15,7 +18,7 @@ export class MultiplyNode extends OperatorNode implements Node {
     }
 
     super(OperatorIds.multiply, left, right, true, '\\times');
-    this.forceTimesSign = forceTimesSign;
+    this.opts = opts;
   }
 
   toMathString(): string {
@@ -48,14 +51,34 @@ export class MultiplyNode extends OperatorNode implements Node {
     }
     if (needBrackets) rightTex = `\\left(${rightTex}\\right)`;
 
-    //  permet de gérer le cas 3*2^x par ex
-    let showTimesSign = this.forceTimesSign || !isNaN(+rightTex[0]) || this.rightChild.type === NodeType.number;
+    let showTimesSign = this.opts?.forceTimesSign || !isNaN(+rightTex[0]) || this.rightChild.type === NodeType.number;
     if (this.rightChild.type === NodeType.operator) {
       const operatorRightChild = this.rightChild as unknown as OperatorNode;
       showTimesSign ||= [OperatorIds.fraction].includes(operatorRightChild.id);
     }
     const nextIsLetter = rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
     return `${leftTex}${showTimesSign ? `\\times${nextIsLetter ? ' ' : ''}` : ''}${rightTex}`;
+  }
+
+  toEquivalentNodes() {
+    const res: Node[] = [];
+    const rightNodes = this.rightChild.toEquivalentNodes();
+
+    const leftNodes = this.leftChild.toEquivalentNodes();
+    rightNodes.forEach((rightNode) => {
+      leftNodes.forEach((leftNode) => {
+        res.push(new MultiplyNode(leftNode, rightNode));
+        //! pas opti, ca va générer plusieurs nodes avec le même tex
+        //! comment gérer ce cas ?
+        res.push(new MultiplyNode(leftNode, rightNode, { forceTimesSign: true }));
+        res.push(new MultiplyNode(rightNode, leftNode));
+        res.push(new MultiplyNode(rightNode, leftNode, { forceTimesSign: true }));
+      });
+    });
+    return res;
+  }
+  toAllValidTexs(): string[] {
+    return this.toEquivalentNodes().map((node) => node.toTex());
   }
 
   toMathjs() {

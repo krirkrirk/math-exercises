@@ -22,7 +22,14 @@ export class NumberNode implements Node {
   toMathjs() {
     return this.toMathString();
   }
-  // simplify(): Node {
-  //   return this;
-  // }
+  toAllValidTexs() {
+    const res: string[] = [];
+    res.push(this.tex);
+    //!est-ce vraiment nécessaire sachant que les inputs students n'auront en théorie jamais de "."
+    if (this.tex.includes(',')) res.push(this.tex.replace(',', '.'));
+    return res;
+  }
+  toEquivalentNodes() {
+    return [this];
+  }
 }

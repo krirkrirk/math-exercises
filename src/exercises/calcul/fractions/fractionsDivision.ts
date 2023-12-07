@@ -8,13 +8,11 @@ import { v4 } from 'uuid';
 export const fractionsDivision: MathExercise = {
   id: 'fractionsDivision',
   connector: '=',
-  instruction: '',
   label: 'Divisions de fractions',
   levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
   sections: ['Fractions'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionsDivision, nb),
-  keys: [],
   qcmTimer: 60,
   freeTimer: 60,
 };
@@ -68,7 +66,6 @@ export function getFractionsDivision(): Question {
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
   };
   return question;
