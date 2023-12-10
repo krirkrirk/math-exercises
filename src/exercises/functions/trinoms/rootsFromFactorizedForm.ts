@@ -7,7 +7,7 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const rootsFromFactorizedForm: MathExercise = {
+export const rootsFromFactorizedForm: MathExercise<QCMProps, VEAProps> = {
   id: 'rootsFromFactorizedForm',
   connector: '=',
   instruction: '',

@@ -6,7 +6,7 @@ import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const chasles: MathExercise = {
+export const chasles: MathExercise<QCMProps, VEAProps> = {
   id: 'chasles',
   connector: '=',
   instruction: '',

@@ -5,7 +5,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const firstDegreeDerivative: MathExercise = {
+export const firstDegreeDerivative: MathExercise<QCMProps, VEAProps> = {
   id: 'firstDegreeDerivative',
   connector: '=',
   instruction: '',

@@ -8,7 +8,7 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const leadingCoefficientCalculV2: MathExercise = {
+export const leadingCoefficientCalculV2: MathExercise<QCMProps, VEAProps> = {
   id: 'leadingCoefficientCalculV2',
   connector: '=',
   instruction: '',

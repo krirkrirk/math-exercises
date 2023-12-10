@@ -5,7 +5,7 @@ import { round } from '#root/math/utils/round';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const rootFunctionDerivative: MathExercise = {
+export const rootFunctionDerivative: MathExercise<QCMProps, VEAProps> = {
   id: 'rootFunctionDerivative',
   connector: '=',
   instruction: '',

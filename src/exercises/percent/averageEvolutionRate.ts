@@ -5,7 +5,7 @@ import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const averageEvolutionRate: MathExercise = {
+export const averageEvolutionRate: MathExercise<QCMProps, VEAProps> = {
   id: 'averageEvolutionRate',
   connector: '=',
   instruction: '',

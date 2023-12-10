@@ -1,70 +1,65 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const arithmeticExplicitFormulaUsage: MathExercise = {
-  id: 'arithmeticExplicitFormulaUsage',
-  connector: '=',
-  instruction: '',
-  label: "Utiliser la formule générale d'une suite arithmétique",
-  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
-  sections: ['Suites'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getArithmeticExplicitFormulaUsage, nb),
-  keys: ['r', 'n', 'u', 'underscore'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  firstValue: number;
+  askedRank: number;
+  reason: number;
 };
+type VEAProps = {};
 
-export function getArithmeticExplicitFormulaUsage(): Question {
+const getArithmeticExplicitFormulaUsage: QuestionGenerator<QCMProps, VEAProps> = () => {
   const askedRank = randint(0, 10);
   const firstValue = randint(-10, 10);
   const reason = randint(-10, 10, [0]);
 
   const polynomial = new Polynomial([firstValue, reason], 'n');
+  const answer = (firstValue + askedRank * reason).toString();
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: (firstValue + askedRank * reason).toString(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: (randint(-5, 6, [firstValue]) + askedRank * reason).toString(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `$(u_n)$ est une suite arithmétique définie par $u_n = ${polynomial.toString()}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
-    answer: (firstValue + askedRank * reason).toString(),
+    answer,
     keys: ['r', 'n', 'u', 'underscore'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, firstValue, askedRank, reason },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n: number, { answer, firstValue, askedRank, reason }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, (randint(-5, 6, [firstValue]) + askedRank * reason).toString());
+  }
+
+  return shuffle(propositions);
+};
+
+export const arithmeticExplicitFormulaUsage: MathExercise<QCMProps, VEAProps> = {
+  id: 'arithmeticExplicitFormulaUsage',
+  connector: '=',
+  label: "Utiliser la formule générale d'une suite arithmétique",
+  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
+  sections: ['Suites'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getArithmeticExplicitFormulaUsage, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

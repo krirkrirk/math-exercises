@@ -5,7 +5,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const niceRootsFromDevForm: MathExercise = {
+export const niceRootsFromDevForm: MathExercise<QCMProps, VEAProps> = {
   id: 'niceRootsFromDevForm',
   connector: '\\iff',
   instruction: '',

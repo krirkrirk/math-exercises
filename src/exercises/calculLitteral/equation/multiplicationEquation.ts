@@ -9,7 +9,7 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const multiplicationEquation: MathExercise = {
+export const multiplicationEquation: MathExercise<QCMProps, VEAProps> = {
   id: 'multiplicationEquation',
   connector: '\\iff',
   instruction: '',

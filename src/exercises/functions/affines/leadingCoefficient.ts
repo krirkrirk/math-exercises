@@ -10,7 +10,7 @@ import { shuffle } from '#root/utils/shuffle';
 import { evaluate } from 'mathjs';
 import { v4 } from 'uuid';
 
-export const leadingCoefficient: MathExercise = {
+export const leadingCoefficient: MathExercise<QCMProps, VEAProps> = {
   id: 'leadingCoefficient',
   connector: '=',
   instruction: '',

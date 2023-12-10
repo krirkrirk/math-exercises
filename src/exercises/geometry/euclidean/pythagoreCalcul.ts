@@ -8,7 +8,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const pythagoreCalcul: MathExercise = {
+export const pythagoreCalcul: MathExercise<QCMProps, VEAProps> = {
   id: 'pythagoreCalcul',
   connector: '=',
   instruction: '',

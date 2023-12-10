@@ -6,7 +6,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { randomLetter } from '#root/utils/randomLetter';
 import { v4 } from 'uuid';
 
-export const vectorCoordinatesFromTwoPoints: MathExercise = {
+export const vectorCoordinatesFromTwoPoints: MathExercise<QCMProps, VEAProps> = {
   id: 'vectorCoordinatesFromTwoPoints',
   connector: '=',
   instruction: '',

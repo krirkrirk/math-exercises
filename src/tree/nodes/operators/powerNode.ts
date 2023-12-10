@@ -1,13 +1,17 @@
 import { pow } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from './operatorNode';
+import { NumberNode } from '../numbers/numberNode';
+import { MultiplyNode } from './multiplyNode';
 
 type PowerNodeOptions = {
   allowProductSyntax?: boolean; //par exemple, pour x^2, si cette prop est true, toEquivalentNodes va sortir l'arbre Multiply(x,x) en plus de l'arbre Power(x,2)
 };
 export class PowerNode extends OperatorNode implements Node {
-  constructor(leftChild: Node, rightChild: Node) {
+  opts?: PowerNodeOptions;
+  constructor(leftChild: Node, rightChild: Node, opts?: PowerNodeOptions) {
     super(OperatorIds.power, leftChild, rightChild, false, '^');
+    this.opts = opts;
   }
 
   toMathString(): string {
@@ -21,7 +25,16 @@ export class PowerNode extends OperatorNode implements Node {
     rightNodes.forEach((rightNode) => {
       leftNodes.forEach((leftNode) => {
         res.push(new PowerNode(leftNode, rightNode));
-        //! ajouter les multiply nodes
+
+        if (this.opts?.allowProductSyntax && this.rightChild.type === NodeType.number) {
+          const power = (this.rightChild as NumberNode).value;
+          if (Math.floor(power) !== power || power < 2) return;
+          let tree = new MultiplyNode(leftNode, leftNode);
+          for (let i = 2; i < power; i++) {
+            tree = new MultiplyNode(tree, leftNode);
+          }
+          res.push(tree);
+        }
       });
     });
     return res;

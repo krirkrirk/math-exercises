@@ -1,31 +1,46 @@
 import { randint } from '#root/math/utils/random/randint';
-import { round } from '#root/math/utils/round';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question } from '../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-import { v4 } from 'uuid';
 
-export const marginalAndConditionalFrequency: MathExercise = {
-  id: 'marginalAndConditionalFrequency',
-  connector: '=',
-  instruction: '',
-  label: 'Calculs de fréquences marginales et conditionnelles',
-  levels: ['1reESM', '1reSpé', '1reTech', 'TermTech', '1rePro', 'TermPro'],
-  isSingleStep: false,
-  sections: ['Statistiques'],
-  generator: (nb: number) => getDistinctQuestions(getMarginalAndConditionalFrequency, nb),
-  keys: ['f', 'cap', 'underscore'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  x1: number;
+  x2: number;
+  x3: number;
+  x4: number;
 };
+type VEAProps = {};
 
-export function getMarginalAndConditionalFrequency(): Question {
-  const [x1, x2, x3, x4] = [1, 2, 3, 4].map((el) => randint(1, 100));
+const getCalculs = (x1: number, x2: number, x3: number, x4: number) => {
   const x = x1 + x2 + x3 + x4;
+  return [
+    (x1 + x3) / x,
+    (x2 + x4) / x,
+    (x1 + x2) / x,
+    (x3 + x4) / x,
+    x1 / (x1 + x2),
+    x3 / (x3 + x4),
+    x2 / (x1 + x2),
+    x4 / (x3 + x4),
+    x1 / (x1 + x3),
+    x3 / (x1 + x3),
+    x2 / (x2 + x4),
+    x4 / (x2 + x4),
+  ];
+};
+const getMarginalAndConditionalFrequency: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const [x1, x2, x3, x4] = [1, 2, 3, 4].map((el) => randint(1, 100));
   const rand = randint(0, 12);
 
   const freqString = [
@@ -58,55 +73,10 @@ export function getMarginalAndConditionalFrequency(): Question {
     'f_B(D)',
   ];
 
-  const Calculs = [
-    (x1 + x3) / x,
-    (x2 + x4) / x,
-    (x1 + x2) / x,
-    (x3 + x4) / x,
-    x1 / (x1 + x2),
-    x3 / (x3 + x4),
-    x2 / (x1 + x2),
-    x4 / (x3 + x4),
-    x1 / (x1 + x3),
-    x3 / (x1 + x3),
-    x2 / (x2 + x4),
-    x4 / (x2 + x4),
-  ];
-
-  const calculsNodes = Calculs.map((el) => simplifyNode(new NumberNode(el)));
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: calculsNodes[rand].toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: calculsNodes[randint(0, 12, [rand])].toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const calculs = getCalculs(x1, x2, x3, x4);
+  const chosenCalculNode = simplifyNode(new NumberNode(calculs[rand]));
+  const answer = chosenCalculNode.toTex();
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `On considère le tableau d'effectifs suivant : 
 
 | |A|B|
@@ -116,11 +86,36 @@ export function getMarginalAndConditionalFrequency(): Question {
 
 Calculer la fréquence ${freqString[rand]}.`,
     startStatement: `${frequences[rand]}`,
-    answer: calculsNodes[rand].toTex(),
+    answer,
     keys: ['f', 'cap', 'underscore'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, x1, x2, x3, x4 },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, x1, x2, x3, x4 }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const calculs = getCalculs(x1, x2, x3, x4);
+  while (propositions.length < n) {
+    const rand = randint(0, 12);
+    tryToAddWrongProp(propositions, simplifyNode(new NumberNode(calculs[rand])).toTex());
+  }
+
+  return shuffle(propositions);
+};
+
+export const marginalAndConditionalFrequency: MathExercise<QCMProps, VEAProps> = {
+  id: 'marginalAndConditionalFrequency',
+  connector: '=',
+  label: 'Calculs de fréquences marginales et conditionnelles',
+  levels: ['1reESM', '1reSpé', '1reTech', 'TermTech', '1rePro', 'TermPro'],
+  isSingleStep: false,
+  sections: ['Statistiques'],
+  generator: (nb: number) => getDistinctQuestions(getMarginalAndConditionalFrequency, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

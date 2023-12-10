@@ -1,13 +1,57 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { IntervalConstructor } from '#root/math/sets/intervals/intervals';
+import { Interval, IntervalConstructor } from '#root/math/sets/intervals/intervals';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const intervalsIntersection: MathExercise = {
+const getIntervalsIntersectionQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const [int1, int2] = IntervalConstructor.differentRandoms(2);
+  const inter = int1.intersection(int2);
+
+  const answer = inter.tex;
+  const question: Question<QCMProps, VEAProps> = {
+    answer,
+    instruction: `Soit $I = ${int1.toTex()}$ et $J = ${int2.toTex()}$. Déterminer $I\\cap J$.`,
+    keys: ['infty', 'emptyset', 'lbracket', 'rbracket', 'semicolon', 'cup', 'cap'],
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer, int1Tex: int1.tex, int2Tex: int2.tex },
+  };
+
+  return question;
+};
+
+type QCMProps = {
+  answer: string;
+  int1Tex: string;
+  int2Tex: string;
+};
+type VEAProps = {};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, int1Tex, int2Tex }) => {
+  const propositions: Proposition[] = [];
+
+  addValidProp(propositions, answer);
+  const int1 = new Interval(int1Tex);
+  const int2 = new Interval(int2Tex);
+  tryToAddWrongProp(propositions, int1.union(int2).tex);
+
+  while (propositions.length < n) {
+    const wrongAnswer = IntervalConstructor.random().tex;
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffle(propositions);
+};
+export const intervalsIntersection: MathExercise<QCMProps, VEAProps> = {
   id: 'intervalsIntersection',
   connector: '=',
-  instruction: '',
   label: "Déterminer l'intersection de deux intervalles",
   levels: ['2nde', '1reESM'],
   isSingleStep: true,
@@ -15,62 +59,5 @@ export const intervalsIntersection: MathExercise = {
   generator: (nb: number) => getDistinctQuestions(getIntervalsIntersectionQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
+  getPropositions,
 };
-
-export function getIntervalsIntersectionQuestion(): Question {
-  const [int1, int2] = IntervalConstructor.differentRandoms(2);
-  const inter = int1.intersection(int2);
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4(),
-      statement: inter.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    const unionTex = int1.union(int2).tex;
-    if (unionTex !== inter.tex) {
-      res.push({
-        id: v4(),
-        statement: unionTex,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-    }
-
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = IntervalConstructor.random().tex;
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
-    answer: inter.tex,
-    instruction: `Soit $I = ${int1.toTex()}$ et $J = ${int2.toTex()}$. Déterminer $I\\cap J$.`,
-    keys: ['infty', 'emptyset', 'lbracket', 'rbracket', 'semicolon', 'cup', 'cap'],
-    getPropositions,
-    answerFormat: 'tex',
-  };
-
-  return question;
-}

@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -7,23 +15,8 @@ import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { VariableNode } from '#root/tree/nodes/variables/variableNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const geometricFindExplicitFormula: MathExercise = {
-  id: 'geometricFindExplicitFormula',
-  connector: '=',
-  instruction: '',
-  label: "Déterminer la formule générale d'une suite géométrique",
-  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
-  sections: ['Suites'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getGeometricFindExplicitFormula, nb),
-  keys: ['q', 'n', 'u', 'underscore'],
-  qcmTimer: 60,
-  freeTimer: 60,
-};
-
-export function getGeometricFindExplicitFormula(): Question {
+const getGeometricFindExplicitFormula: QuestionGenerator<QCMProps, VEAProps> = () => {
   const firstRank = 0;
   const firstValue = randint(1, 10);
   const reason = randint(2, 10);
@@ -33,57 +26,56 @@ export function getGeometricFindExplicitFormula(): Question {
     new PowerNode(new NumberNode(reason), new VariableNode('n')),
   );
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
+  const answer = simplifyNode(formula).toTex();
 
-    res.push({
-      id: v4() + '',
-      statement: simplifyNode(formula).toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    res.push({
-      id: v4() + '',
-      statement: simplifyNode(
-        new MultiplyNode(new NumberNode(reason), new PowerNode(new NumberNode(firstValue), new VariableNode('n'))),
-      ).toTex(),
-      isRightAnswer: false,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 2; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = new MultiplyNode(
-          new NumberNode(firstValue + randint(-firstValue, 2 * firstValue + 1)),
-          new PowerNode(new NumberNode(reason + +randint(-reason + 1, 2 * reason + 1)), new VariableNode('n')),
-        );
-        proposition = {
-          id: v4() + '',
-          statement: simplifyNode(wrongAnswer).toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `$(u_n)$ est une suite géométrique de premier terme $u_{${firstRank}} = ${firstValue}$ et de raison $q = ${reason}$. $\\\\$ Donner l'expression de $u_n$ en fonction de $n$.`,
     startStatement: 'u_n',
-    answer: simplifyNode(formula).toTex(),
+    answer,
     keys: ['q', 'n', 'u', 'underscore'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, reason, firstValue },
   };
   return question;
-}
+};
+type QCMProps = {
+  answer: string;
+  reason: number;
+  firstValue: number;
+};
+type VEAProps = {};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, reason, firstValue }) => {
+  const propositions: Proposition[] = [];
+
+  addValidProp(propositions, answer);
+
+  tryToAddWrongProp(
+    propositions,
+    simplifyNode(
+      new MultiplyNode(new NumberNode(reason), new PowerNode(new NumberNode(firstValue), new VariableNode('n'))),
+    ).toTex(),
+  );
+
+  while (propositions.length < n) {
+    const wrongAnswer = new MultiplyNode(
+      new NumberNode(firstValue + randint(-firstValue, 2 * firstValue + 1)),
+      new PowerNode(new NumberNode(reason + +randint(-reason + 1, 2 * reason + 1)), new VariableNode('n')),
+    );
+    tryToAddWrongProp(propositions, simplifyNode(wrongAnswer).toTex());
+  }
+  return shuffle(propositions);
+};
+
+export const geometricFindExplicitFormula: MathExercise<QCMProps, VEAProps> = {
+  id: 'geometricFindExplicitFormula',
+  connector: '=',
+  label: "Déterminer la formule générale d'une suite géométrique",
+  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
+  sections: ['Suites'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getGeometricFindExplicitFormula, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

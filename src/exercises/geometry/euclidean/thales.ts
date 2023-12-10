@@ -5,7 +5,7 @@ import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const thales: MathExercise = {
+export const thales: MathExercise<QCMProps, VEAProps> = {
   id: 'thales',
   connector: '=',
   instruction: '',

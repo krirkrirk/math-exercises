@@ -1,4 +1,13 @@
-import { shuffleProps, MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  shuffleProps,
+  MathExercise,
+  Proposition,
+  Question,
+  tryToAddWrongProp,
+  QuestionGenerator,
+  QCMGenerator,
+  addValidProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Rational } from '#root/math/numbers/rationals/rational';
 import { randint } from '#root/math/utils/random/randint';
@@ -10,20 +19,13 @@ import { CardsColor, CardsValues } from '../utils/cardsData';
 import { random } from '#root/utils/random';
 import { randomEnumValue } from '#root/utils/randomEnumValue';
 
-export const cardBasicProbas: MathExercise = {
-  id: 'cardBasicProbas',
-  connector: '=',
-  instruction: '',
-  label: 'Calcul de probabilité simple avec un jeu de cartes',
-  levels: ['5ème', '4ème', '3ème', '2ndPro', '2nde', 'CAP'],
-  isSingleStep: true,
-  sections: ['Probabilités'],
-  generator: (nb: number) => getDistinctQuestions(getCardBasicProbasQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  questionType: string;
 };
+type VEAProps = {};
 
-export function getCardBasicProbasQuestion(): Question {
+const getCardBasicProbasQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   //carte précise (as de coeur)
   //carte valeur (as)
   //car couleur (pique)
@@ -56,61 +58,54 @@ export function getCardBasicProbasQuestion(): Question {
       break;
   }
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    switch (questionType) {
-      case 'colorCard':
-        tryToAddWrongProp(res, '13');
-
-        break;
-      case 'oneCard':
-        tryToAddWrongProp(res, '1');
-
-        break;
-      case 'valueCard':
-        tryToAddWrongProp(res, '4');
-
-        break;
-    }
-
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = new Rational(randint(1, 52), 52).simplify().tex;
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffleProps(res, n);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     answer,
     instruction: `On tire une carte dans un jeu de 52 cartes. Quelle est la probabilité d'obtenir ${target} ?`,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, questionType },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, questionType }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  switch (questionType) {
+    case 'colorCard':
+      tryToAddWrongProp(propositions, '13');
+
+      break;
+    case 'oneCard':
+      tryToAddWrongProp(propositions, '1');
+
+      break;
+    case 'valueCard':
+      tryToAddWrongProp(propositions, '4');
+
+      break;
+  }
+
+  while (propositions.length < n) {
+    const wrongAnswer = new Rational(randint(1, 52), 52).simplify().tex;
+
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffleProps(propositions, n);
+};
+
+export const cardBasicProbas: MathExercise<QCMProps, VEAProps> = {
+  id: 'cardBasicProbas',
+  connector: '=',
+  label: 'Calcul de probabilité simple avec un jeu de cartes',
+  levels: ['5ème', '4ème', '3ème', '2ndPro', '2nde', 'CAP'],
+  isSingleStep: true,
+  sections: ['Probabilités'],
+  generator: (nb: number) => getDistinctQuestions(getCardBasicProbasQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

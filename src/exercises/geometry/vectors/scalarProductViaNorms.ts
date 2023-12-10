@@ -5,7 +5,7 @@
 // import { MathExercise, Question } from "../../exercise";
 // import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
-// export const scalarProductViaNorms : MathExercise = {
+// export const scalarProductViaNorms : MathExercise<QCMProps,VEAProps> = {
 //     id: 'scalarProductViaNorms',
 //     connector: "=",
 //     instruction: "",

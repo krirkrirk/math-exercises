@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
@@ -8,21 +16,12 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const mentalDivisions: MathExercise = {
-  id: 'mentalDivisions',
-  connector: '=',
-  instruction: '',
-  label: 'Effectuer mentalement des divisions simples',
-  levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro'],
-  sections: ['Calculs'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getMentalDivisions, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getMentalDivisions(): Question {
+const getMentalDivisions: QuestionGenerator<QCMProps> = () => {
   let a = 1,
     b = 1,
     c = 1;
@@ -68,51 +67,44 @@ export function getMentalDivisions(): Question {
     rand === 6
       ? new DivideNode(allNumbersNodes[0], new DivideNode(allNumbersNodes[1], allNumbersNodes[2]))
       : new DivideNode(allNumbersNodes[0], allNumbersNodes[1]);
+
+  const statementTex = statementTree.toTex();
   const answer = rand === 6 ? a / (b / c) : a / b;
-
-  const getPropositions = (n: number) => {
-    const propositions: Proposition[] = [];
-
-    // Ajout de la réponse correcte
-    propositions.push({
-      id: v4() + '',
-      statement: answer.toString(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    // Ajout des propositions incorrectes
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const incorrectAnswer = round(answer + (coinFlip() ? 1 : -1) * Math.random() * 10, 2);
-        proposition = {
-          id: v4() + '',
-          statement: incorrectAnswer.toString(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    // Mélange des propositions
-    return shuffle(propositions);
-  };
-
-  const question: Question = {
-    instruction: `Calculer : $${statementTree.toTex()}$`,
-    startStatement: statementTree.toTex(),
-    answer: (round(answer, 2) + '').replace('.', ','),
+  const answerTex = (round(answer, 2) + '').replace('.', ',');
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Calculer : $${statementTex}$`,
+    startStatement: statementTex,
+    answer: answerTex,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer: answerTex },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const result = Number(answer.replace(',', '.'));
+  while (propositions.length < n) {
+    const incorrectAnswer = round(result + (coinFlip() ? 1 : -1) * Math.random() * 10, 2);
+
+    tryToAddWrongProp(propositions, incorrectAnswer.toString());
+  }
+
+  return shuffle(propositions);
+};
+
+export const mentalDivisions: MathExercise<QCMProps, VEAProps> = {
+  id: 'mentalDivisions',
+  connector: '=',
+  label: 'Effectuer mentalement des divisions simples',
+  levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro'],
+  sections: ['Calculs'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(getMentalDivisions, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

@@ -1,25 +1,26 @@
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question } from '../../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '../../exercise';
 import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
-import { v4 } from 'uuid';
 
-export const arithmeticThresholdFind: MathExercise = {
-  id: 'arithmeticThresholdFind',
-  connector: '=',
-  instruction: '',
-  label: "Calculer un seuil à l'aide d'une suite arithmétique",
-  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
-  sections: ['Suites'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getArithmeticThresholdFind, nb),
-  keys: ['r', 'n', 'u', 'underscore', 'inf', 'sup', 'approx'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  firstValue: number;
+  reason: number;
+  randValue: number;
 };
+type VEAProps = {};
 
-export function getArithmeticThresholdFind(): Question {
+const getArithmeticThresholdFind: QuestionGenerator<QCMProps, VEAProps> = () => {
   const firstValue = randint(-10, 10);
   const reason = randint(-10, 10, [0]);
   let randValue = firstValue;
@@ -35,46 +36,40 @@ export function getArithmeticThresholdFind(): Question {
     randValue += randint(-100, reason);
     instruction += `À partir de quel rang a-t-on $u_n < ${randValue}$ ?`;
   }
+  const answer = (Math.floor((randValue - firstValue) / reason) + 1).toString();
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: (Math.floor((randValue - firstValue) / reason) + 1).toString(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: (Math.floor((randValue - firstValue) / reason) + randint(-5, 6, [1])).toString(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction,
     startStatement: `n`,
-    answer: (Math.floor((randValue - firstValue) / reason) + 1).toString(),
+    answer,
     keys: ['r', 'n', 'u', 'underscore', 'inf', 'sup', 'approx'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, randValue, firstValue, reason },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randValue, firstValue, reason }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, (Math.floor((randValue - firstValue) / reason) + randint(-5, 6, [1])).toString());
+  }
+
+  return shuffle(propositions);
+};
+
+export const arithmeticThresholdFind: MathExercise<QCMProps, VEAProps> = {
+  id: 'arithmeticThresholdFind',
+  connector: '=',
+  label: "Calculer un seuil à l'aide d'une suite arithmétique",
+  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
+  sections: ['Suites'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getArithmeticThresholdFind, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

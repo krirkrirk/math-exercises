@@ -12,7 +12,7 @@ import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const factoType1Exercise: MathExercise = {
+export const factoType1Exercise: MathExercise<QCMProps, VEAProps> = {
   id: 'facto1',
   connector: '=',
   instruction: '',

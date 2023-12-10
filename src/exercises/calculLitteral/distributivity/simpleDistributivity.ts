@@ -9,7 +9,7 @@ import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const simpleDistributivity: MathExercise = {
+export const simpleDistributivity: MathExercise<QCMProps, VEAProps> = {
   id: 'simpleDistri',
   connector: '=',
   instruction: '',

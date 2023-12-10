@@ -5,7 +5,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const inverseImageFunction: MathExercise = {
+export const inverseImageFunction: MathExercise<QCMProps, VEAProps> = {
   id: 'inverseImageFunction',
   connector: '\\iff',
   instruction: '',

@@ -1,23 +1,26 @@
-import { shuffleProps, MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  shuffleProps,
+  MathExercise,
+  Proposition,
+  Question,
+  tryToAddWrongProp,
+  QuestionGenerator,
+  QCMGenerator,
+  addValidProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
-import { v4 } from 'uuid';
 
-export const recurrenceFormulaUsage: MathExercise = {
-  id: 'recurrenceFormulaUsage',
-  connector: '=',
-  instruction: '',
-  label: "Utiliser la formule de récurrence d'une suite",
-  levels: ['1reESM', '1reSpé', '1reTech'],
-  isSingleStep: true,
-  sections: ['Suites'],
-  generator: (nb: number) => getDistinctQuestions(getRecurrenceFormulaUsageQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  rank: number;
+  u0: number;
+  coeffs: number[];
 };
+type VEAProps = {};
 
-export function getRecurrenceFormulaUsageQuestion(): Question {
+const getRecurrenceFormulaUsageQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const coeffs = [randint(-5, 6), randint(-5, 6), randint(-3, 4, [0])];
   const u = new Polynomial(coeffs, 'u_n');
   const u0 = randint(-2, 3, [0]);
@@ -27,48 +30,42 @@ export function getRecurrenceFormulaUsageQuestion(): Question {
     currentValue = u.calculate(currentValue);
   }
   const answer = currentValue + '';
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
 
-    res.push({
-      id: v4(),
-      statement: answer + '',
-      isRightAnswer: true,
-      format: 'tex',
-    });
-    tryToAddWrongProp(res, u.calculate(rank) + '');
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = randint(-100, 100) + '';
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffleProps(res, n);
-  };
-
-  const question: Question = {
-    answer: answer + '',
+  const question: Question<QCMProps, VEAProps> = {
+    answer,
     instruction: `Soit $u$ la suite définie par $u_0 = ${u0}$ et pour tout $n\\geq 1$, $u_{n+1} = ${u
       .toTree()
       .toTex()}$. Calculer $u_${rank}$.`,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, rank, u0, coeffs },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n: number, { answer, rank, u0, coeffs }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const u = new Polynomial(coeffs, 'u_n');
+  tryToAddWrongProp(propositions, u.calculate(rank) + '');
+  while (propositions.length < n) {
+    const wrongAnswer = randint(-100, 100) + '';
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffleProps(propositions, n);
+};
+
+export const recurrenceFormulaUsage: MathExercise<QCMProps, VEAProps> = {
+  id: 'recurrenceFormulaUsage',
+  connector: '=',
+  label: "Utiliser la formule de récurrence d'une suite",
+  levels: ['1reESM', '1reSpé', '1reTech'],
+  isSingleStep: true,
+  sections: ['Suites'],
+  generator: (nb: number) => getDistinctQuestions(getRecurrenceFormulaUsageQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

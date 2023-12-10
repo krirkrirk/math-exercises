@@ -4,8 +4,8 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
-  addWrongProp,
   tryToAddWrongProp,
 } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
@@ -14,20 +14,21 @@ import { Rational, RationalConstructor } from '#root/math/numbers/rationals/rati
 import { randint } from '#root/math/utils/random/randint';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-const getFractionAndIntegerSum: QuestionGenerator<QCMProps> = () => {
+const getFractionAndIntegerSum: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rational = RationalConstructor.randomIrreductible();
   const integer = new Integer(randint(-10, 11, [0]));
   const statementTree = new AddNode(rational.toTree(), integer.toTree());
   statementTree.shuffle();
   const answerTree = rational.add(integer).toTree();
-  const question: Question = {
+  const answer = answerTree.toTex();
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
-    answer: answerTree.toTex(),
+    answer,
     keys: [],
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, integer: integer.value, rational: [rational.num, rational.denum] },
   };
   return question;
 };
@@ -37,26 +38,42 @@ type QCMProps = {
   integer: number;
   rational: [number, number];
 };
-const getPropositions: QCMGenerator<QCMProps> = (n: number, { answer, integer, rational }) => {
-  const res: Proposition[] = [];
-  addValidProp(res, answer);
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, integer, rational }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
   const integerObj = new Integer(integer);
   const rationalObj = new Rational(rational[0], rational[1]);
-  addWrongProp(res, new Rational(integerObj.value + rationalObj.num, rationalObj.denum).toTex());
+  tryToAddWrongProp(propositions, new Rational(integerObj.value + rationalObj.num, rationalObj.denum).toTex());
 
   if (integerObj.value + rationalObj.denum !== 0)
-    addWrongProp(res, new Rational(integerObj.value + rationalObj.num, integerObj.value + rationalObj.denum).toTex());
+    tryToAddWrongProp(
+      propositions,
+      new Rational(integerObj.value + rationalObj.num, integerObj.value + rationalObj.denum).toTex(),
+    );
 
-  while (res.length < n) {
+  while (propositions.length < n) {
     const rational = RationalConstructor.randomIrreductible();
     const wrongAnswerTree = rational.add(integerObj).toTree();
-    tryToAddWrongProp(res, wrongAnswerTree.toTex());
+    tryToAddWrongProp(propositions, wrongAnswerTree.toTex());
   }
 
-  return shuffle(res);
+  return shuffle(propositions);
 };
 
-export const fractionAndIntegerSum: MathExercise = {
+type VEAProps = {
+  integer: number;
+  rational: [number, number];
+};
+
+const isAnswerValid: VEA<VEAProps> = (ans, { integer, rational }) => {
+  const integerObj = new Integer(integer);
+  const rationalObj = new Rational(rational[0], rational[1]);
+  const answerTree = rationalObj.add(integerObj).toTree();
+  const texs = answerTree.toAllValidTexs();
+  return texs.includes(ans);
+};
+
+export const fractionAndIntegerSum: MathExercise<QCMProps, VEAProps> = {
   id: 'fractionAndIntegerSum',
   connector: '=',
   label: "Somme d'un entier et d'une fraction",
@@ -67,4 +84,5 @@ export const fractionAndIntegerSum: MathExercise = {
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

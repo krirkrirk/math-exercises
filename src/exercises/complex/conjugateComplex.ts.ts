@@ -4,7 +4,7 @@ import { Complex, ComplexConstructor } from '#root/math/complex/complex';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const conjugateComplex: MathExercise = {
+export const conjugateComplex: MathExercise<QCMProps, VEAProps> = {
   id: 'conjugateComplex',
   connector: '=',
   instruction: '',

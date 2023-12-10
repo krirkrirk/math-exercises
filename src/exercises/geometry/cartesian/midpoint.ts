@@ -6,7 +6,7 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const midpoint: MathExercise = {
+export const midpoint: MathExercise<QCMProps, VEAProps> = {
   id: 'midpoint',
   connector: '=',
   instruction: '',

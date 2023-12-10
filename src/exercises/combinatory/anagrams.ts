@@ -67,7 +67,7 @@ const words = [
   'toilette',
   'vitre',
 ];
-export const anagrams: MathExercise = {
+export const anagrams: MathExercise<QCMProps, VEAProps> = {
   id: 'anagrams',
   connector: '=',
   instruction: '',

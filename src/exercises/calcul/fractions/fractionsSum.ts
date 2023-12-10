@@ -1,11 +1,60 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Rational, RationalConstructor } from '#root/math/numbers/rationals/rational';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 as uuidv4 } from 'uuid';
 
-export const fractionsSum: MathExercise = {
+type QCMProps = {
+  answer: string;
+  rational: [number, number];
+  rational2: [number, number];
+};
+type VEAProps = {};
+
+const getFractionsSum: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const rational = RationalConstructor.randomIrreductible();
+  const rational2 = RationalConstructor.randomIrreductible();
+  const statementTree = new AddNode(rational.toTree(), rational2.toTree());
+  const answerTree = rational.add(rational2).toTree();
+  const answer = answerTree.toTex();
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
+    startStatement: statementTree.toTex(),
+    answer,
+    keys: [],
+    answerFormat: 'tex',
+    qcmGeneratorProps: {
+      answer,
+      rational: [rational.num, rational.denum],
+      rational2: [rational2.num, rational2.denum],
+    },
+  };
+  return question;
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, rational, rational2 }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  tryToAddWrongProp(propositions, new Rational(rational[0] + rational2[0], rational[1] + rational2[1]).toTex());
+
+  while (propositions.length < n) {
+    const incorrectRational = RationalConstructor.randomIrreductible();
+    const incorrectRational2 = RationalConstructor.randomIrreductible();
+    tryToAddWrongProp(propositions, incorrectRational.add(incorrectRational2).toTree().toTex());
+  }
+
+  return shuffle(propositions);
+};
+
+export const fractionsSum: MathExercise<QCMProps, VEAProps> = {
   id: 'fractionsSum',
   connector: '=',
   label: 'Sommes de fractions',
@@ -15,60 +64,5 @@ export const fractionsSum: MathExercise = {
   generator: (nb: number) => getDistinctQuestions(getFractionsSum, nb),
   qcmTimer: 60,
   freeTimer: 60,
+  getPropositions,
 };
-
-export function getFractionsSum(): Question {
-  const rational = RationalConstructor.randomIrreductible();
-  const rational2 = RationalConstructor.randomIrreductible();
-  const statementTree = new AddNode(rational.toTree(), rational2.toTree());
-  const answerTree = rational.add(rational2).toTree();
-
-  const getPropositions = (n: number) => {
-    const propositions: Proposition[] = [];
-
-    propositions.push({
-      id: uuidv4(),
-      statement: answerTree.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    propositions.push({
-      id: uuidv4(),
-      statement: new Rational(rational.num + rational2.num, rational.denum + rational2.denum).toTex(),
-      isRightAnswer: false,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 2; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const incorrectRational = RationalConstructor.randomIrreductible();
-        const incorrectRational2 = RationalConstructor.randomIrreductible();
-        proposition = {
-          id: uuidv4(),
-          statement: incorrectRational.add(incorrectRational2).toTree().toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffle(propositions);
-  };
-
-  const question: Question = {
-    instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
-    startStatement: statementTree.toTex(),
-    answer: answerTree.toTex(),
-    keys: [],
-    answerFormat: 'tex',
-  };
-  return question;
-}

@@ -5,14 +5,65 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { probaFlip } from '#root/utils/probaFlip';
-import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  shuffleProps,
+  tryToAddWrongProp,
+} from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-import { v4 } from 'uuid';
 
-export const decimalToScientific: MathExercise = {
+type QCMProps = {
+  answer: string;
+  decimal: number;
+};
+type VEAProps = {};
+
+const getDecimalToScientificQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const isZero = probaFlip(0.2);
+  let intPart: number, dec: Decimal;
+  if (isZero) {
+    dec = DecimalConstructor.fromParts('0', DecimalConstructor.randomFracPart(randint(2, 5), randint(1, 4)));
+  } else {
+    intPart = IntegerConstructor.random(randint(2, 5));
+    dec = DecimalConstructor.fromParts(intPart.toString(), DecimalConstructor.randomFracPart(randint(1, 5)));
+  }
+  const decTex = dec.toTree().toTex();
+  const answer = dec.toScientificNotation().toTex();
+
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Donner l'écriture scientifique de : $${decTex}$`,
+    startStatement: decTex,
+    answer: answer,
+    keys: [],
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer, decimal: dec.value },
+  };
+  return question;
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, decimal }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const dec = new Decimal(decimal);
+  while (propositions.length < n) {
+    const wrongAnswer = new MultiplyNode(
+      dec.toScientificPart(),
+      new PowerNode(new NumberNode(10), new NumberNode(randint(-5, 5, [0, 1]))),
+    ).toTex();
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffleProps(propositions, n);
+};
+
+export const decimalToScientific: MathExercise<QCMProps, VEAProps> = {
   id: 'decimalToScientific',
   connector: '=',
-  instruction: '',
   label: "Passer d'écriture décimale à écriture scientifique",
   levels: [
     '5ème',
@@ -30,67 +81,8 @@ export const decimalToScientific: MathExercise = {
   ],
   sections: ['Puissances'],
   isSingleStep: true,
-  keys: [],
-
   generator: (nb: number) => getDistinctQuestions(getDecimalToScientificQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
+  getPropositions,
 };
-
-export function getDecimalToScientificQuestion(): Question {
-  const isZero = probaFlip(0.2);
-  let intPart: number, dec: Decimal;
-  if (isZero) {
-    dec = DecimalConstructor.fromParts('0', DecimalConstructor.randomFracPart(randint(2, 5), randint(1, 4)));
-  } else {
-    intPart = IntegerConstructor.random(randint(2, 5));
-    dec = DecimalConstructor.fromParts(intPart.toString(), DecimalConstructor.randomFracPart(randint(1, 5)));
-  }
-  const decTex = dec.toTree().toTex();
-  const answer = dec.toScientificNotation().toTex();
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = new MultiplyNode(
-          dec.toScientificPart(),
-          new PowerNode(new NumberNode(10), new NumberNode(randint(-5, 5, [0, 1]))),
-        ).toTex();
-        // const wrongAnswer = randint(-100, 100) + '';
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffleProps(res, n);
-  };
-
-  const question: Question = {
-    instruction: `Donner l'écriture scientifique de : $${decTex}$`,
-    startStatement: decTex,
-    answer: answer,
-    keys: [],
-    getPropositions,
-    answerFormat: 'tex',
-  };
-  return question;
-}

@@ -5,7 +5,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const deltaTrinom: MathExercise = {
+export const deltaTrinom: MathExercise<QCMProps, VEAProps> = {
   id: 'deltaTrinom',
   connector: '=',
   instruction: '',

@@ -41,7 +41,7 @@ export type Proposition = {
   isRightAnswer: boolean;
   format: 'tex' | 'raw';
 };
-export interface Question<TQCMProps = any, TVEAProps = any> {
+export interface Question<TQCMProps = {}, TVEAProps = {}> {
   instruction: string;
   startStatement?: string;
   answer: string;
@@ -53,14 +53,14 @@ export interface Question<TQCMProps = any, TVEAProps = any> {
   divisionFormat?: 'fraction' | 'obelus';
   qcmGeneratorProps?: TQCMProps;
   veaProps?: TVEAProps;
-  //!! à virer apres refonte
-  // getPropositions?: any;
 }
 
 export type QCMGenerator<T> = (n: number, args: T) => Proposition[];
 export type VEA<T> = (studentAnswer: string, args: T) => boolean;
-export type QuestionGenerator<TQCMProps = any, TVEAProps = any> = () => Question<TQCMProps, TVEAProps>;
-export interface MathExercise<TQCMProps = any, TVEAProps = any> {
+export type QuestionGenerator<TQCMProps = {}, TVEAProps = {}, TOptions = {}> = (
+  opts?: TOptions,
+) => Question<TQCMProps, TVEAProps>;
+export interface MathExercise<TQCMProps = {}, TVEAProps = {}> {
   id: string;
   isSingleStep: boolean;
   label: string;
@@ -74,9 +74,6 @@ export interface MathExercise<TQCMProps = any, TVEAProps = any> {
   freeTimer: number;
   getPropositions?: QCMGenerator<TQCMProps>;
   isAnswerValid?: VEA<TVEAProps>;
-  //!! à virer apres refonte
-  // instruction?: any;
-  // keys?: any;
 }
 
 export type MathLevel =

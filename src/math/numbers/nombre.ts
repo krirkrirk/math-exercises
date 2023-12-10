@@ -1,4 +1,5 @@
 import { Node } from '#root/tree/nodes/node';
+import { FractionNodeOptions } from '#root/tree/nodes/operators/fractionNode';
 import { random } from '#root/utils/random';
 import { randint } from '../utils/random/randint';
 import { DecimalConstructor } from './decimals/decimal';
@@ -12,11 +13,15 @@ export enum NumberType {
   Rational,
   Real,
 }
+
+type ToTreeOpts = {
+  FractionNodeOpts?: FractionNodeOptions;
+};
 export interface Nombre {
   value: number;
   tex: string;
   type: NumberType;
-  toTree: () => Node;
+  toTree: (opts?: ToTreeOpts) => Node;
 }
 
 export abstract class NombreConstructor {

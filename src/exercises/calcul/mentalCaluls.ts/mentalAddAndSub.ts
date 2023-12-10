@@ -1,4 +1,13 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  VEA,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
@@ -6,23 +15,14 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const mentalAddAndSub: MathExercise = {
-  id: 'mentalAddAndSub',
-  connector: '=',
-  instruction: '',
-  label: 'Effectuer mentalement des additions et des soustractions simples',
-  levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro'],
-  sections: ['Calculs'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getMentalAddAndSub, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  sum: number;
 };
+type VEAProps = {};
 
-export function getMentalAddAndSub(): Question {
+const getMentalAddAndSub: QuestionGenerator<QCMProps, VEAProps> = () => {
   let numbers: number[] = [];
   const nbrOperations = coinFlip() ? 2 : 3;
 
@@ -43,50 +43,41 @@ export function getMentalAddAndSub(): Question {
   let statementTree = new AddNode(allNumbersNodes[0], allNumbersNodes[1]);
   for (let i = 2; i < nbrOperations; i++) statementTree = new AddNode(statementTree, allNumbersNodes[i]);
   statementTree.shuffle();
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    // Ajout de la réponse correcte
-    const answer = round(sum, 2);
-    res.push({
-      id: v4() + '',
-      statement: answer.toString(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    // Ajout des propositions incorrectes
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const incorrectSum = round(sum + (coinFlip() ? 1 : -1) * Math.random() * 10, 2);
-        proposition = {
-          id: v4() + '',
-          statement: incorrectSum.toString(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    // Mélange des propositions
-    return shuffle(res);
-  };
-
-  const question: Question = {
-    instruction: `Calculer : $${statementTree.toTex()}$`,
-    startStatement: statementTree.toTex(),
-    answer: (round(sum, 2) + '').replace('.', ','),
+  const statement = statementTree.toTex();
+  const answer = (round(sum, 2) + '').replace('.', ',');
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Calculer : $${statement}$`,
+    startStatement: statement,
+    answer,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, sum },
   };
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, sum }) => {
+  const propositions: Proposition[] = [];
+
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    const incorrectSum = round(sum + (coinFlip() ? 1 : -1) * Math.random() * 10, 2);
+    tryToAddWrongProp(propositions, incorrectSum.toString());
+  }
+
+  return shuffle(propositions);
+};
+
+export const mentalAddAndSub: MathExercise<QCMProps, VEAProps> = {
+  id: 'mentalAddAndSub',
+  connector: '=',
+  label: 'Effectuer mentalement des additions et des soustractions simples',
+  levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro'],
+  sections: ['Calculs'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(getMentalAddAndSub, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

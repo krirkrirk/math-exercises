@@ -5,7 +5,7 @@ import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 import { shuffle } from '#root/utils/shuffle';
 
-export const reciprocalPercentage: MathExercise = {
+export const reciprocalPercentage: MathExercise<QCMProps, VEAProps> = {
   id: 'reciprocalPercentage',
   connector: '=',
   instruction: '',

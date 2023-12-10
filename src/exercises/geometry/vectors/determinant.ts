@@ -5,7 +5,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const determinant: MathExercise = {
+export const determinant: MathExercise<QCMProps, VEAProps> = {
   id: 'determinant',
   connector: '=',
   instruction: '',

@@ -7,7 +7,7 @@ import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const trigonometrySideCalcul: MathExercise = {
+export const trigonometrySideCalcul: MathExercise<QCMProps, VEAProps> = {
   id: 'trigonometrySideCalcul',
   connector: '=',
   instruction: '',

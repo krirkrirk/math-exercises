@@ -8,7 +8,7 @@ import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { v4 } from 'uuid';
 
-export const quotientDerivative: MathExercise = {
+export const quotientDerivative: MathExercise<QCMProps, VEAProps> = {
   id: 'quotientDerivative',
   connector: '=',
   instruction: '',

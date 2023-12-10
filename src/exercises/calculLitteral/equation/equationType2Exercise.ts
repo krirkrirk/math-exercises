@@ -14,7 +14,7 @@ import { v4 } from 'uuid';
 /**
  *  type ax=b
  */
-export const equationType2Exercise: MathExercise = {
+export const equationType2Exercise: MathExercise<QCMProps, VEAProps> = {
   id: 'equa2',
   connector: '\\iff',
   instruction: '',

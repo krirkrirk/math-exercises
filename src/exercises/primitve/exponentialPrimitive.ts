@@ -1,6 +1,15 @@
-import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  shuffleProps,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
+import { Polynomial, PolynomialConstructor } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { ExpNode } from '#root/tree/nodes/functions/expNode';
 import { Node } from '#root/tree/nodes/node';
@@ -12,24 +21,15 @@ import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { VariableNode } from '#root/tree/nodes/variables/variableNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { coinFlip } from '#root/utils/coinFlip';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const exponentialPrimitive: MathExercise = {
-  id: 'exponentialPrimitive',
-  connector: '=',
-  instruction: '',
-  label: 'Primitive de la fonction exponentielle',
-  levels: ['TermSpé', 'MathComp'],
-  sections: ['Primitives', 'Exponentielle'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getExponentialPrimitive, nb),
-  keys: ['x', 'C', 'epower', 'exp'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  rand: boolean;
+  a: number;
+  coeffs: number[];
 };
-
-export function getExponentialPrimitive(): Question {
+type VEAProps = {};
+export const getExponentialPrimitive: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rand = coinFlip();
 
   const a = randint(-9, 10);
@@ -40,78 +40,79 @@ export function getExponentialPrimitive(): Question {
 
   if (rand) {
     // a * e^(x)
-    selectedFunction = simplifyNode(new MultiplyNode(new NumberNode(a), new ExpNode(new VariableNode('x')))); // le simplify ici a pour but de éviter les 1*e / -1*e
-    integratedFuction = new MultiplyNode(new NumberNode(a), new ExpNode(new VariableNode('x')));
+    const node = new MultiplyNode(new NumberNode(a), new ExpNode(new VariableNode('x')));
+    selectedFunction = simplifyNode(node); // le simplify ici a pour but de éviter les 1*e / -1*e
+    integratedFuction = node;
   } else {
     // u'(x) * e^(u(x))
-    const oneOrTwo = coinFlip();
-    selectedFunction = new MultiplyNode(u.derivate().toTree(), new ExpNode(u.toTree()));
-    integratedFuction = new ExpNode(u.toTree());
+    const expUTree = new ExpNode(u.toTree());
+    selectedFunction = new MultiplyNode(u.derivate().toTree(), expUTree);
+    integratedFuction = expUTree;
   }
-
-  const getPropositions = (n: number) => {
-    const propositions: Proposition[] = [];
-
-    propositions.push({
-      id: v4(),
-      statement: `${simplifyNode(integratedFuction).toTex()} + C`,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    if (rand) {
-      const wrongIntegrals = [
-        new MultiplyNode(new NumberNode(-a), new ExpNode(new VariableNode('x'))),
-        new MultiplyNode(new NumberNode(a), new ExpNode(new MultiplyNode(new NumberNode(a), new VariableNode('x')))),
-        new MultiplyNode(new NumberNode(a), new ExpNode(new FractionNode(new VariableNode('x'), new NumberNode(a)))),
-        new MultiplyNode(new NumberNode(a), new ExpNode(new AddNode(new VariableNode('x'), new NumberNode(a)))),
-        new MultiplyNode(new NumberNode(a), new ExpNode(new PowerNode(new VariableNode('x'), new NumberNode(a)))),
-        new ExpNode(new VariableNode('x')),
-      ];
-      wrongIntegrals.forEach((node) => tryToAddWrongProp(propositions, simplifyNode(node).toTex()));
-    } else {
-      const wrongIntegrals = [
-        new MultiplyNode(u.toTree(), new ExpNode(u.toTree())),
-        new MultiplyNode(u.derivate().toTree(), new ExpNode(u.toTree())),
-        new MultiplyNode(u.toTree(), new ExpNode(new VariableNode('x'))),
-        new MultiplyNode(new FractionNode(new NumberNode(1), u.toTree()), new ExpNode(new VariableNode('x'))),
-        new MultiplyNode(new FractionNode(new NumberNode(1), u.toTree()), new ExpNode(u.toTree())),
-        new MultiplyNode(new NumberNode(randint(-9, 10, [0])), new ExpNode(u.toTree())),
-      ];
-      wrongIntegrals.forEach((node) => tryToAddWrongProp(propositions, simplifyNode(node).toTex()));
-    }
-
-    const missing = n - propositions.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate;
-      let proposition: Proposition;
-      let wrongIntegral = randint(-10, 10) + 'e^x';
-
-      do {
-        proposition = {
-          id: v4(),
-          statement: `${wrongIntegral} + C`,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffleProps(propositions, n);
-  };
-
-  const question: Question = {
+  const answer = `${simplifyNode(integratedFuction).toTex()}+C`;
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Déterminer la forme générale des primitives de la fonction f définie par $f(x) = ${selectedFunction.toTex()}$.`,
     startStatement: `F(x)`,
-    answer: `${simplifyNode(integratedFuction).toTex()}+C`,
+    answer,
     keys: ['x', 'C', 'epower', 'exp'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, a, rand, coeffs: u.coefficients },
   };
 
   return question;
-}
+};
+
+export const getExponentialPrimitivePropositions: QCMGenerator<QCMProps> = (n, { answer, a, rand, coeffs }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  if (rand) {
+    const aNode = new NumberNode(a);
+    const xNode = new VariableNode('x');
+    const expXTree = new ExpNode(new VariableNode('x'));
+
+    const wrongIntegrals = [
+      new MultiplyNode(new NumberNode(-a), expXTree),
+      new MultiplyNode(aNode, new ExpNode(new MultiplyNode(aNode, xNode))),
+      new MultiplyNode(aNode, new ExpNode(new FractionNode(xNode, aNode))),
+      new MultiplyNode(aNode, new ExpNode(new AddNode(xNode, aNode))),
+      new MultiplyNode(aNode, new ExpNode(new PowerNode(xNode, aNode))),
+      expXTree,
+    ];
+    wrongIntegrals.forEach((node) => tryToAddWrongProp(propositions, simplifyNode(node).toTex()));
+  } else {
+    const u = new Polynomial(coeffs);
+    const uTree = u.toTree();
+    const expXTree = new ExpNode(new VariableNode('x'));
+    const expUTree = new ExpNode(uTree);
+    const invUTree = new FractionNode(new NumberNode(1), uTree);
+    const wrongIntegrals = [
+      new MultiplyNode(uTree, expUTree),
+      new MultiplyNode(u.derivate().toTree(), expUTree),
+      new MultiplyNode(uTree, expXTree),
+      new MultiplyNode(invUTree, expXTree),
+      new MultiplyNode(invUTree, expUTree),
+      new MultiplyNode(new NumberNode(randint(-9, 10, [0])), expUTree),
+    ];
+    wrongIntegrals.forEach((node) => tryToAddWrongProp(propositions, simplifyNode(node).toTex()));
+  }
+
+  while (propositions.length < n) {
+    let wrongIntegral = randint(-10, 10) + 'e^x';
+    tryToAddWrongProp(propositions, `${wrongIntegral} + C`);
+  }
+  return shuffleProps(propositions, n);
+};
+
+export const exponentialPrimitive: MathExercise<QCMProps, VEAProps> = {
+  id: 'exponentialPrimitive',
+  connector: '=',
+  label: 'Primitive de la fonction exponentielle',
+  levels: ['TermSpé', 'MathComp'],
+  sections: ['Primitives', 'Exponentielle'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getExponentialPrimitive, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions: getExponentialPrimitivePropositions,
+};

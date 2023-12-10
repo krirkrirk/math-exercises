@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
@@ -8,19 +16,9 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 as uuidv4 } from 'uuid';
 
-export const fractionToPercentToDecimal: MathExercise = {
-  id: 'fractionToPercentToDecimal',
-  connector: '\\iff',
-  label: "Passer d'une écriture d'un nombre à une autre",
-  levels: ['3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro'],
-  sections: ['Fractions'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getFractionToPercentToDecimal, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
-};
+type VEAProps = {};
 
-export function getFractionToPercentToDecimal(): Question {
+const getFractionToPercentToDecimal: QuestionGenerator<QCMProps, VEAProps> = () => {
   const denominator = 2 ** randint(0, 5) * 5 ** randint(0, 5);
   const numerator = denominator !== 1 ? randint(1, denominator) : randint(1, 100);
 
@@ -65,78 +63,83 @@ export function getFractionToPercentToDecimal(): Question {
     }
   }
 
-  const getPropositions = (n: number) => {
-    const propositions: Proposition[] = [];
-
-    propositions.push({
-      id: uuidv4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        let statement: string = '';
-
-        switch (rand) {
-          case 1:
-            const temp1 = randint(-5, 3, [0]);
-            statement = `${round(percent * 10 ** temp1, -temp1 + 2)}\\%`;
-            break;
-          case 2:
-            statement = `${simplifyNode(
-              new FractionNode(
-                new NumberNode(numerator * randint(1, 20, [0, 1])),
-                new NumberNode(denominator * randint(1, 20, [0, 1])),
-              ),
-            ).toTex()}`;
-            break;
-          case 3:
-            const temp3 = randint(-5, 3, [0]);
-            statement = `${round(percent * 10 ** temp3, -temp3 + 2)}`;
-            break;
-          case 4:
-            statement = `${simplifyNode(
-              new FractionNode(
-                new NumberNode(numerator * randint(1, 20, [0, 1])),
-                new NumberNode(denominator * randint(1, 20, [0, 1])),
-              ),
-            ).toTex()}`;
-            break;
-          case 5:
-            statement = `${round(decimal + Math.random() * 10, 2)}`;
-            break;
-          case 6:
-            statement = `${round(percent + Math.random() * 10, 2)}\\%`;
-            break;
-        }
-
-        proposition = {
-          id: uuidv4(),
-          statement,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffle(propositions);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction,
     answer: answer.replace('.', ','),
     keys: ['percent'],
     answerFormat: 'tex',
+    qcmGeneratorProps: {
+      answer,
+      rand,
+      numerator,
+      denominator,
+    },
   };
 
   return question;
-}
+};
+
+type QCMProps = {
+  answer: string;
+  rand: number;
+  numerator: number;
+  denominator: number;
+};
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, rand, numerator, denominator }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const decimal = numerator / denominator;
+  const percent = round((numerator / denominator) * 100, 2);
+  while (propositions.length < n) {
+    let statement: string = '';
+
+    switch (rand) {
+      case 1:
+        const temp1 = randint(-5, 3, [0]);
+        statement = `${round(percent * 10 ** temp1, -temp1 + 2)}\\%`;
+        break;
+      case 2:
+        statement = `${simplifyNode(
+          new FractionNode(
+            new NumberNode(numerator * randint(1, 20, [0, 1])),
+            new NumberNode(denominator * randint(1, 20, [0, 1])),
+          ),
+        ).toTex()}`;
+        break;
+      case 3:
+        const temp3 = randint(-5, 3, [0]);
+        statement = `${round(percent * 10 ** temp3, -temp3 + 2)}`;
+        break;
+      case 4:
+        statement = `${simplifyNode(
+          new FractionNode(
+            new NumberNode(numerator * randint(1, 20, [0, 1])),
+            new NumberNode(denominator * randint(1, 20, [0, 1])),
+          ),
+        ).toTex()}`;
+        break;
+      case 5:
+        statement = `${round(decimal + Math.random() * 10, 2)}`;
+        break;
+      case 6:
+        statement = `${round(percent + Math.random() * 10, 2)}\\%`;
+        break;
+    }
+    tryToAddWrongProp(propositions, statement);
+  }
+
+  return shuffle(propositions);
+};
+
+export const fractionToPercentToDecimal: MathExercise<QCMProps, VEAProps> = {
+  id: 'fractionToPercentToDecimal',
+  connector: '\\iff',
+  label: "Passer d'une écriture d'un nombre à une autre",
+  levels: ['3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro'],
+  sections: ['Fractions'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getFractionToPercentToDecimal, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

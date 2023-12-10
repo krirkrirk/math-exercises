@@ -6,7 +6,7 @@ import { getFirstDegreeDerivative } from './firstDegreeDerivative';
 import { getSecondDegreeDerivative } from './secondDegreeDerivative';
 import { getThirdDegreeDerivative } from './thirdDegreeDerivative';
 
-export const usualDerivative: MathExercise = {
+export const usualDerivative: MathExercise<QCMProps,VEAProps><QCMProps, VEAProps> = {
   id: 'usualDerivative',
   connector: '=',
   instruction: '',

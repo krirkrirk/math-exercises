@@ -5,7 +5,7 @@ import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const capacityConversion: MathExercise = {
+export const capacityConversion: MathExercise<QCMProps, VEAProps> = {
   id: 'capacityConversion',
   connector: '=',
   instruction: '',

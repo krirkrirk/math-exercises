@@ -1,25 +1,22 @@
 import { randint } from '#root/math/utils/random/randint';
-import { MathExercise, Proposition, Question } from '../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { round } from '#root/math/utils/round';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
-
-export const conditionalProbability: MathExercise = {
-  id: 'conditionalProbability',
-  connector: '=',
-  instruction: '',
-  label: 'Calcul de probabilité conditionnelle avec la formule de Bayes',
-  levels: ['1reESM', '1reSpé', '1reTech', 'TermTech', '1rePro', 'TermPro'],
-  isSingleStep: false,
-  sections: ['Probabilités'],
-  generator: (nb: number) => getDistinctQuestions(getConditionalProbability, nb),
-  keys: ['p', 'cap', 'underscore'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getConditionalProbability(): Question {
+const getConditionalProbability: QuestionGenerator<QCMProps, VEAProps> = () => {
   const pA = randint(2, 100);
   const pB = randint(2, 100);
   const pAB = randint(1, Math.min(pA, pB));
@@ -89,45 +86,36 @@ export function getConditionalProbability(): Question {
     }
   }
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: Math.floor(Math.random() * 100) / 100 + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction,
     startStatement,
     answer: answer.replace('.', ','),
     keys: ['p', 'cap', 'underscore'],
-    getPropositions,
     answerFormat: 'tex',
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, Math.floor(Math.random() * 100) / 100 + '');
+  }
+
+  return shuffle(propositions);
+};
+
+export const conditionalProbability: MathExercise<QCMProps, VEAProps> = {
+  id: 'conditionalProbability',
+  connector: '=',
+  label: 'Calcul de probabilité conditionnelle avec la formule de Bayes',
+  levels: ['1reESM', '1reSpé', '1reTech', 'TermTech', '1rePro', 'TermPro'],
+  isSingleStep: false,
+  sections: ['Probabilités'],
+  generator: (nb: number) => getDistinctQuestions(getConditionalProbability, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

@@ -8,7 +8,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const sequenceRationalFracLimit: MathExercise = {
+export const sequenceRationalFracLimit: MathExercise<QCMProps, VEAProps> = {
   id: 'sequenceRationalFracLimit',
   connector: '=',
   instruction: '',

@@ -1,25 +1,24 @@
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question } from '../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const averageWithTable: MathExercise = {
-  id: 'averageWithTable',
-  connector: '=',
-  instruction: '',
-  label: "Calcul de la moyenne d'un tableau d'effectifs",
-  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
-  isSingleStep: false,
-  sections: ['Statistiques'],
-  generator: (nb: number) => getDistinctQuestions(getAverageWithTableQuestion, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getAverageWithTableQuestion(): Question {
+const getAverageWithTableQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const getRandomUniqueValues = (count: number, min: number, max: number): number[] => {
     const uniqueValues: Set<number> = new Set();
 
@@ -41,38 +40,8 @@ export function getAverageWithTableQuestion(): Question {
   average /= sumEffectives;
   average = round(average, 2);
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: average + '',
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: round(average + randint(-average, 20 - average, [0]) + randint(1, 100) / 100, 2) + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const answer = (average + '').replace('.', ',');
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `On considère le tableau d'effectifs suivant : 
 
 | | | | | | |
@@ -82,11 +51,37 @@ export function getAverageWithTableQuestion(): Question {
 
 Calculer la moyenne de cette série de valeurs.`,
 
-    answer: (average + '').replace('.', ','),
+    answer,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const average = Number(answer.replace(',', '.'));
+  while (propositions.length < n) {
+    tryToAddWrongProp(
+      propositions,
+      round(average + randint(-average, 20 - average, [0]) + randint(1, 100) / 100, 2) + '',
+    );
+  }
+
+  return shuffle(propositions);
+};
+
+export const averageWithTable: MathExercise<QCMProps, VEAProps> = {
+  id: 'averageWithTable',
+  connector: '=',
+  label: "Calcul de la moyenne d'un tableau d'effectifs",
+  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
+  isSingleStep: false,
+  sections: ['Statistiques'],
+  generator: (nb: number) => getDistinctQuestions(getAverageWithTableQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

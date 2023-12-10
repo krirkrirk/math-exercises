@@ -9,7 +9,7 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const expDerivativeOne: MathExercise = {
+export const expDerivativeOne: MathExercise<QCMProps, VEAProps> = {
   id: 'expDerivativeOne',
   connector: '=',
   instruction: '',

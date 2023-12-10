@@ -1,25 +1,23 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { IntegerConstructor } from '#root/math/numbers/integer/integer';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const proportionalityTable: MathExercise = {
-  id: 'proportionalityTable',
-  connector: '=',
-  instruction: '',
-  label: 'Calcul dans un tableau de proportionnalité',
-  levels: ['5ème', '4ème', '3ème', 'CAP', '2ndPro', '1rePro'],
-  isSingleStep: false,
-  sections: ['Proportionnalité'],
-  generator: (nb: number) => getDistinctQuestions(getProportionalityTable, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getProportionalityTable(): Question {
+const getProportionalityTable: QuestionGenerator<QCMProps, VEAProps> = () => {
   const fact = randint(2, 10);
   let [x1, x2]: (string | number)[] = IntegerConstructor.randomDifferents(1, 100 / fact, 2);
   let [x3, x4]: (string | number)[] = [x1 * fact, x2 * fact];
@@ -46,37 +44,7 @@ export function getProportionalityTable(): Question {
       break;
   }
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer + '',
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: answer + randint(-answer + 1, 20, [0]) + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `On considère le tableau de proportionnalité suivant : 
 
 | | |
@@ -87,9 +55,31 @@ export function getProportionalityTable(): Question {
 Déterminer le nombre manquant.`,
     answer: answer,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, Number(answer) + randint(Number(-answer) + 1, 20, [0]) + '');
+  }
+  return shuffle(propositions);
+};
+
+export const proportionalityTable: MathExercise<QCMProps, VEAProps> = {
+  id: 'proportionalityTable',
+  connector: '=',
+  label: 'Calcul dans un tableau de proportionnalité',
+  levels: ['5ème', '4ème', '3ème', 'CAP', '2ndPro', '1rePro'],
+  isSingleStep: false,
+  sections: ['Proportionnalité'],
+  generator: (nb: number) => getDistinctQuestions(getProportionalityTable, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

@@ -11,7 +11,6 @@ import {
 } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
-import { Node } from '#root/tree/nodes/node';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { EqualNode } from '#root/tree/nodes/operators/equalNode';
@@ -66,9 +65,9 @@ type QCMProps = {
   dividend: number;
 };
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer, dividend }) => {
-  const res: Proposition[] = [];
-  addValidProp(res, answer);
-  while (res.length < n) {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  while (propositions.length < n) {
     const divisor = randint(2, 11);
     const quotient = Math.floor(randint(5, 100) / divisor);
     const remainder = randint(5, 100) % divisor;
@@ -76,9 +75,9 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, dividend }) => {
       new NumberNode(dividend),
       new AddNode(new MultiplyNode(new NumberNode(divisor), new NumberNode(quotient)), new NumberNode(remainder)),
     );
-    tryToAddWrongProp(res, wrongAnswer.toTex());
+    tryToAddWrongProp(propositions, wrongAnswer.toTex());
   }
-  return shuffleProps(res, n);
+  return shuffleProps(propositions, n);
 };
 
 export const euclideanDivision: MathExercise<QCMProps, VEAProps> = {

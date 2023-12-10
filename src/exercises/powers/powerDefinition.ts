@@ -1,24 +1,26 @@
-import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  shuffleProps,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { v4 } from 'uuid';
 
-export const powerDefinition: MathExercise = {
-  id: 'powerDefinition',
-  connector: '=',
-  instruction: '',
-  label: 'Écrire un produit sous forme de puissance',
-  levels: ['4ème', '3ème', '2ndPro', 'CAP'],
-  isSingleStep: true,
-  sections: ['Puissances'],
-  generator: (nb: number) => getDistinctQuestions(getPowerDefinitionQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  int: number;
+  power: number;
 };
+type VEAProps = {};
 
-export function getPowerDefinitionQuestion(): Question {
+const getPowerDefinitionQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const int = randint(2, 11);
   const power = randint(2, 6);
   let statement = '';
@@ -27,48 +29,42 @@ export function getPowerDefinitionQuestion(): Question {
     if (i < power - 1) statement += '\\times';
   }
   const answer = new PowerNode(new NumberNode(int), new NumberNode(power)).toTex();
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
 
-    res.push({
-      id: v4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    tryToAddWrongProp(res, `${power}\\times${int}`);
-    tryToAddWrongProp(res, `${int}\\times${power}`);
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = new PowerNode(new NumberNode(int), new NumberNode(randint(2, 7))).toTex();
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffleProps(res, n);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     answer,
     instruction: `Écrire sous forme de puissance : $${statement}$`,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, int, power },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, int, power }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  tryToAddWrongProp(propositions, `${power}\\times${int}`);
+  tryToAddWrongProp(propositions, `${int}\\times${power}`);
+
+  while (propositions.length < n) {
+    const wrongAnswer = new PowerNode(new NumberNode(int), new NumberNode(randint(2, 7))).toTex();
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffleProps(propositions, n);
+};
+
+export const powerDefinition: MathExercise<QCMProps, VEAProps> = {
+  id: 'powerDefinition',
+  connector: '=',
+  label: 'Écrire un produit sous forme de puissance',
+  levels: ['4ème', '3ème', '2ndPro', 'CAP'],
+  isSingleStep: true,
+  sections: ['Puissances'],
+  generator: (nb: number) => getDistinctQuestions(getPowerDefinitionQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

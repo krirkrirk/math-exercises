@@ -5,7 +5,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const extremumTypeFromAlgebricForm: MathExercise = {
+export const extremumTypeFromAlgebricForm: MathExercise<QCMProps, VEAProps> = {
   id: 'extremumTypeFromAlgebricForm',
   instruction: '',
   label: "Déterminer le type d'extremum d'une fonction du second degré via sa forme algébrique",

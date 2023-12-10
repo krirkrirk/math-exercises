@@ -8,7 +8,7 @@ import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
 const squares = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((el) => el ** 2);
-export const equationSimpleSquare: MathExercise = {
+export const equationSimpleSquare: MathExercise<QCMProps, VEAProps> = {
   id: 'equationSimpleSquare',
   connector: '=',
   instruction: '',

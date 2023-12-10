@@ -6,7 +6,7 @@ import { DiscreteSet } from '#root/math/sets/discreteSet';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const canonicalFromDevForm: MathExercise = {
+export const canonicalFromDevForm: MathExercise<QCMProps, VEAProps> = {
   id: 'canonicalFromDevForm',
   connector: '\\iff',
   instruction: '',

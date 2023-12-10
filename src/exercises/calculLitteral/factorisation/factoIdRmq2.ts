@@ -10,7 +10,7 @@ import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const factoIdRmq2: MathExercise = {
+export const factoIdRmq2: MathExercise<QCMProps, VEAProps> = {
   id: 'factoIdRmq2',
   connector: '=',
   instruction: '',

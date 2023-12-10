@@ -6,7 +6,7 @@ import { OppositeNode } from '#root/tree/nodes/functions/oppositeNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const constanteDerivative: MathExercise = {
+export const constanteDerivative: MathExercise<QCMProps, VEAProps> = {
   id: 'constanteDerivative',
   connector: '=',
   instruction: '',

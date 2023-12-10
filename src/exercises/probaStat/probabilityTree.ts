@@ -5,29 +5,23 @@ import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question } from '../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-import { v4 } from 'uuid';
-
-export const probabilityTree: MathExercise = {
-  id: 'probabilityTree',
-  connector: '=',
-  instruction: '',
-  label: "Calculs de probabilités à l'aide d'un arbre pondéré",
-  levels: ['2nde', '1reESM', '1reSpé', '1reTech', '1rePro', 'TermPro', 'TermTech'],
-  isSingleStep: false,
-  sections: ['Probabilités'],
-  generator: (nb: number) => getDistinctQuestions(getProbabilityTree, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
-};
 
 function pgcd(a: number, b: number): number {
   while (b) [a, b] = [b, a % b];
   return a;
 }
 
-export function getProbabilityTree(): Question {
+const getProbabilityTree: QuestionGenerator<QCMProps, VEAProps> = () => {
   const A = randint(2, 9);
   const B = randint(2, 10 - A);
   const AC = randint(2, 9);
@@ -74,8 +68,6 @@ export function getProbabilityTree(): Question {
       answer = simplifyNode(new MultiplyNode(pB, pB_D));
       break;
     }
-    default:
-      answer = simplifyNode(new MultiplyNode(pB, pB_D)); // juste pour éviter l'erreur
   }
 
   let commands = [
@@ -107,47 +99,43 @@ export function getProbabilityTree(): Question {
     'Text("D", (5.5 , -3.1))',
   ];
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: simplifyNode(new MultiplyNode(answer, new NumberNode(randint(2, 11)))).toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction,
     startStatement,
-    answer: answer.toTex(),
+    answer: answer!.toTex(),
     keys: [],
     commands,
     coords: [-2, 8, -5, 5],
-    getPropositions,
     answerFormat: 'tex',
   };
 
   return question;
-}
+};
+
+type QCMProps = {
+  answer: string;
+};
+type VEAProps = {};
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, simplifyNode(new MultiplyNode(answer, new NumberNode(randint(2, 11)))).toTex());
+  }
+
+  return shuffle(propositions);
+};
+
+export const probabilityTree: MathExercise<QCMProps, VEAProps> = {
+  id: 'probabilityTree',
+  connector: '=',
+  label: "Calculs de probabilités à l'aide d'un arbre pondéré",
+  levels: ['2nde', '1reESM', '1reSpé', '1reTech', '1rePro', 'TermPro', 'TermTech'],
+  isSingleStep: false,
+  sections: ['Probabilités'],
+  generator: (nb: number) => getDistinctQuestions(getProbabilityTree, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

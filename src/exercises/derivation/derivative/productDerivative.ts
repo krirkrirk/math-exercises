@@ -5,7 +5,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { v4 } from 'uuid';
 
-export const productDerivative: MathExercise = {
+export const productDerivative: MathExercise<QCMProps, VEAProps> = {
   id: 'productDerivative',
   connector: '=',
   instruction: '',

@@ -6,7 +6,15 @@
  * a/b ± c*d
  */
 
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -15,23 +23,13 @@ import { DivideNode } from '#root/tree/nodes/operators/divideNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const operationsPriorities: MathExercise = {
-  id: 'operationsPriorities',
-  connector: '=',
-  instruction: '',
-  label: 'Priorités opératoires',
-  levels: ['5ème', '4ème'],
-  sections: ['Calculs'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getPriorityQuestions, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getPriorityQuestions(): Question {
+const getPriorityQuestions: QuestionGenerator<QCMProps, VEAProps> = () => {
   const type = randint(1, 6);
   let startStatement = '';
   let answer: string = '';
@@ -120,44 +118,35 @@ export function getPriorityQuestions(): Question {
       break;
   }
 
-  const getPropositions = (n: number) => {
-    const propositions: Proposition[] = [];
-
-    propositions.push({
-      id: v4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4(),
-          statement: randint(-100, 100) + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffle(propositions);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Calculer : $${startStatement}$`,
     startStatement,
     answer,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n: number, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, randint(-100, 100) + '');
+  }
+  return shuffle(propositions);
+};
+
+export const operationsPriorities: MathExercise<QCMProps, VEAProps> = {
+  id: 'operationsPriorities',
+  connector: '=',
+  label: 'Priorités opératoires',
+  levels: ['5ème', '4ème'],
+  sections: ['Calculs'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(getPriorityQuestions, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

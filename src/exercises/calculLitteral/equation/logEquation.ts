@@ -13,7 +13,7 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const logEquation: MathExercise = {
+export const logEquation: MathExercise<QCMProps, VEAProps> = {
   id: 'logEquation',
   connector: '=',
   instruction: '',

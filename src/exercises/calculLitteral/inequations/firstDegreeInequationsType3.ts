@@ -10,7 +10,7 @@ import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const firstDegreeInequationsType3: MathExercise = {
+export const firstDegreeInequationsType3: MathExercise<QCMProps, VEAProps> = {
   id: 'firstDegreeInequationsType3',
   connector: '\\iff',
   instruction: '',

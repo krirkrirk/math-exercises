@@ -8,7 +8,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const alphaBetaFromDevForm: MathExercise = {
+export const alphaBetaFromDevForm: MathExercise<QCMProps, VEAProps> = {
   id: 'alphaBetaFromDevForm',
   connector: '=',
   instruction: '',

@@ -6,7 +6,7 @@ import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const pythagore: MathExercise = {
+export const pythagore: MathExercise<QCMProps, VEAProps> = {
   id: 'pythagore',
   connector: '=',
   instruction: '',

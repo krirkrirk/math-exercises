@@ -6,7 +6,7 @@ import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const reduceExpression: MathExercise = {
+export const reduceExpression: MathExercise<QCMProps, VEAProps> = {
   id: 'reduceExpression',
   connector: '=',
   instruction: '',

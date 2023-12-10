@@ -1,76 +1,64 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const geometricFindReason: MathExercise = {
-  id: 'geometricFindReason',
-  connector: '=',
-  instruction: '',
-  label: "Déterminer la raison d'une suite géométrique",
-  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
-  sections: ['Suites'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getGeometricFindReason, nb),
-  keys: ['q', 'n', 'u', 'underscore'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  value1: number;
+  value2: number;
 };
+type VEAProps = {};
 
-export function getGeometricFindReason(): Question {
+const getGeometricFindReason: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rank1 = randint(0, 10);
   const rank2 = rank1 + 1;
   const reason = randint(2, 10);
   const value1 = randint(1, 10);
   const value2 = reason * value1;
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: reason + '',
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    if (value2 - value1 !== 2)
-      res.push({
-        id: v4() + '',
-        statement: value2 - value1 + '',
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    for (let i = 0; i < (value2 - value1 === 2 ? n - 1 : n - 2); i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: reason + randint(1, 10) + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const answer = reason.toString();
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `$(u_n)$ est une suite géométrique. On sait que $u_{${rank1}} = ${value1}$ et $u_{${rank2}} = ${value2}$. Quelle est la raison de la suite $(u_n)$ ?`,
     startStatement: 'q',
-    answer: reason.toString(),
+    answer,
     keys: ['q', 'n', 'u', 'underscore'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, value1, value2 },
   };
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, value1, value2 }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  if (value2 - value1 !== 2) tryToAddWrongProp(propositions, value2 - value1 + '');
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, Number(answer) + randint(1, 10) + '');
+  }
+
+  return shuffle(propositions);
+};
+
+export const geometricFindReason: MathExercise<QCMProps, VEAProps> = {
+  id: 'geometricFindReason',
+  connector: '=',
+  label: "Déterminer la raison d'une suite géométrique",
+  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
+  sections: ['Suites'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getGeometricFindReason, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

@@ -1,32 +1,28 @@
 import { randint } from '#root/math/utils/random/randint';
+import { Node } from '#root/tree/nodes/node';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { shuffle } from '#root/utils/shuffle';
 
-import { MathExercise, Proposition, Question } from '../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
 /**
  * a±b±c±d
  */
-export const addAndSubWithoutRelatives: MathExercise = {
-  id: 'addAndSubWithoutRelatives',
-  connector: '=',
-  instruction: '',
-  label: 'Additions et soustractions sans les nombres relatifs',
-  levels: ['6ème', '5ème'],
-  sections: ['Calculs'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getAddAndSubWithoutRelatives, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
-};
 
-export function getAddAndSubWithoutRelatives(): Question {
+const getAddAndSubWithoutRelatives: QuestionGenerator<QCMProps, VEAProps> = () => {
   let answer = -1;
-  let statementTree: any;
+  let statementTree: AddNode;
 
   while (answer < 0) {
     const nbOperations = randint(2, 4);
@@ -50,46 +46,44 @@ export function getAddAndSubWithoutRelatives(): Question {
     }
     answer = numbers.reduce((a, b) => a + b);
   }
-
-  const getPropositions = (n: number) => {
-    const propositions: Proposition[] = [];
-
-    propositions.push({
-      id: v4() + '',
-      statement: answer.toString(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const incorrectAnswer = answer + randint(-5, 6, [0]);
-        proposition = {
-          id: v4() + '',
-          statement: incorrectAnswer.toString(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffle(propositions);
-  };
-
-  const question: Question = {
-    instruction: `Calculer : $${statementTree.toTex()}$`,
-    startStatement: statementTree.toTex(),
-    answer: answer.toString(),
+  const answerTex = answer.toString();
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Calculer : $${statementTree!.toTex()}$`,
+    startStatement: statementTree!.toTex(),
+    answer: answerTex,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer: answerTex },
   };
   return question;
-}
+};
+
+type QCMProps = {
+  answer: string;
+};
+type VEAProps = {};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    const incorrectAnswer = Number(answer) + randint(-5, 6, [0]);
+    tryToAddWrongProp(propositions, incorrectAnswer.toString());
+  }
+
+  return shuffle(propositions);
+};
+
+export const addAndSubWithoutRelatives: MathExercise<QCMProps, VEAProps> = {
+  id: 'addAndSubWithoutRelatives',
+  connector: '=',
+  label: 'Additions et soustractions sans les nombres relatifs',
+  levels: ['6ème', '5ème'],
+  sections: ['Calculs'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(getAddAndSubWithoutRelatives, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

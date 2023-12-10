@@ -5,7 +5,7 @@ import { round } from '#root/math/utils/round';
 import { coinFlip } from '#root/utils/coinFlip';
 import { v4 } from 'uuid';
 
-export const evolutionToCM: MathExercise = {
+export const evolutionToCM: MathExercise<QCMProps, VEAProps> = {
   id: 'evolutionToCM',
   connector: '=',
   instruction: '',

@@ -9,7 +9,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const reAndIm: MathExercise = {
+export const reAndIm: MathExercise<QCMProps, VEAProps> = {
   id: 'getReAndImQuestion',
   connector: '=',
   instruction: '',

@@ -7,7 +7,7 @@ import { probaFlip } from '#root/utils/probaFlip';
 import { probaLawFlip } from '#root/utils/probaLawFlip';
 import { v4 } from 'uuid';
 
-export const absoluteValueEquations: MathExercise = {
+export const absoluteValueEquations: MathExercise<QCMProps, VEAProps> = {
   id: 'absoluteValueEquation',
   connector: '\\iff',
   instruction: '',

@@ -6,7 +6,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const imageFunctionGeogebra: MathExercise = {
+export const imageFunctionGeogebra: MathExercise<QCMProps,VEAProps><QCMProps, VEAProps> = {
   id: 'imageFunctionGeogebra',
   connector: '=',
   instruction: '',

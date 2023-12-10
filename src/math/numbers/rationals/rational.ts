@@ -5,7 +5,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { OppositeNode } from '#root/tree/nodes/functions/oppositeNode';
 import { Node } from '#root/tree/nodes/node';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
+import { FractionNode, FractionNodeOptions } from '#root/tree/nodes/operators/fractionNode';
 import { coinFlip } from '#root/utils/coinFlip';
 import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
@@ -13,6 +13,9 @@ import { Integer } from '../integer/integer';
 
 import { Nombre, NumberType } from '../nombre';
 
+type ToTreeOpts = {
+  FractionNodeOpts?: FractionNodeOptions;
+};
 export abstract class RationalConstructor {
   /**
    * @param maxGcd max number by which the fraction is simplifiable
@@ -119,9 +122,12 @@ export class Rational implements Nombre {
     return new Rational(-this.num, this.denum);
   }
 
-  toTree(): Node {
-    if (this.num < 0) return new OppositeNode(new FractionNode(new NumberNode(-this.num), new NumberNode(this.denum)));
-    return new FractionNode(new NumberNode(this.num), new NumberNode(this.denum));
+  toTree(opts?: ToTreeOpts): Node {
+    if (this.num < 0)
+      return new OppositeNode(
+        new FractionNode(new NumberNode(-this.num), new NumberNode(this.denum), opts?.FractionNodeOpts),
+      );
+    return new FractionNode(new NumberNode(this.num), new NumberNode(this.denum), opts?.FractionNodeOpts);
   }
 
   simplify(): Nombre {

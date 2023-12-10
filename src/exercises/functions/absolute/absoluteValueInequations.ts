@@ -5,7 +5,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { coinFlip } from '#root/utils/coinFlip';
 import { v4 } from 'uuid';
 
-export const absoluteValueInequations: MathExercise = {
+export const absoluteValueInequations: MathExercise<QCMProps, VEAProps> = {
   id: 'absoluteValueInequations',
   connector: '\\iff',
   instruction: '',

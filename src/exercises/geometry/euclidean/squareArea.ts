@@ -4,7 +4,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const squareArea: MathExercise = {
+export const squareArea: MathExercise<QCMProps, VEAProps> = {
   id: 'squareArea',
   connector: '=',
   instruction: '',

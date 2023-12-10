@@ -11,7 +11,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-const getParitySumsAndProductsQuestion: QuestionGenerator = () => {
+const getParitySumsAndProductsQuestion: QuestionGenerator<QCMProps> = () => {
   const type = randint(0, 12);
   let instruction = '';
   let answer: 'Pair' | 'Impair' | 'Parfois pair, parfois impair' | 'Premier' = 'Pair';
@@ -80,7 +80,7 @@ type QCMProps = {
 };
 
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
-  const res: Proposition[] = [
+  const propositions: Proposition[] = [
     {
       id: v4(),
       statement: `Pair`,
@@ -106,10 +106,10 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
       format: 'raw',
     },
   ];
-  return shuffle(res);
+  return shuffle(propositions);
 };
 
-export const paritySumsAndProducts: MathExercise = {
+export const paritySumsAndProducts: MathExercise<QCMProps> = {
   id: 'paritySumsAndProducts',
   connector: '=',
   label: 'Parité de sommes et de produits',

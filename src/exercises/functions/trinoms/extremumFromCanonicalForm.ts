@@ -5,7 +5,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const extremumFromCanonicalForm: MathExercise = {
+export const extremumFromCanonicalForm: MathExercise<QCMProps, VEAProps> = {
   id: 'extremumFromCanonicalForm',
   connector: '=',
   instruction: '',

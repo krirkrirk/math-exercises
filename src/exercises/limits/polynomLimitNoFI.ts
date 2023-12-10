@@ -6,7 +6,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const polynomLimitNoFI: MathExercise = {
+export const polynomLimitNoFI: MathExercise<QCMProps,VEAProps><QCMProps, VEAProps> = {
   id: 'polynomLimitNoFI',
   connector: '=',
   instruction: '',

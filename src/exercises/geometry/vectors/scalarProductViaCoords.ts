@@ -7,7 +7,7 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const scalarProductViaCoords: MathExercise = {
+export const scalarProductViaCoords: MathExercise<QCMProps,VEAProps><QCMProps, VEAProps> = {
   id: 'scalarProductViaCoords',
   connector: '=',
   instruction: '',

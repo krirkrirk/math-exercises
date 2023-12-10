@@ -5,7 +5,7 @@ import { getFirstIdentityQuestion } from './firstIdentity';
 import { getSecondIdentityQuestion } from './secondIdentity';
 import { getThirdIdentityQuestion } from './thirdIdentity';
 
-export const allIdentities: MathExercise = {
+export const allIdentities: MathExercise<QCMProps, VEAProps> = {
   id: 'allIdRmq',
   connector: '=',
   instruction: 'Développer et réduire :',

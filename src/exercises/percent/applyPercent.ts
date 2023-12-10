@@ -6,7 +6,7 @@ import { MathExercise, Proposition, Question } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const applyPercent: MathExercise = {
+export const applyPercent: MathExercise<QCMProps, VEAProps> = {
   id: 'applyPercent',
   connector: '=',
   instruction: '',

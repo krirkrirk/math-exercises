@@ -1,13 +1,57 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const geometricFirstTermsSum: MathExercise = {
+type QCMProps = {
+  answer: string;
+  raison: number;
+  final: number;
+};
+type VEAProps = {};
+
+const getGeometricFirstTermsSumQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const raison = randint(2, 10);
+  const final = randint(6, 15);
+  const answer = (raison ** (final + 1) - 1) / (raison - 1);
+
+  const question: Question<QCMProps, VEAProps> = {
+    answer: answer + '',
+    instruction: `Calculer la somme suivante : $1 + ${raison} + ${raison}^2 + \\ldots + ${raison}^{${final}}$`,
+    keys: [],
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer: answer + '', raison, final },
+  };
+
+  return question;
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, raison, final }) => {
+  const propositions: Proposition[] = [];
+
+  addValidProp(propositions, answer);
+  tryToAddWrongProp(propositions, (raison ** (final + 1) - 1).toString());
+  tryToAddWrongProp(propositions, ((raison ** final - 1) / (raison - 1)).toString());
+
+  while (propositions.length < n) {
+    const wrongAnswer = randint(1000, 10000) + '';
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffle(propositions);
+};
+
+export const geometricFirstTermsSum: MathExercise<QCMProps, VEAProps> = {
   id: 'geometricFirstTermsSum',
   connector: '=',
-  instruction: '',
   label: "Somme des termes d'une suite géométrique",
   levels: ['1reESM', '1rePro', '1reSpé', '1reTech', 'TermPro', 'TermSpé', 'TermTech'],
   isSingleStep: true,
@@ -15,63 +59,5 @@ export const geometricFirstTermsSum: MathExercise = {
   generator: (nb: number) => getDistinctQuestions(getGeometricFirstTermsSumQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
+  getPropositions,
 };
-
-export function getGeometricFirstTermsSumQuestion(): Question {
-  const raison = randint(2, 10);
-  const final = randint(6, 15);
-  const answer = (raison ** (final + 1) - 1) / (raison - 1);
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4(),
-      statement: answer.toString(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-    res.push({
-      id: v4(),
-      statement: (raison ** (final + 1) - 1).toString(),
-      isRightAnswer: false,
-      format: 'tex',
-    });
-    res.push({
-      id: v4(),
-      statement: ((raison ** final - 1) / (raison - 1)).toString(),
-      isRightAnswer: false,
-      format: 'tex',
-    });
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-      do {
-        const wrongAnswer = randint(1000, 10000) + '';
-
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
-    answer: answer + '',
-    instruction: `Calculer la somme suivante : $1 + ${raison} + ${raison}^2 + \\ldots + ${raison}^{${final}}$`,
-    keys: [],
-    getPropositions,
-    answerFormat: 'tex',
-  };
-
-  return question;
-}

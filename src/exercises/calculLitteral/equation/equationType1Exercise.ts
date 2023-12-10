@@ -13,7 +13,7 @@ import { v4 } from 'uuid';
 /**
  *  type x+a=b
  */
-export const equationType1Exercise: MathExercise = {
+export const equationType1Exercise: MathExercise<QCMProps, VEAProps> = {
   id: 'equa1',
   connector: '\\iff',
   instruction: '',

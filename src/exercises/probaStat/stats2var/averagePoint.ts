@@ -1,4 +1,13 @@
-import { shuffleProps, MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  shuffleProps,
+  MathExercise,
+  Proposition,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+  QCMGenerator,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { frenchify } from '#root/math/utils/latex/frenchify';
 import { distinctRandTupleInt, randTupleInt } from '#root/math/utils/random/randTupleInt';
@@ -6,20 +15,12 @@ import { randint } from '#root/math/utils/random/randint';
 import { average } from '#root/utils/average';
 import { v4 } from 'uuid';
 
-export const averagePoint: MathExercise = {
-  id: 'averagePoint',
-  connector: '=',
-  instruction: '',
-  label: 'Déterminer le point moyen',
-  levels: ['1rePro', '1reTech', 'TermTech', 'TermPro', 'MathComp'],
-  isSingleStep: true,
-  sections: ['Statistiques'],
-  generator: (nb: number) => getDistinctQuestions(getAveragePointQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getAveragePointQuestion(): Question {
+const getAveragePointQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const points = distinctRandTupleInt(4, 2, { from: -9, to: 10 });
   const tab = `
 | | | | | |
@@ -35,46 +36,37 @@ export function getAveragePointQuestion(): Question {
   const yG = frenchify(average(points.map((el) => el[1])) + '');
   const answer = `\\left(${xG};${yG}\\right)`;
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = `\\left(${frenchify(randint(-9, 10) + '')};${frenchify(randint(-9, 10) + '')}\\right)`;
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffleProps(res, n);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     answer,
     instruction,
     keys: ['semicolon'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  while (propositions.length < n) {
+    const wrongAnswer = `\\left(${frenchify(randint(-9, 10) + '')};${frenchify(randint(-9, 10) + '')}\\right)`;
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffleProps(propositions, n);
+};
+
+export const averagePoint: MathExercise<QCMProps, VEAProps> = {
+  id: 'averagePoint',
+  connector: '=',
+  label: 'Déterminer le point moyen',
+  levels: ['1rePro', '1reTech', 'TermTech', 'TermPro', 'MathComp'],
+  isSingleStep: true,
+  sections: ['Statistiques'],
+  generator: (nb: number) => getDistinctQuestions(getAveragePointQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

@@ -5,7 +5,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const variationsFromAlgebricForm: MathExercise = {
+export const variationsFromAlgebricForm: MathExercise<QCMProps, VEAProps> = {
   id: 'variationsFromAlgebricForm',
   instruction: '',
   label: "Déterminer les variations d'une fonction du second degré via sa forme algébrique",

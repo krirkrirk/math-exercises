@@ -1,72 +1,64 @@
 import { SquareRootConstructor } from '#root/math/numbers/reals/real';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question } from '../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  VEA,
+  addValidProp,
+  tryToAddWrongProp,
+} from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-import { v4 } from 'uuid';
-
-export const simplifySquareRoot: MathExercise = {
-  id: 'simplifySqrt',
-  connector: '=',
-  instruction: '',
-  label: 'Simplification de racines carrées',
-  isSingleStep: false,
-  levels: ['3ème', '2nde', '1reESM'],
-  sections: ['Racines carrées'],
-  generator: (nb: number) => getDistinctQuestions(getSimplifySquareRoot, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getSimplifySquareRoot(): Question {
+const getSimplifySquareRoot: QuestionGenerator<QCMProps, VEAProps> = () => {
   const squareRoot = SquareRootConstructor.randomSimplifiable({
     allowPerfectSquare: false,
     maxSquare: 11,
   });
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: squareRoot.simplify().toTree().toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const squareRoot = SquareRootConstructor.randomSimplifiable({
-          allowPerfectSquare: false,
-          maxSquare: 11,
-        });
-
-        proposition = {
-          id: v4() + '',
-          statement: squareRoot.simplify().toTree().toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
-    instruction: `Simplifier : $${squareRoot.toTree().toTex()}$`,
-    startStatement: squareRoot.toTree().toTex(),
-    answer: squareRoot.simplify().toTree().toTex(),
+  const sqrtTex = squareRoot.toTree().toTex();
+  const answer = squareRoot.simplify().toTree().toTex();
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Simplifier : $${sqrtTex}$`,
+    startStatement: sqrtTex,
+    answer,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    const squareRoot = SquareRootConstructor.randomSimplifiable({
+      allowPerfectSquare: false,
+      maxSquare: 11,
+    });
+    tryToAddWrongProp(propositions, squareRoot.simplify().toTree().toTex());
+  }
+
+  return shuffle(propositions);
+};
+
+export const simplifySquareRoot: MathExercise<QCMProps, VEAProps> = {
+  id: 'simplifySqrt',
+  connector: '=',
+  label: 'Simplification de racines carrées',
+  isSingleStep: false,
+  levels: ['3ème', '2nde', '1reESM'],
+  sections: ['Racines carrées'],
+  generator: (nb: number) => getDistinctQuestions(getSimplifySquareRoot, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

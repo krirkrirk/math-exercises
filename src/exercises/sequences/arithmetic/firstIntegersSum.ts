@@ -1,13 +1,51 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
+type QCMProps = {
+  answer: string;
+  final: number;
+};
+type VEAProps = {};
 
-export const firstIntegersSum: MathExercise = {
+const getFirstIntegersSumQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const final = randint(20, 100);
+  const answer = `${(final * (final + 1)) / 2}`;
+  const question: Question<QCMProps, VEAProps> = {
+    answer,
+    instruction: `Calculer la somme suivante : $1+2+3+\\ldots + ${final}$`,
+    keys: [],
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer, final },
+  };
+
+  return question;
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, final }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  tryToAddWrongProp(propositions, `${(final * (final - 1)) / 2}`);
+  tryToAddWrongProp(propositions, `${final * (final + 1)}`);
+  while (propositions.length < n) {
+    const wrongAnswer = randint(30, 200) + '';
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffle(propositions);
+};
+export const firstIntegersSum: MathExercise<QCMProps, VEAProps> = {
   id: 'firstIntegersSum',
   connector: '=',
-  instruction: '',
   label: 'Somme des $n$ premiers entiers',
   levels: ['1rePro', '1reTech', '1reSpé', '1reESM'],
   isSingleStep: true,
@@ -15,61 +53,5 @@ export const firstIntegersSum: MathExercise = {
   generator: (nb: number) => getDistinctQuestions(getFirstIntegersSumQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
+  getPropositions,
 };
-
-export function getFirstIntegersSumQuestion(): Question {
-  const final = randint(20, 100);
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4(),
-      statement: `${(final * (final + 1)) / 2}`,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-    res.push({
-      id: v4(),
-      statement: `${(final * (final - 1)) / 2}`,
-      isRightAnswer: false,
-      format: 'tex',
-    });
-    res.push({
-      id: v4(),
-      statement: `${final * (final + 1)}`,
-      isRightAnswer: false,
-      format: 'tex',
-    });
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-      do {
-        const wrongAnswer = randint(30, 200) + '';
-
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
-    answer: `${(final * (final + 1)) / 2}`,
-    instruction: `Calculer la somme suivante : $1+2+3+\\ldots + ${final}$`,
-    keys: [],
-    getPropositions,
-    answerFormat: 'tex',
-  };
-
-  return question;
-}

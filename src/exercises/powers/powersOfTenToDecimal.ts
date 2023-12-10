@@ -7,14 +7,60 @@ import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question } from '../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const powersOfTenToDecimal: MathExercise = {
+type QCMProps = {
+  answer: string;
+  randPower: number;
+};
+type VEAProps = {};
+
+const getPowersOfTenToDecimalQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const randPower = randint(-9, 10);
+
+  const statement = new PowerNode(new NumberNode(10), new NumberNode(randPower));
+  const answerTree = new Power(10, randPower).toDecimalWriting().toTree();
+  const answer = answerTree.toTex().replace('.', ',');
+  const statementTex = statement.toTex();
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Donner l'écriture décimale de : $${statementTex}$`,
+    startStatement: statementTex,
+    answer,
+    keys: [],
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer, randPower },
+  };
+  return question;
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randPower }) => {
+  const res: Proposition[] = [];
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    const wrongPower = randPower + randint(-3, 4, [0]);
+    const wrongAnswerTree = new Power(10, wrongPower).toDecimalWriting().toTree();
+    const wrongAnswer = wrongAnswerTree.toTex();
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffle(res);
+};
+
+export const powersOfTenToDecimal: MathExercise<QCMProps, VEAProps> = {
   id: 'powersOfTenToDecimal',
   connector: '=',
-  instruction: '',
   label: "Ecriture décimale d'une puissance de 10",
   levels: [
     '5ème',
@@ -33,60 +79,8 @@ export const powersOfTenToDecimal: MathExercise = {
   sections: ['Puissances'],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getPowersOfTenToDecimalQuestion, nb, 19),
-  keys: [],
   qcmTimer: 60,
   freeTimer: 60,
   maxAllowedQuestions: 19,
+  getPropositions,
 };
-
-export function getPowersOfTenToDecimalQuestion(): Question {
-  const randPower = randint(-9, 10);
-
-  const statement = new PowerNode(new NumberNode(10), new NumberNode(randPower));
-  const answerTree = new Power(10, randPower).toDecimalWriting().toTree();
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answerTree.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongPower = randPower + randint(-3, 4, [0]);
-        const wrongAnswerTree = new Power(10, wrongPower).toDecimalWriting().toTree();
-        const wrongAnswer = wrongAnswerTree.toTex();
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
-    instruction: `Donner l'écriture décimale de : $${statement.toTex()}$`,
-
-    startStatement: statement.toTex(),
-    answer: answerTree.toTex().replace('.', ','),
-    keys: [],
-    getPropositions,
-    answerFormat: 'tex',
-  };
-  return question;
-}

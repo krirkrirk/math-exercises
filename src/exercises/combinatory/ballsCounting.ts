@@ -3,7 +3,7 @@ import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions
 import { randint } from '#root/math/utils/random/randint';
 import { v4 } from 'uuid';
 
-export const ballsCounting: MathExercise = {
+export const ballsCounting: MathExercise<QCMProps, VEAProps> = {
   id: 'ballsCounting',
   connector: '=',
   instruction: '',

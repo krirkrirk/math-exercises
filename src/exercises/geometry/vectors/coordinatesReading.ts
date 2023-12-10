@@ -4,7 +4,7 @@ import { PointConstructor } from '#root/math/geometry/point';
 import { IntegerConstructor } from '#root/math/numbers/integer/integer';
 import { v4 } from 'uuid';
 
-export const coordinatesReading: MathExercise = {
+export const coordinatesReading: MathExercise<QCMProps, VEAProps> = {
   id: 'coordinatesReading',
   connector: '=',
   instruction: '',

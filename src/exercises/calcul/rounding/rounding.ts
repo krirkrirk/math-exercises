@@ -1,6 +1,14 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { DecimalConstructor } from '#root/math/numbers/decimals/decimal';
+import { Decimal, DecimalConstructor } from '#root/math/numbers/decimals/decimal';
 import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
 import { shuffle } from '#root/utils/shuffle';
@@ -9,77 +17,6 @@ import { v4 } from 'uuid';
 /**
  * arrondi à l'unité
  */
-export const roundToUnit: MathExercise = {
-  id: 'roundToUnit',
-  connector: '\\approx',
-  instruction: '',
-  label: "Arrondir à l'unité",
-  levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
-  sections: ['Calculs'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions(0), nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
-};
-/**
- * arrondi à l'unité
- */
-export const roundToDixieme: MathExercise = {
-  id: 'roundToDixieme',
-  connector: '\\approx',
-  instruction: '',
-  label: 'Arrondir au dixième',
-  levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
-  sections: ['Calculs'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions(1), nb),
-  qcmTimer: 60,
-  freeTimer: 60,
-};
-/**
- * arrondi à l'unité
- */
-export const roundToCentieme: MathExercise = {
-  id: 'roundToCentieme',
-  connector: '\\approx',
-  instruction: '',
-  label: 'Arrondir au centième',
-  levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
-  sections: ['Calculs'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions(2), nb),
-  qcmTimer: 60,
-  freeTimer: 60,
-};
-/**
- * arrondi à l'unité
- */
-export const roundToMillieme: MathExercise = {
-  id: 'roundToMillieme',
-  connector: '\\approx',
-  instruction: '',
-  label: 'Arrondir au millième',
-  levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
-  sections: ['Calculs'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions(3), nb),
-  qcmTimer: 60,
-  freeTimer: 60,
-};
-
-export const allRoundings: MathExercise = {
-  id: 'allRoundings',
-  connector: '\\approx',
-  instruction: '',
-  label: 'Arrondir un nombre décimal',
-  levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
-  sections: ['Calculs'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions(randint(0, 4)), nb),
-  qcmTimer: 60,
-  freeTimer: 60,
-};
 
 const instructions = [
   "Arrondir à l'unité :",
@@ -88,77 +25,127 @@ const instructions = [
   'Arrondir au millième :',
 ];
 
-export function getRoundQuestions(precisionAsked: number = 0): Question {
+const getRoundQuestions: QuestionGenerator<QCMProps, VEAProps, { precisionAsked: number }> = (opts) => {
+  const precisionAsked = opts?.precisionAsked || 0;
   const precision = randint(precisionAsked + 1, precisionAsked + 5);
   const dec = DecimalConstructor.random(0, 1000, precision);
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: dec.round(precisionAsked).toTree().toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    res.push({
-      id: v4() + '',
-      statement:
-        round(dec.value, precisionAsked) === round(dec.value + 0.5 * 10 ** -precisionAsked, precisionAsked)
-          ? round(dec.value - 0.5 * 10 ** -precisionAsked, precisionAsked) + ''
-          : round(dec.value + 0.5 * 10 ** -precisionAsked, precisionAsked) + '',
-      isRightAnswer: false,
-      format: 'tex',
-    });
-
-    if (n > 2)
-      res.push({
-        id: v4() + '',
-        statement: dec.toTree().toTex(),
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    if (n > 3 && dec.decimalPart.length !== precisionAsked + 1)
-      res.push({
-        id: v4() + '',
-        statement: dec
-          .round(precisionAsked + 1)
-          .toTree()
-          .toTex(),
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    for (let i = 0; dec.decimalPart.length !== precisionAsked + 1 ? i < n - 4 : i < n - 3; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: DecimalConstructor.random(0, 1000, precision).toTree().toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
-    instruction: `${instructions[precisionAsked]} ${dec.toTree().toTex()}`,
-    startStatement: dec.toTree().toTex(),
-    answer: dec.round(precisionAsked).toTree().toTex(),
+  const decTex = dec.toTree().toTex();
+  const answer = dec.round(precisionAsked).toTree().toTex();
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `${instructions[precisionAsked]} ${decTex}`,
+    startStatement: decTex,
+    answer,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, precisionAsked, decimal: dec.value, precision },
   };
   return question;
-}
+};
+
+type QCMProps = {
+  answer: string;
+  precisionAsked: number;
+  decimal: number;
+  precision: number;
+};
+type VEAProps = {};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, precisionAsked, decimal, precision }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const dec = new Decimal(decimal);
+
+  tryToAddWrongProp(
+    propositions,
+    round(dec.value, precisionAsked) === round(dec.value + 0.5 * 10 ** -precisionAsked, precisionAsked)
+      ? round(dec.value - 0.5 * 10 ** -precisionAsked, precisionAsked) + ''
+      : round(dec.value + 0.5 * 10 ** -precisionAsked, precisionAsked) + '',
+  );
+  tryToAddWrongProp(propositions, dec.toTree().toTex());
+
+  if (dec.decimalPart.length !== precisionAsked + 1)
+    tryToAddWrongProp(
+      propositions,
+      dec
+        .round(precisionAsked + 1)
+        .toTree()
+        .toTex(),
+    );
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, DecimalConstructor.random(0, 1000, precision).toTree().toTex());
+  }
+
+  return shuffle(propositions);
+};
+
+export const roundToUnit: MathExercise<QCMProps, VEAProps> = {
+  id: 'roundToUnit',
+  connector: '\\approx',
+  label: "Arrondir à l'unité",
+  levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
+  sections: ['Calculs'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions({ precisionAsked: 0 }), nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};
+/**
+ * arrondi à l'unité
+ */
+export const roundToDixieme: MathExercise<QCMProps, VEAProps> = {
+  id: 'roundToDixieme',
+  connector: '\\approx',
+  label: 'Arrondir au dixième',
+  levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
+  sections: ['Calculs'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions({ precisionAsked: 1 }), nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};
+/**
+ * arrondi à l'unité
+ */
+export const roundToCentieme: MathExercise<QCMProps, VEAProps> = {
+  id: 'roundToCentieme',
+  connector: '\\approx',
+  label: 'Arrondir au centième',
+  levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
+  sections: ['Calculs'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions({ precisionAsked: 2 }), nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};
+/**
+ * arrondi à l'unité
+ */
+export const roundToMillieme: MathExercise<QCMProps, VEAProps> = {
+  id: 'roundToMillieme',
+  connector: '\\approx',
+  label: 'Arrondir au millième',
+  levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
+  sections: ['Calculs'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions({ precisionAsked: 3 }), nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};
+
+export const allRoundings: MathExercise<QCMProps, VEAProps> = {
+  id: 'allRoundings',
+  connector: '\\approx',
+  label: 'Arrondir un nombre décimal',
+  levels: ['6ème', '5ème', 'CAP', '2ndPro', '1rePro'],
+  sections: ['Calculs'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(() => getRoundQuestions({ precisionAsked: randint(0, 4) }), nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

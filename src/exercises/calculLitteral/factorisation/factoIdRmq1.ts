@@ -14,7 +14,7 @@ import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const factoIdRmq1: MathExercise = {
+export const factoIdRmq1: MathExercise<QCMProps, VEAProps> = {
   id: 'factoIdRmq1',
   connector: '=',
   instruction: '',

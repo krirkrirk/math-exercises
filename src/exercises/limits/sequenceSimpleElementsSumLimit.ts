@@ -6,7 +6,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const sequenceSimpleElementsSumLimit: MathExercise = {
+export const sequenceSimpleElementsSumLimit: MathExercise<QCMProps, VEAProps> = {
   id: 'sequenceSimpleElementsSumLimit',
   connector: '=',
   instruction: '',

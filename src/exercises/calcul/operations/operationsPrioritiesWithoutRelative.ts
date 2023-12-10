@@ -6,7 +6,15 @@
  * a/b ± c*d
  */
 
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -15,23 +23,13 @@ import { DivideNode } from '#root/tree/nodes/operators/divideNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const operationsPrioritiesWithoutRelative: MathExercise = {
-  id: 'operationsPrioritiesWithoutRelative',
-  connector: '=',
-  instruction: '',
-  label: 'Priorités opératoires sans les nombres relatifs',
-  levels: ['6ème', '5ème', '4ème'],
-  sections: ['Calculs'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getOperationsPrioritiesWithoutRelative, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getOperationsPrioritiesWithoutRelative(): Question {
+const getOperationsPrioritiesWithoutRelative: QuestionGenerator<QCMProps, VEAProps> = () => {
   const type = randint(1, 7);
   const flip = randint(1, 4);
   let startStatement = '';
@@ -250,44 +248,37 @@ export function getOperationsPrioritiesWithoutRelative(): Question {
       break;
   }
 
-  const getPropositions = (n: number) => {
-    const propositions: Proposition[] = [];
-
-    propositions.push({
-      id: v4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4(),
-          statement: randint(1, 50) + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffle(propositions);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Calculer : $${startStatement}$`,
     startStatement,
     answer,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, randint(1, 50) + '');
+  }
+
+  return shuffle(propositions);
+};
+
+export const operationsPrioritiesWithoutRelative: MathExercise<QCMProps, VEAProps> = {
+  id: 'operationsPrioritiesWithoutRelative',
+  connector: '=',
+  label: 'Priorités opératoires sans les nombres relatifs',
+  levels: ['6ème', '5ème', '4ème'],
+  sections: ['Calculs'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(getOperationsPrioritiesWithoutRelative, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

@@ -6,7 +6,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const thirdDegreeFunctionVariation: MathExercise = {
+export const thirdDegreeFunctionVariation: MathExercise<QCMProps, VEAProps> = {
   id: 'thirdDegreeFunctionVariation',
   connector: '=',
   instruction: '',

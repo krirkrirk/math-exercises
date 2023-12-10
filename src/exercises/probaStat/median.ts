@@ -1,24 +1,22 @@
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question } from '../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
-
-export const medianWithTable: MathExercise = {
-  id: 'medianWithTable',
-  connector: '=',
-  instruction: '',
-  label: "Calcul de la médiane d'un tableau d'effectifs",
-  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
-  isSingleStep: false,
-  sections: ['Statistiques'],
-  generator: (nb: number) => getDistinctQuestions(getMedianWithTable, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  randomValues: number[];
 };
-
-export function getMedianWithTable(): Question {
+type VEAProps = {};
+const getMedianWithTable: QuestionGenerator<QCMProps, VEAProps> = () => {
   const getRandomUniqueValues = (count: number, min: number, max: number): number[] => {
     const uniqueValues: Set<number> = new Set();
 
@@ -29,13 +27,13 @@ export function getMedianWithTable(): Question {
     return Array.from(uniqueValues).sort((a, b) => a - b);
   };
 
-  const randomValeurs: number[] = getRandomUniqueValues(5, 1, 20);
+  const randomValues: number[] = getRandomUniqueValues(5, 1, 20);
   const randomEffectives = [1, 2, 3, 4, 5].map((el) => randint(1, 6));
 
   let sortedValues: number[] = [];
 
   for (let i = 0; i < randomEffectives.length; i++)
-    for (let j = 0; j < randomEffectives[i]; j++) sortedValues.push(randomValeurs[i]);
+    for (let j = 0; j < randomEffectives[i]; j++) sortedValues.push(randomValues[i]);
 
   const n = randomEffectives.reduce((sum, value) => sum + value, 0);
   const middleIndex = Math.floor(n / 2);
@@ -48,52 +46,46 @@ export function getMedianWithTable(): Question {
     median = sortedValues[middleIndex];
   }
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: median + '',
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: randomValeurs[randint(0, randomValeurs.length)] + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const answer = (median + '').replace('.', ',');
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `On considère le tableau d'effectifs suivant : 
 
 | | | | | | |
 |-|-|-|-|-|-|
-|Valeur|${randomValeurs[0]}|${randomValeurs[1]}|${randomValeurs[2]}|${randomValeurs[3]}|${randomValeurs[4]}|
+|Valeur|${randomValues[0]}|${randomValues[1]}|${randomValues[2]}|${randomValues[3]}|${randomValues[4]}|
 |Effectif|${randomEffectives[0]}|${randomEffectives[1]}|${randomEffectives[2]}|${randomEffectives[3]}|${randomEffectives[4]}|
 
 Calculer la médiane de cette série de valeurs.`,
 
-    answer: (median + '').replace('.', ','),
+    answer,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, randomValues },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randomValues }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, randomValues[randint(0, randomValues.length)] + '');
+  }
+
+  return shuffle(propositions);
+};
+
+export const medianWithTable: MathExercise<QCMProps, VEAProps> = {
+  id: 'medianWithTable',
+  connector: '=',
+  label: "Calcul de la médiane d'un tableau d'effectifs",
+  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
+  isSingleStep: false,
+  sections: ['Statistiques'],
+  generator: (nb: number) => getDistinctQuestions(getMedianWithTable, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

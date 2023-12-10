@@ -5,7 +5,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { coinFlip } from '#root/utils/coinFlip';
 import { v4 } from 'uuid';
 
-export const derivativeNumberCalcul: MathExercise = {
+export const derivativeNumberCalcul: MathExercise<QCMProps, VEAProps> = {
   id: 'derivativeNumberCalcul',
   connector: '=',
   instruction: '',

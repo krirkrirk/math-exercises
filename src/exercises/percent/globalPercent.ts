@@ -5,7 +5,7 @@ import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 import { shuffle } from '#root/utils/shuffle';
 
-export const globalPercent: MathExercise = {
+export const globalPercent: MathExercise<QCMProps, VEAProps> = {
   id: 'globalPercent',
   connector: '=',
   instruction: '',

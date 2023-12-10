@@ -2,28 +2,23 @@ import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question } from '../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
 /**
  * a±b±c±d
  */
-export const addAndSubExercise: MathExercise = {
-  id: 'addAndSub',
-  connector: '=',
-  instruction: '',
-  label: 'Additions et soustractions',
-  levels: ['6ème', '5ème'],
-  sections: ['Calculs'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getAddAndSubQuestions, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
-};
 
-export function getAddAndSubQuestions(): Question {
+const getAddAndSubQuestions: QuestionGenerator<QCMProps, VEAProps> = () => {
   const nbOperations = randint(2, 4);
   const numbers = [];
   for (let i = 0; i < nbOperations + 1; i++) {
@@ -35,47 +30,43 @@ export function getAddAndSubQuestions(): Question {
     statementTree = new AddNode(statementTree, allNumbersNodes[i]);
   }
   const answer = numbers.reduce((a, b) => a + b);
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer.toString(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const randomOffset = randint(-9, 10, [0]);
-        const wrongAnswer = answer + randomOffset;
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer.toString(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
-    instruction: `Calculer : $${statementTree.toTex()}$`,
-    startStatement: statementTree.toTex(),
+  const statement = statementTree.toTex();
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Calculer : $${statement}$`,
+    startStatement: statement,
     answer: answer + '',
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
   };
   return question;
-}
+};
+type QCMProps = {
+  answer: string;
+};
+type VEAProps = {};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    const randomOffset = randint(-9, 10, [0]);
+    const wrongAnswer = Number(answer) + randomOffset;
+    tryToAddWrongProp(propositions, wrongAnswer.toString());
+  }
+
+  return shuffle(propositions);
+};
+
+export const addAndSubExercise: MathExercise<QCMProps, VEAProps> = {
+  id: 'addAndSub',
+  connector: '=',
+  label: 'Additions et soustractions',
+  levels: ['6ème', '5ème'],
+  sections: ['Calculs'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(getAddAndSubQuestions, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

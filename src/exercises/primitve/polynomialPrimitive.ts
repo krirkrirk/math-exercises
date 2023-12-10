@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Rational } from '#root/math/numbers/rationals/rational';
 import { Polynomial, PolynomialConstructor } from '#root/math/polynomials/polynomial';
@@ -15,20 +23,11 @@ import { VariableNode } from '#root/tree/nodes/variables/variableNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
-
-export const polynomialPrimitive: MathExercise = {
-  id: 'polynomialPrimitive',
-  connector: '=',
-  instruction: '',
-  label: "Primitive d'une fonction polynomiale",
-  levels: ['TermSpé', 'MathComp'],
-  sections: ['Primitives'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getPolynomialPrimitive, nb),
-  keys: ['x', 'C'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  degree: number;
 };
+type VEAProps = {};
 
 function getIntegratedPolynomialNode(polynomial: Polynomial) {
   let integralPolynomial: Node = new ConstantNode('C', 'C');
@@ -54,53 +53,46 @@ function getIntegratedPolynomialNode(polynomial: Polynomial) {
   return integralPolynomial;
 }
 
-export function getPolynomialPrimitive(): Question {
+export const getPolynomialPrimitive: QuestionGenerator<QCMProps, VEAProps> = () => {
   const degree = randint(1, 4);
   const polynomial = PolynomialConstructor.randomWithOrder(degree);
 
   const integralPolynomial: Node = getIntegratedPolynomialNode(polynomial);
 
-  const getPropositions = (n: number) => {
-    const propositions: Proposition[] = [];
-
-    propositions.push({
-      id: v4(),
-      statement: `${integralPolynomial.toTex()}`,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate;
-      let proposition: Proposition;
-
-      do {
-        const wrongPolynomial = PolynomialConstructor.randomWithOrder(degree);
-        const wrongIntegral = getIntegratedPolynomialNode(wrongPolynomial);
-        proposition = {
-          id: v4(),
-          statement: wrongIntegral.toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffle(propositions);
-  };
-
-  const question: Question = {
+  const answer = `${integralPolynomial.toTex()}`;
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Déterminer la forme générale des primitives de la fonction polynomiale $f$ définie par $f(x) = ${polynomial.toTex()}$.`,
     startStatement: `F(x)`,
-    answer: `${integralPolynomial.toTex()}`,
+    answer,
     keys: ['x', 'C'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, degree },
   };
 
   return question;
-}
+};
+
+export const getPolynomialPrimitivePropositions: QCMGenerator<QCMProps> = (n, { answer, degree }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    const wrongPolynomial = PolynomialConstructor.randomWithOrder(degree);
+    const wrongIntegral = getIntegratedPolynomialNode(wrongPolynomial);
+    tryToAddWrongProp(propositions, wrongIntegral.toTex());
+  }
+  return shuffle(propositions);
+};
+
+export const polynomialPrimitive: MathExercise<QCMProps, VEAProps> = {
+  id: 'polynomialPrimitive',
+  connector: '=',
+  label: "Primitive d'une fonction polynomiale",
+  levels: ['TermSpé', 'MathComp'],
+  sections: ['Primitives'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getPolynomialPrimitive, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions: getPolynomialPrimitivePropositions,
+};

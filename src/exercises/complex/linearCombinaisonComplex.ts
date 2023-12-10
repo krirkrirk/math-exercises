@@ -12,7 +12,7 @@ import { shuffle } from '#root/utils/shuffle';
 import math, { simplify } from 'mathjs';
 import { v4 } from 'uuid';
 
-export const linearCombinaisonComplex: MathExercise = {
+export const linearCombinaisonComplex: MathExercise<QCMProps, VEAProps> = {
   id: 'linearCombinaisonComplex',
   connector: '=',
   instruction: '',

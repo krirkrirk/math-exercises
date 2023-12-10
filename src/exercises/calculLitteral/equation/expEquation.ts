@@ -11,7 +11,7 @@ import { VariableNode } from '#root/tree/nodes/variables/variableNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
-export const expEquation: MathExercise = {
+export const expEquation: MathExercise<QCMProps, VEAProps> = {
   id: 'expEquation',
   connector: '=',
   instruction: '',

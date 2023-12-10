@@ -1,6 +1,14 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
+import { Polynomial, PolynomialConstructor } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { CosNode } from '#root/tree/nodes/functions/cosNode';
 import { SinNode } from '#root/tree/nodes/functions/sinNode';
@@ -13,21 +21,15 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const sinCosPrimitive: MathExercise = {
-  id: 'sinCosPrimitive',
-  connector: '=',
-  instruction: '',
-  label: 'Primitive de sin et cos',
-  levels: ['TermSpé', 'MathComp'],
-  sections: ['Primitives', 'Trigonométrie'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getSinCosPrimitive, nb),
-  keys: ['x', 'C', 'sin', 'cos'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  rand: boolean;
+  a: number;
+  coeffs: number[];
 };
+type VEAProps = {};
 
-export function getSinCosPrimitive(): Question {
+export const getSinCosPrimitive: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rand = coinFlip();
 
   const a = randint(-9, 10, [0]);
@@ -58,71 +60,67 @@ export function getSinCosPrimitive(): Question {
       : new MultiplyNode(new NumberNode(-1), new CosNode(u.toTree()));
   }
 
-  const getPropositions = (n: number) => {
-    const propositions: Proposition[] = [];
+  const answer = `${simplifyNode(integratedFuction).toTex()}+C`;
 
-    propositions.push({
-      id: v4(),
-      statement: `${simplifyNode(integratedFuction).toTex()} + C`,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate;
-      let proposition: Proposition;
-      let wrongIntegral;
-
-      do {
-        if (rand) {
-          const wrongIntegrals = [
-            new MultiplyNode(new NumberNode(a), new SinNode(new VariableNode('x'))),
-            new MultiplyNode(new NumberNode(-a), new CosNode(new VariableNode('x'))),
-            new MultiplyNode(new NumberNode(a), new CosNode(new VariableNode('x'))),
-            new MultiplyNode(new NumberNode(-a), new SinNode(new VariableNode('x'))),
-            new MultiplyNode(new NumberNode(randint(-9, 10, [a, 0])), new CosNode(new VariableNode('x'))),
-            new MultiplyNode(new NumberNode(randint(-9, 10, [a, 0])), new SinNode(new VariableNode('x'))),
-          ];
-          wrongIntegral = wrongIntegrals[randint(0, wrongIntegrals.length)];
-        } else {
-          const wrongIntegrals = [
-            new MultiplyNode(u.toTree(), new CosNode(u.toTree())),
-            new MultiplyNode(u.toTree(), new SinNode(u.toTree())),
-            new SinNode(u.toTree()),
-            new CosNode(u.toTree()),
-            new MultiplyNode(new NumberNode(-1), new CosNode(u.toTree())),
-            new MultiplyNode(new NumberNode(-1), new SinNode(u.toTree())),
-            new MultiplyNode(new NumberNode(randint(-9, 10, [0])), new CosNode(new VariableNode('x'))),
-            new MultiplyNode(new NumberNode(randint(-9, 10, [0])), new SinNode(new VariableNode('x'))),
-          ];
-          wrongIntegral = wrongIntegrals[randint(0, wrongIntegrals.length)];
-        }
-        proposition = {
-          id: v4(),
-          statement: `${simplifyNode(wrongIntegral).toTex()} + C`,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffle(propositions);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Déterminer la forme générale des primitives de la fonction f définie par $f(x) = ${simplifyNode(
       selectedFunction,
     ).toTex()}$.`,
     startStatement: `F(x)`,
-    answer: `${simplifyNode(integratedFuction).toTex()}+C`,
+    answer,
     keys: ['x', 'C', 'sin', 'cos'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, a, rand, coeffs: u.coefficients },
   };
 
   return question;
-}
+};
+
+export const getSinCosPrimitivePropositions: QCMGenerator<QCMProps> = (n, { answer, rand, a, coeffs }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const u = new Polynomial(coeffs);
+  while (propositions.length < n) {
+    let wrongIntegral;
+
+    if (rand) {
+      const wrongIntegrals = [
+        new MultiplyNode(new NumberNode(a), new SinNode(new VariableNode('x'))),
+        new MultiplyNode(new NumberNode(-a), new CosNode(new VariableNode('x'))),
+        new MultiplyNode(new NumberNode(a), new CosNode(new VariableNode('x'))),
+        new MultiplyNode(new NumberNode(-a), new SinNode(new VariableNode('x'))),
+        new MultiplyNode(new NumberNode(randint(-9, 10, [a, 0])), new CosNode(new VariableNode('x'))),
+        new MultiplyNode(new NumberNode(randint(-9, 10, [a, 0])), new SinNode(new VariableNode('x'))),
+      ];
+      wrongIntegral = wrongIntegrals[randint(0, wrongIntegrals.length)];
+    } else {
+      const wrongIntegrals = [
+        new MultiplyNode(u.toTree(), new CosNode(u.toTree())),
+        new MultiplyNode(u.toTree(), new SinNode(u.toTree())),
+        new SinNode(u.toTree()),
+        new CosNode(u.toTree()),
+        new MultiplyNode(new NumberNode(-1), new CosNode(u.toTree())),
+        new MultiplyNode(new NumberNode(-1), new SinNode(u.toTree())),
+        new MultiplyNode(new NumberNode(randint(-9, 10, [0])), new CosNode(new VariableNode('x'))),
+        new MultiplyNode(new NumberNode(randint(-9, 10, [0])), new SinNode(new VariableNode('x'))),
+      ];
+      wrongIntegral = wrongIntegrals[randint(0, wrongIntegrals.length)];
+    }
+    tryToAddWrongProp(propositions, `${simplifyNode(wrongIntegral).toTex()} + C`);
+  }
+
+  return shuffle(propositions);
+};
+
+export const sinCosPrimitive: MathExercise<QCMProps, VEAProps> = {
+  id: 'sinCosPrimitive',
+  connector: '=',
+  label: 'Primitive de sin et cos',
+  levels: ['TermSpé', 'MathComp'],
+  sections: ['Primitives', 'Trigonométrie'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getSinCosPrimitive, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions: getSinCosPrimitivePropositions,
+};

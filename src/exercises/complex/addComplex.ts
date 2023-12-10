@@ -8,7 +8,7 @@ import { simplifyComplex } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const addComplex: MathExercise = {
+export const addComplex: MathExercise<QCMProps, VEAProps> = {
   id: 'addComplex',
   connector: '=',
   instruction: '',

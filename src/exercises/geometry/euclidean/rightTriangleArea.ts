@@ -6,7 +6,7 @@ import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const rightTriangleArea: MathExercise = {
+export const rightTriangleArea: MathExercise<QCMProps, VEAProps> = {
   id: 'rightTriangleArea',
   connector: '=',
   instruction: '',

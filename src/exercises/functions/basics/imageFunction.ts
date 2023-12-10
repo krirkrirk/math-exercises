@@ -6,7 +6,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const imageFunction: MathExercise = {
+export const imageFunction: MathExercise<QCMProps, VEAProps> = {
   id: 'imageFunction',
   connector: '=',
   instruction: '',

@@ -4,7 +4,7 @@ import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const trianglePerimeter: MathExercise = {
+export const trianglePerimeter: MathExercise<QCMProps, VEAProps> = {
   id: 'trianglePerimeter',
   connector: '=',
   instruction: '',

@@ -8,7 +8,7 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const distanceBetweenTwoPoints: MathExercise = {
+export const distanceBetweenTwoPoints: MathExercise<QCMProps, VEAProps> = {
   id: 'distanceBetweenTwoPoints',
   connector: '=',
   instruction: '',

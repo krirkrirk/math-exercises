@@ -6,7 +6,7 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const circleCircumference: MathExercise = {
+export const circleCircumference: MathExercise<QCMProps, VEAProps> = {
   id: 'circleCircumference',
   connector: '=',
   instruction: '',

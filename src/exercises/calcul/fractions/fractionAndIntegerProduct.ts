@@ -4,8 +4,8 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
-  addWrongProp,
   tryToAddWrongProp,
 } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
@@ -14,9 +14,8 @@ import { Rational, RationalConstructor } from '#root/math/numbers/rationals/rati
 import { randint } from '#root/math/utils/random/randint';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-const getFractionAndIntegerProduct: QuestionGenerator<QCMProps> = () => {
+const getFractionAndIntegerProduct: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rational = RationalConstructor.randomIrreductible();
   const integer = new Integer(randint(-10, 11, [0, 1]));
   const statementTree = new MultiplyNode(rational.toTree(), integer.toTree());
@@ -24,13 +23,14 @@ const getFractionAndIntegerProduct: QuestionGenerator<QCMProps> = () => {
 
   const answerTree = rational.multiply(integer).toTree();
   const answer = answerTree.toTex();
-  const question: Question<QCMProps> = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: [],
     answerFormat: 'tex',
     qcmGeneratorProps: { answer, integer: integer.value, rational: [rational.num, rational.denum] },
+    veaProps: { integer: integer.value, rational: [rational.num, rational.denum] },
   };
   return question;
 };
@@ -40,22 +40,38 @@ type QCMProps = {
   integer: number;
   rational: [number, number];
 };
-const getPropositions: QCMGenerator<QCMProps> = (n: number, { answer, integer, rational }) => {
-  const res: Proposition[] = [];
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, integer, rational }) => {
+  const propositions: Proposition[] = [];
   const integerObj = new Integer(integer);
   const rationalObj = new Rational(rational[0], rational[1]);
-  addValidProp(res, answer);
-  addWrongProp(res, new Rational(integerObj.value * rationalObj.num, integerObj.value * rationalObj.denum).toTex());
+  addValidProp(propositions, answer);
+  tryToAddWrongProp(
+    propositions,
+    new Rational(integerObj.value * rationalObj.num, integerObj.value * rationalObj.denum).toTex(),
+  );
 
-  while (res.length < n) {
+  while (propositions.length < n) {
     const randomMultiplier = randint(-10, 10);
     const wrongAnswerTree = rationalObj.multiply(new Integer(randomMultiplier)).toTree();
-    tryToAddWrongProp(res, wrongAnswerTree.toTex());
+    tryToAddWrongProp(propositions, wrongAnswerTree.toTex());
   }
-  return shuffle(res);
+  return shuffle(propositions);
 };
 
-export const fractionAndIntegerProduct: MathExercise = {
+type VEAProps = {
+  integer: number;
+  rational: [number, number];
+};
+
+const isAnswerValid: VEA<VEAProps> = (ans, { integer, rational }) => {
+  const integerObj = new Integer(integer);
+  const rationalObj = new Rational(rational[0], rational[1]);
+  const answerTree = rationalObj.multiply(integerObj).toTree({ FractionNodeOpts: { allowDecimalSyntax: true } });
+  const texs = answerTree.toAllValidTexs();
+  return texs.includes(ans);
+};
+
+export const fractionAndIntegerProduct: MathExercise<QCMProps, VEAProps> = {
   id: 'fractionAndIntegerProduct',
   connector: '=',
   label: "Produit d'un entier et d'une fraction",
@@ -66,4 +82,5 @@ export const fractionAndIntegerProduct: MathExercise = {
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

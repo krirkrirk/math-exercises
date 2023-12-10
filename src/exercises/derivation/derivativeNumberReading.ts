@@ -11,7 +11,7 @@ import { shuffle } from '#root/utils/shuffle';
 import { evaluate } from 'mathjs';
 import { v4 } from 'uuid';
 
-export const derivativeNumberReading: MathExercise = {
+export const derivativeNumberReading: MathExercise<QCMProps, VEAProps> = {
   id: 'derivativeNumberReading',
   connector: '=',
   instruction: '',

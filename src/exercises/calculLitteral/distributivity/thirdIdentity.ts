@@ -9,7 +9,7 @@ import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const thirdIdentity: MathExercise = {
+export const thirdIdentity: MathExercise<QCMProps, VEAProps> = {
   id: 'idRmq3',
   connector: '=',
   instruction: '',
