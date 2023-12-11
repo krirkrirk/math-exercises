@@ -1,4 +1,13 @@
-import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  shuffleProps,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -9,65 +18,61 @@ import { VariableNode } from '#root/tree/nodes/variables/variableNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
-
-export const expDerivativeThree: MathExercise<QCMProps, VEAProps> = {
-  id: 'expDerivativeThree',
-  connector: '=',
-  instruction: '',
-  label: 'Dérivée de $(ax+b) \\times \\exp(x)$',
-  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp'],
-  sections: ['Dérivation', 'Exponentielle'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getExpDerivativeThree, nb),
-  keys: ['x', 'epower', 'exp'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  a: number;
+  b: number;
 };
+type VEAProps = {};
 
-export function getExpDerivativeThree(): Question {
+const getExpDerivativeThree: QuestionGenerator<QCMProps, VEAProps> = () => {
   const a = randint(-9, 10, [0]);
   const b = randint(-9, 10);
 
   const myfunction = new MultiplyNode(new Polynomial([b, a]).toTree(), new ExpNode(new VariableNode('x')));
   const derivative = new MultiplyNode(new Polynomial([b + a, a]).toTree(), new ExpNode(new VariableNode('x')));
-
-  const getPropositions = (numOptions: number) => {
-    const propositions: Proposition[] = [];
-
-    propositions.push({
-      id: v4(),
-      statement: derivative.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    tryToAddWrongProp(propositions, new MultiplyNode(new NumberNode(a), new ExpNode(new VariableNode('x'))).toTex());
-    tryToAddWrongProp(
-      propositions,
-      new MultiplyNode(new Polynomial([b + a, -a]).toTree(), new ExpNode(new VariableNode('x'))).toTex(),
-    );
-    tryToAddWrongProp(propositions, a + '');
-    tryToAddWrongProp(
-      propositions,
-      simplifyNode(
-        new MultiplyNode(
-          new MultiplyNode(new NumberNode(a), new VariableNode('x')),
-          new ExpNode(new VariableNode('x')),
-        ),
-      ).toTex(),
-    );
-
-    return shuffleProps(propositions, numOptions);
-  };
-
-  const question: Question = {
+  const answer = derivative.toTex();
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Déterminer la dérivée de la fonction $f(x) = ${myfunction.toTex()}$.`,
     startStatement: "f'(x)",
-    answer: derivative.toTex(),
+    answer,
     keys: ['x', 'epower', 'exp'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, a, b },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  tryToAddWrongProp(propositions, new MultiplyNode(new NumberNode(a), new ExpNode(new VariableNode('x'))).toTex());
+  tryToAddWrongProp(
+    propositions,
+    new MultiplyNode(new Polynomial([b + a, -a]).toTree(), new ExpNode(new VariableNode('x'))).toTex(),
+  );
+  tryToAddWrongProp(propositions, a + '');
+  tryToAddWrongProp(
+    propositions,
+    simplifyNode(
+      new MultiplyNode(new MultiplyNode(new NumberNode(a), new VariableNode('x')), new ExpNode(new VariableNode('x'))),
+    ).toTex(),
+  );
+
+  return shuffleProps(propositions, n);
+};
+
+export const expDerivativeThree: MathExercise<QCMProps, VEAProps> = {
+  id: 'expDerivativeThree',
+  connector: '=',
+  label: 'Dérivée de $(ax+b) \\times \\exp(x)$',
+  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp'],
+  sections: ['Dérivation', 'Exponentielle'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getExpDerivativeThree, nb),
+  getPropositions,
+  qcmTimer: 60,
+  freeTimer: 60,
+};

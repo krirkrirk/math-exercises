@@ -1,75 +1,73 @@
-import { DecimalConstructor } from '#root/math/numbers/decimals/decimal';
+import { Decimal, DecimalConstructor } from '#root/math/numbers/decimals/decimal';
 import { randint } from '#root/math/utils/random/randint';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question } from '../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
 
-export const capacityConversion: MathExercise<QCMProps, VEAProps> = {
-  id: 'capacityConversion',
-  connector: '=',
-  instruction: '',
-  label: 'Conversion de capacités',
-  levels: ['6ème', '5ème', 'CAP', '2ndPro'],
-  sections: ['Conversions'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getCapacityConversion, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  randomUnitIndex: number;
+  randomUnitInstructionIndex: number;
+  randomCapacity: number;
 };
+type VEAProps = {};
 
-export function getCapacityConversion(): Question {
+const getCapacityConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const units = ['mL', 'cL', 'dL', 'L', 'daL', 'hL', 'kL'];
 
   const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(0, 7, [randomUnitIndex]);
   const randomCapacity = DecimalConstructor.random(0, 1000, randint(0, 4));
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: randomCapacity.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '',
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer =
-          randomCapacity.multiplyByPowerOfTen(randint(-3, 4, [randomUnitIndex - randomUnitInstructionIndex])).value +
-          '';
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const answer = (randomCapacity.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '').replace(
+    '.',
+    ',',
+  );
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `$${randomCapacity.value}$ $${units[randomUnitIndex]}$ = ... $${units[randomUnitInstructionIndex]}$`,
-    answer: (randomCapacity.multiplyByPowerOfTen(randomUnitIndex - randomUnitInstructionIndex).value + '').replace(
-      '.',
-      ',',
-    ),
+    answer,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, randomCapacity: randomCapacity.value, randomUnitIndex, randomUnitInstructionIndex },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, randomCapacity, randomUnitIndex, randomUnitInstructionIndex },
+) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const capacityDecimal = new Decimal(randomCapacity);
+  while (propositions.length < n) {
+    const wrongAnswer =
+      capacityDecimal.multiplyByPowerOfTen(randint(-3, 4, [randomUnitIndex - randomUnitInstructionIndex])).value + '';
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffle(propositions);
+};
+
+export const capacityConversion: MathExercise<QCMProps, VEAProps> = {
+  id: 'capacityConversion',
+  connector: '=',
+  getPropositions,
+
+  label: 'Conversion de capacités',
+  levels: ['6ème', '5ème', 'CAP', '2ndPro'],
+  sections: ['Conversions'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(getCapacityConversion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+};

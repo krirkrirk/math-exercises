@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { DroiteConstructor } from '#root/math/geometry/droite';
 import { Point } from '#root/math/geometry/point';
@@ -11,20 +19,14 @@ import { shuffle } from '#root/utils/shuffle';
 import { evaluate } from 'mathjs';
 import { v4 } from 'uuid';
 
-export const derivativeNumberReading: MathExercise<QCMProps, VEAProps> = {
-  id: 'derivativeNumberReading',
-  connector: '=',
-  instruction: '',
-  label: 'Lecture de nombre dérivé',
-  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp', '1rePro'],
-  sections: ['Dérivation'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getDerivativeNumberReading, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  A: number[];
+  B: number[];
 };
+type VEAProps = {};
 
-export function getDerivativeNumberReading(): Question {
+const getDerivativeNumberReading: QuestionGenerator<QCMProps, VEAProps> = () => {
   let xA, yA, xB, yB: number;
   let pointA, pointB: Point;
 
@@ -51,51 +53,50 @@ export function getDerivativeNumberReading(): Question {
     `(${xA},${yA})`,
   ];
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: droite.getLeadingCoefficient(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer =
-          droite.getLeadingCoefficient() !== '0'
-            ? simplifyNode(new FractionNode(droite.a, new NumberNode(randint(-4, 5, [0, 1]))))
-            : new NumberNode(randint(-4, 5, [0]));
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer.toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const answer = droite.getLeadingCoefficient();
+  const question: Question<QCMProps, VEAProps> = {
     instruction,
     startStatement: 'a',
-    answer: droite.getLeadingCoefficient(),
+    answer,
     commands,
     coords: [xA - 5, xA + 5, yA - 5, yA + 5],
-    getPropositions,
     answerFormat: 'tex',
     keys: [],
+    qcmGeneratorProps: { answer, A: [xA, yA], B: [xB, yB] },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, A, B }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  const pointA = new Point('A', new NumberNode(A[0]), new NumberNode(A[1]));
+  const pointB = new Point('B', new NumberNode(B[0]), new NumberNode(B[1]));
+  const droite = DroiteConstructor.fromTwoPoints(pointA, pointB, 'D');
+
+  const leadingCoefficient = droite.getLeadingCoefficient();
+  while (propositions.length < n) {
+    const wrongAnswer =
+      leadingCoefficient !== '0'
+        ? simplifyNode(new FractionNode(droite.a, new NumberNode(randint(-4, 5, [0, 1]))))
+        : new NumberNode(randint(-4, 5, [0]));
+    tryToAddWrongProp(propositions, wrongAnswer.toTex());
+  }
+
+  return shuffle(propositions);
+};
+
+export const derivativeNumberReading: MathExercise<QCMProps, VEAProps> = {
+  id: 'derivativeNumberReading',
+  connector: '=',
+  label: 'Lecture de nombre dérivé',
+  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp', '1rePro'],
+  sections: ['Dérivation'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getDerivativeNumberReading, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

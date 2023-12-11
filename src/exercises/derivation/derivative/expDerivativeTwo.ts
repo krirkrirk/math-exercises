@@ -1,4 +1,13 @@
-import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  shuffleProps,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { ExpNode } from '#root/tree/nodes/functions/expNode'; // Importer le nœud d'exponentielle
@@ -7,24 +16,15 @@ import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { VariableNode } from '#root/tree/nodes/variables/variableNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const expDerivativeTwo: MathExercise = {
-  id: 'expDerivativeTwo',
-  connector: '=',
-  instruction: '',
-  label: 'Dérivée de $a \\times \\exp(x) + b$',
-  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp'],
-  sections: ['Dérivation', 'Exponentielle'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getExpDerivative, nb),
-  keys: ['x', 'epower', 'exp'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  a: number;
+  b: number;
 };
+type VEAProps = {};
 
-export function getExpDerivative(): Question {
+const getExpDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
   const a = randint(-9, 10, [0]);
   const b = randint(-9, 10);
 
@@ -33,54 +33,49 @@ export function getExpDerivative(): Question {
     new NumberNode(b),
   );
   const derivative = simplifyNode(new MultiplyNode(new NumberNode(a), new ExpNode(new VariableNode('x'))));
-
-  const getPropositions = (numOptions: number) => {
-    const propositions: Proposition[] = [];
-
-    propositions.push({
-      id: v4(),
-      statement: derivative.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    tryToAddWrongProp(propositions, myfunction.toTex());
-    tryToAddWrongProp(propositions, a + '');
-
-    const missing = numOptions - propositions.length;
-
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate;
-      let proposition: Proposition;
-
-      do {
-        const randomA = randint(-9, 10, [0]);
-        proposition = {
-          id: v4(),
-          statement: simplifyNode(
-            new MultiplyNode(new NumberNode(randomA), new ExpNode(new VariableNode('x'))),
-          ).toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffleProps(propositions, numOptions);
-  };
-
-  const question: Question = {
+  const answer = derivative.toTex();
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Déterminer la dérivée de la fonction $f(x) = ${myfunction.toTex()}$.`,
     startStatement: "f'(x)",
-    answer: derivative.toTex(),
+    answer,
     keys: ['x', 'epower', 'exp'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, a, b },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  const myfunction = new AddNode(
+    new MultiplyNode(new NumberNode(a), new ExpNode(new VariableNode('x'))),
+    new NumberNode(b),
+  );
+  tryToAddWrongProp(propositions, myfunction.toTex());
+  tryToAddWrongProp(propositions, a + '');
+  while (propositions.length < n) {
+    const randomA = randint(-9, 10, [0]);
+    tryToAddWrongProp(
+      propositions,
+      simplifyNode(new MultiplyNode(new NumberNode(randomA), new ExpNode(new VariableNode('x')))).toTex(),
+    );
+  }
+
+  return shuffleProps(propositions, n);
+};
+
+export const expDerivativeTwo: MathExercise<QCMProps, VEAProps> = {
+  id: 'expDerivativeTwo',
+  connector: '=',
+  label: 'Dérivée de $a \\times \\exp(x) + b$',
+  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp'],
+  sections: ['Dérivation', 'Exponentielle'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getExpDerivative, nb),
+  getPropositions,
+  qcmTimer: 60,
+  freeTimer: 60,
+};

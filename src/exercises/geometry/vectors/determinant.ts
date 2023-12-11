@@ -8,12 +8,15 @@ import {
   tryToAddWrongProp,
 } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { VectorConstructor } from '#root/math/geometry/vector';
+import { Vector, VectorConstructor } from '#root/math/geometry/vector';
 import { randint } from '#root/math/utils/random/randint';
+import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { shuffle } from '#root/utils/shuffle';
 
 type QCMProps = {
   answer: string;
+  uCoords: number[];
+  vCoords: number[];
 };
 type VEAProps = {};
 
@@ -32,9 +35,12 @@ const getDeterminantQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, uCoords, vCoords }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
+  const u = new Vector('u', new NumberNode(uCoords[0]), new NumberNode(uCoords[1]));
+  const v = new Vector('v', new NumberNode(vCoords[0]), new NumberNode(vCoords[1]));
+
   tryToAddWrongProp(propositions, u.scalarProduct(v).toTex());
 
   while (propositions.length < n) {

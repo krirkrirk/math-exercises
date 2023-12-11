@@ -21,6 +21,44 @@ function pgcd(a: number, b: number): number {
   return a;
 }
 
+type GetAnswerNodeProps = {
+  type: number;
+  A: number;
+  B: number;
+  AC: number;
+  AD: number;
+  BC: number;
+  BD: number;
+};
+
+type QCMProps = {
+  answer: string;
+} & GetAnswerNodeProps;
+
+const getAnswerNode = ({ type, A, B, AC, AD, BC, BD }: GetAnswerNodeProps) => {
+  const pA = simplifyNode(new NumberNode(A / (A + B)));
+  const pB = simplifyNode(new NumberNode(B / (A + B)));
+
+  const pA_C = simplifyNode(new NumberNode(AC / (AC + AD)));
+  const pA_D = simplifyNode(new NumberNode(AD / (AC + AD)));
+  const pB_C = simplifyNode(new NumberNode(BC / (BC + BD)));
+  const pB_D = simplifyNode(new NumberNode(BD / (BC + BD)));
+  switch (type) {
+    case 1:
+      return simplifyNode(new MultiplyNode(pA, pA_C));
+
+    case 2:
+      return simplifyNode(new MultiplyNode(pA, pA_D));
+
+    case 3:
+      return simplifyNode(new MultiplyNode(pB, pB_C));
+
+    case 4:
+    default:
+      return simplifyNode(new MultiplyNode(pB, pB_D));
+  }
+};
+
 const getProbabilityTree: QuestionGenerator<QCMProps, VEAProps> = () => {
   const A = randint(2, 9);
   const B = randint(2, 10 - A);
@@ -29,43 +67,31 @@ const getProbabilityTree: QuestionGenerator<QCMProps, VEAProps> = () => {
   const BC = randint(2, 9);
   const BD = randint(2, 10 - BC);
 
-  const pA = simplifyNode(new NumberNode(A / (A + B)));
-  const pB = simplifyNode(new NumberNode(B / (A + B)));
-
-  const pA_C = simplifyNode(new NumberNode(AC / (AC + AD)));
-  const pA_D = simplifyNode(new NumberNode(AD / (AC + AD)));
-  const pB_C = simplifyNode(new NumberNode(BC / (BC + BD)));
-  const pB_D = simplifyNode(new NumberNode(BD / (BC + BD)));
-
   let instruction = `En utilisant l'arbre de probabilité suivant, `;
   let startStatement = '';
-  let answer: Node;
 
-  const rand = randint(1, 5);
-
-  switch (rand) {
+  const type = randint(1, 5);
+  const answer = getAnswerNode({ type, A, AC, AD, B, BC, BD });
+  const answerTex = answer.toTex();
+  switch (type) {
     case 1: {
       instruction += `$\\\\$ Calculer $P(A \\cap C)$`;
       startStatement = `P(A \\cap C)`;
-      answer = simplifyNode(new MultiplyNode(pA, pA_C));
       break;
     }
     case 2: {
       instruction += `$\\\\$ Calculer $P(A \\cap D)$`;
       startStatement = `P(A \\cap D)`;
-      answer = simplifyNode(new MultiplyNode(pA, pA_D));
       break;
     }
     case 3: {
       instruction += `$\\\\$ Calculer $P(B \\cap C)$`;
       startStatement = `P(B \\cap C)`;
-      answer = simplifyNode(new MultiplyNode(pB, pB_C));
       break;
     }
     case 4: {
       instruction += `$\\\\$ Calculer $P(B \\cap D)$`;
       startStatement = `P(B \\cap D)`;
-      answer = simplifyNode(new MultiplyNode(pB, pB_D));
       break;
     }
   }
@@ -102,26 +128,24 @@ const getProbabilityTree: QuestionGenerator<QCMProps, VEAProps> = () => {
   const question: Question<QCMProps, VEAProps> = {
     instruction,
     startStatement,
-    answer: answer!.toTex(),
+    answer: answerTex,
     keys: [],
     commands,
     coords: [-2, 8, -5, 5],
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer: answerTex, A, AC, AD, B, BC, BD, type },
   };
 
   return question;
 };
 
-type QCMProps = {
-  answer: string;
-};
 type VEAProps = {};
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, A, AC, AD, B, BC, BD, type }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-
+  const answerNode = getAnswerNode({ A, AC, AD, B, BC, BD, type });
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, simplifyNode(new MultiplyNode(answer, new NumberNode(randint(2, 11)))).toTex());
+    tryToAddWrongProp(propositions, simplifyNode(new MultiplyNode(answerNode, new NumberNode(randint(2, 11)))).toTex());
   }
 
   return shuffle(propositions);

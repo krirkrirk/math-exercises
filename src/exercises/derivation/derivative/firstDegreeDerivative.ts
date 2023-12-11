@@ -1,74 +1,64 @@
-import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  shuffleProps,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+type QCMProps = {
+  answer: string;
+  a: number;
+  b: number;
+};
+type VEAProps = {};
+export const getFirstDegreeDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const [a, b] = [randint(-9, 10, [0]), randint(-9, 10)];
+  const polynomial = new Polynomial([b, a]);
+  const answer = a + '';
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
+    startStatement: `f'(x)`,
+    answer,
+    keys: ['x'],
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer, a, b },
+  };
+
+  return question;
+};
+
+export const getFirstDegreeDerivativePropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  tryToAddWrongProp(propositions, new Polynomial([0, a]).toTree().toTex());
+  tryToAddWrongProp(propositions, 'x');
+  tryToAddWrongProp(propositions, b + '');
+
+  while (propositions.length < n) {
+    const wrongAnswer = randint(-9, 10);
+
+    tryToAddWrongProp(propositions, wrongAnswer + '');
+  }
+
+  return shuffleProps(propositions, n);
+};
 
 export const firstDegreeDerivative: MathExercise<QCMProps, VEAProps> = {
   id: 'firstDegreeDerivative',
   connector: '=',
-  instruction: '',
   label: "Dérivée d'une fonction affine",
   levels: ['1reESM', '1reSpé', '1reTech', 'MathComp', '1rePro', 'TermPro'],
   sections: ['Dérivation'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFirstDegreeDerivative, nb),
-  keys: ['x'],
   qcmTimer: 60,
   freeTimer: 60,
+  getPropositions: getFirstDegreeDerivativePropositions,
 };
-
-export function getFirstDegreeDerivative(): Question {
-  const [a, b] = [randint(-9, 10, [0]), randint(-9, 10)];
-  const polynomial = new Polynomial([b, a]);
-
-  const getPropositions = (n: number) => {
-    const propositions: Proposition[] = [];
-
-    propositions.push({
-      id: v4(),
-      statement: a + '',
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    tryToAddWrongProp(propositions, new Polynomial([0, a]).toTree().toTex());
-    tryToAddWrongProp(propositions, 'x');
-    tryToAddWrongProp(propositions, b + '');
-
-    const missing = n - propositions.length;
-
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = randint(-9, 10);
-        proposition = {
-          id: v4(),
-          statement: wrongAnswer + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffleProps(propositions, n);
-  };
-
-  const question: Question = {
-    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
-    startStatement: `f'(x)`,
-    answer: a + '',
-    keys: ['x'],
-    getPropositions,
-    answerFormat: 'tex',
-  };
-
-  return question;
-}

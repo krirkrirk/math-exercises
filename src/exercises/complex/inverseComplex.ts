@@ -1,13 +1,59 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Complex, ComplexConstructor } from '#root/math/complex/complex';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
+type QCMProps = {
+  answer: string;
+  re: number;
+  im: number;
+};
+type VEAProps = {};
+const getInverseComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const complex = ComplexConstructor.randomNotReal();
+  const answer = complex.inverseNode().toTex();
+
+  const question: Question<QCMProps, VEAProps> = {
+    answer,
+    instruction: `Déterminer l'inverse de $z=${complex.toTree().toTex()}$.`,
+    keys: ['i'],
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer, re: complex.re, im: complex.im },
+    startStatement: '\\frac{1}{z}',
+  };
+
+  return question;
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, re, im }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const complex = new Complex(re, im);
+  const opposite = complex.opposite().toTree().toTex();
+  tryToAddWrongProp(propositions, opposite);
+  const conj = complex.conjugate().toTree().toTex();
+  tryToAddWrongProp(propositions, conj);
+  while (propositions.length < n) {
+    const wrongAnswer = ComplexConstructor.random();
+
+    tryToAddWrongProp(propositions, wrongAnswer.toTree().toTex());
+  }
+
+  return shuffle(propositions);
+};
+
 export const inverseComplex: MathExercise<QCMProps, VEAProps> = {
   id: 'inverseComplex',
   connector: '=',
-  instruction: '',
   label: "Inverse d'un nombre complexe",
   levels: ['MathExp'],
   isSingleStep: true,
@@ -15,68 +61,5 @@ export const inverseComplex: MathExercise<QCMProps, VEAProps> = {
   generator: (nb: number) => getDistinctQuestions(getInverseComplexQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
+  getPropositions,
 };
-
-export function getInverseComplexQuestion(): Question {
-  const complex = ComplexConstructor.randomNotReal();
-  const answer = complex.inverseNode().toTex();
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-    const opposite = complex.opposite().toTree().toTex();
-    if (opposite !== answer)
-      res.push({
-        id: v4(),
-        statement: opposite,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-    const conj = complex.conjugate().toTree().toTex();
-    if (!res.some((prop) => prop.statement === conj))
-      res.push({
-        id: v4(),
-        statement: conj,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = ComplexConstructor.random();
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer.toTree().toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
-    answer,
-    instruction: `Déterminer l'inverse de $z=${complex.toTree().toTex()}$.`,
-    keys: ['i'],
-    getPropositions,
-    answerFormat: 'tex',
-
-    startStatement: '\\frac{1}{z}',
-  };
-
-  return question;
-}

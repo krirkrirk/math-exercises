@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -6,21 +14,14 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const thirdDegreeFunctionVariation: MathExercise<QCMProps, VEAProps> = {
-  id: 'thirdDegreeFunctionVariation',
-  connector: '=',
-  instruction: '',
-  label: "Lecture du signe de la dérivée via les variations d'une fonction",
-  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp', '1rePro', 'TermPro', 'TermTech'],
-  sections: ['Dérivation'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getThirdDegreeFunctionVariation, nb),
-  keys: ['lbracket', 'rbracket', 'semicolon', 'infty'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  racine1: number;
+  racine2: number;
 };
+type VEAProps = {};
 
-export function getThirdDegreeFunctionVariation(): Question {
+const getThirdDegreeFunctionVariation: QuestionGenerator<QCMProps, VEAProps> = () => {
   const a = randint(-3, 4, [0]);
   const c = randint(-2, 3);
   const racine1 = randint(-5, 4);
@@ -36,74 +37,16 @@ export function getThirdDegreeFunctionVariation(): Question {
     (coin < 0 ? 'négative ?' : 'positive ?');
   const answer = coin * a < 0 ? `[${racine1};${racine2}]` : `]-\\infty;${racine1}]\\cup[${racine2};+\\infty[`;
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    res.push({
-      id: v4() + '',
-      statement: `[${racine2};+\\infty[`,
-      isRightAnswer: false,
-      format: 'tex',
-    });
-
-    if (n > 2)
-      res.push({
-        id: v4() + '',
-        statement: `]-\\infty;${racine1}]`,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    if (n > 3)
-      res.push({
-        id: v4() + '',
-        statement: `]-\\infty;${racine1}] \\cup [${racine2};+\\infty[`,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    for (let i = 0; i < n - 4; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const racine1 = randint(-5, 4);
-        const racine2 = randint(racine1 + 1, 6);
-        const wrongAnswer = `[${racine1};${racine2}]`;
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
   const commands = [polynome.toString()];
 
   const ymax = Math.max(polynome.calculate(racine1), polynome.calculate(racine2));
   const ymin = Math.min(polynome.calculate(racine1), polynome.calculate(racine2));
 
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction,
     startStatement: 'S',
     answer,
     keys: ['lbracket', 'rbracket', 'semicolon', 'infty'],
-    getPropositions,
     answerFormat: 'tex',
 
     coords: [
@@ -113,6 +56,37 @@ export function getThirdDegreeFunctionVariation(): Question {
       ymax + ((ymax - ymin) * randint(7, 20)) / 10,
     ],
     commands,
+    qcmGeneratorProps: { answer, racine1, racine2 },
   };
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, racine1, racine2 }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  tryToAddWrongProp(propositions, `[${racine2};+\\infty[`);
+  tryToAddWrongProp(propositions, `]-\\infty;${racine1}]`);
+  tryToAddWrongProp(propositions, `]-\\infty;${racine1}] \\cup [${racine2};+\\infty[`);
+
+  while (propositions.length < n) {
+    const racine1 = randint(-5, 4);
+    const racine2 = randint(racine1 + 1, 6);
+    const wrongAnswer = `[${racine1};${racine2}]`;
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffle(propositions);
+};
+
+export const thirdDegreeFunctionVariation: MathExercise<QCMProps, VEAProps> = {
+  id: 'thirdDegreeFunctionVariation',
+  connector: '=',
+  label: "Lecture du signe de la dérivée via les variations d'une fonction",
+  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp', '1rePro', 'TermPro', 'TermTech'],
+  sections: ['Dérivation'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(getThirdDegreeFunctionVariation, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

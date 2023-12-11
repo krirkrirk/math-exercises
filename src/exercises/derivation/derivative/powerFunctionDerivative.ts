@@ -1,4 +1,13 @@
-import { MathExercise, Proposition, Question, shuffleProps, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  shuffleProps,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
@@ -9,90 +18,82 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
+type QCMProps = {
+  answer: string;
+  a: number;
+  power: number;
+};
+type VEAProps = {};
+
+const getPowerFunctionDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const a = randint(-9, 10, [0]);
+  const power = randint(2, 10);
+
+  const statement = simplifyNode(
+    new MultiplyNode(new NumberNode(a), new PowerNode(new VariableNode('x'), new NumberNode(power))),
+  );
+
+  const answerStatement = simplifyNode(
+    new MultiplyNode(new NumberNode(a * power), new PowerNode(new VariableNode('x'), new NumberNode(power - 1))),
+  );
+
+  const answer = answerStatement.toTex();
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =${statement.toTex()}$.`,
+    startStatement: `f'(x)`,
+    answer,
+    keys: ['x'],
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer, a, power },
+  };
+
+  return question;
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, power }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  tryToAddWrongProp(
+    propositions,
+    new MultiplyNode(new NumberNode(a), new PowerNode(new VariableNode('x'), new NumberNode(power - 1))).toTex(),
+  );
+  tryToAddWrongProp(
+    propositions,
+    new MultiplyNode(new NumberNode(a * power), new PowerNode(new VariableNode('x'), new NumberNode(power))).toTex(),
+  );
+  tryToAddWrongProp(
+    propositions,
+    new MultiplyNode(new NumberNode(a - 1), new PowerNode(new VariableNode('x'), new NumberNode(power))).toTex(),
+  );
+  while (propositions.length < n) {
+    const wrongExponent = randint(2, 10);
+
+    tryToAddWrongProp(
+      propositions,
+      simplifyNode(
+        new MultiplyNode(
+          new NumberNode(a * wrongExponent),
+          new PowerNode(new VariableNode('x'), new NumberNode(wrongExponent - 1)),
+        ),
+      ).toTex(),
+    );
+  }
+
+  return shuffleProps(propositions, n);
+};
+
 export const powerFunctionDerivative: MathExercise<QCMProps, VEAProps> = {
   id: 'powerFunctionDerivative',
   connector: '=',
-  instruction: '',
+
   label: "Dérivée d'une fonction puissance",
   levels: ['1reESM', '1reSpé', '1reTech', 'MathComp'],
   sections: ['Dérivation'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getPowerFunctionDerivative, nb),
-  keys: ['x'],
+  getPropositions,
+
   qcmTimer: 60,
   freeTimer: 60,
 };
-
-export function getPowerFunctionDerivative(): Question {
-  const a = randint(-9, 10, [0]);
-  const n = randint(2, 10);
-
-  const statement = simplifyNode(
-    new MultiplyNode(new NumberNode(a), new PowerNode(new VariableNode('x'), new NumberNode(n))),
-  );
-
-  const answerStatement = simplifyNode(
-    new MultiplyNode(new NumberNode(a * n), new PowerNode(new VariableNode('x'), new NumberNode(n - 1))),
-  );
-
-  const getPropositions = (numOptions: number) => {
-    const propositions: Proposition[] = [];
-
-    propositions.push({
-      id: v4(),
-      statement: answerStatement.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    tryToAddWrongProp(
-      propositions,
-      new MultiplyNode(new NumberNode(a), new PowerNode(new VariableNode('x'), new NumberNode(n - 1))).toTex(),
-    );
-    tryToAddWrongProp(
-      propositions,
-      new MultiplyNode(new NumberNode(a * n), new PowerNode(new VariableNode('x'), new NumberNode(n))).toTex(),
-    );
-    tryToAddWrongProp(
-      propositions,
-      new MultiplyNode(new NumberNode(a - 1), new PowerNode(new VariableNode('x'), new NumberNode(n))).toTex(),
-    );
-    const missing = numOptions - propositions.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate;
-      let proposition: Proposition;
-
-      do {
-        const wrongExponent = randint(2, 10);
-        proposition = {
-          id: v4(),
-          statement: simplifyNode(
-            new MultiplyNode(
-              new NumberNode(a * wrongExponent),
-              new PowerNode(new VariableNode('x'), new NumberNode(wrongExponent - 1)),
-            ),
-          ).toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffleProps(propositions, numOptions);
-  };
-
-  const question: Question = {
-    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =${statement.toTex()}$.`,
-    startStatement: `f'(x)`,
-    answer: answerStatement.toTex(),
-    keys: ['x'],
-    getPropositions,
-    answerFormat: 'tex',
-  };
-
-  return question;
-}

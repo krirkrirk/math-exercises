@@ -2,25 +2,22 @@ import { Decimal, DecimalConstructor } from '#root/math/numbers/decimals/decimal
 import { randint } from '#root/math/utils/random/randint';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question } from '../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
-
-export const volumeCapacityConversion: MathExercise<QCMProps, VEAProps> = {
-  id: 'volumeCapacityConversion',
-  connector: '=',
-  instruction: '',
-  label: "Conversion d'un volume vers une contenance et vice versa",
-  levels: ['6ème', '5ème', 'CAP', '2ndPro'],
-  sections: ['Conversions'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getVolumeCapacityConversion, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
-
-export function getVolumeCapacityConversion(): Question {
+type VEAProps = {};
+const getVolumeCapacityConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const volumeUnits = ['mm^3', 'cm^3', 'dm^3', 'm^3', 'dam^3', 'hm^3', 'km^3'];
   const capacityUnits = ['mL', 'cL', 'dL', 'L', 'daL', 'hL', 'kL'];
 
@@ -45,46 +42,39 @@ export function getVolumeCapacityConversion(): Question {
     AsnwerUnit = volumeUnits[randomUnitInstructionIndex];
     answer = random.multiplyByPowerOfTen(randomUnitIndex - 3 + 3 * (2 - randomUnitInstructionIndex));
   }
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer.value + '',
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = answer.multiplyByPowerOfTen(randint(-3, 4, [0]));
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer.value + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const answerTex = (answer.value + '').replace('.', ',');
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `$${random.value}$ $${instructionUnit}$ = ... $${AsnwerUnit}$`,
-    answer: (answer.value + '').replace('.', ','),
+    answer: answerTex,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer: answerTex },
   };
 
   return question;
-}
+};
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const decimal = new Decimal(Number(answer.replace(',', '.')));
+  while (propositions.length < n) {
+    const wrongAnswer = decimal.multiplyByPowerOfTen(randint(-3, 4, [0]));
+    tryToAddWrongProp(propositions, wrongAnswer.value + '');
+  }
+
+  return shuffle(propositions);
+};
+
+export const volumeCapacityConversion: MathExercise<QCMProps, VEAProps> = {
+  id: 'volumeCapacityConversion',
+  connector: '=',
+  getPropositions,
+
+  label: "Conversion d'un volume vers une contenance et vice versa",
+  levels: ['6ème', '5ème', 'CAP', '2ndPro'],
+  sections: ['Conversions'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(getVolumeCapacityConversion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+};

@@ -1,6 +1,15 @@
-import { shuffleProps, MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  shuffleProps,
+  MathExercise,
+  Proposition,
+  Question,
+  tryToAddWrongProp,
+  QuestionGenerator,
+  addValidProp,
+  QCMGenerator,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
+import { Polynomial, PolynomialConstructor } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
@@ -8,10 +17,53 @@ import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { v4 } from 'uuid';
 
+type QCMProps = {
+  answer: string;
+  answerDenum: string;
+  poly1Coeffs: number[];
+  poly2Coeffs: number[];
+};
+type VEAProps = {};
+
+const getProductDerivativeQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const poly1 = PolynomialConstructor.randomWithLength(2, 2);
+  const poly2 = PolynomialConstructor.randomWithLength(2, 2);
+  const answerNum = poly1.derivate().multiply(poly2).add(poly1.opposite().multiply(poly2.derivate())).toTree().toTex();
+  const answerDenum = new PowerNode(poly2.toTree(), new NumberNode(2)).toTex();
+  const answer = `\\frac{${answerNum}}{${answerDenum}}`;
+
+  const question: Question<QCMProps, VEAProps> = {
+    answer,
+    instruction: `Déterminer la dérivée de la fonction $f$ définie par $f(x) = ${new FractionNode(
+      poly1.toTree(),
+      poly2.toTree(),
+    ).toTex()}$`,
+    keys: ['x', 'xsquare', 'xcube'],
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer, poly1Coeffs: poly1.coefficients, poly2Coeffs: poly2.coefficients, answerDenum },
+  };
+
+  return question;
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, answerDenum, poly1Coeffs, poly2Coeffs }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const poly1 = new Polynomial(poly1Coeffs);
+  const poly2 = new Polynomial(poly2Coeffs);
+  tryToAddWrongProp(propositions, `\\frac{${poly1.derivate().toTree().toTex()}}{${poly2.derivate().toTree().toTex()}}`);
+
+  while (propositions.length < n) {
+    const wrongAnswer = `\\frac{${PolynomialConstructor.random(2).toTree().toTex()}}{${answerDenum}}`;
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffleProps(propositions, n);
+};
+
 export const quotientDerivative: MathExercise<QCMProps, VEAProps> = {
   id: 'quotientDerivative',
   connector: '=',
-  instruction: '',
   label: "Dérivée d'un quotient de polynômes",
   levels: ['1reSpé', 'MathComp'],
   isSingleStep: true,
@@ -19,58 +71,5 @@ export const quotientDerivative: MathExercise<QCMProps, VEAProps> = {
   generator: (nb: number) => getDistinctQuestions(getProductDerivativeQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
+  getPropositions,
 };
-
-export function getProductDerivativeQuestion(): Question {
-  const poly1 = PolynomialConstructor.randomWithLength(2, 2);
-  const poly2 = PolynomialConstructor.randomWithLength(2, 2);
-  const answerNum = poly1.derivate().multiply(poly2).add(poly1.opposite().multiply(poly2.derivate())).toTree().toTex();
-  const answerDenum = new PowerNode(poly2.toTree(), new NumberNode(2)).toTex();
-  const answer = `\\frac{${answerNum}}{${answerDenum}}`;
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    tryToAddWrongProp(res, `\\frac{${poly1.derivate().toTree().toTex()}}{${poly2.derivate().toTree().toTex()}}`);
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = `\\frac{${PolynomialConstructor.random(2).toTree().toTex()}}{${answerDenum}}`;
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffleProps(res, n);
-  };
-
-  const question: Question = {
-    answer,
-    instruction: `Déterminer la dérivée de la fonction $f$ définie par $f(x) = ${new FractionNode(
-      poly1.toTree(),
-      poly2.toTree(),
-    ).toTex()}$`,
-    keys: ['x', 'xsquare', 'xcube'],
-    getPropositions,
-    answerFormat: 'tex',
-  };
-
-  return question;
-}
