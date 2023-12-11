@@ -2,25 +2,23 @@ import { randint } from '#root/math/utils/random/randint';
 import { round } from '#root/math/utils/round';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
-import { MathExercise, Proposition, Question } from '../exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
 import { v4 } from 'uuid';
-
-export const applyPercent: MathExercise<QCMProps, VEAProps> = {
-  id: 'applyPercent',
-  connector: '=',
-  instruction: '',
-  label: "Appliquer un pourcentage d'augmentation ou de diminution.",
-  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', 'TermPro', '1reTech', 'TermTech'],
-  sections: ['Pourcentages'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getApplyPercentQuestion, nb),
-  keys: ['percent'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getApplyPercentQuestion(): Question {
+const getApplyPercentQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const randNbr = randint(1, 500);
   const randPercent = randint(1, 100);
   let instruction = '';
@@ -36,51 +34,44 @@ export function getApplyPercentQuestion(): Question {
     instruction = `Appliquer une baisse de $${randPercent}\\%$ à $${randNbr}$.`;
   }
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: ans.toString(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        let wrongAnswer = ansNb;
-        const deviation = Math.random() < 0.5 ? -1 : 1;
-        const percentDeviation = Math.random() * 20 + 1;
-
-        wrongAnswer += deviation * (percentDeviation / 100) * ansNb;
-        wrongAnswer = round(wrongAnswer, 2);
-
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer.toString(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const answer = ans.toString();
+  const question: Question<QCMProps, VEAProps> = {
     instruction,
-    answer: ans.toString(),
+    answer,
     keys: ['percent'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    const ansNb = Number(answer.replace(',', '.'));
+    const deviation = Math.random() < 0.5 ? -1 : 1;
+    const percentDeviation = Math.random() * 20 + 1;
+
+    let wrongAnswer = ansNb + deviation * (percentDeviation / 100) * ansNb;
+    wrongAnswer = round(wrongAnswer, 2);
+    tryToAddWrongProp(propositions, wrongAnswer.toString());
+  }
+
+  return shuffle(propositions);
+};
+
+export const applyPercent: MathExercise<QCMProps, VEAProps> = {
+  id: 'applyPercent',
+  connector: '=',
+  label: "Appliquer un pourcentage d'augmentation ou de diminution.",
+  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', 'TermPro', '1reTech', 'TermTech'],
+  sections: ['Pourcentages'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getApplyPercentQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

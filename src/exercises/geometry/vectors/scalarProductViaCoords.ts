@@ -1,4 +1,12 @@
-import { MathExercise, Question, Proposition } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Question,
+  Proposition,
+  QCMGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+  QuestionGenerator,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Vector } from '#root/math/geometry/vector';
 import { distinctRandTupleInt } from '#root/math/utils/random/randTupleInt';
@@ -7,64 +15,48 @@ import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const scalarProductViaCoords: MathExercise<QCMProps,VEAProps><QCMProps, VEAProps> = {
+type QCMProps = {
+  answer: string;
+};
+type VEAProps = {};
+
+const getScalarProductViaCoordsQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const [coords1, coords2] = distinctRandTupleInt(2, 2, { from: -9, to: 10 });
+  const u = new Vector('u', new NumberNode(coords1[0]), new NumberNode(coords1[1]));
+  const v = new Vector('v', new NumberNode(coords2[0]), new NumberNode(coords2[1]));
+
+  const answer = u.scalarProduct(v).toTex();
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Soit $${u.toTexWithCoords()}$ et $${v.toTexWithCoords()}$. Calculer $${u.toTex()}\\cdot ${v.toTex()}$.`,
+    startStatement: `${u.toTex()}\\cdot ${v.toTex()}`,
+    answer: answer,
+    keys: [],
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
+  };
+  return question;
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, randint(-100, 100, [0]) + '');
+  }
+
+  return shuffle(propositions);
+};
+
+export const scalarProductViaCoords: MathExercise<QCMProps, VEAProps> = {
   id: 'scalarProductViaCoords',
   connector: '=',
-  instruction: '',
   isSingleStep: false,
   label: "Calculer un produit scalaire à l'aide des coordonnées",
   levels: ['1reSpé', 'TermSpé'],
   sections: ['Vecteurs'],
   generator: (nb: number) => getDistinctQuestions(getScalarProductViaCoordsQuestion, nb),
-  keys: [],
   qcmTimer: 60,
   freeTimer: 60,
+  getPropositions,
 };
-
-export function getScalarProductViaCoordsQuestion(): Question {
-  const [coords1, coords2] = distinctRandTupleInt(2, 2, { from: -9, to: 10 });
-  const u = new Vector('u', new NumberNode(coords1[0]), new NumberNode(coords1[1]));
-  const v = new Vector('v', new NumberNode(coords2[0]), new NumberNode(coords2[1]));
-
-  const correctAnswer = u.scalarProduct(v).toTex();
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: correctAnswer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: randint(-100, 100, [0]) + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  return {
-    instruction: `Soit $${u.toTexWithCoords()}$ et $${v.toTexWithCoords()}$. Calculer $${u.toTex()}\\cdot ${v.toTex()}$.`,
-    startStatement: `${u.toTex()}\\cdot ${v.toTex()}`,
-    answer: correctAnswer,
-    keys: [],
-    getPropositions,
-    answerFormat: 'tex',
-  };
-}

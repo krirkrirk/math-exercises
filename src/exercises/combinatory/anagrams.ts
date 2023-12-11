@@ -1,4 +1,13 @@
-import { shuffleProps, MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  shuffleProps,
+  MathExercise,
+  Proposition,
+  Question,
+  tryToAddWrongProp,
+  QuestionGenerator,
+  QCMGenerator,
+  addValidProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { random } from '#root/utils/random';
@@ -67,18 +76,6 @@ const words = [
   'toilette',
   'vitre',
 ];
-export const anagrams: MathExercise<QCMProps, VEAProps> = {
-  id: 'anagrams',
-  connector: '=',
-  instruction: '',
-  label: "Compter le nombre d'anagrammes d'un mot",
-  levels: ['TermSpé'],
-  isSingleStep: true,
-  sections: ['Combinatoire et dénombrement'],
-  generator: (nb: number) => getDistinctQuestions(getAnagramsQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
-};
 
 const letters = [
   'a',
@@ -112,7 +109,13 @@ const letters = [
   'à',
   'ç',
 ];
-export function getAnagramsQuestion(): Question {
+type QCMProps = {
+  answer: string;
+  word: string;
+};
+type VEAProps = {};
+
+const getAnagramsQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const word = random(words);
   const repeats: number[] = [];
   const wordLetters = word.split('');
@@ -134,51 +137,42 @@ export function getAnagramsQuestion(): Question {
   repeats.forEach((nbOfRepeats) => {
     arrangements *= getFacto(nbOfRepeats);
   });
-  const answer = facto / arrangements;
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
+  const answer = facto / arrangements + '';
 
-    res.push({
-      id: v4(),
-      statement: answer + ``,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    tryToAddWrongProp(res, Math.pow(word.length, word.length) + '');
-    tryToAddWrongProp(res, (word.length * (word.length + 1)) / 2 + '');
-    tryToAddWrongProp(res, word.length * word.length + '');
-
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = randint(1000, 10000);
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffleProps(res, n);
-  };
-
-  const question: Question = {
-    answer: answer + '',
+  const question: Question<QCMProps, VEAProps> = {
+    answer,
     instruction: `Combien d'anagrammes mathématiques du mot ${word} sont possibles ? `,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, word },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, word }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  tryToAddWrongProp(propositions, Math.pow(word.length, word.length) + '');
+  tryToAddWrongProp(propositions, (word.length * (word.length + 1)) / 2 + '');
+  tryToAddWrongProp(propositions, word.length * word.length + '');
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, randint(1000, 10000) + '');
+  }
+
+  return shuffleProps(propositions, n);
+};
+
+export const anagrams: MathExercise<QCMProps, VEAProps> = {
+  id: 'anagrams',
+  connector: '=',
+  label: "Compter le nombre d'anagrammes d'un mot",
+  levels: ['TermSpé'],
+  isSingleStep: true,
+  sections: ['Combinatoire et dénombrement'],
+  generator: (nb: number) => getDistinctQuestions(getAnagramsQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

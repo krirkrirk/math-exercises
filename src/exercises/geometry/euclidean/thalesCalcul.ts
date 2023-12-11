@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { Node } from '#root/tree/nodes/node';
@@ -7,22 +15,13 @@ import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const thalesCalcul: MathExercise<QCMProps, VEAProps> = {
-  id: 'thalesCalcul',
-  connector: '=',
-  instruction: '',
-  label: 'Utiliser le théoreme de Thalès pour faire des calculs',
-  levels: ['5ème', '4ème', '3ème', '2nde'],
-  isSingleStep: false,
-  sections: ['Géométrie euclidienne'],
-  generator: (nb: number) => getDistinctQuestions(getThales, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getThales(): Question {
+const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
   const vertices = [];
   const code = 65 + randint(0, 22); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 5; i++) vertices.push(String.fromCharCode(code + i));
@@ -123,50 +122,43 @@ export function getThales(): Question {
     `ShowLabel(${vertices[3]}, true)`,
     `ShowLabel(${vertices[4]}, true)`,
   ];
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: statement.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: simplifyNode(
-            new FractionNode(new NumberNode(randint(2, 30)), new NumberNode(randint(2, 30))),
-          ).toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const answer = statement.toTex();
+  const question: Question<QCMProps, VEAProps> = {
     instruction,
     startStatement,
-    answer: statement.toTex(),
+    answer,
     keys: [],
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  while (propositions.length < n) {
+    tryToAddWrongProp(
+      propositions,
+      simplifyNode(new FractionNode(new NumberNode(randint(2, 30)), new NumberNode(randint(2, 30)))).toTex(),
+    );
+  }
+
+  return shuffle(propositions);
+};
+
+export const thalesCalcul: MathExercise<QCMProps, VEAProps> = {
+  id: 'thalesCalcul',
+  connector: '=',
+  label: 'Utiliser le théoreme de Thalès pour faire des calculs',
+  levels: ['5ème', '4ème', '3ème', '2nde'],
+  isSingleStep: false,
+  sections: ['Géométrie euclidienne'],
+  generator: (nb: number) => getDistinctQuestions(getThales, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

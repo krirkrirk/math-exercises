@@ -1,23 +1,27 @@
-import { shuffleProps, MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  shuffleProps,
+  MathExercise,
+  Proposition,
+  Question,
+  tryToAddWrongProp,
+  QCMGenerator,
+  QuestionGenerator,
+  addValidProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { PointConstructor } from '#root/math/geometry/point';
 import { IntegerConstructor } from '#root/math/numbers/integer/integer';
+import { randint } from '#root/math/utils/random/randint';
 import { v4 } from 'uuid';
-
-export const coordinatesReading: MathExercise<QCMProps, VEAProps> = {
-  id: 'coordinatesReading',
-  connector: '=',
-  instruction: '',
-  label: "Lire les coordonnées d'un vecteur",
-  levels: ['2nde', '1reESM'],
-  isSingleStep: true,
-  sections: ['Vecteurs'],
-  generator: (nb: number) => getDistinctQuestions(getCoordinatesReadingQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  xA: number;
+  xB: number;
+  yA: number;
+  yB: number;
 };
+type VEAProps = {};
 
-export function getCoordinatesReadingQuestion(): Question {
+const getCoordinatesReadingQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const [xA, yA] = IntegerConstructor.randomDifferents(-5, 6, 2);
   let xB: number, yB: number;
   do {
@@ -39,52 +43,45 @@ export function getCoordinatesReadingQuestion(): Question {
     yMin === yMax ? yMin - 1 : yMin - 0.2 * Math.abs(yDelta),
     yMin === yMax ? yMax + 1 : yMax + 0.2 * Math.abs(yDelta),
   ];
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
 
-    res.push({
-      id: v4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-    tryToAddWrongProp(res, `\\left(${xA - xB};${yA - yB}\\right)`);
-    tryToAddWrongProp(res, `\\left(${xA + xB};${yA + yB}\\right)`);
-    tryToAddWrongProp(res, `\\left(${xA - yA};${xB - yB}\\right)`);
-    tryToAddWrongProp(res, `\\left(${yA - xA};${yB - xB}\\right)`);
-
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = '';
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffleProps(res, n);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     answer: answer,
     instruction: `Lire les coordonnées du vecteur $\\overrightarrow u$ représentée ci-dessous :`,
     keys: ['semicolon', 'u', 'overrightarrow', 'equal'],
-    getPropositions,
     answerFormat: 'tex',
     commands,
     coords,
+    qcmGeneratorProps: { answer, xA, xB, yA, yB },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, xA, xB, yA, yB }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  tryToAddWrongProp(propositions, `\\left(${xA - xB};${yA - yB}\\right)`);
+  tryToAddWrongProp(propositions, `\\left(${xA + xB};${yA + yB}\\right)`);
+  tryToAddWrongProp(propositions, `\\left(${xA - yA};${xB - yB}\\right)`);
+  tryToAddWrongProp(propositions, `\\left(${yA - xA};${yB - xB}\\right)`);
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, `\\left(${randint(-10, 10)};${randint(-10, 10)}\\right)`);
+  }
+
+  return shuffleProps(propositions, n);
+};
+
+export const coordinatesReading: MathExercise<QCMProps, VEAProps> = {
+  id: 'coordinatesReading',
+  connector: '=',
+  label: "Lire les coordonnées d'un vecteur",
+  levels: ['2nde', '1reESM'],
+  isSingleStep: true,
+  sections: ['Vecteurs'],
+  generator: (nb: number) => getDistinctQuestions(getCoordinatesReadingQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

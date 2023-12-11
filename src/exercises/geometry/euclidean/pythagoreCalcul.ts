@@ -1,27 +1,27 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
-import { SquareRoot, SquareRootConstructor } from '#root/math/numbers/reals/real';
+import { SquareRoot } from '#root/math/numbers/reals/real';
 import { randint } from '#root/math/utils/random/randint';
 import { KeyId } from '#root/types/keyIds';
 import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const pythagoreCalcul: MathExercise<QCMProps, VEAProps> = {
-  id: 'pythagoreCalcul',
-  connector: '=',
-  instruction: '',
-  label: 'Utiliser le théoreme de Pythagore pour faire des calculs',
-  levels: ['4ème', '3ème', '2nde'],
-  isSingleStep: false,
-  sections: ['Géométrie euclidienne'],
-  generator: (nb: number) => getDistinctQuestions(getPythagoreCalcul, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getPythagoreCalcul(): Question {
+const getPythagoreCalcul: QuestionGenerator<QCMProps, VEAProps> = () => {
   const vertices = [];
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i));
@@ -59,56 +59,47 @@ export function getPythagoreCalcul(): Question {
       highlightedSide: sides[randoms[2]],
     }),
   ];
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer + '',
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const temp = randint(2, 300);
-        const squareRoot = new SquareRoot(temp);
-        const wrongAnswer =
-          Math.sqrt(temp) === Math.floor(Math.sqrt(temp)) ? Math.sqrt(temp).toString() : squareRoot.toTree().toTex();
-
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  answer = answer + '';
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Dans le triangle ${triangle.getTriangleName()} ci-dessous rectangle en ${triangle.getRightAngle()}, on sait que ${
       sides[randoms[0]]
     } = $${sideLengths[randoms[0]]}$ et que ${sides[randoms[1]]} = $${
       sideLengths[randoms[1]]
     }$.$\\\\$Calculer la longueur exacte ${sides[randoms[2]]}`,
-    answer: answer + '',
+    answer,
     keys: [...(vertices as KeyId[]), 'equal'],
     commands,
     coords: triangle.generateCoords(),
-    getPropositions,
     answerFormat: 'tex',
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    const temp = randint(2, 300);
+    const squareRoot = new SquareRoot(temp);
+    const wrongAnswer =
+      Math.sqrt(temp) === Math.floor(Math.sqrt(temp)) ? Math.sqrt(temp).toString() : squareRoot.toTree().toTex();
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffle(propositions);
+};
+
+export const pythagoreCalcul: MathExercise<QCMProps, VEAProps> = {
+  id: 'pythagoreCalcul',
+  connector: '=',
+  label: 'Utiliser le théoreme de Pythagore pour faire des calculs',
+  levels: ['4ème', '3ème', '2nde'],
+  isSingleStep: false,
+  sections: ['Géométrie euclidienne'],
+  generator: (nb: number) => getDistinctQuestions(getPythagoreCalcul, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

@@ -1,4 +1,14 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  VEA,
+  addValidProp,
+  shuffleProps,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
 import { randint } from '#root/math/utils/random/randint';
@@ -6,10 +16,53 @@ import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
+type QCMProps = {
+  answer: string;
+  sideA: string;
+  sideB: string;
+
+  sideC: string;
+};
+type VEAProps = {};
+const getPythagore: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const vertices: KeyId[] = [];
+  const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
+  for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i) as KeyId);
+
+  const triangle = TriangleConstructor.createRandomRightTriangle({ minRapport: 0.7, maxRapport: 1.3, names: vertices });
+  const sideA = triangle.getSideAName();
+  const sideB = triangle.getSideBName();
+  const sideC = triangle.getSideCName();
+  const answer = `${sideA}^2=${sideB}^2+${sideC}^2`;
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: "Écrire l'égalité de Pythagore pour la figure suivante : ",
+
+    answer,
+    keys: [...vertices, 'equal'],
+    commands: triangle.generateCommands({}),
+    coords: triangle.generateCoords(),
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer, sideA, sideB, sideC },
+  };
+
+  return question;
+};
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, sideA, sideB, sideC }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  tryToAddWrongProp(propositions, `${sideA} = ${sideB} + ${sideC}`);
+  tryToAddWrongProp(propositions, `${sideA}^2 = ${sideB}^2 - ${sideC}^2`);
+  tryToAddWrongProp(propositions, `${sideB}^2 = ${sideA}^2 + ${sideC}^2`);
+  tryToAddWrongProp(propositions, `${sideC}^2 = ${sideA}^2 + ${sideB}^2`);
+  tryToAddWrongProp(propositions, `${sideA}^2 = ${sideB} + ${sideC}^2`);
+  tryToAddWrongProp(propositions, `${sideA}^2 = ${sideB}^2 + ${sideC}`);
+
+  return shuffleProps(propositions, n);
+};
+
 export const pythagore: MathExercise<QCMProps, VEAProps> = {
   id: 'pythagore',
   connector: '=',
-  instruction: '',
   label: "Écrire l'égalité de Pythagore",
   levels: ['4ème', '3ème', '2nde'],
   isSingleStep: false,
@@ -17,84 +70,5 @@ export const pythagore: MathExercise<QCMProps, VEAProps> = {
   generator: (nb: number) => getDistinctQuestions(getPythagore, nb),
   qcmTimer: 60,
   freeTimer: 60,
+  getPropositions,
 };
-
-export function getPythagore(): Question {
-  const vertices: KeyId[] = [];
-  const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
-  for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i) as KeyId);
-
-  const triangle = TriangleConstructor.createRandomRightTriangle({ minRapport: 0.7, maxRapport: 1.3, names: vertices });
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: `${triangle.getSideAName()}^2 = ${triangle.getSideBName()}^2 + ${triangle.getSideCName()}^2`,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    res.push({
-      id: v4() + '',
-      statement: `${triangle.getSideAName()} = ${triangle.getSideBName()} + ${triangle.getSideCName()}`,
-      isRightAnswer: false,
-      format: 'tex',
-    });
-
-    if (n > 2)
-      res.push({
-        id: v4() + '',
-        statement: `${triangle.getSideAName()}^2 = ${triangle.getSideBName()}^2 - ${triangle.getSideCName()}^2`,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    if (n > 3)
-      res.push({
-        id: v4() + '',
-        statement: `${triangle.getSideBName()}^2 = ${triangle.getSideAName()}^2 + ${triangle.getSideCName()}^2`,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    if (n > 4)
-      res.push({
-        id: v4() + '',
-        statement: `${triangle.getSideCName()}^2 = ${triangle.getSideAName()}^2 + ${triangle.getSideBName()}^2`,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    if (n > 5)
-      res.push({
-        id: v4() + '',
-        statement: `${triangle.getSideAName()}^2 = ${triangle.getSideBName()} + ${triangle.getSideCName()}^2`,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    if (n > 6)
-      res.push({
-        id: v4() + '',
-        statement: `${triangle.getSideAName()}^2 = ${triangle.getSideBName()}^2 + ${triangle.getSideCName()}`,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
-    instruction: "Écrire l'égalité de Pythagore pour la figure suivante : ",
-
-    answer: `${triangle.getSideAName()}^2=${triangle.getSideBName()}^2+${triangle.getSideCName()}^2`,
-    keys: [...vertices, 'equal'],
-    commands: triangle.generateCommands({}),
-    coords: triangle.generateCoords(),
-    getPropositions,
-    answerFormat: 'tex',
-  };
-
-  return question;
-}

@@ -1,4 +1,13 @@
-import { shuffleProps, MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  shuffleProps,
+  MathExercise,
+  Proposition,
+  Question,
+  tryToAddWrongProp,
+  QuestionGenerator,
+  QCMGenerator,
+  addValidProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -7,10 +16,57 @@ import { probaFlip } from '#root/utils/probaFlip';
 import { probaLawFlip } from '#root/utils/probaLawFlip';
 import { v4 } from 'uuid';
 
+type QCMProps = {
+  answer: string;
+  a: number;
+  b: number;
+};
+type VEAProps = {};
+
+const getAbsoluteValueEquationsQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const poly = new Polynomial([randint(-9, 10, [0]), 1]);
+  const a = probaFlip(0.9) ? randint(1, 10) : coinFlip() ? 0 : randint(-9, 0);
+  //|x-b| = a
+  const b = -poly.coefficients[0];
+  const answer =
+    a === 0 ? `S=\\left\\{${b}\\right\\}` : a < 0 ? `S=\\emptyset` : `S=\\left\\{${b - a};${b + a}\\right\\}`;
+
+  const question: Question<QCMProps, VEAProps> = {
+    answer: answer,
+    instruction: `Résoudre l'équation $|${poly.toTree().toTex()}| = ${a}$.`,
+    keys: ['S', 'equal', 'emptyset', 'lbrace', 'semicolon', 'rbrace'],
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer, a, b },
+  };
+
+  return question;
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  if (a < 0) {
+    tryToAddWrongProp(propositions, `S=\\left\\{${b - a};${b + a}\\right\\}`);
+    tryToAddWrongProp(propositions, `S=\\left\\{${b + a}\\right\\}`);
+  } else if (a === 0) {
+    tryToAddWrongProp(propositions, `S=\\emptyset`);
+  } else if (a > 0) {
+    tryToAddWrongProp(propositions, `S=\\left\\{${b + a}\\right\\}`);
+    tryToAddWrongProp(propositions, `S=\\left\\{${-b - a};${-b + a}\\right\\}`);
+  }
+  while (propositions.length < n) {
+    const wrongAnswer = `S=\\left\\{${randint(-9, 0)};${randint(0, 10)}\\right\\}`;
+
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffleProps(propositions, n);
+};
+
 export const absoluteValueEquations: MathExercise<QCMProps, VEAProps> = {
   id: 'absoluteValueEquation',
   connector: '\\iff',
-  instruction: '',
   label: 'Résoudre une équation avec valeur absolue',
   levels: ['2nde', '1reESM'],
   isSingleStep: true,
@@ -18,62 +74,5 @@ export const absoluteValueEquations: MathExercise<QCMProps, VEAProps> = {
   generator: (nb: number) => getDistinctQuestions(getAbsoluteValueEquationsQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
+  getPropositions,
 };
-
-export function getAbsoluteValueEquationsQuestion(): Question {
-  const poly = new Polynomial([randint(-9, 10, [0]), 1]);
-  const a = probaFlip(0.9) ? randint(1, 10) : coinFlip() ? 0 : randint(-9, 0);
-  //|x-b| = a
-  const b = -poly.coefficients[0];
-  const answer =
-    a === 0 ? `S=\\left\\{${b}\\right\\}` : a < 0 ? `S=\\emptyset` : `S=\\left\\{${b - a};${b + a}\\right\\}`;
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-    res.push({
-      id: v4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-    if (a < 0) {
-      tryToAddWrongProp(res, `S=\\left\\{${b - a};${b + a}\\right\\}`);
-      tryToAddWrongProp(res, `S=\\left\\{${b + a}\\right\\}`);
-    } else if (a === 0) {
-      tryToAddWrongProp(res, `S=\\emptyset`);
-    } else if (a > 0) {
-      tryToAddWrongProp(res, `S=\\left\\{${b + a}\\right\\}`);
-      tryToAddWrongProp(res, `S=\\left\\{${-b - a};${-b + a}\\right\\}`);
-    }
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = `S=\\left\\{${randint(-9, 0)};${randint(0, 10)}\\right\\}`;
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffleProps(res, n);
-  };
-
-  const question: Question = {
-    answer: answer,
-    instruction: `Résoudre l'équation $|${poly.toTree().toTex()}| = ${a}$.`,
-    keys: ['S', 'equal', 'emptyset', 'lbrace', 'semicolon', 'rbrace'],
-    getPropositions,
-    answerFormat: 'tex',
-  };
-
-  return question;
-}

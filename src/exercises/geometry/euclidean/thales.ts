@@ -1,24 +1,24 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const thales: MathExercise<QCMProps, VEAProps> = {
-  id: 'thales',
-  connector: '=',
-  instruction: '',
-  label: "Ecrire l'égalité de Thalès",
-  levels: ['5ème', '4ème', '3ème', '2nde'],
-  isSingleStep: false,
-  sections: ['Géométrie euclidienne'],
-  generator: (nb: number) => getDistinctQuestions(getThales, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  vertices: string[];
 };
+type VEAProps = {};
 
-export function getThales(): Question {
+const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
   const vertices: string[] = [];
   const code = 65 + randint(0, 22); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 5; i++) vertices.push(String.fromCharCode(code + i));
@@ -66,64 +66,60 @@ export function getThales(): Question {
     `ShowLabel(${vertices[4]}, true)`,
   ];
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-    const wrongQuotients = [
-      vertices[0] + vertices[3],
-      vertices[0] + vertices[1],
-      vertices[0] + vertices[4],
-      vertices[0] + vertices[2],
-      vertices[3] + vertices[4],
-      vertices[1] + vertices[2],
-      vertices[1] + vertices[3],
-      vertices[2] + vertices[4],
-    ];
+  const answer = `\\frac{${vertices[0]}${vertices[3]}}{${vertices[0]}${vertices[1]}}=\\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}}=\\frac{${vertices[3]}${vertices[4]}}{${vertices[1]}${vertices[2]}}`;
 
-    res.push({
-      id: v4() + '',
-      statement: `\\frac{${vertices[0]}${vertices[3]}}{${vertices[0]}${vertices[1]}} = 
-      \\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}} = 
-      \\frac{${vertices[3]}${vertices[4]}}{${vertices[1]}${vertices[2]}}`,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    const indexRange = Array.from({ length: 8 }, (_, i) => i);
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const rands = shuffle(indexRange).slice(0, 6);
-
-        proposition = {
-          id: v4() + '',
-          statement: `\\frac{${wrongQuotients[rands[0]]}}{${wrongQuotients[rands[1]]}} = 
-          \\frac{${wrongQuotients[rands[2]]}}{${wrongQuotients[rands[3]]}} = 
-          \\frac{${wrongQuotients[rands[4]]}}{${wrongQuotients[rands[5]]}}`,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `En utilisant le théoreme de Thalès, Écrire l'égalité des quotients sachant que :$\\\\$ (${vertices[3]}${vertices[4]})//(${vertices[1]}${vertices[2]})`,
-    answer: `\\frac{${vertices[0]}${vertices[3]}}{${vertices[0]}${vertices[1]}}=\\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}}=\\frac{${vertices[3]}${vertices[4]}}{${vertices[1]}${vertices[2]}}`,
+    answer,
     keys: [...(vertices as KeyId[]), 'equal'],
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, vertices },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, vertices }) => {
+  const propositions: Proposition[] = [];
+  const wrongQuotients = [
+    vertices[0] + vertices[3],
+    vertices[0] + vertices[1],
+    vertices[0] + vertices[4],
+    vertices[0] + vertices[2],
+    vertices[3] + vertices[4],
+    vertices[1] + vertices[2],
+    vertices[1] + vertices[3],
+    vertices[2] + vertices[4],
+  ];
+
+  addValidProp(propositions, answer);
+  const indexRange = Array.from({ length: 8 }, (_, i) => i);
+
+  while (propositions.length < n) {
+    const rands = shuffle(indexRange).slice(0, 6);
+
+    tryToAddWrongProp(
+      propositions,
+      `\\frac{${wrongQuotients[rands[0]]}}{${wrongQuotients[rands[1]]}} = 
+    \\frac{${wrongQuotients[rands[2]]}}{${wrongQuotients[rands[3]]}} = 
+    \\frac{${wrongQuotients[rands[4]]}}{${wrongQuotients[rands[5]]}}`,
+    );
+  }
+
+  return shuffle(propositions);
+};
+
+export const thales: MathExercise<QCMProps, VEAProps> = {
+  id: 'thales',
+  connector: '=',
+  label: "Ecrire l'égalité de Thalès",
+  levels: ['5ème', '4ème', '3ème', '2nde'],
+  isSingleStep: false,
+  sections: ['Géométrie euclidienne'],
+  generator: (nb: number) => getDistinctQuestions(getThales, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

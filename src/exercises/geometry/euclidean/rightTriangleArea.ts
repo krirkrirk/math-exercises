@@ -1,25 +1,24 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
 import { randint } from '#root/math/utils/random/randint';
 import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 
-export const rightTriangleArea: MathExercise<QCMProps, VEAProps> = {
-  id: 'rightTriangleArea',
-  connector: '=',
-  instruction: '',
-  label: "Calculer l'aire d'un triangle rectangle",
-  levels: ['4ème', '3ème', '2nde'],
-  isSingleStep: false,
-  sections: ['Géométrie euclidienne'],
-  generator: (nb: number) => getDistinctQuestions(getRightTriangleArea, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getRightTriangleArea(): Question {
+const getRightTriangleArea: QuestionGenerator<QCMProps, VEAProps> = () => {
   const vertices = [];
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i));
@@ -35,48 +34,42 @@ export function getRightTriangleArea(): Question {
     }),
   ];
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: (sidesLength[0] * sidesLength[1]) / 2 + '',
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: (randint(2, 12) * randint(2, 12)) / 2 + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const answer = ((sidesLength[0] * sidesLength[1]) / 2 + '').replace('.', ',');
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Calculer l'aire du triangle ${triangle.getTriangleName()} rectangle en ${triangle.getRightAngle()} sachant que ${triangle.getSideBName()} = $${
       sidesLength[0]
     }$ cm et ${triangle.getSideCName()} = $${sidesLength[1]}$ cm.`,
-    answer: ((sidesLength[0] * sidesLength[1]) / 2 + '').replace('.', ','),
+    answer,
     keys: [...(vertices as KeyId[]), 'equal', 'cm2'],
     commands,
     coords: triangle.generateCoords(),
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, (randint(2, 12) * randint(2, 12)) / 2 + '');
+  }
+
+  return shuffle(propositions);
+};
+
+export const rightTriangleArea: MathExercise<QCMProps, VEAProps> = {
+  id: 'rightTriangleArea',
+  connector: '=',
+  label: "Calculer l'aire d'un triangle rectangle",
+  levels: ['4ème', '3ème', '2nde'],
+  isSingleStep: false,
+  sections: ['Géométrie euclidienne'],
+  generator: (nb: number) => getDistinctQuestions(getRightTriangleArea, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

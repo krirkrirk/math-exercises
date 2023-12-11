@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { TriangleConstructor } from '#root/math/geometry/triangles';
 import { randint } from '#root/math/utils/random/randint';
@@ -7,20 +15,12 @@ import { KeyId } from '#root/types/keyIds';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const trigonometryAngleCalcul: MathExercise<QCMProps, VEAProps> = {
-  id: 'trigonometryAngleCalcul',
-  connector: '=',
-  instruction: '',
-  label: 'Utiliser la trigonométrie pour calculer un angle',
-  levels: ['4ème', '3ème', '2nde'],
-  isSingleStep: false,
-  sections: ['Géométrie euclidienne'],
-  generator: (nb: number) => getDistinctQuestions(getTrigonometryAngleCalcul, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getTrigonometryAngleCalcul(): Question {
+const getTrigonometryAngleCalcul: QuestionGenerator<QCMProps, VEAProps> = () => {
   const vertices = [];
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i));
@@ -42,51 +42,44 @@ export function getTrigonometryAngleCalcul(): Question {
     randAngle === 0
       ? Math.round((Math.acos(sideLengths[0] / sideLengths[2]) * 180) / Math.PI)
       : Math.round((Math.acos(sideLengths[1] / sideLengths[2]) * 180) / Math.PI);
+  const answerTex = answer + '°';
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer + '°',
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        proposition = {
-          id: v4() + '',
-          statement: randint(20, 80) + '°',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Le triangle ${triangle.getTriangleName()} rectangle en ${triangle.getRightAngle()} est tel que ${
       sides[randSides[0]]
     } = $${sideLengths[randSides[0]]}$ cm et ${sides[randSides[1]]} = $${
       sideLengths[randSides[1]]
     }$ cm.$\\\\$ Calculer $\\widehat{${angle[randAngle]}}$ à 1° près.`,
-    answer: answer + '°',
+    answer: answerTex,
     keys: [...(vertices as KeyId[]), 'equal', 'degree', 'cos', 'sin', 'tan', 'arccos', 'arcsin', 'arctan'],
     commands: [...triangle.generateCommands({ highlightedAngle: angle[randAngle] })],
     coords: triangle.generateCoords(),
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer: answerTex },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, randint(20, 80) + '°');
+  }
+
+  return shuffle(propositions);
+};
+
+export const trigonometryAngleCalcul: MathExercise<QCMProps, VEAProps> = {
+  id: 'trigonometryAngleCalcul',
+  connector: '=',
+  label: 'Utiliser la trigonométrie pour calculer un angle',
+  levels: ['4ème', '3ème', '2nde'],
+  isSingleStep: false,
+  sections: ['Géométrie euclidienne'],
+  generator: (nb: number) => getDistinctQuestions(getTrigonometryAngleCalcul, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

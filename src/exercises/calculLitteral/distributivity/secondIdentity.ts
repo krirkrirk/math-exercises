@@ -1,7 +1,15 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
-import { AffineConstructor } from '#root/math/polynomials/affine';
+import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { DiscreteSet } from '#root/math/sets/discreteSet';
 import { Interval } from '#root/math/sets/intervals/intervals';
@@ -10,90 +18,61 @@ import { PowerNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
+type QCMProps = {
+  answer: string;
+  a: number;
+  b: number;
+};
+type VEAProps = {};
+
+const intervalA = new Interval('[[0; 10]]').difference(new DiscreteSet([new Integer(0)]));
+const intervalB = new Interval('[[-10; 0]]').difference(new DiscreteSet([new Integer(0)]));
+
+export const getSecondIdentityQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const affine = AffineConstructor.random(intervalA, intervalB);
+
+  const statementTree = new PowerNode(affine.toTree(), new NumberNode(2));
+  const answer = affine.multiply(affine).toTree().toTex();
+
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Développer et réduire : $${statementTree.toTex()}$`,
+    startStatement: statementTree.toTex(),
+    answer,
+    keys: ['x'],
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer, a: affine.a, b: affine.b },
+  };
+  return question;
+};
+
+export const getSecondIdentityPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  tryToAddWrongProp(propositions, new Polynomial([-(b ** 2), 0, a ** 2]).toTree().toTex());
+  tryToAddWrongProp(propositions, new Polynomial([b ** 2, a * b, a ** 2]).toTree().toTex());
+  tryToAddWrongProp(propositions, new Polynomial([-(b ** 2), -(a ** 2 + b ** 2), a ** 2]).toTree().toTex());
+
+  const affine = new Affine(a, b);
+  while (propositions.length < n) {
+    const affineTemp = AffineConstructor.random(intervalA, intervalB);
+    const wrongAnswer = affine.multiply(affineTemp).toTree();
+    tryToAddWrongProp(propositions, wrongAnswer.toTex());
+  }
+
+  return shuffle(propositions);
+};
+
 export const secondIdentity: MathExercise<QCMProps, VEAProps> = {
   id: 'idRmq2',
   connector: '=',
-  instruction: '',
   label: 'Identité remarquable $(a-b)^2$',
   levels: ['3ème', '2nde'],
   sections: ['Calcul littéral'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getSecondIdentityQuestion, nb),
-  keys: ['x'],
+  getPropositions: getSecondIdentityPropositions,
+
   qcmTimer: 60,
   freeTimer: 60,
 };
-
-export function getSecondIdentityQuestion(): Question {
-  const intervalA = new Interval('[[0; 10]]').difference(new DiscreteSet([new Integer(0)]));
-  const intervalB = new Interval('[[-10; 0]]').difference(new DiscreteSet([new Integer(0)]));
-  const affine = AffineConstructor.random(intervalA, intervalB);
-
-  const statementTree = new PowerNode(affine.toTree(), new NumberNode(2));
-  const answerTree = affine.multiply(affine).toTree();
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answerTree.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    res.push({
-      id: v4() + '',
-      statement: new Polynomial([-(affine.b ** 2), 0, affine.a ** 2]).toTree().toTex(),
-      isRightAnswer: false,
-      format: 'tex',
-    });
-
-    if (n > 2)
-      res.push({
-        id: v4() + '',
-        statement: new Polynomial([affine.b ** 2, affine.a * affine.b, affine.a ** 2]).toTree().toTex(),
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    if (n > 3)
-      res.push({
-        id: v4() + '',
-        statement: new Polynomial([-(affine.b ** 2), -(affine.a ** 2 + affine.b ** 2), affine.a ** 2]).toTree().toTex(),
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    for (let i = 0; i < n - 4; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const affineTemp = AffineConstructor.random(intervalA, intervalB);
-        const wrongAnswer = affine.multiply(affineTemp).toTree();
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer.toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  return {
-    instruction: `Développer et réduire : $${statementTree.toTex()}$`,
-    startStatement: statementTree.toTex(),
-    answer: answerTree.toTex(),
-    keys: ['x'],
-    getPropositions,
-    answerFormat: 'tex',
-  };
-}

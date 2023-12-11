@@ -1,22 +1,26 @@
-import { shuffleProps, MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  shuffleProps,
+  MathExercise,
+  Proposition,
+  Question,
+  tryToAddWrongProp,
+  QuestionGenerator,
+  QCMGenerator,
+  addValidProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { v4 } from 'uuid';
-
-export const ballsCounting: MathExercise<QCMProps, VEAProps> = {
-  id: 'ballsCounting',
-  connector: '=',
-  instruction: '',
-  label: 'Dénombrement avec des boules',
-  levels: ['TermSpé'],
-  isSingleStep: true,
-  sections: ['Combinatoire et dénombrement'],
-  generator: (nb: number) => getDistinctQuestions(getBallsCountingQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  type: number;
+  reds: number;
+  greens: number;
+  blacks: number;
 };
+type VEAProps = {};
 
-export function getBallsCountingQuestion(): Question {
+const getBallsCountingQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const type = randint(0, 6);
   let instruction = '';
   let answer = '';
@@ -53,77 +57,69 @@ export function getBallsCountingQuestion(): Question {
       instruction = `comportant exactement une boule verte`;
       answer = 6 * greens * (reds + blacks) * (reds + blacks - 1) + '';
   }
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
 
-    res.push({
-      id: v4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-    switch (type) {
-      case 0:
-        tryToAddWrongProp(res, total * total * total + '');
-        tryToAddWrongProp(res, 6 + '');
-        break;
-      case 1:
-        tryToAddWrongProp(res, reds * reds * reds + '');
-        tryToAddWrongProp(res, 1 + '');
-        break;
-      case 2:
-        tryToAddWrongProp(res, (reds + greens) * (reds + greens) * (reds + greens) + '');
-        tryToAddWrongProp(res, 6 * blacks * (reds + greens) * (reds + greens - 1) + '');
-        break;
-      case 3:
-        tryToAddWrongProp(res, (reds + greens) * (reds + greens) * (reds + greens) + '');
-        tryToAddWrongProp(res, 3 * (reds + greens) * (reds + greens - 1) + '');
-        break;
-      case 4:
-        tryToAddWrongProp(res, blacks * greens * reds + '');
-        tryToAddWrongProp(res, 6 + '');
-        break;
-      case 5:
-        tryToAddWrongProp(res, 6 * greens * blacks * blacks + '');
-        tryToAddWrongProp(res, 6 + '');
-        break;
-      case 6:
-        tryToAddWrongProp(res, 6 * (blacks * greens * reds) + '');
-        tryToAddWrongProp(res, greens * (reds + blacks) * (reds + blacks - 1) + '');
-        break;
-    }
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = randint(1, 100) + '';
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffleProps(res, n);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     answer: answer,
     instruction: `Une urne contient ${blacks} boules noires numérotées de 1 à ${blacks}, ${reds} boules rouges numérotées de 1 à ${reds} et ${greens} boules vertes numérotées de 1 à ${greens}.
     On tire successivement et sans remise 3 boules dans l'urne. 
     Combien de tirages ${instruction} sont possibles ?`,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, type, reds, greens, blacks },
   };
 
   return question;
-}
+};
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, type, reds, greens, blacks }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const total = reds + greens + blacks;
+  switch (type) {
+    case 0:
+      tryToAddWrongProp(propositions, total * total * total + '');
+      tryToAddWrongProp(propositions, 6 + '');
+      break;
+    case 1:
+      tryToAddWrongProp(propositions, reds * reds * reds + '');
+      tryToAddWrongProp(propositions, 1 + '');
+      break;
+    case 2:
+      tryToAddWrongProp(propositions, (reds + greens) * (reds + greens) * (reds + greens) + '');
+      tryToAddWrongProp(propositions, 6 * blacks * (reds + greens) * (reds + greens - 1) + '');
+      break;
+    case 3:
+      tryToAddWrongProp(propositions, (reds + greens) * (reds + greens) * (reds + greens) + '');
+      tryToAddWrongProp(propositions, 3 * (reds + greens) * (reds + greens - 1) + '');
+      break;
+    case 4:
+      tryToAddWrongProp(propositions, blacks * greens * reds + '');
+      tryToAddWrongProp(propositions, 6 + '');
+      break;
+    case 5:
+      tryToAddWrongProp(propositions, 6 * greens * blacks * blacks + '');
+      tryToAddWrongProp(propositions, 6 + '');
+      break;
+    case 6:
+      tryToAddWrongProp(propositions, 6 * (blacks * greens * reds) + '');
+      tryToAddWrongProp(propositions, greens * (reds + blacks) * (reds + blacks - 1) + '');
+      break;
+  }
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, randint(1, 100) + '');
+  }
+
+  return shuffleProps(propositions, n);
+};
+
+export const ballsCounting: MathExercise<QCMProps, VEAProps> = {
+  id: 'ballsCounting',
+  connector: '=',
+  label: 'Dénombrement avec des boules',
+  levels: ['TermSpé'],
+  isSingleStep: true,
+  sections: ['Combinatoire et dénombrement'],
+  generator: (nb: number) => getDistinctQuestions(getBallsCountingQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question, tryToAddWrongProp } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Rational } from '#root/math/numbers/rationals/rational';
 import { Monom } from '#root/math/polynomials/monom';
@@ -8,20 +16,12 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const rationalFracLimit: MathExercise<QCMProps,VEAProps><QCMProps, VEAProps> = {
-  id: 'rationalFracLimit',
-  connector: '=',
-  instruction: '',
-  label: "Limite d'une fraction rationnelle",
-  levels: ['TermSpé', 'MathComp'],
-  isSingleStep: true,
-  sections: ['Limites'],
-  generator: (nb: number) => getDistinctQuestions(getSequenceRationalFracLimitQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  leadingCoeffsRational: string;
 };
-
-export function getSequenceRationalFracLimitQuestion(): Question {
+type VEAProps = {};
+const getSequenceRationalFracLimitQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const polyNum = PolynomialConstructor.randomWithLength(4, randint(2, 5));
   const polyDenum = PolynomialConstructor.randomWithLength(4, randint(2, 5));
 
@@ -40,53 +40,44 @@ export function getSequenceRationalFracLimitQuestion(): Question {
     answer = tempPoly.getLimit(to);
   }
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    tryToAddWrongProp(res, '+\\infty');
-    tryToAddWrongProp(res, '-\\infty');
-    tryToAddWrongProp(res, '0');
-    tryToAddWrongProp(res, leadingCoeffsRational);
-
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = randint(-10, 10) + '';
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     answer,
     instruction: `Déterminer la limite en $${to}$ de la fonction $f$ définie par : $f(x) = \\dfrac{${polyNum
       .toTree()
       .toTex()}}{${polyDenum.toTree().toTex()}}$.`,
     keys: ['infty'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, leadingCoeffsRational },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, leadingCoeffsRational }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  tryToAddWrongProp(propositions, '+\\infty');
+  tryToAddWrongProp(propositions, '-\\infty');
+  tryToAddWrongProp(propositions, '0');
+  tryToAddWrongProp(propositions, leadingCoeffsRational);
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, randint(-10, 10) + '');
+  }
+
+  return shuffle(propositions);
+};
+
+export const rationalFracLimit: MathExercise<QCMProps, VEAProps> = {
+  id: 'rationalFracLimit',
+  connector: '=',
+  label: "Limite d'une fraction rationnelle",
+  levels: ['TermSpé', 'MathComp'],
+  isSingleStep: true,
+  sections: ['Limites'],
+  generator: (nb: number) => getDistinctQuestions(getSequenceRationalFracLimitQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

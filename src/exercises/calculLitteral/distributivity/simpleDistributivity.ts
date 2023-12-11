@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
@@ -9,91 +17,59 @@ import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
+type QCMProps = {
+  answer: string;
+  a: number;
+  b: number;
+  coeff: number;
+};
+type VEAProps = {};
+
+const excludeNbrs = [new Integer(-1), new Integer(0), new Integer(1)];
+const interval = new Interval('[[-10; 10]]').difference(new DiscreteSet(excludeNbrs));
+
+const getSimpleDistributivityQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const affine = AffineConstructor.random(interval, interval);
+  const coeff = interval.getRandomElement()!;
+
+  const statementTree = new MultiplyNode(new NumberNode(coeff.value), affine.toTree());
+  const answer = affine.times(coeff.value).toTree().toTex();
+
+  const question: Question<QCMProps, VEAProps> = {
+    instruction: `Développer et réduire : $${statementTree.toTex()}$`,
+    startStatement: statementTree.toTex(),
+    answer,
+    keys: ['x'],
+    answerFormat: 'tex',
+    qcmGeneratorProps: { answer, a: affine.a, b: affine.b, coeff: coeff.value },
+  };
+  return question;
+};
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, coeff }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const affine = new Affine(a, b);
+  tryToAddWrongProp(propositions, new Affine(coeff * a, b).toTree().toTex());
+  tryToAddWrongProp(propositions, new Affine(a, coeff * b).toTree().toTex());
+  tryToAddWrongProp(propositions, affine.times(-coeff).toTree().toTex());
+
+  while (propositions.length < n) {
+    const wrongAnswer = AffineConstructor.random(interval, interval).toTree();
+    tryToAddWrongProp(propositions, wrongAnswer.toTex());
+  }
+
+  return shuffle(propositions);
+};
+
 export const simpleDistributivity: MathExercise<QCMProps, VEAProps> = {
   id: 'simpleDistri',
   connector: '=',
-  instruction: '',
   label: 'Distributivité simple',
   levels: ['3ème', '2nde', 'CAP', '2ndPro', '1reTech'],
   sections: ['Calcul littéral'],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getSimpleDistributivityQuestion, nb),
-  keys: ['x'],
   qcmTimer: 60,
   freeTimer: 60,
+  getPropositions,
 };
-
-export function getSimpleDistributivityQuestion(): Question {
-  const excludeNbrs = [new Integer(-1), new Integer(0), new Integer(1)];
-  const interval = new Interval('[[-10; 10]]').difference(new DiscreteSet(excludeNbrs));
-  const affine = AffineConstructor.random(interval, interval);
-  const coeff = interval.getRandomElement()!;
-
-  const statementTree = new MultiplyNode(new NumberNode(coeff.value), affine.toTree());
-  const answerTree = affine.times(coeff.value).toTree();
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answerTree.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    res.push({
-      id: v4() + '',
-      statement: new Affine(coeff.value * affine.a, affine.b).toTree().toTex(),
-      isRightAnswer: false,
-      format: 'tex',
-    });
-
-    if (n > 2)
-      res.push({
-        id: v4() + '',
-        statement: new Affine(affine.a, coeff.value * affine.b).toTree().toTex(),
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    if (n > 3)
-      res.push({
-        id: v4() + '',
-        statement: affine.times(-coeff.value).toTree().toTex(),
-        isRightAnswer: false,
-        format: 'tex',
-      });
-
-    for (let i = 0; i < n - 4; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = AffineConstructor.random(interval, interval).toTree();
-
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer.toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  return {
-    instruction: `Développer et réduire : $${statementTree.toTex()}$`,
-    startStatement: statementTree.toTex(),
-    answer: answerTree.toTex(),
-    keys: ['x'],
-    getPropositions,
-    answerFormat: 'tex',
-  };
-}
