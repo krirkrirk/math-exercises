@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { Rational } from '#root/math/numbers/rationals/rational';
@@ -14,22 +22,14 @@ import { v4 } from 'uuid';
 /**
  *  type ax+b=c
  */
-export const equationType3Exercise: MathExercise<QCMProps, VEAProps> = {
-  id: 'equa3',
-
-  connector: '\\iff',
-  instruction: '',
-  label: 'Équations $ax+b=c$',
-  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
-  sections: ['Équations'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getEquationType3ExerciseQuestion, nb),
-  keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  a: number;
+  b: number;
+  c: number;
 };
-
-export function getEquationType3ExerciseQuestion(): Question {
+type VEAProps = {};
+const getEquationType3ExerciseQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const interval = new Interval('[[-10; 10]]');
   const intervalStar = new Interval('[[-10; 10]]').difference(new DiscreteSet([new Integer(0)]));
   const b = intervalStar.getRandomElement()!;
@@ -40,50 +40,40 @@ export function getEquationType3ExerciseQuestion(): Question {
   const solution = new Rational(c.value - b.value, a.value).simplify();
   const statementTree = new EqualNode(affine, c.toTree());
   const answerTree = new EqualNode(new VariableNode('x'), solution.toTree());
-
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answerTree.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = new Rational(
-          c.value - b.value + randint(-7, 8, [0, -c.value + b.value]),
-          a.value + randint(-7, 8, [-a.value, 0]),
-        ).simplify();
-
-        proposition = {
-          id: v4() + '',
-          statement: new EqualNode(new VariableNode('x'), wrongAnswer.toTree()).toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const answer = answerTree.toTex();
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Résoudre : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
-    answer: answerTree.toTex(),
+    answer,
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, a: a.value, b: b.value, c: c.value },
   };
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    const wrongAnswer = new Rational(c - b + randint(-7, 8, [0, -c + b]), a + randint(-7, 8, [-a, 0])).simplify();
+    tryToAddWrongProp(propositions, new EqualNode(new VariableNode('x'), wrongAnswer.toTree()).toTex());
+  }
+
+  return shuffle(propositions);
+};
+
+export const equationType3Exercise: MathExercise<QCMProps, VEAProps> = {
+  id: 'equa3',
+
+  connector: '\\iff',
+  label: 'Équations $ax+b=c$',
+  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
+  sections: ['Équations'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getEquationType3ExerciseQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

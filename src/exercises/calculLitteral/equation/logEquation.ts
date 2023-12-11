@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Rational } from '#root/math/numbers/rationals/rational';
 import { randint } from '#root/math/utils/random/randint';
@@ -13,21 +21,12 @@ import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const logEquation: MathExercise<QCMProps, VEAProps> = {
-  id: 'logEquation',
-  connector: '=',
-  instruction: '',
-  label: 'Résoudre des équations de type $a \\times \\ln(x) = k$',
-  levels: ['1reSpé', 'TermSpé', 'MathComp'],
-  sections: ['Logarithme népérien'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getLnEquation, nb),
-  keys: ['x', 'equal', 'ln', 'epower', 'exp'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getLnEquation(): Question {
+const getLnEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
   const a = randint(-9, 20, [0]);
   const k = randint(-9, 20, [0]);
 
@@ -35,51 +34,43 @@ export function getLnEquation(): Question {
     simplifyNode(new MultiplyNode(new NumberNode(a), new LogNode(new VariableNode('x')))),
     new NumberNode(k),
   );
-  const answer = new ExpNode(new Rational(k, a).simplify().toTree());
+  const answer = new ExpNode(new Rational(k, a).simplify().toTree()).toTex();
 
-  const getPropositions = (numOptions: number) => {
-    const propositions: Proposition[] = [];
-
-    propositions.push({
-      id: v4(),
-      statement: answer.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < numOptions - 1; i++) {
-      let isDuplicate;
-      let proposition: Proposition;
-
-      do {
-        const randomA = randint(1, 10);
-        const randomK = randint(1, 20);
-
-        proposition = {
-          id: v4(),
-          statement: new ExpNode(
-            simplifyNode(new FractionNode(new NumberNode(randomK), new NumberNode(randomA))),
-          ).toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffle(propositions);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Résoudre l'équation $${equation.toTex()}$.`,
-    answer: answer.toTex(),
+    answer,
     keys: ['x', 'equal', 'ln', 'epower', 'exp'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  while (propositions.length < n) {
+    const randomA = randint(1, 10);
+    const randomK = randint(1, 20);
+    tryToAddWrongProp(
+      propositions,
+      new ExpNode(simplifyNode(new FractionNode(new NumberNode(randomK), new NumberNode(randomA)))).toTex(),
+    );
+  }
+
+  return shuffle(propositions);
+};
+
+export const logEquation: MathExercise<QCMProps, VEAProps> = {
+  id: 'logEquation',
+  connector: '=',
+  label: 'Résoudre des équations de type $a \\times \\ln(x) = k$',
+  levels: ['1reSpé', 'TermSpé', 'MathComp'],
+  sections: ['Logarithme népérien'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getLnEquation, nb),
+  getPropositions,
+  qcmTimer: 60,
+  freeTimer: 60,
+};

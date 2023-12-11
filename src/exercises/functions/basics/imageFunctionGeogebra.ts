@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -6,21 +14,12 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const imageFunctionGeogebra: MathExercise<QCMProps,VEAProps><QCMProps, VEAProps> = {
-  id: 'imageFunctionGeogebra',
-  connector: '=',
-  instruction: '',
-  label: "Lecture d'une image",
-  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
-  sections: ['Fonctions'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getImageFunctionGeogebra, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getImageFunctionGeogebra(): Question {
+const getImageFunctionGeogebra: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rand = coinFlip();
   const xValue = randint(-5, 6);
 
@@ -56,49 +55,42 @@ export function getImageFunctionGeogebra(): Question {
     xmax = 1;
   }
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer + '',
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = answer + randint(-10, 11, [0]);
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
   const commands = [rand ? polynome1.toString() : polynome2.toString()];
-
-  const question: Question = {
+  const answerTex = answer + '';
+  const question: Question<QCMProps, VEAProps> = {
     instruction: statement,
     startStatement: `f(${xValue})`,
-    answer: answer + '',
+    answer: answerTex,
     keys: [],
     commands,
     coords: [xmin, xmax, ymin, ymax],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer: answerTex },
   };
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  while (propositions.length < n) {
+    const wrongAnswer = Number(answer) + randint(-10, 11, [0]);
+
+    tryToAddWrongProp(propositions, wrongAnswer + '');
+  }
+
+  return shuffle(propositions);
+};
+
+export const imageFunctionGeogebra: MathExercise<QCMProps, VEAProps> = {
+  id: 'imageFunctionGeogebra',
+  connector: '=',
+  label: "Lecture d'une image",
+  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
+  sections: ['Fonctions'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(getImageFunctionGeogebra, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -6,21 +14,12 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const imageFunction: MathExercise<QCMProps, VEAProps> = {
-  id: 'imageFunction',
-  connector: '=',
-  instruction: '',
-  label: "Image d'une fonction",
-  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
-  sections: ['Fonctions'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getImageFunction, nb),
-  keys: [],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
+type VEAProps = {};
 
-export function getImageFunction(): Question {
+const getImageFunction: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rand = coinFlip();
   const polynome1 = new Polynomial([randint(-9, 10), randint(-5, 6, [0])]);
   const polynome2 = new Polynomial([randint(-9, 10), randint(-9, 10), randint(-4, 5, [0])]);
@@ -30,47 +29,41 @@ export function getImageFunction(): Question {
     ? `Soit $f(x) = ${polynome1.toTree().toTex()}$. Calculer $f(${xValue})$.`
     : `Soit $f(x) = ${polynome2.toTree().toTex()}$. Calculer $f(${xValue})$.`;
 
-  const answer = rand ? polynome1.calculate(xValue) : polynome2.calculate(xValue);
+  const answer = rand ? polynome1.calculate(xValue) + '' : polynome2.calculate(xValue) + '';
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer + '',
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = answer + randint(-10, 11, [0]);
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer + '',
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction: statement,
     startStatement: `f(${xValue})`,
-    answer: answer + '',
+    answer: answer,
     keys: [],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    const wrongAnswer = Number(answer) + randint(-10, 11, [0]);
+
+    tryToAddWrongProp(propositions, wrongAnswer + '');
+  }
+
+  return shuffle(propositions);
+};
+
+export const imageFunction: MathExercise<QCMProps, VEAProps> = {
+  id: 'imageFunction',
+  connector: '=',
+  label: "Image d'une fonction",
+  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
+  sections: ['Fonctions'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(getImageFunction, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

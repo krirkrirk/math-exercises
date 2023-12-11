@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { DroiteConstructor } from '#root/math/geometry/droite';
 import { Point } from '#root/math/geometry/point';
@@ -8,22 +16,16 @@ import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
 import { simplifyNode } from '#root/tree/parsers/simplify';
 import { shuffle } from '#root/utils/shuffle';
 import { evaluate } from 'mathjs';
-import { v4 } from 'uuid';
-
-export const leadingCoefficient: MathExercise<QCMProps, VEAProps> = {
-  id: 'leadingCoefficient',
-  connector: '=',
-  instruction: '',
-  label: 'Lire le coefficient directeur',
-  levels: ['3ème', '2nde', '1reESM', '2ndPro', '1rePro', '1reTech'],
-  isSingleStep: false,
-  sections: ['Droites'],
-  generator: (nb: number) => getDistinctQuestions(getLeadingCoefficientQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  xA: number;
+  yA: number;
+  xB: number;
+  yB: number;
 };
+type VEAProps = {};
 
-export function getLeadingCoefficientQuestion(): Question {
+const getLeadingCoefficientQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   let xA, yA, xB, yB: number;
   let pointA, pointB: Point;
 
@@ -59,50 +61,47 @@ export function getLeadingCoefficientQuestion(): Question {
     xmax = 1;
   }
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: droite.getLeadingCoefficient(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer =
-          droite.getLeadingCoefficient() !== '0'
-            ? simplifyNode(new FractionNode(droite.a, new NumberNode(randint(-4, 5, [0, 1]))))
-            : new NumberNode(randint(-4, 5, [0]));
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer.toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const answer = droite.getLeadingCoefficient();
+  const question: Question<QCMProps, VEAProps> = {
     instruction: 'Déterminer le coefficient directeur de la droite représentée ci-dessous : ',
-    answer: droite.getLeadingCoefficient(),
+    answer,
     keys: [],
     commands: [`f(x) = (${a}) * x + (${b})`],
     coords: [xmin, xmax, ymin, ymax],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, xA, xB, yA, yB },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, xA, xB, yA, yB }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const pointA = new Point('A', new NumberNode(xA), new NumberNode(yA));
+  const pointB = new Point('B', new NumberNode(xB), new NumberNode(yB));
+  const droite = DroiteConstructor.fromTwoPoints(pointA, pointB, 'D');
+  const leadingCoefficient = droite.getLeadingCoefficient();
+  while (propositions.length < n) {
+    const wrongAnswer =
+      leadingCoefficient !== '0'
+        ? simplifyNode(new FractionNode(droite.a, new NumberNode(randint(-4, 5, [0, 1]))))
+        : new NumberNode(randint(-4, 5, [0]));
+    tryToAddWrongProp(propositions, wrongAnswer.toTex());
+  }
+
+  return shuffle(propositions);
+};
+
+export const leadingCoefficient: MathExercise<QCMProps, VEAProps> = {
+  id: 'leadingCoefficient',
+  connector: '=',
+  label: 'Lire le coefficient directeur',
+  levels: ['3ème', '2nde', '1reESM', '2ndPro', '1rePro', '1reTech'],
+  isSingleStep: false,
+  sections: ['Droites'],
+  generator: (nb: number) => getDistinctQuestions(getLeadingCoefficientQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

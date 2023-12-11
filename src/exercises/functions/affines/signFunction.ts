@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
@@ -8,21 +16,11 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const signFunction: MathExercise<QCMProps, VEAProps> = {
-  id: 'signFunction',
-  connector: '=',
-  instruction: '',
-  label: "Signe d'une fonction affine",
-  levels: ['3ème', '2nde', '2ndPro', '1rePro', '1reTech'],
-  sections: ['Fonctions affines'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getSignFunction, nb),
-  keys: ['S', 'equal', 'lbracket', 'rbracket', 'semicolon', 'infty'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
 };
-
-export function getSignFunction(): Question {
+type VEAProps = {};
+const getSignFunction: QuestionGenerator<QCMProps, VEAProps> = () => {
   const a = randint(-9, 10, [0]);
   const b = randint(-9, 10);
   const affine = new Polynomial([b, a]);
@@ -47,50 +45,42 @@ export function getSignFunction(): Question {
       break;
   }
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const a = randint(-9, 10, [0]);
-        const b = randint(-9, 10);
-        const wrongAnswer = coinFlip()
-          ? `[${simplifyNode(new NumberNode(-b / a)).toTex()};+\\infty[`
-          : `]-\\infty;${simplifyNode(new NumberNode(-b / a)).toTex()}]`;
-
-        proposition = {
-          id: v4() + '',
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction,
     startStatement: 'S',
     answer,
     keys: ['S', 'equal', 'lbracket', 'rbracket', 'semicolon', 'infty'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  while (propositions.length < n) {
+    const a = randint(-9, 10, [0]);
+    const b = randint(-9, 10);
+    const wrongAnswer = coinFlip()
+      ? `[${simplifyNode(new NumberNode(-b / a)).toTex()};+\\infty[`
+      : `]-\\infty;${simplifyNode(new NumberNode(-b / a)).toTex()}]`;
+
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffle(propositions);
+};
+
+export const signFunction: MathExercise<QCMProps, VEAProps> = {
+  id: 'signFunction',
+  connector: '=',
+  label: "Signe d'une fonction affine",
+  levels: ['3ème', '2nde', '2ndPro', '1rePro', '1reTech'],
+  sections: ['Fonctions affines'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(getSignFunction, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

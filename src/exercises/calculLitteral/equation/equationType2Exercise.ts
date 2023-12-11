@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Integer } from '#root/math/numbers/integer/integer';
 import { Rational } from '#root/math/numbers/rationals/rational';
@@ -14,71 +22,54 @@ import { v4 } from 'uuid';
 /**
  *  type ax=b
  */
-export const equationType2Exercise: MathExercise<QCMProps, VEAProps> = {
-  id: 'equa2',
-  connector: '\\iff',
-  instruction: '',
-  label: 'Équations $ax=b$',
-  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
-  sections: ['Équations'],
-  isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getEquationType2ExerciseQuestion, nb),
-  keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  a: number;
+  b: number;
 };
+type VEAProps = {};
 
-export function getEquationType2ExerciseQuestion(): Question {
+const getEquationType2ExerciseQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const interval = new Interval('[[-10; 10]]');
   const b = interval.getRandomElement();
   const a = randint(-9, 10, [0, 1]);
   const solution = new Rational(b.value, a).simplify();
   const affine = new Affine(a, 0).toTree();
   const tree = new EqualNode(affine, b.toTree());
-  const answer = new EqualNode(new VariableNode('x'), solution.toTree());
+  const answer = new EqualNode(new VariableNode('x'), solution.toTree()).toTex();
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = new Rational(
-          b.value + randint(-7, 8, [0, -b.value]),
-          a + randint(-7, 8, [-a, 0]),
-        ).simplify();
-        proposition = {
-          id: v4() + '',
-          statement: new EqualNode(new VariableNode('x'), wrongAnswer.toTree()).toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Résoudre : $${tree.toTex()}$`,
     startStatement: tree.toTex(),
-    answer: answer.toTex(),
+    answer,
     keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, a, b: b.value },
   };
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    const wrongAnswer = new Rational(b + randint(-7, 8, [0, -b]), a + randint(-7, 8, [-a, 0])).simplify();
+    tryToAddWrongProp(propositions, new EqualNode(new VariableNode('x'), wrongAnswer.toTree()).toTex());
+  }
+
+  return shuffle(propositions);
+};
+
+export const equationType2Exercise: MathExercise<QCMProps, VEAProps> = {
+  id: 'equa2',
+  connector: '\\iff',
+  label: 'Équations $ax=b$',
+  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
+  sections: ['Équations'],
+  isSingleStep: true,
+  generator: (nb: number) => getDistinctQuestions(getEquationType2ExerciseQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};
