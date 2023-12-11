@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
 import { LogNode } from '#root/tree/nodes/functions/logNode';
@@ -10,21 +18,13 @@ import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const logSimplifiying: MathExercise<QCMProps, VEAProps> = {
-  id: 'logSimplifiying',
-  connector: '\\iff',
-  instruction: '',
-  label: 'Simplifier des expressions avec $\\ln$',
-  levels: ['1reSpé', 'TermSpé', 'MathComp'],
-  sections: ['Logarithme népérien'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getExpSimplifiying, nb),
-  keys: ['ln'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  pm: number;
 };
+type VEAProps = {};
 
-export function getExpSimplifiying(): Question {
+const getExpSimplifiying: QuestionGenerator<QCMProps, VEAProps> = () => {
   const a = randint(1, 10);
   const b = randint(1, 10);
 
@@ -42,49 +42,42 @@ export function getExpSimplifiying(): Question {
     pm = -1;
   }
 
-  const getPropositions = (numOptions: number) => {
-    const propositions: Proposition[] = [];
-
-    propositions.push({
-      id: v4(),
-      statement: simplifiedExpression.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < numOptions - 1; i++) {
-      let isDuplicate;
-      let proposition: Proposition;
-
-      do {
-        const a = randint(1, 10);
-        const b = randint(1, 10);
-        proposition = {
-          id: v4(),
-          statement:
-            pm > 0
-              ? new LogNode(new NumberNode(a * b)).toTex()
-              : new LogNode(simplifyNode(new NumberNode(a / b))).toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = propositions.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      propositions.push(proposition);
-    }
-
-    return shuffle(propositions);
-  };
-
-  const question: Question = {
+  const answer = simplifiedExpression.toTex();
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Simplifier l'expression $${expression.toTex()}$.`,
-    answer: simplifiedExpression.toTex(),
+    answer,
     keys: ['ln'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, pm },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, pm }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  while (propositions.length < n) {
+    const a = randint(1, 10);
+    const b = randint(1, 10);
+    tryToAddWrongProp(
+      propositions,
+      pm > 0 ? new LogNode(new NumberNode(a * b)).toTex() : new LogNode(simplifyNode(new NumberNode(a / b))).toTex(),
+    );
+  }
+
+  return shuffle(propositions);
+};
+
+export const logSimplifiying: MathExercise<QCMProps, VEAProps> = {
+  id: 'logSimplifiying',
+  connector: '\\iff',
+  label: 'Simplifier des expressions avec $\\ln$',
+  levels: ['1reSpé', 'TermSpé', 'MathComp'],
+  sections: ['Logarithme népérien'],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getExpSimplifiying, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

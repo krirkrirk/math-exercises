@@ -1,13 +1,61 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Complex, ComplexConstructor } from '#root/math/complex/complex';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
+type QCMProps = {
+  answer: string;
+  re: number;
+  im: number;
+};
+type VEAProps = {};
+const getConjugateComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+  const complex = ComplexConstructor.random();
+  const answer = complex.conjugate().toTree().toTex();
+
+  const question: Question<QCMProps, VEAProps> = {
+    answer,
+    instruction: `Déterminer le conjugué de $z=${complex.toTree().toTex()}$.`,
+    keys: ['i', 'overline'],
+    answerFormat: 'tex',
+    startStatement: '\\overline z',
+    qcmGeneratorProps: { answer, re: complex.re, im: complex.im },
+  };
+
+  return question;
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, re, im }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const complex = new Complex(re, im);
+  const opposite = complex.opposite().toTree().toTex();
+  tryToAddWrongProp(propositions, opposite);
+
+  const conjOpposite = complex.conjugate().opposite().toTree().toTex();
+  tryToAddWrongProp(propositions, conjOpposite);
+
+  while (propositions.length < n) {
+    const wrongAnswer = ComplexConstructor.random();
+    tryToAddWrongProp(propositions, wrongAnswer.toTree().toTex());
+  }
+
+  return shuffle(propositions);
+};
+
 export const conjugateComplex: MathExercise<QCMProps, VEAProps> = {
   id: 'conjugateComplex',
   connector: '=',
-  instruction: '',
+  getPropositions,
   label: "Conjugué d'un nombre complexe",
   levels: ['MathExp'],
   isSingleStep: true,
@@ -16,67 +64,3 @@ export const conjugateComplex: MathExercise<QCMProps, VEAProps> = {
   qcmTimer: 60,
   freeTimer: 60,
 };
-
-export function getConjugateComplexQuestion(): Question {
-  const complex = ComplexConstructor.random();
-  const answer = complex.conjugate().toTree().toTex();
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-    const opposite = complex.opposite().toTree().toTex();
-    if (opposite !== answer)
-      res.push({
-        id: v4(),
-        statement: opposite,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-    const conjOpposite = complex.conjugate().opposite().toTree().toTex();
-    if (!res.some((prop) => prop.statement === conjOpposite))
-      res.push({
-        id: v4(),
-        statement: conjOpposite,
-        isRightAnswer: false,
-        format: 'tex',
-      });
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = ComplexConstructor.random();
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer.toTree().toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
-    answer,
-    instruction: `Déterminer le conjugué de $z=${complex.toTree().toTex()}$.`,
-    keys: ['i', 'overline'],
-    getPropositions,
-    answerFormat: 'tex',
-
-    startStatement: '\\overline z',
-  };
-
-  return question;
-}

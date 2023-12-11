@@ -1,4 +1,12 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Rational } from '#root/math/numbers/rationals/rational';
 import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
@@ -10,20 +18,15 @@ import { random } from '#root/utils/random';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 
-export const firstDegreeInequationsType2: MathExercise<QCMProps, VEAProps> = {
-  id: 'firstDegreeInequationsType2',
-  connector: '\\iff',
-  instruction: '',
-  label: 'Résoudre une inéquation du type $ax+b<c$',
-  levels: ['3ème', '2ndPro', '2nde', '1reESM', '1rePro', '1reTech'],
-  isSingleStep: true,
-  sections: ['Inéquations'],
-  generator: (nb: number) => getDistinctQuestions(getFirstDegreeInequationsQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  ineqType: string;
+  a: number;
+  result: string;
 };
+type VEAProps = {};
 
-export function getFirstDegreeInequationsQuestion(): Question {
+const getFirstDegreeInequationsQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const affine = new Affine(randint(-10, 10, [0, 1]), randint(-10, 10, [0]));
   const c = randint(-10, 11);
 
@@ -32,52 +35,42 @@ export function getFirstDegreeInequationsQuestion(): Question {
   const ineqType = random(['\\le', '<', '\\ge', '>']);
   const invIneqType = ineqType === '<' ? '>' : ineqType === '>' ? '<' : ineqType === '\\le' ? '\\ge' : '\\le';
   const answer = `x${affine.a > 0 ? ineqType : invIneqType}${result}`;
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
 
-    res.push({
-      id: v4(),
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-    res.push({
-      id: v4(),
-      statement: `x ${affine.a < 0 ? ineqType : invIneqType} ${result}`,
-      isRightAnswer: false,
-      format: 'tex',
-    });
-
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = `x ${coinFlip() ? ineqType : invIneqType} ${randint(-10, 11)}`;
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     answer: answer,
     instruction: `Résoudre l'inéquation : $${affine.toTex()} ${ineqType} ${c}$ `,
     keys: ['x', 'sup', 'inf', 'geq', 'leq'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, a: affine.a, result, ineqType },
   };
 
   return question;
-}
+};
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, ineqType, result }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const invIneqType = ineqType === '<' ? '>' : ineqType === '>' ? '<' : ineqType === '\\le' ? '\\ge' : '\\le';
+
+  tryToAddWrongProp(propositions, `x${a < 0 ? ineqType : invIneqType}${result}`);
+  while (propositions.length < n) {
+    const wrongAnswer = `x${coinFlip() ? ineqType : invIneqType}${randint(-10, 11)}`;
+
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffle(propositions);
+};
+
+export const firstDegreeInequationsType2: MathExercise<QCMProps, VEAProps> = {
+  id: 'firstDegreeInequationsType2',
+  connector: '\\iff',
+  getPropositions,
+
+  label: 'Résoudre une inéquation du type $ax+b<c$',
+  levels: ['3ème', '2ndPro', '2nde', '1reESM', '1rePro', '1reTech'],
+  isSingleStep: true,
+  sections: ['Inéquations'],
+  generator: (nb: number) => getDistinctQuestions(getFirstDegreeInequationsQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+};

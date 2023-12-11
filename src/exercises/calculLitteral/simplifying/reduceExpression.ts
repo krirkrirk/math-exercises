@@ -1,26 +1,25 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Polynomial } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
 import { AddNode } from '#root/tree/nodes/operators/addNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
-
-export const reduceExpression: MathExercise<QCMProps, VEAProps> = {
-  id: 'reduceExpression',
-  connector: '=',
-  instruction: '',
-  isSingleStep: false,
-  label: 'Réduire une expression',
-  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro'],
-  sections: ['Calcul littéral'],
-  generator: (nb: number) => getDistinctQuestions(getReduceExpression, nb),
-  keys: ['x'],
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  rand: number;
+  polynome1Coeffs: number[];
 };
-
-export function getReduceExpression(): Question {
+type VEAProps = {};
+const getReduceExpression: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rand = randint(0, 7);
   let statement: any;
   let polynome1: Polynomial;
@@ -107,49 +106,42 @@ export function getReduceExpression(): Question {
       break;
   }
 
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4() + '',
-      statement: answer,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    for (let i = 0; i < n - 1; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        polynome2 = new Polynomial(
-          rand < 3
-            ? [randint(-5, 6, [0]), randint(-5, 6, [0])]
-            : [randint(-5, 6, [0]), randint(-5, 6, [0]), randint(-5, 6, [0])],
-        );
-        proposition = {
-          id: v4() + '',
-          statement: polynome1.add(polynome2).toTree().toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
+  const question: Question<QCMProps, VEAProps> = {
     instruction: `Réduire l'expression suivante : $${statement.toTex()}$`,
     startStatement: statement.toTex(),
     answer,
     keys: ['x'],
-    getPropositions,
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, rand, polynome1Coeffs: polynome1.coefficients },
   };
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, rand, polynome1Coeffs }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const polynome1 = new Polynomial(polynome1Coeffs);
+  while (propositions.length < n) {
+    const polynome2 = new Polynomial(
+      rand < 3
+        ? [randint(-5, 6, [0]), randint(-5, 6, [0])]
+        : [randint(-5, 6, [0]), randint(-5, 6, [0]), randint(-5, 6, [0])],
+    );
+    tryToAddWrongProp(propositions, polynome1.add(polynome2).toTree().toTex());
+  }
+
+  return shuffle(propositions);
+};
+
+export const reduceExpression: MathExercise<QCMProps, VEAProps> = {
+  id: 'reduceExpression',
+  connector: '=',
+  isSingleStep: false,
+  label: 'Réduire une expression',
+  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro'],
+  sections: ['Calcul littéral'],
+  generator: (nb: number) => getDistinctQuestions(getReduceExpression, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};

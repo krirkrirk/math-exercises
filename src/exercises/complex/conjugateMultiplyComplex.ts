@@ -1,23 +1,24 @@
-import { MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  addValidProp,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { Complex, ComplexConstructor } from '#root/math/complex/complex';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
-
-export const conjugateMultiplyComplex: MathExercise<QCMProps, VEAProps> = {
-  id: 'conjugateMultiplyComplex',
-  connector: '=',
-  instruction: '',
-  label: "Conjugué d'un produit de nombres complexes",
-  levels: ['MathExp'],
-  isSingleStep: true,
-  sections: ['Nombres complexes'],
-  generator: (nb: number) => getDistinctQuestions(getConjugateMultiplyComplexQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+type QCMProps = {
+  answer: string;
+  z1: number[];
+  z2: number[];
 };
+type VEAProps = {};
 
-export function getConjugateMultiplyComplexQuestion(): Question {
+const getConjugateMultiplyComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const z1 = ComplexConstructor.random();
   let z2: Complex;
   do {
@@ -26,56 +27,46 @@ export function getConjugateMultiplyComplexQuestion(): Question {
 
   const prod = z1.multiply(z2);
   const conj = prod.conjugate();
-  const answer = conj.toTree();
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
+  const answer = conj.toTree().toTex();
 
-    res.push({
-      id: v4(),
-      statement: answer.toTex(),
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    res.push({
-      id: v4(),
-      statement: prod.toTree().toTex(),
-      isRightAnswer: false,
-      format: 'tex',
-    });
-
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = ComplexConstructor.random();
-        proposition = {
-          id: v4(),
-          statement: wrongAnswer.toTree().toTex(),
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffle(res);
-  };
-
-  const question: Question = {
-    answer: answer.toTex(),
+  const question: Question<QCMProps, VEAProps> = {
+    answer,
     instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2.toTree().toTex()}$. Calculer $\\overline{z\\times z'}$.`,
     keys: ['i', 'z', 'overline', 'quote'],
-    getPropositions,
     answerFormat: 'tex',
 
     startStatement: "\\overline{z\\times z'}",
+    qcmGeneratorProps: { answer, z1: [z1.re, z1.im], z2: [z2.re, z2.im] },
   };
 
   return question;
-}
+};
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, z1, z2 }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const complex1 = new Complex(z1[0], z1[1]);
+  const complex2 = new Complex(z2[0], z2[1]);
+  const prod = complex1.multiply(complex2);
+  tryToAddWrongProp(propositions, prod.toTree().toTex());
+  while (propositions.length < n) {
+    const wrongAnswer = ComplexConstructor.random();
+
+    tryToAddWrongProp(propositions, wrongAnswer.toTree().toTex());
+  }
+
+  return shuffle(propositions);
+};
+
+export const conjugateMultiplyComplex: MathExercise<QCMProps, VEAProps> = {
+  id: 'conjugateMultiplyComplex',
+  connector: '=',
+  label: "Conjugué d'un produit de nombres complexes",
+  levels: ['MathExp'],
+  isSingleStep: true,
+  sections: ['Nombres complexes'],
+  generator: (nb: number) => getDistinctQuestions(getConjugateMultiplyComplexQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+};
