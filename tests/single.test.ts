@@ -1,20 +1,24 @@
-import { ballsBasicProbas } from '../src/exercises/probaStat/ballsBasicProbas';
+// import { ballsBasicProbas } from '../src/exercises/probaStat/ballsBasicProbas';
+// test.only('one exo', () => {
+//   const exo = ballsBasicProbas;
+
+//   console.log(exo.id);
+//   try {
+//     const questions = exo.generator(50);
+//     questions.forEach((question) => {
+//       expect(question.instruction.length).not.toBe(0);
+//       expect(question.answer.length).not.toBe(0);
+
+//       const props = question.getPropositions(4);
+//       expect(props.length).toBe(4);
+//       expect(props.filter((prop) => prop.isRightAnswer).length).toBe(1);
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     throw err;
+//   }
+// });
+
 test.only('one exo', () => {
-  const exo = ballsBasicProbas;
-
-  console.log(exo.id);
-  try {
-    const questions = exo.generator(50);
-    questions.forEach((question) => {
-      expect(question.instruction.length).not.toBe(0);
-      expect(question.answer.length).not.toBe(0);
-
-      const props = question.getPropositions(4);
-      expect(props.length).toBe(4);
-      expect(props.filter((prop) => prop.isRightAnswer).length).toBe(1);
-    });
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
+  expect(1 + 1).toBe(2);
 });

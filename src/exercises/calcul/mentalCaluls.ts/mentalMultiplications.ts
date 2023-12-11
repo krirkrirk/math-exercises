@@ -47,12 +47,14 @@ const getMentalMultiplications: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   statementTree.shuffle();
   const statementTex = statementTree.toTex();
+  const answerTex = (round(answer, 2) + '').replace('.', ',');
   const question: Question<QCMProps, VEAProps> = {
     instruction: `Calculer : $${statementTex}$`,
     startStatement: statementTex,
-    answer: (round(answer, 2) + '').replace('.', ','),
+    answer: answerTex,
     keys: [],
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer: answerTex },
   };
 
   return question;

@@ -1,4 +1,3 @@
-import { parse } from 'mathjs';
 import { Node, NodeType } from '../node';
 
 export class VariableNode implements Node {

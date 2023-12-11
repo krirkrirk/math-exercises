@@ -10,9 +10,8 @@ import {
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
 import { randint } from '#root/math/utils/random/randint';
-import { coinFlip } from '#root/utils/coinFlip';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+
 type QCMProps = {
   answer: string;
   coeffs: number[];

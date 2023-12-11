@@ -29,6 +29,7 @@ const getArithmeticRecurrenceFormulaUsage: QuestionGenerator<QCMProps, VEAProps>
     answer,
     keys: ['r', 'n', 'u', 'underscore'],
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
   return question;
 };

@@ -10,6 +10,7 @@ import { decimalToScientific } from './exercises/powers/decimalToScientific';
  * 
 
 */
+
 const allMathExercises = [...exercises];
 
 const getAllMathExercisesBySection = () => {

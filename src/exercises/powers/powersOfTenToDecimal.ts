@@ -17,7 +17,6 @@ import {
   tryToAddWrongProp,
 } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-import { v4 } from 'uuid';
 
 type QCMProps = {
   answer: string;
@@ -44,7 +43,6 @@ const getPowersOfTenToDecimalQuestion: QuestionGenerator<QCMProps, VEAProps> = (
 };
 
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randPower }) => {
-  const res: Proposition[] = [];
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -55,7 +53,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randPower }) => {
     tryToAddWrongProp(propositions, wrongAnswer);
   }
 
-  return shuffle(res);
+  return shuffle(propositions);
 };
 
 export const powersOfTenToDecimal: MathExercise<QCMProps, VEAProps> = {

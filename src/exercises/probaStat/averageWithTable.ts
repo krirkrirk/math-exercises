@@ -54,6 +54,7 @@ Calculer la moyenne de cette série de valeurs.`,
     answer,
     keys: [],
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
 
   return question;

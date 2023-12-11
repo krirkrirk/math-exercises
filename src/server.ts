@@ -56,8 +56,15 @@ const runServer = () => {
     const { ans, veaProps } = req.body;
     const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
     const exo = allExercises[exoIndex];
-    if (!exo) res.send('Exo not found');
-    const result = exo.isAnswerValid?.(ans as string, veaProps) ?? false;
+    if (!exo) {
+      res.send('Exo not found');
+      return;
+    }
+    if (!exo.isAnswerValid) {
+      res.send('No VEA implemented');
+      return;
+    }
+    const result = exo.isAnswerValid(ans as string, veaProps) ?? false;
     res.json({
       result,
     });

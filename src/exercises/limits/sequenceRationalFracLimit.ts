@@ -50,6 +50,7 @@ const getSequenceRationalFracLimitQuestion: QuestionGenerator<QCMProps, VEAProps
       .toTex()}}{${polyDenum.toTree().toTex()}}$.`,
     keys: ['infty'],
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer, leadingCoeffsRational },
   };
 
   return question;

@@ -15,8 +15,8 @@ import { shuffle } from '#root/utils/shuffle';
 
 type QCMProps = {
   answer: string;
-  uCoords: number[];
-  vCoords: number[];
+  uCoords: string[];
+  vCoords: string[];
 };
 type VEAProps = {};
 
@@ -24,12 +24,13 @@ const getDeterminantQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const u = VectorConstructor.random('u');
   const v = VectorConstructor.random('v');
   const answer = u.determinant(v);
-
+  const answerTex = answer.toTex();
   const question: Question<QCMProps, VEAProps> = {
-    answer: answer.toTex(),
+    answer: answerTex,
     instruction: `Soient les vecteurs $${u.toTexWithCoords()}$ et $${v.toTexWithCoords()}$. Calculer le déterminant $\\det(\\overrightarrow u;\\overrightarrow v)$.`,
     keys: [],
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer: answerTex, uCoords: [u.x.toTex(), u.y.toTex()], vCoords: [v.x.toTex(), v.y.toTex()] },
   };
 
   return question;
@@ -38,8 +39,8 @@ const getDeterminantQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer, uCoords, vCoords }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const u = new Vector('u', new NumberNode(uCoords[0]), new NumberNode(uCoords[1]));
-  const v = new Vector('v', new NumberNode(vCoords[0]), new NumberNode(vCoords[1]));
+  const u = new Vector('u', new NumberNode(Number(uCoords[0])), new NumberNode(Number(uCoords[1])));
+  const v = new Vector('v', new NumberNode(Number(vCoords[0])), new NumberNode(Number(vCoords[1])));
 
   tryToAddWrongProp(propositions, u.scalarProduct(v).toTex());
 

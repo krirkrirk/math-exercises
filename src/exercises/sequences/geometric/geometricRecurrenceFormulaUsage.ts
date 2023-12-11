@@ -6,6 +6,7 @@ import {
   QCMGenerator,
   addWrongProp,
   tryToAddWrongProp,
+  addValidProp,
 } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 import { randint } from '#root/math/utils/random/randint';
@@ -37,7 +38,7 @@ const getGeometricRecurrenceFormulaUsage: QuestionGenerator<QCMProps, VEAProps> 
 
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer, firstValue, reason }) => {
   const propositions: Proposition[] = [];
-  addWrongProp(propositions, answer);
+  addValidProp(propositions, answer);
 
   if (firstValue + reason !== 4) tryToAddWrongProp(propositions, (firstValue + reason).toString());
 

@@ -92,6 +92,7 @@ const getConditionalProbability: QuestionGenerator<QCMProps, VEAProps> = () => {
     answer: answer.replace('.', ','),
     keys: ['p', 'cap', 'underscore'],
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
 
   return question;

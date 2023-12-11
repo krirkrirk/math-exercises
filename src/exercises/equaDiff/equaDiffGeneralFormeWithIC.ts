@@ -42,13 +42,14 @@ const solveExponentialEquationWithIC: QuestionGenerator<QCMProps, VEAProps> = ()
                 new ExpNode(simplifyNode(new MultiplyNode(new NumberNode(a), new VariableNode('x')))),
               ),
         ); // y = y(0)e^(ax);
-
+  const answer = myAnswer.toTex();
   const question: Question<QCMProps, VEAProps> = {
     instruction: `Résoudre l'équation différentielle suivante avec la condition initiale $y(0) = ${initialY}$ : $y' = ${myEquation.toTex()}$.`,
     startStatement: `y(x)`,
-    answer: myAnswer.toTex(),
+    answer,
     keys: ['x', 'y', 'epower', 'exp', 'equal'],
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
 
   return question;

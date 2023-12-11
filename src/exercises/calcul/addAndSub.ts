@@ -12,7 +12,6 @@ import {
   tryToAddWrongProp,
 } from '../exercise';
 import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-import { v4 } from 'uuid';
 
 /**
  * a±b±c±d
@@ -29,14 +28,15 @@ const getAddAndSubQuestions: QuestionGenerator<QCMProps, VEAProps> = () => {
   for (let i = 2; i < allNumbersNodes.length; i++) {
     statementTree = new AddNode(statementTree, allNumbersNodes[i]);
   }
-  const answer = numbers.reduce((a, b) => a + b);
+  const answer = numbers.reduce((a, b) => a + b) + '';
   const statement = statementTree.toTex();
   const question: Question<QCMProps, VEAProps> = {
     instruction: `Calculer : $${statement}$`,
     startStatement: statement,
-    answer: answer + '',
+    answer,
     keys: [],
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
   return question;
 };

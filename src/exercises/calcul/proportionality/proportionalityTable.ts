@@ -56,6 +56,7 @@ Déterminer le nombre manquant.`,
     answer: answer,
     keys: [],
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
 
   return question;

@@ -71,6 +71,7 @@ const getPythagoreCalcul: QuestionGenerator<QCMProps, VEAProps> = () => {
     commands,
     coords: triangle.generateCoords(),
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
 
   return question;

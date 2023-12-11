@@ -44,6 +44,7 @@ const getGlobalPercentQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
     answer,
     keys: ['percent'],
     answerFormat: 'tex',
+    qcmGeneratorProps: { answer },
   };
 
   return question;
