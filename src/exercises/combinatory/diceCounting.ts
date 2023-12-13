@@ -59,6 +59,10 @@ const getDiceCountingQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
       instruction = `dans lesquels toutes les faces sont différentes`;
       answer = 6 * 5 * 4 + '';
       break;
+    case 7:
+      instruction = '';
+      answer = 6 * 6 * 6 + '';
+      break;
   }
 
   const question: Question<QCMProps, VEAProps> = {
