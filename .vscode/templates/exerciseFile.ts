@@ -1,11 +1,45 @@
-import { shuffleProps, MathExercise, Proposition, Question } from '#root/exercises/exercise';
+import {
+  MathExercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  VEA,
+  addValidProp,
+  shuffleProps,
+  tryToAddWrongProp,
+} from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { v4 } from 'uuid';
 
-export const {{name}}: MathExercise = {
+type QCMProps = {
+  answer: string;
+};
+type VEAProps={}
+
+const get{{namePascal}}Question: QuestionGenerator<QCMProps, VEAProps>  = ()=>{
+ 
+  const question: Question<QCMProps, VEAProps> = {
+    answer: ``,
+    instruction: ``,
+    keys: [],
+    answerFormat: 'tex',
+    qcmGeneratorProps : {answer}
+  };
+
+  return question;
+}
+
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  while (propositions.length < n) {
+ 
+  }
+  return shuffleProps(propositions, n);
+};
+export const {{name}}: MathExercise<QCMProps, VEAProps> = {
   id: '{{name}}',
   connector: "",
-  instruction: "",
   label: "",
   levels: [],
   isSingleStep: true,
@@ -13,49 +47,5 @@ export const {{name}}: MathExercise = {
   generator: (nb: number) => getDistinctQuestions(get{{namePascal}}Question, nb),
   qcmTimer: 60,
   freeTimer: 60,
+  getPropositions,
 };
-
-export function get{{namePascal}}Question(): Question {
-  const getPropositions = (n: number) => {
-    const res: Proposition[] = [];
-
-    res.push({
-      id: v4(),
-      statement: ``,
-      isRightAnswer: true,
-      format: 'tex',
-    });
-
-    const missing = n - res.length;
-    for (let i = 0; i < missing; i++) {
-      let isDuplicate: boolean;
-      let proposition: Proposition;
-
-      do {
-        const wrongAnswer = '';
-        proposition = {
-          id: v4() + ``,
-          statement: wrongAnswer,
-          isRightAnswer: false,
-          format: 'tex',
-        };
-
-        isDuplicate = res.some((p) => p.statement === proposition.statement);
-      } while (isDuplicate);
-
-      res.push(proposition);
-    }
-
-    return shuffleProps(res, n);
-  };
-
-  const question: Question = {
-    answer: ``,
-    instruction: ``,
-    keys: [],
-    getPropositions,
-    answerFormat: 'tex',
-  };
-
-  return question;
-}
