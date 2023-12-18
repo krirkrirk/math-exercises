@@ -1,23 +1,26 @@
-import { fraction } from 'mathjs';
-import { Node, NodeType } from '../node';
-import { OperatorIds, OperatorNode } from './operatorNode';
-import { NumberNode } from '../numbers/numberNode';
-import { FunctionNode, FunctionsIds } from '../functions/functionNode';
-import { NumberType } from '#root/math/numbers/nombre';
-import { round } from '#root/math/utils/round';
+import { fraction } from "mathjs";
+import { Node, NodeOptions, NodeType } from "../node";
+import { OperatorIds, OperatorNode } from "./operatorNode";
+import { NumberNode } from "../numbers/numberNode";
+import { FunctionNode, FunctionsIds } from "../functions/functionNode";
+import { NumberType } from "#root/math/numbers/nombre";
+import { round } from "#root/math/utils/round";
 
-export type FractionNodeOptions = {
-  allowDecimalSyntax?: boolean;
-  forceMinusBefore?: boolean;
-};
-export class FractionNode extends OperatorNode implements Node {
-  opts?: FractionNodeOptions;
+export class FractionNode implements OperatorNode {
+  opts?: NodeOptions;
   /**
    * @param leftChild num
    * @param rightChild denum
    */
-  constructor(leftChild: Node, rightChild: Node, opts?: FractionNodeOptions) {
-    super(OperatorIds.fraction, leftChild, rightChild, false, '\\frac');
+  id: OperatorIds;
+  leftChild: Node;
+  rightChild: Node;
+  type: NodeType;
+  constructor(leftChild: Node, rightChild: Node, opts?: NodeOptions) {
+    this.id = OperatorIds.fraction;
+    this.leftChild = leftChild;
+    this.rightChild = rightChild;
+    this.type = NodeType.operator;
     this.opts = opts;
   }
 
@@ -25,18 +28,26 @@ export class FractionNode extends OperatorNode implements Node {
     return `(${this.leftChild.toMathString()}) / (${this.rightChild.toMathString()})`;
   }
 
-  toEquivalentNodes() {
+  toEquivalentNodes(opts?: NodeOptions) {
     const res: Node[] = [];
     const rightNodes = this.rightChild.toEquivalentNodes();
     const leftNodes = this.leftChild.toEquivalentNodes();
+    console.log(opts?.allowFractionToDecimal);
     rightNodes.forEach((rightNode) => {
       leftNodes.forEach((leftNode) => {
         res.push(new FractionNode(leftNode, rightNode));
-        if (this.opts?.allowDecimalSyntax && leftNode.type === NodeType.number && rightNode.type === NodeType.number) {
-          const [num, denum] = [(leftNode as NumberNode).value, (rightNode as NumberNode).value];
+        if (
+          opts?.allowFractionToDecimal &&
+          leftNode.type === NodeType.number &&
+          rightNode.type === NodeType.number
+        ) {
+          const [num, denum] = [
+            (leftNode as NumberNode).value,
+            (rightNode as NumberNode).value,
+          ];
           const decimal = round(num / denum, 12);
           //on ne push pas les non décimaux (limite arbitraire : partie décimale de 12 => non décimal)
-          if ((decimal + '').split('.')[1].length > 11) return;
+          if ((decimal + "").split(".")[1].length > 11) return;
           res.push(new NumberNode(decimal));
         }
       });
@@ -54,10 +65,13 @@ export class FractionNode extends OperatorNode implements Node {
   toTex(): string {
     if (
       (this.leftChild.type === NodeType.function &&
-        (this.leftChild as unknown as FunctionNode).id === FunctionsIds.opposite) ||
-      (this.leftChild.type === NodeType.number && (this.leftChild as unknown as NumberNode).value < 0)
+        (this.leftChild as FunctionNode).id === FunctionsIds.opposite) ||
+      (this.leftChild.type === NodeType.number &&
+        (this.leftChild as NumberNode).value < 0)
     ) {
-      return `-\\frac{${this.leftChild.toTex().slice(1)}}{${this.rightChild.toTex()}}`;
+      return `-\\frac{${this.leftChild
+        .toTex()
+        .slice(1)}}{${this.rightChild.toTex()}}`;
     }
 
     return `\\frac{${this.leftChild.toTex()}}{${this.rightChild.toTex()}}`;

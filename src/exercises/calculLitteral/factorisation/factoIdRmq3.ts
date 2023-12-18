@@ -4,6 +4,7 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
@@ -21,7 +22,10 @@ type QCMProps = {
   affine1Coeffs: number[];
   affine2Coeffs: number[];
 };
-type VEAProps = {};
+type VEAProps = {
+  affine1Coeffs: number[];
+  affine2Coeffs: number[];
+};
 
 const getFactoType1Question: QuestionGenerator<QCMProps, VEAProps> = () => {
   const interval = new Interval('[[-10; 10]]').difference(new DiscreteSet([new Integer(0)]));
@@ -39,6 +43,7 @@ const getFactoType1Question: QuestionGenerator<QCMProps, VEAProps> = () => {
     keys: ['x'],
     answerFormat: 'tex',
     qcmGeneratorProps: { answer, affine1Coeffs: affine.coefficients, affine2Coeffs: affine2.coefficients },
+    veaProps: { affine1Coeffs: affine.coefficients, affine2Coeffs: affine2.coefficients },
   };
   return question;
 };
@@ -65,6 +70,14 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, affine1Coeffs, aff
   return shuffleProps(propositions, n);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { affine1Coeffs, affine2Coeffs }) => {
+  const affine = new Affine(affine1Coeffs[1], affine1Coeffs[0]);
+  const affine2 = new Affine(affine2Coeffs[1], affine2Coeffs[0]);
+  const answerTree = new MultiplyNode(affine.toTree(), affine2.toTree());
+  const validLatexs = answerTree.toAllValidTexs();
+  return validLatexs.includes(ans);
+};
+
 export const factoIdRmq3: MathExercise<QCMProps, VEAProps> = {
   id: 'factoIdRmq3',
   connector: '=',
@@ -76,4 +89,5 @@ export const factoIdRmq3: MathExercise<QCMProps, VEAProps> = {
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

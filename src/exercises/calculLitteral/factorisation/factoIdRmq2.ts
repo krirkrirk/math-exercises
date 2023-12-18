@@ -4,6 +4,7 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
 } from '#root/exercises/exercise';
@@ -14,7 +15,7 @@ import { DiscreteSet } from '#root/math/sets/discreteSet';
 import { Interval } from '#root/math/sets/intervals/intervals';
 import { randint } from '#root/math/utils/random/randint';
 import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { PowerNode } from '#root/tree/nodes/operators/powerNode';
+import { PowerNode, SquareNode } from '#root/tree/nodes/operators/powerNode';
 import { shuffle } from '#root/utils/shuffle';
 import { v4 } from 'uuid';
 type QCMProps = {
@@ -22,7 +23,10 @@ type QCMProps = {
   a: number;
   b: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  a: number;
+  b: number;
+};
 
 const getFactoType1Question: QuestionGenerator<QCMProps, VEAProps> = () => {
   const intervalA = new Interval('[[0; 10]]').difference(new DiscreteSet([new Integer(0)]));
@@ -39,6 +43,7 @@ const getFactoType1Question: QuestionGenerator<QCMProps, VEAProps> = () => {
     keys: ['x'],
     answerFormat: 'tex',
     qcmGeneratorProps: { answer, a: affine.a, b: affine.b },
+    veaProps: { a: affine.a, b: affine.b },
   };
   return question;
 };
@@ -60,6 +65,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
+  const affine = new Affine(a, b);
+  const answerTree = new SquareNode(affine.toTree());
+  const validLatexs = answerTree.toAllValidTexs();
+  return validLatexs.includes(ans);
+};
+
 export const factoIdRmq2: MathExercise<QCMProps, VEAProps> = {
   id: 'factoIdRmq2',
   connector: '=',
@@ -71,4 +83,5 @@ export const factoIdRmq2: MathExercise<QCMProps, VEAProps> = {
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

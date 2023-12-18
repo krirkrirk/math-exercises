@@ -2,11 +2,15 @@ import { log } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { FunctionNode, FunctionsIds } from './functionNode';
 
-export class LogNode extends FunctionNode implements Node {
-  type: NodeType = NodeType.function;
+export class LogNode implements FunctionNode {
+  id: FunctionsIds;
+  child: Node;
+  type: NodeType;
 
   constructor(child: Node) {
-    super(FunctionsIds.log, child, '\\ln');
+    this.id = FunctionsIds.opposite;
+    this.child = child;
+    this.type = NodeType.function;
   }
 
   toMathString(): string {

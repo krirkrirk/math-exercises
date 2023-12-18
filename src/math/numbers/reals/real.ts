@@ -1,26 +1,26 @@
-import { isSquare } from '#root/math/utils/arithmetic/isSquare';
-import { primeFactors } from '#root/math/utils/arithmetic/primeFactors';
-import { randint } from '#root/math/utils/random/randint';
-import { SqrtNode } from '#root/tree/nodes/functions/sqrtNode';
-import { Node } from '#root/tree/nodes/node';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { PiNode } from '#root/tree/nodes/numbers/piNode';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
-import { diceFlip } from '#root/utils/diceFlip';
-import { random } from '#root/utils/random';
-import { Integer, IntegerConstructor } from '../integer/integer';
-import { primes } from '../integer/primes';
-import { Nombre, NumberType } from '../nombre';
+import { isSquare } from "#root/math/utils/arithmetic/isSquare";
+import { primeFactors } from "#root/math/utils/arithmetic/primeFactors";
+import { randint } from "#root/math/utils/random/randint";
+import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
+import { Node } from "#root/tree/nodes/node";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { PiNode } from "#root/tree/nodes/numbers/piNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { diceFlip } from "#root/utils/diceFlip";
+import { random } from "#root/utils/random";
+import { Integer, IntegerConstructor } from "../integer/integer";
+import { primes } from "../integer/primes";
+import { Nombre, NumberType } from "../nombre";
 export abstract class RealConstructor {
   static random() {
     const dice = diceFlip(2);
     switch (dice) {
       case 0:
-        return new Real(Math.PI, '\\pi');
+        return new Real(Math.PI, "\\pi");
       case 1:
         return SquareRootConstructor.randomIrreductible();
     }
-    return new Real(Math.PI, '\\pi');
+    return new Real(Math.PI, "\\pi");
   }
 }
 export class Real implements Nombre {
@@ -33,7 +33,7 @@ export class Real implements Nombre {
     this.type = NumberType.Real;
   }
   toTree(): Node {
-    if (this.tex === '\\pi') return PiNode;
+    if (this.tex === "\\pi") return PiNode;
     return new NumberNode(this.value);
   }
 }
@@ -42,7 +42,10 @@ export abstract class SquareRootConstructor {
   /**
    * @returns simplifiable square root type sqrt(c)=a*sqrt(b)
    */
-  static randomSimplifiable({ allowPerfectSquare = false, maxSquare = 11 }): SquareRoot {
+  static randomSimplifiable({
+    allowPerfectSquare = false,
+    maxSquare = 11,
+  }): SquareRoot {
     const a = randint(2, maxSquare);
     let b;
     let bMin = allowPerfectSquare ? 1 : 2;
@@ -76,7 +79,8 @@ export class SquareRoot extends Real {
       }
     }
     const outsideSqrt = multiples.reduce((x, y) => x * y);
-    const insideSqrt = factors.length === 0 ? 1 : factors.reduce((x, y) => x * y);
+    const insideSqrt =
+      factors.length === 0 ? 1 : factors.reduce((x, y) => x * y);
     return [outsideSqrt, insideSqrt];
   }
   simplify(): Real {
@@ -86,14 +90,17 @@ export class SquareRoot extends Real {
       insideSqrt !== 1
         ? new Real(
             outsideSqrt * Math.sqrt(insideSqrt),
-            `${outsideSqrt === 1 ? '' : `${outsideSqrt}`}\\sqrt{${insideSqrt}}`,
+            `${outsideSqrt === 1 ? "" : `${outsideSqrt}`}\\sqrt{${insideSqrt}}`,
           )
-        : new Real(outsideSqrt, outsideSqrt + '');
+        : new Real(outsideSqrt, outsideSqrt + "");
     simplified.toTree = (): Node => {
       return insideSqrt !== 1
         ? outsideSqrt === 1
           ? new SqrtNode(new NumberNode(insideSqrt))
-          : new MultiplyNode(new NumberNode(outsideSqrt), new SqrtNode(new NumberNode(insideSqrt)))
+          : new MultiplyNode(
+              new NumberNode(outsideSqrt),
+              new SqrtNode(new NumberNode(insideSqrt)),
+            )
         : new NumberNode(outsideSqrt);
     };
     return simplified;

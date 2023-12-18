@@ -4,31 +4,42 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Integer } from '#root/math/numbers/integer/integer';
-import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
-import { Polynomial } from '#root/math/polynomials/polynomial';
-import { DiscreteSet } from '#root/math/sets/discreteSet';
-import { Interval } from '#root/math/sets/intervals/intervals';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Integer } from "#root/math/numbers/integer/integer";
+import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
+import { Polynomial } from "#root/math/polynomials/polynomial";
+import { DiscreteSet } from "#root/math/sets/discreteSet";
+import { Interval } from "#root/math/sets/intervals/intervals";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { shuffle } from "#root/utils/shuffle";
+import { v4 } from "uuid";
 
 type QCMProps = {
   answer: string;
   a: number;
   b: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  a: number;
+  b: number;
+};
 
-const intervalA = new Interval('[[0; 10]]').difference(new DiscreteSet([new Integer(0)]));
-const intervalB = new Interval('[[-10; 0]]').difference(new DiscreteSet([new Integer(0)]));
+const intervalA = new Interval("[[0; 10]]").difference(
+  new DiscreteSet([new Integer(0)]),
+);
+const intervalB = new Interval("[[-10; 0]]").difference(
+  new DiscreteSet([new Integer(0)]),
+);
 
-export const getSecondIdentityQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+export const getSecondIdentityQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const affine = AffineConstructor.random(intervalA, intervalB);
 
   const statementTree = new PowerNode(affine.toTree(), new NumberNode(2));
@@ -38,20 +49,32 @@ export const getSecondIdentityQuestion: QuestionGenerator<QCMProps, VEAProps> = 
     instruction: `Développer et réduire : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer,
-    keys: ['x'],
-    answerFormat: 'tex',
+    keys: ["x"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, a: affine.a, b: affine.b },
   };
   return question;
 };
 
-export const getSecondIdentityPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+export const getSecondIdentityPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, a, b },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  tryToAddWrongProp(propositions, new Polynomial([-(b ** 2), 0, a ** 2]).toTree().toTex());
-  tryToAddWrongProp(propositions, new Polynomial([b ** 2, a * b, a ** 2]).toTree().toTex());
-  tryToAddWrongProp(propositions, new Polynomial([-(b ** 2), -(a ** 2 + b ** 2), a ** 2]).toTree().toTex());
+  tryToAddWrongProp(
+    propositions,
+    new Polynomial([-(b ** 2), 0, a ** 2]).toTree().toTex(),
+  );
+  tryToAddWrongProp(
+    propositions,
+    new Polynomial([b ** 2, a * b, a ** 2]).toTree().toTex(),
+  );
+  tryToAddWrongProp(
+    propositions,
+    new Polynomial([-(b ** 2), -(a ** 2 + b ** 2), a ** 2]).toTree().toTex(),
+  );
 
   const affine = new Affine(a, b);
   while (propositions.length < n) {
@@ -63,16 +86,24 @@ export const getSecondIdentityPropositions: QCMGenerator<QCMProps> = (n, { answe
   return shuffle(propositions);
 };
 
-export const secondIdentity: MathExercise<QCMProps, VEAProps> = {
-  id: 'idRmq2',
-  connector: '=',
-  label: 'Identité remarquable $(a-b)^2$',
-  levels: ['3ème', '2nde'],
-  sections: ['Calcul littéral'],
-  isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getSecondIdentityQuestion, nb),
-  getPropositions: getSecondIdentityPropositions,
+export const isSecondIdentityAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
+  const affine = new Affine(a, b);
+  const answer = affine.multiply(affine).toTree();
+  const texs = answer.toAllValidTexs();
+  return texs.includes(ans);
+};
 
+export const secondIdentity: MathExercise<QCMProps, VEAProps> = {
+  id: "idRmq2",
+  connector: "=",
+  label: "Identité remarquable $(a-b)^2$",
+  levels: ["3ème", "2nde"],
+  sections: ["Calcul littéral"],
+  isSingleStep: false,
+  generator: (nb: number) =>
+    getDistinctQuestions(getSecondIdentityQuestion, nb),
+  getPropositions: getSecondIdentityPropositions,
+  isAnswerValid: isSecondIdentityAnswerValid,
   qcmTimer: 60,
   freeTimer: 60,
 };

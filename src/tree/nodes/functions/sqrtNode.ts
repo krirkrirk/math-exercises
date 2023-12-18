@@ -2,10 +2,15 @@ import { sqrt } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { FunctionNode, FunctionsIds } from './functionNode';
 
-export class SqrtNode extends FunctionNode implements Node {
-  type: NodeType = NodeType.function;
+export class SqrtNode implements FunctionNode {
+  id: FunctionsIds;
+  child: Node;
+  type: NodeType;
+
   constructor(child: Node) {
-    super(FunctionsIds.sqrt, child, '\\sqrt');
+    this.id = FunctionsIds.opposite;
+    this.child = child;
+    this.type = NodeType.function;
   }
   toMathString(): string {
     return `sqr(${this.child.toMathString()})`;

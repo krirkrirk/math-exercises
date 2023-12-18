@@ -2,11 +2,15 @@ import { cos } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { FunctionNode, FunctionsIds } from './functionNode';
 
-export class CosNode extends FunctionNode implements Node {
-  type: NodeType = NodeType.function;
+export class CosNode implements FunctionNode {
+  id: FunctionsIds;
+  child: Node;
+  type: NodeType;
 
   constructor(child: Node) {
-    super(FunctionsIds.cos, child, '\\cos');
+    this.id = FunctionsIds.opposite;
+    this.child = child;
+    this.type = NodeType.function;
   }
 
   toMathString(): string {

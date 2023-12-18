@@ -7,14 +7,12 @@ const divideNodeToTex = (leftChild: Node, rightChild: Node) => {
   let leftTex = leftChild.toTex();
 
   if (leftChild.type === NodeType.operator) {
-    if (
-      [OperatorIds.add, OperatorIds.substract, OperatorIds.multiply].includes((leftChild as unknown as OperatorNode).id)
-    )
+    if ([OperatorIds.add, OperatorIds.substract, OperatorIds.multiply].includes((leftChild as OperatorNode).id))
       leftTex = `\\left(${leftTex}\\right)`;
   }
   let needBrackets = rightTex[0] === '-';
   if (rightChild.type === NodeType.operator) {
-    const operatorRightChild = rightChild as unknown as OperatorNode;
+    const operatorRightChild = rightChild as OperatorNode;
     needBrackets ||= [OperatorIds.add, OperatorIds.substract, OperatorIds.divide].includes(operatorRightChild.id);
   }
   if (needBrackets) rightTex = `\\left(${rightTex}\\right)`;
@@ -22,13 +20,21 @@ const divideNodeToTex = (leftChild: Node, rightChild: Node) => {
   return `${leftTex}\\div${nextIsLetter ? ' ' : ''}${rightTex}`;
 };
 
-export class DivideNode extends OperatorNode implements Node {
+export class DivideNode implements OperatorNode {
+  id: OperatorIds;
+  leftChild: Node;
+  rightChild: Node;
+  type: NodeType;
   /**
    * @param leftChild num
    * @param rightChild denum
    */
+
   constructor(leftChild: Node, rightChild: Node) {
-    super(OperatorIds.divide, leftChild, rightChild, false, '\\div');
+    this.id = OperatorIds.divide;
+    this.leftChild = leftChild;
+    this.rightChild = rightChild;
+    this.type = NodeType.operator;
   }
 
   toMathString(): string {

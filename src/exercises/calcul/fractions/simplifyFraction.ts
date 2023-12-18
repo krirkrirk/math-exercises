@@ -6,10 +6,10 @@ import {
   QuestionGenerator,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { RationalConstructor } from '#root/math/numbers/rationals/rational';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { RationalConstructor } from "#root/math/numbers/rationals/rational";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
@@ -24,7 +24,7 @@ const getSimplifyFraction: QuestionGenerator<QCMProps, VEAProps> = () => {
     startStatement: rationalTex,
     answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer },
   };
   return question;
@@ -36,18 +36,21 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
 
   while (propositions.length < n) {
     const incorrectRational = RationalConstructor.randomSimplifiable(10);
-    tryToAddWrongProp(propositions, incorrectRational.simplify().toTree().toTex());
+    tryToAddWrongProp(
+      propositions,
+      incorrectRational.simplify().toTree().toTex(),
+    );
   }
 
   return shuffle(propositions);
 };
 
 export const simplifyFraction: MathExercise<QCMProps, VEAProps> = {
-  id: 'simplifyFrac',
-  connector: '=',
-  label: 'Simplification de fractions',
-  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
-  sections: ['Fractions'],
+  id: "simplifyFrac",
+  connector: "=",
+  label: "Simplification de fractions",
+  levels: ["4ème", "3ème", "2nde", "CAP", "2ndPro", "1rePro"],
+  sections: ["Fractions"],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getSimplifyFraction, nb),
   qcmTimer: 60,

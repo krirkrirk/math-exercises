@@ -1,25 +1,52 @@
-import { multiply } from 'mathjs';
-import { FunctionNode, FunctionsIds } from '../functions/functionNode';
-import { Node, NodeType } from '../node';
-import { OperatorIds, OperatorNode } from './operatorNode';
+import { multiply } from "mathjs";
+import { FunctionNode, FunctionsIds } from "../functions/functionNode";
+import { Node, NodeType } from "../node";
+import {
+  CommutativeOperatorNode,
+  OperatorIds,
+  OperatorNode,
+} from "./operatorNode";
+import { coinFlip } from "#root/utils/coinFlip";
+import { permute } from "#root/utils/permutations";
+import {
+  getCartesiansProducts,
+  getFlatCartesianProducts,
+} from "#root/utils/cartesianProducts";
+import { operatorComposition } from "#root/tree/utilities/operatorComposition";
+import { PowerNode } from "./powerNode";
+import { NumberNode } from "../numbers/numberNode";
+import { isInt } from "#root/utils/isInt";
 
 type MultiplyNodeOptions = {
   forceTimesSign?: boolean;
 };
-export class MultiplyNode extends OperatorNode implements Node {
-  opts?: MultiplyNodeOptions | undefined;
+export class MultiplyNode implements CommutativeOperatorNode {
+  opts?: MultiplyNodeOptions;
+  id: OperatorIds;
+  leftChild: Node;
+  rightChild: Node;
+  type: NodeType;
   constructor(leftChild: Node, rightChild: Node, opts?: MultiplyNodeOptions) {
     let [left, right] = [leftChild, rightChild];
     const shouldSwitch =
-      (rightChild.type === NodeType.function && (rightChild as unknown as FunctionNode).id === FunctionsIds.opposite) ||
-      (leftChild.type === NodeType.constant && rightChild.type === NodeType.number);
+      (rightChild.type === NodeType.function &&
+        (rightChild as FunctionNode).id === FunctionsIds.opposite) ||
+      (leftChild.type === NodeType.constant &&
+        rightChild.type === NodeType.number);
     if (shouldSwitch) {
       [left, right] = [rightChild, leftChild];
     }
-
-    super(OperatorIds.multiply, left, right, true, '\\times');
+    this.id = OperatorIds.multiply;
+    this.leftChild = leftChild;
+    this.rightChild = rightChild;
+    this.type = NodeType.operator;
     this.opts = opts;
   }
+
+  shuffle = () => {
+    if (coinFlip())
+      [this.leftChild, this.rightChild] = [this.rightChild, this.leftChild];
+  };
 
   toMathString(): string {
     return `(${this.leftChild.toMathString()})*(${this.rightChild.toMathString()})`;
@@ -30,7 +57,7 @@ export class MultiplyNode extends OperatorNode implements Node {
     let rightTex = this.rightChild.toTex();
 
     if (this.rightChild.type === NodeType.variable) {
-      if (leftTex === '1') {
+      if (leftTex === "1") {
         return rightTex;
       }
     }
@@ -38,47 +65,157 @@ export class MultiplyNode extends OperatorNode implements Node {
     if (this.leftChild.type === NodeType.operator) {
       if (
         [OperatorIds.add, OperatorIds.substract, OperatorIds.divide].includes(
-          (this.leftChild as unknown as OperatorNode).id,
+          (this.leftChild as OperatorNode).id,
         )
       )
         leftTex = `\\left(${leftTex}\\right)`;
     }
 
-    let needBrackets = rightTex[0] === '-';
+    let needBrackets = rightTex[0] === "-";
     if (this.rightChild.type === NodeType.operator) {
-      const operatorRightChild = this.rightChild as unknown as OperatorNode;
-      needBrackets ||= [OperatorIds.add, OperatorIds.substract].includes(operatorRightChild.id);
+      const operatorRightChild = this.rightChild as OperatorNode;
+      needBrackets ||= [OperatorIds.add, OperatorIds.substract].includes(
+        operatorRightChild.id,
+      );
     }
     if (needBrackets) rightTex = `\\left(${rightTex}\\right)`;
 
-    let showTimesSign = this.opts?.forceTimesSign || !isNaN(+rightTex[0]) || this.rightChild.type === NodeType.number;
+    let showTimesSign =
+      this.opts?.forceTimesSign ||
+      !isNaN(+rightTex[0]) ||
+      this.rightChild.type === NodeType.number;
+
     if (this.rightChild.type === NodeType.operator) {
-      const operatorRightChild = this.rightChild as unknown as OperatorNode;
+      const operatorRightChild = this.rightChild as OperatorNode;
       showTimesSign ||= [OperatorIds.fraction].includes(operatorRightChild.id);
     }
-    const nextIsLetter = rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
-    return `${leftTex}${showTimesSign ? `\\times${nextIsLetter ? ' ' : ''}` : ''}${rightTex}`;
+    const nextIsLetter =
+      rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
+    return `${leftTex}${
+      showTimesSign ? `\\times${nextIsLetter ? " " : ""}` : ""
+    }${rightTex}`;
   }
 
-  toEquivalentNodes() {
-    const res: Node[] = [];
-    const rightNodes = this.rightChild.toEquivalentNodes();
+  toAllTexs() {
+    const res: string[] = [];
 
-    const leftNodes = this.leftChild.toEquivalentNodes();
-    rightNodes.forEach((rightNode) => {
-      leftNodes.forEach((leftNode) => {
-        res.push(new MultiplyNode(leftNode, rightNode));
-        //! pas opti, ca va générer plusieurs nodes avec le même tex
-        //! comment gérer ce cas ?
-        res.push(new MultiplyNode(leftNode, rightNode, { forceTimesSign: true }));
-        res.push(new MultiplyNode(rightNode, leftNode));
-        res.push(new MultiplyNode(rightNode, leftNode, { forceTimesSign: true }));
+    let leftTex = this.leftChild.toTex();
+    let rightTex = this.rightChild.toTex();
+
+    if (this.leftChild.type === NodeType.operator) {
+      if (
+        [OperatorIds.add, OperatorIds.substract, OperatorIds.divide].includes(
+          (this.leftChild as OperatorNode).id,
+        )
+      )
+        leftTex = `\\left(${leftTex}\\right)`;
+    }
+
+    let needRightBrackets = rightTex[0] === "-";
+    if (this.rightChild.type === NodeType.operator) {
+      const operatorRightChild = this.rightChild as OperatorNode;
+      needRightBrackets ||= [OperatorIds.add, OperatorIds.substract].includes(
+        operatorRightChild.id,
+      );
+    }
+    if (needRightBrackets) rightTex = `\\left(${rightTex}\\right)`;
+
+    let mustShowTimesSign =
+      !isNaN(+rightTex[0]) || this.rightChild.type === NodeType.number;
+
+    const nextIsLetter =
+      rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
+
+    res.push(`${leftTex}${`\\times${nextIsLetter ? " " : ""}`}${rightTex}`);
+    if (mustShowTimesSign) return res;
+
+    res.push(`${leftTex}${rightTex}`);
+    return res;
+  }
+
+  toEquivalentNodes(): MultiplyNode[] {
+    const res: MultiplyNode[] = [];
+
+    const multiplyTree: (Node | (Node | Node[])[])[] = [];
+    //ce seront des nodes qui ne sont pas des MultiNode
+    //si l'élement est un array ca signifie qu'il faudra faire les produits cartésiens pour avoir toutes les possibilités
+    //exp [2,[[5,5], 5^2], 3] -> il faudra faire les permutation sur [2,5,5,3] et sur [2,5^2,3]
+    //!manque d'opti si [2,[5x5,5^2],[5x5,5^2]] par exp, mais par contruction on aura écrit ca [2,5^4]
+
+    //1: choper le sous arbre de type Non Multi (ie les enfants nonMulti des Multi)
+    const recursive = (node: Node) => {
+      if (node.type === NodeType.operator) {
+        const operatorNode = node as OperatorNode;
+        if (operatorNode.id === OperatorIds.multiply) {
+          const multiplyNode = operatorNode as MultiplyNode;
+          recursive(multiplyNode.leftChild);
+          recursive(multiplyNode.rightChild);
+        } else if (operatorNode.id === OperatorIds.power) {
+          //si power node avec power=int, créer un array contenant chaque décomposition de la puissnace possible
+          //genre 5^2 : [[5,5], 5^2]
+          //5^3  : [[5,5,5], [5,5^2], 5^3]
+          const powerNode = operatorNode as PowerNode;
+          const power = powerNode.rightChild;
+          if (power.type === NodeType.number) {
+            const powerNB = (power as NumberNode).value;
+            if (isInt(powerNB) && powerNB > 1) {
+              const arr: (Node | Node[])[] = [
+                new PowerNode(powerNode.leftChild, powerNode.rightChild, {
+                  allowPowerToProduct: false,
+                }),
+              ];
+              for (let i = 0; i < powerNB - 1; i++) {
+                const newPower = powerNB - (i + 1);
+                if (newPower === 1) {
+                  //que des nbs solos
+                  const nbs = Array<Node>(powerNB).fill(powerNode.leftChild);
+                  arr.push(nbs);
+                } else {
+                  //powerNb-newPower nbs solos
+                  const newPowerNode = new PowerNode(
+                    powerNode.leftChild,
+                    new NumberNode(newPower),
+                    { allowPowerToProduct: false },
+                  );
+                  const nbs = Array<Node>(powerNB - newPower).fill(
+                    powerNode.leftChild,
+                  );
+                  arr.push([...nbs, newPowerNode]);
+                }
+              }
+              multiplyTree.push(arr);
+            }
+          }
+        } else multiplyTree.push(node);
+      } else multiplyTree.push(node);
+    };
+    recursive(this);
+
+    const multiplyCartesians = getFlatCartesianProducts(
+      multiplyTree.map((el) => (Array.isArray(el) ? el : [el])),
+    );
+
+    multiplyCartesians.forEach((multiplyCartesian) => {
+      //2: pour tous les nodes qui ne sont pas Multi, on génère les equiv node
+      const equivNodesArr = multiplyCartesian.map((node) =>
+        node.toEquivalentNodes(),
+      );
+      //!pas opti car si [2,3,3] alors les 3 se permutent et donc double sortie [2,3_1,3_2], [2,3_2,3_1]
+      //3: créer toutes les permutations de tous les nodes equiv
+      let equivNodesPermutations = permute(equivNodesArr);
+      equivNodesPermutations.forEach((permutation) => {
+        //4: créé les produits cartésiens des nodes equiv puis nodify
+        const cartesiansProducts = getCartesiansProducts(permutation);
+        cartesiansProducts.forEach((product) => {
+          res.push(operatorComposition(MultiplyNode, product));
+        });
       });
     });
     return res;
   }
+
   toAllValidTexs(): string[] {
-    return this.toEquivalentNodes().map((node) => node.toTex());
+    return this.toEquivalentNodes().flatMap((node) => node.toAllTexs());
   }
 
   toMathjs() {

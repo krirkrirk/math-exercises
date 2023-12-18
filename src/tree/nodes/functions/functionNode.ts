@@ -9,14 +9,13 @@ export enum FunctionsIds {
   exp,
 }
 
-export abstract class FunctionNode {
+export interface FunctionNode extends Node {
   id: FunctionsIds;
   child: Node;
-  type = NodeType.function;
-  tex: string;
-  constructor(id: FunctionsIds, child: Node, tex: string) {
-    this.id = id;
-    this.child = child;
-    this.tex = tex;
-  }
+  // tex: string;
+  // constructor(id: FunctionsIds, child: Node, tex: string) {
+  //   this.id = id;
+  //   this.child = child;
+  //   this.tex = tex;
+  // }
 }

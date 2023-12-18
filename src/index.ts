@@ -1,37 +1,20 @@
-import { MathExercise, MathSection } from './exercises/exercise';
-import { exercises } from './exercises/exercises';
-import { decimalToScientific } from './exercises/powers/decimalToScientific';
+import { exercises } from "./exercises/exercises";
+import { NumberNode } from "./tree/nodes/numbers/numberNode";
+import { AddNode } from "./tree/nodes/operators/addNode";
 
 /**
  * TODO
  * Décimal : permettre facilement -0.xxx
  * Tree shaking export
  * 
+ * VEA: 
+ *  -> -3x est bien transofmré en -3*x, x*(-3) mais pas en -x*3
+ *      ->> faire le meme delire que pour les power mais pour les opposite ? 
+ *          c'est à dire créer toutes les permuts en déplacant le moins qquepart
+ *  -> faire des nodes pour les Ensembles de nombre
  * 
+ * Passer les sqrtNode en tree-iable
 
 */
 
-const allMathExercises = [...exercises];
-
-const getAllMathExercisesBySection = () => {
-  const data: { section: MathSection; exos: MathExercise[] }[] = [];
-
-  allMathExercises.forEach((exo) => {
-    const sectionsData = data.filter((el) => exo.sections.includes(el.section));
-    if (!sectionsData.length) {
-      exo.sections.forEach((section) =>
-        data.push({
-          section,
-          exos: [exo],
-        }),
-      );
-    } else {
-      sectionsData.forEach((sectionData) => {
-        data.find((d) => d.section === sectionData.section)?.exos.push(exo);
-      });
-    }
-  });
-  return data;
-};
-
-export { allMathExercises, getAllMathExercisesBySection };
+export { exercises };

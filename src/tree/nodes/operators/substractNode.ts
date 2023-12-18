@@ -2,10 +2,18 @@ import { subtract } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { OperatorIds, OperatorNode } from './operatorNode';
 
-export class SubstractNode extends OperatorNode implements Node {
+export class SubstractNode implements OperatorNode {
+  id: OperatorIds;
+  leftChild: Node;
+  rightChild: Node;
+  type: NodeType;
   constructor(leftChild: Node, rightChild: Node) {
-    super(OperatorIds.substract, leftChild, rightChild, false, '-');
+    this.id = OperatorIds.substract;
+    this.leftChild = leftChild;
+    this.rightChild = rightChild;
+    this.type = NodeType.operator;
   }
+
   toMathString(): string {
     return `${this.leftChild.toMathString()}-(${this.rightChild.toMathString()})`;
   }
@@ -31,7 +39,7 @@ export class SubstractNode extends OperatorNode implements Node {
 
     const needBrackets =
       (this.rightChild.type === NodeType.operator &&
-        [OperatorIds.add, OperatorIds.substract].includes((this.rightChild as unknown as OperatorNode).id)) ||
+        [OperatorIds.add, OperatorIds.substract].includes((this.rightChild as OperatorNode).id)) ||
       rightTex[0] === '-';
 
     if (needBrackets) rightTex = `(${rightTex})`;

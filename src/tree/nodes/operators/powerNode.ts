@@ -1,16 +1,20 @@
-import { pow } from 'mathjs';
-import { Node, NodeType } from '../node';
-import { OperatorIds, OperatorNode } from './operatorNode';
-import { NumberNode } from '../numbers/numberNode';
-import { MultiplyNode } from './multiplyNode';
+import { pow } from "mathjs";
+import { Node, NodeOptions, NodeType } from "../node";
+import { OperatorIds, OperatorNode } from "./operatorNode";
+import { NumberNode } from "../numbers/numberNode";
+import { MultiplyNode } from "./multiplyNode";
 
-type PowerNodeOptions = {
-  allowProductSyntax?: boolean; //par exemple, pour x^2, si cette prop est true, toEquivalentNodes va sortir l'arbre Multiply(x,x) en plus de l'arbre Power(x,2)
-};
-export class PowerNode extends OperatorNode implements Node {
-  opts?: PowerNodeOptions;
-  constructor(leftChild: Node, rightChild: Node, opts?: PowerNodeOptions) {
-    super(OperatorIds.power, leftChild, rightChild, false, '^');
+export class PowerNode implements OperatorNode {
+  opts?: NodeOptions;
+  id: OperatorIds;
+  leftChild: Node;
+  rightChild: Node;
+  type: NodeType;
+  constructor(leftChild: Node, rightChild: Node, opts?: NodeOptions) {
+    this.id = OperatorIds.power;
+    this.leftChild = leftChild;
+    this.rightChild = rightChild;
+    this.type = NodeType.operator;
     this.opts = opts;
   }
 
@@ -25,8 +29,10 @@ export class PowerNode extends OperatorNode implements Node {
     rightNodes.forEach((rightNode) => {
       leftNodes.forEach((leftNode) => {
         res.push(new PowerNode(leftNode, rightNode));
-
-        if (this.opts?.allowProductSyntax && this.rightChild.type === NodeType.number) {
+        if (
+          this.opts?.allowPowerToProduct &&
+          this.rightChild.type === NodeType.number
+        ) {
           const power = (this.rightChild as NumberNode).value;
           if (Math.floor(power) !== power || power < 2) return;
           let tree = new MultiplyNode(leftNode, leftNode);
@@ -47,9 +53,9 @@ export class PowerNode extends OperatorNode implements Node {
   toTex(): string {
     let rightTex = this.rightChild.toTex();
     let leftTex = this.leftChild.toTex();
-    let needBrackets = leftTex[0] === '-';
+    let needBrackets = leftTex[0] === "-";
     if (this.leftChild.type === NodeType.operator) {
-      const childOperator = this.leftChild as unknown as OperatorNode;
+      const childOperator = this.leftChild as OperatorNode;
       needBrackets ||= [
         OperatorIds.add,
         OperatorIds.substract,
@@ -67,5 +73,11 @@ export class PowerNode extends OperatorNode implements Node {
 
   toMathjs() {
     return pow(this.leftChild.toMathjs(), this.rightChild.toMathjs());
+  }
+}
+
+export class SquareNode extends PowerNode {
+  constructor(child: Node, opts?: NodeOptions) {
+    super(child, new NumberNode(2), opts);
   }
 }

@@ -1,11 +1,10 @@
-import { Node } from '#root/tree/nodes/node';
-import { FractionNodeOptions } from '#root/tree/nodes/operators/fractionNode';
-import { random } from '#root/utils/random';
-import { randint } from '../utils/random/randint';
-import { DecimalConstructor } from './decimals/decimal';
-import { Integer } from './integer/integer';
-import { RationalConstructor } from './rationals/rational';
-import { RealConstructor } from './reals/real';
+import { Node, NodeOptions } from "#root/tree/nodes/node";
+import { random } from "#root/utils/random";
+import { randint } from "../utils/random/randint";
+import { DecimalConstructor } from "./decimals/decimal";
+import { Integer } from "./integer/integer";
+import { RationalConstructor } from "./rationals/rational";
+import { RealConstructor } from "./reals/real";
 
 export enum NumberType {
   Integer,
@@ -14,19 +13,21 @@ export enum NumberType {
   Real,
 }
 
-type ToTreeOpts = {
-  FractionNodeOpts?: FractionNodeOptions;
-};
 export interface Nombre {
   value: number;
   tex: string;
   type: NumberType;
-  toTree: (opts?: ToTreeOpts) => Node;
+  toTree: (opts?: NodeOptions) => Node;
 }
 
 export abstract class NombreConstructor {
   static random() {
-    const type = random([NumberType.Decimal, NumberType.Decimal, NumberType.Rational, NumberType.Real]);
+    const type = random([
+      NumberType.Decimal,
+      NumberType.Decimal,
+      NumberType.Rational,
+      NumberType.Real,
+    ]);
     switch (type) {
       case NumberType.Integer:
         return new Integer(randint(-9, 10));

@@ -2,11 +2,15 @@ import { sin } from 'mathjs';
 import { Node, NodeType } from '../node';
 import { FunctionNode, FunctionsIds } from './functionNode';
 
-export class SinNode extends FunctionNode implements Node {
-  type: NodeType = NodeType.function;
+export class SinNode implements FunctionNode {
+  id: FunctionsIds;
+  child: Node;
+  type: NodeType;
 
   constructor(child: Node) {
-    super(FunctionsIds.sin, child, '\\sin');
+    this.id = FunctionsIds.opposite;
+    this.child = child;
+    this.type = NodeType.function;
   }
 
   toMathString(): string {

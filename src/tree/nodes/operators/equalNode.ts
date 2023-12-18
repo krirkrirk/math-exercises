@@ -1,14 +1,18 @@
-import { equal } from 'mathjs';
-import { Node, NodeType } from '../node';
-import { OperatorIds, OperatorNode } from './operatorNode';
+import { equal } from "mathjs";
+import { Node, NodeOptions, NodeType } from "../node";
+import { OperatorIds, OperatorNode } from "./operatorNode";
 
-type EqualNodeOptions = {
-  isRightChildOnlyValid?: boolean;
-};
-export class EqualNode extends OperatorNode implements Node {
-  opts: EqualNodeOptions | undefined;
-  constructor(leftChild: Node, rightChild: Node, opts?: EqualNodeOptions) {
-    super(OperatorIds.equal, leftChild, rightChild, true, '=');
+export class EqualNode implements OperatorNode {
+  id: OperatorIds;
+  leftChild: Node;
+  rightChild: Node;
+  opts?: NodeOptions;
+  type: NodeType;
+  constructor(leftChild: Node, rightChild: Node, opts?: NodeOptions) {
+    this.id = OperatorIds.equal;
+    this.leftChild = leftChild;
+    this.rightChild = rightChild;
+    this.type = NodeType.operator;
     this.opts = opts;
   }
 
@@ -16,7 +20,7 @@ export class EqualNode extends OperatorNode implements Node {
     const res: Node[] = [];
     const rightNodes = this.rightChild.toEquivalentNodes();
 
-    if (this.opts?.isRightChildOnlyValid) {
+    if (this.opts?.allowRawRightChildAsSolution) {
       res.push(...rightNodes);
     }
     const leftNodes = this.leftChild.toEquivalentNodes();

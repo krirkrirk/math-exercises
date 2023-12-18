@@ -4,20 +4,22 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Integer } from '#root/math/numbers/integer/integer';
-import { Rational } from '#root/math/numbers/rationals/rational';
-import { Affine } from '#root/math/polynomials/affine';
-import { DiscreteSet } from '#root/math/sets/discreteSet';
-import { Interval } from '#root/math/sets/intervals/intervals';
-import { randint } from '#root/math/utils/random/randint';
-import { EqualNode } from '#root/tree/nodes/operators/equalNode';
-import { VariableNode } from '#root/tree/nodes/variables/variableNode';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { equationKeys } from "#root/exercises/utils/keys/equationKeys";
+import { Integer } from "#root/math/numbers/integer/integer";
+import { Rational } from "#root/math/numbers/rationals/rational";
+import { Affine } from "#root/math/polynomials/affine";
+import { DiscreteSet } from "#root/math/sets/discreteSet";
+import { Interval } from "#root/math/sets/intervals/intervals";
+import { randint } from "#root/math/utils/random/randint";
+import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
+import { EqualNode } from "#root/tree/nodes/operators/equalNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { shuffle } from "#root/utils/shuffle";
 
 /**
  *  type ax+b=cx+d
@@ -30,30 +32,51 @@ type QCMProps = {
   c: number;
   d: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  a: number;
+  b: number;
+  c: number;
+  d: number;
+};
 
-const getEquationType4ExerciseQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
-  const interval = new Interval('[[-10; 10]]');
-  const intervalStar = new Interval('[[-10; 10]]').difference(new DiscreteSet([new Integer(0)]));
+const getEquationType4ExerciseQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
+  const interval = new Interval("[[-10; 10]]");
+  const intervalStar = new Interval("[[-10; 10]]").difference(
+    new DiscreteSet([new Integer(0)]),
+  );
   const a = intervalStar.getRandomElement()!;
   const b = interval.getRandomElement();
-  const intervalC = new Interval('[[-10; 10]]').difference(new DiscreteSet([new Integer(0), new Integer(a.value)]));
+  const intervalC = new Interval("[[-10; 10]]").difference(
+    new DiscreteSet([new Integer(0), new Integer(a.value)]),
+  );
   const c = intervalC.getRandomElement()!;
   const d = interval.getRandomElement();
 
   const affines = [new Affine(a.value, b.value), new Affine(c.value, d.value)];
-  const solution = new Rational(d.value - b.value, a.value - c.value).simplify();
+  const solution = new Rational(
+    d.value - b.value,
+    a.value - c.value,
+  ).simplify();
 
   const statementTree = new EqualNode(affines[0].toTree(), affines[1].toTree());
-  const answerTree = new EqualNode(new VariableNode('x'), solution.toTree());
+  const answerTree = new EqualNode(new VariableNode("x"), solution.toTree());
   const answer = answerTree.toTex();
   const question: Question<QCMProps, VEAProps> = {
     instruction: `Résoudre : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
-    keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
-    answerFormat: 'tex',
-    qcmGeneratorProps: { answer, a: a.value, b: b.value, c: c.value, d: d.value },
+    keys: equationKeys,
+    answerFormat: "tex",
+    qcmGeneratorProps: {
+      answer,
+      a: a.value,
+      b: b.value,
+      c: c.value,
+      d: d.value,
+    },
   };
   return question;
 };
@@ -66,21 +89,36 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c, d }) => {
       d - b + randint(-7, 8, [0, -d + b]),
       a - c + randint(-7, 8, [-a + c, 0]),
     ).simplify();
-    tryToAddWrongProp(propositions, new EqualNode(new VariableNode('x'), wrongAnswer.toTree()).toTex());
+    tryToAddWrongProp(
+      propositions,
+      new EqualNode(new VariableNode("x"), wrongAnswer.toTree()).toTex(),
+    );
   }
 
   return shuffle(propositions);
 };
-export const equationType4Exercise: MathExercise<QCMProps, VEAProps> = {
-  id: 'equa4',
 
-  connector: '\\iff',
-  label: 'Équations $ax+b=cx+d$',
-  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
-  sections: ['Équations'],
+const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c, d }) => {
+  const solution = new Rational(d - b, a - c).simplify().toTree();
+  const answerTree = new EquationSolutionNode([solution], {
+    opts: { allowFractionToDecimal: true, allowRawRightChildAsSolution: true },
+  });
+  const validLatexs = answerTree.toAllValidTexs();
+  return validLatexs.includes(ans);
+};
+
+export const equationType4Exercise: MathExercise<QCMProps, VEAProps> = {
+  id: "equa4",
+
+  connector: "\\iff",
+  label: "Équations $ax+b=cx+d$",
+  levels: ["4ème", "3ème", "2nde", "CAP", "2ndPro", "1rePro", "1reTech"],
+  sections: ["Équations"],
   isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getEquationType4ExerciseQuestion, nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(getEquationType4ExerciseQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

@@ -6,11 +6,14 @@ import {
   QuestionGenerator,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Rational, RationalConstructor } from '#root/math/numbers/rationals/rational';
-import { DivideNode } from '#root/tree/nodes/operators/divideNode';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import {
+  Rational,
+  RationalConstructor,
+} from "#root/math/numbers/rationals/rational";
+import { DivideNode } from "#root/tree/nodes/operators/divideNode";
+import { shuffle } from "#root/utils/shuffle";
 
 const getFractionsDivision: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rational = RationalConstructor.randomIrreductible();
@@ -23,7 +26,7 @@ const getFractionsDivision: QuestionGenerator<QCMProps, VEAProps> = () => {
     startStatement: statementTree.toTex(),
     answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: {
       answer,
       rationalNum: [rational.num, rational.denum],
@@ -39,14 +42,20 @@ type QCMProps = {
   rationalDenum: [number, number];
 };
 type VEAProps = {};
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, rationalNum, rationalDenum }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, rationalNum, rationalDenum },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
   const rational = new Rational(rationalNum[0], rationalNum[1]);
   const rational2 = new Rational(rationalDenum[0], rationalDenum[1]);
 
-  tryToAddWrongProp(propositions, rational.multiply(rational2).toTree().toTex());
+  tryToAddWrongProp(
+    propositions,
+    rational.multiply(rational2).toTree().toTex(),
+  );
 
   while (propositions.length < n) {
     const randomRational = RationalConstructor.randomIrreductible();
@@ -58,11 +67,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, rationalNum, ratio
 };
 
 export const fractionsDivision: MathExercise<QCMProps, VEAProps> = {
-  id: 'fractionsDivision',
-  connector: '=',
-  label: 'Divisions de fractions',
-  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
-  sections: ['Fractions'],
+  id: "fractionsDivision",
+  connector: "=",
+  label: "Divisions de fractions",
+  levels: ["4ème", "3ème", "2nde", "CAP", "2ndPro", "1rePro"],
+  sections: ["Fractions"],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionsDivision, nb),
   qcmTimer: 60,

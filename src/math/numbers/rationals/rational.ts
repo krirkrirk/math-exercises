@@ -1,21 +1,18 @@
-import { coprimesOf } from '#root/math/utils/arithmetic/coprimesOf';
-import { gcd } from '#root/math/utils/arithmetic/gcd';
-import { lcd } from '#root/math/utils/arithmetic/lcd';
-import { randint } from '#root/math/utils/random/randint';
-import { OppositeNode } from '#root/tree/nodes/functions/oppositeNode';
-import { Node } from '#root/tree/nodes/node';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { FractionNode, FractionNodeOptions } from '#root/tree/nodes/operators/fractionNode';
-import { coinFlip } from '#root/utils/coinFlip';
-import { random } from '#root/utils/random';
-import { shuffle } from '#root/utils/shuffle';
-import { Integer } from '../integer/integer';
+import { coprimesOf } from "#root/math/utils/arithmetic/coprimesOf";
+import { gcd } from "#root/math/utils/arithmetic/gcd";
+import { lcd } from "#root/math/utils/arithmetic/lcd";
+import { randint } from "#root/math/utils/random/randint";
+import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
+import { Node, NodeOptions } from "#root/tree/nodes/node";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { coinFlip } from "#root/utils/coinFlip";
+import { random } from "#root/utils/random";
+import { shuffle } from "#root/utils/shuffle";
+import { Integer } from "../integer/integer";
 
-import { Nombre, NumberType } from '../nombre';
+import { Nombre, NumberType } from "../nombre";
 
-type ToTreeOpts = {
-  FractionNodeOpts?: FractionNodeOptions;
-};
 export abstract class RationalConstructor {
   /**
    * @param maxGcd max number by which the fraction is simplifiable
@@ -57,17 +54,21 @@ export class Rational implements Nombre {
   type: NumberType;
 
   constructor(numerator: number, denumerator: number) {
-    if (denumerator === 0) throw Error('division by zero');
+    if (denumerator === 0) throw Error("division by zero");
     this.num = numerator;
     this.denum = denumerator;
     this.value = numerator / denumerator;
     this.isSimplified = Math.abs(gcd(numerator, denumerator)) === 1;
-    this.tex = `${this.num < 0 ? '-' : ''}\\frac{${this.num < 0 ? -this.num : this.num}}{${this.denum}}`;
+    this.tex = `${this.num < 0 ? "-" : ""}\\frac{${
+      this.num < 0 ? -this.num : this.num
+    }}{${this.denum}}`;
     this.type = NumberType.Rational;
   }
 
   toTex() {
-    return `${this.num < 0 ? '-' : ''}\\frac{${this.num < 0 ? -this.num : this.num}}{${this.denum}}`;
+    return `${this.num < 0 ? "-" : ""}\\frac{${
+      this.num < 0 ? -this.num : this.num
+    }}{${this.denum}}`;
   }
 
   add(nb: Nombre): Nombre {
@@ -79,11 +80,13 @@ export class Rational implements Nombre {
       case NumberType.Rational: {
         const rational = nb as Rational;
         const ppcm = lcd(rational.denum, this.denum);
-        const num = this.num * (ppcm / this.denum) + rational.num * (ppcm / rational.denum);
+        const num =
+          this.num * (ppcm / this.denum) +
+          rational.num * (ppcm / rational.denum);
         return new Rational(num, ppcm).simplify();
       }
     }
-    throw Error('not implemented yet');
+    throw Error("not implemented yet");
   }
 
   multiply(nb: Nombre): Nombre {
@@ -100,7 +103,7 @@ export class Rational implements Nombre {
         return new Rational(num, denum).simplify();
       }
     }
-    throw Error('not implemented yet');
+    throw Error("not implemented yet");
   }
   divide(nb: Nombre): Nombre {
     switch (nb.type) {
@@ -115,25 +118,39 @@ export class Rational implements Nombre {
         return new Rational(num, denum).simplify();
       }
     }
-    throw Error('not implemented yet');
+    throw Error("not implemented yet");
   }
 
   opposite(): Rational {
     return new Rational(-this.num, this.denum);
   }
 
-  toTree(opts?: ToTreeOpts): Node {
+  toTree(opts?: NodeOptions): Node {
     if (this.num < 0)
       return new OppositeNode(
-        new FractionNode(new NumberNode(-this.num), new NumberNode(this.denum), opts?.FractionNodeOpts),
+        new FractionNode(
+          new NumberNode(-this.num),
+          new NumberNode(this.denum),
+          opts,
+        ),
       );
-    return new FractionNode(new NumberNode(this.num), new NumberNode(this.denum), opts?.FractionNodeOpts);
+    return new FractionNode(
+      new NumberNode(this.num),
+      new NumberNode(this.denum),
+      opts,
+    );
   }
 
   simplify(): Nombre {
-    const sign = (this.num > 0 && this.denum > 0) || (this.num < 0 && this.denum < 0) ? 1 : -1;
+    const sign =
+      (this.num > 0 && this.denum > 0) || (this.num < 0 && this.denum < 0)
+        ? 1
+        : -1;
     const div = Math.abs(gcd(this.num, this.denum));
     if (Math.abs(this.denum) === div) return new Integer(this.num / this.denum);
-    return new Rational((sign * Math.abs(this.num)) / div, Math.abs(this.denum) / div);
+    return new Rational(
+      (sign * Math.abs(this.num)) / div,
+      Math.abs(this.denum) / div,
+    );
   }
 }

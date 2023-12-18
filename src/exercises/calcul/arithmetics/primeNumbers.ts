@@ -1,4 +1,4 @@
-import { randint } from '#root/math/utils/random/randint';
+import { randint } from "#root/math/utils/random/randint";
 
 import {
   MathExercise,
@@ -10,11 +10,14 @@ import {
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
-} from '../../exercise';
-import { getDistinctQuestions } from '../../utils/getDistinctQuestions';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
-import { PowerNode } from '#root/tree/nodes/operators/powerNode';
+} from "../../exercise";
+import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { operatorComposition } from "#root/tree/utilities/operatorComposition";
+import { getCartesiansProducts } from "#root/utils/cartesianProducts";
+import { Node } from "#root/tree/nodes/node";
 
 function prodNumbers(tab: number[]) {
   let temp = 1;
@@ -42,7 +45,10 @@ const getPrimeNumbers: QuestionGenerator<QCMProps, VEAProps> = () => {
   chosenNumbers = chosenNumbers.sort((a, b) => a - b);
 
   const numberNodes = chosenNumbers.map((nb) => new NumberNode(nb));
-  let tree = new MultiplyNode(numberNodes[numberNodes.length - 2], numberNodes[numberNodes.length - 1]);
+  let tree = new MultiplyNode(
+    numberNodes[numberNodes.length - 2],
+    numberNodes[numberNodes.length - 1],
+  );
   for (let i = numberNodes.length - 3; i > -1; i--) {
     tree = new MultiplyNode(numberNodes[i], tree);
   }
@@ -54,7 +60,7 @@ const getPrimeNumbers: QuestionGenerator<QCMProps, VEAProps> = () => {
     startStatement: `${prod}`,
     answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, chosenNumbers },
     veaProps: { chosenNumbers },
   };
@@ -65,7 +71,10 @@ type QCMProps = {
   answer: string;
   chosenNumbers: number[];
 };
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, chosenNumbers }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, chosenNumbers },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const wrongFactors = [...chosenNumbers];
@@ -105,23 +114,25 @@ const isAnswerValid: VEA<VEAProps> = (ans, { chosenNumbers }) => {
     nbsToPower.push([nb, count]);
   });
   const nodes = nbsToPower.map((el) => {
-    if (el[1] === 1) return new NumberNode(el[0]);
-    else return new PowerNode(new NumberNode(el[0]), new NumberNode(el[1]), { allowProductSyntax: true });
+    const nbNode = new NumberNode(el[0]);
+    if (el[1] === 1) {
+      return nbNode;
+    } else {
+      return new PowerNode(nbNode, new NumberNode(el[1]));
+    }
   });
-  let tree = new MultiplyNode(nodes[nodes.length - 1], nodes[nodes.length - 2]);
-  for (let i = nodes.length - 3; i > -1; i--) {
-    tree = new MultiplyNode(nodes[i], tree);
-  }
-  const texs = tree.toAllValidTexs();
+  const answer = operatorComposition(MultiplyNode, nodes);
+  const texs = answer.toAllValidTexs();
+  console.log(texs);
   return texs.includes(ans);
 };
 
 export const primeNumbers: MathExercise<QCMProps, VEAProps> = {
-  id: 'primeNumbers',
-  connector: '=',
-  label: 'Décomposition en nombres premiers',
-  levels: ['5ème', '4ème', '3ème', '2nde'],
-  sections: ['Arithmétique'],
+  id: "primeNumbers",
+  connector: "=",
+  label: "Décomposition en nombres premiers",
+  levels: ["5ème", "4ème", "3ème", "2nde"],
+  sections: ["Arithmétique"],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getPrimeNumbers, nb),
   qcmTimer: 60,

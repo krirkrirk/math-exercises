@@ -4,6 +4,7 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
 } from '#root/exercises/exercise';
@@ -15,13 +16,15 @@ import { Interval } from '#root/math/sets/intervals/intervals';
 import { randint } from '#root/math/utils/random/randint';
 import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
 import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
 type QCMProps = {
   answer: string;
   affine1Coeffs: number[];
   affine2Coeffs: number[];
 };
-type VEAProps = {};
+type VEAProps = {
+  affine1Coeffs: number[];
+  affine2Coeffs: number[];
+};
 
 const interval = new Interval('[[-10; 10]]').difference(new DiscreteSet([new Integer(0)]));
 
@@ -37,6 +40,7 @@ const getDoubleDistributivityQuestion: QuestionGenerator<QCMProps, VEAProps> = (
     answer,
     keys: ['x'],
     answerFormat: 'tex',
+    veaProps: { affine1Coeffs: affines[0].coefficients, affine2Coeffs: affines[1].coefficients },
     qcmGeneratorProps: { answer, affine1Coeffs: affines[0].coefficients, affine2Coeffs: affines[1].coefficients },
   };
   return question;
@@ -71,6 +75,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, affine1Coeffs, aff
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { affine1Coeffs, affine2Coeffs }) => {
+  const affines = [new Affine(affine1Coeffs[1], affine1Coeffs[0]), new Affine(affine2Coeffs[1], affine2Coeffs[0])];
+  const answerTree = affines[0].multiply(affines[1]).toTree();
+  const validLatexs = answerTree.toAllValidTexs();
+  return validLatexs.includes(ans);
+};
+
 export const doubleDistributivity: MathExercise<QCMProps, VEAProps> = {
   id: 'doubleDistri',
   connector: '=',
@@ -82,4 +93,5 @@ export const doubleDistributivity: MathExercise<QCMProps, VEAProps> = {
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

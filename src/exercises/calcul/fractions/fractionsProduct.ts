@@ -6,12 +6,15 @@ import {
   QuestionGenerator,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Rational, RationalConstructor } from '#root/math/numbers/rationals/rational';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import {
+  Rational,
+  RationalConstructor,
+} from "#root/math/numbers/rationals/rational";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { shuffle } from "#root/utils/shuffle";
+import { v4 } from "uuid";
 
 type QCMProps = {
   answer: string;
@@ -31,7 +34,7 @@ const getFractionsProduct: QuestionGenerator<QCMProps, VEAProps> = () => {
     startStatement: statementTree.toTex(),
     answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: {
       answer,
       rationalNum: [rational.num, rational.denum],
@@ -41,7 +44,10 @@ const getFractionsProduct: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, rationalNum, rationalDenum }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, rationalNum, rationalDenum },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -56,11 +62,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, rationalNum, ratio
 };
 
 export const fractionsProduct: MathExercise<QCMProps, VEAProps> = {
-  id: 'fractionsProduct',
-  connector: '=',
-  label: 'Produits de fractions',
-  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
-  sections: ['Fractions'],
+  id: "fractionsProduct",
+  connector: "=",
+  label: "Produits de fractions",
+  levels: ["4ème", "3ème", "2nde", "CAP", "2ndPro", "1rePro"],
+  sections: ["Fractions"],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionsProduct, nb),
   qcmTimer: 60,

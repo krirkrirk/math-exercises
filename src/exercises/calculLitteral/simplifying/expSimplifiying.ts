@@ -39,7 +39,6 @@ const getExpSimplifiying: QuestionGenerator<QCMProps, VEAProps> = () => {
         ),
         new ExpNode(new Polynomial([randint(-9, 10), randint(-9, 10, [0])]).toTree()),
       );
-      expression.shuffle();
       break;
     case 2:
       expression = new MultiplyNode(
@@ -53,7 +52,6 @@ const getExpSimplifiying: QuestionGenerator<QCMProps, VEAProps> = () => {
         new ExpNode(new Polynomial([randint(-9, 10), randint(-9, 10, [0])]).toTree()),
         new ExpNode(new Polynomial([randint(-9, 10), randint(-9, 10, [0])]).toTree()),
       );
-      expression.shuffle();
       break;
     default:
       expression = new ExpNode(new VariableNode('x'));
@@ -86,7 +84,6 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, random }) => {
           ),
           new ExpNode(new Polynomial([randint(-9, 10), randint(-9, 10, [0])]).toTree()),
         );
-        wrongExpression.shuffle();
         break;
       case 2:
         wrongExpression = new MultiplyNode(
@@ -100,7 +97,6 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, random }) => {
           new ExpNode(new Polynomial([randint(-9, 10), randint(-9, 10, [0])]).toTree()),
           new ExpNode(new Polynomial([randint(-9, 10), randint(-9, 10, [0])]).toTree()),
         );
-        wrongExpression.shuffle();
         break;
       default:
         wrongExpression = new ExpNode(new VariableNode('x'));

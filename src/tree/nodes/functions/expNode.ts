@@ -1,16 +1,16 @@
-import { exp } from 'mathjs';
-import { Node, NodeType } from '../node';
-import { FunctionNode, FunctionsIds } from './functionNode';
+import { exp } from "mathjs";
+import { Node, NodeOptions, NodeType } from "../node";
+import { FunctionNode, FunctionsIds } from "./functionNode";
 
-type ExpNodeOptions = {
-  useExpNotation: boolean;
-};
-export class ExpNode extends FunctionNode implements Node {
-  opts?: ExpNodeOptions;
-  type: NodeType = NodeType.function;
-
-  constructor(child: Node, opts?: ExpNodeOptions) {
-    super(FunctionsIds.exp, child, '\\exp');
+export class ExpNode implements FunctionNode {
+  opts?: NodeOptions;
+  id: FunctionsIds;
+  child: Node;
+  type: NodeType;
+  constructor(child: Node, opts?: NodeOptions) {
+    this.id = FunctionsIds.exp;
+    this.child = child;
+    this.type = NodeType.function;
     this.opts = opts;
   }
 
