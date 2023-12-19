@@ -83,7 +83,8 @@ export class SquareRoot extends Real {
       factors.length === 0 ? 1 : factors.reduce((x, y) => x * y);
     return [outsideSqrt, insideSqrt];
   }
-  simplify(): Real {
+  simplify(): Nombre {
+    if (this.operand === 0) return new Integer(0);
     const [outsideSqrt, insideSqrt] = this.getSimplifiedCoeffs();
 
     const simplified =
