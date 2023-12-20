@@ -67,7 +67,13 @@ export class SquareRoot extends Real {
     this.operand = operand;
   }
 
+  isSimplifiable() {
+    const [a, b] = this.getSimplifiedCoeffs();
+    return a !== 1;
+  }
+
   getSimplifiedCoeffs(): [number, number] {
+    if (this.operand === 0) return [1, 0];
     const factors = primeFactors(this.operand);
     // finds primes with even exponents
     const multiples = [1];

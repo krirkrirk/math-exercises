@@ -91,6 +91,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { integer, rational }) => {
     .multiply(integerObj)
     .toTree({ allowFractionToDecimal: true });
   const texs = answerTree.toAllValidTexs();
+  console.log(texs);
   return texs.includes(ans);
 };
 

@@ -11,8 +11,16 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { equationKeys } from "#root/exercises/utils/keys/equationKeys";
+import { Rational } from "#root/math/numbers/rationals/rational";
+import { SquareRoot } from "#root/math/numbers/reals/real";
 import { randint } from "#root/math/utils/random/randint";
-import { EmptySet } from "#root/tree/nodes/sets/setNode";
+import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
+import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import {
+  DiscreteSetNode,
+  EmptySet,
+} from "#root/tree/nodes/sets/discreteSetNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { diceFlip } from "#root/utils/diceFlip";
 import { isInt } from "#root/utils/isInt";
@@ -36,7 +44,6 @@ type VEAProps = {
 
 const getEquationSimpleSquare: QuestionGenerator<QCMProps, VEAProps> = () => {
   let randNbr = randint(-20, 101);
-  let answer: string;
 
   const rand = diceFlip(3);
   if (rand === 0) randNbr = randint(-20, 0);
@@ -45,20 +52,22 @@ const getEquationSimpleSquare: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   const instruction = `Résoudre l'équation : $x^2 = ${randNbr}$`;
   const sqrt = Math.sqrt(randNbr);
-
+  let solutionsSet: DiscreteSetNode;
   if (randNbr < 0) {
-    answer = EmptySet;
+    solutionsSet = new DiscreteSetNode([]);
   } else if (sqrt === Math.floor(sqrt)) {
-    if (sqrt === 0) answer = `S=\\left\\{0\\right\\}`;
-    else answer = `S=\\left\\{-${sqrt};${sqrt}\\right\\}`;
+    if (sqrt === 0) solutionsSet = new DiscreteSetNode([new NumberNode(0)]);
+    else
+      solutionsSet = new DiscreteSetNode([
+        new NumberNode(-sqrt),
+        new NumberNode(+sqrt),
+      ]);
   } else {
-    const factor = higherFactor(randNbr);
-    const radicand = randNbr / factor ** 2;
-    answer = `S=\\left\\{-${factor === 1 ? "" : factor}\\sqrt{${radicand}};${
-      factor === 1 ? "" : factor
-    }\\sqrt{${radicand}}\\right\\}`;
+    const tree = new SquareRoot(randNbr).simplify().toTree();
+    solutionsSet = new DiscreteSetNode([new OppositeNode(tree), tree]);
   }
 
+  const answer = new EquationSolutionNode(solutionsSet!).toTex();
   const question: Question<QCMProps, VEAProps> = {
     instruction,
     answer,
@@ -71,9 +80,9 @@ const getEquationSimpleSquare: QuestionGenerator<QCMProps, VEAProps> = () => {
 };
 
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randNbr }) => {
-  console.log(answer, randNbr);
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
+  const half = new Rational(randNbr, 2).simplify().toTree();
 
   if (randNbr < 0) {
     tryToAddWrongProp(
@@ -84,39 +93,40 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randNbr }) => {
       propositions,
       `S=\\left\\{\\sqrt{-${-randNbr}}\\right\\}`,
     );
-    while (propositions.length < n) {
-      const factor = randint(2, 5);
-      const radicand = randint(2, -randNbr);
-      tryToAddWrongProp(
-        propositions,
-        `S=\\left\\{${factor}\\sqrt{${radicand}};-${factor}\\sqrt{${radicand}}\\right\\}`,
-      );
-    }
+
+    tryToAddWrongProp(
+      propositions,
+      new EquationSolutionNode(new DiscreteSetNode([half])).toTex(),
+    );
   } else if (isInt(Math.sqrt(randNbr))) {
     const sqrt = Math.sqrt(randNbr);
     tryToAddWrongProp(propositions, `S=\\left\\{${sqrt}\\right\\}`);
+    tryToAddWrongProp(
+      propositions,
+      new EquationSolutionNode(new DiscreteSetNode([half])).toTex(),
+    );
     while (propositions.length < n) {
       const tempAns = sqrt + randint(-sqrt + 1, 7, [0]);
       tryToAddWrongProp(
         propositions,
         coinFlip()
-          ? `S=\\left\\{${tempAns};-${tempAns}\\right\\}`
+          ? `S=\\left\\{-${tempAns};${tempAns}\\right\\}`
           : `S=\\emptyset`,
       );
     }
   } else {
+    const sqrtTree = new SquareRoot(randNbr).simplify().toTree();
     const sqrt = Math.sqrt(randNbr);
     const factor = higherFactor(randNbr);
     const radicand = randNbr / factor ** 2;
     tryToAddWrongProp(
       propositions,
-      `S=\\left\\{${factor}\\sqrt{${radicand}}\\right\\}`,
+      new EquationSolutionNode(new DiscreteSetNode([sqrtTree])).toTex(),
     );
     tryToAddWrongProp(
       propositions,
-      `S=\\left\\{${radicand}\\sqrt{${factor}}\\right\\}`,
+      new EquationSolutionNode(new DiscreteSetNode([half])).toTex(),
     );
-    tryToAddWrongProp(propositions, `S=\\left\\{${Math.floor(sqrt)}\\right\\}`);
 
     while (propositions.length < n) {
       const tempFactor = factor + randint(-factor + 1, 7, [0]);
@@ -124,7 +134,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randNbr }) => {
       tryToAddWrongProp(
         propositions,
         coinFlip()
-          ? `S=\\left\\{${tempFactor}\\sqrt{${tempRadicand}};-${tempFactor}\\sqrt{${tempRadicand}}\\right\\}`
+          ? `S=\\left\\{-${tempFactor}\\sqrt{${tempRadicand}};${tempFactor}\\sqrt{${tempRadicand}}\\right\\}`
           : `S=\\emptyset`,
       );
     }
@@ -134,7 +144,30 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randNbr }) => {
 };
 
 const isAnswerValid: VEA<VEAProps> = (ans, { randNbr }) => {
-  return true;
+  let answerTrees: EquationSolutionNode[] = [];
+  if (randNbr < 0) {
+    answerTrees = [new EquationSolutionNode(EmptySet)];
+  } else {
+    const sqrt = new SquareRoot(randNbr);
+    const sqrtTree = sqrt.toTree();
+    answerTrees.push(
+      new EquationSolutionNode(
+        new DiscreteSetNode([new OppositeNode(sqrtTree), sqrtTree]),
+      ),
+    );
+
+    if (sqrt.isSimplifiable()) {
+      const simplified = sqrt.simplify().toTree();
+      answerTrees.push(
+        new EquationSolutionNode(
+          new DiscreteSetNode([new OppositeNode(simplified), simplified]),
+        ),
+      );
+    }
+  }
+  const texs = answerTrees.flatMap((tree) => tree.toAllValidTexs());
+  console.log(texs);
+  return texs.includes(ans);
   // const answerTree = ;
   // const validLatexs = answerTree.toAllValidTexs();
   // return validLatexs.includes(ans);

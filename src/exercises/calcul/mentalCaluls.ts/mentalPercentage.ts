@@ -4,15 +4,15 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { randint } from '#root/math/utils/random/randint';
-import { coinFlip } from '#root/utils/coinFlip';
-import { shuffle } from '#root/utils/shuffle';
-
-type VEAProps = {};
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randint } from "#root/math/utils/random/randint";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { coinFlip } from "#root/utils/coinFlip";
+import { shuffle } from "#root/utils/shuffle";
 
 const getMentalPercentage: QuestionGenerator<QCMProps, VEAProps> = () => {
   let a = 1,
@@ -68,12 +68,12 @@ const getMentalPercentage: QuestionGenerator<QCMProps, VEAProps> = () => {
       break;
   }
 
-  const answer = ((a * b) / 100 + '').replace('.', ',');
+  const answer = ((a * b) / 100 + "").replace(".", ",");
   const question: Question<QCMProps, VEAProps> = {
-    instruction: `Calculer : $${String(a).replace('.', ',')}\\%$ de $${b}$.`,
+    instruction: `Calculer : $${String(a).replace(".", ",")}\\%$ de $${b}$.`,
     answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, rand },
   };
 
@@ -84,6 +84,7 @@ type QCMProps = {
   answer: string;
   rand: number;
 };
+type VEAProps = { answer: string };
 
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer, rand }) => {
   const propositions: Proposition[] = [];
@@ -139,21 +140,42 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, rand }) => {
         break;
     }
     let incorrectAnswer = (a * b) / 100;
-    tryToAddWrongProp(propositions, incorrectAnswer.toString());
+    tryToAddWrongProp(
+      propositions,
+      incorrectAnswer.toString().replace(".", ","),
+    );
   }
 
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (studentAns, { answer }) => {
+  const answerTree = new NumberNode(Number(answer.replace(",", ".")));
+  const texs = answerTree.toAllValidTexs();
+  return texs.includes(studentAns);
+};
+
 export const mentalPercentage: MathExercise<QCMProps, VEAProps> = {
-  id: 'mentalPercentage',
-  connector: '=',
-  label: 'Effectuer mentalement des calculs de pourcentages simples',
-  levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro', 'TermPro'],
-  sections: ['Pourcentages'],
+  id: "mentalPercentage",
+  connector: "=",
+  label: "Effectuer mentalement des calculs de pourcentages simples",
+  levels: [
+    "6ème",
+    "5ème",
+    "4ème",
+    "3ème",
+    "2nde",
+    "1reESM",
+    "CAP",
+    "2ndPro",
+    "1rePro",
+    "TermPro",
+  ],
+  sections: ["Pourcentages"],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getMentalPercentage, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

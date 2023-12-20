@@ -4,20 +4,27 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Rational, RationalConstructor } from '#root/math/numbers/rationals/rational';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import {
+  Rational,
+  RationalConstructor,
+} from "#root/math/numbers/rationals/rational";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
   rational: [number, number];
   rational2: [number, number];
 };
-type VEAProps = {};
+type VEAProps = {
+  rational: [number, number];
+  rational2: [number, number];
+};
 
 const getFractionsSum: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rational = RationalConstructor.randomIrreductible();
@@ -30,7 +37,7 @@ const getFractionsSum: QuestionGenerator<QCMProps, VEAProps> = () => {
     startStatement: statementTree.toTex(),
     answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: {
       answer,
       rational: [rational.num, rational.denum],
@@ -40,29 +47,54 @@ const getFractionsSum: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, rational, rational2 }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, rational, rational2 },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  tryToAddWrongProp(propositions, new Rational(rational[0] + rational2[0], rational[1] + rational2[1]).toTex());
+  tryToAddWrongProp(
+    propositions,
+    new Rational(
+      rational[0] + rational2[0],
+      rational[1] + rational2[1],
+    ).toTex(),
+  );
 
   while (propositions.length < n) {
     const incorrectRational = RationalConstructor.randomIrreductible();
     const incorrectRational2 = RationalConstructor.randomIrreductible();
-    tryToAddWrongProp(propositions, incorrectRational.add(incorrectRational2).toTree().toTex());
+    tryToAddWrongProp(
+      propositions,
+      incorrectRational.add(incorrectRational2).toTree().toTex(),
+    );
   }
 
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { rational, rational2 }) => {
+  const rationalA = new Rational(rational[0], rational[1]);
+  const rationalB = new Rational(rational2[0], rational2[1]);
+
+  const answerTree = rationalA
+    .add(rationalB)
+    .toTree({ allowFractionToDecimal: true });
+
+  const texs = answerTree.toAllValidTexs();
+  return texs.includes(ans);
+};
+
 export const fractionsSum: MathExercise<QCMProps, VEAProps> = {
-  id: 'fractionsSum',
-  connector: '=',
-  label: 'Sommes de fractions',
-  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro'],
-  sections: ['Fractions'],
+  id: "fractionsSum",
+  connector: "=",
+  label: "Sommes de fractions",
+  levels: ["4ème", "3ème", "2nde", "CAP", "2ndPro", "1rePro"],
+  sections: ["Fractions"],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFractionsSum, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

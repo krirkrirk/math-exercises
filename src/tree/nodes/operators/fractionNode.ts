@@ -3,7 +3,6 @@ import { Node, NodeOptions, NodeType } from "../node";
 import { OperatorIds, OperatorNode } from "./operatorNode";
 import { NumberNode } from "../numbers/numberNode";
 import { FunctionNode, FunctionsIds } from "../functions/functionNode";
-import { NumberType } from "#root/math/numbers/nombre";
 import { round } from "#root/math/utils/round";
 
 export class FractionNode implements OperatorNode {
@@ -29,15 +28,15 @@ export class FractionNode implements OperatorNode {
   }
 
   toEquivalentNodes(opts?: NodeOptions) {
+    const options = opts ?? this.opts;
     const res: Node[] = [];
     const rightNodes = this.rightChild.toEquivalentNodes();
     const leftNodes = this.leftChild.toEquivalentNodes();
-    console.log(opts?.allowFractionToDecimal);
     rightNodes.forEach((rightNode) => {
       leftNodes.forEach((leftNode) => {
         res.push(new FractionNode(leftNode, rightNode));
         if (
-          opts?.allowFractionToDecimal &&
+          options?.allowFractionToDecimal &&
           leftNode.type === NodeType.number &&
           rightNode.type === NodeType.number
         ) {
@@ -64,7 +63,8 @@ export class FractionNode implements OperatorNode {
 
   toTex(): string {
     if (
-      (this.leftChild.type === NodeType.function &&
+      (!this.opts?.allowMinusAnywhereInFraction &&
+        this.leftChild.type === NodeType.function &&
         (this.leftChild as FunctionNode).id === FunctionsIds.opposite) ||
       (this.leftChild.type === NodeType.number &&
         (this.leftChild as NumberNode).value < 0)

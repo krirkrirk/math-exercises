@@ -18,6 +18,7 @@ import { Interval } from "#root/math/sets/intervals/intervals";
 import { randint } from "#root/math/utils/random/randint";
 import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
 import { EqualNode } from "#root/tree/nodes/operators/equalNode";
+import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
@@ -100,7 +101,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c, d }) => {
 
 const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c, d }) => {
   const solution = new Rational(d - b, a - c).simplify().toTree();
-  const answerTree = new EquationSolutionNode([solution], {
+  const answerTree = new EquationSolutionNode(new DiscreteSetNode([solution]), {
     opts: { allowFractionToDecimal: true, allowRawRightChildAsSolution: true },
   });
   const validLatexs = answerTree.toAllValidTexs();

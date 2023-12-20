@@ -13,6 +13,8 @@ import {
   getCartesiansProducts,
   getFlatCartesianProducts,
 } from "./utils/cartesianProducts";
+import { DiscreteSetNode } from "./tree/nodes/sets/discreteSetNode";
+import { FractionNode } from "./tree/nodes/operators/fractionNode";
 const jsonParser = bodyParser.json();
 
 const allExercises = [...exercises];
@@ -21,20 +23,9 @@ const runServer = () => {
   dotenv.config();
   const app: Express = express();
   app.use(cors());
-  // const cartesians = getFlatCartesianProducts([[1], [[5, 5], 6], [7, [8, 9]]]);
-  const cartesians = getFlatCartesianProducts([
-    [1],
-    [2],
-    [[3, 3, 3], [4, 5], 6],
-  ]);
-  console.log(cartesians);
-  const pow = new PowerNode(new NumberNode(3), new NumberNode(3), {
-    allowPowerToProduct: true,
-  });
-  const mul = operatorComposition(MultiplyNode, [
-    ...[1, 2].map((el) => new NumberNode(el)),
-    pow,
-  ]);
+  console.log(
+    exercises.length - exercises.filter((exo) => !!exo.isAnswerValid).length,
+  );
   // console.log(mul.toAllValidTexs());
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);

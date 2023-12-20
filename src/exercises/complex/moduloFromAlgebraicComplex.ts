@@ -4,7 +4,6 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
-  VEA,
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
@@ -13,8 +12,6 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { ComplexConstructor } from "#root/math/complex/complex";
 import { SquareRoot } from "#root/math/numbers/reals/real";
 import { randint } from "#root/math/utils/random/randint";
-import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { AddNode } from "#root/tree/nodes/operators/addNode";
 
 type QCMProps = {
   answer: string;
@@ -23,7 +20,10 @@ type QCMProps = {
 };
 type VEAProps = {};
 
-const getModuloFromAlgebraicComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getModuloFromAlgebraicComplexQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const z = ComplexConstructor.random();
   const zTex = z.toTree().toTex();
   const answer = z.toModuleTree().toTex();
@@ -41,7 +41,10 @@ const getModuloFromAlgebraicComplexQuestion: QuestionGenerator<QCMProps, VEAProp
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer, re, im }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  tryToAddWrongProp(propositions, new SquareRoot(re + im).simplify().toTree().toTex());
+  tryToAddWrongProp(
+    propositions,
+    new SquareRoot(re + im).simplify().toTree().toTex(),
+  );
   tryToAddWrongProp(propositions, re ** 2 + im ** 2 + "");
 
   while (propositions.length < n) {
@@ -56,7 +59,8 @@ export const moduloFromAlgebraicComplex: MathExercise<QCMProps, VEAProps> = {
   levels: ["MathExp"],
   isSingleStep: true,
   sections: ["Nombres complexes"],
-  generator: (nb: number) => getDistinctQuestions(getModuloFromAlgebraicComplexQuestion, nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(getModuloFromAlgebraicComplexQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,

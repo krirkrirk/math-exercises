@@ -4,17 +4,24 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { RationalConstructor } from "#root/math/numbers/rationals/rational";
+import {
+  Rational,
+  RationalConstructor,
+} from "#root/math/numbers/rationals/rational";
 import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  num: number;
+  denum: number;
+};
 const getSimplifyFraction: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rational = RationalConstructor.randomSimplifiable(10);
   const rationalTex = rational.toTree().toTex();
@@ -26,6 +33,7 @@ const getSimplifyFraction: QuestionGenerator<QCMProps, VEAProps> = () => {
     keys: [],
     answerFormat: "tex",
     qcmGeneratorProps: { answer },
+    veaProps: { num: rational.num, denum: rational.denum },
   };
   return question;
 };
@@ -44,6 +52,17 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
 
   return shuffle(propositions);
 };
+const isAnswerValid: VEA<VEAProps> = (ans, { num, denum }) => {
+  const rational = new Rational(num, denum);
+
+  const answerTree = rational
+    .simplify()
+    .toTree({ allowFractionToDecimal: true });
+
+  const texs = answerTree.toAllValidTexs();
+  console.log(texs);
+  return texs.includes(ans);
+};
 
 export const simplifyFraction: MathExercise<QCMProps, VEAProps> = {
   id: "simplifyFrac",
@@ -56,4 +75,5 @@ export const simplifyFraction: MathExercise<QCMProps, VEAProps> = {
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

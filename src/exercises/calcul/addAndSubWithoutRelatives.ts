@@ -1,8 +1,8 @@
-import { randint } from '#root/math/utils/random/randint';
-import { Node } from '#root/tree/nodes/node';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { shuffle } from '#root/utils/shuffle';
+import { randint } from "#root/math/utils/random/randint";
+import { Node } from "#root/tree/nodes/node";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { shuffle } from "#root/utils/shuffle";
 
 import {
   MathExercise,
@@ -10,17 +10,21 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-import { v4 } from 'uuid';
+} from "../exercise";
+import { getDistinctQuestions } from "../utils/getDistinctQuestions";
+import { v4 } from "uuid";
 
 /**
  * a±b±c±d
  */
 
-const getAddAndSubWithoutRelatives: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getAddAndSubWithoutRelatives: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   let answer = -1;
   let statementTree: AddNode;
 
@@ -52,7 +56,7 @@ const getAddAndSubWithoutRelatives: QuestionGenerator<QCMProps, VEAProps> = () =
     startStatement: statementTree!.toTex(),
     answer: answerTex,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer: answerTex },
   };
   return question;
@@ -61,7 +65,9 @@ const getAddAndSubWithoutRelatives: QuestionGenerator<QCMProps, VEAProps> = () =
 type QCMProps = {
   answer: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   const propositions: Proposition[] = [];
@@ -75,15 +81,23 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (studentAns, { answer }) => {
+  const answerTree = new NumberNode(Number(answer));
+  const texs = answerTree.toAllValidTexs();
+  return texs.includes(studentAns);
+};
+
 export const addAndSubWithoutRelatives: MathExercise<QCMProps, VEAProps> = {
-  id: 'addAndSubWithoutRelatives',
-  connector: '=',
-  label: 'Additions et soustractions sans les nombres relatifs',
-  levels: ['6ème', '5ème'],
-  sections: ['Calculs'],
+  id: "addAndSubWithoutRelatives",
+  connector: "=",
+  label: "Additions et soustractions sans les nombres relatifs",
+  levels: ["6ème", "5ème"],
+  sections: ["Calculs"],
   isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getAddAndSubWithoutRelatives, nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(getAddAndSubWithoutRelatives, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

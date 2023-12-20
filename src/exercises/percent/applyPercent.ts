@@ -1,36 +1,40 @@
-import { randint } from '#root/math/utils/random/randint';
-import { round } from '#root/math/utils/round';
-import { coinFlip } from '#root/utils/coinFlip';
-import { shuffle } from '#root/utils/shuffle';
+import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { coinFlip } from "#root/utils/coinFlip";
+import { shuffle } from "#root/utils/shuffle";
 import {
   MathExercise,
   Proposition,
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-import { v4 } from 'uuid';
+} from "../exercise";
+import { getDistinctQuestions } from "../utils/getDistinctQuestions";
+
 type QCMProps = {
   answer: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
 const getApplyPercentQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const randNbr = randint(1, 500);
   const randPercent = randint(1, 100);
-  let instruction = '';
-  let ans = '';
+  let instruction = "";
+  let ans = "";
   let ansNb = 0;
   if (coinFlip()) {
     ansNb = round(randNbr * (1 + randPercent / 100), 2);
-    ans = (ansNb + '').replace('.', ',');
+    ans = (ansNb + "").replace(".", ",");
     instruction = `Appliquer une hausse de $${randPercent}\\%$ à $${randNbr}$.`;
   } else {
     ansNb = round(randNbr * (1 - randPercent / 100), 2);
-    ans = (ansNb + '').replace('.', ',');
+    ans = (ansNb + "").replace(".", ",");
     instruction = `Appliquer une baisse de $${randPercent}\\%$ à $${randNbr}$.`;
   }
 
@@ -38,8 +42,8 @@ const getApplyPercentQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const question: Question<QCMProps, VEAProps> = {
     instruction,
     answer,
-    keys: ['percent'],
-    answerFormat: 'tex',
+    keys: ["percent"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer },
   };
 
@@ -51,27 +55,44 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   addValidProp(propositions, answer);
 
   while (propositions.length < n) {
-    const ansNb = Number(answer.replace(',', '.'));
+    const ansNb = Number(answer.replace(",", "."));
     const deviation = Math.random() < 0.5 ? -1 : 1;
     const percentDeviation = Math.random() * 20 + 1;
 
     let wrongAnswer = ansNb + deviation * (percentDeviation / 100) * ansNb;
     wrongAnswer = round(wrongAnswer, 2);
-    tryToAddWrongProp(propositions, wrongAnswer.toString());
+    tryToAddWrongProp(propositions, wrongAnswer.toString().replace(".", ","));
   }
 
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  const answerTree = new NumberNode(Number(answer.replace(",", ".")));
+  const texs = answerTree.toAllValidTexs();
+  return texs.includes(ans);
+};
+
 export const applyPercent: MathExercise<QCMProps, VEAProps> = {
-  id: 'applyPercent',
-  connector: '=',
+  id: "applyPercent",
+  connector: "=",
   label: "Appliquer un pourcentage d'augmentation ou de diminution.",
-  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1rePro', 'TermPro', '1reTech', 'TermTech'],
-  sections: ['Pourcentages'],
+  levels: [
+    "4ème",
+    "3ème",
+    "2nde",
+    "CAP",
+    "2ndPro",
+    "1rePro",
+    "TermPro",
+    "1reTech",
+    "TermTech",
+  ],
+  sections: ["Pourcentages"],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getApplyPercentQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

@@ -12,27 +12,30 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { randint } from '#root/math/utils/random/randint';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { DivideNode } from '#root/tree/nodes/operators/divideNode';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
-import { coinFlip } from '#root/utils/coinFlip';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randint } from "#root/math/utils/random/randint";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { DivideNode } from "#root/tree/nodes/operators/divideNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { coinFlip } from "#root/utils/coinFlip";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
 const getPriorityQuestions: QuestionGenerator<QCMProps, VEAProps> = () => {
   const type = randint(1, 6);
-  let startStatement = '';
-  let answer: string = '';
+  let startStatement = "";
+  let answer: string = "";
   let a, b, c, d: number;
   let statement: AddNode;
   switch (type) {
@@ -47,7 +50,10 @@ const getPriorityQuestions: QuestionGenerator<QCMProps, VEAProps> = () => {
           )
         : //a*b middle
           new AddNode(
-            new AddNode(new NumberNode(c), new MultiplyNode(new NumberNode(a), new NumberNode(b))),
+            new AddNode(
+              new NumberNode(c),
+              new MultiplyNode(new NumberNode(a), new NumberNode(b)),
+            ),
             new NumberNode(d),
           );
       statement.shuffle();
@@ -65,7 +71,10 @@ const getPriorityQuestions: QuestionGenerator<QCMProps, VEAProps> = () => {
           )
         : //a/b middle
           new AddNode(
-            new AddNode(new NumberNode(c), new DivideNode(new NumberNode(a), new NumberNode(b))),
+            new AddNode(
+              new NumberNode(c),
+              new DivideNode(new NumberNode(a), new NumberNode(b)),
+            ),
             new NumberNode(d),
           );
       statement.shuffle();
@@ -109,7 +118,10 @@ const getPriorityQuestions: QuestionGenerator<QCMProps, VEAProps> = () => {
       a = b * randint(0, 11);
       c = d * randint(0, 11);
       statement = new AddNode(
-        new MultiplyNode(new MultiplyNode(new NumberNode(a), new NumberNode(b)), new NumberNode(c)),
+        new MultiplyNode(
+          new MultiplyNode(new NumberNode(a), new NumberNode(b)),
+          new NumberNode(c),
+        ),
         new NumberNode(d),
       );
       statement.shuffle();
@@ -123,7 +135,7 @@ const getPriorityQuestions: QuestionGenerator<QCMProps, VEAProps> = () => {
     startStatement,
     answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer },
   };
   return question;
@@ -133,20 +145,27 @@ const getPropositions: QCMGenerator<QCMProps> = (n: number, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, randint(-100, 100) + '');
+    tryToAddWrongProp(propositions, randint(-100, 100) + "");
   }
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (studentAns, { answer }) => {
+  const answerTree = new NumberNode(Number(answer));
+  const texs = answerTree.toAllValidTexs();
+  return texs.includes(studentAns);
+};
+
 export const operationsPriorities: MathExercise<QCMProps, VEAProps> = {
-  id: 'operationsPriorities',
-  connector: '=',
-  label: 'Priorités opératoires',
-  levels: ['5ème', '4ème'],
-  sections: ['Calculs'],
+  id: "operationsPriorities",
+  connector: "=",
+  label: "Priorités opératoires",
+  levels: ["5ème", "4ème"],
+  sections: ["Calculs"],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getPriorityQuestions, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

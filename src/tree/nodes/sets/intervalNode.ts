@@ -1,0 +1,106 @@
+import { getCartesiansProducts } from "#root/utils/cartesianProducts";
+import { permute } from "#root/utils/permutations";
+import { InequationNode } from "../inequations/inequationNode";
+import { Node, NodeOptions, NodeType } from "../node";
+import { ConstantNode } from "../numbers/constantNode";
+import { VariableNode } from "../variables/variableNode";
+
+export enum ClosureType {
+  FF,
+  FO,
+  OF,
+  OO,
+}
+
+export class IntervalNode implements Node {
+  type: NodeType;
+  opts?: NodeOptions | undefined;
+  closure: ClosureType;
+  a: Node;
+  b: Node;
+  constructor(a: Node, b: Node, closure: ClosureType, opts?: NodeOptions) {
+    this.type = NodeType.set;
+    this.closure = closure;
+    this.a = a;
+    this.b = b;
+    this.opts = opts;
+  }
+
+  toAllValidTexs() {
+    return this.toEquivalentNodes(this.opts).map((node) => node.toTex());
+  }
+
+  toEquivalentNodes(opts?: NodeOptions) {
+    const res: IntervalNode[] = [];
+    const equivs = [
+      this.a.toEquivalentNodes(opts ?? this.opts),
+      this.b.toEquivalentNodes(opts ?? this.opts),
+    ];
+    const cartesians = getCartesiansProducts(equivs);
+    cartesians.forEach((product) => {
+      res.push(
+        new IntervalNode(
+          product[0],
+          product[1],
+          this.closure,
+          opts ?? this.opts,
+        ),
+      );
+    });
+    return res;
+  }
+
+  toInequality(middleChild?: Node) {
+    let middle = middleChild ?? new VariableNode("x");
+    if (
+      this.a.type === NodeType.constant &&
+      (this.a as ConstantNode).tex.includes("infty")
+    ) {
+      return new InequationNode(
+        [middle, this.b],
+        this.closure === ClosureType.OF ? "\\le" : "<",
+      );
+    }
+    if (
+      this.b.type === NodeType.constant &&
+      (this.b as ConstantNode).tex.includes("infty")
+    ) {
+      return new InequationNode(
+        [middle, this.a],
+        this.closure === ClosureType.FO ? "\\ge" : ">",
+      );
+    }
+    const leftSymbol =
+      this.closure === ClosureType.FO || this.closure === ClosureType.FF
+        ? "\\ge"
+        : "<";
+    const rightSymbol =
+      this.closure === ClosureType.FF || this.closure === ClosureType.OF
+        ? "\\ge"
+        : "<";
+
+    return new InequationNode(
+      [this.a, middle, this.b],
+      [leftSymbol, rightSymbol],
+    );
+  }
+  toMathString() {
+    return this.toTex();
+  }
+
+  toMathjs() {
+    return this.toTex();
+  }
+
+  toTex() {
+    const left =
+      this.closure === ClosureType.FF || this.closure === ClosureType.FO
+        ? "["
+        : "]";
+    const right =
+      this.closure === ClosureType.FF || this.closure === ClosureType.OF
+        ? "]"
+        : "[";
+    return `${left}${this.a.toTex()};${this.b.toTex()}${right}`;
+  }
+}

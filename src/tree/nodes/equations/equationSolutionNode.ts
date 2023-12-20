@@ -1,14 +1,18 @@
 import { Node, NodeOptions, NodeType } from "../node";
+import { DiscreteSetNode } from "../sets/discreteSetNode";
 
 type EquationSolutionNodeOptions = { variable?: string; opts?: NodeOptions };
 export class EquationSolutionNode implements Node {
   type: NodeType;
   variable: string;
-  solutions: Node[];
+  solutionsSet: DiscreteSetNode;
   opts?: NodeOptions;
-  constructor(solutions: Node[], params?: EquationSolutionNodeOptions) {
+  constructor(
+    solutionsSet: DiscreteSetNode,
+    params?: EquationSolutionNodeOptions,
+  ) {
     this.type = NodeType.set;
-    this.solutions = solutions;
+    this.solutionsSet = solutionsSet;
     this.variable = params?.variable ?? "x";
     this.opts = params?.opts
       ? {
@@ -24,9 +28,9 @@ export class EquationSolutionNode implements Node {
   }
 
   toAllTexs() {
-    const res = [this.toTex()];
-    if (this.solutions.length === 1) {
-      const solTex = this.solutions[0].toTex();
+    const res = [this.toTex(), this.solutionsSet.toTex()];
+    if (this.solutionsSet.elements.length === 1) {
+      const solTex = this.solutionsSet.elements[0].toTex();
       res.push(`${this.variable}=${solTex}`);
       if (this.opts?.allowRawRightChildAsSolution) res.push(solTex);
     }
@@ -34,28 +38,20 @@ export class EquationSolutionNode implements Node {
   }
 
   toEquivalentNodes(opts?: NodeOptions) {
-    if (this.solutions.length === 1) {
-      const equivs = this.solutions.flatMap((sol) =>
-        sol.toEquivalentNodes(opts),
-      );
-      return equivs.map(
-        (equiv) =>
-          new EquationSolutionNode([equiv], { variable: this.variable, opts }),
-      );
-    }
-    //produit carté
-    return [this];
+    const equivs = this.solutionsSet.toEquivalentNodes(opts ?? this.opts);
+    return equivs.map(
+      (equiv) =>
+        new EquationSolutionNode(equiv, { variable: this.variable, opts }),
+    );
   }
 
   toMathString() {
     return "";
   }
   toMathjs() {
-    return `S={${this.solutions.map((el) => el.toTex()).join(";")}}`;
+    return `S={${this.solutionsSet.toMathjs()}}`;
   }
   toTex() {
-    return `S=\\left\\{${this.solutions
-      .map((el) => el.toTex())
-      .join(";")}\\right\\}`;
+    return `S=${this.solutionsSet.toTex()}`;
   }
 }

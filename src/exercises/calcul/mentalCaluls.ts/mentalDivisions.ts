@@ -4,22 +4,25 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { randint } from '#root/math/utils/random/randint';
-import { round } from '#root/math/utils/round';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { DivideNode } from '#root/tree/nodes/operators/divideNode';
-import { coinFlip } from '#root/utils/coinFlip';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { DivideNode } from "#root/tree/nodes/operators/divideNode";
+import { coinFlip } from "#root/utils/coinFlip";
+import { shuffle } from "#root/utils/shuffle";
+import { v4 } from "uuid";
 
 type QCMProps = {
   answer: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
 const getMentalDivisions: QuestionGenerator<QCMProps> = () => {
   let a = 1,
@@ -35,7 +38,9 @@ const getMentalDivisions: QuestionGenerator<QCMProps> = () => {
 
     case 2: // ex : 0.28 / 0.7 ou 0.6 / 0.2
       b = randint(1, 10) / 10;
-      a = coinFlip() ? round((b * randint(2, 10)) / 10, 2) : round(b * randint(2, 10), 1);
+      a = coinFlip()
+        ? round((b * randint(2, 10)) / 10, 2)
+        : round(b * randint(2, 10), 1);
       break;
 
     case 3: // ex : 25 / 50
@@ -62,21 +67,26 @@ const getMentalDivisions: QuestionGenerator<QCMProps> = () => {
   }
 
   const allNumbersNodes =
-    rand === 6 ? [a, b, c].map((nb) => new NumberNode(nb)) : [a, b].map((nb) => new NumberNode(nb));
+    rand === 6
+      ? [a, b, c].map((nb) => new NumberNode(nb))
+      : [a, b].map((nb) => new NumberNode(nb));
   const statementTree =
     rand === 6
-      ? new DivideNode(allNumbersNodes[0], new DivideNode(allNumbersNodes[1], allNumbersNodes[2]))
+      ? new DivideNode(
+          allNumbersNodes[0],
+          new DivideNode(allNumbersNodes[1], allNumbersNodes[2]),
+        )
       : new DivideNode(allNumbersNodes[0], allNumbersNodes[1]);
 
   const statementTex = statementTree.toTex();
   const answer = rand === 6 ? a / (b / c) : a / b;
-  const answerTex = (round(answer, 2) + '').replace('.', ',');
+  const answerTex = (round(answer, 2) + "").replace(".", ",");
   const question: Question<QCMProps, VEAProps> = {
     instruction: `Calculer : $${statementTex}$`,
     startStatement: statementTex,
     answer: answerTex,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer: answerTex },
   };
 
@@ -86,25 +96,48 @@ const getMentalDivisions: QuestionGenerator<QCMProps> = () => {
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const result = Number(answer.replace(',', '.'));
+  const result = Number(answer.replace(",", "."));
   while (propositions.length < n) {
-    const incorrectAnswer = round(result + (coinFlip() ? 1 : -1) * Math.random() * 10, 2);
+    const incorrectAnswer = round(
+      result + (coinFlip() ? 1 : -1) * Math.random() * 10,
+      2,
+    );
 
-    tryToAddWrongProp(propositions, incorrectAnswer.toString());
+    tryToAddWrongProp(
+      propositions,
+      incorrectAnswer.toString().replace(".", ","),
+    );
   }
 
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (studentAns, { answer }) => {
+  const answerTree = new NumberNode(Number(answer.replace(",", ".")));
+  const texs = answerTree.toAllValidTexs();
+  return texs.includes(studentAns);
+};
+
 export const mentalDivisions: MathExercise<QCMProps, VEAProps> = {
-  id: 'mentalDivisions',
-  connector: '=',
-  label: 'Effectuer mentalement des divisions simples',
-  levels: ['6ème', '5ème', '4ème', '3ème', '2nde', '1reESM', 'CAP', '2ndPro', '1rePro'],
-  sections: ['Calculs'],
+  id: "mentalDivisions",
+  connector: "=",
+  label: "Effectuer mentalement des divisions simples",
+  levels: [
+    "6ème",
+    "5ème",
+    "4ème",
+    "3ème",
+    "2nde",
+    "1reESM",
+    "CAP",
+    "2ndPro",
+    "1rePro",
+  ],
+  sections: ["Calculs"],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getMentalDivisions, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

@@ -84,7 +84,9 @@ type VEAProps = {
 const isAnswerValid: VEA<VEAProps> = (ans, { integer, rational }) => {
   const integerObj = new Integer(integer);
   const rationalObj = new Rational(rational[0], rational[1]);
-  const answerTree = rationalObj.add(integerObj).toTree();
+  const answerTree = rationalObj
+    .add(integerObj)
+    .toTree({ allowFractionToDecimal: true });
   const texs = answerTree.toAllValidTexs();
   return texs.includes(ans);
 };

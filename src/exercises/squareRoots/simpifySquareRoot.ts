@@ -1,5 +1,8 @@
-import { SquareRootConstructor } from '#root/math/numbers/reals/real';
-import { shuffle } from '#root/utils/shuffle';
+import {
+  SquareRoot,
+  SquareRootConstructor,
+} from "#root/math/numbers/reals/real";
+import { shuffle } from "#root/utils/shuffle";
 import {
   MathExercise,
   Proposition,
@@ -9,12 +12,14 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+} from "../exercise";
+import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 type QCMProps = {
   answer: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  sqrtOperand: number;
+};
 
 const getSimplifySquareRoot: QuestionGenerator<QCMProps, VEAProps> = () => {
   const squareRoot = SquareRootConstructor.randomSimplifiable({
@@ -29,8 +34,9 @@ const getSimplifySquareRoot: QuestionGenerator<QCMProps, VEAProps> = () => {
     startStatement: sqrtTex,
     answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer },
+    veaProps: { sqrtOperand: squareRoot.operand },
   };
   return question;
 };
@@ -50,15 +56,23 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { sqrtOperand }) => {
+  const answer = new SquareRoot(sqrtOperand).simplify().toTree();
+  const texs = answer.toAllValidTexs();
+  console.log(texs);
+  return texs.includes(ans);
+};
+
 export const simplifySquareRoot: MathExercise<QCMProps, VEAProps> = {
-  id: 'simplifySqrt',
-  connector: '=',
-  label: 'Simplification de racines carrées',
+  id: "simplifySqrt",
+  connector: "=",
+  label: "Simplification de racines carrées",
   isSingleStep: false,
-  levels: ['3ème', '2nde', '1reESM'],
-  sections: ['Racines carrées'],
+  levels: ["3ème", "2nde", "1reESM"],
+  sections: ["Racines carrées"],
   generator: (nb: number) => getDistinctQuestions(getSimplifySquareRoot, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

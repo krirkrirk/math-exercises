@@ -4,6 +4,7 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
@@ -21,7 +22,10 @@ type QCMProps = {
   rationalNum: [number, number];
   rationalDenum: [number, number];
 };
-type VEAProps = {};
+type VEAProps = {
+  rationalNum: [number, number];
+  rationalDenum: [number, number];
+};
 
 const getFractionsProduct: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rational = RationalConstructor.randomIrreductible();
@@ -61,6 +65,17 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { rationalDenum, rationalNum }) => {
+  const rational = new Rational(rationalNum[0], rationalNum[1]);
+  const rational2 = new Rational(rationalDenum[0], rationalDenum[1]);
+  const answerTree = rational
+    .multiply(rational2)
+    .toTree({ allowFractionToDecimal: true });
+
+  const texs = answerTree.toAllValidTexs();
+  return texs.includes(ans);
+};
+
 export const fractionsProduct: MathExercise<QCMProps, VEAProps> = {
   id: "fractionsProduct",
   connector: "=",
@@ -72,4 +87,5 @@ export const fractionsProduct: MathExercise<QCMProps, VEAProps> = {
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

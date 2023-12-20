@@ -12,28 +12,34 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { randint } from '#root/math/utils/random/randint';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { DivideNode } from '#root/tree/nodes/operators/divideNode';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
-import { coinFlip } from '#root/utils/coinFlip';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randint } from "#root/math/utils/random/randint";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { DivideNode } from "#root/tree/nodes/operators/divideNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { coinFlip } from "#root/utils/coinFlip";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
-const getOperationsPrioritiesWithoutRelative: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getOperationsPrioritiesWithoutRelative: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const type = randint(1, 7);
   const flip = randint(1, 4);
-  let startStatement = '';
-  let answer: string = '';
+  let startStatement = "";
+  let answer: string = "";
   let a, b, c, d: number;
   let statement: AddNode;
   switch (type) {
@@ -85,7 +91,10 @@ const getOperationsPrioritiesWithoutRelative: QuestionGenerator<QCMProps, VEAPro
           d = randint(-(c + a * b), 11, [0]);
 
           statement = new AddNode(
-            new AddNode(new NumberNode(c), new MultiplyNode(new NumberNode(a), new NumberNode(b))),
+            new AddNode(
+              new NumberNode(c),
+              new MultiplyNode(new NumberNode(a), new NumberNode(b)),
+            ),
             new NumberNode(d),
           );
 
@@ -145,7 +154,10 @@ const getOperationsPrioritiesWithoutRelative: QuestionGenerator<QCMProps, VEAPro
           d = randint(-(c + a / b), 11, [0]);
 
           statement = new AddNode(
-            new AddNode(new NumberNode(c), new DivideNode(new NumberNode(a), new NumberNode(b))),
+            new AddNode(
+              new NumberNode(c),
+              new DivideNode(new NumberNode(a), new NumberNode(b)),
+            ),
             new NumberNode(d),
           );
 
@@ -226,7 +238,10 @@ const getOperationsPrioritiesWithoutRelative: QuestionGenerator<QCMProps, VEAPro
         d = randint(-a * b * c, 11);
 
         statement = new AddNode(
-          new MultiplyNode(new MultiplyNode(new NumberNode(a), new NumberNode(b)), new NumberNode(c)),
+          new MultiplyNode(
+            new MultiplyNode(new NumberNode(a), new NumberNode(b)),
+            new NumberNode(c),
+          ),
           new NumberNode(d),
         );
         startStatement = statement.toTex();
@@ -239,7 +254,10 @@ const getOperationsPrioritiesWithoutRelative: QuestionGenerator<QCMProps, VEAPro
         } while (a * b * c + d < 0);
 
         statement = new AddNode(
-          new MultiplyNode(new MultiplyNode(new NumberNode(a), new NumberNode(b)), new NumberNode(c)),
+          new MultiplyNode(
+            new MultiplyNode(new NumberNode(a), new NumberNode(b)),
+            new NumberNode(c),
+          ),
           new NumberNode(d),
         );
         startStatement = statement.toTex();
@@ -253,7 +271,7 @@ const getOperationsPrioritiesWithoutRelative: QuestionGenerator<QCMProps, VEAPro
     startStatement,
     answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer },
   };
   return question;
@@ -264,21 +282,32 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   addValidProp(propositions, answer);
 
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, randint(1, 50) + '');
+    tryToAddWrongProp(propositions, randint(1, 50) + "");
   }
 
   return shuffle(propositions);
 };
 
-export const operationsPrioritiesWithoutRelative: MathExercise<QCMProps, VEAProps> = {
-  id: 'operationsPrioritiesWithoutRelative',
-  connector: '=',
-  label: 'Priorités opératoires sans les nombres relatifs',
-  levels: ['6ème', '5ème', '4ème'],
-  sections: ['Calculs'],
+const isAnswerValid: VEA<VEAProps> = (studentAns, { answer }) => {
+  const answerTree = new NumberNode(Number(answer));
+  const texs = answerTree.toAllValidTexs();
+  return texs.includes(studentAns);
+};
+
+export const operationsPrioritiesWithoutRelative: MathExercise<
+  QCMProps,
+  VEAProps
+> = {
+  id: "operationsPrioritiesWithoutRelative",
+  connector: "=",
+  label: "Priorités opératoires sans les nombres relatifs",
+  levels: ["6ème", "5ème", "4ème"],
+  sections: ["Calculs"],
   isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getOperationsPrioritiesWithoutRelative, nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(getOperationsPrioritiesWithoutRelative, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

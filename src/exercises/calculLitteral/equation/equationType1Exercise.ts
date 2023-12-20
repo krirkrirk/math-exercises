@@ -14,8 +14,9 @@ import { Affine } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
 import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { EqualNode } from "#root/tree/nodes/operators/equalNode";
 import { shuffle } from "#root/utils/shuffle";
+import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
+import { EqualNode } from "#root/tree/nodes/operators/equalNode";
 
 /**
  *  type x+a=b
@@ -68,7 +69,9 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
 
 const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
   const solution = b - a;
-  const answerTree = new EquationSolutionNode([new NumberNode(solution)]);
+  const answerTree = new EquationSolutionNode(
+    new DiscreteSetNode([new NumberNode(solution)]),
+  );
   const validLatexs = answerTree.toAllValidTexs();
   return validLatexs.includes(ans);
 };

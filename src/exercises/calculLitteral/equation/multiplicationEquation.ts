@@ -4,22 +4,34 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Rational } from '#root/math/numbers/rationals/rational';
-import { Polynomial } from '#root/math/polynomials/polynomial';
-import { randint } from '#root/math/utils/random/randint';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
-import { simplifyNode } from '#root/tree/parsers/simplify';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Rational } from "#root/math/numbers/rationals/rational";
+import { Polynomial } from "#root/math/polynomials/polynomial";
+import { randint } from "#root/math/utils/random/randint";
+import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
+import { simplifyNode } from "#root/tree/parsers/simplify";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
+  a: number;
+  b: number;
+  c: number;
+  d: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  a: number;
+  b: number;
+  c: number;
+  d: number;
+};
 
 const getMultiplicationEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
   // (ax + b)(cx + d) = 0
@@ -33,25 +45,26 @@ const getMultiplicationEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   const polynome1 = new Polynomial([b, a]);
   const polynome2 = new Polynomial([d, c]);
-
-  const answer = `S=\\left\\{${new Rational(-b, a).simplify().toTree().toTex()};${new Rational(-d, c)
-    .simplify()
-    .toTree()
-    .toTex()}\\right\\}`;
+  const sol1 = new Rational(-b, a).simplify().toTree();
+  const sol2 = new Rational(-d, c).simplify().toTree();
+  const sortedSols = -b / a < -d / c ? [sol1, sol2] : [sol2, sol1];
+  const answer = new EquationSolutionNode(
+    new DiscreteSetNode(sortedSols),
+  ).toTex();
 
   const question: Question<QCMProps, VEAProps> = {
     instruction: `Résoudre : $(${polynome1.toTex()})(${polynome2.toTex()}) = 0$`,
     startStatement: `(${polynome1.toTex()})(${polynome2.toTex()}) = 0`,
     answer,
-    keys: ['x', 'S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'ou'],
-    answerFormat: 'tex',
-    qcmGeneratorProps: { answer },
+    keys: ["x", "S", "equal", "lbrace", "rbrace", "semicolon", "ou"],
+    answerFormat: "tex",
+    qcmGeneratorProps: { answer, a, b, c, d },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c, d }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -63,24 +76,40 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
       d = randint(-9, 10, [0]);
     } while (a / c === b / d);
 
-    const wrongAnswer = `S=\\left\\{${simplifyNode(
-      new FractionNode(new NumberNode(-b), new NumberNode(a)),
-    ).toTex()};${simplifyNode(new FractionNode(new NumberNode(-d), new NumberNode(c))).toTex()}\\right\\}`;
+    const sol1 = new Rational(-b, a).simplify().toTree();
+    const sol2 = new Rational(-d, c).simplify().toTree();
+    const sortedSols = -b / a < -d / c ? [sol1, sol2] : [sol2, sol1];
+    const wrongAnswer = new EquationSolutionNode(
+      new DiscreteSetNode(sortedSols),
+    ).toTex();
     tryToAddWrongProp(propositions, wrongAnswer);
   }
 
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c, d }) => {
+  const sol1 = new Rational(-b, a).simplify().toTree();
+  const sol2 = new Rational(-d, c).simplify().toTree();
+  const sortedSols = -b / a < -d / c ? [sol1, sol2] : [sol2, sol1];
+  const answer = new EquationSolutionNode(new DiscreteSetNode(sortedSols), {
+    opts: { allowFractionToDecimal: true },
+  });
+  const texs = answer.toAllValidTexs();
+  return texs.includes(ans);
+};
+
 export const multiplicationEquation: MathExercise<QCMProps, VEAProps> = {
-  id: 'multiplicationEquation',
-  connector: '\\iff',
-  label: 'Résoudre une équation produit nul',
-  levels: ['2nde', '1reESM', '1reSpé', '1reTech'],
-  sections: ['Équations'],
+  id: "multiplicationEquation",
+  connector: "\\iff",
+  label: "Résoudre une équation produit nul",
+  levels: ["2nde", "1reESM", "1reSpé", "1reTech"],
+  sections: ["Équations"],
   isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getMultiplicationEquation, nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(getMultiplicationEquation, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };
