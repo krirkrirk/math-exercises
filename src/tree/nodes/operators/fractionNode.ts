@@ -27,6 +27,9 @@ export class FractionNode implements OperatorNode {
     return `(${this.leftChild.toMathString()}) / (${this.rightChild.toMathString()})`;
   }
 
+  toInversed() {
+    return new FractionNode(this.rightChild, this.leftChild);
+  }
   toEquivalentNodes(opts?: NodeOptions) {
     const options = opts ?? this.opts;
     const res: Node[] = [];
@@ -57,8 +60,8 @@ export class FractionNode implements OperatorNode {
     //! est ce qu'on gère le placement du moins n'importe où
   }
 
-  toAllValidTexs(): string[] {
-    return this.toEquivalentNodes().map((node) => node.toTex());
+  toAllValidTexs(opts?: NodeOptions): string[] {
+    return this.toEquivalentNodes(opts).map((node) => node.toTex());
   }
 
   toTex(): string {

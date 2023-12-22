@@ -72,9 +72,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
 
 const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
   const affine = new Affine(a, b);
-  const answerTree = new SquareNode(affine.toTree(), {
-    allowPowerToProduct: true,
-  });
+  const answerTree = new SquareNode(affine.toTree());
   const validLatexs = answerTree.toAllValidTexs();
   return validLatexs.includes(ans);
 };

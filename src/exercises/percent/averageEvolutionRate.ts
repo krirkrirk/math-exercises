@@ -1,33 +1,36 @@
-import { randint } from '#root/math/utils/random/randint';
-import { round } from '#root/math/utils/round';
-import { shuffle } from '#root/utils/shuffle';
+import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
+import { shuffle } from "#root/utils/shuffle";
 import {
   MathExercise,
   Proposition,
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+} from "../exercise";
+import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
 type QCMProps = {
   answer: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 const getAverageEvolutionRate: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rate = randint(1, 100);
   const nbMois = randint(2, 13);
 
-  const instruction = `Un prix augmente de $${rate}\\%$ en $${nbMois}$ mois. Quel est le taux d'évolution mensuel moyen ?`;
+  const instruction = `Un prix augmente de $${rate}\\%$ en $${nbMois}$ mois. Quel est le taux d'évolution mensuel moyen (arrondir au centième de pourcentage) ?`;
   const answer = round((Math.pow(1 + rate / 100, 1 / nbMois) - 1) * 100, 2);
-  const answerTex = (answer + '').replace('.', ',') + `\\%`;
+  const answerTex = (answer + "").replace(".", ",") + `\\%`;
   const question: Question<QCMProps, VEAProps> = {
     instruction,
     answer: answerTex,
-    keys: ['percent'],
-    answerFormat: 'tex',
+    keys: ["percent"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer: answerTex },
   };
 
@@ -39,27 +42,37 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   addValidProp(propositions, answer);
 
   while (propositions.length < n) {
-    let wrongAnswer = Number(answer.replace(',', '.').replace(`\\%`, ''));
+    let wrongAnswer = Number(answer.replace(",", ".").replace(`\\%`, ""));
     const deviation = Math.random() < 0.5 ? -1 : 1;
     const percentDeviation = Math.random() * 10 + 1;
 
     wrongAnswer += deviation * percentDeviation;
     wrongAnswer = round(wrongAnswer, 2);
-    tryToAddWrongProp(propositions, `${wrongAnswer}\\%`);
+    tryToAddWrongProp(
+      propositions,
+      `${(wrongAnswer + "").replace(".", ",")}\\%`,
+    );
   }
 
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  const allowedTex = [answer];
+  allowedTex.push("+" + answer);
+  return allowedTex.includes(ans);
+};
+
 export const averageEvolutionRate: MathExercise<QCMProps, VEAProps> = {
-  id: 'averageEvolutionRate',
-  connector: '=',
+  id: "averageEvolutionRate",
+  connector: "=",
   label: "Calculer un taux d'évolution moyen",
-  levels: ['2nde', '1rePro', 'TermPro', '1reTech', 'TermTech'],
-  sections: ['Pourcentages'],
+  levels: ["2nde", "1rePro", "TermPro", "1reTech", "TermTech"],
+  sections: ["Pourcentages"],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getAverageEvolutionRate, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

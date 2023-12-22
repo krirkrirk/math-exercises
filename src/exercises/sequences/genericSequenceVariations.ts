@@ -7,29 +7,35 @@ import {
   QuestionGenerator,
   addValidProp,
   QCMGenerator,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Rational } from '#root/math/numbers/rationals/rational';
-import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
-import { randint } from '#root/math/utils/random/randint';
-import { v4 } from 'uuid';
+  VEA,
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Rational } from "#root/math/numbers/rationals/rational";
+import { PolynomialConstructor } from "#root/math/polynomials/polynomial";
+import { randint } from "#root/math/utils/random/randint";
+import { v4 } from "uuid";
 
-const getGenericSequenceVariationsQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
-  const u = PolynomialConstructor.randomWithOrder(2, 'n');
+const getGenericSequenceVariationsQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
+  const u = PolynomialConstructor.randomWithOrder(2, "n");
   const [b, a] = u.coefficients.slice(1);
   const root = Math.ceil((-a - b) / (2 * a));
   const answer =
     root <= 0
       ? a > 0
-        ? 'Croissante'
-        : 'Décroissante'
-      : `${a > 0 ? 'Croissante' : 'Décroissante'} à partir du rang ${root}`;
+        ? "Croissante"
+        : "Décroissante"
+      : `${a > 0 ? "Croissante" : "Décroissante"} à partir du rang ${root}`;
 
   const question: Question<QCMProps, VEAProps> = {
     answer,
-    instruction: `Soit $u$ la suite définie par $u_n = ${u.toTree().toTex()}$. Quel est le sens de variations de $u$ ?`,
+    instruction: `Soit $u$ la suite définie par $u_n = ${u
+      .toTree()
+      .toTex()}$. Quel est le sens de variations de $u$ ?`,
     keys: [],
-    answerFormat: 'raw',
+    answerFormat: "raw",
     qcmGeneratorProps: { answer, root },
   };
 
@@ -40,30 +46,44 @@ type QCMProps = {
   answer: string;
   root: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer, root }) => {
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer, 'raw');
+  addValidProp(propositions, answer, "raw");
 
-  tryToAddWrongProp(propositions, 'Croissante', 'raw');
-  tryToAddWrongProp(propositions, 'Décroissante', 'raw');
+  tryToAddWrongProp(propositions, "Croissante", "raw");
+  tryToAddWrongProp(propositions, "Décroissante", "raw");
   let fakeRoot = root <= 0 ? randint(1, 10) : root;
-  tryToAddWrongProp(propositions, `Croissante à partir du rang ${fakeRoot}`, 'raw');
-  tryToAddWrongProp(propositions, `Décroissante à partir du rang ${fakeRoot}`, 'raw');
+  tryToAddWrongProp(
+    propositions,
+    `Croissante à partir du rang ${fakeRoot}`,
+    "raw",
+  );
+  tryToAddWrongProp(
+    propositions,
+    `Décroissante à partir du rang ${fakeRoot}`,
+    "raw",
+  );
 
   return shuffleProps(propositions, n);
 };
-
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
+};
 export const genericSequenceVariations: MathExercise<QCMProps, VEAProps> = {
-  id: 'genericSequenceVariations',
-  connector: '=',
-  label: "Déterminer le sens de variations d'une suite en étudiant la différence de deux termes",
-  levels: ['1reESM', '1rePro', '1reTech'],
+  id: "genericSequenceVariations",
+  connector: "=",
+  label:
+    "Déterminer le sens de variations d'une suite en étudiant la différence de deux termes",
+  levels: ["1reESM", "1rePro", "1reTech"],
   isSingleStep: true,
-  sections: ['Suites'],
-  generator: (nb: number) => getDistinctQuestions(getGenericSequenceVariationsQuestion, nb),
+  sections: ["Suites"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getGenericSequenceVariationsQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
-  answerType: 'QCM',
+  answerType: "QCM",
   getPropositions,
 };

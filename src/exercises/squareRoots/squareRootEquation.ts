@@ -66,7 +66,6 @@ const isAnswerValid: VEA<VEAProps> = (ans, { k }) => {
     k < 0 ? EmptySet : new DiscreteSetNode([new NumberNode(k ** 2)]);
   const answerTree = new EquationSolutionNode(solution);
   const validLatexs = answerTree.toAllValidTexs();
-  console.log(validLatexs);
   return validLatexs.includes(ans);
 };
 export const squareRootEquation: MathExercise<QCMProps, VEAProps> = {

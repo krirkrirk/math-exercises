@@ -7,23 +7,29 @@ import {
   QuestionGenerator,
   QCMGenerator,
   addValidProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { randint } from '#root/math/utils/random/randint';
-import { randomLetter } from '#root/utils/randomLetter';
+  VEA,
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randint } from "#root/math/utils/random/randint";
+import { randomLetter } from "#root/utils/randomLetter";
 
 type QCMProps = {
   answer: string;
   A: number[];
   B: number[];
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
-const getVectorCoordinatesFromTwoPointsQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getVectorCoordinatesFromTwoPointsQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const A = [randint(-9, 9), randint(-9, 9)];
   const B = [randint(-9, 9), randint(-9, 9)];
   const startLetter = randomLetter(true);
-  let endLetter = '';
+  let endLetter = "";
   do {
     endLetter = randomLetter(true);
   } while (endLetter === startLetter);
@@ -33,8 +39,8 @@ const getVectorCoordinatesFromTwoPointsQuestion: QuestionGenerator<QCMProps, VEA
   const question: Question<QCMProps, VEAProps> = {
     answer,
     instruction: `Soit $${startLetter}\\left(${A[0]};${A[1]}\\right)$ et $${endLetter}\\left(${B[0]};${B[1]}\\right)$. Quelles sont les coordonnées du vecteur $\\overrightarrow{${startLetter}${endLetter}}$ ?`,
-    keys: ['semicolon'],
-    answerFormat: 'tex',
+    keys: ["semicolon"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, A, B },
   };
 
@@ -45,25 +51,43 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, A, B }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  tryToAddWrongProp(propositions, `\\left(${A[0] - B[0]};${A[1] - B[1]}\\right)`);
-  tryToAddWrongProp(propositions, `\\left(${A[1] - A[0]};${B[1] - B[0]}\\right)`);
-  tryToAddWrongProp(propositions, `\\left(${B[1] - B[0]};${A[1] - A[0]}\\right)`);
+  tryToAddWrongProp(
+    propositions,
+    `\\left(${A[0] - B[0]};${A[1] - B[1]}\\right)`,
+  );
+  tryToAddWrongProp(
+    propositions,
+    `\\left(${A[1] - A[0]};${B[1] - B[0]}\\right)`,
+  );
+  tryToAddWrongProp(
+    propositions,
+    `\\left(${B[1] - B[0]};${A[1] - A[0]}\\right)`,
+  );
 
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, `\\left(${randint(-10, 10)};${randint(-10, 10)}\\right)`);
+    tryToAddWrongProp(
+      propositions,
+      `\\left(${randint(-10, 10)};${randint(-10, 10)}\\right)`,
+    );
   }
   return shuffleProps(propositions, n);
 };
 
-export const vectorCoordinatesFromTwoPoints: MathExercise<QCMProps, VEAProps> = {
-  id: 'vectorCoordinatesFromTwoPoints',
-  connector: '=',
-  label: "Déterminer les coordonnées d'un vecteur à partir de deux points",
-  levels: ['2nde'],
-  isSingleStep: true,
-  sections: ['Vecteurs'],
-  generator: (nb: number) => getDistinctQuestions(getVectorCoordinatesFromTwoPointsQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
-  getPropositions,
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
 };
+export const vectorCoordinatesFromTwoPoints: MathExercise<QCMProps, VEAProps> =
+  {
+    id: "vectorCoordinatesFromTwoPoints",
+    connector: "=",
+    label: "Déterminer les coordonnées d'un vecteur à partir de deux points",
+    levels: ["2nde"],
+    isSingleStep: true,
+    sections: ["Vecteurs"],
+    generator: (nb: number) =>
+      getDistinctQuestions(getVectorCoordinatesFromTwoPointsQuestion, nb),
+    qcmTimer: 60,
+    freeTimer: 60,
+    getPropositions,
+    isAnswerValid,
+  };

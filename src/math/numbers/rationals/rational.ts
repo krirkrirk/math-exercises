@@ -141,6 +141,10 @@ export class Rational implements Nombre {
     );
   }
 
+  isIrreductible() {
+    return this.denum !== 1 && gcd(this.num, this.denum) === 1;
+  }
+
   simplify(): Nombre {
     const sign =
       (this.num > 0 && this.denum > 0) || (this.num < 0 && this.denum < 0)

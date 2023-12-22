@@ -4,46 +4,59 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { randint } from '#root/math/utils/random/randint';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
-import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { VariableNode } from '#root/tree/nodes/variables/variableNode';
-import { simplifyNode } from '#root/tree/parsers/simplify';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Power } from "#root/math/numbers/integer/power";
+import { randint } from "#root/math/utils/random/randint";
+import { NodeOptions } from "#root/tree/nodes/node";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { simplifyNode } from "#root/tree/parsers/simplify";
+import { shuffle } from "#root/utils/shuffle";
+import { v4 } from "uuid";
 
 type QCMProps = {
   answer: string;
   a: number;
   power: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  a: number;
+  power: number;
+};
 
-const getPowerFunctionDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getPowerFunctionDerivative: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const a = randint(-9, 10, [0]);
   const power = randint(2, 10);
 
-  const statement = simplifyNode(
-    new MultiplyNode(new NumberNode(a), new PowerNode(new VariableNode('x'), new NumberNode(power))),
+  const statement = new MultiplyNode(
+    new NumberNode(a),
+    new PowerNode(new VariableNode("x"), new NumberNode(power)),
   );
-
-  const answerStatement = simplifyNode(
-    new MultiplyNode(new NumberNode(a * power), new PowerNode(new VariableNode('x'), new NumberNode(power - 1))),
-  );
+  const answerStatement =
+    power > 2
+      ? new MultiplyNode(
+          new NumberNode(a * power),
+          new PowerNode(new VariableNode("x"), new NumberNode(power - 1)),
+        )
+      : new MultiplyNode(new NumberNode(a * power), new VariableNode("x"));
 
   const answer = answerStatement.toTex();
   const question: Question<QCMProps, VEAProps> = {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =${statement.toTex()}$.`,
     startStatement: `f'(x)`,
     answer,
-    keys: ['x'],
-    answerFormat: 'tex',
+    keys: ["x"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, a, power },
   };
 
@@ -56,15 +69,24 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, power }) => {
 
   tryToAddWrongProp(
     propositions,
-    new MultiplyNode(new NumberNode(a), new PowerNode(new VariableNode('x'), new NumberNode(power - 1))).toTex(),
+    new MultiplyNode(
+      new NumberNode(a),
+      new PowerNode(new VariableNode("x"), new NumberNode(power - 1)),
+    ).toTex(),
   );
   tryToAddWrongProp(
     propositions,
-    new MultiplyNode(new NumberNode(a * power), new PowerNode(new VariableNode('x'), new NumberNode(power))).toTex(),
+    new MultiplyNode(
+      new NumberNode(a * power),
+      new PowerNode(new VariableNode("x"), new NumberNode(power)),
+    ).toTex(),
   );
   tryToAddWrongProp(
     propositions,
-    new MultiplyNode(new NumberNode(a - 1), new PowerNode(new VariableNode('x'), new NumberNode(power))).toTex(),
+    new MultiplyNode(
+      new NumberNode(a - 1),
+      new PowerNode(new VariableNode("x"), new NumberNode(power)),
+    ).toTex(),
   );
   while (propositions.length < n) {
     const wrongExponent = randint(2, 10);
@@ -74,7 +96,10 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, power }) => {
       simplifyNode(
         new MultiplyNode(
           new NumberNode(a * wrongExponent),
-          new PowerNode(new VariableNode('x'), new NumberNode(wrongExponent - 1)),
+          new PowerNode(
+            new VariableNode("x"),
+            new NumberNode(wrongExponent - 1),
+          ),
         ),
       ).toTex(),
     );
@@ -83,17 +108,37 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, power }) => {
   return shuffleProps(propositions, n);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { a, power }) => {
+  const opts: NodeOptions = { forbidPowerToProduct: true };
+  const answerTree =
+    power > 2
+      ? new MultiplyNode(
+          new NumberNode(a * power),
+          new PowerNode(new VariableNode("x"), new NumberNode(power - 1), opts),
+          opts,
+        )
+      : new MultiplyNode(
+          new NumberNode(a * power),
+          new VariableNode("x"),
+          opts,
+        );
+  const texs = answerTree.toAllValidTexs();
+  console.log(texs);
+  return texs.includes(ans);
+};
+
 export const powerFunctionDerivative: MathExercise<QCMProps, VEAProps> = {
-  id: 'powerFunctionDerivative',
-  connector: '=',
+  id: "powerFunctionDerivative",
+  connector: "=",
 
   label: "Dérivée d'une fonction puissance",
-  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp'],
-  sections: ['Dérivation'],
+  levels: ["1reESM", "1reSpé", "1reTech", "MathComp"],
+  sections: ["Dérivation"],
   isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getPowerFunctionDerivative, nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(getPowerFunctionDerivative, nb),
   getPropositions,
-
+  isAnswerValid,
   qcmTimer: 60,
   freeTimer: 60,
 };

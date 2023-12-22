@@ -29,7 +29,7 @@ export class OppositeNode implements FunctionNode {
     if (this.child.type === NodeType.number && childTex[0] === "-") {
       return childTex.substring(1);
     }
-    if (needBrackets) childTex = `(${childTex})`;
+    if (needBrackets) childTex = `\\left(${childTex}\\right)`;
     return `-${childTex}`;
   }
 
@@ -42,8 +42,8 @@ export class OppositeNode implements FunctionNode {
     return res;
   }
 
-  toAllValidTexs(): string[] {
-    return this.toEquivalentNodes().map((node) => node.toTex());
+  toAllValidTexs(opts?: NodeOptions): string[] {
+    return this.toEquivalentNodes(opts).map((node) => node.toTex());
   }
 
   toMathjs() {

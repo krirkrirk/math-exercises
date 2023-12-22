@@ -1,8 +1,12 @@
-import { KeyId } from '#root/types/keyIds';
-import { shuffle } from '#root/utils/shuffle';
-import { uuid } from 'uuidv4';
+import { KeyId } from "#root/types/keyIds";
+import { shuffle } from "#root/utils/shuffle";
+import { uuid } from "uuidv4";
 
-export const addValidProp = (props: Proposition[], statement: string, format: 'tex' | 'raw' = 'tex') => {
+export const addValidProp = (
+  props: Proposition[],
+  statement: string,
+  format: "tex" | "raw" = "tex",
+) => {
   props.push({
     id: uuid(),
     statement,
@@ -10,7 +14,11 @@ export const addValidProp = (props: Proposition[], statement: string, format: 't
     format: format,
   });
 };
-export const addWrongProp = (props: Proposition[], statement: string, format: 'tex' | 'raw' = 'tex') => {
+export const addWrongProp = (
+  props: Proposition[],
+  statement: string,
+  format: "tex" | "raw" = "tex",
+) => {
   props.push({
     id: uuid(),
     statement,
@@ -18,7 +26,11 @@ export const addWrongProp = (props: Proposition[], statement: string, format: 't
     format: format,
   });
 };
-export const tryToAddWrongProp = (props: Proposition[], statement: string, format: 'tex' | 'raw' = 'tex') => {
+export const tryToAddWrongProp = (
+  props: Proposition[],
+  statement: string,
+  format: "tex" | "raw" = "tex",
+) => {
   if (!props.some((prop) => prop.statement === statement)) {
     props.push({
       id: uuid(),
@@ -39,18 +51,18 @@ export type Proposition = {
   id: string;
   statement: string;
   isRightAnswer: boolean;
-  format: 'tex' | 'raw';
+  format: "tex" | "raw";
 };
 export interface Question<TQCMProps = {}, TVEAProps = {}> {
   instruction: string;
   startStatement?: string;
   answer: string;
-  answerFormat: 'tex' | 'raw';
+  answerFormat: "tex" | "raw";
   keys?: KeyId[];
   commands?: string[];
   coords?: number[];
   options?: any;
-  divisionFormat?: 'fraction' | 'obelus';
+  divisionFormat?: "fraction" | "obelus";
   qcmGeneratorProps?: TQCMProps;
   veaProps?: TVEAProps;
 }
@@ -66,10 +78,10 @@ export interface MathExercise<TQCMProps = {}, TVEAProps = {}> {
   label: string;
   sections: MathSection[];
   levels: MathLevel[];
-  connector?: '=' | '\\iff' | '\\approx';
+  connector?: "=" | "\\iff" | "\\approx";
   generator: (n: number) => Question<TQCMProps, TVEAProps>[];
   maxAllowedQuestions?: number;
-  answerType?: 'QCM' | 'free';
+  answerType?: "QCM" | "free";
   qcmTimer: number;
   freeTimer: number;
   getPropositions?: QCMGenerator<TQCMProps>;
@@ -77,57 +89,61 @@ export interface MathExercise<TQCMProps = {}, TVEAProps = {}> {
 }
 
 export type MathLevel =
-  | '6ème'
-  | '5ème'
-  | '4ème'
-  | '3ème'
-  | '2nde'
-  | '1reTech'
-  | '1reESM'
-  | '1reSpé'
-  | 'TermSpé'
-  | 'TermTech'
-  | 'MathExp'
-  | 'MathComp'
-  | 'CAP'
-  | '2ndPro'
-  | '1rePro'
-  | 'TermPro';
+  | "6ème"
+  | "5ème"
+  | "4ème"
+  | "3ème"
+  | "2nde"
+  | "1reTech"
+  | "1reESM"
+  | "1reSpé"
+  | "TermSpé"
+  | "TermTech"
+  | "MathExp"
+  | "MathComp"
+  | "CAP"
+  | "2ndPro"
+  | "1rePro"
+  | "TermPro";
 
 export type MathSection =
-  | 'Arithmétique'
-  | 'Calcul littéral'
-  | 'Calculs'
-  | 'Combinatoire et dénombrement'
-  | 'Conversions'
-  | 'Dérivation'
-  | 'Droites'
-  | 'Ensembles et intervalles'
-  | 'Équations'
-  | 'Équations différentielles'
-  | 'Exponentielle'
-  | 'Fonction cube'
-  | 'Fonction inverse'
-  | 'Fonctions'
-  | 'Fonctions affines'
-  | 'Fonctions de référence'
-  | 'Fractions'
-  | 'Géométrie cartésienne'
-  | 'Géométrie euclidienne'
-  | 'Inéquations'
-  | 'Intégration'
-  | 'Limites'
-  | 'Logarithme népérien'
-  | 'Nombres complexes'
-  | 'Pourcentages'
-  | 'Primitives'
-  | 'Probabilités'
-  | 'Proportionnalité'
-  | 'Puissances'
-  | 'Racines carrées'
-  | 'Second degré'
-  | 'Statistiques'
-  | 'Suites'
-  | 'Trigonométrie'
-  | 'Valeur absolue'
-  | 'Vecteurs';
+  | "Aires"
+  | "Arithmétique"
+  | "Calcul littéral"
+  | "Calculs"
+  | "Combinatoire et dénombrement"
+  | "Conversions"
+  | "Dérivation"
+  | "Droites"
+  | "Ensembles et intervalles"
+  | "Équations"
+  | "Équations différentielles"
+  | "Exponentielle"
+  | "Fonction cube"
+  | "Fonction inverse"
+  | "Fonctions"
+  | "Fonctions affines"
+  | "Fonctions de référence"
+  | "Fractions"
+  | "Géométrie cartésienne"
+  | "Géométrie euclidienne"
+  | "Inéquations"
+  | "Intégration"
+  | "Limites"
+  | "Logarithme népérien"
+  | "Nombres complexes"
+  | "Périmètres"
+  | "Pourcentages"
+  | "Primitives"
+  | "Probabilités"
+  | "Proportionnalité"
+  | "Puissances"
+  | "Racines carrées"
+  | "Second degré"
+  | "Statistiques"
+  | "Suites"
+  | "Théorème de Pythagore"
+  | "Théorème de Thalès"
+  | "Trigonométrie"
+  | "Valeur absolue"
+  | "Vecteurs";

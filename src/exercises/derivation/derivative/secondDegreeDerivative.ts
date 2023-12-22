@@ -4,21 +4,27 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Polynomial } from '#root/math/polynomials/polynomial';
-import { randint } from '#root/math/utils/random/randint';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Polynomial } from "#root/math/polynomials/polynomial";
+import { randint } from "#root/math/utils/random/randint";
+import { shuffle } from "#root/utils/shuffle";
+import { v4 } from "uuid";
 
 type QCMProps = {
   answer: string;
   coefficients: number[];
 };
-type VEAProps = {};
-export const getSecondDegreeDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
+type VEAProps = {
+  coefficients: number[];
+};
+export const getSecondDegreeDerivative: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const coefficients = [randint(-9, 10), randint(-9, 10), randint(-9, 10, [0])];
 
   const polynomial = new Polynomial(coefficients);
@@ -28,24 +34,32 @@ export const getSecondDegreeDerivative: QuestionGenerator<QCMProps, VEAProps> = 
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
     startStatement: `f'(x)`,
     answer,
-    keys: ['x'],
-    answerFormat: 'tex',
+    keys: ["x"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, coefficients },
   };
 
   return question;
 };
 
-export const getSecondDegreeDerivativePropositions: QCMGenerator<QCMProps> = (n, { answer, coefficients }) => {
+export const getSecondDegreeDerivativePropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, coefficients },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
   if (coefficients[1] !== 0)
-    tryToAddWrongProp(propositions, new Polynomial([coefficients[0], coefficients[1]]).toTree().toTex());
+    tryToAddWrongProp(
+      propositions,
+      new Polynomial([coefficients[0], coefficients[1]]).toTree().toTex(),
+    );
   if (coefficients[1] !== 0)
     tryToAddWrongProp(
       propositions,
-      new Polynomial([coefficients[0] + coefficients[1], coefficients[1]]).toTree().toTex(),
+      new Polynomial([coefficients[0] + coefficients[1], coefficients[1]])
+        .toTree()
+        .toTex(),
     );
   while (propositions.length < n) {
     const randomCoefficients = [
@@ -59,16 +73,36 @@ export const getSecondDegreeDerivativePropositions: QCMGenerator<QCMProps> = (n,
 
   return shuffle(propositions);
 };
+export const isSecondDegreeDerivativeAnswerValid: VEA<VEAProps> = (
+  ans,
+  { coefficients },
+) => {
+  const polynomial = new Polynomial(coefficients);
+  const derivative = polynomial.derivate().toTree();
+  const texs = derivative.toAllValidTexs();
+  console.log(texs);
+  return texs.includes(ans);
+};
 
 export const secondDegreeDerivative: MathExercise<QCMProps, VEAProps> = {
-  id: 'secondDegreeDerivative',
-  connector: '=',
+  id: "secondDegreeDerivative",
+  connector: "=",
   label: "Dérivée d'un polynôme de degré 2",
-  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp', '1rePro', 'TermPro', 'TermTech'],
-  sections: ['Dérivation'],
+  levels: [
+    "1reESM",
+    "1reSpé",
+    "1reTech",
+    "MathComp",
+    "1rePro",
+    "TermPro",
+    "TermTech",
+  ],
+  sections: ["Dérivation"],
   isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getSecondDegreeDerivative, nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(getSecondDegreeDerivative, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions: getSecondDegreeDerivativePropositions,
+  isAnswerValid: isSecondDegreeDerivativeAnswerValid,
 };

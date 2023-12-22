@@ -59,7 +59,6 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
 const isAnswerValid: VEA<VEAProps> = (ans, { sqrtOperand }) => {
   const answer = new SquareRoot(sqrtOperand).simplify().toTree();
   const texs = answer.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 

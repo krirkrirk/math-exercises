@@ -1,23 +1,27 @@
-import { SqrtNode } from '#root/tree/nodes/functions/sqrtNode';
-import { Node } from '#root/tree/nodes/node';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
-import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
-import { simplifyNode } from '#root/tree/parsers/simplify';
-import { evaluate } from 'mathjs';
-import { MathSet } from '../sets/mathSet';
-import { Interval } from '../sets/intervals/intervals';
+import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
+import { Node, NodeType } from "#root/tree/nodes/node";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { simplifyNode } from "#root/tree/parsers/simplify";
+import { evaluate } from "mathjs";
+import { MathSet } from "../sets/mathSet";
+import { Interval } from "../sets/intervals/intervals";
+import { Rational } from "../numbers/rationals/rational";
 
 export abstract class PointConstructor {
-  static random(domainX: MathSet = new Interval('[[-10; 10]]'), domainY: MathSet = new Interval('[[-10; 10]]')): Point {
+  static random(
+    domainX: MathSet = new Interval("[[-10; 10]]"),
+    domainY: MathSet = new Interval("[[-10; 10]]"),
+  ): Point {
     const x = domainX.getRandomElement();
     const y = domainY.getRandomElement();
-    if (x === null || y === null) throw Error("can't build point with thoses sets");
-    return new Point('A', new NumberNode(x.value), new NumberNode(y.value));
+    if (x === null || y === null)
+      throw Error("can't build point with thoses sets");
+    return new Point("A", new NumberNode(x.value), new NumberNode(y.value));
   }
-
 }
 
 export class Point {
@@ -37,6 +41,9 @@ export class Point {
   toTexWithCoords(): string {
     return `${this.name}\\left(${this.x.toTex()};${this.y.toTex()}\\right)`;
   }
+  toCoords(): string {
+    return `\\left(${this.x.toTex()};${this.y.toTex()}\\right)`;
+  }
 
   getXnumber(): number {
     return evaluate(this.x.toMathString());
@@ -46,11 +53,20 @@ export class Point {
     return evaluate(this.y.toMathString());
   }
 
-  midpoint(B: Point, name = 'I'): Point {
+  midpoint(B: Point, name = "I"): Point {
+    const types = [this.x.type, this.y.type, B.x.type, B.y.type];
+    if (types.some((type) => type !== NodeType.number)) {
+      throw Error("general midpoint not implemented yet");
+    }
     return new Point(
       name,
-      simplifyNode(new FractionNode(new AddNode(this.x, B.x), new NumberNode(2))),
-      simplifyNode(new FractionNode(new AddNode(this.y, B.y), new NumberNode(2))),
+      new Rational((this.x as NumberNode).value + (B.x as NumberNode).value, 2)
+        .simplify()
+        .toTree(),
+
+      new Rational((this.y as NumberNode).value + (B.y as NumberNode).value, 2)
+        .simplify()
+        .toTree(),
     );
   }
 
@@ -63,12 +79,18 @@ export class Point {
   distanceToNode(B: Point): Node {
     const dx = new SubstractNode(this.x, B.x);
     const dy = new SubstractNode(this.y, B.y);
-    const sum = new AddNode(new PowerNode(dx, new NumberNode(2)), new PowerNode(dy, new NumberNode(2)));
+    const sum = new AddNode(
+      new PowerNode(dx, new NumberNode(2)),
+      new PowerNode(dy, new NumberNode(2)),
+    );
     return new SqrtNode(simplifyNode(sum));
   }
 
   equalTo(B: Point): boolean {
-    return this.getXnumber() === B.getXnumber() && this.getYnumber() === B.getYnumber();
+    return (
+      this.getXnumber() === B.getXnumber() &&
+      this.getYnumber() === B.getYnumber()
+    );
   }
 }
 

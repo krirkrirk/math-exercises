@@ -30,7 +30,7 @@ export class PowerNode implements OperatorNode {
       leftNodes.forEach((leftNode) => {
         res.push(new PowerNode(leftNode, rightNode));
         if (
-          this.opts?.allowPowerToProduct &&
+          !this.opts?.forbidPowerToProduct &&
           this.rightChild.type === NodeType.number
         ) {
           const power = (this.rightChild as NumberNode).value;

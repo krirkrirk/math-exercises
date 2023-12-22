@@ -4,18 +4,21 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { randint } from '#root/math/utils/random/randint';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randint } from "#root/math/utils/random/randint";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
   randomSide: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
 const sides = [
   [3, 4, 5],
@@ -39,12 +42,12 @@ const sides = [
 const getTriangleAreaV2: QuestionGenerator<QCMProps, VEAProps> = () => {
   const randomSide = randint(0, sides.length);
   const area = (sides[randomSide][0] * sides[randomSide][1]) / 2;
-  const answer = area + '';
+  const answer = area + "";
   const question: Question<QCMProps, VEAProps> = {
-    instruction: `Calculer l'aire du triangle rectangle qui a pour côtés: $${sides[randomSide][0]}$ cm, $${sides[randomSide][1]}$ cm et $${sides[randomSide][2]}$ cm.`,
-    answer,
-    answerFormat: 'tex',
-    keys: [],
+    instruction: `Calculer l'aire du triangle rectangle dont les côtés mesurent : $${sides[randomSide][0]}$ cm, $${sides[randomSide][1]}$ cm et $${sides[randomSide][2]}$ cm.`,
+    answer: answer + "\\text{cm}^2",
+    answerFormat: "tex",
+    keys: ["cm", "cm2"],
     qcmGeneratorProps: { answer, randomSide },
   };
 
@@ -53,26 +56,39 @@ const getTriangleAreaV2: QuestionGenerator<QCMProps, VEAProps> = () => {
 
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randomSide }) => {
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer);
+  addValidProp(propositions, answer + "\\text{cm}^2");
   const area = Number(answer);
-  tryToAddWrongProp(propositions, sides[randomSide][0] + sides[randomSide][1] + sides[randomSide][2] + '');
+  tryToAddWrongProp(
+    propositions,
+    sides[randomSide][0] +
+      sides[randomSide][1] +
+      sides[randomSide][2] +
+      "\\text{cm}^2",
+  );
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, area + randint(-area + 1, 14, [0]) + '');
+    tryToAddWrongProp(
+      propositions,
+      area + randint(-area + 1, 14, [0]) + "\\text{cm}^2",
+    );
   }
 
   return shuffle(propositions);
 };
-
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  const texs = [answer + "", answer + "\\text{cm}^2"];
+  return texs.includes(ans);
+};
 export const triangleAreaV2: MathExercise<QCMProps, VEAProps> = {
-  id: 'triangleAreaV2',
-  connector: '=',
+  id: "triangleAreaV2",
+  connector: "=",
   label: "Calculer l'aire d'un triangle (sans figure)",
-  levels: ['5ème', '4ème', '3ème', '2nde'],
+  levels: ["5ème", "4ème", "3ème", "2nde"],
   isSingleStep: false,
-  sections: ['Géométrie euclidienne'],
+  sections: ["Aires", "Géométrie euclidienne"],
   generator: (nb: number) => getDistinctQuestions(getTriangleAreaV2, nb, 16),
   qcmTimer: 60,
   freeTimer: 60,
   maxAllowedQuestions: 16,
   getPropositions,
+  isAnswerValid,
 };

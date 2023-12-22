@@ -4,22 +4,26 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { randint } from '#root/math/utils/random/randint';
-import { Node } from '#root/tree/nodes/node';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
-import { simplifyNode } from '#root/tree/parsers/simplify';
-import { coinFlip } from '#root/utils/coinFlip';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Rational } from "#root/math/numbers/rationals/rational";
+import { randint } from "#root/math/utils/random/randint";
+import { Node } from "#root/tree/nodes/node";
+import { coinFlip } from "#root/utils/coinFlip";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  sideLengths: number[];
+  rand: number;
+  rand2: number;
+  isAskingC: boolean;
+};
 
 const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
   const vertices = [];
@@ -32,11 +36,24 @@ const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
   let theta = 0; // angle entre AB et AC
 
   do {
-    [xB, yB, xC, yC] = [randint(-10, 11), randint(-10, 11), randint(-10, 11), randint(-10, 11)];
+    [xB, yB, xC, yC] = [
+      randint(-10, 11),
+      randint(-10, 11),
+      randint(-10, 11),
+      randint(-10, 11),
+    ];
     d1 = Math.hypot(xB - xA, yB - yA); // Calculer la distance entre A et B
     d2 = Math.hypot(xC - xA, yC - yA); // Calculer la distance entre A et C
-    theta = Math.acos(((xB - xA) * (xC - xA) + (yB - yA) * (yC - yA)) / (d1 * d2));
-  } while (!theta || theta < 0.35 || theta > 2.1 || d1 / d2 > 1.3 || d1 / d2 < 0.7);
+    theta = Math.acos(
+      ((xB - xA) * (xC - xA) + (yB - yA) * (yC - yA)) / (d1 * d2),
+    );
+  } while (
+    !theta ||
+    theta < 0.35 ||
+    theta > 2.1 ||
+    d1 / d2 > 1.3 ||
+    d1 / d2 < 0.7
+  );
 
   d3 = Math.sqrt(d1 ** 2 + d2 ** 2 - 2 * d1 * d2 * Math.cos(theta)); // Calculer la distance entre C et B
   // CB² = AB² * AC² - 2*AB*AC*cos(theta)  : pythagore généralisé
@@ -62,44 +79,52 @@ const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
   ];
 
   // round pour avoir des valeurs dans N tout en gardant les proportions pour que ça soit cohérent. sides[i] a pour longueur sideLengths[i]
-  const sideLengths = [d1, factor * d1, d2, factor * d2, d3, factor * d3].map((el) => Math.round(Math.abs(el)));
+  const sideLengths = [d1, factor * d1, d2, factor * d2, d3, factor * d3].map(
+    (el) => Math.round(Math.abs(el)),
+  );
 
   const rand = randint(0, 3);
   let rand2 = randint(0, 3, [rand]);
-  if (sideLengths[2 * rand] === sideLengths[2 * rand2]) rand2 = randint(0, 3, [rand, rand2]); // condition pour pas prendre 2 longueurs identiques
+  if (sideLengths[2 * rand] === sideLengths[2 * rand2])
+    rand2 = randint(0, 3, [rand, rand2]); // condition pour pas prendre 2 longueurs identiques
 
-  let instruction = `Dans la figure ci-dessous, nous avons (${vertices[3]}${vertices[4]})//(${vertices[1]}${vertices[2]}), `;
+  let instruction = `Dans la figure ci-dessous, on a $(${vertices[3]}${vertices[4]})//(${vertices[1]}${vertices[2]})$, `;
   let statement: Node;
   let startStatement;
 
-  if (coinFlip()) {
+  const isAskingC = coinFlip();
+  if (isAskingC) {
     // a/b = c/d on cherche c
-    instruction += `${sides[2 * rand]} = $${sideLengths[2 * rand]}$, ${sides[2 * rand + 1]} = $${
-      sideLengths[2 * rand + 1]
-    }$, ${sides[2 * rand2]} = $${sideLengths[2 * rand2]}$.$\\\\$Déterminer ${sides[2 * rand2 + 1]}`;
+    instruction += `$${sides[2 * rand]} = ${sideLengths[2 * rand]}$, $${
+      sides[2 * rand + 1]
+    } = ${sideLengths[2 * rand + 1]}$, $${sides[2 * rand2]} = ${
+      sideLengths[2 * rand2]
+    }$. Déterminer $${sides[2 * rand2 + 1]}$.`;
 
     startStatement = `${sides[2 * rand2 + 1]}`;
 
-    statement = simplifyNode(
-      new FractionNode(
-        new NumberNode(sideLengths[2 * rand2] * sideLengths[2 * rand + 1]),
-        new NumberNode(sideLengths[2 * rand]),
-      ),
-    );
+    statement = new Rational(
+      sideLengths[2 * rand2] * sideLengths[2 * rand + 1],
+      sideLengths[2 * rand],
+    )
+      .simplify()
+      .toTree();
   } else {
     // a/b = c/d on cherche d
-    instruction += `${sides[2 * rand]} = $${sideLengths[2 * rand]}$, ${sides[2 * rand + 1]} = $${
-      sideLengths[2 * rand + 1]
-    }$, ${sides[2 * rand2 + 1]} = $${sideLengths[2 * rand2 + 1]}$.$\\\\$Déterminer ${sides[2 * rand2]}`;
+    instruction += `$${sides[2 * rand]} = ${sideLengths[2 * rand]}$, $${
+      sides[2 * rand + 1]
+    } = ${sideLengths[2 * rand + 1]}$, $${sides[2 * rand2 + 1]} = ${
+      sideLengths[2 * rand2 + 1]
+    }$. Déterminer $${sides[2 * rand2]}$.`;
 
     startStatement = `${sides[2 * rand2]}`;
 
-    statement = simplifyNode(
-      new FractionNode(
-        new NumberNode(sideLengths[2 * rand2 + 1] * sideLengths[2 * rand]),
-        new NumberNode(sideLengths[2 * rand + 1]),
-      ),
-    );
+    statement = new Rational(
+      sideLengths[2 * rand2 + 1] * sideLengths[2 * rand],
+      sideLengths[2 * rand + 1],
+    )
+      .simplify()
+      .toTree();
   }
 
   const commands = [
@@ -130,8 +155,9 @@ const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
     keys: [],
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer },
+    veaProps: { isAskingC, rand, rand2, sideLengths },
   };
 
   return question;
@@ -143,22 +169,47 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      simplifyNode(new FractionNode(new NumberNode(randint(2, 30)), new NumberNode(randint(2, 30)))).toTex(),
+      new Rational(randint(2, 30), randint(2, 30)).simplify().toTree().toTex(),
     );
   }
 
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (
+  ans,
+  { isAskingC, rand, rand2, sideLengths },
+) => {
+  let answer: Node;
+  if (isAskingC)
+    answer = new Rational(
+      sideLengths[2 * rand2] * sideLengths[2 * rand + 1],
+      sideLengths[2 * rand],
+    )
+      .simplify()
+      .toTree();
+  else
+    answer = new Rational(
+      sideLengths[2 * rand2 + 1] * sideLengths[2 * rand],
+      sideLengths[2 * rand + 1],
+    )
+      .simplify()
+      .toTree();
+  const texs = answer.toAllValidTexs({ allowFractionToDecimal: true });
+  console.log(texs);
+
+  return texs.includes(ans);
+};
 export const thalesCalcul: MathExercise<QCMProps, VEAProps> = {
-  id: 'thalesCalcul',
-  connector: '=',
-  label: 'Utiliser le théoreme de Thalès pour faire des calculs',
-  levels: ['5ème', '4ème', '3ème', '2nde'],
+  id: "thalesCalcul",
+  connector: "=",
+  label: "Utiliser le théoreme de Thalès pour faire des calculs",
+  levels: ["5ème", "4ème", "3ème", "2nde"],
   isSingleStep: false,
-  sections: ['Géométrie euclidienne'],
+  sections: ["Théorème de Thalès", "Géométrie euclidienne"],
   generator: (nb: number) => getDistinctQuestions(getThales, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

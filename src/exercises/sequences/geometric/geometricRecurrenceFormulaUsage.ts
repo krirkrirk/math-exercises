@@ -7,19 +7,25 @@ import {
   addWrongProp,
   tryToAddWrongProp,
   addValidProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { randint } from '#root/math/utils/random/randint';
-import { shuffle } from '#root/utils/shuffle';
+  VEA,
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randint } from "#root/math/utils/random/randint";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
   firstValue: number;
   reason: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
-const getGeometricRecurrenceFormulaUsage: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getGeometricRecurrenceFormulaUsage: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const firstRank = randint(1, 20);
   const firstValue = randint(1, 10);
   const reason = randint(2, 10);
@@ -29,35 +35,49 @@ const getGeometricRecurrenceFormulaUsage: QuestionGenerator<QCMProps, VEAProps> 
     instruction: `$(u_n)$ est une suite définie par $u_{n+1} = ${reason}\\times u_n$ et $u_{${firstRank}} = ${firstValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer: (firstValue * reason).toString(),
-    keys: ['q', 'n', 'u', 'underscore'],
-    answerFormat: 'tex',
+    keys: ["q", "n", "u", "underscore"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, firstValue, reason },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, firstValue, reason }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, firstValue, reason },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  if (firstValue + reason !== 4) tryToAddWrongProp(propositions, (firstValue + reason).toString());
+  if (firstValue + reason !== 4)
+    tryToAddWrongProp(propositions, (firstValue + reason).toString());
 
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, firstValue * (reason + randint(-reason + 1, 6, [0])) + '');
+    tryToAddWrongProp(
+      propositions,
+      firstValue * (reason + randint(-reason + 1, 6, [0])) + "",
+    );
   }
 
   return shuffle(propositions);
 };
 
-export const geometricRecurrenceFormulaUsage: MathExercise<QCMProps, VEAProps> = {
-  id: 'geometricRecurrenceFormulaUsage',
-  connector: '=',
-  label: "Utiliser la formule de récurrence d'une suite géométrique",
-  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
-  sections: ['Suites'],
-  isSingleStep: false,
-  qcmTimer: 60,
-  freeTimer: 60,
-  generator: (nb: number) => getDistinctQuestions(getGeometricRecurrenceFormulaUsage, nb),
-  getPropositions,
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
 };
+
+export const geometricRecurrenceFormulaUsage: MathExercise<QCMProps, VEAProps> =
+  {
+    id: "geometricRecurrenceFormulaUsage",
+    connector: "=",
+    label: "Utiliser la formule de récurrence d'une suite géométrique",
+    levels: ["1reESM", "1reSpé", "1reTech", "1rePro", "TermTech", "TermPro"],
+    sections: ["Suites"],
+    isSingleStep: false,
+    qcmTimer: 60,
+    freeTimer: 60,
+    generator: (nb: number) =>
+      getDistinctQuestions(getGeometricRecurrenceFormulaUsage, nb),
+    getPropositions,
+    isAnswerValid,
+  };

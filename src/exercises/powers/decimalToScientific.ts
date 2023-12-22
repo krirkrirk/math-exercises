@@ -1,36 +1,54 @@
-import { Decimal, DecimalConstructor } from '#root/math/numbers/decimals/decimal';
-import { Integer, IntegerConstructor } from '#root/math/numbers/integer/integer';
-import { randint } from '#root/math/utils/random/randint';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
-import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { probaFlip } from '#root/utils/probaFlip';
+import {
+  Decimal,
+  DecimalConstructor,
+} from "#root/math/numbers/decimals/decimal";
+import {
+  Integer,
+  IntegerConstructor,
+} from "#root/math/numbers/integer/integer";
+import { randint } from "#root/math/utils/random/randint";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { probaFlip } from "#root/utils/probaFlip";
 import {
   MathExercise,
   Proposition,
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
-} from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+} from "../exercise";
+import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
 type QCMProps = {
   answer: string;
   decimal: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  decimal: number;
+};
 
-const getDecimalToScientificQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getDecimalToScientificQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const isZero = probaFlip(0.2);
   let intPart: number, dec: Decimal;
   if (isZero) {
-    dec = DecimalConstructor.fromParts('0', DecimalConstructor.randomFracPart(randint(2, 5), randint(1, 4)));
+    dec = DecimalConstructor.fromParts(
+      "0",
+      DecimalConstructor.randomFracPart(randint(2, 5), randint(1, 4)),
+    );
   } else {
     intPart = IntegerConstructor.random(randint(2, 5));
-    dec = DecimalConstructor.fromParts(intPart.toString(), DecimalConstructor.randomFracPart(randint(1, 5)));
+    dec = DecimalConstructor.fromParts(
+      intPart.toString(),
+      DecimalConstructor.randomFracPart(randint(1, 5)),
+    );
   }
   const decTex = dec.toTree().toTex();
   const answer = dec.toScientificNotation().toTex();
@@ -40,7 +58,7 @@ const getDecimalToScientificQuestion: QuestionGenerator<QCMProps, VEAProps> = ()
     startStatement: decTex,
     answer: answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, decimal: dec.value },
   };
   return question;
@@ -61,28 +79,36 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, decimal }) => {
   return shuffleProps(propositions, n);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { decimal }) => {
+  const answerTree = new Decimal(decimal).toScientificNotation();
+  const texs = answerTree.toAllValidTexs();
+  return texs.includes(ans);
+};
+
 export const decimalToScientific: MathExercise<QCMProps, VEAProps> = {
-  id: 'decimalToScientific',
-  connector: '=',
+  id: "decimalToScientific",
+  connector: "=",
   label: "Passer d'écriture décimale à écriture scientifique",
   levels: [
-    '5ème',
-    '4ème',
-    '3ème',
-    '2nde',
-    'CAP',
-    '2ndPro',
-    '1reESM',
-    '1rePro',
-    '1reSpé',
-    '1reTech',
-    'TermPro',
-    'TermTech',
+    "5ème",
+    "4ème",
+    "3ème",
+    "2nde",
+    "CAP",
+    "2ndPro",
+    "1reESM",
+    "1rePro",
+    "1reSpé",
+    "1reTech",
+    "TermPro",
+    "TermTech",
   ],
-  sections: ['Puissances'],
+  sections: ["Puissances"],
   isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getDecimalToScientificQuestion, nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(getDecimalToScientificQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

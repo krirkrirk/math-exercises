@@ -1,18 +1,18 @@
-import { Node } from '../../tree/nodes/node';
-import { NumberNode } from '../../tree/nodes/numbers/numberNode';
-import { AddNode } from '../../tree/nodes/operators/addNode';
-import { MultiplyNode } from '../../tree/nodes/operators/multiplyNode';
-import { OppositeNode } from '../../tree/nodes/functions/oppositeNode';
-import { PowerNode } from '../../tree/nodes/operators/powerNode';
-import { SubstractNode } from '../../tree/nodes/operators/substractNode';
-import { VariableNode } from '../../tree/nodes/variables/variableNode';
-import { randint } from '#root/math/utils/random/randint';
-import { coinFlip } from '#root/utils/coinFlip';
+import { Node } from "../../tree/nodes/node";
+import { NumberNode } from "../../tree/nodes/numbers/numberNode";
+import { AddNode } from "../../tree/nodes/operators/addNode";
+import { MultiplyNode } from "../../tree/nodes/operators/multiplyNode";
+import { OppositeNode } from "../../tree/nodes/functions/oppositeNode";
+import { PowerNode } from "../../tree/nodes/operators/powerNode";
+import { SubstractNode } from "../../tree/nodes/operators/substractNode";
+import { VariableNode } from "../../tree/nodes/variables/variableNode";
+import { randint } from "#root/math/utils/random/randint";
+import { coinFlip } from "#root/utils/coinFlip";
 
 export abstract class PolynomialConstructor {
-  static randomWithOrder(order: number, variable: string = 'x') {
+  static randomWithOrder(order: number, variable: string = "x") {
     if (order < 0) {
-      throw Error('Order must be a non-negative integer');
+      throw Error("Order must be a non-negative integer");
     }
 
     const coefficients = [];
@@ -23,9 +23,9 @@ export abstract class PolynomialConstructor {
 
     return new Polynomial(coefficients, variable);
   }
-  static random(maxOrder: number, variable: string = 'x') {
+  static random(maxOrder: number, variable: string = "x") {
     if (maxOrder < 0) {
-      throw Error('Order must be a non-negative integer');
+      throw Error("Order must be a non-negative integer");
     }
     const order = randint(1, maxOrder + 1);
     const coefficients = [];
@@ -44,9 +44,13 @@ export abstract class PolynomialConstructor {
    * @param variable
    * @returns
    */
-  static randomWithLength(maxOrder: number, length: number, variable: string = 'x') {
+  static randomWithLength(
+    maxOrder: number,
+    length: number,
+    variable: string = "x",
+  ) {
     if (maxOrder < 0) {
-      throw Error('Order must be a non-negative integer');
+      throw Error("Order must be a non-negative integer");
     }
     const order = randint(1, maxOrder + 1);
     const coefficients = [];
@@ -63,9 +67,13 @@ export abstract class PolynomialConstructor {
     return new Polynomial(coefficients, variable);
   }
 
-  static randomWithLengthAndSameSigns(maxOrder: number, length: number, variable: string = 'x') {
+  static randomWithLengthAndSameSigns(
+    maxOrder: number,
+    length: number,
+    variable: string = "x",
+  ) {
     if (maxOrder < 0) {
-      throw Error('Order must be a non-negative integer');
+      throw Error("Order must be a non-negative integer");
     }
     const order = randint(1, maxOrder + 1);
     const coefficients = [];
@@ -75,22 +83,32 @@ export abstract class PolynomialConstructor {
       otherTermDegrees.push(randint(0, order));
     }
     for (let i = 0; i <= order - 1; i++) {
-      if (otherTermDegrees.includes(i)) coefficients.push(sign * randint(0, 10, [0]));
+      if (otherTermDegrees.includes(i))
+        coefficients.push(sign * randint(0, 10, [0]));
       else coefficients.push(0);
     }
     coefficients.push(sign * randint(0, 10, [0]));
 
     return new Polynomial(coefficients, variable);
   }
-  static randomNoFI(maxOrder: number, to: '+\\infty' | '-\\infty', length?: number, variable: string = 'x') {
+  static randomNoFI(
+    maxOrder: number,
+    to: "+\\infty" | "-\\infty",
+    length?: number,
+    variable: string = "x",
+  ) {
     if (maxOrder < 0) {
-      throw Error('Order must be a non-negative integer');
+      throw Error("Order must be a non-negative integer");
     }
     const order = randint(1, maxOrder + 1);
 
     const fixedLength = length ?? order;
-    if (to === '+\\infty') {
-      return PolynomialConstructor.randomWithLengthAndSameSigns(maxOrder, fixedLength, variable);
+    if (to === "+\\infty") {
+      return PolynomialConstructor.randomWithLengthAndSameSigns(
+        maxOrder,
+        fixedLength,
+        variable,
+      );
     }
     //en -infini les degrés de parité différentes doivent avoir un signe différent
     const coefficients = [];
@@ -100,10 +118,15 @@ export abstract class PolynomialConstructor {
       otherTermDegrees.push(randint(0, order));
     }
     for (let i = 0; i <= order - 1; i++) {
-      if (otherTermDegrees.includes(i)) coefficients.push((i % 2 === 0 ? signEven : -signEven) * randint(0, 10, [0]));
+      if (otherTermDegrees.includes(i))
+        coefficients.push(
+          (i % 2 === 0 ? signEven : -signEven) * randint(0, 10, [0]),
+        );
       else coefficients.push(0);
     }
-    coefficients.push((order % 2 === 0 ? signEven : -signEven) * randint(0, 10, [0]));
+    coefficients.push(
+      (order % 2 === 0 ? signEven : -signEven) * randint(0, 10, [0]),
+    );
 
     return new Polynomial(coefficients, variable);
   }
@@ -122,17 +145,23 @@ export class Polynomial {
    * @param coefficients coefficients[i] est le coeff de x^i
    * @param variable
    */
-  constructor(coefficients: number[], variable: string = 'x') {
-    if (coefficients.length === 0) throw Error('coeffs must be not null');
-    if (coefficients.length > 1 && coefficients[coefficients.length - 1] === 0) {
-      throw Error('n-th coeff must be not null');
+  constructor(coefficients: number[], variable: string = "x") {
+    if (coefficients.length === 0) throw Error("coeffs must be not null");
+    if (
+      coefficients.length > 1 &&
+      coefficients[coefficients.length - 1] === 0
+    ) {
+      throw Error("n-th coeff must be not null");
     }
     this.coefficients = coefficients;
     this.variable = variable;
     this.degree = coefficients.length - 1;
   }
   equals(P: Polynomial): boolean {
-    return P.degree === this.degree && this.coefficients.every((coeff, i) => coeff === P.coefficients[i]);
+    return (
+      P.degree === this.degree &&
+      this.coefficients.every((coeff, i) => coeff === P.coefficients[i])
+    );
   }
   getRoots(): number[] {
     const roots: number[] = [];
@@ -163,13 +192,14 @@ export class Polynomial {
       }
     } else {
       //méthode de Newton-Raphson ou des bibliothèques de calcul symbolique pour obtenir les racines.
-      throw Error('general roots not implemented yet');
+      throw Error("general roots not implemented yet");
     }
 
     return roots.sort((a, b) => a - b);
   }
   add(P: Polynomial): Polynomial {
-    if (P.variable !== this.variable) throw Error("Can't add two polynomials with different variables");
+    if (P.variable !== this.variable)
+      throw Error("Can't add two polynomials with different variables");
 
     const maxDegree = Math.max(P.degree, this.degree);
 
@@ -193,8 +223,10 @@ export class Polynomial {
       this.variable,
     );
   }
+
   multiply(Q: Polynomial): Polynomial {
-    if (Q.variable !== this.variable) throw Error("Can't multiply two polynomials with different variables");
+    if (Q.variable !== this.variable)
+      throw Error("Can't multiply two polynomials with different variables");
 
     const p = this.degree;
     const q = Q.degree;
@@ -215,6 +247,12 @@ export class Polynomial {
     return new Polynomial(res.slice(0, firstNonZeroIndex), this.variable);
   }
 
+  scalarDivide(n: number): Polynomial {
+    return new Polynomial(
+      this.coefficients.map((coeff) => coeff / n),
+      this.variable,
+    );
+  }
   opposite(): Polynomial {
     return new Polynomial(
       this.coefficients.map((coeff) => -coeff),
@@ -223,38 +261,44 @@ export class Polynomial {
   }
 
   derivate(): Polynomial {
+    if (this.coefficients.length === 1)
+      return new Polynomial([0], this.variable);
     const res: number[] = [];
 
-    for (let i = 1; i < this.coefficients.length; i++) res.push(i * this.coefficients[i]);
+    for (let i = 1; i < this.coefficients.length; i++)
+      res.push(i * this.coefficients[i]);
 
     return new Polynomial(res, this.variable);
   }
 
   integrate(): Polynomial {
-    const newCoefficients = this.coefficients.map((coeff, exp) => coeff / (exp + 1));
+    const newCoefficients = this.coefficients.map(
+      (coeff, exp) => coeff / (exp + 1),
+    );
     newCoefficients.unshift(0);
     return new Polynomial(newCoefficients, this.variable);
   }
 
   calculate(x: number): number {
     let res = 0;
-    for (let i = 0; i < this.coefficients.length; i++) res += x ** i * this.coefficients[i];
+    for (let i = 0; i < this.coefficients.length; i++)
+      res += x ** i * this.coefficients[i];
     return res;
   }
 
-  getLimit(to: '+\\infty' | '-\\infty'): string {
+  getLimit(to: "+\\infty" | "-\\infty"): string {
     const leadingCoeff = this.coefficients[this.coefficients.length - 1];
-    if (this.degree === 0) return leadingCoeff + '';
-    if (to === '+\\infty') {
-      if (leadingCoeff > 0) return '+\\infty';
-      return '-\\infty';
+    if (this.degree === 0) return leadingCoeff + "";
+    if (to === "+\\infty") {
+      if (leadingCoeff > 0) return "+\\infty";
+      return "-\\infty";
     } else {
       if (leadingCoeff > 0) {
-        if (this.degree % 2 === 0) return '+\\infty';
-        return '-\\infty';
+        if (this.degree % 2 === 0) return "+\\infty";
+        return "-\\infty";
       } else {
-        if (this.degree % 2 === 0) return '-\\infty';
-        return '+\\infty';
+        if (this.degree % 2 === 0) return "-\\infty";
+        return "+\\infty";
       }
     }
   }
@@ -270,7 +314,10 @@ export class Polynomial {
 
       const monome =
         cursor > 1
-          ? new PowerNode(new VariableNode(this.variable), new NumberNode(cursor))
+          ? new PowerNode(
+              new VariableNode(this.variable),
+              new NumberNode(cursor),
+            )
           : new VariableNode(this.variable);
 
       let res: Node;
@@ -295,15 +342,22 @@ export class Polynomial {
   }
 
   toTex(): string {
-    let s = '';
+    let s = "";
     for (let i = this.degree; i > -1; i--) {
       const coeff = this.coefficients[i];
       if (coeff === 0) continue;
       if (i === 0) s += coeff > 0 ? `+${coeff}` : coeff;
       else if (i === this.degree) {
-        s += coeff === 1 ? '' : coeff === -1 ? '-' : coeff;
+        s += coeff === 1 ? "" : coeff === -1 ? "-" : coeff;
       } else {
-        s += coeff === 1 ? '+' : coeff === -1 ? '-' : coeff > 0 ? `+${coeff}` : coeff;
+        s +=
+          coeff === 1
+            ? "+"
+            : coeff === -1
+            ? "-"
+            : coeff > 0
+            ? `+${coeff}`
+            : coeff;
       }
       //x^n
       if (i === 0) continue;

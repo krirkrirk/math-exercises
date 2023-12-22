@@ -3,18 +3,8 @@ import express, { Express, Request, Response } from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
-import { IntervalConstructor } from "./math/sets/intervals/intervals";
-import { AddNode } from "./tree/nodes/operators/addNode";
-import { NumberNode } from "./tree/nodes/numbers/numberNode";
-import { operatorComposition } from "./tree/utilities/operatorComposition";
-import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
-import { PowerNode } from "./tree/nodes/operators/powerNode";
-import {
-  getCartesiansProducts,
-  getFlatCartesianProducts,
-} from "./utils/cartesianProducts";
-import { DiscreteSetNode } from "./tree/nodes/sets/discreteSetNode";
-import { FractionNode } from "./tree/nodes/operators/fractionNode";
+import { RationalFrac } from "./math/polynomials/rationalFrac";
+import { Polynomial } from "./math/polynomials/polynomial";
 const jsonParser = bodyParser.json();
 
 const allExercises = [...exercises];
@@ -26,6 +16,10 @@ const runServer = () => {
   console.log(
     exercises.length - exercises.filter((exo) => !!exo.isAnswerValid).length,
   );
+
+  const frac = new RationalFrac(new Polynomial([-8]), new Polynomial([0, -8]));
+  console.log(frac.toTree().toTex());
+  console.log(frac.simplify().toTree().toTex());
   // console.log(mul.toAllValidTexs());
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);

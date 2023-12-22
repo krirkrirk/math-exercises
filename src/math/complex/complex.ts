@@ -6,7 +6,6 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { simplifyNode } from "#root/tree/parsers/simplify";
 import { Rational } from "../numbers/rationals/rational";
 import { SquareRoot } from "../numbers/reals/real";
 import { randint } from "../utils/random/randint";
@@ -50,8 +49,12 @@ export class Complex {
 
   divideNode(z: Complex) {
     const moduleSq = z.moduleSquared();
-    const newRe = new Rational(this.re * z.re + this.im * z.im, moduleSq).simplify().toTree();
-    const newIm = new Rational(this.im * z.re - z.im * this.re, moduleSq).simplify().toTree();
+    const newRe = new Rational(this.re * z.re + this.im * z.im, moduleSq)
+      .simplify()
+      .toTree();
+    const newIm = new Rational(this.im * z.re - z.im * this.re, moduleSq)
+      .simplify()
+      .toTree();
     let imNode;
     if (newIm.toTex() === "0") return newRe;
     if (newIm.toTex() === "1") imNode = new VariableNode("i");
@@ -61,7 +64,10 @@ export class Complex {
   }
 
   multiply(z: Complex) {
-    return new Complex(this.re * z.re - this.im * z.im, this.re * z.im + this.im * z.re);
+    return new Complex(
+      this.re * z.re - this.im * z.im,
+      this.re * z.im + this.im * z.re,
+    );
   }
   opposite() {
     return new Complex(-this.re, -this.im);
@@ -71,24 +77,23 @@ export class Complex {
   }
   toArgumentTree() {
     if (this.re === 0 && this.im === 0) throw Error("0 n'a pas d'argument");
-    if(this.re === 0){
+    if (this.re === 0) {
       const piOver2 = new FractionNode(PiNode, new NumberNode(2));
-      if(this.im>0) return piOver2;
-      else return new OppositeNode(piOver2)
+      if (this.im > 0) return piOver2;
+      else return new OppositeNode(piOver2);
     }
-    if(this.im===0){
-      if(this.re>0) return new NumberNode(0);
-      else return PiNode
+    if (this.im === 0) {
+      if (this.re > 0) return new NumberNode(0);
+      else return PiNode;
     }
-    if(this.re>0){
+    if (this.re > 0) {
       //arctan(b/a)
     }
-    if(this.im>0){
+    if (this.im > 0) {
       //arctan(b/a)+pi
     }
-    if(this.im<0){
+    if (this.im < 0) {
       //arctan(b/a)-pi
-      
     }
   }
   toModuleTree() {

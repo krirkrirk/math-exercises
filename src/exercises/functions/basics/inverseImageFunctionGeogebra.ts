@@ -4,16 +4,17 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Polynomial } from '#root/math/polynomials/polynomial';
-import { randint } from '#root/math/utils/random/randint';
-import { round } from '#root/math/utils/round';
-import { coinFlip } from '#root/utils/coinFlip';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Polynomial } from "#root/math/polynomials/polynomial";
+import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
+import { coinFlip } from "#root/utils/coinFlip";
+import { shuffle } from "#root/utils/shuffle";
+import { v4 } from "uuid";
 
 type QCMProps = {
   answer: string;
@@ -21,9 +22,14 @@ type QCMProps = {
   xValue: number;
   polynome1Coeffs: number[];
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
-const getInverseImageFunctionGeogebra: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getInverseImageFunctionGeogebra: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const rand = coinFlip();
   const xValue = randint(-5, 6);
   const yValue = randint(-5, 6);
@@ -31,25 +37,42 @@ const getInverseImageFunctionGeogebra: QuestionGenerator<QCMProps, VEAProps> = (
   let polynome1: Polynomial;
   do {
     polynome1 = new Polynomial([randint(-9, 10), randint(-5, 6, [0])]);
-  } while (polynome1.calculate(xValue) > 10 || polynome1.calculate(xValue) < -10);
+  } while (
+    polynome1.calculate(xValue) > 10 ||
+    polynome1.calculate(xValue) < -10
+  );
 
-  let polynome2 = new Polynomial([randint(-9, 10) - yValue, randint(-9, 10), randint(-4, 5, [0])]);
+  let polynome2 = new Polynomial([
+    randint(-9, 10) - yValue,
+    randint(-9, 10),
+    randint(-4, 5, [0]),
+  ]);
   let roots = polynome2.getRoots();
 
   if (roots.length === 2)
     while (roots[0] > 10 || roots[0] < -10 || roots[1] > 10 || roots[1] < -10) {
-      polynome2 = new Polynomial([randint(-9, 10) - yValue, randint(-9, 10), randint(-4, 5, [0])]);
+      polynome2 = new Polynomial([
+        randint(-9, 10) - yValue,
+        randint(-9, 10),
+        randint(-4, 5, [0]),
+      ]);
       roots = polynome2.getRoots();
     }
 
   if (roots.length === 1)
     while (roots[0] < -10 || roots[0] > 10) {
-      polynome2 = new Polynomial([randint(-9, 10) - yValue, randint(-9, 10), randint(-4, 5, [0])]);
+      polynome2 = new Polynomial([
+        randint(-9, 10) - yValue,
+        randint(-9, 10),
+        randint(-4, 5, [0]),
+      ]);
       roots = polynome2.getRoots();
     }
 
   const statement = rand
-    ? `Déterminer le ou les antécédents de $${polynome1.calculate(xValue)}$ par la fonction $f$ représentée ci dessous.`
+    ? `Déterminer le ou les antécédents de $${polynome1.calculate(
+        xValue,
+      )}$ par la fonction $f$ représentée ci dessous.`
     : `Déterminer le ou les antécédents de $${yValue}$ par la fonction $f$ représentée ci dessous.`;
 
   let answer = rand
@@ -129,20 +152,28 @@ const getInverseImageFunctionGeogebra: QuestionGenerator<QCMProps, VEAProps> = (
       : polynome2.toString(),
   ];
 
-  answer = (answer + '').replaceAll('.', ',');
+  answer = (answer + "").replaceAll(".", ",");
   const question: Question<QCMProps, VEAProps> = {
     instruction: statement,
     answer,
-    keys: ['S', 'equal', 'lbrace', 'rbrace', 'semicolon', 'emptyset'],
+    keys: ["S", "equal", "lbrace", "rbrace", "semicolon", "emptyset"],
     commands,
     coords: [xmin, xmax, ymin, ymax],
-    answerFormat: 'tex',
-    qcmGeneratorProps: { answer, roots, xValue, polynome1Coeffs: polynome1.coefficients },
+    answerFormat: "tex",
+    qcmGeneratorProps: {
+      answer,
+      roots,
+      xValue,
+      polynome1Coeffs: polynome1.coefficients,
+    },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, roots, xValue, polynome1Coeffs }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, roots, xValue, polynome1Coeffs },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const polynome1 = new Polynomial(polynome1Coeffs);
@@ -154,21 +185,25 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, roots, xValue, pol
       : roots.length === 1
       ? randint(-9, 10, [roots[0]])
       : `\\emptyset`;
-    tryToAddWrongProp(propositions, wrongAnswer + '');
+    tryToAddWrongProp(propositions, wrongAnswer + "");
   }
 
   return shuffle(propositions);
 };
-
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
+};
 export const inverseImageFunctionGeogebra: MathExercise<QCMProps, VEAProps> = {
-  id: 'inverseImageFunctionGeogebra',
-  connector: '\\iff',
+  id: "inverseImageFunctionGeogebra",
+  connector: "\\iff",
   label: "Lecture d'antécédents",
-  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
-  sections: ['Fonctions'],
+  levels: ["3ème", "2nde", "CAP", "2ndPro", "1rePro", "1reTech"],
+  sections: ["Fonctions"],
   isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getInverseImageFunctionGeogebra, nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(getInverseImageFunctionGeogebra, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

@@ -4,17 +4,20 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { randint } from '#root/math/utils/random/randint';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randint } from "#root/math/utils/random/randint";
+import { shuffle } from "#root/utils/shuffle";
+import { v4 } from "uuid";
 type QCMProps = {
   answer: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
 const getArithmeticFindReason: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rank1 = randint(0, 10);
@@ -22,13 +25,13 @@ const getArithmeticFindReason: QuestionGenerator<QCMProps, VEAProps> = () => {
   const reason = randint(-10, 10, [0]);
   const value1 = randint(-10, 10);
   const value2 = reason + value1;
-  const answer = reason + '';
+  const answer = reason + "";
   const question: Question<QCMProps, VEAProps> = {
     instruction: `$(u_n)$ est une suite arithmétique. On sait que $u_{${rank1}} = ${value1}$ et $u_{${rank2}} = ${value2}$. Quelle est la raison de la suite $(u_n)$ ?`,
-    startStatement: 'r',
+    startStatement: "r",
     answer,
-    keys: ['r', 'n', 'u', 'underscore'],
-    answerFormat: 'tex',
+    keys: ["r", "n", "u", "underscore"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer },
   };
   return question;
@@ -39,21 +42,23 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   addValidProp(propositions, answer);
 
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, Number(answer) + randint(-5, 6, [0]) + '');
+    tryToAddWrongProp(propositions, Number(answer) + randint(-5, 6, [0]) + "");
   }
 
   return shuffle(propositions);
 };
-
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
+};
 export const arithmeticFindReason: MathExercise<QCMProps, VEAProps> = {
-  id: 'arithmeticFindReason',
-  connector: '=',
+  id: "arithmeticFindReason",
+  connector: "=",
   label: "Déterminer la raison d'une suite arithmétique",
-  levels: ['1reESM', '1reSpé', '1reTech', '1rePro', 'TermTech', 'TermPro'],
-  sections: ['Suites'],
+  levels: ["1reESM", "1reSpé", "1reTech", "1rePro", "TermTech", "TermPro"],
+  sections: ["Suites"],
   isSingleStep: false,
   getPropositions,
-
+  isAnswerValid,
   qcmTimer: 60,
   freeTimer: 60,
   generator: (nb: number) => getDistinctQuestions(getArithmeticFindReason, nb),

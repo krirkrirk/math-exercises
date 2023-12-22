@@ -24,9 +24,15 @@ type QCMProps = {
   c: number;
   d: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  c: number;
+  d: number;
+};
 
-const getRationalFractionForbiddenValueQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getRationalFractionForbiddenValueQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const a = randint(-10, 11, [0]);
   const b = randint(-10, 11);
   //pour éviter affine2 = k*affine1
@@ -56,22 +62,35 @@ const getRationalFractionForbiddenValueQuestion: QuestionGenerator<QCMProps, VEA
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c, d }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  tryToAddWrongProp(propositions, new Rational(-b, a).simplify().toTree().toTex());
+  tryToAddWrongProp(
+    propositions,
+    new Rational(-b, a).simplify().toTree().toTex(),
+  );
   tryToAddWrongProp(propositions, d + "");
   while (propositions.length < n) {
     tryToAddWrongProp(propositions, randint(-10, 11) + "");
   }
   return shuffle(propositions);
 };
-export const rationalFractionForbiddenValue: MathExercise<QCMProps, VEAProps> = {
-  id: "rationalFractionForbiddenValue",
-  connector: "=",
-  label: "Déterminer la valeur interdite d'un quotient de polynôme",
-  levels: ["2nde", "1reESM", "1reSpé"],
-  isSingleStep: true,
-  sections: ["Fonctions", "Fractions", "Fonctions affines"],
-  generator: (nb: number) => getDistinctQuestions(getRationalFractionForbiddenValueQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
-  getPropositions,
+const isAnswerValid: VEA<VEAProps> = (ans, { c, d }) => {
+  const answerTree = new Rational(-d, c)
+    .simplify()
+    .toTree({ allowFractionToDecimal: true });
+  const texs = answerTree.toAllValidTexs();
+  return texs.includes(ans);
 };
+export const rationalFractionForbiddenValue: MathExercise<QCMProps, VEAProps> =
+  {
+    id: "rationalFractionForbiddenValue",
+    connector: "=",
+    label: "Déterminer la valeur interdite d'un quotient de polynôme",
+    levels: ["2nde", "1reESM", "1reSpé"],
+    isSingleStep: true,
+    sections: ["Fonctions", "Fractions"],
+    generator: (nb: number) =>
+      getDistinctQuestions(getRationalFractionForbiddenValueQuestion, nb),
+    qcmTimer: 60,
+    freeTimer: 60,
+    getPropositions,
+    isAnswerValid,
+  };

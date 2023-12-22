@@ -6,21 +6,25 @@ export enum NodeType {
   function,
   set,
   inequation,
+  point,
+  mesure,
+  equality,
 }
 export type NodeOptions = {
   forceTimesSign?: boolean;
-  allowPowerToProduct?: boolean; //par exemple, pour x^2, si cette prop est true, toEquivalentNodes va sortir l'arbre Multiply(x,x) en plus de l'arbre Power(x,2)
+  forbidPowerToProduct?: boolean; //par exemple, pour x^2, si cette prop est true, toEquivalentNodes va sortir l'arbre Multiply(x,x) en plus de l'arbre Power(x,2)
   allowRawRightChildAsSolution?: boolean;
   allowFractionToDecimal?: boolean;
   allowMinusAnywhereInFraction?: boolean;
   useExpNotation?: boolean;
+  allowSimplifySqrt?: boolean;
 };
 export interface Node {
   type: NodeType;
   opts?: NodeOptions;
   toMathString: () => string;
   toEquivalentNodes: (opts?: NodeOptions) => Node[];
-  toAllValidTexs: () => string[];
+  toAllValidTexs: (opts?: NodeOptions) => string[];
   toTex: () => string;
   toMathjs: () => any;
   // simplify: () => Node;

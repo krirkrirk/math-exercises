@@ -4,19 +4,25 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { randint } from '#root/math/utils/random/randint';
-import { KeyId } from '#root/types/keyIds';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randint } from "#root/math/utils/random/randint";
+import { MultiEqualNode } from "#root/tree/nodes/equations/multiEqualNode";
+import { LengthNode } from "#root/tree/nodes/geometry/lengthNode";
+import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { KeyId } from "#root/types/keyIds";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
   vertices: string[];
 };
-type VEAProps = {};
+type VEAProps = {
+  vertices: string[];
+};
 
 const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
   const vertices: string[] = [];
@@ -29,11 +35,24 @@ const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
   let theta = 0; // angle entre AB et AC
 
   do {
-    [xB, yB, xC, yC] = [randint(-10, 11), randint(-10, 11), randint(-10, 11), randint(-10, 11)];
+    [xB, yB, xC, yC] = [
+      randint(-10, 11),
+      randint(-10, 11),
+      randint(-10, 11),
+      randint(-10, 11),
+    ];
     d1 = Math.hypot(xB - xA, yB - yA); // Calculer la distance entre A et B
     d2 = Math.hypot(xC - xA, yC - yA); // Calculer la distance entre A et C
-    theta = Math.acos(((xB - xA) * (xC - xA) + (yB - yA) * (yC - yA)) / (d1 * d2));
-  } while (!theta || theta < 0.35 || theta > 2.1 || d1 / d2 > 1.3 || d1 / d2 < 0.7);
+    theta = Math.acos(
+      ((xB - xA) * (xC - xA) + (yB - yA) * (yC - yA)) / (d1 * d2),
+    );
+  } while (
+    !theta ||
+    theta < 0.35 ||
+    theta > 2.1 ||
+    d1 / d2 > 1.3 ||
+    d1 / d2 < 0.7
+  );
 
   const factor = randint(-5, 6, [-2, -1, 0, 1, 2]) / 10; // facteur = AB/AE, Pour que l'affichage soit acceptable, les valeurs de factor sont +- 0.5 0.4 0.3
 
@@ -69,12 +88,12 @@ const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
   const answer = `\\frac{${vertices[0]}${vertices[3]}}{${vertices[0]}${vertices[1]}}=\\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}}=\\frac{${vertices[3]}${vertices[4]}}{${vertices[1]}${vertices[2]}}`;
 
   const question: Question<QCMProps, VEAProps> = {
-    instruction: `En utilisant le théoreme de Thalès, Écrire l'égalité des quotients sachant que :$\\\\$ (${vertices[3]}${vertices[4]})//(${vertices[1]}${vertices[2]})`,
+    instruction: `En utilisant le théoreme de Thalès, écrire l'égalité des quotients sachant que  $(${vertices[3]}${vertices[4]})//(${vertices[1]}${vertices[2]})$.`,
     answer,
-    keys: [...(vertices as KeyId[]), 'equal'],
+    keys: [...(vertices as KeyId[]), "equal"],
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, vertices },
   };
 
@@ -111,15 +130,39 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, vertices }) => {
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { vertices }) => {
+  const lengths = [
+    new LengthNode(`${vertices[0]}${vertices[3]}`),
+    new LengthNode(`${vertices[0]}${vertices[1]}`),
+    new LengthNode(`${vertices[0]}${vertices[4]}`),
+    new LengthNode(`${vertices[0]}${vertices[2]}`),
+    new LengthNode(`${vertices[3]}${vertices[4]}`),
+    new LengthNode(`${vertices[1]}${vertices[2]}`),
+  ];
+  const fractions = [
+    new FractionNode(lengths[0], lengths[1]),
+    new FractionNode(lengths[2], lengths[3]),
+    new FractionNode(lengths[4], lengths[5]),
+  ];
+  const answers = [
+    new MultiEqualNode(fractions),
+    new MultiEqualNode(fractions.map((frac) => frac.toInversed())),
+  ];
+  const texs = [...answers[0].toAllValidTexs(), ...answers[1].toAllValidTexs()];
+  console.log(texs);
+  return texs.includes(ans);
+};
+
 export const thales: MathExercise<QCMProps, VEAProps> = {
-  id: 'thales',
-  connector: '=',
+  id: "thales",
+  connector: "=",
   label: "Ecrire l'égalité de Thalès",
-  levels: ['5ème', '4ème', '3ème', '2nde'],
+  levels: ["5ème", "4ème", "3ème", "2nde"],
   isSingleStep: false,
-  sections: ['Géométrie euclidienne'],
+  sections: ["Théorème de Thalès", "Géométrie euclidienne"],
   generator: (nb: number) => getDistinctQuestions(getThales, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

@@ -2,45 +2,57 @@
  * (a^b)^c
  */
 
-import { Power } from '#root/math/numbers/integer/power';
-import { randint } from '#root/math/utils/random/randint';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { shuffle } from '#root/utils/shuffle';
+import { Power } from "#root/math/numbers/integer/power";
+import { randint } from "#root/math/utils/random/randint";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { shuffle } from "#root/utils/shuffle";
 import {
   MathExercise,
   Proposition,
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
-} from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+} from "../exercise";
+import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 type QCMProps = {
   answer: string;
   a: number;
   b: number;
   c: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  a: number;
+  b: number;
+  c: number;
+};
 
-const getPowersPowerQuestion: QuestionGenerator<QCMProps, VEAProps, { useOnlyPowersOfTen: boolean }> = (opts) => {
+const getPowersPowerQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps,
+  { useOnlyPowersOfTen: boolean }
+> = (opts) => {
   const a = opts?.useOnlyPowersOfTen ? 10 : randint(-11, 11, [0, 1]);
   const [b, c] = [1, 2].map((el) => randint(-11, 11));
 
-  const statement = new PowerNode(new PowerNode(new NumberNode(a), new NumberNode(b)), new NumberNode(c));
+  const statement = new PowerNode(
+    new PowerNode(new NumberNode(a), new NumberNode(b)),
+    new NumberNode(c),
+  );
   let answerTree = new Power(a, b * c).simplify();
   const answer = answerTree.toTex();
   const statementTex = statement.toTex();
   const question: Question<QCMProps, VEAProps> = {
-    instruction: `Calculer : $${statementTex}$`,
+    instruction: `Simplifier : $${statementTex}$`,
 
     startStatement: statementTex,
     answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, a, b, c },
   };
   return question;
@@ -51,11 +63,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
   addValidProp(propositions, answer);
 
   if (a === 1 || a === 0 || a === -1) {
-    tryToAddWrongProp(propositions, '1');
-    tryToAddWrongProp(propositions, '-1');
-    tryToAddWrongProp(propositions, '0');
-    tryToAddWrongProp(propositions, b * c + '');
-    tryToAddWrongProp(propositions, b + c + '');
+    tryToAddWrongProp(propositions, "1");
+    tryToAddWrongProp(propositions, "-1");
+    tryToAddWrongProp(propositions, "0");
+    tryToAddWrongProp(propositions, b * c + "");
+    tryToAddWrongProp(propositions, b + c + "");
   }
 
   while (propositions.length < n) {
@@ -67,29 +79,58 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
 
   return shuffleProps(propositions, n);
 };
-
+const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
+  const power = new Power(a, b * c);
+  const answerTree = power.simplify();
+  const texs = answerTree.toAllValidTexs();
+  const rawTex = power.toTree().toTex();
+  if (!texs.includes(rawTex)) texs.push(rawTex);
+  return texs.includes(ans);
+};
 export const powersOfTenPower: MathExercise<QCMProps, VEAProps> = {
-  id: 'powersOfTenPower',
-  connector: '=',
+  id: "powersOfTenPower",
+  connector: "=",
   label: "Puissance d'une puissance de 10 ",
-  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro', '1reESM', '1rePro', '1reSpé', '1reTech', 'TermPro', 'TermTech'],
-  sections: ['Puissances'],
+  levels: [
+    "4ème",
+    "3ème",
+    "2nde",
+    "CAP",
+    "2ndPro",
+    "1reESM",
+    "1rePro",
+    "1reSpé",
+    "1reTech",
+    "TermPro",
+    "TermTech",
+  ],
+  sections: ["Puissances"],
   isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(() => getPowersPowerQuestion({ useOnlyPowersOfTen: true }), nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(
+      () => getPowersPowerQuestion({ useOnlyPowersOfTen: true }),
+      nb,
+    ),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };
 
 export const powersPower: MathExercise<QCMProps, VEAProps> = {
-  id: 'powersPower',
-  connector: '=',
+  id: "powersPower",
+  connector: "=",
   label: "Puissance d'une puissance",
-  levels: ['4ème', '3ème', '2nde'],
-  sections: ['Puissances'],
+  levels: ["4ème", "3ème", "2nde"],
+  sections: ["Puissances"],
   isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(() => getPowersPowerQuestion({ useOnlyPowersOfTen: true }), nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(
+      () => getPowersPowerQuestion({ useOnlyPowersOfTen: false }),
+      nb,
+    ),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

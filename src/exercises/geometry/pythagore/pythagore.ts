@@ -8,46 +8,60 @@ import {
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { TriangleConstructor } from '#root/math/geometry/triangles';
-import { randint } from '#root/math/utils/random/randint';
-import { KeyId } from '#root/types/keyIds';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { TriangleConstructor } from "#root/math/geometry/triangles";
+import { randint } from "#root/math/utils/random/randint";
+import { LengthNode } from "#root/tree/nodes/geometry/lengthNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { EqualNode } from "#root/tree/nodes/operators/equalNode";
+import { SquareNode } from "#root/tree/nodes/operators/powerNode";
+import { KeyId } from "#root/types/keyIds";
 
 type QCMProps = {
   answer: string;
   sideA: string;
   sideB: string;
-
   sideC: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  sideA: string;
+  sideB: string;
+  sideC: string;
+};
 const getPythagore: QuestionGenerator<QCMProps, VEAProps> = () => {
   const vertices: KeyId[] = [];
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
-  for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i) as KeyId);
+  for (let i = 0; i < 3; i++)
+    vertices.push(String.fromCharCode(code + i) as KeyId);
 
-  const triangle = TriangleConstructor.createRandomRightTriangle({ minRapport: 0.7, maxRapport: 1.3, names: vertices });
+  const triangle = TriangleConstructor.createRandomRightTriangle({
+    minRapport: 0.7,
+    maxRapport: 1.3,
+    names: vertices,
+  });
   const sideA = triangle.getSideAName();
   const sideB = triangle.getSideBName();
   const sideC = triangle.getSideCName();
   const answer = `${sideA}^2=${sideB}^2+${sideC}^2`;
   const question: Question<QCMProps, VEAProps> = {
-    instruction: "Écrire l'égalité de Pythagore pour la figure suivante : ",
+    instruction:
+      "Écrire l'égalité de Pythagore pour le triangle rectangle suivant : ",
 
     answer,
-    keys: [...vertices, 'equal'],
+    keys: [...vertices, "equal"],
     commands: triangle.generateCommands({}),
     coords: triangle.generateCoords(),
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, sideA, sideB, sideC },
   };
 
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, sideA, sideB, sideC }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, sideA, sideB, sideC },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   tryToAddWrongProp(propositions, `${sideA} = ${sideB} + ${sideC}`);
@@ -60,15 +74,27 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, sideA, sideB, side
   return shuffleProps(propositions, n);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { sideA, sideB, sideC }) => {
+  const answer = new EqualNode(
+    new SquareNode(new LengthNode(sideA)),
+    new AddNode(
+      new SquareNode(new LengthNode(sideB)),
+      new SquareNode(new LengthNode(sideC)),
+    ),
+  );
+  const texs = answer.toAllValidTexs();
+  return texs.includes(ans);
+};
 export const pythagore: MathExercise<QCMProps, VEAProps> = {
-  id: 'pythagore',
-  connector: '=',
+  id: "pythagore",
+  connector: "=",
   label: "Écrire l'égalité de Pythagore",
-  levels: ['4ème', '3ème', '2nde'],
+  levels: ["4ème", "3ème", "2nde"],
   isSingleStep: false,
-  sections: ['Géométrie euclidienne'],
+  sections: ["Théorème de Pythagore", "Géométrie euclidienne"],
   generator: (nb: number) => getDistinctQuestions(getPythagore, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

@@ -1,6 +1,8 @@
-import { subtract } from 'mathjs';
-import { Node, NodeType } from '../node';
-import { OperatorIds, OperatorNode } from './operatorNode';
+import { subtract } from "mathjs";
+import { Node, NodeType } from "../node";
+import { OperatorIds, OperatorNode } from "./operatorNode";
+import { OppositeNode } from "../functions/oppositeNode";
+import { AddNode } from "./addNode";
 
 export class SubstractNode implements OperatorNode {
   id: OperatorIds;
@@ -25,6 +27,7 @@ export class SubstractNode implements OperatorNode {
     rightNodes.forEach((rightNode) => {
       leftNodes.forEach((leftNode) => {
         res.push(new SubstractNode(leftNode, rightNode));
+        res.push(new AddNode(new OppositeNode(rightNode), leftNode));
       });
     });
     return res;
@@ -39,8 +42,10 @@ export class SubstractNode implements OperatorNode {
 
     const needBrackets =
       (this.rightChild.type === NodeType.operator &&
-        [OperatorIds.add, OperatorIds.substract].includes((this.rightChild as OperatorNode).id)) ||
-      rightTex[0] === '-';
+        [OperatorIds.add, OperatorIds.substract].includes(
+          (this.rightChild as OperatorNode).id,
+        )) ||
+      rightTex[0] === "-";
 
     if (needBrackets) rightTex = `(${rightTex})`;
 

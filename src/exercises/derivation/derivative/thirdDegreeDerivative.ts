@@ -4,21 +4,27 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Polynomial } from '#root/math/polynomials/polynomial';
-import { randint } from '#root/math/utils/random/randint';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Polynomial } from "#root/math/polynomials/polynomial";
+import { randint } from "#root/math/utils/random/randint";
 
 type QCMProps = {
   answer: string;
   coefficients: number[];
 };
-type VEAProps = {};
+type VEAProps = {
+  coefficients: number[];
+};
 
-export const getThirdDegreeDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
+export const getThirdDegreeDerivative: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const coefficients: number[] = [];
 
   for (let i = 1; i <= 3; i++) coefficients.push(randint(-9, 10));
@@ -32,27 +38,38 @@ export const getThirdDegreeDerivative: QuestionGenerator<QCMProps, VEAProps> = (
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
     startStatement: `f'(x)`,
     answer: answer,
-    keys: ['x'],
-    answerFormat: 'tex',
+    keys: ["x"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, coefficients },
   };
 
   return question;
 };
 
-export const getThirdDegreeDerivativePropositions: QCMGenerator<QCMProps> = (n, { answer, coefficients }) => {
+export const getThirdDegreeDerivativePropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, coefficients },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
   if (coefficients[2] !== 0)
     tryToAddWrongProp(
       propositions,
-      new Polynomial([coefficients[0], coefficients[1], coefficients[2]]).toTree().toTex(),
+      new Polynomial([coefficients[0], coefficients[1], coefficients[2]])
+        .toTree()
+        .toTex(),
     );
   if (coefficients[2] !== 0)
     tryToAddWrongProp(
       propositions,
-      new Polynomial([coefficients[0] + coefficients[1], coefficients[1], coefficients[2]]).toTree().toTex(),
+      new Polynomial([
+        coefficients[0] + coefficients[1],
+        coefficients[1],
+        coefficients[2],
+      ])
+        .toTree()
+        .toTex(),
     );
 
   while (propositions.length < n) {
@@ -68,15 +85,34 @@ export const getThirdDegreeDerivativePropositions: QCMGenerator<QCMProps> = (n, 
   return shuffleProps(propositions, n);
 };
 
+export const isThirdDegreeDerivativeAnswerValid: VEA<VEAProps> = (
+  ans,
+  { coefficients },
+) => {
+  const polynomial = new Polynomial(coefficients);
+  const derivative = polynomial.derivate().toTree();
+  const texs = derivative.toAllValidTexs();
+  console.log(texs);
+  return texs.includes(ans);
+};
 export const thirdDegreeDerivative: MathExercise<QCMProps, VEAProps> = {
-  id: 'thirdDegreeDerivative',
-  connector: '=',
+  id: "thirdDegreeDerivative",
+  connector: "=",
   label: "Dérivée d'un polynôme de degré 3",
-  levels: ['1reESM', '1reSpé', '1reTech', 'MathComp', '1rePro', 'TermPro', 'TermTech'],
-  sections: ['Dérivation'],
+  levels: [
+    "1reESM",
+    "1reSpé",
+    "1reTech",
+    "MathComp",
+    "1rePro",
+    "TermPro",
+    "TermTech",
+  ],
+  sections: ["Dérivation"],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getThirdDegreeDerivative, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions: getThirdDegreeDerivativePropositions,
+  isAnswerValid: isThirdDegreeDerivativeAnswerValid,
 };
