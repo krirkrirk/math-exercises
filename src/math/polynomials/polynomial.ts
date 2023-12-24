@@ -1,4 +1,4 @@
-import { Node } from "../../tree/nodes/node";
+import { Node, NodeOptions } from "../../tree/nodes/node";
 import { NumberNode } from "../../tree/nodes/numbers/numberNode";
 import { AddNode } from "../../tree/nodes/operators/addNode";
 import { MultiplyNode } from "../../tree/nodes/operators/multiplyNode";
@@ -8,6 +8,7 @@ import { SubstractNode } from "../../tree/nodes/operators/substractNode";
 import { VariableNode } from "../../tree/nodes/variables/variableNode";
 import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
+import { Rational } from "../numbers/rationals/rational";
 
 export abstract class PolynomialConstructor {
   static randomWithOrder(order: number, variable: string = "x") {
@@ -271,12 +272,43 @@ export class Polynomial {
     return new Polynomial(res, this.variable);
   }
 
-  integrate(): Polynomial {
-    const newCoefficients = this.coefficients.map(
-      (coeff, exp) => coeff / (exp + 1),
-    );
-    newCoefficients.unshift(0);
-    return new Polynomial(newCoefficients, this.variable);
+  // integrate(): Polynomial {
+  //   const newCoefficients = this.coefficients.map(
+  //     (coeff, exp) => coeff / (exp + 1),
+  //   );
+  //   newCoefficients.unshift(0);
+  //   return new Polynomial(newCoefficients, this.variable);
+  // }
+
+  integrateToNode(opts?: NodeOptions) {
+    let integralPolynomial: Node = new VariableNode("C");
+
+    for (let i = 0; i < this.degree + 1; i++) {
+      const coeff = this.coefficients[i];
+      if (coeff === 0) continue;
+      const nodeCoeff = new Rational(coeff, i + 1).simplify().toTree();
+      const powerNode =
+        i + 1 === 1
+          ? new VariableNode("x")
+          : new PowerNode(new VariableNode("x"), new NumberNode(i + 1), opts);
+
+      let terme;
+      if (nodeCoeff.toTex() === "1") terme = powerNode;
+      else if (nodeCoeff.toTex() === "-1")
+        terme = new OppositeNode(powerNode, opts);
+      else {
+        terme = new MultiplyNode(
+          nodeCoeff,
+          i + 1 === 1
+            ? new VariableNode("x")
+            : new PowerNode(new VariableNode("x"), new NumberNode(i + 1), opts),
+          opts,
+        );
+      }
+
+      integralPolynomial = new AddNode(terme, integralPolynomial, opts);
+    }
+    return integralPolynomial;
   }
 
   calculate(x: number): number {
@@ -303,7 +335,7 @@ export class Polynomial {
     }
   }
 
-  toTree(): Node {
+  toTree(opts?: NodeOptions): Node {
     const recursive = (cursor: number): Node => {
       const coeff = this.coefficients[cursor];
       if (coeff === 0) return recursive(cursor - 1);
@@ -317,13 +349,14 @@ export class Polynomial {
           ? new PowerNode(
               new VariableNode(this.variable),
               new NumberNode(cursor),
+              opts,
             )
           : new VariableNode(this.variable);
 
       let res: Node;
       if (coeff === 1) res = monome;
       else if (coeff === -1) res = new OppositeNode(monome);
-      else res = new MultiplyNode(new NumberNode(coeff), monome);
+      else res = new MultiplyNode(new NumberNode(coeff), monome, opts);
 
       let nextCoeff;
       for (let i = cursor - 1; i > -1; i--) {

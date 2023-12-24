@@ -21,10 +21,10 @@ export class ExpNode implements FunctionNode {
   toTex(): string {
     const tex = this.child.toTex();
     if (this.opts?.useExpNotation) {
-      return `exp\\left(${this.child.toTex}\\right)`;
+      return `\\exp\\left(${tex}\\right)`;
     }
     const needBraces = tex.length > 1;
-    if (needBraces) return `e^{${this.child.toTex()}}`;
+    if (needBraces) return `e^{${tex}}`;
     return `e^${tex}`;
   }
   toMathjs() {

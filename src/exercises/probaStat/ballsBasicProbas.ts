@@ -7,20 +7,27 @@ import {
   QuestionGenerator,
   addValidProp,
   QCMGenerator,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Rational } from '#root/math/numbers/rationals/rational';
-import { randint } from '#root/math/utils/random/randint';
+  VEA,
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Rational } from "#root/math/numbers/rationals/rational";
+import { randint } from "#root/math/utils/random/randint";
 
 type QCMProps = {
   answer: string;
   total: number;
   nbColorAsked: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  total: number;
+  nbColorAsked: number;
+};
 
-const getBallsBasicProbasQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
-  const colors = ['rouge', 'jaune', 'verte'];
+const getBallsBasicProbasQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
+  const colors = ["rouge", "jaune", "verte"];
   const repartitions = [randint(1, 4), randint(1, 4), randint(1, 4)];
   const total = repartitions.reduce((acc, curr) => (acc += curr), 0);
   const colorAskedIndex = randint(0, 3);
@@ -30,22 +37,29 @@ const getBallsBasicProbasQuestion: QuestionGenerator<QCMProps, VEAProps> = () =>
 
   const question: Question<QCMProps, VEAProps> = {
     answer,
-    instruction: `Dans un sac, il y a ${repartitions[0]} boules ${colors[0]}${repartitions[0] > 1 ? 's' : ''}, 
-    ${repartitions[1]} boules ${colors[1]}${repartitions[1] > 1 ? 's' : ''} et ${repartitions[2]} boules ${colors[2]}${
-      repartitions[2] > 1 ? 's' : ''
+    instruction: `Dans un sac, il y a ${repartitions[0]} boules ${colors[0]}${
+      repartitions[0] > 1 ? "s" : ""
+    }, 
+    ${repartitions[1]} boules ${colors[1]}${
+      repartitions[1] > 1 ? "s" : ""
+    } et ${repartitions[2]} boules ${colors[2]}${
+      repartitions[2] > 1 ? "s" : ""
     }. Quelle est la probabilité de tirer une boule ${colorAsked} ?`,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, total, nbColorAsked },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, total, nbColorAsked }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, total, nbColorAsked },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  tryToAddWrongProp(propositions, nbColorAsked + '');
+  tryToAddWrongProp(propositions, nbColorAsked + "");
   tryToAddWrongProp(propositions, `\\frac{1}{3}`);
   if (total === 3) {
     tryToAddWrongProp(propositions, `3`);
@@ -58,15 +72,25 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, total, nbColorAske
   return shuffleProps(propositions, n);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { total, nbColorAsked }) => {
+  const answer = new Rational(nbColorAsked, total)
+    .simplify()
+    .toTree({ allowFractionToDecimal: true });
+  const texs = answer.toAllValidTexs();
+  return texs.includes(ans);
+};
+
 export const ballsBasicProbas: MathExercise<QCMProps, VEAProps> = {
-  id: 'ballsBasicProbas',
-  connector: '=',
-  label: 'Calcul de probabilité simple avec des boules colorés',
-  levels: ['5ème', '4ème', '3ème', '2ndPro', '2nde', 'CAP'],
+  id: "ballsBasicProbas",
+  connector: "=",
+  label: "Calcul de probabilité simple avec des boules colorés",
+  levels: ["5ème", "4ème", "3ème", "2ndPro", "2nde", "CAP"],
   isSingleStep: true,
-  sections: ['Probabilités'],
-  generator: (nb: number) => getDistinctQuestions(getBallsBasicProbasQuestion, nb),
+  sections: ["Probabilités"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getBallsBasicProbasQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

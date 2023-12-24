@@ -207,6 +207,8 @@ import { derivativeNumberCalcul } from "./derivation/derivativeNumberCalcul";
 import { averagePoint } from "./probaStat/stats2var/averagePoint";
 import { rationalFractionForbiddenValue } from "./functions/rationalFraction/rationalFractionForbiddenValue";
 import { moduloFromAlgebraicComplex } from "./complex/moduloFromAlgebraicComplex";
+import { sinUCosUPrimitive } from "./primitve/sinUCosUPrimitive";
+import { expUPrimitive } from "./primitve/expUPrimitive";
 
 export const exercises: MathExercise<any, any>[] = [
   /**
@@ -388,8 +390,10 @@ export const exercises: MathExercise<any, any>[] = [
    */
   constantPrimitive,
   polynomialPrimitive,
+  sinUCosUPrimitive,
   sinCosPrimitive,
   exponentialPrimitive,
+  expUPrimitive,
   logarithmePrimitive,
   usualPrimitives,
 

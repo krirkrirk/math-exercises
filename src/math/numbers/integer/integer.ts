@@ -95,4 +95,16 @@ export class Integer implements Nombre {
         throw Error("not implemented");
     }
   }
+  multiply(nb: Nombre): Rational | Integer {
+    switch (nb.type) {
+      case NumberType.Integer:
+        const int = nb as Integer;
+        return new Integer(this.value * int.value);
+      case NumberType.Rational:
+        const rational = nb as Rational;
+        return rational.multiply(this);
+      default:
+        throw Error("not implemented");
+    }
+  }
 }

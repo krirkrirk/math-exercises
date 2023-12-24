@@ -4,19 +4,21 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Decimal } from "#root/math/numbers/decimals/decimal";
+import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
+import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { PercentNode } from "#root/tree/nodes/numbers/percentNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
-import { v4 as uuidv4 } from "uuid";
-
-type VEAProps = {};
 
 const getFractionToPercentToDecimal: QuestionGenerator<
   QCMProps,
@@ -37,13 +39,19 @@ const getFractionToPercentToDecimal: QuestionGenerator<
   let instruction = "";
   let answer = "";
 
+  const percentTex = `${percent}\\%`;
+  const fracTex = new Rational(numerator, denominator)
+    .simplify()
+    .toTree()
+    .toTex();
+  const decimalTex = `${decimal}`;
   switch (rand) {
     case 1: {
       instruction = `Écrire le nombre $${String(decimal).replace(
         ".",
         ",",
       )}$ sous forme de pourcentage.`;
-      answer = `${percent}\\%`;
+      answer = percentTex;
       break;
     }
     case 2: {
@@ -51,7 +59,7 @@ const getFractionToPercentToDecimal: QuestionGenerator<
         ".",
         ",",
       )}$ sous forme de fraction.`;
-      answer = `${simplifyNode(fraction).toTex()}`;
+      answer = fracTex;
       break;
     }
     case 3: {
@@ -59,7 +67,7 @@ const getFractionToPercentToDecimal: QuestionGenerator<
         ".",
         ",",
       )}\\%$ sous forme décimale.`;
-      answer = `${decimal}`;
+      answer = decimalTex;
       break;
     }
     case 4: {
@@ -67,17 +75,17 @@ const getFractionToPercentToDecimal: QuestionGenerator<
         ".",
         ",",
       )}\\%$ sous forme de fraction.`;
-      answer = `${simplifyNode(fraction).toTex()}`;
+      answer = fracTex;
       break;
     }
     case 5: {
       instruction = `Écrire le nombre $${fraction.toTex()}$ sous forme décimale.`;
-      answer = `${decimal}`;
+      answer = decimalTex;
       break;
     }
     case 6: {
       instruction = `Écrire le nombre $${fraction.toTex()}$ sous forme de pourcentage.`;
-      answer = `${percent}\\%`;
+      answer = percentTex;
       break;
     }
   }
@@ -104,6 +112,7 @@ type QCMProps = {
   numerator: number;
   denominator: number;
 };
+
 const getPropositions: QCMGenerator<QCMProps> = (
   n,
   { answer, rand, numerator, denominator },
@@ -152,6 +161,45 @@ const getPropositions: QCMGenerator<QCMProps> = (
 
   return shuffle(propositions);
 };
+type VEAProps = {
+  rand: number;
+  numerator: number;
+  denominator: number;
+};
+
+const isAnswerValid: VEA<VEAProps> = (
+  ans,
+  { rand, numerator, denominator },
+) => {
+  const decimal = numerator / denominator;
+  const percent = round((numerator / denominator) * 100, 2);
+  const percentNode = new PercentNode(percent);
+  const fracNode = new Rational(numerator, denominator).simplify().toTree();
+  const decimalNode = new Decimal(decimal).toTree();
+  let answer: Node;
+  switch (rand) {
+    case 1:
+    case 6: {
+      answer = percentNode;
+      break;
+    }
+    case 2:
+    case 4: {
+      answer = fracNode;
+      break;
+    }
+    case 3:
+    case 5: {
+      answer = decimalNode;
+      break;
+    }
+    default:
+      throw Error("wrong type in fractiontopercenttodecimal");
+  }
+  const texs = answer.toAllValidTexs();
+  console.log(texs);
+  return texs.includes(ans);
+};
 
 export const fractionToPercentToDecimal: MathExercise<QCMProps, VEAProps> = {
   id: "fractionToPercentToDecimal",
@@ -165,4 +213,5 @@ export const fractionToPercentToDecimal: MathExercise<QCMProps, VEAProps> = {
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

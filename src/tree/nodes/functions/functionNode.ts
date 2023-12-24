@@ -1,4 +1,4 @@
-import { Node, NodeType } from '../node';
+import { Node, NodeType } from "../node";
 
 export enum FunctionsIds {
   opposite,
@@ -7,6 +7,7 @@ export enum FunctionsIds {
   sin,
   log,
   exp,
+  abs,
 }
 
 export interface FunctionNode extends Node {

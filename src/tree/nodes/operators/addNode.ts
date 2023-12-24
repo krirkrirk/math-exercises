@@ -1,5 +1,5 @@
 import { add } from "mathjs";
-import { Node, NodeType } from "../node";
+import { Node, NodeOptions, NodeType } from "../node";
 import {
   CommutativeOperatorNode,
   OperatorIds,
@@ -18,12 +18,13 @@ export class AddNode implements CommutativeOperatorNode {
   leftChild: Node;
   rightChild: Node;
   type: NodeType;
-
-  constructor(leftChild: Node, rightChild: Node) {
+  opts?: NodeOptions;
+  constructor(leftChild: Node, rightChild: Node, opts?: NodeOptions) {
     this.id = OperatorIds.add;
     this.leftChild = leftChild;
     this.rightChild = rightChild;
     this.type = NodeType.operator;
+    this.opts = opts;
   }
   shuffle = () => {
     if (coinFlip())
@@ -34,7 +35,8 @@ export class AddNode implements CommutativeOperatorNode {
     return `${this.leftChild.toMathString()} + (${this.rightChild.toMathString()})`;
   }
 
-  toEquivalentNodes(): Node[] {
+  toEquivalentNodes(opts?: NodeOptions): Node[] {
+    const options = opts ?? this.opts;
     const res: AddNode[] = [];
 
     const addTree: Node[] = [];
@@ -54,7 +56,9 @@ export class AddNode implements CommutativeOperatorNode {
     recursive(this);
 
     //2: pour tous les nodes qui ne sont pas Add, on génère les equiv node
-    const equivNodesArr = addTree.map((node) => node.toEquivalentNodes());
+    const equivNodesArr = addTree.map((node) =>
+      node.toEquivalentNodes(options),
+    );
 
     //3: créer toutes les permutations de tous kes nodes equiv
     let equivNodesPermutations = permute(equivNodesArr);
@@ -73,8 +77,9 @@ export class AddNode implements CommutativeOperatorNode {
     return [this.toTex()];
   }
 
-  toAllValidTexs(): string[] {
-    return this.toEquivalentNodes().map((node) => node.toTex());
+  toAllValidTexs(opts?: NodeOptions): string[] {
+    const options = opts ?? this.opts;
+    return this.toEquivalentNodes(options).map((node) => node.toTex());
   }
 
   toTex(): string {

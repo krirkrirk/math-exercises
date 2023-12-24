@@ -16,8 +16,6 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
-import { getCartesiansProducts } from "#root/utils/cartesianProducts";
-import { Node } from "#root/tree/nodes/node";
 
 function prodNumbers(tab: number[]) {
   let temp = 1;

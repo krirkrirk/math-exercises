@@ -15,6 +15,7 @@ import {
 } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 import { CosNode } from "#root/tree/nodes/functions/cosNode";
+import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { SinNode } from "#root/tree/nodes/functions/sinNode";
 import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -26,28 +27,30 @@ import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
-  a: number;
+  coeffs: number[];
   isCos: boolean;
 };
 type VEAProps = {
-  a: number;
+  coeffs: number[];
   isCos: boolean;
 };
 
-export const getSinCosPrimitive: QuestionGenerator<QCMProps, VEAProps> = () => {
-  const a = randint(-9, 10, [0]);
+export const getSinUCosUPrimitive: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
+  const u = PolynomialConstructor.randomWithOrder(randint(1, 3));
 
   let selectedFunction: Node;
   let integratedFuction: Node;
-
   const isCos = coinFlip();
   selectedFunction = isCos
-    ? new MultiplyNode(new NumberNode(a), new CosNode(new VariableNode("x")))
-    : new MultiplyNode(new NumberNode(a), new SinNode(new VariableNode("x")));
+    ? new MultiplyNode(u.derivate().toTree(), new CosNode(u.toTree()))
+    : new MultiplyNode(u.derivate().toTree(), new SinNode(u.toTree()));
 
   integratedFuction = isCos
-    ? new MultiplyNode(new NumberNode(a), new SinNode(new VariableNode("x")))
-    : new MultiplyNode(new NumberNode(-a), new CosNode(new VariableNode("x")));
+    ? new SinNode(u.toTree())
+    : new MultiplyNode(new NumberNode(-1), new CosNode(u.toTree()));
 
   const answer = new AddNode(integratedFuction, new VariableNode("C")).toTex();
 
@@ -57,30 +60,32 @@ export const getSinCosPrimitive: QuestionGenerator<QCMProps, VEAProps> = () => {
     answer,
     keys: ["x", "C", "sin", "cos"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, isCos },
+    qcmGeneratorProps: { answer, coeffs: u.coefficients, isCos },
   };
 
   return question;
 };
 
-export const getSinCosPrimitivePropositions: QCMGenerator<QCMProps> = (
+export const getSinUCosUPrimitivePropositions: QCMGenerator<QCMProps> = (
   n,
-  { answer, a },
+  { answer, coeffs },
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-
+  const u = new Polynomial(coeffs);
   const wrongIntegrals = [
-    new MultiplyNode(new NumberNode(a), new SinNode(new VariableNode("x"))),
-    new MultiplyNode(new NumberNode(-a), new CosNode(new VariableNode("x"))),
-    new MultiplyNode(new NumberNode(a), new CosNode(new VariableNode("x"))),
-    new MultiplyNode(new NumberNode(-a), new SinNode(new VariableNode("x"))),
+    new MultiplyNode(u.toTree(), new CosNode(u.toTree())),
+    new MultiplyNode(u.toTree(), new SinNode(u.toTree())),
+    new SinNode(u.toTree()),
+    new CosNode(u.toTree()),
+    new MultiplyNode(new NumberNode(-1), new CosNode(u.toTree())),
+    new MultiplyNode(new NumberNode(-1), new SinNode(u.toTree())),
     new MultiplyNode(
-      new NumberNode(randint(-9, 10, [a, 0])),
+      new NumberNode(randint(-9, 10, [0])),
       new CosNode(new VariableNode("x")),
     ),
     new MultiplyNode(
-      new NumberNode(randint(-9, 10, [a, 0])),
+      new NumberNode(randint(-9, 10, [0])),
       new SinNode(new VariableNode("x")),
     ),
   ];
@@ -92,13 +97,14 @@ export const getSinCosPrimitivePropositions: QCMGenerator<QCMProps> = (
 
   return shuffle(propositions);
 };
-export const isSinCosPrimitiveAnswerValid: VEA<VEAProps> = (
+export const isSinUCosUPrimitiveAnswerValid: VEA<VEAProps> = (
   ans,
-  { isCos, a },
+  { isCos, coeffs },
 ) => {
+  const u = new Polynomial(coeffs);
   const integratedFuction = isCos
-    ? new MultiplyNode(new NumberNode(a), new SinNode(new VariableNode("x")))
-    : new MultiplyNode(new NumberNode(-a), new CosNode(new VariableNode("x")));
+    ? new SinNode(u.toTree({ forbidPowerToProduct: true }))
+    : new OppositeNode(new CosNode(u.toTree({ forbidPowerToProduct: true })));
 
   const answer = new AddNode(integratedFuction, new VariableNode("C"));
   const texs = answer.toAllValidTexs();
@@ -106,16 +112,16 @@ export const isSinCosPrimitiveAnswerValid: VEA<VEAProps> = (
   return texs.includes(ans);
 };
 
-export const sinCosPrimitive: MathExercise<QCMProps, VEAProps> = {
-  id: "sinCosPrimitive",
+export const sinUCosUPrimitive: MathExercise<QCMProps, VEAProps> = {
+  id: "sinUCosUPrimitive",
   connector: "=",
-  label: "Primitive de sin et cos",
+  label: "Primitive de $u'\\sin(u)$ et $u'\\cos(u)$",
   levels: ["TermSpé", "MathComp"],
   sections: ["Primitives", "Trigonométrie"],
   isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getSinCosPrimitive, nb),
+  generator: (nb: number) => getDistinctQuestions(getSinUCosUPrimitive, nb),
   qcmTimer: 60,
   freeTimer: 60,
-  getPropositions: getSinCosPrimitivePropositions,
-  isAnswerValid: isSinCosPrimitiveAnswerValid,
+  getPropositions: getSinUCosUPrimitivePropositions,
+  isAnswerValid: isSinUCosUPrimitiveAnswerValid,
 };

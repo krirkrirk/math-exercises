@@ -1,38 +1,34 @@
-import { log } from "mathjs";
+import { abs } from "mathjs";
 import { Node, NodeType } from "../node";
 import { FunctionNode, FunctionsIds } from "./functionNode";
 
-export class LogNode implements FunctionNode {
+export class AbsNode implements FunctionNode {
   id: FunctionsIds;
   child: Node;
   type: NodeType;
 
   constructor(child: Node) {
-    this.id = FunctionsIds.opposite;
+    this.id = FunctionsIds.abs;
     this.child = child;
     this.type = NodeType.function;
   }
 
   toMathString(): string {
-    return `log(${this.child.toMathString()})`;
+    return `abs(${this.child.toMathString()})`;
   }
 
   toTex(): string {
-    const shouldntUseBrackets =
-      this.child.type === NodeType.function &&
-      (this.child as FunctionNode).id === FunctionsIds.abs;
-    if (shouldntUseBrackets) return `\\ln${this.child.toTex()}`;
-    else return `\\ln\\left(${this.child.toTex()}\\right)`;
+    return `\\left|${this.child.toTex()}\\right|`;
   }
   toMathjs() {
-    return log(this.child.toMathjs());
+    return abs(this.child.toMathjs());
   }
 
   toEquivalentNodes(): Node[] {
     const res: Node[] = [];
     const childNodes = this.child.toEquivalentNodes();
     childNodes.forEach((childNode) => {
-      res.push(new LogNode(childNode));
+      res.push(new AbsNode(childNode));
     });
     return res;
   }

@@ -8,11 +8,12 @@ export class OppositeNode implements FunctionNode {
   id: FunctionsIds;
   child: Node;
   type: NodeType;
-
-  constructor(child: Node) {
+  opts?: NodeOptions;
+  constructor(child: Node, opts?: NodeOptions) {
     this.id = FunctionsIds.opposite;
     this.child = child;
     this.type = NodeType.function;
+    this.opts = opts;
   }
   toMathString(): string {
     return `-(${this.child.toMathString()})`;
@@ -34,8 +35,9 @@ export class OppositeNode implements FunctionNode {
   }
 
   toEquivalentNodes(opts?: NodeOptions): Node[] {
+    const options = opts ?? this.opts;
     const res: Node[] = [];
-    const childNodes = this.child.toEquivalentNodes(opts);
+    const childNodes = this.child.toEquivalentNodes(options);
     childNodes.forEach((childNode) => {
       res.push(new OppositeNode(childNode));
     });
@@ -43,7 +45,8 @@ export class OppositeNode implements FunctionNode {
   }
 
   toAllValidTexs(opts?: NodeOptions): string[] {
-    return this.toEquivalentNodes(opts).map((node) => node.toTex());
+    const options = opts ?? this.opts;
+    return this.toEquivalentNodes(options).map((node) => node.toTex());
   }
 
   toMathjs() {

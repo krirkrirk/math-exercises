@@ -89,7 +89,7 @@ export class Rational implements Nombre {
     throw Error("not implemented yet");
   }
 
-  multiply(nb: Nombre): Nombre {
+  multiply(nb: Nombre): Rational | Integer {
     switch (nb.type) {
       case NumberType.Integer: {
         const num = this.num * nb.value;
@@ -145,7 +145,7 @@ export class Rational implements Nombre {
     return this.denum !== 1 && gcd(this.num, this.denum) === 1;
   }
 
-  simplify(): Nombre {
+  simplify(): Integer | Rational {
     const sign =
       (this.num > 0 && this.denum > 0) || (this.num < 0 && this.denum < 0)
         ? 1

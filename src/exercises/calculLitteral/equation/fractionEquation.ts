@@ -19,7 +19,6 @@ import {
   DiscreteSetNode,
   EmptySet,
 } from "#root/tree/nodes/sets/discreteSetNode";
-import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {

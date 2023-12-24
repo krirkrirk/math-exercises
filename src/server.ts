@@ -17,9 +17,6 @@ const runServer = () => {
     exercises.length - exercises.filter((exo) => !!exo.isAnswerValid).length,
   );
 
-  const frac = new RationalFrac(new Polynomial([-8]), new Polynomial([0, -8]));
-  console.log(frac.toTree().toTex());
-  console.log(frac.simplify().toTree().toTex());
   // console.log(mul.toAllValidTexs());
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);

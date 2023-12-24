@@ -16,7 +16,6 @@ import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutio
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
-import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {

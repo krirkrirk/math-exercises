@@ -4,82 +4,113 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Polynomial, PolynomialConstructor } from '#root/math/polynomials/polynomial';
-import { randint } from '#root/math/utils/random/randint';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
-import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { simplifyNode } from '#root/tree/parsers/simplify';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import {
+  Polynomial,
+  PolynomialConstructor,
+} from "#root/math/polynomials/polynomial";
+import { randint } from "#root/math/utils/random/randint";
+import { AbsNode } from "#root/tree/nodes/functions/absNode";
+import { LogNode } from "#root/tree/nodes/functions/logNode";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
   coeffs: number[];
 };
-type VEAProps = {};
-export const getLogarithmePrimitive: QuestionGenerator<QCMProps, VEAProps> = () => {
+type VEAProps = {
+  coeffs: number[];
+};
+export const getLogarithmePrimitive: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const u = PolynomialConstructor.randomWithOrder(randint(1, 3));
-
-  const selectedFunction = new FractionNode(u.derivate().toTree(), u.toTree());
-  const integratedFuction = `\\ln\\left|${u.toTex()}\\right|`;
-  const answer = `${integratedFuction}+C`;
+  const uTree = u.toTree();
+  const selectedFunction = new FractionNode(u.derivate().toTree(), uTree);
+  const integratedFuction = new LogNode(new AbsNode(uTree));
+  const answer = new AddNode(integratedFuction, new VariableNode("C")).toTex();
   const question: Question<QCMProps, VEAProps> = {
-    instruction: `Déterminer la forme générale des primitives de la fonction f définie par $f(x) = ${simplifyNode(
-      selectedFunction,
-    ).toTex()}$.`,
+    instruction: `Déterminer la forme générale des primitives de la fonction $f$ définie par $f(x) = ${selectedFunction.toTex()}$.`,
     startStatement: `F(x)`,
     answer,
-    keys: ['x', 'C', 'ln', 'abs'],
-    answerFormat: 'tex',
+    keys: ["x", "C", "ln", "abs"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, coeffs: u.coefficients },
   };
 
   return question;
 };
 
-export const getLogarithmePrimitivePropositions: QCMGenerator<QCMProps> = (n, { answer, coeffs }) => {
+export const getLogarithmePrimitivePropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, coeffs },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
   const u = new Polynomial(coeffs);
+  const uTree = u.toTree();
   const wrongIntegrals = [
-    new FractionNode(u.derivate().toTree(), new PowerNode(u.toTree(), new NumberNode(2))).toTex(),
     new FractionNode(
-      u
-        .derivate()
-        .multiply(new Polynomial([-1]))
-        .toTree(),
-      new PowerNode(u.toTree(), new NumberNode(2)),
-    ).toTex(),
-    `ln(${new PowerNode(u.toTree(), new NumberNode(2)).toTex()})`,
+      u.derivate().toTree(),
+      new PowerNode(uTree, new NumberNode(2)),
+    ),
+    new FractionNode(
+      u.derivate().opposite().toTree(),
+      new PowerNode(uTree, new NumberNode(2)),
+    ),
+    new LogNode(new PowerNode(uTree, new NumberNode(2))),
   ];
-  while (propositions.length < n) {
-    wrongIntegrals.push(
-      new PowerNode(u.toTree(), new NumberNode(2)).toTex(),
-      `ln\|${PolynomialConstructor.randomWithOrder(randint(1, 3)).toTex()}\|`,
-    );
-    let wrongIntegral;
-    wrongIntegral = wrongIntegrals[randint(0, wrongIntegrals.length)];
-    tryToAddWrongProp(propositions, `${wrongIntegral} + C`);
-    wrongIntegrals.pop();
-  }
+  const cNode = new VariableNode("C");
+
+  wrongIntegrals.forEach((int) =>
+    tryToAddWrongProp(propositions, new AddNode(int, cNode).toTex()),
+  );
+
+  // while (propositions.length < n) {
+  //  const wrongIntegral =
+  //     new PowerNode(u.toTree(), new NumberNode(2)).toTex(),
+  //     `ln\|${PolynomialConstructor.randomWithOrder(randint(1, 3)).toTex()}\|`,
+  //   );
+  //   let wrongIntegral;
+  //   wrongIntegral = wrongIntegrals[randint(0, wrongIntegrals.length)];
+  //   tryToAddWrongProp(propositions, `${wrongIntegral} + C`);
+  //   wrongIntegrals.pop();
+  // }
 
   return shuffle(propositions);
 };
 
+const isLogarithmePrimitiveAnswerValid: VEA<VEAProps> = (ans, { coeffs }) => {
+  const u = new Polynomial(coeffs);
+  const uTree = u.toTree({ forbidPowerToProduct: true });
+  const integratedFuction = new LogNode(new AbsNode(uTree));
+  const answer = new AddNode(integratedFuction, new VariableNode("C"));
+  const texs = answer.toAllValidTexs();
+  console.log(texs);
+  return texs.includes(ans);
+};
+
 export const logarithmePrimitive: MathExercise<QCMProps, VEAProps> = {
-  id: 'logarithmePrimitive',
-  connector: '=',
-  label: 'Primitive de la fonction logarithme',
-  levels: ['TermSpé', 'MathComp'],
-  sections: ['Primitives', 'Logarithme népérien'],
+  id: "logarithmePrimitive",
+  connector: "=",
+  label: "Primitive de $\\frac{u'}{u}$",
+  levels: ["TermSpé", "MathComp"],
+  sections: ["Primitives", "Logarithme népérien"],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getLogarithmePrimitive, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions: getLogarithmePrimitivePropositions,
+  isAnswerValid: isLogarithmePrimitiveAnswerValid,
 };

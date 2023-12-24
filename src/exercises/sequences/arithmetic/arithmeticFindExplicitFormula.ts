@@ -35,7 +35,7 @@ const getArithmeticFindExplicitFormula: QuestionGenerator<
   const reason = randint(-10, 10, [0]);
 
   const formula = new Polynomial([firstValue, reason], "n");
-  const answer = "u_n=" + formula.toString();
+  const answer = "u_n=" + formula.toTex();
   const question: Question<QCMProps, VEAProps> = {
     instruction: `$(u_n)$ est une suite arithmétique de premier terme $u_{${firstRank}} = ${firstValue}$ et de raison $r = ${reason}$. $\\\\$ Donner l'expression de $u_n$ en fonction de $n$.`,
     answer,

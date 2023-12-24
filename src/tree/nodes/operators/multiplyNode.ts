@@ -218,7 +218,6 @@ export class MultiplyNode implements CommutativeOperatorNode {
         //4: créé les produits cartésiens des nodes equiv puis nodify
         const cartesiansProducts = getCartesiansProducts(permutation);
         cartesiansProducts.forEach((product) => {
-          console.log(product);
           res.push(operatorComposition(MultiplyNode, product));
         });
       });
