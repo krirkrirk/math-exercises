@@ -56,6 +56,7 @@ export const getConstantPrimitivePropositions: QCMGenerator<QCMProps> = (
 
   return shuffle(propositions);
 };
+
 export const isConstantPrimitiveAnswerValid: VEA<VEAProps> = (ans, { c }) => {
   const answer = new AddNode(new Monom(1, c).toTree(), new VariableNode("C"));
   const texs = answer.toAllValidTexs();
