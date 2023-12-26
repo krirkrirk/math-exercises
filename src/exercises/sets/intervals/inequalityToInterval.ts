@@ -7,18 +7,34 @@ import {
   VEA,
   addValidProp,
   addWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Interval, IntervalConstructor } from '#root/math/sets/intervals/intervals';
-import { coinFlip } from '#root/utils/coinFlip';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import {
+  Interval,
+  IntervalConstructor,
+} from "#root/math/sets/intervals/intervals";
+import { InequationNode } from "#root/tree/nodes/inequations/inequationNode";
+import { InequationSolutionNode } from "#root/tree/nodes/inequations/inequationSolutionNode";
+import {
+  MinusInfinityNode,
+  PlusInfinityNode,
+} from "#root/tree/nodes/numbers/infiniteNode";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { BelongsNode } from "#root/tree/nodes/operators/belongsNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { coinFlip } from "#root/utils/coinFlip";
+import { shuffle } from "#root/utils/shuffle";
 
-const getInequalityToIntervalQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getInequalityToIntervalQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const isIntervalToInequality = coinFlip();
   const interval = IntervalConstructor.random();
   const inequalityString = interval.toInequality();
-  const answer = isIntervalToInequality ? inequalityString : `x\\in${interval.toTex()}`;
+  const answer = isIntervalToInequality
+    ? inequalityString
+    : `x\\in${interval.toTex()}`;
   const instruction = isIntervalToInequality
     ? `Soit $x \\in ${interval.toTex()}$. Traduire cette appartenance en une inégalité.`
     : `Soit $${inequalityString}$. Traduire cette inégalité en appartenance à un intervalle.`;
@@ -26,9 +42,24 @@ const getInequalityToIntervalQuestion: QuestionGenerator<QCMProps, VEAProps> = (
   const question: Question<QCMProps, VEAProps> = {
     answer,
     instruction: instruction,
-    keys: ['x', 'belongs', 'inf', 'sup', 'geq', 'leq', 'lbracket', 'rbracket', 'semicolon', 'infty'],
-    answerFormat: 'tex',
-    qcmGeneratorProps: { answer, isIntervalToInequality: isIntervalToInequality, intervalTex: interval.tex },
+    keys: [
+      "x",
+      "belongs",
+      "inf",
+      "sup",
+      "geq",
+      "leq",
+      "lbracket",
+      "rbracket",
+      "semicolon",
+      "infty",
+    ],
+    answerFormat: "tex",
+    qcmGeneratorProps: {
+      answer,
+      isIntervalToInequality: isIntervalToInequality,
+      intervalTex: interval.tex,
+    },
   };
 
   return question;
@@ -39,78 +70,147 @@ type QCMProps = {
   isIntervalToInequality: boolean;
   intervalTex: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  isIntervalToInequality: boolean;
+  intervalTex: string;
+};
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, isIntervalToInequality, intervalTex }) => {
-  const reverseBracket = (bracket: ']' | '[') => {
-    return bracket === '[' ? ']' : '[';
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, isIntervalToInequality, intervalTex },
+) => {
+  const reverseBracket = (bracket: "]" | "[") => {
+    return bracket === "[" ? "]" : "[";
   };
-  const switchInequality = (symbol: '\\le' | '<' | '\\ge' | '>') => {
-    if (symbol === '\\le') return '<';
-    if (symbol === '<') return '\\le';
-    if (symbol === '>') return '\\ge';
-    return '>';
+  const switchInclusion = (symbol: "\\le" | "<" | "\\ge" | ">") => {
+    if (symbol === "\\le") return "<";
+    if (symbol === "<") return "\\le";
+    if (symbol === ">") return "\\ge";
+    return ">";
   };
-  const reverseInequality = (symbol: '\\le' | '<' | '\\ge' | '>') => {
-    if (symbol === '\\le') return '\\ge';
-    if (symbol === '<') return '>';
-    if (symbol === '>') return '<';
-    return '\\le';
+  const reverseInequality = (symbol: "\\le" | "<" | "\\ge" | ">") => {
+    if (symbol === "\\le") return "\\ge";
+    if (symbol === "<") return ">";
+    if (symbol === ">") return "<";
+    return "\\le";
   };
 
   const interval = new Interval(intervalTex);
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  let wrongStatements: string[] = [];
+  const xNode = new VariableNode("x");
   if (isIntervalToInequality) {
+    let wrongIneqs: InequationNode[] = [];
+
     if (interval.min === -Infinity) {
-      wrongStatements = [
-        `x${switchInequality(interval.rightInequalitySymbol)}${interval.maxTex}`,
-        `-\\infty\\le x${switchInequality(interval.rightInequalitySymbol)}${interval.maxTex}`,
-        `-\\infty <x${switchInequality(interval.rightInequalitySymbol)}${interval.maxTex}`,
+      wrongIneqs = [
+        new InequationNode(
+          [xNode, new NumberNode(interval.max)],
+          switchInclusion(interval.rightInequalitySymbol),
+        ),
+        new InequationNode(
+          [xNode, new NumberNode(interval.max)],
+          reverseInequality(switchInclusion(interval.rightInequalitySymbol)),
+        ),
+        new InequationNode(
+          [xNode, new NumberNode(interval.max)],
+          reverseInequality(interval.rightInequalitySymbol),
+        ),
       ];
     } else if (interval.max === Infinity) {
-      wrongStatements = [
-        `x ${switchInequality(reverseInequality(interval.leftInequalitySymbol))} ${interval.minTex}`,
-        `${interval.minTex} ${switchInequality(interval.leftInequalitySymbol)} x \\le +\\infty`,
-        `${interval.minTex} ${switchInequality(interval.leftInequalitySymbol)} x \\le +\\infty`,
+      wrongIneqs = [
+        new InequationNode(
+          [xNode, new NumberNode(interval.min)],
+          switchInclusion(interval.leftInequalitySymbol),
+        ),
+        new InequationNode(
+          [xNode, new NumberNode(interval.min)],
+          reverseInequality(switchInclusion(interval.leftInequalitySymbol)),
+        ),
+        new InequationNode(
+          [xNode, new NumberNode(interval.min)],
+          reverseInequality(interval.leftInequalitySymbol),
+        ),
       ];
     } else {
-      wrongStatements = [
-        `${interval.minTex} ${switchInequality(interval.leftInequalitySymbol)} x ${interval.rightInequalitySymbol} ${
-          interval.maxTex
-        }`,
-        `${interval.minTex} ${interval.leftInequalitySymbol} x ${switchInequality(interval.rightInequalitySymbol)} ${
-          interval.maxTex
-        }`,
-        `${interval.minTex} ${switchInequality(interval.leftInequalitySymbol)} x ${switchInequality(
-          interval.rightInequalitySymbol,
-        )} ${interval.maxTex}`,
+      wrongIneqs = [
+        new InequationNode(
+          [new NumberNode(interval.min), xNode, new NumberNode(interval.max)],
+          [
+            switchInclusion(interval.leftInequalitySymbol),
+            interval.rightInequalitySymbol,
+          ],
+        ),
+        new InequationNode(
+          [new NumberNode(interval.min), xNode, new NumberNode(interval.max)],
+          [
+            interval.leftInequalitySymbol,
+            switchInclusion(interval.rightInequalitySymbol),
+          ],
+        ),
+        new InequationNode(
+          [new NumberNode(interval.min), xNode, new NumberNode(interval.max)],
+          [
+            switchInclusion(interval.leftInequalitySymbol),
+            switchInclusion(interval.rightInequalitySymbol),
+          ],
+        ),
       ];
     }
+    wrongIneqs.forEach((ineq) => {
+      addWrongProp(propositions, ineq.toTex());
+    });
   } else {
-    wrongStatements = [
-      `x \\in ${reverseBracket(interval.leftBracket)}${interval.insideToTex()}${interval.rightBracket}`,
-      `x \\in ${interval.leftBracket}${interval.insideToTex()}${reverseBracket(interval.rightBracket)}`,
-      `x \\in ${reverseBracket(interval.leftBracket)}${interval.insideToTex()}${reverseBracket(interval.rightBracket)}`,
+    const wrongStatements = [
+      `x\\in${reverseBracket(interval.leftBracket)}${interval.insideToTex()}${
+        interval.rightBracket
+      }`,
+      `x\\in${interval.leftBracket}${interval.insideToTex()}${reverseBracket(
+        interval.rightBracket,
+      )}`,
+      `x\\in${reverseBracket(
+        interval.leftBracket,
+      )}${interval.insideToTex()}${reverseBracket(interval.rightBracket)}`,
     ];
+    wrongStatements.forEach((ineq) => {
+      addWrongProp(propositions, ineq);
+    });
   }
-  wrongStatements.forEach((statement) => {
-    addWrongProp(propositions, statement);
-  });
+
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (
+  ans,
+  { intervalTex, isIntervalToInequality },
+) => {
+  const interval = new Interval(intervalTex).toTree();
+  console.log(interval.toTex());
+  const inequality = interval.toInequality();
+
+  const answer = isIntervalToInequality
+    ? inequality
+    : new BelongsNode(new VariableNode("x"), interval, {
+        allowRawRightChildAsSolution: true,
+      });
+
+  const texs = answer.toAllValidTexs();
+  console.log(texs);
+  return texs.includes(ans);
+};
+
 export const inequalityToInterval: MathExercise<QCMProps, VEAProps> = {
-  id: 'inequalityToInterval',
-  connector: '=',
-  label: 'Traduire une inégalité en intervalle',
-  levels: ['2ndPro', '2nde', 'CAP', '1reESM'],
+  id: "inequalityToInterval",
+  connector: "=",
+  label: "Traduire une inégalité en intervalle",
+  levels: ["2ndPro", "2nde", "CAP", "1reESM"],
   isSingleStep: true,
-  sections: ['Ensembles et intervalles'],
-  generator: (nb: number) => getDistinctQuestions(getInequalityToIntervalQuestion, nb),
+  sections: ["Ensembles et intervalles"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getInequalityToIntervalQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

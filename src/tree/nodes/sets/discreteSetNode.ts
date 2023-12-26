@@ -1,8 +1,9 @@
 import { getCartesiansProducts } from "#root/utils/cartesianProducts";
 import { permute } from "#root/utils/permutations";
 import { Node, NodeOptions, NodeType } from "../node";
+import { SetNode } from "./setNode";
 
-export class DiscreteSetNode implements Node {
+export class DiscreteSetNode implements SetNode {
   type: NodeType;
   opts?: NodeOptions | undefined;
   elements: Node[];

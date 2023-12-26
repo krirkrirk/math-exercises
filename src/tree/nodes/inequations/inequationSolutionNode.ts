@@ -1,5 +1,4 @@
 import { Node, NodeOptions, NodeType } from "../node";
-import { DiscreteSetNode } from "../sets/discreteSetNode";
 import { IntervalNode } from "../sets/intervalNode";
 
 type InequationSolutionNodeOptions = { variable?: string; opts?: NodeOptions };
@@ -24,8 +23,18 @@ export class InequationSolutionNode implements Node {
       : { allowRawRightChildAsSolution: true };
   }
 
+  toAllTexs() {
+    const intervalTex = this.intervalSolution.toTex();
+    const res = [
+      this.toTex(),
+      this.intervalSolution.toTex(),
+      `${this.variable}\\in${intervalTex}`,
+    ];
+    return res;
+  }
+
   toAllValidTexs() {
-    return this.toEquivalentNodes(this.opts).map((el) => el.toTex());
+    return this.toEquivalentNodes(this.opts).flatMap((el) => el.toAllTexs());
   }
 
   toEquivalentNodes(opts?: NodeOptions) {

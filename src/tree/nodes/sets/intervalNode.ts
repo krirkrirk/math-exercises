@@ -4,6 +4,7 @@ import { InequationNode } from "../inequations/inequationNode";
 import { Node, NodeOptions, NodeType } from "../node";
 import { ConstantNode } from "../numbers/constantNode";
 import { VariableNode } from "../variables/variableNode";
+import { SetNode } from "./setNode";
 
 export enum ClosureType {
   FF,
@@ -12,7 +13,7 @@ export enum ClosureType {
   OO,
 }
 
-export class IntervalNode implements Node {
+export class IntervalNode implements SetNode {
   type: NodeType;
   opts?: NodeOptions | undefined;
   closure: ClosureType;
@@ -72,11 +73,11 @@ export class IntervalNode implements Node {
     }
     const leftSymbol =
       this.closure === ClosureType.FO || this.closure === ClosureType.FF
-        ? "\\ge"
+        ? "\\le"
         : "<";
     const rightSymbol =
       this.closure === ClosureType.FF || this.closure === ClosureType.OF
-        ? "\\ge"
+        ? "\\le"
         : "<";
 
     return new InequationNode(

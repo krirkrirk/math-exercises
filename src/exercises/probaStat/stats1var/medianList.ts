@@ -1,23 +1,26 @@
-import { randint } from '#root/math/utils/random/randint';
-import { round } from '#root/math/utils/round';
-import { shuffle } from '#root/utils/shuffle';
+import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
+import { shuffle } from "#root/utils/shuffle";
 import {
   MathExercise,
   Proposition,
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
-} from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-import { v4 } from 'uuid';
+} from "../../exercise";
+import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
+import { v4 } from "uuid";
 type QCMProps = {
   answer: string;
   sortedValues: number[];
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
 const getMedianList: QuestionGenerator<QCMProps, VEAProps> = () => {
   let randomValeurs: number[] = [];
@@ -36,41 +39,51 @@ const getMedianList: QuestionGenerator<QCMProps, VEAProps> = () => {
   } else {
     median = sortedValues[middleIndex];
   }
-  const answer = (median + '').replace('.', ',');
+  const answer = (median + "").replace(".", ",");
   const question: Question<QCMProps, VEAProps> = {
-    instruction: `On considère la liste suivante : $${randomValeurs.join(';\\ ')}.$
+    instruction: `On considère la liste suivante : $${randomValeurs.join(
+      ";\\ ",
+    )}.$
     $\\\\$Calculer la médiane de cette liste de valeurs.`,
     answer,
-    keys: ['f', 'cap', 'underscore'],
-    answerFormat: 'tex',
+    keys: [],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, sortedValues },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, sortedValues }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, sortedValues },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  sortedValues.forEach((value) => tryToAddWrongProp(propositions, value + ''));
+  sortedValues.forEach((value) => tryToAddWrongProp(propositions, value + ""));
 
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, randint(0, 20) + '');
+    tryToAddWrongProp(propositions, randint(0, 20) + "");
   }
 
   return shuffleProps(propositions, n);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
+};
+
 export const medianWithList: MathExercise<QCMProps, VEAProps> = {
-  id: 'medianWithList',
-  connector: '=',
+  id: "medianWithList",
+  connector: "=",
   label: "Calcul de la médiane d'une liste de valeurs",
-  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
+  levels: ["3ème", "2nde", "CAP", "2ndPro", "1rePro", "1reTech"],
   isSingleStep: false,
-  sections: ['Statistiques'],
+  sections: ["Statistiques"],
   generator: (nb: number) => getDistinctQuestions(getMedianList, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

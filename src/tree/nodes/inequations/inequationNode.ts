@@ -100,9 +100,8 @@ export class InequationNode implements Node {
   }
   toReversed() {
     const newChildren = [...this.children].reverse();
-    const newSymbols = Array.isArray(this.symbols)
-      ? this.symbols.map(getInversedInequationSymbol)
-      : getInversedInequationSymbol(this.symbols);
+    const newSymbols = this.symbols.map(getInversedInequationSymbol);
+
     return new InequationNode(newChildren, newSymbols);
   }
   toAllValidTexs() {
@@ -125,6 +124,9 @@ export class InequationNode implements Node {
   }
   toMathjs() {
     return this.tex;
+  }
+  toAllTexs() {
+    return [this.toTex()];
   }
   toTex() {
     return this.tex;

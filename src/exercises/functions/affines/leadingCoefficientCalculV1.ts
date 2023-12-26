@@ -7,64 +7,84 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Rational } from '#root/math/numbers/rationals/rational';
-import { randint } from '#root/math/utils/random/randint';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { FractionNode } from '#root/tree/nodes/operators/fractionNode';
-import { simplifyNode } from '#root/tree/parsers/simplify';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Rational } from "#root/math/numbers/rationals/rational";
+import { randint } from "#root/math/utils/random/randint";
+
+import { shuffle } from "#root/utils/shuffle";
 type QCMProps = {
   answer: string;
   xA: number;
   xB: number;
-
   yA: number;
-
   yB: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  xA: number;
+  xB: number;
+  yA: number;
+  yB: number;
+};
 
-const getLeadingCoefficientCalculV1Question: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getLeadingCoefficientCalculV1Question: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const [xA, yA] = [1, 2].map((el) => randint(-9, 10));
   const xB = randint(-9, 10, [xA]);
   const yB = randint(-9, 10);
   const answer = new Rational(yB - yA, xB - xA).simplify().toTree().toTex();
   const question: Question<QCMProps, VEAProps> = {
     instruction: `Soit $f$ une fonction affine telle que $f(${xA})$ = $${yA}$ et $f(${xB})$ = $${yB}$.$\\\\$Quel est le coefficient directeur de $f$ ?`,
-    startStatement: 'a',
+    startStatement: "a",
     answer,
-    answerFormat: 'tex',
+    answerFormat: "tex",
     keys: [],
     qcmGeneratorProps: { answer, xA, xB, yA, yB },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, xA, xB, yA, yB }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, xA, xB, yA, yB },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
-    const wrongAnswer = simplifyNode(
-      new FractionNode(new NumberNode(yB - yA + randint(-3, 4, [0])), new NumberNode(xB - xA + randint(-3, 4, [0]))),
-    ).toTex();
+    const wrongAnswer = new Rational(
+      yB - yA + randint(-3, 4, [0]),
+      xB - xA + randint(-3, 4, [0]),
+    )
+      .simplify()
+      .toTree()
+      .toTex();
     tryToAddWrongProp(propositions, wrongAnswer);
   }
 
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { xA, xB, yA, yB }) => {
+  const answer = new Rational(yB - yA, xB - xA)
+    .simplify()
+    .toTree({ allowFractionToDecimal: true });
+  const texs = answer.toAllValidTexs();
+  return texs.includes(ans);
+};
+
 export const leadingCoefficientCalculV1: MathExercise<QCMProps, VEAProps> = {
-  id: 'leadingCoefficientCalculV1',
-  connector: '=',
+  id: "leadingCoefficientCalculV1",
+  connector: "=",
   label: "Calculer le coefficient directeur d'une fonction affine",
-  levels: ['3ème', '2nde', '2ndPro', '1rePro', '1reTech'],
+  levels: ["3ème", "2nde", "2ndPro", "1rePro", "1reTech"],
   isSingleStep: true,
-  sections: ['Fonctions affines'],
-  generator: (nb: number) => getDistinctQuestions(getLeadingCoefficientCalculV1Question, nb),
+  sections: ["Fonctions affines"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getLeadingCoefficientCalculV1Question, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

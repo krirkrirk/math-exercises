@@ -23,7 +23,15 @@ import { AddNode } from "./tree/nodes/operators/addNode";
  * 
  * 
  * 
- * !!!current vea : reciprocal percentge
+ * !!!à fix :
+ * ! fraction réductible
+ * ! 0,20 au lieu de 0,2
+ * ! moins partout dans fraction
+ * !puissances négatives vers inverse fraction 
+ * ! simplification du ln
+ * ! meileure gestion des [] : le clavier devriat pouvoir produire des left/right ; 
+ *      !aussi en tapant [ puis diviser, le crochet passe en numérateur
+ * ! espace tous les 3 chiffres dans un nb (le clavier doit le fournir aussi!) 
 
 */
 

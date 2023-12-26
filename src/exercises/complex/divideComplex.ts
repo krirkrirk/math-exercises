@@ -4,17 +4,23 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Complex, ComplexConstructor } from '#root/math/complex/complex';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Complex, ComplexConstructor } from "#root/math/complex/complex";
+import { shuffle } from "#root/utils/shuffle";
+
 type QCMProps = {
   answer: string;
+  z1: number[];
+  z2: number[];
 };
-type VEAProps = {};
+type VEAProps = {
+  z1: number[];
+  z2: number[];
+};
 
 const getDivideComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const z1 = ComplexConstructor.random();
@@ -27,16 +33,22 @@ const getDivideComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   const question: Question<QCMProps, VEAProps> = {
     answer: answerTex,
-    instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2.toTree().toTex()}$. Calculer $\\frac{z}{z'}$.`,
-    keys: ['i', 'z', 'quote'],
-    answerFormat: 'tex',
+    instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2
+      .toTree()
+      .toTex()}$. Calculer $\\frac{z}{z'}$.`,
+    keys: ["i", "z", "quote"],
+    answerFormat: "tex",
 
     startStatement: "\\frac{z}{z'}",
-    qcmGeneratorProps: { answer: answerTex },
+    qcmGeneratorProps: {
+      answer: answerTex,
+      z1: [z1.re, z1.im],
+      z2: [z2.re, z2.im],
+    },
   };
-
   return question;
 };
+
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
@@ -48,15 +60,24 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { z1, z2 }) => {
+  const complex1 = new Complex(z1[0], z1[1]);
+  const complex2 = new Complex(z2[0], z2[1]);
+  const divide = complex1.divideNode(complex2);
+  const texs = divide.toAllValidTexs({ allowFractionToDecimal: true });
+  return texs.includes(ans);
+};
+
 export const divideComplex: MathExercise<QCMProps, VEAProps> = {
-  id: 'divideComplex',
-  connector: '=',
-  label: 'Diviser deux nombres complexes',
-  levels: ['MathExp'],
+  id: "divideComplex",
+  connector: "=",
+  label: "Diviser deux nombres complexes",
+  levels: ["MathExp"],
   isSingleStep: true,
-  sections: ['Nombres complexes'],
+  sections: ["Nombres complexes"],
   generator: (nb: number) => getDistinctQuestions(getDivideComplexQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

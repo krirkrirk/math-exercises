@@ -1,16 +1,18 @@
 import { log } from "mathjs";
-import { Node, NodeType } from "../node";
+import { Node, NodeOptions, NodeType } from "../node";
 import { FunctionNode, FunctionsIds } from "./functionNode";
 
 export class LogNode implements FunctionNode {
   id: FunctionsIds;
   child: Node;
   type: NodeType;
+  opts?: NodeOptions;
 
-  constructor(child: Node) {
+  constructor(child: Node, opts?: NodeOptions) {
     this.id = FunctionsIds.opposite;
     this.child = child;
     this.type = NodeType.function;
+    this.opts = opts;
   }
 
   toMathString(): string {
@@ -18,11 +20,15 @@ export class LogNode implements FunctionNode {
   }
 
   toTex(): string {
+    const tex = this.child.toTex();
+    if (!this.opts?.allowLnOfOne && tex === "1") {
+      return "0";
+    }
     const shouldntUseBrackets =
       this.child.type === NodeType.function &&
       (this.child as FunctionNode).id === FunctionsIds.abs;
-    if (shouldntUseBrackets) return `\\ln${this.child.toTex()}`;
-    else return `\\ln\\left(${this.child.toTex()}\\right)`;
+    if (shouldntUseBrackets) return `\\ln${tex}`;
+    else return `\\ln\\left(${tex}\\right)`;
   }
   toMathjs() {
     return log(this.child.toMathjs());

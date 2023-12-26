@@ -14,7 +14,7 @@ const runServer = () => {
   const app: Express = express();
   app.use(cors());
   console.log(
-    exercises.length - exercises.filter((exo) => !!exo.isAnswerValid).length,
+    exercises.filter((exo) => !exo.isAnswerValid).map((exo) => exo.id),
   );
 
   // console.log(mul.toAllValidTexs());

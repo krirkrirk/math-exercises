@@ -77,7 +77,7 @@ import { powersOfTenProduct, powersProduct } from "./powers/powersProduct";
 import { scientificToDecimal } from "./powers/scientificToDecimal";
 
 import { conditionalProbability } from "./probaStat/conditionalProbability";
-import { marginalAndConditionalFrequency } from "./probaStat/marginalAndConditionalFrequency";
+import { marginalAndConditionalFrequency } from "./probaStat/stats1var/marginalAndConditionalFrequency";
 import { probabilityTree } from "./probaStat/probabilityTree";
 
 import { arithmeticExplicitFormulaUsage } from "./sequences/arithmetic/arithmeticExplicitFormulaUsage";
@@ -117,8 +117,8 @@ import { logEquation } from "./calculLitteral/equation/logEquation";
 import { expEquation } from "./calculLitteral/equation/expEquation";
 import { expSimplifiying } from "./calculLitteral/simplifying/expSimplifiying";
 import { logSimplifiying } from "./calculLitteral/simplifying/logSimplifiying";
-import { quartiles } from "#root/exercises/probaStat/quartiles";
-import { quartilesList } from "#root/exercises/probaStat/quartilesList";
+import { quartiles } from "#root/exercises/probaStat/stats1var/quartiles";
+import { quartilesList } from "#root/exercises/probaStat/stats1var/quartilesList";
 import { euclideanDivision } from "#root/exercises/calcul/arithmetics/euclideanDivision";
 import { thirdDegreeFunctionVariation } from "#root/exercises/derivation/derivative/thirdDegreeFunctionVariation";
 import { polynomLimit } from "#root/exercises/limits/polynomLimit";
@@ -147,9 +147,9 @@ import { variationsFromAlgebricForm } from "./functions/trinoms/variationsFromAl
 import { mutiplyComplex } from "./complex/mutiplyComplex";
 import { reAndIm } from "./complex/reAndIm";
 import { addComplex } from "./complex/addComplex";
-import { averageWithTable } from "./probaStat/averageWithTable";
-import { medianWithList } from "./probaStat/medianList";
-import { medianWithTable } from "./probaStat/median";
+import { averageWithTable } from "./probaStat/stats1var/averageWithTable";
+import { medianWithList } from "./probaStat/stats1var/medianList";
+import { medianWithTable } from "./probaStat/stats1var/median";
 import { conjugateComplex } from "./complex/conjugateComplex.ts";
 import { conjugateMultiplyComplex } from "./complex/conjugateMultiplyComplex";
 import { inverseComplex } from "./complex/inverseComplex";

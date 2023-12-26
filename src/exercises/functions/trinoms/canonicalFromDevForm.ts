@@ -7,28 +7,38 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Integer } from '#root/math/numbers/integer/integer';
-import { TrinomConstructor } from '#root/math/polynomials/trinom';
-import { DiscreteSet } from '#root/math/sets/discreteSet';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Integer } from "#root/math/numbers/integer/integer";
+import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
+import { DiscreteSet } from "#root/math/sets/discreteSet";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
   a: number;
+  b: number;
+  c: number;
 };
-type VEAProps = {};
-const getCanonicalFromDevFormQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+type VEAProps = {
+  a: number;
+  b: number;
+  c: number;
+};
+const getCanonicalFromDevFormQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const trinom = TrinomConstructor.randomCanonical();
   const answer = trinom.getCanonicalForm().toTex();
   const question: Question<QCMProps, VEAProps> = {
     answer,
-    keys: ['x', 'equal', 'alpha', 'beta'],
-    instruction: `Déterminer la forme canonique de la fonction $f$ définie par $f(x) = ${trinom.toTree().toTex()}$`,
-    answerFormat: 'tex',
-    qcmGeneratorProps: { answer, a: trinom.a },
+    keys: ["x", "equal", "alpha", "beta"],
+    instruction: `Déterminer la forme canonique de la fonction $f$ définie par $f(x) = ${trinom
+      .toTree()
+      .toTex()}$`,
+    answerFormat: "tex",
+    qcmGeneratorProps: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
   };
 
   return question;
@@ -41,7 +51,9 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a }) => {
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      TrinomConstructor.randomCanonical(new DiscreteSet([new Integer(a), new Integer(-a)]))
+      TrinomConstructor.randomCanonical(
+        new DiscreteSet([new Integer(a), new Integer(-a)]),
+      )
         .getCanonicalForm()
         .toTex(),
     );
@@ -50,15 +62,24 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a }) => {
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
+  const trinom = new Trinom(a, b, c);
+  const node = trinom.getCanonicalForm();
+  const texs = node.toAllValidTexs();
+  return texs.includes(ans);
+};
+
 export const canonicalFromDevForm: MathExercise<QCMProps, VEAProps> = {
-  id: 'canonicalFromDevForm',
-  connector: '\\iff',
-  label: 'Déterminer la forme canonique à partir de la forme développée',
-  levels: ['1reSpé'],
+  id: "canonicalFromDevForm",
+  connector: "\\iff",
+  label: "Déterminer la forme canonique à partir de la forme développée",
+  levels: ["1reSpé"],
   isSingleStep: false,
-  sections: ['Second degré'],
-  generator: (nb: number) => getDistinctQuestions(getCanonicalFromDevFormQuestion, nb),
+  sections: ["Second degré"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getCanonicalFromDevFormQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

@@ -4,14 +4,21 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Interval, IntervalConstructor } from '#root/math/sets/intervals/intervals';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import {
+  Interval,
+  IntervalConstructor,
+} from "#root/math/sets/intervals/intervals";
+import { shuffle } from "#root/utils/shuffle";
 
-const getIntervalsIntersectionQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getIntervalsIntersectionQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const [int1, int2] = IntervalConstructor.differentRandoms(2);
   const inter = int1.intersection(int2);
 
@@ -19,8 +26,16 @@ const getIntervalsIntersectionQuestion: QuestionGenerator<QCMProps, VEAProps> = 
   const question: Question<QCMProps, VEAProps> = {
     answer,
     instruction: `Soit $I = ${int1.toTex()}$ et $J = ${int2.toTex()}$. Déterminer $I\\cap J$.`,
-    keys: ['infty', 'emptyset', 'lbracket', 'rbracket', 'semicolon', 'cup', 'cap'],
-    answerFormat: 'tex',
+    keys: [
+      "infty",
+      "emptyset",
+      "lbracket",
+      "rbracket",
+      "semicolon",
+      "cup",
+      "cap",
+    ],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, int1Tex: int1.tex, int2Tex: int2.tex },
   };
 
@@ -32,9 +47,16 @@ type QCMProps = {
   int1Tex: string;
   int2Tex: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+  int1Tex: string;
+  int2Tex: string;
+};
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, int1Tex, int2Tex }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, int1Tex, int2Tex },
+) => {
   const propositions: Proposition[] = [];
 
   addValidProp(propositions, answer);
@@ -49,15 +71,22 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, int1Tex, int2Tex }
 
   return shuffle(propositions);
 };
+
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
+};
+
 export const intervalsIntersection: MathExercise<QCMProps, VEAProps> = {
-  id: 'intervalsIntersection',
-  connector: '=',
+  id: "intervalsIntersection",
+  connector: "=",
   label: "Déterminer l'intersection de deux intervalles",
-  levels: ['2nde', '1reESM'],
+  levels: ["2nde", "1reESM"],
   isSingleStep: true,
-  sections: ['Ensembles et intervalles'],
-  generator: (nb: number) => getDistinctQuestions(getIntervalsIntersectionQuestion, nb),
+  sections: ["Ensembles et intervalles"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getIntervalsIntersectionQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

@@ -4,83 +4,123 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Integer } from '#root/math/numbers/integer/integer';
-import { Rational } from '#root/math/numbers/rationals/rational';
-import { Affine } from '#root/math/polynomials/affine';
-import { Monom } from '#root/math/polynomials/monom';
-import { TrinomConstructor } from '#root/math/polynomials/trinom';
-import { DiscreteSet } from '#root/math/sets/discreteSet';
-import { Interval } from '#root/math/sets/intervals/intervals';
-import { randint } from '#root/math/utils/random/randint';
-import { coinFlip } from '#root/utils/coinFlip';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Integer } from "#root/math/numbers/integer/integer";
+import { Rational } from "#root/math/numbers/rationals/rational";
+import { Affine } from "#root/math/polynomials/affine";
+import { Polynomial } from "#root/math/polynomials/polynomial";
+import { TrinomConstructor } from "#root/math/polynomials/trinom";
+import { DiscreteSet } from "#root/math/sets/discreteSet";
+import { Interval } from "#root/math/sets/intervals/intervals";
+import { randint } from "#root/math/utils/random/randint";
+import { coinFlip } from "#root/utils/coinFlip";
 
 type QCMProps = {
   answer: string;
-  coeffs: number[];
-};
-type VEAProps = {};
+  numCoeffs: number[];
+  denumCoeffs: number[];
 
-const getSequenceRationalFracLimitQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+  isRight: boolean;
+};
+type VEAProps = {
+  answer: string;
+  numCoeffs: number[];
+  denumCoeffs: number[];
+  isRight: boolean;
+};
+const getSign = (nb: number) => {
+  return nb >= 0 ? "+" : "-";
+};
+
+const getSequenceRationalFracLimitQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const polyDenum = new Affine(1, randint(-9, 10, [0]));
 
   const forbiddenValue = -polyDenum.b;
-  const interval = new Interval('[[-10;10]]').difference(new DiscreteSet([new Integer(forbiddenValue)]));
-  const intervalStar = new Interval('[[-10;10]]').difference(new DiscreteSet([new Integer(0)]));
+  const interval = new Interval("[[-10;10]]").difference(
+    new DiscreteSet([new Integer(forbiddenValue)]),
+  );
+  const intervalStar = new Interval("[[-10;10]]").difference(
+    new DiscreteSet([new Integer(0)]),
+  );
 
-  const polyNum = TrinomConstructor.randomFactorized(intervalStar, interval, interval);
+  const polyNum = TrinomConstructor.randomFactorized(
+    intervalStar,
+    interval,
+    interval,
+  );
 
   const numLimit = polyNum.calculate(-polyDenum.b);
-  const getSign = (nb: number) => {
-    return nb >= 0 ? '+' : '-';
-  };
+
   const isRight = coinFlip();
   const to = isRight ? `${forbiddenValue}` : `${forbiddenValue}`;
   const from = isRight ? `x>${forbiddenValue}` : `x<${forbiddenValue}`;
-  const answer = isRight ? `${getSign(numLimit)}\\infty` : `${getSign(-numLimit)}\\infty`;
+  const answer = isRight
+    ? `${getSign(numLimit)}\\infty`
+    : `${getSign(-numLimit)}\\infty`;
 
   const question: Question<QCMProps, VEAProps> = {
     answer,
-    instruction: `Soit $f$ la fonction définie par : $f(x) = \\dfrac{${polyNum.toTree().toTex()}}{${polyDenum
+    instruction: `Soit $f$ la fonction définie par : $f(x) = \\dfrac{${polyNum
+      .toTree()
+      .toTex()}}{${polyDenum
       .toTree()
       .toTex()}}$. Déterminer $\\lim\\limits_{x \\to ${to}, \\ ${from}}f(x).$
       `,
-    keys: ['infty'],
-    answerFormat: 'tex',
-    qcmGeneratorProps: { answer, coeffs: polyNum.coefficients },
+    keys: ["infty"],
+    answerFormat: "tex",
+    qcmGeneratorProps: {
+      answer,
+      numCoeffs: polyNum.coefficients,
+      denumCoeffs: polyDenum.coefficients,
+      isRight,
+    },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, coeffs }) => {
+const getPropositions: QCMGenerator<QCMProps> = (n, { answer, numCoeffs }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  tryToAddWrongProp(propositions, '+\\infty');
-  tryToAddWrongProp(propositions, '-\\infty');
-  tryToAddWrongProp(propositions, '0');
-  tryToAddWrongProp(propositions, coeffs[coeffs.length - 1].toString());
+  tryToAddWrongProp(propositions, "+\\infty");
+  tryToAddWrongProp(propositions, "-\\infty");
+  tryToAddWrongProp(propositions, "0");
+  tryToAddWrongProp(propositions, numCoeffs[numCoeffs.length - 1].toString());
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, randint(-10, 10) + '');
+    tryToAddWrongProp(propositions, randint(-10, 10) + "");
   }
 
   return shuffleProps(propositions, n);
 };
 
-export const rationalFracForbiddenValueLimit: MathExercise<QCMProps, VEAProps> = {
-  id: 'rationalFracForbiddenValueLimit',
-  connector: '=',
-  label: "Limite d'une fraction rationnelle avec valeur interdite",
-  levels: ['TermSpé', 'MathComp'],
-  isSingleStep: true,
-  sections: ['Limites'],
-  generator: (nb: number) => getDistinctQuestions(getSequenceRationalFracLimitQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
-  getPropositions,
+const isAnswerValid: VEA<VEAProps> = (
+  ans,
+  { answer, numCoeffs, denumCoeffs, isRight },
+) => {
+  return ans === answer;
 };
+
+export const rationalFracForbiddenValueLimit: MathExercise<QCMProps, VEAProps> =
+  {
+    id: "rationalFracForbiddenValueLimit",
+    connector: "=",
+    label: "Limite d'une fraction rationnelle avec valeur interdite",
+    levels: ["TermSpé", "MathComp"],
+    isSingleStep: true,
+    sections: ["Limites"],
+    generator: (nb: number) =>
+      getDistinctQuestions(getSequenceRationalFracLimitQuestion, nb),
+    qcmTimer: 60,
+    freeTimer: 60,
+    getPropositions,
+    isAnswerValid,
+  };

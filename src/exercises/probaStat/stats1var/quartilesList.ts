@@ -1,22 +1,25 @@
-import { randint } from '#root/math/utils/random/randint';
-import { shuffle } from '#root/utils/shuffle';
+import { randint } from "#root/math/utils/random/randint";
+import { shuffle } from "#root/utils/shuffle";
 import {
   MathExercise,
   Proposition,
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
-} from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
+} from "../../exercise";
+import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
 type QCMProps = {
   answer: string;
   randomValues: number[];
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
 const getQuartiles: QuestionGenerator<QCMProps, VEAProps> = () => {
   let randomValues: number[] = [];
@@ -39,59 +42,68 @@ const getQuartiles: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   switch (randomQuartile) {
     case 0:
-      quartileToString = 'premier quartile';
+      quartileToString = "premier quartile";
       choosenQuartile = firstQuartile;
       break;
 
     case 1:
-      quartileToString = 'troisième quartile';
+      quartileToString = "troisième quartile";
       choosenQuartile = thirdQuartile;
       break;
 
     default:
-      quartileToString = 'troisième quartile';
+      quartileToString = "troisième quartile";
       choosenQuartile = thirdQuartile;
       break;
   }
 
-  const answer = choosenQuartile + '';
+  const answer = choosenQuartile + "";
   const question: Question<QCMProps, VEAProps> = {
-    instruction: `On considère la liste suivante : $${randomValues.join(';\\ ')}.$
+    instruction: `On considère la liste suivante : $${randomValues.join(
+      ";\\ ",
+    )}.$
     $\\\\$Calculer le ${quartileToString} de cette série de valeurs.`,
     answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, randomValues },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randomValues }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, randomValues },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
   randomValues.forEach((value) => {
-    tryToAddWrongProp(propositions, value + '');
+    tryToAddWrongProp(propositions, value + "");
   });
 
   while (propositions.length < n) {
     const randValue = randint(0, 100);
-    tryToAddWrongProp(propositions, randValue + '');
+    tryToAddWrongProp(propositions, randValue + "");
   }
 
   return shuffleProps(propositions, n);
 };
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
+};
 
 export const quartilesList: MathExercise<QCMProps, VEAProps> = {
-  id: 'quartilesList',
-  connector: '=',
+  id: "quartilesList",
+  connector: "=",
   label: "Calcul des quartiles d'une liste",
-  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
+  levels: ["3ème", "2nde", "CAP", "2ndPro", "1rePro", "1reTech"],
   isSingleStep: false,
-  sections: ['Statistiques'],
+  sections: ["Statistiques"],
   generator: (nb: number) => getDistinctQuestions(getQuartiles, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

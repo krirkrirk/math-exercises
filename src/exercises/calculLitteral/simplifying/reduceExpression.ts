@@ -4,120 +4,112 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Polynomial } from '#root/math/polynomials/polynomial';
-import { randint } from '#root/math/utils/random/randint';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Polynomial } from "#root/math/polynomials/polynomial";
+import { randint } from "#root/math/utils/random/randint";
+import { Node } from "#root/tree/nodes/node";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { shuffle } from "#root/utils/shuffle";
+
 type QCMProps = {
   answer: string;
   rand: number;
   polynome1Coeffs: number[];
+  polynome2Coeffs: number[];
 };
-type VEAProps = {};
+type VEAProps = {
+  rand: number;
+  polynome1Coeffs: number[];
+  polynome2Coeffs: number[];
+};
 const getReduceExpression: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rand = randint(0, 7);
-  let statement: any;
   let polynome1: Polynomial;
   let polynome2: Polynomial;
-  let answer: string;
 
   switch (rand) {
     case 0: // ax + b + cx + d
       polynome1 = new Polynomial([randint(-9, 10), randint(-9, 10, [0])]);
       polynome2 = new Polynomial([randint(-5, 6), randint(-5, 6, [0])]);
-
-      statement = new AddNode(polynome1.toTree(), polynome2.toTree());
-      statement.shuffle();
-
-      answer = polynome1.add(polynome2).toTree().toTex();
       break;
 
     case 1:
       polynome1 = new Polynomial([randint(-9, 10), randint(-9, 10, [0])]);
       polynome2 = new Polynomial([0, randint(-5, 6, [0])]);
-
-      statement = new AddNode(polynome1.toTree(), polynome2.toTree());
-      statement.shuffle();
-
-      answer = polynome1.add(polynome2).toTree().toTex();
       break;
 
     case 2:
       polynome1 = new Polynomial([randint(-9, 10), randint(-9, 10, [0])]);
       polynome2 = new Polynomial([randint(-5, 6, [0])]);
-
-      statement = new AddNode(polynome1.toTree(), polynome2.toTree());
-      statement.shuffle();
-
-      answer = polynome1.add(polynome2).toTree().toTex();
       break;
 
     case 3:
-      polynome1 = new Polynomial([randint(-9, 10), randint(-9, 10), randint(-9, 10, [0])]);
+      polynome1 = new Polynomial([
+        randint(-9, 10),
+        randint(-9, 10),
+        randint(-9, 10, [0]),
+      ]);
       polynome2 = new Polynomial([0, randint(-5, 6), randint(-5, 6, [0])]);
-
-      statement = new AddNode(polynome1.toTree(), polynome2.toTree());
-      statement.shuffle();
-
-      answer = polynome1.add(polynome2).toTree().toTex();
       break;
 
     case 4:
-      polynome1 = new Polynomial([randint(-9, 10), randint(-9, 10), randint(-9, 10, [0])]);
+      polynome1 = new Polynomial([
+        randint(-9, 10),
+        randint(-9, 10),
+        randint(-9, 10, [0]),
+      ]);
       polynome2 = new Polynomial([0, 0, randint(-5, 6, [0])]);
-
-      statement = new AddNode(polynome1.toTree(), polynome2.toTree());
-      statement.shuffle();
-
-      answer = polynome1.add(polynome2).toTree().toTex();
       break;
 
     case 5:
-      polynome1 = new Polynomial([randint(-9, 10), randint(-9, 10), randint(-9, 10, [0])]);
+      polynome1 = new Polynomial([
+        randint(-9, 10),
+        randint(-9, 10),
+        randint(-9, 10, [0]),
+      ]);
       polynome2 = new Polynomial([0, randint(-5, 6, [0])]);
-
-      statement = new AddNode(polynome1.toTree(), polynome2.toTree());
-      statement.shuffle();
-
-      answer = polynome1.add(polynome2).toTree().toTex();
       break;
 
     case 6:
-      polynome1 = new Polynomial([randint(-9, 10), randint(-9, 10), randint(-9, 10, [0])]);
+      polynome1 = new Polynomial([
+        randint(-9, 10),
+        randint(-9, 10),
+        randint(-9, 10, [0]),
+      ]);
       polynome2 = new Polynomial([randint(-5, 6, [0])]);
-
-      statement = new AddNode(polynome1.toTree(), polynome2.toTree());
-      statement.shuffle();
-
-      answer = polynome1.add(polynome2).toTree().toTex();
       break;
 
     default:
-      polynome1 = new Polynomial([randint(-9, 10), randint(-9, 10), randint(-9, 10, [0])]);
-      polynome2 = new Polynomial([randint(-5, 6, [0])]);
-      statement = new AddNode(new Polynomial([1, 2]).toTree(), new Polynomial([3, 4]).toTree());
-      statement.shuffle();
-      answer = polynome1.add(polynome2).toTree().toTex();
-      break;
+      throw Error("something went wrong");
   }
-
+  const statement = new AddNode(polynome1.toTree(), polynome2.toTree());
+  statement.shuffle();
+  const statementTex = statement.toTex();
+  const answer = polynome1.add(polynome2).toTree().toTex();
   const question: Question<QCMProps, VEAProps> = {
-    instruction: `Réduire l'expression suivante : $${statement.toTex()}$`,
-    startStatement: statement.toTex(),
+    instruction: `Réduire l'expression suivante : $${statementTex}$`,
+    startStatement: statementTex,
     answer,
-    keys: ['x'],
-    answerFormat: 'tex',
-    qcmGeneratorProps: { answer, rand, polynome1Coeffs: polynome1.coefficients },
+    keys: ["x"],
+    answerFormat: "tex",
+    qcmGeneratorProps: {
+      answer,
+      rand,
+      polynome1Coeffs: polynome1.coefficients,
+      polynome2Coeffs: polynome2.coefficients,
+    },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, rand, polynome1Coeffs }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, rand, polynome1Coeffs },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const polynome1 = new Polynomial(polynome1Coeffs);
@@ -133,15 +125,30 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, rand, polynome1Coe
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (
+  ans,
+  { polynome1Coeffs, polynome2Coeffs, rand },
+) => {
+  const polynome1 = new Polynomial(polynome1Coeffs);
+  const polynome2 = new Polynomial(polynome2Coeffs);
+  const answer = polynome1
+    .add(polynome2)
+    .toTree({ forbidPowerToProduct: true });
+  const texs = answer.toAllValidTexs();
+  console.log(texs);
+  return texs.includes(ans);
+};
+
 export const reduceExpression: MathExercise<QCMProps, VEAProps> = {
-  id: 'reduceExpression',
-  connector: '=',
+  id: "reduceExpression",
+  connector: "=",
   isSingleStep: false,
-  label: 'Réduire une expression',
-  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro'],
-  sections: ['Calcul littéral'],
+  label: "Réduire une expression",
+  levels: ["4ème", "3ème", "2nde", "CAP", "2ndPro"],
+  sections: ["Calcul littéral"],
   generator: (nb: number) => getDistinctQuestions(getReduceExpression, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

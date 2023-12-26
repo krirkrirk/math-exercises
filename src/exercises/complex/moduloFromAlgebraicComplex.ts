@@ -4,21 +4,27 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { ComplexConstructor } from "#root/math/complex/complex";
+import { Complex, ComplexConstructor } from "#root/math/complex/complex";
 import { SquareRoot } from "#root/math/numbers/reals/real";
 import { randint } from "#root/math/utils/random/randint";
+import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
 type QCMProps = {
   answer: string;
   re: number;
   im: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  re: number;
+  im: number;
+};
 
 const getModuloFromAlgebraicComplexQuestion: QuestionGenerator<
   QCMProps,
@@ -52,6 +58,17 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, re, im }) => {
   }
   return shuffleProps(propositions, n);
 };
+
+const isAnswerValid: VEA<VEAProps> = (ans, { re, im }) => {
+  const z = new Complex(re, im);
+  const answer = new SqrtNode(new NumberNode(z.moduleSquared()), {
+    allowSimplifySqrt: true,
+  });
+  const texs = answer.toAllValidTexs();
+  console.log(texs);
+  return texs.includes(ans);
+};
+
 export const moduloFromAlgebraicComplex: MathExercise<QCMProps, VEAProps> = {
   id: "moduloFromAlgebraicComplex",
   connector: "=",
@@ -64,4 +81,5 @@ export const moduloFromAlgebraicComplex: MathExercise<QCMProps, VEAProps> = {
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

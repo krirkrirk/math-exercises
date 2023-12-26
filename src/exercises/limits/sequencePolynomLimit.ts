@@ -4,30 +4,38 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
-import { randint } from '#root/math/utils/random/randint';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { PolynomialConstructor } from "#root/math/polynomials/polynomial";
+import { randint } from "#root/math/utils/random/randint";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
   coeffs: number[];
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
-const getSequencePolynomLimitQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
-  const poly = PolynomialConstructor.random(4, 'n');
-  const to = '+\\infty';
+const getSequencePolynomLimitQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
+  const poly = PolynomialConstructor.random(4, "n");
+  const to = "+\\infty";
   const answer = poly.getLimit(to);
 
   const question: Question<QCMProps, VEAProps> = {
     answer: answer,
-    instruction: `Déterminer la limite de la suite $u$ définie par : $u_n = ${poly.toTree().toTex()}$.`,
-    keys: ['infty'],
-    answerFormat: 'tex',
+    instruction: `Déterminer la limite de la suite $u$ définie par : $u_n = ${poly
+      .toTree()
+      .toTex()}$.`,
+    keys: ["infty"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, coeffs: poly.coefficients },
   };
 
@@ -38,28 +46,32 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, coeffs }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  tryToAddWrongProp(propositions, '+\\infty');
-  tryToAddWrongProp(propositions, '-\\infty');
-  tryToAddWrongProp(propositions, '0');
-  tryToAddWrongProp(propositions, coeffs[coeffs.length - 1] + '');
+  tryToAddWrongProp(propositions, "+\\infty");
+  tryToAddWrongProp(propositions, "-\\infty");
+  tryToAddWrongProp(propositions, "0");
+  tryToAddWrongProp(propositions, coeffs[coeffs.length - 1] + "");
 
   while (propositions.length < n) {
-    const wrongAnswer = randint(-10, 10) + '';
+    const wrongAnswer = randint(-10, 10) + "";
     tryToAddWrongProp(propositions, wrongAnswer);
   }
 
   return shuffle(propositions);
 };
-
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
+};
 export const sequencePolynomLimit: MathExercise<QCMProps, VEAProps> = {
-  id: 'sequencePolynomLimit',
-  connector: '=',
+  id: "sequencePolynomLimit",
+  connector: "=",
   label: "Limite d'une suite polynomiale",
-  levels: ['TermSpé', 'MathComp'],
+  levels: ["TermSpé", "MathComp"],
   isSingleStep: true,
-  sections: ['Limites', 'Suites'],
-  generator: (nb: number) => getDistinctQuestions(getSequencePolynomLimitQuestion, nb),
+  sections: ["Limites", "Suites"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getSequencePolynomLimitQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

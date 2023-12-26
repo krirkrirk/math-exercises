@@ -4,64 +4,79 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { NumberType } from '#root/math/numbers/nombre';
-import { PolynomialConstructor } from '#root/math/polynomials/polynomial';
-import { GeometricSequenceConstructor } from '#root/math/sequences/geometricSequence';
-import { randint } from '#root/math/utils/random/randint';
-import { coinFlip } from '#root/utils/coinFlip';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { GeometricSequenceConstructor } from "#root/math/sequences/geometricSequence";
 
 type QCMProps = {
   answer: string;
   reason: string;
   firstTerm: string;
 };
-type VEAProps = {};
-const getSequenceGeometricLimitQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+type VEAProps = {
+  answer: string;
+};
+const getSequenceGeometricLimitQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const sequence = GeometricSequenceConstructor.randomWithLimit();
-  const to = '+\\infty';
+  const to = "+\\infty";
   const answer = sequence.getLimit();
-  if (!answer) throw Error('received geometric sequence with no limit');
+  if (!answer) throw Error("received geometric sequence with no limit");
 
   const question: Question<QCMProps, VEAProps> = {
     answer: answer,
-    instruction: `Déterminer la limite de la suite $u$ définie par : $u_n = ${sequence.toTree().toTex()}$.`,
-    keys: ['infty'],
-    answerFormat: 'tex',
-    qcmGeneratorProps: { answer, reason: sequence.reason.tex, firstTerm: sequence.firstTerm.tex },
+    instruction: `Déterminer la limite de la suite $u$ définie par : $u_n = ${sequence
+      .toTree()
+      .toTex()}$.`,
+    keys: ["infty"],
+    answerFormat: "tex",
+    qcmGeneratorProps: {
+      answer,
+      reason: sequence.reason.tex,
+      firstTerm: sequence.firstTerm.tex,
+    },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, reason, firstTerm }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, reason, firstTerm },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  tryToAddWrongProp(propositions, '+\\infty');
-  tryToAddWrongProp(propositions, '-\\infty');
-  tryToAddWrongProp(propositions, '0');
-  tryToAddWrongProp(propositions, reason + '');
-  tryToAddWrongProp(propositions, firstTerm + '');
+  tryToAddWrongProp(propositions, "+\\infty");
+  tryToAddWrongProp(propositions, "-\\infty");
+  tryToAddWrongProp(propositions, "0");
+  tryToAddWrongProp(propositions, reason + "");
+  tryToAddWrongProp(propositions, firstTerm + "");
 
   return shuffleProps(propositions, n);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
+};
+
 export const sequenceGeometricLimit: MathExercise<QCMProps, VEAProps> = {
-  id: 'sequenceGeometricLimit',
-  connector: '=',
+  id: "sequenceGeometricLimit",
+  connector: "=",
   label: "Limite d'une suite géométrique",
-  levels: ['TermSpé', 'MathComp'],
+  levels: ["TermSpé", "MathComp"],
   isSingleStep: true,
-  sections: ['Limites', 'Suites'],
-  generator: (nb: number) => getDistinctQuestions(getSequenceGeometricLimitQuestion, nb),
+  sections: ["Limites", "Suites"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getSequenceGeometricLimitQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

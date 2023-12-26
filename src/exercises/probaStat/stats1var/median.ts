@@ -1,23 +1,30 @@
-import { randint } from '#root/math/utils/random/randint';
-import { shuffle } from '#root/utils/shuffle';
+import { randint } from "#root/math/utils/random/randint";
+import { shuffle } from "#root/utils/shuffle";
 import {
   MathExercise,
   Proposition,
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '../exercise';
-import { getDistinctQuestions } from '../utils/getDistinctQuestions';
-import { v4 } from 'uuid';
+} from "../../exercise";
+import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
+
 type QCMProps = {
   answer: string;
   randomValues: number[];
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 const getMedianWithTable: QuestionGenerator<QCMProps, VEAProps> = () => {
-  const getRandomUniqueValues = (count: number, min: number, max: number): number[] => {
+  const getRandomUniqueValues = (
+    count: number,
+    min: number,
+    max: number,
+  ): number[] => {
     const uniqueValues: Set<number> = new Set();
 
     while (uniqueValues.size < count) {
@@ -33,7 +40,8 @@ const getMedianWithTable: QuestionGenerator<QCMProps, VEAProps> = () => {
   let sortedValues: number[] = [];
 
   for (let i = 0; i < randomEffectives.length; i++)
-    for (let j = 0; j < randomEffectives[i]; j++) sortedValues.push(randomValues[i]);
+    for (let j = 0; j < randomEffectives[i]; j++)
+      sortedValues.push(randomValues[i]);
 
   const n = randomEffectives.reduce((sum, value) => sum + value, 0);
   const middleIndex = Math.floor(n / 2);
@@ -46,7 +54,7 @@ const getMedianWithTable: QuestionGenerator<QCMProps, VEAProps> = () => {
     median = sortedValues[middleIndex];
   }
 
-  const answer = (median + '').replace('.', ',');
+  const answer = (median + "").replace(".", ",");
   const question: Question<QCMProps, VEAProps> = {
     instruction: `On considère le tableau d'effectifs suivant : 
 
@@ -59,33 +67,43 @@ Calculer la médiane de cette série de valeurs.`,
 
     answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, randomValues },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randomValues }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, randomValues },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, randomValues[randint(0, randomValues.length)] + '');
+    tryToAddWrongProp(
+      propositions,
+      randomValues[randint(0, randomValues.length)] + "",
+    );
   }
 
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
+};
 export const medianWithTable: MathExercise<QCMProps, VEAProps> = {
-  id: 'medianWithTable',
-  connector: '=',
+  id: "medianWithTable",
+  connector: "=",
   label: "Calcul de la médiane d'un tableau d'effectifs",
-  levels: ['3ème', '2nde', 'CAP', '2ndPro', '1rePro', '1reTech'],
+  levels: ["3ème", "2nde", "CAP", "2ndPro", "1rePro", "1reTech"],
   isSingleStep: false,
-  sections: ['Statistiques'],
+  sections: ["Statistiques"],
   generator: (nb: number) => getDistinctQuestions(getMedianWithTable, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

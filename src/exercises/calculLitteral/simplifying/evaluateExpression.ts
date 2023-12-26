@@ -4,38 +4,46 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Polynomial } from '#root/math/polynomials/polynomial';
-import { randint } from '#root/math/utils/random/randint';
-import { coinFlip } from '#root/utils/coinFlip';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Polynomial } from "#root/math/polynomials/polynomial";
+import { randint } from "#root/math/utils/random/randint";
+import { coinFlip } from "#root/utils/coinFlip";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
 const getEvaluateExpression: QuestionGenerator<QCMProps, VEAProps> = () => {
   const rand = coinFlip();
   const polynome1 = new Polynomial([randint(-9, 10), randint(-5, 6, [0])]);
-  const polynome2 = new Polynomial([randint(-9, 10), randint(-9, 10), randint(-4, 5, [0])]);
+  const polynome2 = new Polynomial([
+    randint(-9, 10),
+    randint(-9, 10),
+    randint(-4, 5, [0]),
+  ]);
   const xValue = randint(-9, 10);
 
   const statement = rand
-    ? `Calculer $${polynome1.toTree().toTex()}$ pour $x = ${xValue}$`
-    : `Calculer $${polynome2.toTree().toTex()}$ pour $x = ${xValue}$`;
+    ? `Calculer $${polynome1.toTree().toTex()}$ pour $x = ${xValue}$.`
+    : `Calculer $${polynome2.toTree().toTex()}$ pour $x = ${xValue}$.`;
 
-  const answer = rand ? polynome1.calculate(xValue) + '' : polynome2.calculate(xValue) + '';
+  const answer = rand
+    ? polynome1.calculate(xValue) + ""
+    : polynome2.calculate(xValue) + "";
 
   const question: Question<QCMProps, VEAProps> = {
     instruction: statement,
     answer,
-    keys: ['x'],
-    answerFormat: 'tex',
+    keys: ["x"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer },
   };
   return question;
@@ -47,21 +55,26 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   while (propositions.length < n) {
     const wrongAnswer = Number(answer) + randint(-10, 11, [0]);
 
-    tryToAddWrongProp(propositions, wrongAnswer + '');
+    tryToAddWrongProp(propositions, wrongAnswer + "");
   }
 
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
+};
+
 export const evaluateExpression: MathExercise<QCMProps, VEAProps> = {
-  id: 'evaluateExpression',
-  connector: '=',
-  label: 'Evaluer une expression',
-  levels: ['4ème', '3ème', '2nde', 'CAP', '2ndPro'],
-  sections: ['Calcul littéral'],
+  id: "evaluateExpression",
+  connector: "=",
+  label: "Evaluer une expression",
+  levels: ["4ème", "3ème", "2nde", "CAP", "2ndPro"],
+  sections: ["Calcul littéral"],
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(getEvaluateExpression, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

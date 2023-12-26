@@ -17,6 +17,8 @@ export type NodeOptions = {
   allowFractionToDecimal?: boolean;
   allowMinusAnywhereInFraction?: boolean;
   useExpNotation?: boolean;
+  allowLnOfOne?: boolean;
+  allowPowerOne?: boolean;
   allowSimplifySqrt?: boolean;
 };
 export interface Node {

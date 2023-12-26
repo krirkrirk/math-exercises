@@ -7,118 +7,121 @@ import {
   QuestionGenerator,
   QCMGenerator,
   addValidProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { randint } from '#root/math/utils/random/randint';
-import { random } from '#root/utils/random';
-import { v4 } from 'uuid';
+  VEA,
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randint } from "#root/math/utils/random/randint";
+import { random } from "#root/utils/random";
+import { v4 } from "uuid";
 
 const words = [
-  'angle',
-  'armoire',
-  'banc',
-  'bureau',
-  'cabinet',
-  'carreau',
-  'chaise',
-  'classe',
-  'clé',
-  'coin',
-  'couloir',
-  'dossier',
-  'eau',
-  'école',
-  'écriture',
-  'entrée',
-  'escalier',
-  'étagère',
-  'étude',
-  'extérieur',
-  'fenêtre',
-  'intérieur',
-  'lavabo',
-  'lecture',
-  'lit',
-  'marche',
-  'matelas',
-  'maternelle',
-  'meuble',
-  'mousse',
-  'mur',
-  'peluche',
-  'placard',
-  'plafond',
-  'porte',
-  'portemanteau',
-  'poubelle',
-  'radiateur',
-  'rampe',
-  'récréation',
-  'rentrée',
-  'rideau',
-  'robinet',
-  'salle',
-  'savon',
-  'serrure',
-  'serviette',
-  'siège',
-  'sieste',
-  'silence',
-  'sol',
-  'sommeil',
-  'sonnette',
-  'sortie',
-  'table',
-  'tableau',
-  'tabouret',
-  'tapis',
-  'tiroir',
-  'toilette',
-  'vitre',
+  "angle",
+  "armoire",
+  "banc",
+  "bureau",
+  "cabinet",
+  "carreau",
+  "chaise",
+  "classe",
+  "clé",
+  "coin",
+  "couloir",
+  "dossier",
+  "eau",
+  "école",
+  "écriture",
+  "entrée",
+  "escalier",
+  "étagère",
+  "étude",
+  "extérieur",
+  "fenêtre",
+  "intérieur",
+  "lavabo",
+  "lecture",
+  "lit",
+  "marche",
+  "matelas",
+  "maternelle",
+  "meuble",
+  "mousse",
+  "mur",
+  "peluche",
+  "placard",
+  "plafond",
+  "porte",
+  "portemanteau",
+  "poubelle",
+  "radiateur",
+  "rampe",
+  "récréation",
+  "rentrée",
+  "rideau",
+  "robinet",
+  "salle",
+  "savon",
+  "serrure",
+  "serviette",
+  "siège",
+  "sieste",
+  "silence",
+  "sol",
+  "sommeil",
+  "sonnette",
+  "sortie",
+  "table",
+  "tableau",
+  "tabouret",
+  "tapis",
+  "tiroir",
+  "toilette",
+  "vitre",
 ];
 
 const letters = [
-  'a',
-  'b',
-  'c',
-  'd',
-  'e',
-  'f',
-  'g',
-  'h',
-  'i',
-  'j',
-  'k',
-  'l',
-  'm',
-  'n',
-  'o',
-  'p',
-  'q',
-  'r',
-  's',
-  't',
-  'u',
-  'v',
-  'w',
-  'x',
-  'y',
-  'z',
-  'é',
-  'è',
-  'à',
-  'ç',
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+  "é",
+  "è",
+  "à",
+  "ç",
 ];
 type QCMProps = {
   answer: string;
   word: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
 const getAnagramsQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const word = random(words);
   const repeats: number[] = [];
-  const wordLetters = word.split('');
+  const wordLetters = word.split("");
   letters.forEach((letter) => {
     const nbOfRepeats = wordLetters.filter((l) => l === letter).length;
     if (nbOfRepeats > 1) repeats.push(nbOfRepeats);
@@ -130,20 +133,20 @@ const getAnagramsQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   };
 
   const facto = word
-    .split('')
+    .split("")
     .map((el, index) => index + 1)
     .reduce((acc, curr) => acc * curr, 1);
   let arrangements = 1;
   repeats.forEach((nbOfRepeats) => {
     arrangements *= getFacto(nbOfRepeats);
   });
-  const answer = facto / arrangements + '';
+  const answer = facto / arrangements + "";
 
   const question: Question<QCMProps, VEAProps> = {
     answer,
     instruction: `Combien d'anagrammes mathématiques du mot ${word} sont possibles ? `,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, word },
   };
 
@@ -153,26 +156,30 @@ const getAnagramsQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
 const getPropositions: QCMGenerator<QCMProps> = (n, { answer, word }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  tryToAddWrongProp(propositions, Math.pow(word.length, word.length) + '');
-  tryToAddWrongProp(propositions, (word.length * (word.length + 1)) / 2 + '');
-  tryToAddWrongProp(propositions, word.length * word.length + '');
+  tryToAddWrongProp(propositions, Math.pow(word.length, word.length) + "");
+  tryToAddWrongProp(propositions, (word.length * (word.length + 1)) / 2 + "");
+  tryToAddWrongProp(propositions, word.length * word.length + "");
 
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, randint(1000, 10000) + '');
+    tryToAddWrongProp(propositions, randint(1000, 10000) + "");
   }
 
   return shuffleProps(propositions, n);
 };
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
+};
 
 export const anagrams: MathExercise<QCMProps, VEAProps> = {
-  id: 'anagrams',
-  connector: '=',
+  id: "anagrams",
+  connector: "=",
   label: "Compter le nombre d'anagrammes d'un mot",
-  levels: ['TermSpé'],
+  levels: ["TermSpé"],
   isSingleStep: true,
-  sections: ['Combinatoire et dénombrement'],
+  sections: ["Combinatoire et dénombrement"],
   generator: (nb: number) => getDistinctQuestions(getAnagramsQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

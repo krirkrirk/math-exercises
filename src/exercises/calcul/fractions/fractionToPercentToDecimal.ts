@@ -17,7 +17,6 @@ import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { PercentNode } from "#root/tree/nodes/numbers/percentNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 
 const getFractionToPercentToDecimal: QuestionGenerator<
@@ -130,24 +129,26 @@ const getPropositions: QCMGenerator<QCMProps> = (
         statement = `${round(percent * 10 ** temp1, -temp1 + 2)}\\%`;
         break;
       case 2:
-        statement = `${simplifyNode(
-          new FractionNode(
-            new NumberNode(numerator * randint(1, 20, [0, 1])),
-            new NumberNode(denominator * randint(1, 20, [0, 1])),
-          ),
-        ).toTex()}`;
+        statement = `${new Rational(
+          numerator * randint(1, 20, [0, 1]),
+          denominator * randint(1, 20, [0, 1]),
+        )
+          .simplify()
+          .toTree()
+          .toTex()}`;
         break;
       case 3:
         const temp3 = randint(-5, 3, [0]);
         statement = `${round(percent * 10 ** temp3, -temp3 + 2)}`;
         break;
       case 4:
-        statement = `${simplifyNode(
-          new FractionNode(
-            new NumberNode(numerator * randint(1, 20, [0, 1])),
-            new NumberNode(denominator * randint(1, 20, [0, 1])),
-          ),
-        ).toTex()}`;
+        statement = `${new Rational(
+          numerator * randint(1, 20, [0, 1]),
+          denominator * randint(1, 20, [0, 1]),
+        )
+          .simplify()
+          .toTree()
+          .toTex()}`;
         break;
       case 5:
         statement = `${round(decimal + Math.random() * 10, 2)}`;

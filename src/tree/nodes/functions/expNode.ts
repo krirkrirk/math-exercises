@@ -20,6 +20,9 @@ export class ExpNode implements FunctionNode {
 
   toTex(): string {
     const tex = this.child.toTex();
+    if (!this.opts?.allowPowerOne && tex === "1") {
+      return "e";
+    }
     if (this.opts?.useExpNotation) {
       return `\\exp\\left(${tex}\\right)`;
     }

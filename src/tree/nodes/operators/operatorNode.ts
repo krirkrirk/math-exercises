@@ -9,6 +9,7 @@ export enum OperatorIds {
   divide,
   power,
   equal,
+  belongs,
 }
 
 export interface OperatorNode extends Node {

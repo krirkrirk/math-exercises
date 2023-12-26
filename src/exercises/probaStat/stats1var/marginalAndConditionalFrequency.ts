@@ -11,8 +11,8 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from "../exercise";
-import { getDistinctQuestions } from "../utils/getDistinctQuestions";
+} from "../../exercise";
+import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
 type QCMProps = {
   answer: string;
@@ -127,6 +127,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { rand, x1, x2, x3, x4 }) => {
   const calculs = getCalculs(x1, x2, x3, x4);
   const chosenCalculNode = simplifyNode(new NumberNode(calculs[rand]));
   const answer = chosenCalculNode;
+  return true;
 };
 
 export const marginalAndConditionalFrequency: MathExercise<QCMProps, VEAProps> =

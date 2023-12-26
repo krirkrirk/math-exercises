@@ -44,9 +44,12 @@ export class Complex {
     const conj = this.conjugate();
     const invRe = new Rational(conj.re, moduleSq).simplify().toTree();
     const invIm = new Rational(conj.im, moduleSq).simplify().toTree();
-    return new AddNode(invRe, new MultiplyNode(invIm, new VariableNode("i")));
+    return new ComplexNode(invRe, invIm);
   }
 
+  add(z: Complex) {
+    return new Complex(this.re + z.re, this.im + z.im);
+  }
   divideNode(z: Complex) {
     const moduleSq = z.moduleSquared();
     const newRe = new Rational(this.re * z.re + this.im * z.im, moduleSq)
@@ -55,12 +58,7 @@ export class Complex {
     const newIm = new Rational(this.im * z.re - z.im * this.re, moduleSq)
       .simplify()
       .toTree();
-    let imNode;
-    if (newIm.toTex() === "0") return newRe;
-    if (newIm.toTex() === "1") imNode = new VariableNode("i");
-    else imNode = new MultiplyNode(newIm, new VariableNode("i"));
-    if (newRe.toTex() === "0") return imNode;
-    return new AddNode(newRe, new MultiplyNode(newIm, new VariableNode("i")));
+    return new ComplexNode(newRe, newIm);
   }
 
   multiply(z: Complex) {
@@ -100,6 +98,6 @@ export class Complex {
     return new SquareRoot(this.re ** 2 + this.im ** 2).simplify().toTree();
   }
   toTree() {
-    return new ComplexNode(this.re, this.im);
+    return new ComplexNode(new NumberNode(this.re), new NumberNode(this.im));
   }
 }

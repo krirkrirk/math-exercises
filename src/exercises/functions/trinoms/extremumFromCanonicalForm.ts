@@ -4,33 +4,41 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Trinom, TrinomConstructor } from '#root/math/polynomials/trinom';
-import { randint } from '#root/math/utils/random/randint';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
+import { randint } from "#root/math/utils/random/randint";
+import { PointNode } from "#root/tree/nodes/geometry/pointNode";
+import { shuffle } from "#root/utils/shuffle";
 type QCMProps = {
   answer: string;
   a: number;
   b: number;
   c: number;
 };
-type VEAProps = {};
+type VEAProps = {
+  a: number;
+  b: number;
+  c: number;
+};
 
-const getExtremumFromCanonicalFormQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getExtremumFromCanonicalFormQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const trinom = TrinomConstructor.randomCanonical();
-  const answer = trinom.getSommet();
+  const answer = trinom.getSommet().toTexWithCoords();
 
   const question: Question<QCMProps, VEAProps> = {
     answer: answer,
     instruction: `Soit $f$ la fonction définie par $${trinom
       .getCanonicalForm()
       .toTex()}$. Quelles sont les coordonnées du sommet $S$ de la parabole représentative de $f$ ?`,
-    keys: ['S', 'equal', 'semicolon'],
-    answerFormat: 'tex',
+    keys: ["S", "semicolon"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
   };
 
@@ -43,26 +51,40 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
   const trinom = new Trinom(a, b, c);
   const alpha = trinom.getAlpha();
   const beta = trinom.getBeta();
-  tryToAddWrongProp(propositions, `S\\left(${beta}; ${alpha}\\right)`);
-  tryToAddWrongProp(propositions, `S\\left(${-alpha}; ${beta}\\right)`);
-  tryToAddWrongProp(propositions, `S\\left(${alpha}; ${-beta}\\right)`);
+  tryToAddWrongProp(propositions, `S\\left(${beta};${alpha}\\right)`);
+  tryToAddWrongProp(propositions, `S\\left(${-alpha};${beta}\\right)`);
+  tryToAddWrongProp(propositions, `S\\left(${alpha};${-beta}\\right)`);
 
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, `S\\left(${randint(-10, 11)}; ${randint(-10, 11)} \\right)`);
+    tryToAddWrongProp(
+      propositions,
+      `S\\left(${randint(-10, 11)};${randint(-10, 11)}\\right)`,
+    );
   }
 
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
+  const trinom = new Trinom(a, b, c);
+  const sommet = trinom.getSommet();
+  const answer = new PointNode(sommet);
+  const texs = answer.toAllValidTexs();
+  return texs.includes(ans);
+};
+
 export const extremumFromCanonicalForm: MathExercise<QCMProps, VEAProps> = {
-  id: 'extremumFromCanonicalForm',
-  connector: '=',
-  label: "Déterminer les coordonnées du sommet d'une parabole à partir de la forme canonique",
-  levels: ['1reSpé'],
+  id: "extremumFromCanonicalForm",
+  connector: "=",
+  label:
+    "Déterminer les coordonnées du sommet d'une parabole à partir de la forme canonique",
+  levels: ["1reSpé"],
   isSingleStep: true,
-  sections: ['Second degré'],
-  generator: (nb: number) => getDistinctQuestions(getExtremumFromCanonicalFormQuestion, nb),
+  sections: ["Second degré"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getExtremumFromCanonicalFormQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

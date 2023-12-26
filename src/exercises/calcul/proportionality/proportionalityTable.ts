@@ -4,43 +4,50 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { IntegerConstructor } from '#root/math/numbers/integer/integer';
-import { randint } from '#root/math/utils/random/randint';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { IntegerConstructor } from "#root/math/numbers/integer/integer";
+import { randint } from "#root/math/utils/random/randint";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
 const getProportionalityTable: QuestionGenerator<QCMProps, VEAProps> = () => {
   const fact = randint(2, 10);
-  let [x1, x2]: (string | number)[] = IntegerConstructor.randomDifferents(1, 100 / fact, 2);
+  let [x1, x2]: (string | number)[] = IntegerConstructor.randomDifferents(
+    1,
+    100 / fact,
+    2,
+  );
   let [x3, x4]: (string | number)[] = [x1 * fact, x2 * fact];
-  let answer = '';
+  let answer = "";
 
   const randQuation = randint(0, 4);
 
   switch (randQuation) {
     case 0:
-      answer = x1 + '';
-      x1 = '?';
+      answer = x1 + "";
+      x1 = "?";
       break;
     case 1:
-      answer = +x2 + '';
-      x2 = '?';
+      answer = +x2 + "";
+      x2 = "?";
       break;
     case 2:
-      answer = x3 + '';
-      x3 = '?';
+      answer = x3 + "";
+      x3 = "?";
       break;
     case 3:
-      answer = x4 + '';
-      x4 = '?';
+      answer = x4 + "";
+      x4 = "?";
       break;
   }
 
@@ -55,7 +62,7 @@ const getProportionalityTable: QuestionGenerator<QCMProps, VEAProps> = () => {
 Déterminer le nombre manquant.`,
     answer: answer,
     keys: [],
-    answerFormat: 'tex',
+    answerFormat: "tex",
     qcmGeneratorProps: { answer },
   };
 
@@ -67,20 +74,27 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   addValidProp(propositions, answer);
 
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, Number(answer) + randint(Number(-answer) + 1, 20, [0]) + '');
+    tryToAddWrongProp(
+      propositions,
+      Number(answer) + randint(Number(-answer) + 1, 20, [0]) + "",
+    );
   }
   return shuffle(propositions);
 };
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
+};
 
 export const proportionalityTable: MathExercise<QCMProps, VEAProps> = {
-  id: 'proportionalityTable',
-  connector: '=',
-  label: 'Calcul dans un tableau de proportionnalité',
-  levels: ['5ème', '4ème', '3ème', 'CAP', '2ndPro', '1rePro'],
+  id: "proportionalityTable",
+  connector: "=",
+  label: "Calcul dans un tableau de proportionnalité",
+  levels: ["5ème", "4ème", "3ème", "CAP", "2ndPro", "1rePro"],
   isSingleStep: false,
-  sections: ['Proportionnalité'],
+  sections: ["Proportionnalité"],
   generator: (nb: number) => getDistinctQuestions(getProportionalityTable, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

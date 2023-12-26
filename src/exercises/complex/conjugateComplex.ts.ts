@@ -4,30 +4,37 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Complex, ComplexConstructor } from '#root/math/complex/complex';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Complex, ComplexConstructor } from "#root/math/complex/complex";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
   re: number;
   im: number;
 };
-type VEAProps = {};
-const getConjugateComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+type VEAProps = {
+  re: number;
+  im: number;
+};
+
+const getConjugateComplexQuestion: QuestionGenerator<
+  QCMProps,
+  VEAProps
+> = () => {
   const complex = ComplexConstructor.random();
   const answer = complex.conjugate().toTree().toTex();
 
   const question: Question<QCMProps, VEAProps> = {
     answer,
     instruction: `Déterminer le conjugué de $z=${complex.toTree().toTex()}$.`,
-    keys: ['i', 'overline'],
-    answerFormat: 'tex',
-    startStatement: '\\overline z',
+    keys: ["i", "overline"],
+    answerFormat: "tex",
+    startStatement: "\\overline z",
     qcmGeneratorProps: { answer, re: complex.re, im: complex.im },
   };
 
@@ -52,15 +59,24 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, re, im }) => {
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { im, re }) => {
+  const complex = new Complex(re, im);
+  const answer = complex.conjugate().toTree();
+  const texs = answer.toAllValidTexs();
+  return texs.includes(ans);
+};
+
 export const conjugateComplex: MathExercise<QCMProps, VEAProps> = {
-  id: 'conjugateComplex',
-  connector: '=',
+  id: "conjugateComplex",
+  connector: "=",
   getPropositions,
   label: "Conjugué d'un nombre complexe",
-  levels: ['MathExp'],
+  levels: ["MathExp"],
   isSingleStep: true,
-  sections: ['Nombres complexes'],
-  generator: (nb: number) => getDistinctQuestions(getConjugateComplexQuestion, nb),
+  sections: ["Nombres complexes"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getConjugateComplexQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
+  isAnswerValid,
 };

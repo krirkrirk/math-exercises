@@ -4,49 +4,56 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Complex, ComplexConstructor } from '#root/math/complex/complex';
-import { randint } from '#root/math/utils/random/randint';
-import { coinFlip } from '#root/utils/coinFlip';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Complex, ComplexConstructor } from "#root/math/complex/complex";
+import { randint } from "#root/math/utils/random/randint";
+import { coinFlip } from "#root/utils/coinFlip";
+import { shuffle } from "#root/utils/shuffle";
 type QCMProps = {
   answer: string;
   re: number;
   im: number;
   isRe: boolean;
 };
-type VEAProps = {};
+type VEAProps = {
+  answer: string;
+};
 
 const getReAndImQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const z1 = ComplexConstructor.random();
   const isRe = coinFlip();
-  const answer = (isRe ? z1.re : z1.im) + '';
+  const answer = (isRe ? z1.re : z1.im) + "";
 
   const question: Question<QCMProps, VEAProps> = {
     answer,
-    instruction: `Soit $z=${z1.toTree().toTex()}$. Quelle est la partie ${isRe ? 'réelle' : 'imaginaire'} de $z$ ?`,
-    keys: ['i', 'z'],
-    answerFormat: 'tex',
+    instruction: `Soit $z=${z1.toTree().toTex()}$. Quelle est la partie ${
+      isRe ? "réelle" : "imaginaire"
+    } de $z$ ?`,
+    keys: ["i", "z"],
+    answerFormat: "tex",
     qcmGeneratorProps: { answer, re: z1.re, im: z1.im, isRe },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, re, im, isRe }) => {
+const getPropositions: QCMGenerator<QCMProps> = (
+  n,
+  { answer, re, im, isRe },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  tryToAddWrongProp(propositions, im + 'i');
+  tryToAddWrongProp(propositions, im + "i");
   tryToAddWrongProp(propositions, isRe ? im.toString() : re.toString());
 
   tryToAddWrongProp(propositions, (-im).toString());
 
   while (propositions.length < n) {
-    const wrongAnswer = randint(-10, 11) + '';
+    const wrongAnswer = randint(-10, 11) + "";
 
     tryToAddWrongProp(propositions, wrongAnswer);
   }
@@ -54,16 +61,21 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, re, im, isRe }) =>
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+  return ans === answer;
+};
+
 export const reAndIm: MathExercise<QCMProps, VEAProps> = {
-  id: 'getReAndImQuestion',
-  connector: '=',
+  id: "getReAndImQuestion",
+  connector: "=",
   getPropositions,
 
-  label: 'Identifier partie réelle et partie imaginaire',
-  levels: ['MathExp'],
+  label: "Identifier partie réelle et partie imaginaire",
+  levels: ["MathExp"],
   isSingleStep: true,
-  sections: ['Nombres complexes'],
+  sections: ["Nombres complexes"],
   generator: (nb: number) => getDistinctQuestions(getReAndImQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
+  isAnswerValid,
 };

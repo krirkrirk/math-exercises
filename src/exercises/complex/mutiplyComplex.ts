@@ -4,20 +4,23 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Complex, ComplexConstructor } from '#root/math/complex/complex';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Complex, ComplexConstructor } from "#root/math/complex/complex";
+import { shuffle } from "#root/utils/shuffle";
 
 type QCMProps = {
   answer: string;
   z1: number[];
   z2: number[];
 };
-type VEAProps = {};
+type VEAProps = {
+  z1: number[];
+  z2: number[];
+};
 const getMutiplyComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const z1 = ComplexConstructor.random();
   let z2: Complex;
@@ -29,9 +32,11 @@ const getMutiplyComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   const question: Question<QCMProps, VEAProps> = {
     answer,
-    instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2.toTree().toTex()}$. Calculer $z\\times z'$.`,
-    keys: ['i', 'z', 'quote'],
-    answerFormat: 'tex',
+    instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2
+      .toTree()
+      .toTex()}$. Calculer $z\\times z'$.`,
+    keys: ["i", "z", "quote"],
+    answerFormat: "tex",
 
     startStatement: "z\\times z'",
     qcmGeneratorProps: { answer, z1: [z1.re, z1.im], z2: [z2.re, z2.im] },
@@ -53,15 +58,26 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, z1, z2 }) => {
   return shuffle(propositions);
 };
 
+const isAnswerValid: VEA<VEAProps> = (ans, { z1, z2 }) => {
+  const complex1 = new Complex(z1[0], z1[1]);
+  const complex2 = new Complex(z2[0], z2[1]);
+  const answer = complex1.multiply(complex2).toTree();
+  const texs = answer.toAllValidTexs();
+  console.log(texs);
+  return texs.includes(ans);
+};
+
 export const mutiplyComplex: MathExercise<QCMProps, VEAProps> = {
-  id: 'mutiplyComplex',
-  connector: '=',
-  label: 'Multiplier deux nombres complexes',
-  levels: ['MathExp'],
+  id: "mutiplyComplex",
+  connector: "=",
+  label: "Multiplier deux nombres complexes",
+  levels: ["MathExp"],
   isSingleStep: true,
-  sections: ['Nombres complexes'],
-  generator: (nb: number) => getDistinctQuestions(getMutiplyComplexQuestion, nb),
+  sections: ["Nombres complexes"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getMutiplyComplexQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

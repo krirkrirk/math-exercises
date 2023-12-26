@@ -9,6 +9,10 @@ import { VariableNode } from "../../tree/nodes/variables/variableNode";
 import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 import { Rational } from "../numbers/rationals/rational";
+import {
+  MinusInfinityNode,
+  PlusInfinityNode,
+} from "#root/tree/nodes/numbers/infiniteNode";
 
 export abstract class PolynomialConstructor {
   static randomWithOrder(order: number, variable: string = "x") {
@@ -198,7 +202,13 @@ export class Polynomial {
 
     return roots.sort((a, b) => a - b);
   }
-  add(P: Polynomial): Polynomial {
+  add(P: Polynomial | number): Polynomial {
+    if (typeof P === "number") {
+      return new Polynomial(
+        [this.coefficients[0] + P, ...this.coefficients.slice(1)],
+        this.variable,
+      );
+    }
     if (P.variable !== this.variable)
       throw Error("Can't add two polynomials with different variables");
 
@@ -331,6 +341,23 @@ export class Polynomial {
       } else {
         if (this.degree % 2 === 0) return "-\\infty";
         return "+\\infty";
+      }
+    }
+  }
+
+  getLimitNode(to: "+\\infty" | "-\\infty") {
+    const leadingCoeff = this.coefficients[this.coefficients.length - 1];
+    if (this.degree === 0) return new NumberNode(leadingCoeff);
+    if (to === "+\\infty") {
+      if (leadingCoeff > 0) return PlusInfinityNode;
+      return MinusInfinityNode;
+    } else {
+      if (leadingCoeff > 0) {
+        if (this.degree % 2 === 0) return PlusInfinityNode;
+        return MinusInfinityNode;
+      } else {
+        if (this.degree % 2 === 0) return MinusInfinityNode;
+        return PlusInfinityNode;
       }
     }
   }
