@@ -18,12 +18,9 @@ import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
   k: number;
 };
-type VEAProps = {
-  k: number;
-};
+
 const getCubicEquationQuestion: QuestionGenerator<Identifiers> = () => {
   const x = randint(-10, 11);
   const k = x ** 3;
@@ -34,7 +31,7 @@ const getCubicEquationQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Résoudre l'équation suivante : $x^3 = ${k}$`,
     keys: equationKeys,
     answerFormat: "tex",
-    identifiers: { answer, k },
+    identifiers: { k },
   };
 
   return question;

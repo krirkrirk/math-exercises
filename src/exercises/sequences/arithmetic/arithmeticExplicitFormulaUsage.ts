@@ -14,13 +14,9 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   firstValue: number;
   askedRank: number;
   reason: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getArithmeticExplicitFormulaUsage: QuestionGenerator<
@@ -39,7 +35,7 @@ const getArithmeticExplicitFormulaUsage: QuestionGenerator<
     answer,
     keys: ["r", "n", "u", "underscore"],
     answerFormat: "tex",
-    identifiers: { answer, firstValue, askedRank, reason },
+    identifiers: { firstValue, askedRank, reason },
   };
 
   return question;

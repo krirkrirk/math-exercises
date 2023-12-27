@@ -29,16 +29,11 @@ import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   a: number;
   ineqType: string;
   result: number;
 };
-type VEAProps = {
-  a: number;
-  ineqType: string;
-  result: number;
-};
+
 const getFirstDegreeInequationsQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -55,7 +50,7 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
     instruction: `Résoudre l'inéquation : $${affine.toTex()} ${ineqType} ${c}$ `,
     keys: inequationKeys,
     answerFormat: "tex",
-    identifiers: { answer, a: affine.a, ineqType, result },
+    identifiers: { a: affine.a, ineqType, result },
   };
 
   return question;

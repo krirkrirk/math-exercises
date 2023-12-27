@@ -21,18 +21,12 @@ import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 
 type Identifiers = {
-  answer: string;
   numCoeffs: number[];
   denumCoeffs: number[];
 
   isRight: boolean;
 };
-type VEAProps = {
-  answer: string;
-  numCoeffs: number[];
-  denumCoeffs: number[];
-  isRight: boolean;
-};
+
 const getSign = (nb: number) => {
   return nb >= 0 ? "+" : "-";
 };
@@ -76,7 +70,6 @@ const getSequenceRationalFracLimitQuestion: QuestionGenerator<
     keys: ["infty"],
     answerFormat: "tex",
     identifiers: {
-      answer,
       numCoeffs: polyNum.coefficients,
       denumCoeffs: polyDenum.coefficients,
       isRight,

@@ -22,11 +22,6 @@ import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
-  a: number;
-  power: number;
-};
-type VEAProps = {
   a: number;
   power: number;
 };
@@ -54,7 +49,7 @@ const getPowerFunctionDerivative: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    identifiers: { answer, a, power },
+    identifiers: { a, power },
   };
 
   return question;
@@ -96,6 +91,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
       simplifyNode(
         new MultiplyNode(
           new NumberNode(a * wrongExponent),
+
           new PowerNode(
             new VariableNode("x"),
             new NumberNode(wrongExponent - 1),

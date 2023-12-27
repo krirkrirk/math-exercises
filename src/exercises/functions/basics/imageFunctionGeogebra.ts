@@ -14,12 +14,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
   const rand = coinFlip();
@@ -79,7 +74,7 @@ const getImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
     commands,
     coords: [xmin, xmax, ymin, ymax],
     answerFormat: "tex",
-    identifiers: { answer: answerTex },
+    identifiers: {},
   };
   return question;
 };

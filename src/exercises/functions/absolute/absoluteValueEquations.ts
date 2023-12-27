@@ -19,11 +19,6 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { probaFlip } from "#root/utils/probaFlip";
 
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-};
-type VEAProps = {
   a: number;
   b: number;
 };
@@ -47,7 +42,7 @@ const getAbsoluteValueEquationsQuestion: QuestionGenerator<
     instruction: `Résoudre l'équation $|${poly.toTree().toTex()}| = ${a}$.`,
     keys: ["S", "equal", "emptyset", "lbrace", "semicolon", "rbrace"],
     answerFormat: "tex",
-    identifiers: { answer, a, b },
+    identifiers: { a, b },
   };
 
   return question;

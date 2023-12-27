@@ -15,13 +15,10 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 
 type Identifiers = {
-  answer: string;
   int: number;
   power: number;
 };
-type VEAProps = {
-  answer: string;
-};
+
 const getCalculatePowerQuestion: QuestionGenerator<Identifiers> = () => {
   const int = randint(-10, 11);
   const power = randint(0, 6);
@@ -36,7 +33,7 @@ const getCalculatePowerQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Calculer : $${statement}$`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, int, power },
+    identifiers: { int, power },
   };
 
   return question;

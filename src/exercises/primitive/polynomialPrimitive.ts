@@ -17,10 +17,6 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  coeffs: number[];
-};
-type VEAProps = {
   coeffs: number[];
 };
 
@@ -37,7 +33,7 @@ export const getPolynomialPrimitive: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "C"],
     answerFormat: "tex",
-    identifiers: { answer, coeffs: polynomial.coefficients },
+    identifiers: { coeffs: polynomial.coefficients },
   };
 
   return question;

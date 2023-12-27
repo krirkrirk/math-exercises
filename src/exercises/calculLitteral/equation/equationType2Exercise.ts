@@ -27,11 +27,6 @@ import { v4 } from "uuid";
  *  type ax=b
  */
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-};
-type VEAProps = {
   a: number;
   b: number;
 };
@@ -54,7 +49,7 @@ const getEquationType2ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: equationKeys,
     answerFormat: "tex",
-    identifiers: { answer, a, b: b.value },
+    identifiers: { a, b: b.value },
   };
   return question;
 };

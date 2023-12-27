@@ -15,11 +15,6 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 
 type Identifiers = {
-  answer: string;
-  int: number;
-  power: number;
-};
-type VEAProps = {
   int: number;
   power: number;
 };
@@ -42,7 +37,7 @@ const getPowerDefinitionQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Écrire sous forme de puissance : $${statement}$`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, int, power },
+    identifiers: { int, power },
   };
 
   return question;

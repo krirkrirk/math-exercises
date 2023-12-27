@@ -19,11 +19,6 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-};
-type VEAProps = {
   a: number;
   b: number;
 };
@@ -43,7 +38,7 @@ const getLnDerivative: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "ln", "epower"],
     answerFormat: "tex",
-    identifiers: { answer, a, b },
+    identifiers: { a, b },
   };
 
   return question;

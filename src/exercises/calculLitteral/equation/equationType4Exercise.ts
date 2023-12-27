@@ -27,13 +27,6 @@ import { shuffle } from "#root/utils/shuffle";
  */
 
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-  c: number;
-  d: number;
-};
-type VEAProps = {
   a: number;
   b: number;
   c: number;
@@ -69,7 +62,6 @@ const getEquationType4ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
     keys: equationKeys,
     answerFormat: "tex",
     identifiers: {
-      answer,
       a: a.value,
       b: b.value,
       c: c.value,

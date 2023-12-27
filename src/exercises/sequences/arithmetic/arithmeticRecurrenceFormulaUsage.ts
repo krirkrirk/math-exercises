@@ -13,12 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getArithmeticRecurrenceFormulaUsage: QuestionGenerator<
   Identifiers
@@ -34,7 +29,7 @@ const getArithmeticRecurrenceFormulaUsage: QuestionGenerator<
     answer,
     keys: ["r", "n", "u", "underscore"],
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
   return question;
 };

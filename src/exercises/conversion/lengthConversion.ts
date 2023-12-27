@@ -18,13 +18,9 @@ import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
   randomUnitIndex: number;
   randomUnitInstructionIndex: number;
   randomLength: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getLengthConversion: QuestionGenerator<Identifiers> = () => {
@@ -48,7 +44,6 @@ const getLengthConversion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: {
-      answer,
       randomLength: randomLength.value,
       randomUnitIndex,
       randomUnitInstructionIndex,

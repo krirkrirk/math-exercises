@@ -4,6 +4,7 @@ import {
   QCMGenerator,
   Question,
   QuestionGenerator,
+  VEA,
   addValidProp,
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
@@ -18,10 +19,8 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { simplifyComplex, simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {};
+type Identifiers = {};
+
 const getLinearCombinaisonComplexQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -51,7 +50,7 @@ const getLinearCombinaisonComplexQuestion: QuestionGenerator<
       .toTex()}$. Calculer $${statement.toTex()}$.`,
     keys: ["i", "z", "quote"],
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
 
   return question;
@@ -68,6 +67,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 
   return shuffle(propositions);
 };
+
+const isAnswerValid: VEA<Identifiers> = (n, { answer }) => {
+  return true;
+};
 export const linearCombinaisonComplex: MathExercise<Identifiers> = {
   id: "linearCombinaisonComplex",
   connector: "=",
@@ -80,4 +83,5 @@ export const linearCombinaisonComplex: MathExercise<Identifiers> = {
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

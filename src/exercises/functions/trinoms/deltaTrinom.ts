@@ -13,16 +13,8 @@ import { TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {
-  answer: string;
   a: number;
   b: number;
-
-  c: number;
-};
-type VEAProps = {
-  a: number;
-  b: number;
-
   c: number;
 };
 
@@ -37,7 +29,7 @@ const getDeltaTrinomQuestion: QuestionGenerator<Identifiers> = () => {
       .toTex()}$. Calculer le discriminant $\\Delta$.`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
+    identifiers: { a: trinom.a, b: trinom.b, c: trinom.c },
   };
 
   return question;

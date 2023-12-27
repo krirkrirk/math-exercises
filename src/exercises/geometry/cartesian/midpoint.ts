@@ -16,7 +16,6 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   coordsA: number[];
   coordsB: number[];
 };
@@ -41,7 +40,7 @@ const getMidpointQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["I", "semicolon"],
     answerFormat: "tex",
-    identifiers: { answer, coordsA: coords1, coordsB: coords2 },
+    identifiers: { coordsA: coords1, coordsB: coords2 },
   };
   return question;
 };

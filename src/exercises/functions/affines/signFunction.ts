@@ -22,16 +22,11 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   a: number;
   b: number;
   askingPositive: boolean;
 };
-type VEAProps = {
-  a: number;
-  b: number;
-  askingPositive: boolean;
-};
+
 const getSignFunction: QuestionGenerator<Identifiers> = () => {
   const a = randint(-9, 10, [0]);
   const b = randint(-9, 10);
@@ -65,7 +60,7 @@ const getSignFunction: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["S", "equal", "lbracket", "rbracket", "semicolon", "infty"],
     answerFormat: "tex",
-    identifiers: { answer, a, askingPositive, b },
+    identifiers: { a, askingPositive, b },
   };
   return question;
 };

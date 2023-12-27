@@ -15,12 +15,9 @@ import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
   coefficients: number[];
 };
-type VEAProps = {
-  coefficients: number[];
-};
+
 export const getSecondDegreeDerivative: QuestionGenerator<Identifiers> = () => {
   const coefficients = [randint(-9, 10), randint(-9, 10), randint(-9, 10, [0])];
 
@@ -33,7 +30,7 @@ export const getSecondDegreeDerivative: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    identifiers: { answer, coefficients },
+    identifiers: { coefficients },
   };
 
   return question;

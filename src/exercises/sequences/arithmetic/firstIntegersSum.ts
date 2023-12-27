@@ -13,11 +13,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 type Identifiers = {
-  answer: string;
   final: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getFirstIntegersSumQuestion: QuestionGenerator<Identifiers> = () => {
@@ -28,7 +24,7 @@ const getFirstIntegersSumQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Calculer la somme suivante : $1+2+3+\\ldots + ${final}$`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, final },
+    identifiers: { final },
   };
 
   return question;

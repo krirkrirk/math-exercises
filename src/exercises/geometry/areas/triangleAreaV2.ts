@@ -13,11 +13,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   randomSide: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const sides = [
@@ -43,12 +39,13 @@ const getTriangleAreaV2: QuestionGenerator<Identifiers> = () => {
   const randomSide = randint(0, sides.length);
   const area = (sides[randomSide][0] * sides[randomSide][1]) / 2;
   const answer = area + "";
+  const answerTex = answer + "\\text{cm}^2";
   const question: Question<Identifiers> = {
     instruction: `Calculer l'aire du triangle rectangle dont les côtés mesurent : $${sides[randomSide][0]}$ cm, $${sides[randomSide][1]}$ cm et $${sides[randomSide][2]}$ cm.`,
-    answer: answer + "\\text{cm}^2",
+    answer: answerTex,
     answerFormat: "tex",
     keys: ["cm", "cm2"],
-    identifiers: { answer, randomSide },
+    identifiers: { randomSide },
   };
 
   return question;
@@ -58,9 +55,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, randomSide },
 ) => {
+  console.log("props", answer, randomSide);
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer + "\\text{cm}^2");
-  const area = Number(answer);
+  addValidProp(propositions, answer);
+  const area = Number(answer.split("\\text")[0]);
   tryToAddWrongProp(
     propositions,
     sides[randomSide][0] +
@@ -78,7 +76,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffle(propositions);
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  const texs = [answer + "", answer + "\\text{cm}^2"];
+  const texs = [answer, answer.split("\\text")[0]];
   return texs.includes(ans);
 };
 export const triangleAreaV2: MathExercise<Identifiers> = {

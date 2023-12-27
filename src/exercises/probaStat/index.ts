@@ -1,0 +1,7 @@
+export * from "./ballsBasicProbas";
+export * from "./cardBasicProbas";
+export * from "./conditionalProbability";
+export * from "./diceBasicProbas";
+export * from "./probabilityTree";
+export * from "./stats1var";
+export * from "./stats2var";

@@ -16,14 +16,7 @@ import { InequationSolutionNode } from "#root/tree/nodes/inequations/inequationS
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { ClosureType, IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { coinFlip } from "#root/utils/coinFlip";
-import { v4 } from "uuid";
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-  isStrict: boolean;
-};
-type VEAProps = {
   a: number;
   b: number;
   isStrict: boolean;
@@ -58,7 +51,7 @@ const getAbsoluteValueInequationsQuestion: QuestionGenerator<
       "inf",
     ],
     answerFormat: "tex",
-    identifiers: { answer, a, b, isStrict },
+    identifiers: { a, b, isStrict },
   };
 
   return question;

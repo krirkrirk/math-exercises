@@ -14,12 +14,8 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   firstValue: number;
   reason: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getGeometricRecurrenceFormulaUsage: QuestionGenerator<
@@ -33,10 +29,10 @@ const getGeometricRecurrenceFormulaUsage: QuestionGenerator<
   const question: Question<Identifiers> = {
     instruction: `$(u_n)$ est une suite définie par $u_{n+1} = ${reason}\\times u_n$ et $u_{${firstRank}} = ${firstValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
-    answer: (firstValue * reason).toString(),
+    answer,
     keys: ["q", "n", "u", "underscore"],
     answerFormat: "tex",
-    identifiers: { answer, firstValue, reason },
+    identifiers: { firstValue, reason },
   };
   return question;
 };

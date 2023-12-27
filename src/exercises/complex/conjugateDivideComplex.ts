@@ -14,11 +14,6 @@ import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
-  z1: number[];
-  z2: number[];
-};
-type VEAProps = {
   z1: number[];
   z2: number[];
 };
@@ -47,7 +42,6 @@ const getConjugateDivideComplexQuestion: QuestionGenerator<
 
     startStatement: "\\overline{\\frac{z}{z'}}",
     identifiers: {
-      answer: answerTex,
       z1: [z1.re, z1.im],
       z2: [z2.re, z2.im],
     },

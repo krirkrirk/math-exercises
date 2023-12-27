@@ -18,12 +18,8 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
-  answer: string;
   a: number;
   b: number;
-};
-type VEAProps = {
-  a: number;
 };
 
 const getExpDerivative: QuestionGenerator<Identifiers> = () => {
@@ -45,7 +41,7 @@ const getExpDerivative: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "epower", "exp"],
     answerFormat: "tex",
-    identifiers: { answer, a, b },
+    identifiers: { a, b },
   };
 
   return question;

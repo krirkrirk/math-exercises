@@ -15,7 +15,7 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
-type GetAnswerNodeProps = {
+type Identifiers = {
   type: number;
   A: number;
   B: number;
@@ -25,13 +25,7 @@ type GetAnswerNodeProps = {
   BD: number;
 };
 
-type Identifiers = {
-  answer: string;
-} & GetAnswerNodeProps;
-
-type VEAProps = GetAnswerNodeProps;
-
-const getAnswerNode = ({ type, A, B, AC, AD, BC, BD }: GetAnswerNodeProps) => {
+const getAnswerNode = ({ type, A, B, AC, AD, BC, BD }: Identifiers) => {
   const pA = new Rational(A, A + B).simplify();
   const pB = new Rational(B, A + B).simplify();
   const pA_C = new Rational(AC, AC + AD).simplify();
@@ -137,7 +131,7 @@ const getProbabilityTree: QuestionGenerator<Identifiers> = () => {
     commands,
     coords: [-2, 8, -5, 5],
     answerFormat: "tex",
-    identifiers: { answer: answerTex, A, AC, AD, B, BC, BD, type },
+    identifiers: { A, AC, AD, B, BC, BD, type },
   };
 
   return question;

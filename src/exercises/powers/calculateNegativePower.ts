@@ -18,14 +18,10 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { v4 } from "uuid";
 type Identifiers = {
-  answer: string;
   int: number;
   power: number;
 };
-type VEAProps = {
-  int: number;
-  power: number;
-};
+
 const getCalculatePowerQuestion: QuestionGenerator<Identifiers> = () => {
   const int = randint(1, 11);
   const power = randint(-5, 0);
@@ -43,7 +39,7 @@ const getCalculatePowerQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Calculer : $${statement}$`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, int, power },
+    identifiers: { int, power },
   };
 
   return question;

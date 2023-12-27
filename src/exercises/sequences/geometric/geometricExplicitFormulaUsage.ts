@@ -14,17 +14,12 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   firstValue: number;
   reason: number;
   askedRank: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getGeometricExplicitFormulaUsage: QuestionGenerator<Identifiers> = () => {
@@ -35,7 +30,7 @@ const getGeometricExplicitFormulaUsage: QuestionGenerator<Identifiers> = () => {
     new NumberNode(firstValue),
     new PowerNode(new NumberNode(reason), new VariableNode("n")),
   );
-  const formulaTex = simplifyNode(formula).toTex();
+  const formulaTex = formula.toTex();
   const answer = (firstValue * Math.pow(reason, askedRank)).toString();
   const question: Question<Identifiers> = {
     instruction: `$(u_n)$ est une suite géométrique définie par $u_n = ${formulaTex}$. Calculer : $u_{${askedRank}}$`,
@@ -43,7 +38,7 @@ const getGeometricExplicitFormulaUsage: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, firstValue, reason, askedRank },
+    identifiers: { firstValue, reason, askedRank },
   };
   return question;
 };

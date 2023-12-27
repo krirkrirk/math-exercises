@@ -18,12 +18,6 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { probaFlip } from "#root/utils/probaFlip";
 type Identifiers = {
-  answer: string;
-  isParityQuestion: boolean;
-  isEvenQuestion: boolean;
-  nbFaces: number;
-};
-type VEAProps = {
   isParityQuestion: boolean;
   isEvenQuestion: boolean;
   nbFaces: number;
@@ -48,7 +42,7 @@ const getDiceBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `On lance un dé à ${nbFaces} faces. Quelle est la probabilité d'obtenir ${target} ?`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, isParityQuestion, isEvenQuestion, nbFaces },
+    identifiers: { isParityQuestion, isEvenQuestion, nbFaces },
   };
 
   return question;

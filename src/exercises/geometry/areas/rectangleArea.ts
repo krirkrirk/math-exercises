@@ -11,23 +11,19 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getRectangleArea: QuestionGenerator<Identifiers> = () => {
   const length = randint(3, 13);
   const width = randint(1, length);
   const answer = length * width + "";
+  const answerTex = answer + "\\text{cm}^2";
   const question: Question<Identifiers> = {
     instruction: `Calculer l'aire d'un rectangle de $${length}$ cm de longueur et de $${width}$ cm de largeur.`,
-    answer: answer + "\\text{cm}^2",
+    answer: answerTex,
     answerFormat: "tex",
     keys: [],
-    identifiers: { answer },
+    identifiers: {},
   };
 
   return question;
@@ -35,7 +31,7 @@ const getRectangleArea: QuestionGenerator<Identifiers> = () => {
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer + "\\text{cm}^2");
+  addValidProp(propositions, answer);
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
@@ -47,7 +43,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  const texs = [answer + "", answer + "\\text{cm}^2"];
+  const texs = [answer, answer.split("\\text")[0]];
   return texs.includes(ans);
 };
 

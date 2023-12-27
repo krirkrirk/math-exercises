@@ -15,11 +15,7 @@ import {
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 import { v4 } from "uuid";
 type Identifiers = {
-  answer: string;
   sortedValues: number[];
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getMedianList: QuestionGenerator<Identifiers> = () => {
@@ -48,7 +44,7 @@ const getMedianList: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, sortedValues },
+    identifiers: { sortedValues },
   };
 
   return question;

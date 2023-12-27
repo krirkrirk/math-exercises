@@ -13,14 +13,8 @@ import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
-import { v4 } from "uuid";
 
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getImageFunction: QuestionGenerator<Identifiers> = () => {
   const rand = coinFlip();
@@ -46,7 +40,7 @@ const getImageFunction: QuestionGenerator<Identifiers> = () => {
     answer: answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
   return question;
 };

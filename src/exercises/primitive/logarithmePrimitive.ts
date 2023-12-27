@@ -24,12 +24,9 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   coeffs: number[];
 };
-type VEAProps = {
-  coeffs: number[];
-};
+
 export const getLogarithmePrimitive: QuestionGenerator<Identifiers> = () => {
   const u = PolynomialConstructor.randomWithOrder(randint(1, 3));
   const uTree = u.toTree();
@@ -42,7 +39,7 @@ export const getLogarithmePrimitive: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "C", "ln", "abs"],
     answerFormat: "tex",
-    identifiers: { answer, coeffs: u.coefficients },
+    identifiers: { coeffs: u.coefficients },
   };
 
   return question;

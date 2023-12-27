@@ -24,7 +24,7 @@ const getIntervalsUnionQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Soit $I = ${int1.tex}$ et $J = ${int2.tex}$. Déterminer $I\\cup J$.`,
     keys: ["infty", "lbracket", "rbracket", "semicolon", "cup", "cap"],
     answerFormat: "tex",
-    identifiers: { answer, int1Tex: int1.tex, int2Tex: int2.tex },
+    identifiers: { int1Tex: int1.tex, int2Tex: int2.tex },
   };
 
   return question;
@@ -48,13 +48,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 type Identifiers = {
-  answer: string;
-  int1Tex: string;
-  int2Tex: string;
-};
-type VEAProps = {
-  answer: string;
-
   int1Tex: string;
   int2Tex: string;
 };

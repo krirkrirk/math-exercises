@@ -16,12 +16,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getScalarProductViaCoordsQuestion: QuestionGenerator<
   Identifiers
@@ -45,7 +40,7 @@ const getScalarProductViaCoordsQuestion: QuestionGenerator<
     answer: answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
   return question;
 };

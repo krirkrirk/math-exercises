@@ -22,12 +22,6 @@ import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-  c: number;
-};
-type VEAProps = {
   a: number;
   b: number;
   c: number;
@@ -54,7 +48,7 @@ const getPowersProductQuestion: QuestionGenerator<
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, a, b, c },
+    identifiers: { a, b, c },
   };
   return question;
 };

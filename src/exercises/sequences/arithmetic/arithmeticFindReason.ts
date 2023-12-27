@@ -12,12 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getArithmeticFindReason: QuestionGenerator<Identifiers> = () => {
   const rank1 = randint(0, 10);
@@ -32,7 +27,7 @@ const getArithmeticFindReason: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["r", "n", "u", "underscore"],
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
   return question;
 };

@@ -17,11 +17,6 @@ import { randint } from "#root/math/utils/random/randint";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {
-  answer: string;
-  affine1Coeffs: number[];
-  affine2Coeffs: number[];
-};
-type VEAProps = {
   affine1Coeffs: number[];
   affine2Coeffs: number[];
 };
@@ -46,7 +41,6 @@ const getDoubleDistributivityQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["x"],
     answerFormat: "tex",
     identifiers: {
-      answer,
       affine1Coeffs: affines[0].coefficients,
       affine2Coeffs: affines[1].coefficients,
     },

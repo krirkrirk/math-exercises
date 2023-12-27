@@ -18,11 +18,6 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 type Identifiers = {
-  answer: string;
-  affine1Coeffs: number[];
-  affine2Coeffs: number[];
-};
-type VEAProps = {
   affine1Coeffs: number[];
   affine2Coeffs: number[];
 };
@@ -44,7 +39,6 @@ export const getThirdIdentityQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["x"],
     answerFormat: "tex",
     identifiers: {
-      answer,
       affine1Coeffs: affine.coefficients,
       affine2Coeffs: affine2.coefficients,
     },

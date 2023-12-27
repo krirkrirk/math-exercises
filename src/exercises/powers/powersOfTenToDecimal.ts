@@ -20,11 +20,7 @@ import {
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
 type Identifiers = {
-  answer: string;
   randPower: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getPowersOfTenToDecimalQuestion: QuestionGenerator<Identifiers> = () => {
@@ -43,7 +39,7 @@ const getPowersOfTenToDecimalQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, randPower },
+    identifiers: { randPower },
   };
   return question;
 };

@@ -15,12 +15,8 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   uCoords: string[];
   vCoords: string[];
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getDeterminantQuestion: QuestionGenerator<Identifiers> = () => {
@@ -34,7 +30,6 @@ const getDeterminantQuestion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: {
-      answer: answerTex,
       uCoords: [u.x.toTex(), u.y.toTex()],
       vCoords: [v.x.toTex(), v.y.toTex()],
     },

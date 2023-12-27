@@ -13,22 +13,19 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   side: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getSquarePerimeter: QuestionGenerator<Identifiers> = () => {
   const side = randint(1, 21);
   const answer = side * 4 + "";
+  const answerTex = answer + "\\text{cm}";
   const question: Question<Identifiers> = {
     instruction: `Calculer le périmètre d'un carré de $${side}$ cm de côté.`,
-    answer: answer + "\\text{cm}",
+    answer: answerTex,
     answerFormat: "tex",
     keys: ["cm", "cm2"],
-    identifiers: { answer, side },
+    identifiers: { side },
   };
 
   return question;
@@ -36,7 +33,7 @@ const getSquarePerimeter: QuestionGenerator<Identifiers> = () => {
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer, side }) => {
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer + "\\text{cm}");
+  addValidProp(propositions, answer);
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
@@ -47,7 +44,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, side }) => {
   return shuffle(propositions);
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  const texs = [answer + "", answer + "\\text{cm}"];
+  const texs = [answer, answer.split("\\text")[0]];
   return texs.includes(ans);
 };
 export const squarePerimeter: MathExercise<Identifiers> = {

@@ -33,19 +33,13 @@ const getIntervalsIntersectionQuestion: QuestionGenerator<Identifiers> = () => {
       "cap",
     ],
     answerFormat: "tex",
-    identifiers: { answer, int1Tex: int1.tex, int2Tex: int2.tex },
+    identifiers: { int1Tex: int1.tex, int2Tex: int2.tex },
   };
 
   return question;
 };
 
 type Identifiers = {
-  answer: string;
-  int1Tex: string;
-  int2Tex: string;
-};
-type VEAProps = {
-  answer: string;
   int1Tex: string;
   int2Tex: string;
 };

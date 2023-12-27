@@ -15,15 +15,9 @@ import { randint } from "#root/math/utils/random/randint";
 import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
-import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-};
-type VEAProps = {
   a: number;
   b: number;
 };
@@ -38,7 +32,7 @@ const getFirstDegreeEquation: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: equationKeys,
     answerFormat: "tex",
-    identifiers: { answer, a, b },
+    identifiers: { a, b },
   };
 
   return question;
@@ -48,14 +42,15 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   addValidProp(propositions, answer);
   tryToAddWrongProp(
     propositions,
-    `x=${simplifyNode(new NumberNode(b / a)).toTex()}`,
+    `x=${new Rational(b, a).simplify().toTree().toTex()}`,
   );
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      `x=${simplifyNode(
-        new NumberNode((a + randint(-7, 8, [-a])) / (b + randint(-7, 8, [-b]))),
-      ).toTex()}`,
+      `x=${new Rational(a + randint(-7, 8, [-a]), b + randint(-7, 8, [-b]))
+        .simplify()
+        .toTree()
+        .toTex()}`,
     );
   }
 

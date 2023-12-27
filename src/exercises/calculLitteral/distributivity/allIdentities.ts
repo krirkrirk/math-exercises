@@ -23,14 +23,6 @@ import {
   isThirdIdentityAnswerValid,
 } from "./thirdIdentity";
 type Identifiers = {
-  answer: string;
-  type: number;
-  a?: number;
-  b?: number;
-  affine1Coeffs?: number[];
-  affine2Coeffs?: number[];
-};
-type VEAProps = {
   type: number;
   a?: number;
   b?: number;
@@ -40,7 +32,7 @@ type VEAProps = {
 
 const getAllIdentitiesQuestion: QuestionGenerator<Identifiers> = () => {
   const type = random([1, 2, 3]);
-  let question: Question<any, any>;
+  let question: Question<any>;
   let identifiers: Identifiers;
   switch (type) {
     case 1:
@@ -80,16 +72,17 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
 const isAnswerValid: VEA<Identifiers> = (
   ans,
-  { type, a, b, affine1Coeffs, affine2Coeffs },
+  { type, a, b, affine1Coeffs, affine2Coeffs, answer },
 ) => {
   switch (type) {
     case 1:
-      return isFirstIdentityAnswerValid(ans, { a: a!, b: b! });
+      return isFirstIdentityAnswerValid(ans, { answer, a: a!, b: b! });
     case 2:
-      return isSecondIdentityAnswerValid(ans, { a: a!, b: b! });
+      return isSecondIdentityAnswerValid(ans, { answer, a: a!, b: b! });
     case 3:
     default:
       return isThirdIdentityAnswerValid(ans, {
+        answer,
         affine1Coeffs: affine1Coeffs!,
         affine2Coeffs: affine2Coeffs!,
       });

@@ -21,14 +21,10 @@ import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
 type Identifiers = {
-  answer: string;
   coords1: number[];
   coords2: number[];
 };
-type VEAProps = {
-  coords1: number[];
-  coords2: number[];
-};
+
 const getDistanceBetweenTwoPoints: QuestionGenerator<Identifiers> = () => {
   const [coords1, coords2] = distinctRandTupleInt(2, 2, { from: -9, to: 10 });
   let A = new Point(
@@ -53,7 +49,7 @@ const getDistanceBetweenTwoPoints: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, coords1, coords2 },
+    identifiers: { coords1, coords2 },
   };
   return question;
 };

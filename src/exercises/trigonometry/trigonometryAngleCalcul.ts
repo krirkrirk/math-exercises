@@ -16,12 +16,7 @@ import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getTrigonometryAngleCalcul: QuestionGenerator<Identifiers> = () => {
   const vertices = [];
@@ -75,7 +70,7 @@ const getTrigonometryAngleCalcul: QuestionGenerator<Identifiers> = () => {
     ],
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    identifiers: { answer: answerTex },
+    identifiers: {},
   };
 
   return question;

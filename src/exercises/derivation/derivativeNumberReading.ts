@@ -22,11 +22,6 @@ import { evaluate } from "mathjs";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
-  A: number[];
-  B: number[];
-};
-type VEAProps = {
   A: number[];
   B: number[];
 };
@@ -70,7 +65,7 @@ const getDerivativeNumberReading: QuestionGenerator<Identifiers> = () => {
     coords: [xA - 5, xA + 5, yA - 5, yA + 5],
     answerFormat: "tex",
     keys: [],
-    identifiers: { answer, A: [xA, yA], B: [xB, yB] },
+    identifiers: { A: [xA, yA], B: [xB, yB] },
   };
 
   return question;

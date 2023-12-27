@@ -13,12 +13,9 @@ import {
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
 type Identifiers = {
-  answer: string;
   randomValues: number[];
 };
-type VEAProps = {
-  answer: string;
-};
+
 const getMedianWithTable: QuestionGenerator<Identifiers> = () => {
   const getRandomUniqueValues = (
     count: number,
@@ -68,7 +65,7 @@ Calculer la médiane de cette série de valeurs.`,
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, randomValues },
+    identifiers: { randomValues },
   };
 
   return question;

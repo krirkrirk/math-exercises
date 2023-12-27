@@ -14,12 +14,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getEvaluateExpression: QuestionGenerator<Identifiers> = () => {
   const rand = coinFlip();
@@ -44,7 +39,7 @@ const getEvaluateExpression: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
   return question;
 };

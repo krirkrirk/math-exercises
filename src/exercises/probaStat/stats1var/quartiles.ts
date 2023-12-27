@@ -15,11 +15,7 @@ import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
   randomValues: number[];
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getQuartiles: QuestionGenerator<Identifiers> = () => {
@@ -90,7 +86,7 @@ Calculer le ${quartileToString} de cette série de valeurs.`,
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, randomValues },
+    identifiers: { randomValues },
   };
 
   return question;

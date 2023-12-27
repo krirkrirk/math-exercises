@@ -14,10 +14,6 @@ import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 
 type Identifiers = {
-  answer: string;
-  coefficients: number[];
-};
-type VEAProps = {
   coefficients: number[];
 };
 
@@ -37,7 +33,7 @@ export const getThirdDegreeDerivative: QuestionGenerator<Identifiers> = () => {
     answer: answer,
     keys: ["x"],
     answerFormat: "tex",
-    identifiers: { answer, coefficients },
+    identifiers: { coefficients },
   };
 
   return question;

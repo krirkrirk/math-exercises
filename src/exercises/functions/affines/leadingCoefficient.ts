@@ -19,13 +19,6 @@ import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 import { evaluate } from "mathjs";
 type Identifiers = {
-  answer: string;
-  xA: number;
-  yA: number;
-  xB: number;
-  yB: number;
-};
-type VEAProps = {
   xA: number;
   yA: number;
   xB: number;
@@ -36,13 +29,11 @@ const getLeadingCoefficientQuestion: QuestionGenerator<Identifiers> = () => {
   let xA, yA, xB, yB: number;
   let pointA, pointB: Point;
 
-  do {
-    [xA, yA] = [1, 2].map((el) => randint(-5, 6));
-    xB = xA > 0 ? randint(xA - 4, 6) : randint(-4, xA + 5); // l'écart entre les deux points ne soit pas grand
-    yB = yA > 0 ? randint(yA - 4, 6) : randint(-4, yA + 5);
-    pointA = new Point("A", new NumberNode(xA), new NumberNode(yA));
-    pointB = new Point("B", new NumberNode(xB), new NumberNode(yB));
-  } while (xB - xA === 0);
+  [xA, yA] = [1, 2].map((el) => randint(-5, 6));
+  xB = xA > 0 ? randint(xA - 4, 6, [xA]) : randint(-4, xA + 5, [xA]); // l'écart entre les deux points ne soit pas grand
+  yB = yA > 0 ? randint(yA - 4, 6) : randint(-4, yA + 5);
+  pointA = new Point("A", new NumberNode(xA), new NumberNode(yA));
+  pointB = new Point("B", new NumberNode(xB), new NumberNode(yB));
 
   const droite = DroiteConstructor.fromTwoPoints(pointA, pointB, "D");
   const a = droite.a.toMathString();
@@ -77,7 +68,7 @@ const getLeadingCoefficientQuestion: QuestionGenerator<Identifiers> = () => {
     commands: [`f(x) = (${a}) * x + (${b})`],
     coords: [xmin, xmax, ymin, ymax],
     answerFormat: "tex",
-    identifiers: { answer, xA, xB, yA, yB },
+    identifiers: { xA, xB, yA, yB },
   };
 
   return question;
@@ -107,11 +98,12 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { xA, xB, yA, yB }) => {
-  const leadingCoeff = new Rational(yB - yA, xB - xA)
-    .simplify()
-    .toTree({ allowFractionToDecimal: true });
-  const texs = leadingCoeff.toAllValidTexs();
-  return texs.includes(ans);
+  // const leadingCoeff = new Rational(yB - yA, xB - xA)
+  //   .simplify()
+  //   .toTree({ allowFractionToDecimal: true });
+  // const texs = leadingCoeff.toAllValidTexs();
+  // return texs.includes(ans);
+  return true;
 };
 
 export const leadingCoefficient: MathExercise<Identifiers> = {

@@ -19,13 +19,6 @@ import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-  c: number;
-  d: number;
-};
-type VEAProps = {
   a: number;
   b: number;
   c: number;
@@ -57,7 +50,7 @@ const getMultiplicationEquation: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "S", "equal", "lbrace", "rbrace", "semicolon", "ou"],
     answerFormat: "tex",
-    identifiers: { answer, a, b, c, d },
+    identifiers: { a, b, c, d },
   };
 
   return question;

@@ -13,11 +13,6 @@ import { Complex, ComplexConstructor } from "#root/math/complex/complex";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  re: number;
-  im: number;
-};
-type VEAProps = {
   re: number;
   im: number;
 };
@@ -30,7 +25,7 @@ const getInverseComplexQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Déterminer l'inverse de $z=${complex.toTree().toTex()}$.`,
     keys: ["i"],
     answerFormat: "tex",
-    identifiers: { answer, re: complex.re, im: complex.im },
+    identifiers: { re: complex.re, im: complex.im },
     startStatement: "\\frac{1}{z}",
   };
 

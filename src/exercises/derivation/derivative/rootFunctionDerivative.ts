@@ -22,10 +22,6 @@ import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
-  a: number;
-};
-type VEAProps = {
   a: number;
 };
 
@@ -49,7 +45,7 @@ const getRootFunctionDerivative: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    identifiers: { answer, a },
+    identifiers: { a },
   };
 
   return question;

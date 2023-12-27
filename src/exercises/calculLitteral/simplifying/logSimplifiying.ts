@@ -20,12 +20,6 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  pm: number;
-  a: number;
-  b: number;
-};
-type VEAProps = {
   pm: number;
   a: number;
   b: number;
@@ -62,7 +56,7 @@ const getExpSimplifiying: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["ln"],
     answerFormat: "tex",
-    identifiers: { answer, pm, a, b },
+    identifiers: { pm, a, b },
   };
 
   return question;

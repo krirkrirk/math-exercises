@@ -14,13 +14,9 @@ import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 
 type Identifiers = {
-  answer: string;
   rank: number;
   u0: number;
   coeffs: number[];
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getRecurrenceFormulaUsageQuestion: QuestionGenerator<
@@ -43,7 +39,7 @@ const getRecurrenceFormulaUsageQuestion: QuestionGenerator<
       .toTex()}$. Calculer $u_${rank}$.`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, rank, u0, coeffs },
+    identifiers: { rank, u0, coeffs },
   };
 
   return question;

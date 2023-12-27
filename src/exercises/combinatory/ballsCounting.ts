@@ -13,14 +13,10 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { v4 } from "uuid";
 type Identifiers = {
-  answer: string;
   type: number;
   reds: number;
   greens: number;
   blacks: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getBallsCountingQuestion: QuestionGenerator<Identifiers> = () => {
@@ -71,7 +67,7 @@ const getBallsCountingQuestion: QuestionGenerator<Identifiers> = () => {
     Combien de tirages ${instruction} sont possibles ?`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, type, reds, greens, blacks },
+    identifiers: { type, reds, greens, blacks },
   };
 
   return question;

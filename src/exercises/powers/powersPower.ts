@@ -20,12 +20,6 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-  c: number;
-};
-type VEAProps = {
   a: number;
   b: number;
   c: number;
@@ -52,7 +46,7 @@ const getPowersPowerQuestion: QuestionGenerator<
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, a, b, c },
+    identifiers: { a, b, c },
   };
   return question;
 };

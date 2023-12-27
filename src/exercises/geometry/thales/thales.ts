@@ -17,10 +17,6 @@ import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  vertices: string[];
-};
-type VEAProps = {
   vertices: string[];
 };
 
@@ -94,7 +90,7 @@ const getThales: QuestionGenerator<Identifiers> = () => {
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
     answerFormat: "tex",
-    identifiers: { answer, vertices },
+    identifiers: { vertices },
   };
 
   return question;

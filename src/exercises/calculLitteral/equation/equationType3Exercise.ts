@@ -27,16 +27,11 @@ import { v4 } from "uuid";
  *  type ax+b=c
  */
 type Identifiers = {
-  answer: string;
   a: number;
   b: number;
   c: number;
 };
-type VEAProps = {
-  a: number;
-  b: number;
-  c: number;
-};
+
 const getEquationType3ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const interval = new Interval("[[-10; 10]]");
   const intervalStar = new Interval("[[-10; 10]]").difference(
@@ -57,7 +52,7 @@ const getEquationType3ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: equationKeys,
     answerFormat: "tex",
-    identifiers: { answer, a: a.value, b: b.value, c: c.value },
+    identifiers: { a: a.value, b: b.value, c: c.value },
   };
   return question;
 };

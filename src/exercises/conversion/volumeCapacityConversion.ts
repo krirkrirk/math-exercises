@@ -17,12 +17,8 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { v4 } from "uuid";
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
+
 const getVolumeCapacityConversion: QuestionGenerator<Identifiers> = () => {
   const volumeUnits = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
   const capacityUnits = ["mL", "cL", "dL", "L", "daL", "hL", "kL"];
@@ -62,7 +58,7 @@ const getVolumeCapacityConversion: QuestionGenerator<Identifiers> = () => {
     answer: answerTex,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer: answerTex },
+    identifiers: {},
   };
 
   return question;

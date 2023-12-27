@@ -13,12 +13,8 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   value1: number;
   value2: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getGeometricFindReason: QuestionGenerator<Identifiers> = () => {
@@ -35,7 +31,7 @@ const getGeometricFindReason: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, value1, value2 },
+    identifiers: { value1, value2 },
   };
   return question;
 };

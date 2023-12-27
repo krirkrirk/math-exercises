@@ -1,5 +1,19 @@
-import { exercises } from "../src/exercises/exercises";
+import * as Exercises from "./../src/exercises";
+import { MathExercise } from "./../src/exercises/exercise";
+
+const exercises = Object.values(Exercises) as MathExercise<any>[];
+type Worst = {
+  exoId: string;
+  time: number;
+};
 test("all exos", () => {
+  const questionsGenerationTimes: number[] = [];
+  let worstQuestionGenerationTime: Worst = { exoId: "", time: 0 };
+  const qcmGenerationTimes: number[] = [];
+  let worstQCMGenerationTime: Worst = { exoId: "", time: 0 };
+  const veaTimes: number[] = [];
+  let worstVEATime: Worst = { exoId: "", time: 0 };
+
   console.log(exercises.length);
   exercises.forEach((exo) => {
     console.log(exo.id);
@@ -7,8 +21,17 @@ test("all exos", () => {
       expect(exo.sections.length).not.toBe(0);
       expect(exo.levels.length).not.toBe(0);
 
+      let before = Date.now();
       const questions = exo.generator(30);
-
+      let after = Date.now();
+      let time = after - before;
+      questionsGenerationTimes.push(time);
+      if (worstQuestionGenerationTime.time < time) {
+        worstQuestionGenerationTime = {
+          exoId: exo.id,
+          time,
+        };
+      }
       if (exo.answerType !== "free") {
         expect(exo.getPropositions).not.toBe(undefined);
       }
@@ -22,12 +45,39 @@ test("all exos", () => {
         expect(question.instruction?.length).not.toBe(0);
         if (exo.answerType !== "QCM") {
           expect(question.keys).not.toBe(undefined);
+
+          let before = Date.now();
           expect(
-            exo.isAnswerValid!(question.answer, question.identifiers),
+            exo.isAnswerValid!(question.answer, {
+              answer: question.answer,
+              ...question.identifiers,
+            }),
           ).toBe(true);
+          let after = Date.now();
+          let time = after - before;
+          veaTimes.push(time);
+          if (worstVEATime.time < time) {
+            worstVEATime = {
+              exoId: exo.id,
+              time,
+            };
+          }
         }
         if (exo.answerType !== "free") {
-          const props = exo.getPropositions!(4, question.identifiers);
+          let before = Date.now();
+          const props = exo.getPropositions!(4, {
+            answer: question.answer,
+            ...question.identifiers,
+          });
+          let after = Date.now();
+          let time = after - before;
+          qcmGenerationTimes.push(time);
+          if (worstQCMGenerationTime.time < time) {
+            worstQCMGenerationTime = {
+              exoId: exo.id,
+              time,
+            };
+          }
           expect(props.length).toBe(4);
           expect(props.filter((prop) => prop.isRightAnswer).length).toBe(1);
           props.forEach((prop) =>
@@ -36,8 +86,27 @@ test("all exos", () => {
         }
       });
     } catch (err) {
-      console.log(exo.id);
+      console.log(exo.id, err);
       throw err;
     }
   });
+
+  console.log(
+    "average vea",
+    veaTimes.reduce((acc, curr) => acc + curr) / veaTimes.length,
+  );
+  console.log(
+    "average qcm",
+    qcmGenerationTimes.reduce((acc, curr) => acc + curr) /
+      qcmGenerationTimes.length,
+  );
+  console.log(
+    "average generator",
+    questionsGenerationTimes.reduce((acc, curr) => acc + curr) /
+      questionsGenerationTimes.length,
+  );
+
+  console.log("worst qcm", worstQCMGenerationTime);
+  console.log("worst vea", worstVEATime);
+  console.log("worst generator", worstQuestionGenerationTime);
 });

@@ -18,11 +18,6 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  a: number;
-  initialY: number;
-};
-type VEAProps = {
   a: number;
   initialY: number;
 };
@@ -50,7 +45,7 @@ const solveExponentialEquationWithIC: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "y", "epower", "exp", "equal"],
     answerFormat: "tex",
-    identifiers: { answer, a, initialY },
+    identifiers: { a, initialY },
   };
 
   return question;

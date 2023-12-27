@@ -16,10 +16,6 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  c: number;
-};
-type VEAProps = {
   c: number;
 };
 
@@ -33,7 +29,7 @@ export const getConstantPrimitive: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "C"],
     answerFormat: "tex",
-    identifiers: { answer, c },
+    identifiers: { c },
   };
 
   return question;

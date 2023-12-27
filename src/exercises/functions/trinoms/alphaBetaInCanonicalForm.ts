@@ -17,18 +17,12 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   param: string;
   a: number;
   alpha: number;
   beta: number;
 };
-type VEAProps = {
-  param: string;
-  a: number;
-  alpha: number;
-  beta: number;
-};
+
 const getAlphaBetaInCanonicalFormQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -49,7 +43,7 @@ const getAlphaBetaInCanonicalFormQuestion: QuestionGenerator<
     keys: ["x", "alpha", "beta"],
     answerFormat: "tex",
     startStatement: param,
-    identifiers: { answer, param, a: trinom.a, alpha, beta },
+    identifiers: { param, a: trinom.a, alpha, beta },
   };
 
   return question;

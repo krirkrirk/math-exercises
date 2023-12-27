@@ -18,10 +18,8 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 type Identifiers = {
-  answer: string;
   coeffs: number[];
 };
-type VEAProps = { answer: string; coeffs: number[] };
 
 const getPolynomLimitQuestion: QuestionGenerator<Identifiers> = () => {
   const poly = PolynomialConstructor.random(4);
@@ -35,7 +33,7 @@ const getPolynomLimitQuestion: QuestionGenerator<Identifiers> = () => {
       .toTex()}$.`,
     keys: ["infty"],
     answerFormat: "tex",
-    identifiers: { answer, coeffs: poly.coefficients },
+    identifiers: { coeffs: poly.coefficients },
   };
 
   return question;

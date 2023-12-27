@@ -21,12 +21,9 @@ import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
-  answer: string;
   a: number;
 };
-type VEAProps = {
-  a: number;
-};
+
 export const getExponentialPrimitive: QuestionGenerator<Identifiers> = () => {
   const a = randint(-20, 20, [0]);
 
@@ -42,7 +39,7 @@ export const getExponentialPrimitive: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "C", "epower", "exp"],
     answerFormat: "tex",
-    identifiers: { answer, a },
+    identifiers: { a },
   };
 
   return question;

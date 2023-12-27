@@ -13,10 +13,8 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   a: number;
 };
-type VEAProps = {};
 const getVariationsFromAlgebricFormQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -35,7 +33,7 @@ const getVariationsFromAlgebricFormQuestion: QuestionGenerator<
       isDevForm ? trinom.toTree().toTex() : trinom.getCanonicalForm().toTex()
     }$ ?`,
     answerFormat: "raw",
-    identifiers: { answer, a: trinom.a },
+    identifiers: { a: trinom.a },
   };
 
   return question;

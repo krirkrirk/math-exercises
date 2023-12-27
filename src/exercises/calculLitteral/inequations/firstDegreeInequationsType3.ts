@@ -25,7 +25,6 @@ import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   coeff: number;
   ineqType: string;
   result: string;
@@ -66,7 +65,6 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
     keys: inequationKeys,
     answerFormat: "tex",
     identifiers: {
-      answer,
       coeff,
       ineqType,
       result,

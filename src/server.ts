@@ -1,4 +1,8 @@
-import { exercises } from "./exercises/exercises";
+// import { exercises } from "./exercises";
+import * as Exercises from "./exercises";
+const exercises = Object.values(Exercises) as MathExercise<any>[];
+
+export { Exercises };
 import express, { Express, Request, Response } from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
@@ -7,6 +11,7 @@ import { RationalFrac } from "./math/polynomials/rationalFrac";
 import { Polynomial } from "./math/polynomials/polynomial";
 import { exponentialPrimitive } from "./exercises/primitive/exponentialPrimitive";
 import { expUPrimitive } from "./exercises/primitive/expUPrimitive";
+import { MathExercise } from "./exercises/exercise";
 const jsonParser = bodyParser.json();
 
 const allExercises = [...exercises];
@@ -15,18 +20,8 @@ const runServer = () => {
   dotenv.config();
   const app: Express = express();
   app.use(cors());
-  console.log(
-    exercises.filter((exo) => !exo.isAnswerValid).map((exo) => exo.id),
-  );
-  exercises.forEach((exo, index) => console.log(exo.id, index));
-  const exo = expUPrimitive;
-  const q = exo.generator(10);
-  const props = q.flatMap((question) =>
-    exo.getPropositions!(4, question.identifiers!),
-  );
-  console.log(exo.isAnswerValid!(q[0].answer, q[0].identifiers!));
-  console.log(props);
-  // console.log(mul.toAllValidTexs());
+
+  console.log(exercises.length);
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });
@@ -57,7 +52,10 @@ const runServer = () => {
     const populatedQuestions = questions?.map((q) => {
       return {
         ...q,
-        propositions: exo.getPropositions?.(4, q.identifiers),
+        propositions: exo.getPropositions?.(4, {
+          answer: q.answer,
+          ...q.identifiers,
+        }),
       };
     });
     res.json({

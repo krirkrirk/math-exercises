@@ -15,16 +15,11 @@ import { DiscreteSet } from "#root/math/sets/discreteSet";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   a: number;
   b: number;
   c: number;
 };
-type VEAProps = {
-  a: number;
-  b: number;
-  c: number;
-};
+
 const getCanonicalFromDevFormQuestion: QuestionGenerator<Identifiers> = () => {
   const trinom = TrinomConstructor.randomCanonical();
   const answer = trinom.getCanonicalForm().toTex();
@@ -35,7 +30,7 @@ const getCanonicalFromDevFormQuestion: QuestionGenerator<Identifiers> = () => {
       .toTree()
       .toTex()}$`,
     answerFormat: "tex",
-    identifiers: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
+    identifiers: { a: trinom.a, b: trinom.b, c: trinom.c },
   };
 
   return question;

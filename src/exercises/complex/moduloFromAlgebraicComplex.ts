@@ -17,11 +17,6 @@ import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
 type Identifiers = {
-  answer: string;
-  re: number;
-  im: number;
-};
-type VEAProps = {
   re: number;
   im: number;
 };
@@ -37,7 +32,7 @@ const getModuloFromAlgebraicComplexQuestion: QuestionGenerator<
     instruction: `Soit $z=${zTex}$. Déterminer le module $|z|$ de $z$.`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, re: z.re, im: z.im },
+    identifiers: { re: z.re, im: z.im },
   };
 
   return question;

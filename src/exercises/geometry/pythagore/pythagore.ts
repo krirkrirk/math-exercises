@@ -19,16 +19,11 @@ import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { KeyId } from "#root/types/keyIds";
 
 type Identifiers = {
-  answer: string;
   sideA: string;
   sideB: string;
   sideC: string;
 };
-type VEAProps = {
-  sideA: string;
-  sideB: string;
-  sideC: string;
-};
+
 const getPythagore: QuestionGenerator<Identifiers> = () => {
   const vertices: KeyId[] = [];
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
@@ -53,7 +48,7 @@ const getPythagore: QuestionGenerator<Identifiers> = () => {
     commands: triangle.generateCommands({}),
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    identifiers: { answer, sideA, sideB, sideC },
+    identifiers: { sideA, sideB, sideC },
   };
 
   return question;

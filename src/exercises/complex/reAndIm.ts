@@ -14,13 +14,9 @@ import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {
-  answer: string;
   re: number;
   im: number;
   isRe: boolean;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getReAndImQuestion: QuestionGenerator<Identifiers> = () => {
@@ -35,7 +31,7 @@ const getReAndImQuestion: QuestionGenerator<Identifiers> = () => {
     } de $z$ ?`,
     keys: ["i", "z"],
     answerFormat: "tex",
-    identifiers: { answer, re: z1.re, im: z1.im, isRe },
+    identifiers: { re: z1.re, im: z1.im, isRe },
   };
 
   return question;

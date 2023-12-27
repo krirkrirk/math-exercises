@@ -17,11 +17,6 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  firstValue: number;
-  reason: number;
-};
-type VEAProps = {
   firstValue: number;
   reason: number;
 };
@@ -38,7 +33,7 @@ const getArithmeticFindExplicitFormula: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["un", "equal", "r", "n", "u", "underscore"],
     answerFormat: "tex",
-    identifiers: { answer, firstValue, reason },
+    identifiers: { firstValue, reason },
   };
 
   return question;

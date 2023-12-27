@@ -22,11 +22,6 @@ import { EqualNode } from "#root/tree/nodes/operators/equalNode";
  *  type x+a=b
  */
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-};
-type VEAProps = {
   a: number;
   b: number;
 };
@@ -44,7 +39,7 @@ const getEquationType1ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: equationKeys,
     answerFormat: "tex",
-    identifiers: { answer, a, b },
+    identifiers: { a, b },
   };
   return question;
 };

@@ -19,10 +19,6 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
 type Identifiers = {
-  answer: string;
-  questionType: string;
-};
-type VEAProps = {
   questionType: string;
 };
 
@@ -60,7 +56,7 @@ const getCardBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `On tire une carte dans un jeu de 52 cartes. Quelle est la probabilité d'obtenir ${target} ?`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, questionType },
+    identifiers: { questionType },
   };
 
   return question;

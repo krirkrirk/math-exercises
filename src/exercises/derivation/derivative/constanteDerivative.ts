@@ -12,15 +12,10 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { NombreConstructor, NumberType } from "#root/math/numbers/nombre";
 import { randint } from "#root/math/utils/random/randint";
-import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
-import { shuffle } from "#root/utils/shuffle";
-import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
   tex: string;
 };
-type VEAProps = {};
 
 export const getConstanteDerivative: QuestionGenerator<Identifiers> = () => {
   const c = NombreConstructor.random();
@@ -32,7 +27,7 @@ export const getConstanteDerivative: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    identifiers: { answer, tex },
+    identifiers: { tex },
   };
 
   return question;

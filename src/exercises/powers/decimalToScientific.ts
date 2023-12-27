@@ -25,10 +25,6 @@ import {
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
 type Identifiers = {
-  answer: string;
-  decimal: number;
-};
-type VEAProps = {
   decimal: number;
 };
 
@@ -56,7 +52,7 @@ const getDecimalToScientificQuestion: QuestionGenerator<Identifiers> = () => {
     answer: answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, decimal: dec.value },
+    identifiers: { decimal: dec.value },
   };
   return question;
 };

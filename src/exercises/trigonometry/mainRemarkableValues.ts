@@ -16,7 +16,6 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 type Identifiers = {
-  answer: string;
   valueIndex: number;
   isCos: boolean;
 };
@@ -40,7 +39,7 @@ const getMainRemarkableValues: QuestionGenerator<Identifiers> = () => {
     answer: answer,
     keys: ["pi", "cos", "sin"],
     answerFormat: "tex",
-    identifiers: { answer, valueIndex, isCos },
+    identifiers: { valueIndex, isCos },
   };
   return question;
 };

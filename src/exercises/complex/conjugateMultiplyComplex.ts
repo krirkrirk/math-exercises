@@ -12,11 +12,6 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Complex, ComplexConstructor } from "#root/math/complex/complex";
 import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {
-  answer: string;
-  z1: number[];
-  z2: number[];
-};
-type VEAProps = {
   z1: number[];
   z2: number[];
 };
@@ -43,7 +38,7 @@ const getConjugateMultiplyComplexQuestion: QuestionGenerator<
     answerFormat: "tex",
 
     startStatement: "\\overline{z\\times z'}",
-    identifiers: { answer, z1: [z1.re, z1.im], z2: [z2.re, z2.im] },
+    identifiers: { z1: [z1.re, z1.im], z2: [z2.re, z2.im] },
   };
 
   return question;

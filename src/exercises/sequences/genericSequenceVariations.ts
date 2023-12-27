@@ -35,19 +35,16 @@ const getGenericSequenceVariationsQuestion: QuestionGenerator<
       .toTex()}$. Quel est le sens de variations de $u$ ?`,
     keys: [],
     answerFormat: "raw",
-    identifiers: { answer, root },
+    identifiers: { root },
   };
 
   return question;
 };
 
 type Identifiers = {
-  answer: string;
   root: number;
 };
-type VEAProps = {
-  answer: string;
-};
+
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer, root }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer, "raw");

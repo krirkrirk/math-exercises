@@ -30,22 +30,16 @@ import {
 } from "./thirdDegreeDerivative";
 
 type Identifiers = {
-  answer: string;
   type: number;
   a?: number;
   b?: number;
   coefficients?: number[];
   tex?: string;
 };
-type VEAProps = {
-  answer: string;
-  type: number;
-  coefficients?: number[];
-};
 
 const getUsualDerivative: QuestionGenerator<Identifiers> = () => {
   const type = randint(1, 5);
-  let question: Question<any, any>;
+  let question: Question<any>;
   let identifiers: Identifiers;
 
   switch (type) {
@@ -103,25 +97,27 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 const isAnswerValid: VEA<Identifiers> = (
   ans,
-  { answer, type, coefficients },
+  { answer, type, coefficients, a, b, tex },
 ) => {
   let valid: boolean;
   switch (type) {
     case 1:
-      valid = isFirstDegreeDerivativeAnswerValid(ans, { answer });
+      valid = isFirstDegreeDerivativeAnswerValid(ans, { answer, a: a!, b: b! });
       break;
     case 2:
       valid = isSecondDegreeDerivativeAnswerValid(ans, {
         coefficients: coefficients!,
+        answer,
       });
       break;
     case 3:
       valid = isThirdDegreeDerivativeAnswerValid(ans, {
         coefficients: coefficients!,
+        answer,
       });
       break;
     case 4:
-      valid = isConstanteDerivativeAnswerValid(ans, {});
+      valid = isConstanteDerivativeAnswerValid(ans, { answer, tex: tex! });
       break;
     default:
       throw Error("erreur");

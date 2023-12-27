@@ -12,12 +12,7 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { shuffle } from "#root/utils/shuffle";
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getReciprocalPercentageQuestion: QuestionGenerator<Identifiers> = () => {
   const randPercent = randint(1, 50);
@@ -39,7 +34,7 @@ const getReciprocalPercentageQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["percent"],
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
 
   return question;

@@ -22,15 +22,8 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {
-  answer: string;
   random: number;
   a?: number;
-  uCoeffs: number[];
-  vCoeffs: number[];
-};
-type VEAProps = {
-  random: number;
-  a: number;
   uCoeffs: number[];
   vCoeffs: number[];
 };
@@ -88,7 +81,6 @@ const getExpSimplifiying: QuestionGenerator<Identifiers> = () => {
     keys: ["x", "epower", "exp"],
     answerFormat: "tex",
     identifiers: {
-      answer,
       random,
       a,
       uCoeffs: u.coefficients,
@@ -149,7 +141,7 @@ const isAnswerValid: VEA<Identifiers> = (
   let answer: ExpNode;
   switch (random) {
     case 1:
-      answer = new ExpNode(u.add(a).add(v.opposite()).toTree());
+      answer = new ExpNode(u.add(a!).add(v.opposite()).toTree());
       break;
     case 2:
       answer = new ExpNode(u.add(v).toTree());

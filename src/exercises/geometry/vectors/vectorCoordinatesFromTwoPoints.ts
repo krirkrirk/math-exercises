@@ -14,12 +14,8 @@ import { randint } from "#root/math/utils/random/randint";
 import { randomLetter } from "#root/utils/randomLetter";
 
 type Identifiers = {
-  answer: string;
   A: number[];
   B: number[];
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getVectorCoordinatesFromTwoPointsQuestion: QuestionGenerator<
@@ -40,7 +36,7 @@ const getVectorCoordinatesFromTwoPointsQuestion: QuestionGenerator<
     instruction: `Soit $${startLetter}\\left(${A[0]};${A[1]}\\right)$ et $${endLetter}\\left(${B[0]};${B[1]}\\right)$. Quelles sont les coordonnées du vecteur $\\overrightarrow{${startLetter}${endLetter}}$ ?`,
     keys: ["semicolon"],
     answerFormat: "tex",
-    identifiers: { answer, A, B },
+    identifiers: { A, B },
   };
 
   return question;

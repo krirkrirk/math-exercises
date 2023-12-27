@@ -16,7 +16,6 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   sideLengths: number[];
   rand: number;
   rand2: number;
@@ -154,7 +153,7 @@ const getThales: QuestionGenerator<Identifiers> = () => {
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
     answerFormat: "tex",
-    identifiers: { answer, isAskingC, rand, rand2, sideLengths },
+    identifiers: { isAskingC, rand, rand2, sideLengths },
   };
 
   return question;

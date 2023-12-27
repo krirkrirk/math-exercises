@@ -23,17 +23,10 @@ import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
   a: number;
   coin: number;
   racine1: number;
   racine2: number;
-};
-type VEAProps = {
-  racine1: number;
-  racine2: number;
-  a: number;
-  coin: number;
 };
 
 const getThirdDegreeFunctionVariation: QuestionGenerator<Identifiers> = () => {
@@ -85,7 +78,7 @@ const getThirdDegreeFunctionVariation: QuestionGenerator<Identifiers> = () => {
       ymax + ((ymax - ymin) * randint(7, 20)) / 10,
     ],
     commands,
-    identifiers: { answer, racine1, racine2, coin, a },
+    identifiers: { racine1, racine2, coin, a },
   };
   return question;
 };

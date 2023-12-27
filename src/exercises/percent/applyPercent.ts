@@ -15,12 +15,7 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getApplyPercentQuestion: QuestionGenerator<Identifiers> = () => {
   const randNbr = randint(1, 500);
@@ -44,7 +39,7 @@ const getApplyPercentQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["percent"],
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
 
   return question;

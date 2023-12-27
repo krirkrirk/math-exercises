@@ -9,10 +9,7 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import {
-  Polynomial,
-  PolynomialConstructor,
-} from "#root/math/polynomials/polynomial";
+
 import { randint } from "#root/math/utils/random/randint";
 import { CosNode } from "#root/tree/nodes/functions/cosNode";
 import { SinNode } from "#root/tree/nodes/functions/sinNode";
@@ -25,11 +22,6 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  a: number;
-  isCos: boolean;
-};
-type VEAProps = {
   a: number;
   isCos: boolean;
 };
@@ -57,7 +49,7 @@ export const getSinCosPrimitive: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "C", "sin", "cos"],
     answerFormat: "tex",
-    identifiers: { answer, a, isCos },
+    identifiers: { a, isCos },
   };
 
   return question;

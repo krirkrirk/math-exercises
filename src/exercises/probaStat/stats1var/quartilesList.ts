@@ -14,11 +14,7 @@ import {
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
 type Identifiers = {
-  answer: string;
   randomValues: number[];
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getQuartiles: QuestionGenerator<Identifiers> = () => {
@@ -66,7 +62,7 @@ const getQuartiles: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, randomValues },
+    identifiers: { randomValues },
   };
 
   return question;

@@ -14,13 +14,9 @@ import {
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
 type Identifiers = {
-  answer: string;
   firstValue: number;
   reason: number;
   randValue: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getArithmeticThresholdFind: QuestionGenerator<Identifiers> = () => {
@@ -47,7 +43,7 @@ const getArithmeticThresholdFind: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["r", "n", "u", "underscore", "inf", "sup", "approx"],
     answerFormat: "tex",
-    identifiers: { answer, randValue, firstValue, reason },
+    identifiers: { randValue, firstValue, reason },
   };
 
   return question;

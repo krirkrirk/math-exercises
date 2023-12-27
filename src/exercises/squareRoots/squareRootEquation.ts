@@ -20,10 +20,6 @@ import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
-  k: number;
-};
-type VEAProps = {
   k: number;
 };
 
@@ -36,7 +32,7 @@ const getSquareRootEquationQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Résoudre l'équation suivante : $\\sqrt x = ${k}$`,
     keys: ["S", "equal", "lbrace", "semicolon", "rbrace", "emptyset"],
     answerFormat: "tex",
-    identifiers: { k, answer },
+    identifiers: { k },
   };
 
   return question;

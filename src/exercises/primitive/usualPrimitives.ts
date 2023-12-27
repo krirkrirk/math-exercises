@@ -30,14 +30,6 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 type Identifiers = {
-  answer: string;
-  type: number;
-  a?: number;
-  coeffs?: number[];
-  isCos?: boolean;
-  c?: number;
-};
-type VEAProps = {
   type: number;
   a?: number;
   coeffs?: number[];
@@ -47,7 +39,7 @@ type VEAProps = {
 
 const getUsualPrimitives: QuestionGenerator<Identifiers> = () => {
   const rand = randint(1, 5);
-  let question: Question<any, any>;
+  let question: Question<any>;
   let identifiers: any;
   switch (rand) {
     case 1:
@@ -108,27 +100,30 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
 const isAnswerValid: VEA<Identifiers> = (
   ans,
-  { type, a, coeffs, isCos, c },
+  { type, a, coeffs, isCos, c, answer },
 ) => {
   let res = false;
   switch (type) {
     case 1:
-      res = isConstantPrimitiveAnswerValid(ans, { c: c! });
+      res = isConstantPrimitiveAnswerValid(ans, { c: c!, answer });
       break;
     case 2:
       res = isPolynomialPrimitiveAnswerValid(ans, {
         coeffs: coeffs!,
+        answer,
       });
       break;
     case 3:
       res = isSinCosPrimitiveAnswerValid(ans, {
         a: a!,
         isCos: isCos!,
+        answer,
       });
       break;
     case 4:
       res = isExponentialPrimitiveAnswerValid(ans, {
         a: a!,
+        answer,
       });
       break;
     default:

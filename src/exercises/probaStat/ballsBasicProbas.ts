@@ -14,11 +14,6 @@ import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 
 type Identifiers = {
-  answer: string;
-  total: number;
-  nbColorAsked: number;
-};
-type VEAProps = {
   total: number;
   nbColorAsked: number;
 };
@@ -44,7 +39,7 @@ const getBallsBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
     }. Quelle est la probabilité de tirer une boule ${colorAsked} ?`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, total, nbColorAsked },
+    identifiers: { total, nbColorAsked },
   };
 
   return question;

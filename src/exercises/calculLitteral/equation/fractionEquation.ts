@@ -22,18 +22,12 @@ import {
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   a: number;
   b: number;
   c: number;
   d: number;
 };
-type VEAProps = {
-  a: number;
-  b: number;
-  c: number;
-  d: number;
-};
+
 const getFractionEquation: QuestionGenerator<Identifiers> = () => {
   // (ax + b)/(cx + d) = 0
 
@@ -69,7 +63,7 @@ const getFractionEquation: QuestionGenerator<Identifiers> = () => {
       "emptyset",
     ],
     answerFormat: "tex",
-    identifiers: { answer, a, b, c, d },
+    identifiers: { a, b, c, d },
   };
 
   return question;

@@ -15,12 +15,6 @@ import { round } from "#root/math/utils/round";
 import { coinFlip } from "#root/utils/coinFlip";
 
 type Identifiers = {
-  answer: string;
-  isFromEvolutionToCM: boolean;
-  evolution: number;
-};
-type VEAProps = {
-  answer: string;
   isFromEvolutionToCM: boolean;
   evolution: number;
 };
@@ -43,7 +37,7 @@ const getEvolutionToCmQuestion: QuestionGenerator<Identifiers> = () => {
       : `Quelle est l'évolution en pourcentage associée à un coefficient multiplicateur de $${CM}$ ?`,
     keys: ["percent"],
     answerFormat: "tex",
-    identifiers: { answer, isFromEvolutionToCM, evolution },
+    identifiers: { isFromEvolutionToCM, evolution },
   };
 
   return question;

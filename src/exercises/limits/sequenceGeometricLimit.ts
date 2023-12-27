@@ -13,13 +13,10 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { GeometricSequenceConstructor } from "#root/math/sequences/geometricSequence";
 
 type Identifiers = {
-  answer: string;
   reason: string;
   firstTerm: string;
 };
-type VEAProps = {
-  answer: string;
-};
+
 const getSequenceGeometricLimitQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -35,7 +32,6 @@ const getSequenceGeometricLimitQuestion: QuestionGenerator<
     keys: ["infty"],
     answerFormat: "tex",
     identifiers: {
-      answer,
       reason: sequence.reason.toTree().toTex(),
       firstTerm: sequence.firstTerm.toTree().toTex(),
     },

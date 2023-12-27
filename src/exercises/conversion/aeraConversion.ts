@@ -15,16 +15,12 @@ import {
   tryToAddWrongProp,
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
-import { v4 } from "uuid";
 type Identifiers = {
-  answer: string;
   randomUnitIndex: number;
   randomUnitInstructionIndex: number;
   randomAera: number;
 };
-type VEAProps = {
-  answer: string;
-};
+
 const getAeraConversion: QuestionGenerator<Identifiers> = () => {
   const units = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
 
@@ -51,7 +47,6 @@ const getAeraConversion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: {
-      answer,
       randomAera: randomAera.value,
       randomUnitIndex,
       randomUnitInstructionIndex,

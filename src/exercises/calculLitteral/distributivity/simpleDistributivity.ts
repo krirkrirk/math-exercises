@@ -18,12 +18,6 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-  coeff: number;
-};
-type VEAProps = {
   a: number;
   b: number;
   coeff: number;
@@ -50,7 +44,7 @@ const getSimpleDistributivityQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    identifiers: { answer, a: affine.a, b: affine.b, coeff: coeff.value },
+    identifiers: { a: affine.a, b: affine.b, coeff: coeff.value },
   };
   return question;
 };

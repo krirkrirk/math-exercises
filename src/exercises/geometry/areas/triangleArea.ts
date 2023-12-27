@@ -15,12 +15,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getTriangleArea: QuestionGenerator<Identifiers> = () => {
   const vertices = [];
@@ -79,18 +74,19 @@ const getTriangleArea: QuestionGenerator<Identifiers> = () => {
     ".",
     ",",
   );
+  const answerTex = answer + "\\text{cm}^2";
   const question: Question<Identifiers> = {
     instruction: `Calculer l'aire du triangle $${triangle.getTriangleName()}$ sachant que $${
       sides[randoms[0]]
     } = ${sidesLength[randoms[0]]}$ cm et $${
       vertices[randoms[0]]
     }${String.fromCharCode(code + 3)} = ${height}$ cm.`,
-    answer: answer + "\\text{cm}^2",
+    answer: answerTex,
     keys: ["cm", "cm2"],
     commands,
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
 
   return question;
@@ -98,7 +94,7 @@ const getTriangleArea: QuestionGenerator<Identifiers> = () => {
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer + "\\text{cm}^2");
+  addValidProp(propositions, answer);
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
@@ -112,7 +108,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   return shuffle(propositions);
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  const double = Number(answer.replace(",", ".")) * 2;
+  const double = Number(answer.split("\\text")[0].replace(",", ".")) * 2;
   const area = new Rational(double, 2)
     .simplify()
     .toTree({ allowFractionToDecimal: true });

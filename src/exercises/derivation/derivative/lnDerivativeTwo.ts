@@ -20,12 +20,8 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   a: number;
   b: number;
-};
-type VEAProps = {
-  a: number;
 };
 
 const getLnDerivative: QuestionGenerator<Identifiers> = () => {
@@ -44,7 +40,7 @@ const getLnDerivative: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "ln", "epower"],
     answerFormat: "tex",
-    identifiers: { answer, a, b },
+    identifiers: { a, b },
   };
 
   return question;

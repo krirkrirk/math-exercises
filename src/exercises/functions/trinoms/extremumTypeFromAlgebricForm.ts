@@ -14,10 +14,8 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 type Identifiers = {
-  answer: string;
   a: number;
 };
-type VEAProps = {};
 
 const getExtremumTypeFromAlgebricFormQuestion: QuestionGenerator<
   Identifiers
@@ -35,7 +33,7 @@ const getExtremumTypeFromAlgebricFormQuestion: QuestionGenerator<
     }$ admet-elle un maximum ou un minimum ?`,
     answerFormat: "raw",
     keys: [],
-    identifiers: { answer, a: trinom.a },
+    identifiers: { a: trinom.a },
   };
 
   return question;

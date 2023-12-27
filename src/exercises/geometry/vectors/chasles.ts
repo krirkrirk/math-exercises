@@ -15,11 +15,7 @@ import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   randLetters: string[];
-};
-type VEAProps = {
-  answer: string;
 };
 
 const letters = "ABCDEFGHIJKLMNPQRSTUVWXYZ";
@@ -49,7 +45,7 @@ const getChaslesQuestion: QuestionGenerator<Identifiers> = () => {
       ...(randLetters.sort((a, b) => a.localeCompare(b)) as KeyId[]),
     ],
     answerFormat: "tex",
-    identifiers: { answer, randLetters },
+    identifiers: { randLetters },
   };
 
   return question;

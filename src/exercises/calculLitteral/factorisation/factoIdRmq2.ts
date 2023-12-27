@@ -19,11 +19,6 @@ import { PowerNode, SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-};
-type VEAProps = {
   a: number;
   b: number;
 };
@@ -46,7 +41,7 @@ const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    identifiers: { answer, a: affine.a, b: affine.b },
+    identifiers: { a: affine.a, b: affine.b },
   };
   return question;
 };

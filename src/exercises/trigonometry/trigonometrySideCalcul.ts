@@ -15,12 +15,7 @@ import { round } from "#root/math/utils/round";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getTrigonometrySideCalcul: QuestionGenerator<Identifiers> = () => {
   const vertices = [];
@@ -83,7 +78,7 @@ const getTrigonometrySideCalcul: QuestionGenerator<Identifiers> = () => {
     commands,
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
 
   return question;

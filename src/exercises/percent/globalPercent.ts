@@ -14,12 +14,7 @@ import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { shuffle } from "#root/utils/shuffle";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getGlobalPercentQuestion: QuestionGenerator<Identifiers> = () => {
   const tab = ["hausse", "baisse"];
@@ -49,7 +44,7 @@ const getGlobalPercentQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["percent"],
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
 
   return question;

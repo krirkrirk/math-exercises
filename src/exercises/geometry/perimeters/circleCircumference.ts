@@ -13,12 +13,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getCircleCircumference: QuestionGenerator<Identifiers> = () => {
   const radius = randint(1, 13);
@@ -29,14 +24,15 @@ const getCircleCircumference: QuestionGenerator<Identifiers> = () => {
     ? round(2 * Math.PI * radius, 2)
     : round(Math.PI * diametre, 2);
   const answer = (answerNb + "").replace(".", ",");
+  const answerTex = answer + "\\text{cm}";
   const question: Question<Identifiers> = {
     instruction: `Calculer la circonférence d'un cercle de ${
       coin ? "rayon " + `$${radius}$` : "diamètre " + `$${diametre}$`
     } cm.`,
-    answer: answer + "\\text{cm}",
+    answer: answerTex,
     answerFormat: "tex",
     keys: ["cm", "cm2"],
-    identifiers: { answer },
+    identifiers: {},
   };
 
   return question;
@@ -44,7 +40,7 @@ const getCircleCircumference: QuestionGenerator<Identifiers> = () => {
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer + "\\text{cm}");
+  addValidProp(propositions, answer);
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
@@ -56,7 +52,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  const texs = [answer, answer + "\\text{cm}"];
+  const texs = [answer, answer.split("\\text")[0]];
   return texs.includes(ans);
 };
 

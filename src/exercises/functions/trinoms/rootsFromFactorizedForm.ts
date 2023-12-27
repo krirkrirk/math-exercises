@@ -18,12 +18,6 @@ import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-  c: number;
-};
-type VEAProps = {
   a: number;
   b: number;
   c: number;
@@ -41,7 +35,7 @@ const getRootsFromFactorizedFormQuestion: QuestionGenerator<
       .toTex()}$. Résoudre l'équation $f(x) = 0$.`,
     keys: ["S", "equal", "lbrace", "semicolon", "rbrace", "emptyset"],
     answerFormat: "tex",
-    identifiers: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
+    identifiers: { a: trinom.a, b: trinom.b, c: trinom.c },
   };
 
   return question;

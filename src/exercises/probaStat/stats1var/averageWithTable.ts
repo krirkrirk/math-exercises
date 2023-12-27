@@ -13,12 +13,7 @@ import {
 } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getAverageWithTableQuestion: QuestionGenerator<Identifiers> = () => {
   const getRandomUniqueValues = (
@@ -61,7 +56,7 @@ Calculer la moyenne de cette série de valeurs (arrondir au centième).`,
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
 
   return question;

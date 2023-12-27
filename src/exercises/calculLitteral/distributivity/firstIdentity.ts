@@ -20,14 +20,10 @@ import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
   a: number;
   b: number;
 };
-type VEAProps = {
-  a: number;
-  b: number;
-};
+
 const interval = new Interval("[[1; 10]]").difference(
   new DiscreteSet([new Integer(0)]),
 );
@@ -44,7 +40,7 @@ export const getFirstIdentityQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    identifiers: { answer, a: affine.a, b: affine.b },
+    identifiers: { a: affine.a, b: affine.b },
   };
   return question;
 };

@@ -16,13 +16,6 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  roots: number[];
-  xValue: number;
-  polynome1Coeffs: number[];
-};
-type VEAProps = {
-  answer: string;
   roots: number[];
   xValue: number;
   polynome1Coeffs: number[];
@@ -160,7 +153,6 @@ const getInverseImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
     coords: [xmin, xmax, ymin, ymax],
     answerFormat: "tex",
     identifiers: {
-      answer,
       roots,
       xValue,
       polynome1Coeffs: polynome1.coefficients,

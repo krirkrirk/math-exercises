@@ -25,13 +25,10 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 type Identifiers = {
-  answer: string;
   tenPower: number;
   decimal: number;
 };
-type VEAProps = {
-  answer: string;
-};
+
 const getScientificToDecimalQuestion: QuestionGenerator<Identifiers> = () => {
   const decScientific = DecimalConstructor.randomScientific(randint(1, 4));
   const tenPower = randint(-5, 6, [0, 1]);
@@ -48,7 +45,7 @@ const getScientificToDecimalQuestion: QuestionGenerator<Identifiers> = () => {
     answer: answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, decimal: decScientific.value, tenPower },
+    identifiers: { decimal: decScientific.value, tenPower },
   };
   return question;
 };

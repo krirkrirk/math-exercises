@@ -16,16 +16,11 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   rand: number;
   polynome1Coeffs: number[];
   polynome2Coeffs: number[];
 };
-type VEAProps = {
-  rand: number;
-  polynome1Coeffs: number[];
-  polynome2Coeffs: number[];
-};
+
 const getReduceExpression: QuestionGenerator<Identifiers> = () => {
   const rand = randint(0, 7);
   let polynome1: Polynomial;
@@ -97,7 +92,6 @@ const getReduceExpression: QuestionGenerator<Identifiers> = () => {
     keys: ["x"],
     answerFormat: "tex",
     identifiers: {
-      answer,
       rand,
       polynome1Coeffs: polynome1.coefficients,
       polynome2Coeffs: polynome2.coefficients,

@@ -14,14 +14,10 @@ import { IntegerConstructor } from "#root/math/numbers/integer/integer";
 import { randint } from "#root/math/utils/random/randint";
 import { v4 } from "uuid";
 type Identifiers = {
-  answer: string;
   xA: number;
   xB: number;
   yA: number;
   yB: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getCoordinatesReadingQuestion: QuestionGenerator<Identifiers> = () => {
@@ -54,7 +50,7 @@ const getCoordinatesReadingQuestion: QuestionGenerator<Identifiers> = () => {
     answerFormat: "tex",
     commands,
     coords,
-    identifiers: { answer, xA, xB, yA, yB },
+    identifiers: { xA, xB, yA, yB },
   };
 
   return question;

@@ -14,12 +14,8 @@ import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
   reason: number;
   startValue: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getGeometricReasonUsage: QuestionGenerator<Identifiers> = () => {
@@ -34,7 +30,7 @@ const getGeometricReasonUsage: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["q", "n", "u", "underscore"],
     answerFormat: "tex",
-    identifiers: { answer, startValue, reason },
+    identifiers: { startValue, reason },
   };
   return question;
 };

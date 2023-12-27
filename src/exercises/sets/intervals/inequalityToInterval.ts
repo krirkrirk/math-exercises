@@ -53,7 +53,6 @@ const getInequalityToIntervalQuestion: QuestionGenerator<Identifiers> = () => {
     ],
     answerFormat: "tex",
     identifiers: {
-      answer,
       isIntervalToInequality: isIntervalToInequality,
       intervalTex: interval.tex,
     },
@@ -63,11 +62,6 @@ const getInequalityToIntervalQuestion: QuestionGenerator<Identifiers> = () => {
 };
 
 type Identifiers = {
-  answer: string;
-  isIntervalToInequality: boolean;
-  intervalTex: string;
-};
-type VEAProps = {
   isIntervalToInequality: boolean;
   intervalTex: string;
 };

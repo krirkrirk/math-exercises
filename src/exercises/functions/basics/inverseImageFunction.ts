@@ -13,12 +13,7 @@ import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getInverseImageFunction: QuestionGenerator<Identifiers> = () => {
   const polynome1 = new Polynomial([randint(-9, 10), randint(-5, 6, [0])]);
@@ -35,7 +30,7 @@ const getInverseImageFunction: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "equal"],
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
   return question;
 };

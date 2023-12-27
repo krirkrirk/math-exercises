@@ -28,18 +28,14 @@ const getExplicitFormulaUsageQuestion: QuestionGenerator<Identifiers> = () => {
       .toTex()}$. Calculer $u_${rank}$.`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, rank, coeffs: u.coefficients },
+    identifiers: { rank, coeffs: u.coefficients },
   };
   return question;
 };
 
 type Identifiers = {
-  answer: string;
   rank: number;
   coeffs: number[];
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getPropositions: QCMGenerator<Identifiers> = (

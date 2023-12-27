@@ -17,11 +17,7 @@ import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
   leadingCoeffsRational: string;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getSequencePolynomProductLimitQuestion: QuestionGenerator<
@@ -51,7 +47,7 @@ const getSequencePolynomProductLimitQuestion: QuestionGenerator<
       .toTex()})(${polyDenum.toTree().toTex()})$.`,
     keys: ["infty"],
     answerFormat: "tex",
-    identifiers: { answer, leadingCoeffsRational },
+    identifiers: { leadingCoeffsRational },
   };
   return question;
 };

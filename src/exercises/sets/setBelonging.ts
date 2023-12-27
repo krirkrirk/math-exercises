@@ -15,12 +15,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getSetBelongingQuestion: QuestionGenerator<Identifiers> = () => {
   //N Z D Q R (racine2, pi)
@@ -65,7 +60,7 @@ const getSetBelongingQuestion: QuestionGenerator<Identifiers> = () => {
       "reals",
     ],
     answerFormat: "tex",
-    identifiers: { answer },
+    identifiers: {},
   };
 
   return question;

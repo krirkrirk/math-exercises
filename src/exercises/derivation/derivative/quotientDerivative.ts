@@ -19,11 +19,6 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { PowerNode, SquareNode } from "#root/tree/nodes/operators/powerNode";
 
 type Identifiers = {
-  answer: string;
-  poly1Coeffs: number[];
-  poly2Coeffs: number[];
-};
-type VEAProps = {
   poly1Coeffs: number[];
   poly2Coeffs: number[];
 };
@@ -59,7 +54,6 @@ const getProductDerivativeQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["x", "xsquare", "xcube"],
     answerFormat: "tex",
     identifiers: {
-      answer,
       poly1Coeffs: poly1.coefficients,
       poly2Coeffs: poly2.coefficients,
     },

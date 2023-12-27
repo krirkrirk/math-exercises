@@ -26,11 +26,6 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  coeffs: number[];
-  isCos: boolean;
-};
-type VEAProps = {
   coeffs: number[];
   isCos: boolean;
 };
@@ -57,7 +52,7 @@ export const getSinUCosUPrimitive: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "C", "sin", "cos"],
     answerFormat: "tex",
-    identifiers: { answer, coeffs: u.coefficients, isCos },
+    identifiers: { coeffs: u.coefficients, isCos },
   };
 
   return question;

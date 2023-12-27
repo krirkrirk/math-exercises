@@ -23,12 +23,9 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
-  answer: string;
   coeffs: number[];
 };
-type VEAProps = {
-  coeffs: number[];
-};
+
 export const getExpUPrimitive: QuestionGenerator<Identifiers> = () => {
   const u = PolynomialConstructor.randomWithOrder(randint(1, 3));
 
@@ -45,7 +42,7 @@ export const getExpUPrimitive: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "C", "epower", "exp"],
     answerFormat: "tex",
-    identifiers: { answer, coeffs: u.coefficients },
+    identifiers: { coeffs: u.coefficients },
   };
 
   return question;

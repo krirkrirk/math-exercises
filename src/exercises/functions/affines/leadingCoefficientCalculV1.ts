@@ -14,13 +14,6 @@ import { randint } from "#root/math/utils/random/randint";
 
 import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {
-  answer: string;
-  xA: number;
-  xB: number;
-  yA: number;
-  yB: number;
-};
-type VEAProps = {
   xA: number;
   xB: number;
   yA: number;
@@ -40,7 +33,7 @@ const getLeadingCoefficientCalculV1Question: QuestionGenerator<
     answer,
     answerFormat: "tex",
     keys: [],
-    identifiers: { answer, xA, xB, yA, yB },
+    identifiers: { xA, xB, yA, yB },
   };
   return question;
 };

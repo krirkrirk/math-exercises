@@ -13,12 +13,8 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   raison: number;
   final: number;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getGeometricFirstTermsSumQuestion: QuestionGenerator<
@@ -26,14 +22,14 @@ const getGeometricFirstTermsSumQuestion: QuestionGenerator<
 > = () => {
   const raison = randint(2, 8);
   const final = randint(5, 10);
-  const answer = (raison ** (final + 1) - 1) / (raison - 1);
+  const answer = (raison ** (final + 1) - 1) / (raison - 1) + "";
 
   const question: Question<Identifiers> = {
-    answer: answer + "",
+    answer: answer,
     instruction: `Calculer la somme suivante : $1 + ${raison} + ${raison}^2 + \\ldots + ${raison}^{${final}}$`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer: answer + "", raison, final },
+    identifiers: { raison, final },
   };
 
   return question;

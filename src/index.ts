@@ -1,4 +1,4 @@
-import { exercises } from "./exercises/exercises";
+// import { exercises } from "./exercises/exercises";
 import { NumberNode } from "./tree/nodes/numbers/numberNode";
 import { AddNode } from "./tree/nodes/operators/addNode";
 
@@ -34,5 +34,7 @@ import { AddNode } from "./tree/nodes/operators/addNode";
  * ! espace tous les 3 chiffres dans un nb (le clavier doit le fournir aussi!) 
 
 */
+import * as Exercises from "./exercises";
+const exercises = Object.values(Exercises);
 
 export { exercises };

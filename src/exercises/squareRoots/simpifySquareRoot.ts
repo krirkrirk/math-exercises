@@ -16,7 +16,6 @@ import {
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 type Identifiers = {
   sqrtOperand: number;
-  answer: string;
 };
 
 const getSimplifySquareRoot: QuestionGenerator<Identifiers> = () => {
@@ -33,7 +32,7 @@ const getSimplifySquareRoot: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, sqrtOperand: squareRoot.operand },
+    identifiers: { sqrtOperand: squareRoot.operand },
   };
   return question;
 };

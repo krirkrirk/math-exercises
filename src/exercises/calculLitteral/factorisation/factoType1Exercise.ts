@@ -21,11 +21,6 @@ import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  affinesCoeffs: number[][];
-  operation: string;
-};
-type VEAProps = {
   affinesCoeffs: number[][];
   operation: string;
 };
@@ -71,7 +66,6 @@ const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
     keys: ["x"],
     answerFormat: "tex",
     identifiers: {
-      answer,
       affinesCoeffs: affines.map((affine) => affine.coefficients),
       operation,
     },

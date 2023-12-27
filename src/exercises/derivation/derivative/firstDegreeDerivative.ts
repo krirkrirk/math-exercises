@@ -13,13 +13,10 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 type Identifiers = {
-  answer: string;
   a: number;
   b: number;
 };
-type VEAProps = {
-  answer: string;
-};
+
 export const getFirstDegreeDerivative: QuestionGenerator<Identifiers> = () => {
   const [a, b] = [randint(-9, 10, [0]), randint(-9, 10)];
   const polynomial = new Polynomial([b, a]);
@@ -30,7 +27,7 @@ export const getFirstDegreeDerivative: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    identifiers: { answer, a, b },
+    identifiers: { a, b },
   };
 
   return question;

@@ -13,13 +13,6 @@ import { Complex, ComplexConstructor } from "#root/math/complex/complex";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  z1Re: number;
-  z1Im: number;
-  z2Re: number;
-  z2Im: number;
-};
-type VEAProps = {
   z1Re: number;
   z1Im: number;
   z2Re: number;
@@ -44,7 +37,6 @@ const getAddComplexQuestion: QuestionGenerator<Identifiers> = () => {
     answerFormat: "tex",
     startStatement: "z+z'",
     identifiers: {
-      answer,
       z1Re: z1.re,
       z1Im: z1.im,
       z2Re: z2.re,

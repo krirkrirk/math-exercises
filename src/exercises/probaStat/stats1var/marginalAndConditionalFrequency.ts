@@ -1,8 +1,6 @@
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { Node } from "#root/tree/nodes/node";
-import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 import {
   MathExercise,
@@ -17,14 +15,6 @@ import {
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
 type Identifiers = {
-  answer: string;
-  x1: number;
-  x2: number;
-  x3: number;
-  x4: number;
-  rand: number;
-};
-type VEAProps = {
   x1: number;
   x2: number;
   x3: number;
@@ -133,7 +123,7 @@ Calculer la fréquence ${freqString}.`,
     answer,
     keys: ["f", "cap", "underscore"],
     answerFormat: "tex",
-    identifiers: { answer, rand, x1, x2, x3, x4 },
+    identifiers: { rand, x1, x2, x3, x4 },
   };
 
   return question;

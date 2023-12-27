@@ -14,12 +14,9 @@ import { randint } from "#root/math/utils/random/randint";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
   type: number;
 };
-type VEAProps = {
-  answer: string;
-};
+
 const getDiceCountingQuestion: QuestionGenerator<Identifiers> = () => {
   const type = randint(0, 8);
   let instruction = "";
@@ -73,7 +70,7 @@ const getDiceCountingQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `On tire 3 fois consécutivement un dé à six faces numérotées de 1 à 6. Combien de tirages ${instruction} sont possibles ?`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, type },
+    identifiers: { type },
   };
 
   return question;

@@ -22,11 +22,6 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  a: number;
-  k: number;
-};
-type VEAProps = {
   a: number;
   k: number;
 };
@@ -61,7 +56,7 @@ const getLnEquation: QuestionGenerator<Identifiers> = () => {
       "rbrace",
     ],
     answerFormat: "tex",
-    identifiers: { answer, a, k },
+    identifiers: { a, k },
   };
 
   return question;

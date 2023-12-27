@@ -46,13 +46,12 @@ const getRemarkableValues: QuestionGenerator<Identifiers> = () => {
     answer: answer,
     keys: ["pi", "cos", "sin"],
     answerFormat: "tex",
-    identifiers: { answer, isCos, valueIndex },
+    identifiers: { isCos, valueIndex },
   };
   return question;
 };
 
 type Identifiers = {
-  answer: string;
   valueIndex: number;
   isCos: boolean;
 };

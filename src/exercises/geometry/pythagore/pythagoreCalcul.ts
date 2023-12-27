@@ -20,7 +20,6 @@ import { isInt } from "#root/utils/isInt";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   square: number;
 };
 
@@ -82,7 +81,7 @@ const getPythagoreCalcul: QuestionGenerator<Identifiers> = () => {
     commands,
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    identifiers: { answer, square },
+    identifiers: { square },
   };
 
   return question;

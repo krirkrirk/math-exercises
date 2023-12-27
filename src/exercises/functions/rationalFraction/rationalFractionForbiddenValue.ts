@@ -18,13 +18,8 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   a: number;
   b: number;
-  c: number;
-  d: number;
-};
-type VEAProps = {
   c: number;
   d: number;
 };
@@ -52,7 +47,7 @@ const getRationalFractionForbiddenValueQuestion: QuestionGenerator<
     instruction: `Soit $f(x)=${fctTex}$. Quelle est la valeur interdite de la fonction $f$ ?`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, a, b, c, d },
+    identifiers: { a, b, c, d },
   };
 
   return question;

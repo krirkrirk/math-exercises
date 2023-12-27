@@ -111,11 +111,7 @@ const letters = [
   "ç",
 ];
 type Identifiers = {
-  answer: string;
   word: string;
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getAnagramsQuestion: QuestionGenerator<Identifiers> = () => {
@@ -147,7 +143,7 @@ const getAnagramsQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Combien d'anagrammes mathématiques du mot ${word} sont possibles ? `,
     keys: [],
     answerFormat: "tex",
-    identifiers: { answer, word },
+    identifiers: { word },
   };
 
   return question;

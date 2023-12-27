@@ -23,11 +23,6 @@ import { average } from "#root/utils/average";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
-  xValues: number[];
-  yValues: number[];
-};
-type VEAProps = {
   xValues: number[];
   yValues: number[];
 };
@@ -54,7 +49,6 @@ const getAveragePointQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["semicolon"],
     answerFormat: "tex",
     identifiers: {
-      answer,
       xValues: sortedPoints.map((el) => el[0]),
       yValues: sortedPoints.map((el) => el[1]),
     },

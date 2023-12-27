@@ -21,11 +21,6 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  numCoeffs: number[];
-  denumCoeffs: number[];
-};
-type VEAProps = {
   numCoeffs: number[];
   denumCoeffs: number[];
 };
@@ -65,7 +60,6 @@ const getSequenceRationalFracLimitQuestion: QuestionGenerator<
     keys: ["infty"],
     answerFormat: "tex",
     identifiers: {
-      answer,
       numCoeffs: polyNum.coefficients,
       denumCoeffs: polyDenum.coefficients,
     },

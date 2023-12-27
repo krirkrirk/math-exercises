@@ -18,15 +18,9 @@ import { randint } from "#root/math/utils/random/randint";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 
 type Identifiers = {
-  answer: string;
   affine1Coeffs: number[];
   affine2Coeffs: number[];
 };
-type VEAProps = {
-  affine1Coeffs: number[];
-  affine2Coeffs: number[];
-};
-
 const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
   const interval = new Interval("[[-10; 10]]").difference(
     new DiscreteSet([new Integer(0)]),
@@ -45,7 +39,6 @@ const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
     keys: ["x"],
     answerFormat: "tex",
     identifiers: {
-      answer,
       affine1Coeffs: affine.coefficients,
       affine2Coeffs: affine2.coefficients,
     },

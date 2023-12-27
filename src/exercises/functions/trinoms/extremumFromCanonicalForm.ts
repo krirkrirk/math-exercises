@@ -14,12 +14,6 @@ import { randint } from "#root/math/utils/random/randint";
 import { PointNode } from "#root/tree/nodes/geometry/pointNode";
 import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {
-  answer: string;
-  a: number;
-  b: number;
-  c: number;
-};
-type VEAProps = {
   a: number;
   b: number;
   c: number;
@@ -38,7 +32,7 @@ const getExtremumFromCanonicalFormQuestion: QuestionGenerator<
       .toTex()}$. Quelles sont les coordonnées du sommet $S$ de la parabole représentative de $f$ ?`,
     keys: ["S", "semicolon"],
     answerFormat: "tex",
-    identifiers: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
+    identifiers: { a: trinom.a, b: trinom.b, c: trinom.c },
   };
 
   return question;

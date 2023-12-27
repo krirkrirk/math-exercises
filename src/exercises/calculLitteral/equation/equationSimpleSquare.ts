@@ -35,10 +35,6 @@ const higherFactor = (n: number): number => {
 };
 
 type Identifiers = {
-  answer: string;
-  randNbr: number;
-};
-type VEAProps = {
   randNbr: number;
 };
 
@@ -73,7 +69,7 @@ const getEquationSimpleSquare: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: equationKeys,
     answerFormat: "tex",
-    identifiers: { answer, randNbr },
+    identifiers: { randNbr },
   };
 
   return question;

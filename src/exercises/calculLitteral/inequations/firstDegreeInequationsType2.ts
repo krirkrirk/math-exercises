@@ -28,7 +28,6 @@ import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
   ineqType: string;
   a: number;
   b: number;
@@ -63,7 +62,7 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
     instruction: `Résoudre l'inéquation : $${affine.toTex()} ${ineqType} ${c}$ `,
     keys: inequationKeys,
     answerFormat: "tex",
-    identifiers: { answer, a: affine.a, b: affine.b, c, result, ineqType },
+    identifiers: { a: affine.a, b: affine.b, c, result, ineqType },
   };
 
   return question;

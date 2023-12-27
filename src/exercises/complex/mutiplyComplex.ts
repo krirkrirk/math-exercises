@@ -13,14 +13,10 @@ import { Complex, ComplexConstructor } from "#root/math/complex/complex";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   z1: number[];
   z2: number[];
 };
-type VEAProps = {
-  z1: number[];
-  z2: number[];
-};
+
 const getMutiplyComplexQuestion: QuestionGenerator<Identifiers> = () => {
   const z1 = ComplexConstructor.random();
   let z2: Complex;
@@ -39,7 +35,7 @@ const getMutiplyComplexQuestion: QuestionGenerator<Identifiers> = () => {
     answerFormat: "tex",
 
     startStatement: "z\\times z'",
-    identifiers: { answer, z1: [z1.re, z1.im], z2: [z2.re, z2.im] },
+    identifiers: { z1: [z1.re, z1.im], z2: [z2.re, z2.im] },
   };
 
   return question;

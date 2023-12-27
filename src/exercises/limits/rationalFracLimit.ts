@@ -22,16 +22,11 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   limitTo: "+\\infty" | "-\\infty";
   numCoeffs: number[];
   denumCoeffs: number[];
 };
-type VEAProps = {
-  limitTo: "+\\infty" | "-\\infty";
-  numCoeffs: number[];
-  denumCoeffs: number[];
-};
+
 const getSequenceRationalFracLimitQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -67,7 +62,6 @@ const getSequenceRationalFracLimitQuestion: QuestionGenerator<
     keys: ["infty"],
     answerFormat: "tex",
     identifiers: {
-      answer,
       numCoeffs: polyNum.coefficients,
       denumCoeffs: polyDenum.coefficients,
       limitTo: to,

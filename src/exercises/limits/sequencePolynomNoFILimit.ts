@@ -14,11 +14,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
   coeffs: number[];
-};
-type VEAProps = {
-  answer: string;
 };
 
 const getSequencePolynomNoFILimitQuestion: QuestionGenerator<
@@ -40,7 +36,7 @@ const getSequencePolynomNoFILimitQuestion: QuestionGenerator<
       .toTex()}$.`,
     keys: ["infty"],
     answerFormat: "tex",
-    identifiers: { answer, coeffs: poly.coefficients },
+    identifiers: { coeffs: poly.coefficients },
   };
 
   return question;

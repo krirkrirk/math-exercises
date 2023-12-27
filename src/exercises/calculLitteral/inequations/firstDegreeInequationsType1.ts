@@ -27,7 +27,6 @@ import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 type Identifiers = {
-  answer: string;
   a: number;
   b: number;
   ineqType: string;
@@ -58,7 +57,7 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
     instruction: `Résoudre l'inéquation : $${affine.toTex()} ${ineqType} ${b}$ `,
     keys: inequationKeys,
     answerFormat: "tex",
-    identifiers: { answer, a: affine.a, b, ineqType, result },
+    identifiers: { a: affine.a, b, ineqType, result },
   };
 
   return question;

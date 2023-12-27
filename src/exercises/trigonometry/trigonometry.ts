@@ -18,7 +18,6 @@ import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {
-  answer: string;
   sideA: string;
   sideB: string;
   sideC: string;
@@ -77,7 +76,7 @@ const getTrigonometry: QuestionGenerator<Identifiers> = () => {
     ],
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    identifiers: { answer, sideA, sideB, sideC, randAngle, randTrigo },
+    identifiers: { sideA, sideB, sideC, randAngle, randTrigo },
   };
 
   return question;

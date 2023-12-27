@@ -35,16 +35,11 @@ const getGeometricFindExplicitFormula: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["un", "equal", "q", "n", "u", "underscore"],
     answerFormat: "tex",
-    identifiers: { answer, reason, firstValue },
+    identifiers: { reason, firstValue },
   };
   return question;
 };
 type Identifiers = {
-  answer: string;
-  reason: number;
-  firstValue: number;
-};
-type VEAProps = {
   reason: number;
   firstValue: number;
 };

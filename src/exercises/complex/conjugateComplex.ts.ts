@@ -13,11 +13,6 @@ import { Complex, ComplexConstructor } from "#root/math/complex/complex";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  answer: string;
-  re: number;
-  im: number;
-};
-type VEAProps = {
   re: number;
   im: number;
 };
@@ -32,7 +27,7 @@ const getConjugateComplexQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["i", "overline"],
     answerFormat: "tex",
     startStatement: "\\overline z",
-    identifiers: { answer, re: complex.re, im: complex.im },
+    identifiers: { re: complex.re, im: complex.im },
   };
 
   return question;
