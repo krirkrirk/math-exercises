@@ -12,7 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Complex, ComplexConstructor } from "#root/math/complex/complex";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   re: number;
   im: number;
@@ -22,26 +22,23 @@ type VEAProps = {
   im: number;
 };
 
-const getConjugateComplexQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getConjugateComplexQuestion: QuestionGenerator<Identifiers> = () => {
   const complex = ComplexConstructor.random();
   const answer = complex.conjugate().toTree().toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Déterminer le conjugué de $z=${complex.toTree().toTex()}$.`,
     keys: ["i", "overline"],
     answerFormat: "tex",
     startStatement: "\\overline z",
-    qcmGeneratorProps: { answer, re: complex.re, im: complex.im },
+    identifiers: { answer, re: complex.re, im: complex.im },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, re, im }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, re, im }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const complex = new Complex(re, im);
@@ -59,14 +56,15 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, re, im }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { im, re }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { im, re }) => {
   const complex = new Complex(re, im);
   const answer = complex.conjugate().toTree();
   const texs = answer.toAllValidTexs();
+  console.log(ans, texs);
   return texs.includes(ans);
 };
 
-export const conjugateComplex: MathExercise<QCMProps, VEAProps> = {
+export const conjugateComplex: MathExercise<Identifiers> = {
   id: "conjugateComplex",
   connector: "=",
   getPropositions,

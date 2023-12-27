@@ -21,7 +21,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { shuffle } from "#root/utils/shuffle";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   random: number;
   a?: number;
@@ -35,7 +35,7 @@ type VEAProps = {
   vCoeffs: number[];
 };
 
-const getExpSimplifiying: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getExpSimplifiying: QuestionGenerator<Identifiers> = () => {
   const random = randint(1, 4);
   let a: number | undefined;
   let u: Polynomial, v: Polynomial;
@@ -82,12 +82,12 @@ const getExpSimplifiying: QuestionGenerator<QCMProps, VEAProps> = () => {
       throw Error("something wrong happened");
   }
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Simplifier l'expression $${expression.toTex()}$.`,
     answer,
     keys: ["x", "epower", "exp"],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       random,
       a,
@@ -99,7 +99,7 @@ const getExpSimplifiying: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, random, a, uCoeffs, vCoeffs },
 ) => {
@@ -140,7 +140,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, random, uCoeffs, vCoeffs }) => {
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { a, random, uCoeffs, vCoeffs },
+) => {
   const u = new Polynomial(uCoeffs);
   const v = new Polynomial(vCoeffs);
   let answer: ExpNode;
@@ -162,7 +165,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, random, uCoeffs, vCoeffs }) => {
   return texs.includes(ans);
 };
 
-export const expSimplifiying: MathExercise<QCMProps, VEAProps> = {
+export const expSimplifiying: MathExercise<Identifiers> = {
   id: "expSimplifiying",
   connector: "\\iff",
   label: "Simplifier des expressions avec l'exponentielle",

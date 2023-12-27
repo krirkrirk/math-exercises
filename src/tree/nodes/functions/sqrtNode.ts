@@ -39,15 +39,15 @@ export class SqrtNode implements FunctionNode {
       const operand = this.child as NumberNode;
       const sqrt = new SquareRoot(operand.value);
       const coeffs = sqrt.getSimplifiedCoeffs();
-      if (coeffs[0] !== 1) {
+      if (isInt(Math.sqrt(coeffs[1]))) {
+        res.push(new NumberNode(coeffs[0]));
+      } else if (coeffs[0] !== 1) {
         res.push(
           ...new MultiplyNode(
             new NumberNode(coeffs[0]),
             new SqrtNode(new NumberNode(coeffs[1])),
           ).toEquivalentNodes(),
         );
-      } else if (isInt(Math.sqrt(coeffs[1]))) {
-        res.push(new NumberNode(Math.sqrt(coeffs[1])));
       }
     }
     return res;

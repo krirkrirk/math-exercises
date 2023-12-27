@@ -17,7 +17,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -30,24 +30,23 @@ type VEAProps = {
 };
 
 const getRootsFromFactorizedFormQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const trinom = TrinomConstructor.randomFactorized();
   const answer = trinom.getRootsEquationSolutionTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Soit $f(x) = ${trinom
       .getFactorizedForm()
       .toTex()}$. Résoudre l'équation $f(x) = 0$.`,
     keys: ["S", "equal", "lbrace", "semicolon", "rbrace", "emptyset"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
+    identifiers: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
   };
 
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const trinom = new Trinom(a, b, c);
@@ -98,7 +97,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
   const trinom = new Trinom(a, b, c);
   const roots = trinom.getRootsNode();
   const answer = new EquationSolutionNode(new DiscreteSetNode(roots));
@@ -107,7 +106,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
   return texs.includes(ans);
 };
 
-export const rootsFromFactorizedForm: MathExercise<QCMProps, VEAProps> = {
+export const rootsFromFactorizedForm: MathExercise<Identifiers> = {
   id: "rootsFromFactorizedForm",
   connector: "=",
   label: "Déterminer les racines d'un trinôme à partir de sa forme factorisée",

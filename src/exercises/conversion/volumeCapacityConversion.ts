@@ -17,16 +17,13 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
-const getVolumeCapacityConversion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getVolumeCapacityConversion: QuestionGenerator<Identifiers> = () => {
   const volumeUnits = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
   const capacityUnits = ["mL", "cL", "dL", "L", "daL", "hL", "kL"];
 
@@ -56,7 +53,7 @@ const getVolumeCapacityConversion: QuestionGenerator<
     );
   }
   const answerTex = answer.toTree().toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Compléter : $${random.value
       .toString()
       .replace(".", ",")} \\textrm{${instructionUnit}}${
@@ -65,14 +62,15 @@ const getVolumeCapacityConversion: QuestionGenerator<
     answer: answerTex,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer: answerTex },
+    identifiers: { answer: answerTex },
   };
 
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
+  console.log("volume prop", answer);
   const decimal = new Decimal(Number(answer.replace(",", ".")));
   while (propositions.length < n) {
     const wrongAnswer = decimal.multiplyByPowerOfTen(randint(-3, 4, [0]));
@@ -82,11 +80,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const volumeCapacityConversion: MathExercise<QCMProps, VEAProps> = {
+export const volumeCapacityConversion: MathExercise<Identifiers> = {
   id: "volumeCapacityConversion",
   connector: "=",
   getPropositions,

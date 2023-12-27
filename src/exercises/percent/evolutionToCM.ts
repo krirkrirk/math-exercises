@@ -14,7 +14,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { coinFlip } from "#root/utils/coinFlip";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   isFromEvolutionToCM: boolean;
   evolution: number;
@@ -25,7 +25,7 @@ type VEAProps = {
   evolution: number;
 };
 
-const getEvolutionToCmQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getEvolutionToCmQuestion: QuestionGenerator<Identifiers> = () => {
   const isFromEvolutionToCM = coinFlip();
   const evolution = randint(-99, 101, [0]);
   const isHausse = evolution > 0;
@@ -34,7 +34,7 @@ const getEvolutionToCmQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
     ? CM
     : (isHausse ? "+" : "") + evolution + "\\%";
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: isFromEvolutionToCM
       ? `Quel est le coefficient multiplicateur associé à une ${
@@ -43,13 +43,13 @@ const getEvolutionToCmQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
       : `Quelle est l'évolution en pourcentage associée à un coefficient multiplicateur de $${CM}$ ?`,
     keys: ["percent"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, isFromEvolutionToCM, evolution },
+    identifiers: { answer, isFromEvolutionToCM, evolution },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, isFromEvolutionToCM, evolution },
 ) => {
@@ -78,13 +78,13 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   const allowedTex = [answer];
   if (answer[0] === "+") allowedTex.push(answer.slice(1));
   return allowedTex.includes(ans);
 };
 
-export const evolutionToCM: MathExercise<QCMProps, VEAProps> = {
+export const evolutionToCM: MathExercise<Identifiers> = {
   id: "evolutionToCM",
   connector: "=",
   label: "Passer d'évolution en pourcentage au coefficient multiplicateur",

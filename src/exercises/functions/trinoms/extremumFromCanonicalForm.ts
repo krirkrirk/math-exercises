@@ -13,7 +13,7 @@ import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
 import { PointNode } from "#root/tree/nodes/geometry/pointNode";
 import { shuffle } from "#root/utils/shuffle";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -26,26 +26,25 @@ type VEAProps = {
 };
 
 const getExtremumFromCanonicalFormQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const trinom = TrinomConstructor.randomCanonical();
   const answer = trinom.getSommet().toTexWithCoords();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Soit $f$ la fonction définie par $${trinom
       .getCanonicalForm()
       .toTex()}$. Quelles sont les coordonnées du sommet $S$ de la parabole représentative de $f$ ?`,
     keys: ["S", "semicolon"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
+    identifiers: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const trinom = new Trinom(a, b, c);
@@ -65,7 +64,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
   const trinom = new Trinom(a, b, c);
   const sommet = trinom.getSommet();
   const answer = new PointNode(sommet);
@@ -73,7 +72,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
   return texs.includes(ans);
 };
 
-export const extremumFromCanonicalForm: MathExercise<QCMProps, VEAProps> = {
+export const extremumFromCanonicalForm: MathExercise<Identifiers> = {
   id: "extremumFromCanonicalForm",
   connector: "=",
   label:

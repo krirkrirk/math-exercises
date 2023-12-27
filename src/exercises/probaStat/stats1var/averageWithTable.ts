@@ -13,17 +13,14 @@ import {
 } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getAverageWithTableQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getAverageWithTableQuestion: QuestionGenerator<Identifiers> = () => {
   const getRandomUniqueValues = (
     count: number,
     min: number,
@@ -51,7 +48,7 @@ const getAverageWithTableQuestion: QuestionGenerator<
   average = round(average, 2);
 
   const answer = (average + "").replace(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `On considère le tableau d'effectifs suivant : 
 
 | | | | | | |
@@ -64,13 +61,13 @@ Calculer la moyenne de cette série de valeurs (arrondir au centième).`,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const average = Number(answer.replace(",", "."));
@@ -89,11 +86,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const averageWithTable: MathExercise<QCMProps, VEAProps> = {
+export const averageWithTable: MathExercise<Identifiers> = {
   id: "averageWithTable",
   connector: "=",
   label: "Calcul de la moyenne d'un tableau d'effectifs",

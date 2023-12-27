@@ -17,7 +17,7 @@ import {
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   randomUnitIndex: number;
   randomUnitInstructionIndex: number;
@@ -26,7 +26,7 @@ type QCMProps = {
 type VEAProps = {
   answer: string;
 };
-const getMassConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getMassConversion: QuestionGenerator<Identifiers> = () => {
   const units = ["mg", "cg", "dg", "g", "dag", "hg", "kg"];
 
   const randomUnitIndex = randint(0, 7);
@@ -37,7 +37,7 @@ const getMassConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
       randomUnitIndex - randomUnitInstructionIndex,
     ).value + ""
   ).replace(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Compléter : $${randomMass.value
       .toString()
       .replace(".", ",")} \\textrm{${
@@ -46,7 +46,7 @@ const getMassConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       randomMass: randomMass.value,
       randomUnitIndex,
@@ -57,7 +57,7 @@ const getMassConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, randomMass, randomUnitIndex, randomUnitInstructionIndex },
 ) => {
@@ -77,11 +77,11 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const massConversion: MathExercise<QCMProps, VEAProps> = {
+export const massConversion: MathExercise<Identifiers> = {
   id: "massConversion",
   connector: "=",
   label: "Conversion de masses",

@@ -16,8 +16,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { v4 } from "uuid";
 
 const getGenericSequenceVariationsQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const u = PolynomialConstructor.randomWithOrder(2, "n");
   const [b, a] = u.coefficients.slice(1);
@@ -29,27 +28,27 @@ const getGenericSequenceVariationsQuestion: QuestionGenerator<
         : "Décroissante"
       : `${a > 0 ? "Croissante" : "Décroissante"} à partir du rang ${root}`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Soit $u$ la suite définie par $u_n = ${u
       .toTree()
       .toTex()}$. Quel est le sens de variations de $u$ ?`,
     keys: [],
     answerFormat: "raw",
-    qcmGeneratorProps: { answer, root },
+    identifiers: { answer, root },
   };
 
   return question;
 };
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   root: number;
 };
 type VEAProps = {
   answer: string;
 };
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, root }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, root }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer, "raw");
 
@@ -69,10 +68,10 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, root }) => {
 
   return shuffleProps(propositions, n);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const genericSequenceVariations: MathExercise<QCMProps, VEAProps> = {
+export const genericSequenceVariations: MathExercise<Identifiers> = {
   id: "genericSequenceVariations",
   connector: "=",
   label:

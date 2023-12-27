@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   coefficients: number[];
 };
@@ -21,10 +21,7 @@ type VEAProps = {
   coefficients: number[];
 };
 
-export const getThirdDegreeDerivative: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+export const getThirdDegreeDerivative: QuestionGenerator<Identifiers> = () => {
   const coefficients: number[] = [];
 
   for (let i = 1; i <= 3; i++) coefficients.push(randint(-9, 10));
@@ -34,19 +31,19 @@ export const getThirdDegreeDerivative: QuestionGenerator<
   const derivative = polynomial.derivate();
   const answer = derivative.toTree().toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
     startStatement: `f'(x)`,
     answer: answer,
     keys: ["x"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, coefficients },
+    identifiers: { answer, coefficients },
   };
 
   return question;
 };
 
-export const getThirdDegreeDerivativePropositions: QCMGenerator<QCMProps> = (
+export const getThirdDegreeDerivativePropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, coefficients },
 ) => {
@@ -85,7 +82,7 @@ export const getThirdDegreeDerivativePropositions: QCMGenerator<QCMProps> = (
   return shuffleProps(propositions, n);
 };
 
-export const isThirdDegreeDerivativeAnswerValid: VEA<VEAProps> = (
+export const isThirdDegreeDerivativeAnswerValid: VEA<Identifiers> = (
   ans,
   { coefficients },
 ) => {
@@ -95,7 +92,7 @@ export const isThirdDegreeDerivativeAnswerValid: VEA<VEAProps> = (
   console.log(texs);
   return texs.includes(ans);
 };
-export const thirdDegreeDerivative: MathExercise<QCMProps, VEAProps> = {
+export const thirdDegreeDerivative: MathExercise<Identifiers> = {
   id: "thirdDegreeDerivative",
   connector: "=",
   label: "Dérivée d'un polynôme de degré 3",

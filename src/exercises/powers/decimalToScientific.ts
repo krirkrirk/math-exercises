@@ -24,7 +24,7 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   decimal: number;
 };
@@ -32,10 +32,7 @@ type VEAProps = {
   decimal: number;
 };
 
-const getDecimalToScientificQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getDecimalToScientificQuestion: QuestionGenerator<Identifiers> = () => {
   const isZero = probaFlip(0.2);
   let intPart: number, dec: Decimal;
   if (isZero) {
@@ -53,18 +50,18 @@ const getDecimalToScientificQuestion: QuestionGenerator<
   const decTex = dec.toTree().toTex();
   const answer = dec.toScientificNotation().toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Donner l'écriture scientifique de : $${decTex}$`,
     startStatement: decTex,
     answer: answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, decimal: dec.value },
+    identifiers: { answer, decimal: dec.value },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, decimal }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, decimal }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const dec = new Decimal(decimal);
@@ -79,13 +76,14 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, decimal }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { decimal }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { decimal }) => {
   const answerTree = new Decimal(decimal).toScientificNotation();
-  const texs = answerTree.toAllValidTexs();
+  const texs = answerTree.toAllValidTexs({ forbidPowerToProduct: true });
+  console.log(ans, texs);
   return texs.includes(ans);
 };
 
-export const decimalToScientific: MathExercise<QCMProps, VEAProps> = {
+export const decimalToScientific: MathExercise<Identifiers> = {
   id: "decimalToScientific",
   connector: "=",
   label: "Passer d'écriture décimale à écriture scientifique",

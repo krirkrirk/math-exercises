@@ -22,7 +22,7 @@ import {
   getThirdIdentityQuestion,
   isThirdIdentityAnswerValid,
 } from "./thirdIdentity";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   type: number;
   a?: number;
@@ -38,28 +38,28 @@ type VEAProps = {
   affine2Coeffs?: number[];
 };
 
-const getAllIdentitiesQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getAllIdentitiesQuestion: QuestionGenerator<Identifiers> = () => {
   const type = random([1, 2, 3]);
   let question: Question<any, any>;
-  let qcmGeneratorProps: QCMProps;
+  let identifiers: Identifiers;
   switch (type) {
     case 1:
       question = getFirstIdentityQuestion();
-      qcmGeneratorProps = { ...question.qcmGeneratorProps, type: 1 };
+      identifiers = { ...question.identifiers, type: 1 };
       break;
     case 2:
       question = getSecondIdentityQuestion();
-      qcmGeneratorProps = { ...question.qcmGeneratorProps, type: 2 };
+      identifiers = { ...question.identifiers, type: 2 };
       break;
     case 3:
     default:
       question = getThirdIdentityQuestion();
-      qcmGeneratorProps = { ...question.qcmGeneratorProps, type: 3 };
+      identifiers = { ...question.identifiers, type: 3 };
       break;
   }
-  return { ...question, qcmGeneratorProps };
+  return { ...question, identifiers };
 };
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, type, a, b, affine1Coeffs, affine2Coeffs },
 ) => {
@@ -78,7 +78,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   }
 };
 
-const isAnswerValid: VEA<VEAProps> = (
+const isAnswerValid: VEA<Identifiers> = (
   ans,
   { type, a, b, affine1Coeffs, affine2Coeffs },
 ) => {
@@ -96,7 +96,7 @@ const isAnswerValid: VEA<VEAProps> = (
   }
 };
 
-export const allIdentities: MathExercise<QCMProps, VEAProps> = {
+export const allIdentities: MathExercise<Identifiers> = {
   id: "allIdRmq",
   connector: "=",
   label: "Identités remarquables (toutes)",

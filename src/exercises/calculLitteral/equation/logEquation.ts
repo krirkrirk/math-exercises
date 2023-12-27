@@ -21,7 +21,7 @@ import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   k: number;
@@ -31,7 +31,7 @@ type VEAProps = {
   k: number;
 };
 
-const getLnEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getLnEquation: QuestionGenerator<Identifiers> = () => {
   const a = randint(-9, 20, [0]);
   const k = randint(-9, 20, [0]);
 
@@ -45,7 +45,7 @@ const getLnEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
     new DiscreteSetNode([new ExpNode(new Rational(k, a).simplify().toTree())]),
   ).toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Résoudre l'équation $${equation.toTex()}$.`,
     answer,
     keys: [
@@ -61,13 +61,13 @@ const getLnEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
       "rbrace",
     ],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, k },
+    identifiers: { answer, a, k },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -86,7 +86,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, k }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, k }) => {
   const answer = new EquationSolutionNode(
     new DiscreteSetNode([
       new ExpNode(
@@ -98,7 +98,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, k }) => {
   console.log(texs);
   return texs.includes(ans);
 };
-export const logEquation: MathExercise<QCMProps, VEAProps> = {
+export const logEquation: MathExercise<Identifiers> = {
   id: "logEquation",
   connector: "=",
   label: "Résoudre des équations de type $a \\times \\ln(x) = k$",

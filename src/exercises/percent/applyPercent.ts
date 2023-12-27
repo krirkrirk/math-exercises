@@ -15,14 +15,14 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getApplyPercentQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getApplyPercentQuestion: QuestionGenerator<Identifiers> = () => {
   const randNbr = randint(1, 500);
   const randPercent = randint(1, 100);
   let instruction = "";
@@ -39,18 +39,18 @@ const getApplyPercentQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   }
 
   const answer = ans.toString();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction,
     answer,
     keys: ["percent"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -67,13 +67,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   const answerTree = new NumberNode(Number(answer.replace(",", ".")));
   const texs = answerTree.toAllValidTexs();
   return texs.includes(ans);
 };
 
-export const applyPercent: MathExercise<QCMProps, VEAProps> = {
+export const applyPercent: MathExercise<Identifiers> = {
   id: "applyPercent",
   connector: "=",
   label: "Appliquer un pourcentage d'augmentation ou de diminution.",

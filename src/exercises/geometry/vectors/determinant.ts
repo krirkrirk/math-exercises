@@ -14,7 +14,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   uCoords: string[];
   vCoords: string[];
@@ -23,17 +23,17 @@ type VEAProps = {
   answer: string;
 };
 
-const getDeterminantQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getDeterminantQuestion: QuestionGenerator<Identifiers> = () => {
   const u = VectorConstructor.random("u");
   const v = VectorConstructor.random("v");
   const answer = u.determinant(v);
   const answerTex = answer.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answerTex,
     instruction: `Soient les vecteurs $${u.toTexWithCoords()}$ et $${v.toTexWithCoords()}$. Calculer le déterminant $\\det(\\overrightarrow u;\\overrightarrow v)$.`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer: answerTex,
       uCoords: [u.x.toTex(), u.y.toTex()],
       vCoords: [v.x.toTex(), v.y.toTex()],
@@ -43,7 +43,7 @@ const getDeterminantQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, uCoords, vCoords },
 ) => {
@@ -70,11 +70,11 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const determinant: MathExercise<QCMProps, VEAProps> = {
+export const determinant: MathExercise<Identifiers> = {
   id: "determinant",
   connector: "=",
   label: "Calculer le déterminant de deux vecteurs",

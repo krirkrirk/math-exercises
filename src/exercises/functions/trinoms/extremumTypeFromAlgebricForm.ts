@@ -13,15 +13,14 @@ import { TrinomConstructor } from "#root/math/polynomials/trinom";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
 };
 type VEAProps = {};
 
 const getExtremumTypeFromAlgebricFormQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const isDevForm = coinFlip();
   const trinom = isDevForm
@@ -29,20 +28,20 @@ const getExtremumTypeFromAlgebricFormQuestion: QuestionGenerator<
     : TrinomConstructor.randomCanonical();
   const answer = trinom.a > 0 ? "Un minimum" : "Un maximum";
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `La fonction $f$ définie par $f(x) = ${
       isDevForm ? trinom.toTree().toTex() : trinom.getCanonicalForm().toTex()
     }$ admet-elle un maximum ou un minimum ?`,
     answerFormat: "raw",
     keys: [],
-    qcmGeneratorProps: { answer, a: trinom.a },
+    identifiers: { answer, a: trinom.a },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer, "raw");
   tryToAddWrongProp(propositions, a < 0 ? "Un minimum" : "Un maximum", "raw");
@@ -51,7 +50,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a }) => {
   return shuffle(propositions);
 };
 
-export const extremumTypeFromAlgebricForm: MathExercise<QCMProps, VEAProps> = {
+export const extremumTypeFromAlgebricForm: MathExercise<Identifiers> = {
   id: "extremumTypeFromAlgebricForm",
   label:
     "Déterminer le type d'extremum d'une fonction du second degré via sa forme algébrique",

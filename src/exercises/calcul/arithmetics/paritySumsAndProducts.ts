@@ -10,7 +10,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-const getParitySumsAndProductsQuestion: QuestionGenerator<QCMProps> = () => {
+const getParitySumsAndProductsQuestion: QuestionGenerator<Identifiers> = () => {
   const type = randint(0, 12);
   let instruction = "";
   let answer: "Pair" | "Impair" | "Parfois pair, parfois impair" | "Premier" =
@@ -67,21 +67,19 @@ const getParitySumsAndProductsQuestion: QuestionGenerator<QCMProps> = () => {
       answer = "Pair";
       break;
   }
-  const question: Question<QCMProps> = {
+  const question: Question<Identifiers> = {
     answer: answer!,
     instruction,
     keys: [],
     answerFormat: "raw",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
   return question;
 };
 
-type QCMProps = {
-  answer: string;
-};
+type Identifiers = {};
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [
     {
       id: v4(),
@@ -111,7 +109,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-export const paritySumsAndProducts: MathExercise<QCMProps> = {
+export const paritySumsAndProducts: MathExercise<Identifiers> = {
   id: "paritySumsAndProducts",
   connector: "=",
   label: "Parité de sommes et de produits",

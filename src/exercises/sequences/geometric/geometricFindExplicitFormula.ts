@@ -15,13 +15,9 @@ import { EqualNode } from "#root/tree/nodes/operators/equalNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 
-const getGeometricFindExplicitFormula: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getGeometricFindExplicitFormula: QuestionGenerator<Identifiers> = () => {
   const firstRank = 0;
   const firstValue = randint(1, 10);
   const reason = randint(2, 10);
@@ -31,19 +27,19 @@ const getGeometricFindExplicitFormula: QuestionGenerator<
     new PowerNode(new NumberNode(reason), new VariableNode("n")),
   );
 
-  const answer = "u_n=" + simplifyNode(formula).toTex();
+  const answer = "u_n=" + formula.toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `$(u_n)$ est une suite géométrique de premier terme $u_{${firstRank}} = ${firstValue}$ et de raison $q = ${reason}$. $\\\\$ Donner l'expression de $u_n$ en fonction de $n$.`,
 
     answer,
     keys: ["un", "equal", "q", "n", "u", "underscore"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, reason, firstValue },
+    identifiers: { answer, reason, firstValue },
   };
   return question;
 };
-type QCMProps = {
+type Identifiers = {
   answer: string;
   reason: number;
   firstValue: number;
@@ -53,7 +49,7 @@ type VEAProps = {
   firstValue: number;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, reason, firstValue },
 ) => {
@@ -64,11 +60,9 @@ const getPropositions: QCMGenerator<QCMProps> = (
   tryToAddWrongProp(
     propositions,
     "u_n=" +
-      simplifyNode(
-        new MultiplyNode(
-          new NumberNode(reason),
-          new PowerNode(new NumberNode(firstValue), new VariableNode("n")),
-        ),
+      new MultiplyNode(
+        new NumberNode(reason),
+        new PowerNode(new NumberNode(firstValue), new VariableNode("n")),
       ).toTex(),
   );
 
@@ -80,12 +74,12 @@ const getPropositions: QCMGenerator<QCMProps> = (
         new VariableNode("n"),
       ),
     );
-    tryToAddWrongProp(propositions, "u_n=" + simplifyNode(wrongAnswer).toTex());
+    tryToAddWrongProp(propositions, "u_n=" + wrongAnswer.toTex());
   }
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { reason, firstValue }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { reason, firstValue }) => {
   const formula = new MultiplyNode(
     new NumberNode(firstValue),
     new PowerNode(new NumberNode(reason), new VariableNode("n")),
@@ -94,11 +88,11 @@ const isAnswerValid: VEA<VEAProps> = (ans, { reason, firstValue }) => {
     allowRawRightChildAsSolution: true,
   });
   const texs = equal.toAllValidTexs();
-  console.log(texs);
+  console.log(ans, texs);
   return texs.includes(ans);
 };
 
-export const geometricFindExplicitFormula: MathExercise<QCMProps, VEAProps> = {
+export const geometricFindExplicitFormula: MathExercise<Identifiers> = {
   id: "geometricFindExplicitFormula",
   connector: "=",
   label: "Déterminer la formule générale d'une suite géométrique",

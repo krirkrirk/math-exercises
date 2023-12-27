@@ -18,21 +18,20 @@ import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { shuffle } from "#root/utils/shuffle";
 
-const getFractionAndIntegerSum: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getFractionAndIntegerSum: QuestionGenerator<Identifiers> = () => {
   const rational = RationalConstructor.randomIrreductible();
   const integer = new Integer(randint(-10, 11, [0]));
   const statementTree = new AddNode(rational.toTree(), integer.toTree());
   statementTree.shuffle();
   const answerTree = rational.add(integer).toTree();
   const answer = answerTree.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: {
-      answer,
+    identifiers: {
       integer: integer.value,
       rational: [rational.num, rational.denum],
     },
@@ -40,12 +39,11 @@ const getFractionAndIntegerSum: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-type QCMProps = {
-  answer: string;
+type Identifiers = {
   integer: number;
   rational: [number, number];
 };
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, integer, rational },
 ) => {
@@ -76,12 +74,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-type VEAProps = {
-  integer: number;
-  rational: [number, number];
-};
-
-const isAnswerValid: VEA<VEAProps> = (ans, { integer, rational }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { integer, rational }) => {
   const integerObj = new Integer(integer);
   const rationalObj = new Rational(rational[0], rational[1]);
   const answerTree = rationalObj
@@ -91,7 +84,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { integer, rational }) => {
   return texs.includes(ans);
 };
 
-export const fractionAndIntegerSum: MathExercise<QCMProps, VEAProps> = {
+export const fractionAndIntegerSum: MathExercise<Identifiers> = {
   id: "fractionAndIntegerSum",
   connector: "=",
   label: "Somme d'un entier et d'une fraction",

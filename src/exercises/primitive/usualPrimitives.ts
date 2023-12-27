@@ -10,29 +10,26 @@ import {
   getConstantPrimitive,
   getConstantPrimitivePropositions,
   isConstantPrimitiveAnswerValid,
-} from "#root/exercises/primitve/constantPrimitive";
+} from "#root/exercises/primitive/constantPrimitive";
 import {
   getExponentialPrimitive,
   getExponentialPrimitivePropositions,
   isExponentialPrimitiveAnswerValid,
-} from "#root/exercises/primitve/exponentialPrimitive";
-import {
-  getLogarithmePrimitive,
-  getLogarithmePrimitivePropositions,
-} from "#root/exercises/primitve/logarithmePrimitive";
+} from "#root/exercises/primitive/exponentialPrimitive";
+
 import {
   getPolynomialPrimitive,
   getPolynomialPrimitivePropositions,
   isPolynomialPrimitiveAnswerValid,
-} from "#root/exercises/primitve/polynomialPrimitive";
+} from "#root/exercises/primitive/polynomialPrimitive";
 import {
   getSinCosPrimitive,
   getSinCosPrimitivePropositions,
   isSinCosPrimitiveAnswerValid,
-} from "#root/exercises/primitve/sinCosPrimitive";
+} from "#root/exercises/primitive/sinCosPrimitive";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   type: number;
   a?: number;
@@ -48,34 +45,34 @@ type VEAProps = {
   c?: number;
 };
 
-const getUsualPrimitives: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getUsualPrimitives: QuestionGenerator<Identifiers> = () => {
   const rand = randint(1, 5);
   let question: Question<any, any>;
-  let qcmGeneratorProps: any;
+  let identifiers: any;
   switch (rand) {
     case 1:
       question = getConstantPrimitive();
-      qcmGeneratorProps = { ...question.qcmGeneratorProps, type: 1 };
+      identifiers = { ...question.identifiers, type: 1 };
       break;
     case 2:
       question = getPolynomialPrimitive();
-      qcmGeneratorProps = { ...question.qcmGeneratorProps, type: 2 };
+      identifiers = { ...question.identifiers, type: 2 };
       break;
     case 3:
       question = getSinCosPrimitive();
-      qcmGeneratorProps = { ...question.qcmGeneratorProps, type: 3 };
+      identifiers = { ...question.identifiers, type: 3 };
       break;
     case 4:
       question = getExponentialPrimitive();
-      qcmGeneratorProps = { ...question.qcmGeneratorProps, type: 4 };
+      identifiers = { ...question.identifiers, type: 4 };
       break;
     default:
       throw Error("erreur");
   }
-  return { ...question, qcmGeneratorProps };
+  return { ...question, identifiers };
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, type, a, c, coeffs, isCos },
 ) => {
@@ -109,7 +106,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return props;
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { type, a, coeffs, isCos, c }) => {
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { type, a, coeffs, isCos, c },
+) => {
   let res = false;
   switch (type) {
     case 1:
@@ -137,7 +137,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { type, a, coeffs, isCos, c }) => {
   return res;
 };
 
-export const usualPrimitives: MathExercise<QCMProps, VEAProps> = {
+export const usualPrimitives: MathExercise<Identifiers> = {
   id: "usualPrimitives",
   connector: "=",
   label: "Primitives des fonctions de référence",

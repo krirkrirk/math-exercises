@@ -13,7 +13,7 @@ import { Complex, ComplexConstructor } from "#root/math/complex/complex";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   z1: number[];
   z2: number[];
@@ -24,8 +24,7 @@ type VEAProps = {
 };
 
 const getConjugateDivideComplexQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const z1 = ComplexConstructor.random();
   let z2: Complex;
@@ -38,7 +37,7 @@ const getConjugateDivideComplexQuestion: QuestionGenerator<
 
   const answerTex = conjz1.divideNode(conjz2).toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answerTex,
     instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2
       .toTree()
@@ -47,7 +46,7 @@ const getConjugateDivideComplexQuestion: QuestionGenerator<
     answerFormat: "tex",
 
     startStatement: "\\overline{\\frac{z}{z'}}",
-    qcmGeneratorProps: {
+    identifiers: {
       answer: answerTex,
       z1: [z1.re, z1.im],
       z2: [z2.re, z2.im],
@@ -57,7 +56,7 @@ const getConjugateDivideComplexQuestion: QuestionGenerator<
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -70,7 +69,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { z1, z2 }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { z1, z2 }) => {
   const complex1 = new Complex(z1[0], z1[1]).conjugate();
   const complex2 = new Complex(z2[0], z2[1]).conjugate();
   const divide = complex1.divideNode(complex2);
@@ -79,7 +78,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { z1, z2 }) => {
   return texs.includes(ans);
 };
 
-export const conjugateDivideComplex: MathExercise<QCMProps, VEAProps> = {
+export const conjugateDivideComplex: MathExercise<Identifiers> = {
   id: "conjugateDivideComplex",
   connector: "=",
   label: "Conjugué d'une fraction de nombres complexes",

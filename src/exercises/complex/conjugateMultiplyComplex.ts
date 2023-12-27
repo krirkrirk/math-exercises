@@ -11,7 +11,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Complex, ComplexConstructor } from "#root/math/complex/complex";
 import { shuffle } from "#root/utils/shuffle";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   z1: number[];
   z2: number[];
@@ -22,8 +22,7 @@ type VEAProps = {
 };
 
 const getConjugateMultiplyComplexQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const z1 = ComplexConstructor.random();
   let z2: Complex;
@@ -35,7 +34,7 @@ const getConjugateMultiplyComplexQuestion: QuestionGenerator<
   const conj = prod.conjugate();
   const answer = conj.toTree().toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2
       .toTree()
@@ -44,13 +43,13 @@ const getConjugateMultiplyComplexQuestion: QuestionGenerator<
     answerFormat: "tex",
 
     startStatement: "\\overline{z\\times z'}",
-    qcmGeneratorProps: { answer, z1: [z1.re, z1.im], z2: [z2.re, z2.im] },
+    identifiers: { answer, z1: [z1.re, z1.im], z2: [z2.re, z2.im] },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, z1, z2 }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, z1, z2 }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const complex1 = new Complex(z1[0], z1[1]);
@@ -66,7 +65,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, z1, z2 }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { z1, z2 }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { z1, z2 }) => {
   const complex1 = new Complex(z1[0], z1[1]);
   const complex2 = new Complex(z2[0], z2[1]);
   const answer = complex1.multiply(complex2).conjugate().toTree();
@@ -74,7 +73,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { z1, z2 }) => {
   return texs.includes(ans);
 };
 
-export const conjugateMultiplyComplex: MathExercise<QCMProps, VEAProps> = {
+export const conjugateMultiplyComplex: MathExercise<Identifiers> = {
   id: "conjugateMultiplyComplex",
   connector: "=",
   label: "Conjugué d'un produit de nombres complexes",

@@ -16,20 +16,19 @@ import {
 import { DivideNode } from "#root/tree/nodes/operators/divideNode";
 import { shuffle } from "#root/utils/shuffle";
 
-const getFractionsDivision: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getFractionsDivision: QuestionGenerator<Identifiers> = () => {
   const rational = RationalConstructor.randomIrreductible();
   const rational2 = RationalConstructor.randomIrreductible();
   const statementTree = new DivideNode(rational.toTree(), rational2.toTree());
   const answerTree = rational.divide(rational2).toTree();
   const answer = answerTree.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: {
-      answer,
+    identifiers: {
       rationalNum: [rational.num, rational.denum],
       rationalDenum: [rational2.num, rational2.denum],
     },
@@ -37,16 +36,12 @@ const getFractionsDivision: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-type QCMProps = {
-  answer: string;
+type Identifiers = {
   rationalNum: [number, number];
   rationalDenum: [number, number];
 };
-type VEAProps = {
-  rationalNum: [number, number];
-  rationalDenum: [number, number];
-};
-const getPropositions: QCMGenerator<QCMProps> = (
+
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, rationalNum, rationalDenum },
 ) => {
@@ -70,7 +65,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { rationalDenum, rationalNum }) => {
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { rationalDenum, rationalNum },
+) => {
   const rational = new Rational(rationalNum[0], rationalNum[1]);
   const rational2 = new Rational(rationalDenum[0], rationalDenum[1]);
   const answerTree = rational
@@ -81,7 +79,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { rationalDenum, rationalNum }) => {
   return texs.includes(ans);
 };
 
-export const fractionsDivision: MathExercise<QCMProps, VEAProps> = {
+export const fractionsDivision: MathExercise<Identifiers> = {
   id: "fractionsDivision",
   connector: "=",
   label: "Divisions de fractions",

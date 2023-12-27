@@ -24,7 +24,7 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   isCos: boolean;
@@ -34,7 +34,7 @@ type VEAProps = {
   isCos: boolean;
 };
 
-export const getSinCosPrimitive: QuestionGenerator<QCMProps, VEAProps> = () => {
+export const getSinCosPrimitive: QuestionGenerator<Identifiers> = () => {
   const a = randint(-9, 10, [0]);
 
   let selectedFunction: Node;
@@ -51,19 +51,19 @@ export const getSinCosPrimitive: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   const answer = new AddNode(integratedFuction, new VariableNode("C")).toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la forme générale des primitives de la fonction $f$ définie par $f(x) = ${selectedFunction.toTex()}$.`,
     startStatement: `F(x)`,
     answer,
     keys: ["x", "C", "sin", "cos"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, isCos },
+    identifiers: { answer, a, isCos },
   };
 
   return question;
 };
 
-export const getSinCosPrimitivePropositions: QCMGenerator<QCMProps> = (
+export const getSinCosPrimitivePropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, a },
 ) => {
@@ -92,7 +92,7 @@ export const getSinCosPrimitivePropositions: QCMGenerator<QCMProps> = (
 
   return shuffle(propositions);
 };
-export const isSinCosPrimitiveAnswerValid: VEA<VEAProps> = (
+export const isSinCosPrimitiveAnswerValid: VEA<Identifiers> = (
   ans,
   { isCos, a },
 ) => {
@@ -106,7 +106,7 @@ export const isSinCosPrimitiveAnswerValid: VEA<VEAProps> = (
   return texs.includes(ans);
 };
 
-export const sinCosPrimitive: MathExercise<QCMProps, VEAProps> = {
+export const sinCosPrimitive: MathExercise<Identifiers> = {
   id: "sinCosPrimitive",
   connector: "=",
   label: "Primitive de sin et cos",

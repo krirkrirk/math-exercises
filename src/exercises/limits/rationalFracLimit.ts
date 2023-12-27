@@ -21,7 +21,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   limitTo: "+\\infty" | "-\\infty";
   numCoeffs: number[];
@@ -33,8 +33,7 @@ type VEAProps = {
   denumCoeffs: number[];
 };
 const getSequenceRationalFracLimitQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const polyNum = PolynomialConstructor.randomWithLength(4, randint(2, 5));
   const polyDenum = PolynomialConstructor.randomWithLength(4, randint(2, 5));
@@ -60,14 +59,14 @@ const getSequenceRationalFracLimitQuestion: QuestionGenerator<
     answer = tempPoly.getLimit(to);
   }
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Déterminer la limite en $${to}$ de la fonction $f$ définie par : $f(x) = \\dfrac{${polyNum
       .toTree()
       .toTex()}}{${polyDenum.toTree().toTex()}}$.`,
     keys: ["infty"],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       numCoeffs: polyNum.coefficients,
       denumCoeffs: polyDenum.coefficients,
@@ -78,7 +77,7 @@ const getSequenceRationalFracLimitQuestion: QuestionGenerator<
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, denumCoeffs, numCoeffs },
 ) => {
@@ -104,7 +103,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (
+const isAnswerValid: VEA<Identifiers> = (
   ans,
   { denumCoeffs, numCoeffs, limitTo },
 ) => {
@@ -133,7 +132,7 @@ const isAnswerValid: VEA<VEAProps> = (
   return texs.includes(ans);
 };
 
-export const rationalFracLimit: MathExercise<QCMProps, VEAProps> = {
+export const rationalFracLimit: MathExercise<Identifiers> = {
   id: "rationalFracLimit",
   connector: "=",
   label: "Limite d'une fraction rationnelle",

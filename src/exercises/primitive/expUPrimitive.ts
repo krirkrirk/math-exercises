@@ -22,14 +22,14 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   coeffs: number[];
 };
 type VEAProps = {
   coeffs: number[];
 };
-export const getExpUPrimitive: QuestionGenerator<QCMProps, VEAProps> = () => {
+export const getExpUPrimitive: QuestionGenerator<Identifiers> = () => {
   const u = PolynomialConstructor.randomWithOrder(randint(1, 3));
 
   const integratedFuction = new ExpNode(u.toTree());
@@ -39,19 +39,19 @@ export const getExpUPrimitive: QuestionGenerator<QCMProps, VEAProps> = () => {
   );
 
   const answer = new AddNode(integratedFuction, new VariableNode("C")).toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la forme générale des primitives de la fonction $f$ définie par $f(x) = ${selectedFunction.toTex()}$.`,
     startStatement: `F(x)`,
     answer,
     keys: ["x", "C", "epower", "exp"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, coeffs: u.coefficients },
+    identifiers: { answer, coeffs: u.coefficients },
   };
 
   return question;
 };
 
-export const getExpUPrimitivePropositions: QCMGenerator<QCMProps> = (
+export const getExpUPrimitivePropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, coeffs },
 ) => {
@@ -86,7 +86,10 @@ export const getExpUPrimitivePropositions: QCMGenerator<QCMProps> = (
   return shuffleProps(propositions, n);
 };
 
-export const isExpUPrimitiveAnswerValid: VEA<VEAProps> = (ans, { coeffs }) => {
+export const isExpUPrimitiveAnswerValid: VEA<Identifiers> = (
+  ans,
+  { coeffs },
+) => {
   const u = new Polynomial(coeffs);
   const integratedFuction = new ExpNode(
     u.toTree({ forbidPowerToProduct: true }),
@@ -96,7 +99,7 @@ export const isExpUPrimitiveAnswerValid: VEA<VEAProps> = (ans, { coeffs }) => {
   console.log(texs);
   return texs.includes(ans);
 };
-export const expUPrimitive: MathExercise<QCMProps, VEAProps> = {
+export const expUPrimitive: MathExercise<Identifiers> = {
   id: "expUPrimitive",
   connector: "=",
   label: "Primitive de $u'\\exp(u)$",

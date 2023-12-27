@@ -25,14 +25,9 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
-const getPriorityQuestions: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getPriorityQuestions: QuestionGenerator<Identifiers> = () => {
   const type = randint(1, 6);
   let startStatement = "";
   let answer: string = "";
@@ -130,18 +125,18 @@ const getPriorityQuestions: QuestionGenerator<QCMProps, VEAProps> = () => {
       break;
   }
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer : $${startStatement}$`,
     startStatement,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: {},
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n: number, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n: number, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -150,13 +145,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n: number, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (studentAns, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (studentAns, { answer }) => {
   const answerTree = new NumberNode(Number(answer));
   const texs = answerTree.toAllValidTexs();
   return texs.includes(studentAns);
 };
 
-export const operationsPriorities: MathExercise<QCMProps, VEAProps> = {
+export const operationsPriorities: MathExercise<Identifiers> = {
   id: "operationsPriorities",
   connector: "=",
   label: "Priorités opératoires",

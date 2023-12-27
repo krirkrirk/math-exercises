@@ -14,7 +14,7 @@ import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
 import { DiscreteSet } from "#root/math/sets/discreteSet";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -25,26 +25,23 @@ type VEAProps = {
   b: number;
   c: number;
 };
-const getCanonicalFromDevFormQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getCanonicalFromDevFormQuestion: QuestionGenerator<Identifiers> = () => {
   const trinom = TrinomConstructor.randomCanonical();
   const answer = trinom.getCanonicalForm().toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     keys: ["x", "equal", "alpha", "beta"],
     instruction: `Déterminer la forme canonique de la fonction $f$ définie par $f(x) = ${trinom
       .toTree()
       .toTex()}$`,
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
+    identifiers: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -62,14 +59,14 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
   const trinom = new Trinom(a, b, c);
   const node = trinom.getCanonicalForm();
   const texs = node.toAllValidTexs();
   return texs.includes(ans);
 };
 
-export const canonicalFromDevForm: MathExercise<QCMProps, VEAProps> = {
+export const canonicalFromDevForm: MathExercise<Identifiers> = {
   id: "canonicalFromDevForm",
   connector: "\\iff",
   label: "Déterminer la forme canonique à partir de la forme développée",

@@ -21,7 +21,7 @@ import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   power: number;
@@ -31,10 +31,7 @@ type VEAProps = {
   power: number;
 };
 
-const getPowerFunctionDerivative: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getPowerFunctionDerivative: QuestionGenerator<Identifiers> = () => {
   const a = randint(-9, 10, [0]);
   const power = randint(2, 10);
 
@@ -51,19 +48,22 @@ const getPowerFunctionDerivative: QuestionGenerator<
       : new MultiplyNode(new NumberNode(a * power), new VariableNode("x"));
 
   const answer = answerStatement.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =${statement.toTex()}$.`,
     startStatement: `f'(x)`,
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, power },
+    identifiers: { answer, a, power },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, power }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, a, power },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -108,7 +108,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, power }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, power }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, power }) => {
   const opts: NodeOptions = { forbidPowerToProduct: true };
   const answerTree =
     power > 2
@@ -127,7 +127,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, power }) => {
   return texs.includes(ans);
 };
 
-export const powerFunctionDerivative: MathExercise<QCMProps, VEAProps> = {
+export const powerFunctionDerivative: MathExercise<Identifiers> = {
   id: "powerFunctionDerivative",
   connector: "=",
 

@@ -18,7 +18,7 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
 };
@@ -26,7 +26,7 @@ type VEAProps = {
   a: number;
 };
 
-const getExponentialEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getExponentialEquation: QuestionGenerator<Identifiers> = () => {
   const a = randint(-19, 20, [0]);
 
   const equation = new MultiplyNode(new NumberNode(a), new VariableNode("y"));
@@ -39,19 +39,19 @@ const getExponentialEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
     ),
   ).toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Résoudre l'équation différentielle suivante : $y' = ${equation.toTex()}$.`,
     startStatement: `y(x)`,
     answer,
     keys: ["x", "y", "epower", "exp", "C", "equal"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a },
+    identifiers: { answer, a },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const yNode = new VariableNode("y");
@@ -72,7 +72,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a }) => {
   const answer = new EqualNode(
     new VariableNode("y"),
     new MultiplyNode(
@@ -86,17 +86,16 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a }) => {
   return texs.includes(ans);
 };
 
-export const exponentialDifferentialEquation: MathExercise<QCMProps, VEAProps> =
-  {
-    id: "exponentialDifferentialEquation",
-    connector: "=",
-    label: "Équation différentielle $y' = ay$",
-    levels: ["1reSpé", "MathComp", "TermSpé"],
-    sections: ["Équations différentielles"],
-    isSingleStep: false,
-    generator: (nb: number) => getDistinctQuestions(getExponentialEquation, nb),
-    qcmTimer: 60,
-    freeTimer: 60,
-    getPropositions,
-    isAnswerValid,
-  };
+export const exponentialDifferentialEquation: MathExercise<Identifiers> = {
+  id: "exponentialDifferentialEquation",
+  connector: "=",
+  label: "Équation différentielle $y' = ay$",
+  levels: ["1reSpé", "MathComp", "TermSpé"],
+  sections: ["Équations différentielles"],
+  isSingleStep: false,
+  generator: (nb: number) => getDistinctQuestions(getExponentialEquation, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+  isAnswerValid,
+};

@@ -16,7 +16,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   re: number;
   im: number;
@@ -27,24 +27,23 @@ type VEAProps = {
 };
 
 const getModuloFromAlgebraicComplexQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const z = ComplexConstructor.random();
   const zTex = z.toTree().toTex();
   const answer = z.toModuleTree().toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Soit $z=${zTex}$. Déterminer le module $|z|$ de $z$.`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, re: z.re, im: z.im },
+    identifiers: { answer, re: z.re, im: z.im },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, re, im }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, re, im }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   tryToAddWrongProp(
@@ -59,7 +58,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, re, im }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { re, im }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { re, im }) => {
   const z = new Complex(re, im);
   const answer = new SqrtNode(new NumberNode(z.moduleSquared()), {
     allowSimplifySqrt: true,
@@ -69,7 +68,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { re, im }) => {
   return texs.includes(ans);
 };
 
-export const moduloFromAlgebraicComplex: MathExercise<QCMProps, VEAProps> = {
+export const moduloFromAlgebraicComplex: MathExercise<Identifiers> = {
   id: "moduloFromAlgebraicComplex",
   connector: "=",
   label: "Déterminer le module d'un nombre complexe via sa forme algébrique",

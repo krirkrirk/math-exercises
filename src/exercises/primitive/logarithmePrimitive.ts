@@ -23,35 +23,32 @@ import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   coeffs: number[];
 };
 type VEAProps = {
   coeffs: number[];
 };
-export const getLogarithmePrimitive: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+export const getLogarithmePrimitive: QuestionGenerator<Identifiers> = () => {
   const u = PolynomialConstructor.randomWithOrder(randint(1, 3));
   const uTree = u.toTree();
   const selectedFunction = new FractionNode(u.derivate().toTree(), uTree);
   const integratedFuction = new LogNode(new AbsNode(uTree));
   const answer = new AddNode(integratedFuction, new VariableNode("C")).toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la forme générale des primitives de la fonction $f$ définie par $f(x) = ${selectedFunction.toTex()}$.`,
     startStatement: `F(x)`,
     answer,
     keys: ["x", "C", "ln", "abs"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, coeffs: u.coefficients },
+    identifiers: { answer, coeffs: u.coefficients },
   };
 
   return question;
 };
 
-export const getLogarithmePrimitivePropositions: QCMGenerator<QCMProps> = (
+export const getLogarithmePrimitivePropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, coeffs },
 ) => {
@@ -91,7 +88,10 @@ export const getLogarithmePrimitivePropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isLogarithmePrimitiveAnswerValid: VEA<VEAProps> = (ans, { coeffs }) => {
+const isLogarithmePrimitiveAnswerValid: VEA<Identifiers> = (
+  ans,
+  { coeffs },
+) => {
   const u = new Polynomial(coeffs);
   const uTree = u.toTree({ forbidPowerToProduct: true });
   const integratedFuction = new LogNode(new AbsNode(uTree));
@@ -101,7 +101,7 @@ const isLogarithmePrimitiveAnswerValid: VEA<VEAProps> = (ans, { coeffs }) => {
   return texs.includes(ans);
 };
 
-export const logarithmePrimitive: MathExercise<QCMProps, VEAProps> = {
+export const logarithmePrimitive: MathExercise<Identifiers> = {
   id: "logarithmePrimitive",
   connector: "=",
   label: "Primitive de $\\frac{u'}{u}$",

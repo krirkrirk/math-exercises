@@ -20,7 +20,7 @@ import { Interval } from "#root/math/sets/intervals/intervals";
 import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   numCoeffs: number[];
   denumCoeffs: number[];
@@ -38,8 +38,7 @@ const getSign = (nb: number) => {
 };
 
 const getSequenceRationalFracLimitQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const polyDenum = new Affine(1, randint(-9, 10, [0]));
 
@@ -66,7 +65,7 @@ const getSequenceRationalFracLimitQuestion: QuestionGenerator<
     ? `${getSign(numLimit)}\\infty`
     : `${getSign(-numLimit)}\\infty`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Soit $f$ la fonction définie par : $f(x) = \\dfrac{${polyNum
       .toTree()
@@ -76,7 +75,7 @@ const getSequenceRationalFracLimitQuestion: QuestionGenerator<
       `,
     keys: ["infty"],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       numCoeffs: polyNum.coefficients,
       denumCoeffs: polyDenum.coefficients,
@@ -87,7 +86,10 @@ const getSequenceRationalFracLimitQuestion: QuestionGenerator<
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, numCoeffs }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, numCoeffs },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -102,25 +104,24 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, numCoeffs }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (
+const isAnswerValid: VEA<Identifiers> = (
   ans,
   { answer, numCoeffs, denumCoeffs, isRight },
 ) => {
   return ans === answer;
 };
 
-export const rationalFracForbiddenValueLimit: MathExercise<QCMProps, VEAProps> =
-  {
-    id: "rationalFracForbiddenValueLimit",
-    connector: "=",
-    label: "Limite d'une fraction rationnelle avec valeur interdite",
-    levels: ["TermSpé", "MathComp"],
-    isSingleStep: true,
-    sections: ["Limites"],
-    generator: (nb: number) =>
-      getDistinctQuestions(getSequenceRationalFracLimitQuestion, nb),
-    qcmTimer: 60,
-    freeTimer: 60,
-    getPropositions,
-    isAnswerValid,
-  };
+export const rationalFracForbiddenValueLimit: MathExercise<Identifiers> = {
+  id: "rationalFracForbiddenValueLimit",
+  connector: "=",
+  label: "Limite d'une fraction rationnelle avec valeur interdite",
+  levels: ["TermSpé", "MathComp"],
+  isSingleStep: true,
+  sections: ["Limites"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getSequenceRationalFracLimitQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+  isAnswerValid,
+};

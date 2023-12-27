@@ -15,14 +15,9 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
-type QCMProps = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
-const getMentalMultiplications: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getMentalMultiplications: QuestionGenerator<Identifiers> = () => {
   const a = randint(-9, 10, [-1, 0, 1]);
   const b = coinFlip()
     ? randint(-99, 100, [-10, 0, 10]) / 10
@@ -54,19 +49,19 @@ const getMentalMultiplications: QuestionGenerator<QCMProps, VEAProps> = () => {
   statementTree.shuffle();
   const statementTex = statementTree.toTex();
   const answerTex = (round(answer, 2) + "").replace(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer : $${statementTex}$`,
     startStatement: statementTex,
     answer: answerTex,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer: answerTex },
+    identifiers: {},
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const result = Number(answer.replace(",", "."));
@@ -83,13 +78,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (studentAns, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (studentAns, { answer }) => {
   const answerTree = new NumberNode(Number(answer.replace(",", ".")));
   const texs = answerTree.toAllValidTexs();
   return texs.includes(studentAns);
 };
 
-export const mentalMultiplications: MathExercise<QCMProps, VEAProps> = {
+export const mentalMultiplications: MathExercise<Identifiers> = {
   id: "mentalMultiplications",
   connector: "=",
   label: "Effectuer mentalement des multiplications simples",

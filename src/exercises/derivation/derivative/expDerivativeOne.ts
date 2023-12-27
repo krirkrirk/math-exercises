@@ -17,7 +17,7 @@ import { ExpNode } from "#root/tree/nodes/functions/expNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -27,7 +27,7 @@ type VEAProps = {
   b: number;
 };
 
-const getExpDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getExpDerivative: QuestionGenerator<Identifiers> = () => {
   const a = randint(-9, 10, [0]);
   const b = randint(-9, 10);
 
@@ -35,19 +35,19 @@ const getExpDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
   const myfunction = new ExpNode(affine.toTree());
   const derivative = new MultiplyNode(new NumberNode(a), myfunction);
   const answer = derivative.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la dérivée de la fonction $f(x) = ${myfunction.toTex()}$.`,
     startStatement: "f'(x)",
     answer,
     keys: ["x", "epower", "exp"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b },
+    identifiers: { answer, a, b },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const affine = new Affine(a, b);
@@ -71,14 +71,14 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
 
   return shuffleProps(propositions, n);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   const affine = new Polynomial([b, a]);
   const myfunction = new ExpNode(affine.toTree());
   const derivative = new MultiplyNode(new NumberNode(a), myfunction);
   const texs = derivative.toAllValidTexs();
   return texs.includes(ans);
 };
-export const expDerivativeOne: MathExercise<QCMProps, VEAProps> = {
+export const expDerivativeOne: MathExercise<Identifiers> = {
   id: "expDerivativeOne",
   connector: "=",
   label: "Dérivée de $\\exp(ax + b)$",

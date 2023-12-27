@@ -18,7 +18,7 @@ import { EqualNode } from "#root/tree/nodes/operators/equalNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { KeyId } from "#root/types/keyIds";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   sideA: string;
   sideB: string;
@@ -29,7 +29,7 @@ type VEAProps = {
   sideB: string;
   sideC: string;
 };
-const getPythagore: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getPythagore: QuestionGenerator<Identifiers> = () => {
   const vertices: KeyId[] = [];
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 3; i++)
@@ -44,7 +44,7 @@ const getPythagore: QuestionGenerator<QCMProps, VEAProps> = () => {
   const sideB = triangle.getSideBName();
   const sideC = triangle.getSideCName();
   const answer = `${sideA}^2=${sideB}^2+${sideC}^2`;
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction:
       "Écrire l'égalité de Pythagore pour le triangle rectangle suivant : ",
 
@@ -53,12 +53,12 @@ const getPythagore: QuestionGenerator<QCMProps, VEAProps> = () => {
     commands: triangle.generateCommands({}),
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, sideA, sideB, sideC },
+    identifiers: { answer, sideA, sideB, sideC },
   };
 
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, sideA, sideB, sideC },
 ) => {
@@ -74,7 +74,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { sideA, sideB, sideC }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { sideA, sideB, sideC }) => {
   const answer = new EqualNode(
     new SquareNode(new LengthNode(sideA)),
     new AddNode(
@@ -85,7 +85,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { sideA, sideB, sideC }) => {
   const texs = answer.toAllValidTexs();
   return texs.includes(ans);
 };
-export const pythagore: MathExercise<QCMProps, VEAProps> = {
+export const pythagore: MathExercise<Identifiers> = {
   id: "pythagore",
   connector: "=",
   label: "Écrire l'égalité de Pythagore",

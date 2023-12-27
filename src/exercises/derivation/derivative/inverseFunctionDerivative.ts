@@ -17,7 +17,7 @@ import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
 };
@@ -25,24 +25,21 @@ type VEAProps = {
   a: number;
 };
 
-const getInverseFunctionDerivative: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getInverseFunctionDerivative: QuestionGenerator<Identifiers> = () => {
   const a = randint(-19, 20, [0]);
   const answer = `${a > 0 ? "-" : ""}\\frac{${Math.abs(a)}}{x^2}`;
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =\\frac{${a}}{x}$.`,
     startStatement: `f'(x)`,
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a },
+    identifiers: { answer, a },
   };
 
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -59,7 +56,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a }) => {
   const answerTree = new FractionNode(
     new NumberNode(-a),
     new SquareNode(new VariableNode("x")),
@@ -69,7 +66,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a }) => {
   return texs.includes(ans);
 };
 
-export const inverseFunctionDerivative: MathExercise<QCMProps, VEAProps> = {
+export const inverseFunctionDerivative: MathExercise<Identifiers> = {
   id: "inverseFunctionDerivative",
   connector: "=",
   label: "Dérivée d'une fonction inverse",

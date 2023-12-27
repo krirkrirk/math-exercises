@@ -20,7 +20,7 @@ import { round } from "#root/math/utils/round";
 import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   coords1: number[];
   coords2: number[];
@@ -29,10 +29,7 @@ type VEAProps = {
   coords1: number[];
   coords2: number[];
 };
-const getDistanceBetweenTwoPoints: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getDistanceBetweenTwoPoints: QuestionGenerator<Identifiers> = () => {
   const [coords1, coords2] = distinctRandTupleInt(2, 2, { from: -9, to: 10 });
   let A = new Point(
     "A",
@@ -50,18 +47,18 @@ const getDistanceBetweenTwoPoints: QuestionGenerator<
     .toTree()
     .toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Soit $${A.toTexWithCoords()}$ et $${B.toTexWithCoords()}$. Calculer la distance $AB$.`,
     startStatement: "AB",
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, coords1, coords2 },
+    identifiers: { answer, coords1, coords2 },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, coords1, coords2 },
 ) => {
@@ -124,7 +121,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { coords1, coords2 }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { coords1, coords2 }) => {
   const A = new Point(
     "A",
     new NumberNode(coords1[0]),
@@ -139,10 +136,11 @@ const isAnswerValid: VEA<VEAProps> = (ans, { coords1, coords2 }) => {
     allowSimplifySqrt: true,
   });
   const texs = answer.toAllValidTexs();
+  console.log(ans, texs);
   return texs.includes(ans);
 };
 
-export const distanceBetweenTwoPoints: MathExercise<QCMProps, VEAProps> = {
+export const distanceBetweenTwoPoints: MathExercise<Identifiers> = {
   id: "distanceBetweenTwoPoints",
   connector: "=",
   label: "Distance entre deux points",

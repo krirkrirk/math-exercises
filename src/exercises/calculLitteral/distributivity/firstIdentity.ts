@@ -19,7 +19,7 @@ import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -32,27 +32,24 @@ const interval = new Interval("[[1; 10]]").difference(
   new DiscreteSet([new Integer(0)]),
 );
 
-export const getFirstIdentityQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+export const getFirstIdentityQuestion: QuestionGenerator<Identifiers> = () => {
   const affine = AffineConstructor.random(interval, interval);
 
   const statementTree = new PowerNode(affine.toTree(), new NumberNode(2));
   const answer = affine.multiply(affine).toTree().toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Développer et réduire : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a: affine.a, b: affine.b },
+    identifiers: { answer, a: affine.a, b: affine.b },
   };
   return question;
 };
 
-export const getFirstIdentityPropositions: QCMGenerator<QCMProps> = (
+export const getFirstIdentityPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, a, b },
 ) => {
@@ -81,14 +78,14 @@ export const getFirstIdentityPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-export const isFirstIdentityAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
+export const isFirstIdentityAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   const affine = new Affine(a, b);
   const answer = affine.multiply(affine).toTree();
   const texs = answer.toAllValidTexs();
   return texs.includes(ans);
 };
 
-export const firstIdentity: MathExercise<QCMProps, VEAProps> = {
+export const firstIdentity: MathExercise<Identifiers> = {
   id: "idRmq1",
   connector: "=",
   label: "Identité remarquable $(a+b)^2$",

@@ -15,14 +15,14 @@ import { round } from "#root/math/utils/round";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getTrigonometrySideCalcul: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getTrigonometrySideCalcul: QuestionGenerator<Identifiers> = () => {
   const vertices = [];
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i));
@@ -70,7 +70,7 @@ const getTrigonometrySideCalcul: QuestionGenerator<QCMProps, VEAProps> = () => {
     ".",
     ",",
   )}`;
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Le triangle $${triangle.getTriangleName()}$ rectangle en $${triangle.getRightAngle()}$ est tel que $${
       sides[randside]
     } = ${(sideLengths[randside] + "").replace(".", ",")}$ cm et $\\widehat{${
@@ -83,13 +83,13 @@ const getTrigonometrySideCalcul: QuestionGenerator<QCMProps, VEAProps> = () => {
     commands,
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -102,13 +102,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   const answerTree = new NumberNode(Number(answer.replace(",", ".")));
   const texs = answerTree.toAllValidTexs();
   return texs.includes(ans);
 };
 
-export const trigonometrySideCalcul: MathExercise<QCMProps, VEAProps> = {
+export const trigonometrySideCalcul: MathExercise<Identifiers> = {
   id: "trigonometrySideCalcul",
   connector: "=",
   label: "Utiliser la trigonométrie pour calculer un côté",

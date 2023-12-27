@@ -14,14 +14,12 @@ import {
   Polynomial,
   PolynomialConstructor,
 } from "#root/math/polynomials/polynomial";
-import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { PowerNode, SquareNode } from "#root/tree/nodes/operators/powerNode";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
-  answerDenum: string;
   poly1Coeffs: number[];
   poly2Coeffs: number[];
 };
@@ -30,10 +28,7 @@ type VEAProps = {
   poly2Coeffs: number[];
 };
 
-const getProductDerivativeQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getProductDerivativeQuestion: QuestionGenerator<Identifiers> = () => {
   const poly1 = PolynomialConstructor.randomWithLength(2, 2);
   let poly2: Polynomial;
   let isMultiple = false;
@@ -51,12 +46,11 @@ const getProductDerivativeQuestion: QuestionGenerator<
     .derivate()
     .multiply(poly2)
     .add(poly1.opposite().multiply(poly2.derivate()))
-    .toTree()
-    .toTex();
-  const answerDenum = new PowerNode(poly2.toTree(), new NumberNode(2)).toTex();
-  const answer = `\\frac{${answerNum}}{${answerDenum}}`;
+    .toTree();
+  const answerDenum = new SquareNode(poly2.toTree());
+  const answer = new FractionNode(answerNum, answerDenum).toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Déterminer la dérivée de la fonction $f$ définie par $f(x) = ${new FractionNode(
       poly1.toTree(),
@@ -64,25 +58,26 @@ const getProductDerivativeQuestion: QuestionGenerator<
     ).toTex()}$`,
     keys: ["x", "xsquare", "xcube"],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       poly1Coeffs: poly1.coefficients,
       poly2Coeffs: poly2.coefficients,
-      answerDenum,
     },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, answerDenum, poly1Coeffs, poly2Coeffs },
+  { answer, poly1Coeffs, poly2Coeffs },
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const poly1 = new Polynomial(poly1Coeffs);
   const poly2 = new Polynomial(poly2Coeffs);
+  const answerDenum = new SquareNode(poly2.toTree()).toTex();
+
   tryToAddWrongProp(
     propositions,
     `\\frac{${poly1.derivate().toTree().toTex()}}{${poly2
@@ -101,7 +96,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { poly1Coeffs, poly2Coeffs }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { poly1Coeffs, poly2Coeffs }) => {
   const poly1 = new Polynomial(poly1Coeffs);
   const poly2 = new Polynomial(poly2Coeffs);
   const answerNum = poly1
@@ -112,11 +107,11 @@ const isAnswerValid: VEA<VEAProps> = (ans, { poly1Coeffs, poly2Coeffs }) => {
   const answerDenum = new PowerNode(poly2.toTree(), new NumberNode(2));
   const answer = new FractionNode(answerNum, answerDenum);
   const texs = answer.toAllValidTexs();
-  console.log(texs);
+  console.log(ans, texs);
   return texs.includes(ans);
 };
 
-export const quotientDerivative: MathExercise<QCMProps, VEAProps> = {
+export const quotientDerivative: MathExercise<Identifiers> = {
   id: "quotientDerivative",
   connector: "=",
   label: "Dérivée d'un quotient de polynômes",

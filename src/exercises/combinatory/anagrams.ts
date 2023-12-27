@@ -110,7 +110,7 @@ const letters = [
   "à",
   "ç",
 ];
-type QCMProps = {
+type Identifiers = {
   answer: string;
   word: string;
 };
@@ -118,7 +118,7 @@ type VEAProps = {
   answer: string;
 };
 
-const getAnagramsQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getAnagramsQuestion: QuestionGenerator<Identifiers> = () => {
   const word = random(words);
   const repeats: number[] = [];
   const wordLetters = word.split("");
@@ -142,18 +142,18 @@ const getAnagramsQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   });
   const answer = facto / arrangements + "";
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Combien d'anagrammes mathématiques du mot ${word} sont possibles ? `,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, word },
+    identifiers: { answer, word },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, word }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, word }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   tryToAddWrongProp(propositions, Math.pow(word.length, word.length) + "");
@@ -166,11 +166,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, word }) => {
 
   return shuffleProps(propositions, n);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const anagrams: MathExercise<QCMProps, VEAProps> = {
+export const anagrams: MathExercise<Identifiers> = {
   id: "anagrams",
   connector: "=",
   label: "Compter le nombre d'anagrammes d'un mot",

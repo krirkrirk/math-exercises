@@ -17,7 +17,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   int: number;
   power: number;
@@ -26,7 +26,7 @@ type VEAProps = {
   int: number;
   power: number;
 };
-const getCalculatePowerQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getCalculatePowerQuestion: QuestionGenerator<Identifiers> = () => {
   const int = randint(1, 11);
   const power = randint(-5, 0);
   const statement = new PowerNode(
@@ -38,18 +38,21 @@ const getCalculatePowerQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
     .toTree()
     .toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Calculer : $${statement}$`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, int, power },
+    identifiers: { answer, int, power },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, int, power }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, int, power },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -75,7 +78,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, int, power }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { int, power }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { int, power }) => {
   const answerTree = new Rational(1, int ** Math.abs(power))
     .simplify()
     .toTree({ allowFractionToDecimal: true });
@@ -88,7 +91,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { int, power }) => {
   return texs.includes(ans);
 };
 
-export const calculateNegativePower: MathExercise<QCMProps, VEAProps> = {
+export const calculateNegativePower: MathExercise<Identifiers> = {
   id: "calculateNegativePower",
   connector: "=",
   label: "Calculer une puissance négative",

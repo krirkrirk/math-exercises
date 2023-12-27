@@ -17,20 +17,16 @@ import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
-  sideA: string;
-  sideB: string;
-  sideC: string;
-};
-type VEAProps = {
   sideA: string;
   sideB: string;
   sideC: string;
   randAngle: number;
   randTrigo: number;
 };
-const getTrigonometry: QuestionGenerator<QCMProps, VEAProps> = () => {
+
+const getTrigonometry: QuestionGenerator<Identifiers> = () => {
   const vertices = [];
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i));
@@ -72,7 +68,7 @@ const getTrigonometry: QuestionGenerator<QCMProps, VEAProps> = () => {
   }
 
   const answer = quotient[randTrigo];
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `À quel quotient est égal ${trigo[randTrigo]} de l'angle $\\widehat{${angle[randAngle]}}$?`,
     answer,
     keys: [...(vertices as KeyId[]), "equal"],
@@ -81,14 +77,13 @@ const getTrigonometry: QuestionGenerator<QCMProps, VEAProps> = () => {
     ],
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, sideA, sideB, sideC },
-    veaProps: { randAngle, randTrigo, sideA, sideB, sideC },
+    identifiers: { answer, sideA, sideB, sideC, randAngle, randTrigo },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, sideA, sideB, sideC },
 ) => {
@@ -115,7 +110,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (
+const isAnswerValid: VEA<Identifiers> = (
   ans,
   { randAngle, randTrigo, sideA, sideB, sideC },
 ) => {
@@ -141,7 +136,7 @@ const isAnswerValid: VEA<VEAProps> = (
   return texs.includes(ans);
 };
 
-export const trigonometry: MathExercise<QCMProps, VEAProps> = {
+export const trigonometry: MathExercise<Identifiers> = {
   id: "trigonometry",
   connector: "=",
   label:

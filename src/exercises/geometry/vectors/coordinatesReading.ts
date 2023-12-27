@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { IntegerConstructor } from "#root/math/numbers/integer/integer";
 import { randint } from "#root/math/utils/random/randint";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   xA: number;
   xB: number;
@@ -24,10 +24,7 @@ type VEAProps = {
   answer: string;
 };
 
-const getCoordinatesReadingQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getCoordinatesReadingQuestion: QuestionGenerator<Identifiers> = () => {
   const [xA, yA] = IntegerConstructor.randomDifferents(-5, 6, 2);
   let xB: number, yB: number;
   do {
@@ -50,20 +47,20 @@ const getCoordinatesReadingQuestion: QuestionGenerator<
     yMin === yMax ? yMax + 1 : yMax + 0.2 * Math.abs(yDelta),
   ];
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Lire les coordonnées du vecteur $\\overrightarrow u$ représenté ci-dessous :`,
     keys: ["semicolon", "u", "overrightarrow", "equal"],
     answerFormat: "tex",
     commands,
     coords,
-    qcmGeneratorProps: { answer, xA, xB, yA, yB },
+    identifiers: { answer, xA, xB, yA, yB },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, xA, xB, yA, yB },
 ) => {
@@ -85,11 +82,11 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return [answer, "u" + answer, "\\overrightarrow{u}" + answer].includes(ans);
 };
 
-export const coordinatesReading: MathExercise<QCMProps, VEAProps> = {
+export const coordinatesReading: MathExercise<Identifiers> = {
   id: "coordinatesReading",
   connector: "=",
   label: "Lire les coordonnées d'un vecteur",

@@ -13,28 +13,28 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getSquareArea: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getSquareArea: QuestionGenerator<Identifiers> = () => {
   const side = randint(1, 21);
   const answer = side ** 2 + "";
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer l'aire d'un carré de $${side}$ cm de côté.`,
     answer: answer + "\\text{cm}^2",
     answerFormat: "tex",
     keys: ["cm", "cm2"],
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer + "\\text{cm}^2");
   while (propositions.length < n) {
@@ -44,12 +44,12 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   const texs = [answer + "", answer + "\\text{cm}^2"];
   return texs.includes(ans);
 };
 
-export const squareArea: MathExercise<QCMProps, VEAProps> = {
+export const squareArea: MathExercise<Identifiers> = {
   id: "squareArea",
   connector: "=",
   label: "Calculer l'aire d'un carré",

@@ -16,27 +16,24 @@ import {
 } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 
-const getExplicitFormulaUsageQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getExplicitFormulaUsageQuestion: QuestionGenerator<Identifiers> = () => {
   const u = PolynomialConstructor.randomWithOrder(2, "n");
   const rank = randint(0, 4);
   const answer = u.calculate(rank) + "";
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Soit $u$ la suite définie pour tout $n\\geq 0$ par $u_n = ${u
       .toTree()
       .toTex()}$. Calculer $u_${rank}$.`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, rank, coeffs: u.coefficients },
+    identifiers: { answer, rank, coeffs: u.coefficients },
   };
   return question;
 };
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   rank: number;
   coeffs: number[];
@@ -45,7 +42,7 @@ type VEAProps = {
   answer: string;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, rank, coeffs },
 ) => {
@@ -60,10 +57,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
   }
   return shuffleProps(propositions, n);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const explicitFormulaUsage: MathExercise<QCMProps, VEAProps> = {
+export const explicitFormulaUsage: MathExercise<Identifiers> = {
   id: "explicitFormulaUsage",
   connector: "=",
   label: "Utiliser la formule explicite d'une suite",

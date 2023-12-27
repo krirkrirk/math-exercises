@@ -18,7 +18,7 @@ import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -28,22 +28,22 @@ type VEAProps = {
   b: number;
 };
 
-const getFirstDegreeEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getFirstDegreeEquation: QuestionGenerator<Identifiers> = () => {
   const a = randint(-30, 30, [0]);
   const b = randint(-30, 30, [0]);
   const answer = `x=${new Rational(a, b).simplify().toTree().toTex()}`;
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Résoudre l'équation suivante : $\\frac{${a}}{x} = ${b}$`,
     startStatement: `x`,
     answer,
     keys: equationKeys,
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b },
+    identifiers: { answer, a, b },
   };
 
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   tryToAddWrongProp(
@@ -61,7 +61,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   const solution = new Rational(a, b).simplify().toTree();
   const answerTree = new EquationSolutionNode(new DiscreteSetNode([solution]), {
     opts: { allowFractionToDecimal: true, allowRawRightChildAsSolution: true },
@@ -70,7 +70,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
   return validLatexs.includes(ans);
 };
 
-export const firstDegreeEquation: MathExercise<QCMProps, VEAProps> = {
+export const firstDegreeEquation: MathExercise<Identifiers> = {
   id: "firstDegreeEquation",
   connector: "=",
   label: "Résoudre une équation du premier degré du type $\\frac{a}{x} = b$",

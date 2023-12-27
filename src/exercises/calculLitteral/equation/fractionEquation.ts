@@ -21,7 +21,7 @@ import {
 } from "#root/tree/nodes/sets/discreteSetNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -34,7 +34,7 @@ type VEAProps = {
   c: number;
   d: number;
 };
-const getFractionEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getFractionEquation: QuestionGenerator<Identifiers> = () => {
   // (ax + b)/(cx + d) = 0
 
   const a = randint(-9, 10, [0]);
@@ -53,7 +53,7 @@ const getFractionEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
           .toTree()
           .toTex()}\\right\\}`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Résoudre : $\\frac{${polynome1.toTex()}}{${polynome2.toTex()}} = 0$`,
 
     startStatement: `\\frac{${polynome1.toTex()}}{${polynome2.toTex()}} = 0`,
@@ -69,13 +69,16 @@ const getFractionEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
       "emptyset",
     ],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b, c, d },
+    identifiers: { answer, a, b, c, d },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c, d }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, a, b, c, d },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   tryToAddWrongProp(
@@ -96,7 +99,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c, d }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c, d }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d }) => {
   const solutions =
     -d / c === -b / a
       ? EmptySet
@@ -107,7 +110,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c, d }) => {
   const validLatexs = answer.toAllValidTexs();
   return validLatexs.includes(ans);
 };
-export const fractionEquation: MathExercise<QCMProps, VEAProps> = {
+export const fractionEquation: MathExercise<Identifiers> = {
   id: "fractionEquation",
   connector: "\\iff",
   label: "Résoudre une équation quotient nul",

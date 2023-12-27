@@ -25,16 +25,10 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
 const getOperationsPrioritiesWithoutRelative: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const type = randint(1, 7);
   const flip = randint(1, 4);
@@ -266,18 +260,18 @@ const getOperationsPrioritiesWithoutRelative: QuestionGenerator<
       break;
   }
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer : $${startStatement}$`,
     startStatement,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: {},
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -288,16 +282,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (studentAns, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (studentAns, { answer }) => {
   const answerTree = new NumberNode(Number(answer));
   const texs = answerTree.toAllValidTexs();
   return texs.includes(studentAns);
 };
 
-export const operationsPrioritiesWithoutRelative: MathExercise<
-  QCMProps,
-  VEAProps
-> = {
+export const operationsPrioritiesWithoutRelative: MathExercise<Identifiers> = {
   id: "operationsPrioritiesWithoutRelative",
   connector: "=",
   label: "Priorités opératoires sans les nombres relatifs",

@@ -24,7 +24,7 @@ import {
   tryToAddWrongProp,
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   tenPower: number;
   decimal: number;
@@ -32,10 +32,7 @@ type QCMProps = {
 type VEAProps = {
   answer: string;
 };
-const getScientificToDecimalQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getScientificToDecimalQuestion: QuestionGenerator<Identifiers> = () => {
   const decScientific = DecimalConstructor.randomScientific(randint(1, 4));
   const tenPower = randint(-5, 6, [0, 1]);
   const answer = decScientific.multiplyByPowerOfTen(tenPower).toTree().toTex();
@@ -45,18 +42,18 @@ const getScientificToDecimalQuestion: QuestionGenerator<
     new PowerNode(new NumberNode(10), new NumberNode(tenPower)),
   );
   const statementTex = statement.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Donner l'écriture décimale de : $${statementTex}$`,
     startStatement: statementTex,
     answer: answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, decimal: decScientific.value, tenPower },
+    identifiers: { answer, decimal: decScientific.value, tenPower },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, tenPower, decimal },
 ) => {
@@ -78,11 +75,11 @@ const getPropositions: QCMGenerator<QCMProps> = (
 
   return shuffleProps(propositions, n);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const scientificToDecimal: MathExercise<QCMProps, VEAProps> = {
+export const scientificToDecimal: MathExercise<Identifiers> = {
   id: "scientificToDecimal",
   connector: "=",
   label: "Passer d'écriture scientifique à écriture décimale",

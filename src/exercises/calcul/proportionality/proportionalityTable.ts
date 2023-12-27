@@ -13,14 +13,9 @@ import { IntegerConstructor } from "#root/math/numbers/integer/integer";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
-const getProportionalityTable: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getProportionalityTable: QuestionGenerator<Identifiers> = () => {
   const fact = randint(2, 10);
   let [x1, x2]: (string | number)[] = IntegerConstructor.randomDifferents(
     1,
@@ -51,7 +46,7 @@ const getProportionalityTable: QuestionGenerator<QCMProps, VEAProps> = () => {
       break;
   }
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `On considère le tableau de proportionnalité suivant : 
 
 | | |
@@ -63,13 +58,13 @@ Déterminer le nombre manquant.`,
     answer: answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: {},
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -81,11 +76,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   }
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const proportionalityTable: MathExercise<QCMProps, VEAProps> = {
+export const proportionalityTable: MathExercise<Identifiers> = {
   id: "proportionalityTable",
   connector: "=",
   label: "Calcul dans un tableau de proportionnalité",

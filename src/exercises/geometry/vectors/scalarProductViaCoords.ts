@@ -16,7 +16,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
@@ -24,8 +24,7 @@ type VEAProps = {
 };
 
 const getScalarProductViaCoordsQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const [coords1, coords2] = distinctRandTupleInt(2, 2, { from: -9, to: 10 });
   const u = new Vector(
@@ -40,18 +39,18 @@ const getScalarProductViaCoordsQuestion: QuestionGenerator<
   );
 
   const answer = u.scalarProduct(v).toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Soit $${u.toTexWithCoords()}$ et $${v.toTexWithCoords()}$. Calculer $${u.toTex()}\\cdot ${v.toTex()}$.`,
     startStatement: `${u.toTex()}\\cdot ${v.toTex()}`,
     answer: answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -62,10 +61,10 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const scalarProductViaCoords: MathExercise<QCMProps, VEAProps> = {
+export const scalarProductViaCoords: MathExercise<Identifiers> = {
   id: "scalarProductViaCoords",
   connector: "=",
   isSingleStep: false,

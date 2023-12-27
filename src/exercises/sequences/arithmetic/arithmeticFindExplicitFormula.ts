@@ -16,7 +16,7 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   firstValue: number;
   reason: number;
@@ -26,28 +26,25 @@ type VEAProps = {
   reason: number;
 };
 
-const getArithmeticFindExplicitFormula: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getArithmeticFindExplicitFormula: QuestionGenerator<Identifiers> = () => {
   const firstRank = 0;
   const firstValue = randint(-10, 10);
   const reason = randint(-10, 10, [0]);
 
   const formula = new Polynomial([firstValue, reason], "n");
   const answer = "u_n=" + formula.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `$(u_n)$ est une suite arithmétique de premier terme $u_{${firstRank}} = ${firstValue}$ et de raison $r = ${reason}$. $\\\\$ Donner l'expression de $u_n$ en fonction de $n$.`,
     answer,
     keys: ["un", "equal", "r", "n", "u", "underscore"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, firstValue, reason },
+    identifiers: { answer, firstValue, reason },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, firstValue, reason },
 ) => {
@@ -67,7 +64,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { reason, firstValue }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { reason, firstValue }) => {
   const formula = new Polynomial([firstValue, reason], "n");
 
   const equal = new EqualNode(new VariableNode("u_n"), formula.toTree(), {
@@ -78,7 +75,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { reason, firstValue }) => {
   return texs.includes(ans);
 };
 
-export const arithmeticFindExplicitFormula: MathExercise<QCMProps, VEAProps> = {
+export const arithmeticFindExplicitFormula: MathExercise<Identifiers> = {
   id: "arithmeticFindExplicitFormula",
   connector: "=",
   label: "Déterminer la formule générale d'une suite arithmétique",

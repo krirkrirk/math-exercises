@@ -12,7 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Complex, ComplexConstructor } from "#root/math/complex/complex";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   z1: number[];
   z2: number[];
@@ -21,7 +21,7 @@ type VEAProps = {
   z1: number[];
   z2: number[];
 };
-const getMutiplyComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getMutiplyComplexQuestion: QuestionGenerator<Identifiers> = () => {
   const z1 = ComplexConstructor.random();
   let z2: Complex;
   do {
@@ -30,7 +30,7 @@ const getMutiplyComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   const answer = z1.multiply(z2).toTree().toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2
       .toTree()
@@ -39,13 +39,13 @@ const getMutiplyComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
     answerFormat: "tex",
 
     startStatement: "z\\times z'",
-    qcmGeneratorProps: { answer, z1: [z1.re, z1.im], z2: [z2.re, z2.im] },
+    identifiers: { answer, z1: [z1.re, z1.im], z2: [z2.re, z2.im] },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, z1, z2 }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, z1, z2 }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const prod = new Complex(z1[0], z1[1]).multiply(new Complex(z2[0], z2[1]));
@@ -58,16 +58,16 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, z1, z2 }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { z1, z2 }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { z1, z2 }) => {
   const complex1 = new Complex(z1[0], z1[1]);
   const complex2 = new Complex(z2[0], z2[1]);
   const answer = complex1.multiply(complex2).toTree();
   const texs = answer.toAllValidTexs();
-  console.log(texs);
+  console.log(ans, texs);
   return texs.includes(ans);
 };
 
-export const mutiplyComplex: MathExercise<QCMProps, VEAProps> = {
+export const mutiplyComplex: MathExercise<Identifiers> = {
   id: "mutiplyComplex",
   connector: "=",
   label: "Multiplier deux nombres complexes",

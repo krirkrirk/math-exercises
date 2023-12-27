@@ -13,7 +13,7 @@ import { Complex, ComplexConstructor } from "#root/math/complex/complex";
 import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   re: number;
   im: number;
@@ -23,25 +23,25 @@ type VEAProps = {
   answer: string;
 };
 
-const getReAndImQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getReAndImQuestion: QuestionGenerator<Identifiers> = () => {
   const z1 = ComplexConstructor.random();
   const isRe = coinFlip();
   const answer = (isRe ? z1.re : z1.im) + "";
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Soit $z=${z1.toTree().toTex()}$. Quelle est la partie ${
       isRe ? "réelle" : "imaginaire"
     } de $z$ ?`,
     keys: ["i", "z"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, re: z1.re, im: z1.im, isRe },
+    identifiers: { answer, re: z1.re, im: z1.im, isRe },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, re, im, isRe },
 ) => {
@@ -61,11 +61,11 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const reAndIm: MathExercise<QCMProps, VEAProps> = {
+export const reAndIm: MathExercise<Identifiers> = {
   id: "getReAndImQuestion",
   connector: "=",
   getPropositions,

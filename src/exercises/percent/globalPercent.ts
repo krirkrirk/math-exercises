@@ -14,14 +14,14 @@ import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { shuffle } from "#root/utils/shuffle";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getGlobalPercentQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getGlobalPercentQuestion: QuestionGenerator<Identifiers> = () => {
   const tab = ["hausse", "baisse"];
   let ans = 1;
   let instruction = "Le prix d'un article subit une ";
@@ -44,18 +44,18 @@ const getGlobalPercentQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
     ". \nDéterminer le taux d'évolution global du prix de cet article (arrondir au centième de pourcentage).";
   const answer = `${(ans + "").replace(".", ",")}\\%`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction,
     answer,
     keys: ["percent"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -75,13 +75,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   const allowedTex = [answer];
   if (answer[0] !== "-") allowedTex.push("+" + answer);
   return allowedTex.includes(ans);
 };
 
-export const globalPercent: MathExercise<QCMProps, VEAProps> = {
+export const globalPercent: MathExercise<Identifiers> = {
   id: "globalPercent",
   connector: "=",
   label:

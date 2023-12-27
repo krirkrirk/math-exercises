@@ -15,7 +15,7 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   c: number;
 };
@@ -23,25 +23,22 @@ type VEAProps = {
   c: number;
 };
 
-export const getConstantPrimitive: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+export const getConstantPrimitive: QuestionGenerator<Identifiers> = () => {
   const c = randint(-19, 20, [0]);
   const monom = new Monom(1, c);
   const answer = new AddNode(monom.toTree(), new VariableNode("C")).toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la forme générale des primitives de la fonction constante $f$ définie par $f(x) = ${c}$.`,
     startStatement: `F(x)`,
     answer,
     keys: ["x", "C"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, c },
+    identifiers: { answer, c },
   };
 
   return question;
 };
-export const getConstantPrimitivePropositions: QCMGenerator<QCMProps> = (
+export const getConstantPrimitivePropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, c },
 ) => {
@@ -57,13 +54,16 @@ export const getConstantPrimitivePropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-export const isConstantPrimitiveAnswerValid: VEA<VEAProps> = (ans, { c }) => {
+export const isConstantPrimitiveAnswerValid: VEA<Identifiers> = (
+  ans,
+  { c },
+) => {
   const answer = new AddNode(new Monom(1, c).toTree(), new VariableNode("C"));
   const texs = answer.toAllValidTexs();
   return texs.includes(ans);
 };
 
-export const constantPrimitive: MathExercise<QCMProps, VEAProps> = {
+export const constantPrimitive: MathExercise<Identifiers> = {
   id: "constantPrimitive",
   connector: "=",
   label: "Primitive d'une constante",

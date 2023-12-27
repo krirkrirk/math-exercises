@@ -10,13 +10,9 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import {
-  Polynomial,
-  PolynomialConstructor,
-} from "#root/math/polynomials/polynomial";
+
 import { randint } from "#root/math/utils/random/randint";
 import { ExpNode } from "#root/tree/nodes/functions/expNode";
-import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
@@ -24,18 +20,15 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
 };
 type VEAProps = {
   a: number;
 };
-export const getExponentialPrimitive: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
-  const a = randint(-9, 10, [0]);
+export const getExponentialPrimitive: QuestionGenerator<Identifiers> = () => {
+  const a = randint(-20, 20, [0]);
 
   const integratedFuction = new MultiplyNode(
     new NumberNode(a),
@@ -43,19 +36,19 @@ export const getExponentialPrimitive: QuestionGenerator<
   );
   const answer = new AddNode(integratedFuction, new VariableNode("C")).toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la forme générale des primitives de la fonction $f$ définie par $f(x) = ${integratedFuction.toTex()}$.`,
     startStatement: `F(x)`,
     answer,
     keys: ["x", "C", "epower", "exp"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a },
+    identifiers: { answer, a },
   };
 
   return question;
 };
 
-export const getExponentialPrimitivePropositions: QCMGenerator<QCMProps> = (
+export const getExponentialPrimitivePropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, a },
 ) => {
@@ -89,7 +82,7 @@ export const getExponentialPrimitivePropositions: QCMGenerator<QCMProps> = (
   return shuffleProps(propositions, n);
 };
 
-export const isExponentialPrimitiveAnswerValid: VEA<VEAProps> = (
+export const isExponentialPrimitiveAnswerValid: VEA<Identifiers> = (
   ans,
   { a },
 ) => {
@@ -103,7 +96,7 @@ export const isExponentialPrimitiveAnswerValid: VEA<VEAProps> = (
   return texs.includes(ans);
 };
 
-export const exponentialPrimitive: MathExercise<QCMProps, VEAProps> = {
+export const exponentialPrimitive: MathExercise<Identifiers> = {
   id: "exponentialPrimitive",
   connector: "=",
   label: "Primitive de la fonction exponentielle",

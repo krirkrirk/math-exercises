@@ -53,7 +53,7 @@ export type Proposition = {
   isRightAnswer: boolean;
   format: "tex" | "raw";
 };
-export interface Question<TQCMProps = {}, TVEAProps = {}> {
+export interface Question<TIdentifiers = {}> {
   instruction: string;
   startStatement?: string;
   answer: string;
@@ -63,29 +63,34 @@ export interface Question<TQCMProps = {}, TVEAProps = {}> {
   coords?: number[];
   options?: any;
   divisionFormat?: "fraction" | "obelus";
-  qcmGeneratorProps?: TQCMProps;
-  veaProps?: TVEAProps;
+  identifiers: TIdentifiers;
 }
 
-export type QCMGenerator<T> = (n: number, args: T) => Proposition[];
-export type VEA<T> = (studentAnswer: string, args: T) => boolean;
-export type QuestionGenerator<TQCMProps = {}, TVEAProps = {}, TOptions = {}> = (
+export type QCMGenerator<TIdentifiers> = (
+  n: number,
+  args: { answer: string } & TIdentifiers,
+) => Proposition[];
+export type VEA<TIdentifiers> = (
+  studentAnswer: string,
+  args: { answer: string } & TIdentifiers,
+) => boolean;
+export type QuestionGenerator<TIdentifiers = {}, TOptions = {}> = (
   opts?: TOptions,
-) => Question<TQCMProps, TVEAProps>;
-export interface MathExercise<TQCMProps = {}, TVEAProps = {}> {
+) => Question<TIdentifiers>;
+export interface MathExercise<TIdentifiers = {}> {
   id: string;
   isSingleStep: boolean;
   label: string;
   sections: MathSection[];
   levels: MathLevel[];
   connector?: "=" | "\\iff" | "\\approx";
-  generator: (n: number) => Question<TQCMProps, TVEAProps>[];
+  generator: (n: number) => Question<TIdentifiers>[];
   maxAllowedQuestions?: number;
   answerType?: "QCM" | "free";
   qcmTimer: number;
   freeTimer: number;
-  getPropositions?: QCMGenerator<TQCMProps>;
-  isAnswerValid?: VEA<TVEAProps>;
+  getPropositions?: QCMGenerator<{ answer: string } & TIdentifiers>;
+  isAnswerValid?: VEA<TIdentifiers>;
 }
 
 export type MathLevel =

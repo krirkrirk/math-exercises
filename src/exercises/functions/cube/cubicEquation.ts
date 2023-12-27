@@ -17,30 +17,30 @@ import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   k: number;
 };
 type VEAProps = {
   k: number;
 };
-const getCubicEquationQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getCubicEquationQuestion: QuestionGenerator<Identifiers> = () => {
   const x = randint(-10, 11);
   const k = x ** 3;
   const answer = `S=\\left\\{${x}\\right\\}`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Résoudre l'équation suivante : $x^3 = ${k}$`,
     keys: equationKeys,
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, k },
+    identifiers: { answer, k },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, k }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, k }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   tryToAddWrongProp(propositions, `S=\\{${k ** 3}\\}`);
@@ -52,7 +52,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, k }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { k }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { k }) => {
   const sol = Math.cbrt(k);
   const answerTree = new EquationSolutionNode(
     new DiscreteSetNode([new NumberNode(sol)]),
@@ -61,7 +61,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { k }) => {
   console.log(texs);
   return texs.includes(ans);
 };
-export const cubicEquation: MathExercise<QCMProps, VEAProps> = {
+export const cubicEquation: MathExercise<Identifiers> = {
   id: "cubicEquation",
   connector: "\\iff",
   label: "Résoudre une équation du type $x^3 = k$",

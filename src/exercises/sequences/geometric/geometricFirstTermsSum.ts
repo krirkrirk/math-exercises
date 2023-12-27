@@ -12,7 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   raison: number;
   final: number;
@@ -22,25 +22,24 @@ type VEAProps = {
 };
 
 const getGeometricFirstTermsSumQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const raison = randint(2, 8);
   const final = randint(5, 10);
   const answer = (raison ** (final + 1) - 1) / (raison - 1);
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer + "",
     instruction: `Calculer la somme suivante : $1 + ${raison} + ${raison}^2 + \\ldots + ${raison}^{${final}}$`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer: answer + "", raison, final },
+    identifiers: { answer: answer + "", raison, final },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, raison, final },
 ) => {
@@ -60,10 +59,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const geometricFirstTermsSum: MathExercise<QCMProps, VEAProps> = {
+export const geometricFirstTermsSum: MathExercise<Identifiers> = {
   id: "geometricFirstTermsSum",
   connector: "=",
   label: "Somme des termes d'une suite géométrique",

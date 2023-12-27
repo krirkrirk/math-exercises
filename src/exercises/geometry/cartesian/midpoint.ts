@@ -15,14 +15,13 @@ import { PointNode } from "#root/tree/nodes/geometry/pointNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
-};
-type VEAProps = {
   coordsA: number[];
   coordsB: number[];
 };
-const getMidpointQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+
+const getMidpointQuestion: QuestionGenerator<Identifiers> = () => {
   const [coords1, coords2] = distinctRandTupleInt(2, 2, { from: -9, to: 10 });
   const A = new Point(
     "A",
@@ -36,19 +35,18 @@ const getMidpointQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   );
 
   const answer = A.midpoint(B).toTexWithCoords();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Soit $${A.toTexWithCoords()}$ et $${B.toTexWithCoords()}$. Quelles sont les coordonnées du milieu $I$ de $[AB]$ ?`,
     startStatement: "I",
     answer,
     keys: ["I", "semicolon"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
-    veaProps: { coordsA: coords1, coordsB: coords2 },
+    identifiers: { answer, coordsA: coords1, coordsB: coords2 },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -73,7 +71,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { coordsA, coordsB }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { coordsA, coordsB }) => {
   const A = new Point(
     "A",
     new NumberNode(coordsA[0]),
@@ -92,7 +90,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { coordsA, coordsB }) => {
   console.log(texs);
   return texs.includes(ans);
 };
-export const midpoint: MathExercise<QCMProps, VEAProps> = {
+export const midpoint: MathExercise<Identifiers> = {
   id: "midpoint",
   connector: "=",
   label: "Coordonnées du milieu",

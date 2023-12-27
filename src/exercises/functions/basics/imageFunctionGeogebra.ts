@@ -14,14 +14,14 @@ import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getImageFunctionGeogebra: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
   const rand = coinFlip();
   const xValue = randint(-5, 6);
 
@@ -71,7 +71,7 @@ const getImageFunctionGeogebra: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   const commands = [rand ? polynome1.toString() : polynome2.toString()];
   const answerTex = answer + "";
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: statement,
     startStatement: `f(${xValue})`,
     answer: answerTex,
@@ -79,12 +79,12 @@ const getImageFunctionGeogebra: QuestionGenerator<QCMProps, VEAProps> = () => {
     commands,
     coords: [xmin, xmax, ymin, ymax],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer: answerTex },
+    identifiers: { answer: answerTex },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -95,10 +95,10 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const imageFunctionGeogebra: MathExercise<QCMProps, VEAProps> = {
+export const imageFunctionGeogebra: MathExercise<Identifiers> = {
   id: "imageFunctionGeogebra",
   connector: "=",
   label: "Lecture d'une image",

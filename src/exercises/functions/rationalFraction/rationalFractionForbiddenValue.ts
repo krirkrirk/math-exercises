@@ -17,7 +17,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -30,8 +30,7 @@ type VEAProps = {
 };
 
 const getRationalFractionForbiddenValueQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const a = randint(-10, 11, [0]);
   const b = randint(-10, 11);
@@ -48,18 +47,21 @@ const getRationalFractionForbiddenValueQuestion: QuestionGenerator<
   const fctTex = fct.toTex();
   const answerTree = new Rational(-d, c).simplify().toTree();
   const answer = answerTree.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Soit $f(x)=${fctTex}$. Quelle est la valeur interdite de la fonction $f$ ?`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b, c, d },
+    identifiers: { answer, a, b, c, d },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c, d }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, a, b, c, d },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   tryToAddWrongProp(
@@ -72,25 +74,24 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c, d }) => {
   }
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { c, d }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { c, d }) => {
   const answerTree = new Rational(-d, c)
     .simplify()
     .toTree({ allowFractionToDecimal: true });
   const texs = answerTree.toAllValidTexs();
   return texs.includes(ans);
 };
-export const rationalFractionForbiddenValue: MathExercise<QCMProps, VEAProps> =
-  {
-    id: "rationalFractionForbiddenValue",
-    connector: "=",
-    label: "Déterminer la valeur interdite d'un quotient de polynôme",
-    levels: ["2nde", "1reESM", "1reSpé"],
-    isSingleStep: true,
-    sections: ["Fonctions", "Fractions"],
-    generator: (nb: number) =>
-      getDistinctQuestions(getRationalFractionForbiddenValueQuestion, nb),
-    qcmTimer: 60,
-    freeTimer: 60,
-    getPropositions,
-    isAnswerValid,
-  };
+export const rationalFractionForbiddenValue: MathExercise<Identifiers> = {
+  id: "rationalFractionForbiddenValue",
+  connector: "=",
+  label: "Déterminer la valeur interdite d'un quotient de polynôme",
+  levels: ["2nde", "1reESM", "1reSpé"],
+  isSingleStep: true,
+  sections: ["Fonctions", "Fractions"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getRationalFractionForbiddenValueQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+  isAnswerValid,
+};

@@ -26,7 +26,7 @@ import { v4 } from "uuid";
 /**
  *  type ax=b
  */
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -36,10 +36,7 @@ type VEAProps = {
   b: number;
 };
 
-const getEquationType2ExerciseQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getEquationType2ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const interval = new Interval("[[-10; 10]]");
   const b = interval.getRandomElement();
   const a = randint(-9, 10, [0, 1]);
@@ -51,18 +48,18 @@ const getEquationType2ExerciseQuestion: QuestionGenerator<
     solution.toTree(),
   ).toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Résoudre : $${tree.toTex()}$`,
     startStatement: tree.toTex(),
     answer,
     keys: equationKeys,
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b: b.value },
+    identifiers: { answer, a, b: b.value },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -80,7 +77,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   const solution = new Rational(b, a).simplify().toTree();
   const answerTree = new EquationSolutionNode(new DiscreteSetNode([solution]), {
     opts: { allowFractionToDecimal: true, allowRawRightChildAsSolution: true },
@@ -91,7 +88,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
   return validLatexs.includes(ans);
 };
 
-export const equationType2Exercise: MathExercise<QCMProps, VEAProps> = {
+export const equationType2Exercise: MathExercise<Identifiers> = {
   id: "equa2",
   connector: "\\iff",
   label: "Équations $ax=b$",

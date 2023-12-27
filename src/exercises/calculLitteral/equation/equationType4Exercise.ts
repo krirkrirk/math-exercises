@@ -26,7 +26,7 @@ import { shuffle } from "#root/utils/shuffle";
  *  type ax+b=cx+d
  */
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -40,10 +40,7 @@ type VEAProps = {
   d: number;
 };
 
-const getEquationType4ExerciseQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getEquationType4ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const interval = new Interval("[[-10; 10]]");
   const intervalStar = new Interval("[[-10; 10]]").difference(
     new DiscreteSet([new Integer(0)]),
@@ -65,13 +62,13 @@ const getEquationType4ExerciseQuestion: QuestionGenerator<
   const statementTree = new EqualNode(affines[0].toTree(), affines[1].toTree());
   const answerTree = new EqualNode(new VariableNode("x"), solution.toTree());
   const answer = answerTree.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Résoudre : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTree.toTex(),
     keys: equationKeys,
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       a: a.value,
       b: b.value,
@@ -82,7 +79,10 @@ const getEquationType4ExerciseQuestion: QuestionGenerator<
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c, d }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, a, b, c, d },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -99,7 +99,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c, d }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c, d }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d }) => {
   const solution = new Rational(d - b, a - c).simplify().toTree();
   const answerTree = new EquationSolutionNode(new DiscreteSetNode([solution]), {
     opts: { allowFractionToDecimal: true, allowRawRightChildAsSolution: true },
@@ -108,7 +108,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c, d }) => {
   return validLatexs.includes(ans);
 };
 
-export const equationType4Exercise: MathExercise<QCMProps, VEAProps> = {
+export const equationType4Exercise: MathExercise<Identifiers> = {
   id: "equa4",
 
   connector: "\\iff",

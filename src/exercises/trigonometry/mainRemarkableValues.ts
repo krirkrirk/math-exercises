@@ -15,15 +15,13 @@ import {
   tryToAddWrongProp,
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
-type QCMProps = {
+type Identifiers = {
   answer: string;
-};
-type VEAProps = {
   valueIndex: number;
   isCos: boolean;
 };
 
-const getMainRemarkableValues: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getMainRemarkableValues: QuestionGenerator<Identifiers> = () => {
   const isCos = coinFlip();
 
   const valueIndex = randint(0, remarkableTrigoValues.length);
@@ -36,19 +34,18 @@ const getMainRemarkableValues: QuestionGenerator<QCMProps, VEAProps> = () => {
     ? `\\cos\\left(${remarkableValue.angle.toTex()}\\right)`
     : `\\sin\\left(${remarkableValue.angle.toTex()}\\right)`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Donner la valeur exacte de : $${statement}$`,
     startStatement: statement,
     answer: answer,
     keys: ["pi", "cos", "sin"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
-    veaProps: { valueIndex, isCos },
+    identifiers: { answer, valueIndex, isCos },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const values = [
@@ -70,13 +67,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { valueIndex, isCos }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { valueIndex, isCos }) => {
   const remarkableValue = remarkableTrigoValues[valueIndex];
   const answer = isCos ? remarkableValue.cos : remarkableValue.sin;
   const texs = answer.toAllValidTexs({ allowFractionToDecimal: true });
   return texs.includes(ans);
 };
-export const mainRemarkableValuesExercise: MathExercise<QCMProps, VEAProps> = {
+export const mainRemarkableValuesExercise: MathExercise<Identifiers> = {
   id: "mainRemarkableValues",
   connector: "=",
   label: "Valeurs remarquables de $\\cos$ et $\\sin$ sur $[-\\pi, \\pi]$",

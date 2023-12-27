@@ -107,7 +107,11 @@ export class MultiplyNode implements CommutativeOperatorNode {
 
     let leftTex = this.leftChild.toTex();
     let rightTex = this.rightChild.toTex();
-
+    if (leftTex === "1") {
+      if (this.rightChild.type !== NodeType.number) {
+        res.push(rightTex);
+      }
+    }
     if (this.leftChild.type === NodeType.operator) {
       if (
         [OperatorIds.add, OperatorIds.substract, OperatorIds.divide].includes(
@@ -125,7 +129,11 @@ export class MultiplyNode implements CommutativeOperatorNode {
       );
     }
     if (needRightBrackets) rightTex = `\\left(${rightTex}\\right)`;
-
+    if (leftTex === "-1") {
+      if (this.rightChild.type !== NodeType.number) {
+        res.push("-" + rightTex);
+      }
+    }
     let mustShowTimesSign =
       !isNaN(+rightTex[0]) || this.rightChild.type === NodeType.number;
 
@@ -133,6 +141,12 @@ export class MultiplyNode implements CommutativeOperatorNode {
       rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
 
     res.push(`${leftTex}${`\\times${nextIsLetter ? " " : ""}`}${rightTex}`);
+    if (!needRightBrackets)
+      res.push(
+        `${leftTex}${`\\times${
+          nextIsLetter ? " " : ""
+        }`}\\left(${rightTex}\\right)`,
+      );
     if (mustShowTimesSign) return res;
 
     res.push(`${leftTex}${rightTex}`);

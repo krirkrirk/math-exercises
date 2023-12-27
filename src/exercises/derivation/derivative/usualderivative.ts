@@ -29,7 +29,7 @@ import {
   isThirdDegreeDerivativeAnswerValid,
 } from "./thirdDegreeDerivative";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   type: number;
   a?: number;
@@ -43,35 +43,35 @@ type VEAProps = {
   coefficients?: number[];
 };
 
-const getUsualDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getUsualDerivative: QuestionGenerator<Identifiers> = () => {
   const type = randint(1, 5);
   let question: Question<any, any>;
-  let qcmGeneratorProps: QCMProps;
+  let identifiers: Identifiers;
 
   switch (type) {
     case 1:
       question = getFirstDegreeDerivative();
-      qcmGeneratorProps = { ...question.qcmGeneratorProps, type: 1 };
+      identifiers = { ...question.identifiers, type: 1 };
       break;
     case 2:
       question = getSecondDegreeDerivative();
-      qcmGeneratorProps = { ...question.qcmGeneratorProps, type: 2 };
+      identifiers = { ...question.identifiers, type: 2 };
       break;
     case 3:
       question = getThirdDegreeDerivative();
-      qcmGeneratorProps = { ...question.qcmGeneratorProps, type: 3 };
+      identifiers = { ...question.identifiers, type: 3 };
       break;
     case 4:
       question = getConstanteDerivative();
-      qcmGeneratorProps = { ...question.qcmGeneratorProps, type: 4 };
+      identifiers = { ...question.identifiers, type: 4 };
       break;
     default:
       throw Error("erreur");
   }
-  return { ...question, qcmGeneratorProps };
+  return { ...question, identifiers };
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, type, a, b, coefficients, tex },
 ) => {
@@ -101,7 +101,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
   }
   return props;
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer, type, coefficients }) => {
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { answer, type, coefficients },
+) => {
   let valid: boolean;
   switch (type) {
     case 1:
@@ -126,7 +129,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { answer, type, coefficients }) => {
   return valid;
 };
 
-export const usualDerivative: MathExercise<QCMProps, VEAProps> = {
+export const usualDerivative: MathExercise<Identifiers> = {
   id: "usualDerivative",
   connector: "=",
   label: "Dérivées des fonctions de référence",

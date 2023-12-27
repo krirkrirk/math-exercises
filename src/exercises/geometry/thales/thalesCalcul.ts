@@ -15,17 +15,15 @@ import { Node } from "#root/tree/nodes/node";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
-};
-type VEAProps = {
   sideLengths: number[];
   rand: number;
   rand2: number;
   isAskingC: boolean;
 };
 
-const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getThales: QuestionGenerator<Identifiers> = () => {
   const vertices = [];
   const code = 65 + randint(0, 22); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 5; i++) vertices.push(String.fromCharCode(code + i));
@@ -148,7 +146,7 @@ const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
     `ShowLabel(${vertices[4]}, true)`,
   ];
   const answer = statement.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction,
     startStatement,
     answer,
@@ -156,14 +154,13 @@ const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
-    veaProps: { isAskingC, rand, rand2, sideLengths },
+    identifiers: { answer, isAskingC, rand, rand2, sideLengths },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -176,7 +173,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (
+const isAnswerValid: VEA<Identifiers> = (
   ans,
   { isAskingC, rand, rand2, sideLengths },
 ) => {
@@ -200,7 +197,7 @@ const isAnswerValid: VEA<VEAProps> = (
 
   return texs.includes(ans);
 };
-export const thalesCalcul: MathExercise<QCMProps, VEAProps> = {
+export const thalesCalcul: MathExercise<Identifiers> = {
   id: "thalesCalcul",
   connector: "=",
   label: "Utiliser le théoreme de Thalès pour faire des calculs",

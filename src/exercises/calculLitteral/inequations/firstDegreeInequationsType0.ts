@@ -28,7 +28,7 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   ineqType: string;
@@ -40,8 +40,7 @@ type VEAProps = {
   result: number;
 };
 const getFirstDegreeInequationsQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const affine = new Affine(1, randint(-10, 11));
   const c = randint(-10, 11);
@@ -51,17 +50,17 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
   const ineqType = random(["\\le", "<", "\\ge", ">"]);
   const answer = `x${ineqType}${result}`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Résoudre l'inéquation : $${affine.toTex()} ${ineqType} ${c}$ `,
     keys: inequationKeys,
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a: affine.a, ineqType, result },
+    identifiers: { answer, a: affine.a, ineqType, result },
   };
 
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, a, ineqType, result },
 ) => {
@@ -92,7 +91,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, ineqType, result }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, ineqType, result }) => {
   const ineq = new InequationNode(
     [new VariableNode("x"), new NumberNode(result)],
     ineqType as InegalitySymbols,
@@ -102,7 +101,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, ineqType, result }) => {
   return texs.includes(ans);
 };
 
-export const firstDegreeInequationsType0: MathExercise<QCMProps, VEAProps> = {
+export const firstDegreeInequationsType0: MathExercise<Identifiers> = {
   id: "firstDegreeInequationsType0",
   connector: "\\iff",
   label: "Résoudre une inéquation du type $x+b<c$",

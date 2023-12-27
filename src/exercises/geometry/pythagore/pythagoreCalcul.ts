@@ -19,14 +19,12 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { isInt } from "#root/utils/isInt";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
-};
-type VEAProps = {
   square: number;
 };
 
-const getPythagoreCalcul: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getPythagoreCalcul: QuestionGenerator<Identifiers> = () => {
   const vertices = [];
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i));
@@ -73,7 +71,7 @@ const getPythagoreCalcul: QuestionGenerator<QCMProps, VEAProps> = () => {
     }),
   ];
   answer = answer + "";
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Dans le triangle $${triangle.getTriangleName()}$ rectangle en $${triangle.getRightAngle()}$, on sait que $${
       sides[randoms[0]]
     } = ${sideLengths[randoms[0]]}$ et que $${sides[randoms[1]]} = ${
@@ -84,14 +82,13 @@ const getPythagoreCalcul: QuestionGenerator<QCMProps, VEAProps> = () => {
     commands,
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
-    veaProps: { square },
+    identifiers: { answer, square },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -108,7 +105,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { square }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { square }) => {
   const sqrt = Math.sqrt(square);
   const answer = isInt(sqrt)
     ? new NumberNode(sqrt)
@@ -118,7 +115,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { square }) => {
   return texs.includes(ans);
 };
 
-export const pythagoreCalcul: MathExercise<QCMProps, VEAProps> = {
+export const pythagoreCalcul: MathExercise<Identifiers> = {
   id: "pythagoreCalcul",
   connector: "=",
   label: "Utiliser le théoreme de Pythagore pour faire des calculs",

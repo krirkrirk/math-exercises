@@ -18,7 +18,7 @@ import { LogNode } from "#root/tree/nodes/functions/logNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -28,7 +28,7 @@ type VEAProps = {
   b: number;
 };
 
-const getLnDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getLnDerivative: QuestionGenerator<Identifiers> = () => {
   const a = randint(-9, 10, [0]);
   const b = randint(-9, 10);
   const polynom = new Polynomial([b, a]);
@@ -37,18 +37,18 @@ const getLnDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
     .simplify()
     .toTree()
     .toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la dérivée de la fonction $f(x) = ${logTree.toTex()}$.`,
     startStatement: "f'(x)",
     answer,
     keys: ["x", "ln", "epower"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b },
+    identifiers: { answer, a, b },
   };
 
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const polynom = new Polynomial([b, a]);
@@ -67,7 +67,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   const frac = new RationalFrac(new Polynomial([a]), new Polynomial([b, a]));
   const nonSimplified = frac.toTree();
   const simplified = frac.simplify().toTree();
@@ -79,7 +79,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
   return texs.includes(ans);
 };
 
-export const lnDerivativeOne: MathExercise<QCMProps, VEAProps> = {
+export const lnDerivativeOne: MathExercise<Identifiers> = {
   id: "lnDerivativeOne",
   connector: "=",
   label: "Dérivée de $\\ln(ax + b)$",

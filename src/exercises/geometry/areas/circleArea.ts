@@ -14,14 +14,14 @@ import { round } from "#root/math/utils/round";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getCircleArea: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getCircleArea: QuestionGenerator<Identifiers> = () => {
   const radius = randint(1, 13);
   const diametre = randint(1, 21);
 
@@ -30,20 +30,20 @@ const getCircleArea: QuestionGenerator<QCMProps, VEAProps> = () => {
     ? round(Math.PI * radius ** 2, 2)
     : round(Math.PI * (diametre / 2) ** 2, 2);
   const answer = (answerNb + "").replace(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer l'aire d'un cercle de ${
       coin ? "rayon " + `$${radius}$` : "diamètre " + `$${diametre}$`
     } cm (arrondir au centième).`,
     answer: answer + "\\text{cm}^2",
     answerFormat: "tex",
     keys: ["cm", "cm2"],
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer + "\\text{cm}^2");
   while (propositions.length < n) {
@@ -55,11 +55,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   const texs = [answer, answer + "\\text{cm}^2"];
   return texs.includes(ans);
 };
-export const circleArea: MathExercise<QCMProps, VEAProps> = {
+export const circleArea: MathExercise<Identifiers> = {
   id: "circleArea",
   connector: "=",
   label: "Calculer l'aire d'un cercle",

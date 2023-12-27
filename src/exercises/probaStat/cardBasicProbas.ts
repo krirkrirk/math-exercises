@@ -18,7 +18,7 @@ import { randomEnumValue } from "#root/utils/randomEnumValue";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   questionType: string;
 };
@@ -26,10 +26,7 @@ type VEAProps = {
   questionType: string;
 };
 
-const getCardBasicProbasQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getCardBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
   const questionType = probaLawFlip<"oneCard" | "valueCard" | "colorCard">([
     ["oneCard", 0.33],
     ["valueCard", 0.33],
@@ -58,18 +55,18 @@ const getCardBasicProbasQuestion: QuestionGenerator<
       break;
   }
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `On tire une carte dans un jeu de 52 cartes. Quelle est la probabilité d'obtenir ${target} ?`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, questionType },
+    identifiers: { answer, questionType },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, questionType },
 ) => {
@@ -96,7 +93,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { questionType }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { questionType }) => {
   let denum: number;
   switch (questionType) {
     case "oneCard":
@@ -119,7 +116,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { questionType }) => {
   return texs.includes(ans);
 };
 
-export const cardBasicProbas: MathExercise<QCMProps, VEAProps> = {
+export const cardBasicProbas: MathExercise<Identifiers> = {
   id: "cardBasicProbas",
   connector: "=",
   label: "Calcul de probabilité simple avec un jeu de cartes",

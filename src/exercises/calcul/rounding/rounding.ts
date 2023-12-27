@@ -30,8 +30,7 @@ const instructions = [
 ];
 
 const getRoundQuestions: QuestionGenerator<
-  QCMProps,
-  VEAProps,
+  Identifiers,
   { precisionAsked: number }
 > = (opts) => {
   const precisionAsked = opts?.precisionAsked || 0;
@@ -39,14 +38,13 @@ const getRoundQuestions: QuestionGenerator<
   const dec = DecimalConstructor.random(0, 1000, precision);
   const decTex = dec.toTree().toTex();
   const answer = dec.round(precisionAsked).toTree().toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `${instructions[precisionAsked]} ${decTex}`,
     startStatement: decTex,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: {
-      answer,
+    identifiers: {
       precisionAsked,
       decimal: dec.value,
       precision,
@@ -55,20 +53,13 @@ const getRoundQuestions: QuestionGenerator<
   return question;
 };
 
-type QCMProps = {
-  answer: string;
-  precisionAsked: number;
-  decimal: number;
-  precision: number;
-};
-type VEAProps = {
-  answer: string;
+type Identifiers = {
   precisionAsked: number;
   decimal: number;
   precision: number;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, precisionAsked, decimal, precision },
 ) => {
@@ -80,8 +71,12 @@ const getPropositions: QCMGenerator<QCMProps> = (
     propositions,
     round(dec.value, precisionAsked) ===
       round(dec.value + 0.5 * 10 ** -precisionAsked, precisionAsked)
-      ? round(dec.value - 0.5 * 10 ** -precisionAsked, precisionAsked) + ""
-      : round(dec.value + 0.5 * 10 ** -precisionAsked, precisionAsked) + "",
+      ? round(dec.value - 0.5 * 10 ** -precisionAsked, precisionAsked)
+          .toString()
+          .replace(".", ",")
+      : round(dec.value + 0.5 * 10 ** -precisionAsked, precisionAsked)
+          .toString()
+          .replace(".", ","),
   );
   tryToAddWrongProp(propositions, dec.toTree().toTex());
 
@@ -104,13 +99,13 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { decimal, precisionAsked }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { decimal, precisionAsked }) => {
   const dec = new Decimal(decimal);
   const answer = dec.round(precisionAsked).toTree();
   const texs = answer.toAllValidTexs();
   return texs.includes(ans);
 };
-export const roundToUnit: MathExercise<QCMProps, VEAProps> = {
+export const roundToUnit: MathExercise<Identifiers> = {
   id: "roundToUnit",
   connector: "\\approx",
   label: "Arrondir à l'unité",
@@ -127,7 +122,7 @@ export const roundToUnit: MathExercise<QCMProps, VEAProps> = {
 /**
  * arrondi à l'unité
  */
-export const roundToDixieme: MathExercise<QCMProps, VEAProps> = {
+export const roundToDixieme: MathExercise<Identifiers> = {
   id: "roundToDixieme",
   connector: "\\approx",
   label: "Arrondir au dixième",
@@ -144,7 +139,7 @@ export const roundToDixieme: MathExercise<QCMProps, VEAProps> = {
 /**
  * arrondi à l'unité
  */
-export const roundToCentieme: MathExercise<QCMProps, VEAProps> = {
+export const roundToCentieme: MathExercise<Identifiers> = {
   id: "roundToCentieme",
   connector: "\\approx",
   label: "Arrondir au centième",
@@ -161,7 +156,7 @@ export const roundToCentieme: MathExercise<QCMProps, VEAProps> = {
 /**
  * arrondi à l'unité
  */
-export const roundToMillieme: MathExercise<QCMProps, VEAProps> = {
+export const roundToMillieme: MathExercise<Identifiers> = {
   id: "roundToMillieme",
   connector: "\\approx",
   label: "Arrondir au millième",
@@ -176,7 +171,7 @@ export const roundToMillieme: MathExercise<QCMProps, VEAProps> = {
   isAnswerValid,
 };
 
-export const allRoundings: MathExercise<QCMProps, VEAProps> = {
+export const allRoundings: MathExercise<Identifiers> = {
   id: "allRoundings",
   connector: "\\approx",
   label: "Arrondir un nombre décimal",

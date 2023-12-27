@@ -13,14 +13,14 @@ import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getCircleCircumference: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getCircleCircumference: QuestionGenerator<Identifiers> = () => {
   const radius = randint(1, 13);
   const diametre = randint(1, 21);
 
@@ -29,20 +29,20 @@ const getCircleCircumference: QuestionGenerator<QCMProps, VEAProps> = () => {
     ? round(2 * Math.PI * radius, 2)
     : round(Math.PI * diametre, 2);
   const answer = (answerNb + "").replace(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer la circonférence d'un cercle de ${
       coin ? "rayon " + `$${radius}$` : "diamètre " + `$${diametre}$`
     } cm.`,
     answer: answer + "\\text{cm}",
     answerFormat: "tex",
     keys: ["cm", "cm2"],
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer + "\\text{cm}");
   while (propositions.length < n) {
@@ -55,12 +55,12 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   const texs = [answer, answer + "\\text{cm}"];
   return texs.includes(ans);
 };
 
-export const circleCircumference: MathExercise<QCMProps, VEAProps> = {
+export const circleCircumference: MathExercise<Identifiers> = {
   id: "circleCircumference",
   connector: "=",
   label: "Calculer la circonférence d'un cercle",

@@ -12,7 +12,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   type: number;
   reds: number;
@@ -23,7 +23,7 @@ type VEAProps = {
   answer: string;
 };
 
-const getBallsCountingQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getBallsCountingQuestion: QuestionGenerator<Identifiers> = () => {
   const type = randint(0, 6);
   let instruction = "";
   let answer = "";
@@ -64,19 +64,19 @@ const getBallsCountingQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
       answer = 6 * greens * (reds + blacks) * (reds + blacks - 1) + "";
   }
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Une urne contient ${blacks} boules noires numérotées de 1 à ${blacks}, ${reds} boules rouges numérotées de 1 à ${reds} et ${greens} boules vertes numérotées de 1 à ${greens}.
     On tire successivement et sans remise 3 boules dans l'urne. 
     Combien de tirages ${instruction} sont possibles ?`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, type, reds, greens, blacks },
+    identifiers: { answer, type, reds, greens, blacks },
   };
 
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, type, reds, greens, blacks },
 ) => {
@@ -135,11 +135,11 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const ballsCounting: MathExercise<QCMProps, VEAProps> = {
+export const ballsCounting: MathExercise<Identifiers> = {
   id: "ballsCounting",
   connector: "=",
   label: "Dénombrement avec des boules",

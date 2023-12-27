@@ -18,7 +18,7 @@ import { getDistinctQuestions } from "../utils/getDistinctQuestions";
  * a±b±c±d
  */
 
-const getAddAndSubQuestions: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getAddAndSubQuestions: QuestionGenerator<Identifiers> = () => {
   const nbOperations = randint(2, 4);
   const numbers = [];
   for (let i = 0; i < nbOperations + 1; i++) {
@@ -31,24 +31,19 @@ const getAddAndSubQuestions: QuestionGenerator<QCMProps, VEAProps> = () => {
   }
   const answer = numbers.reduce((a, b) => a + b) + "";
   const statement = statementTree.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer : $${statement}$`,
     startStatement: statement,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: {},
   };
   return question;
 };
-type QCMProps = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -61,12 +56,12 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (studentAns, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (studentAns, { answer }) => {
   const answerTree = new NumberNode(Number(answer));
   const texs = answerTree.toAllValidTexs();
   return texs.includes(studentAns);
 };
-export const addAndSubExercise: MathExercise<QCMProps, VEAProps> = {
+export const addAndSubExercise: MathExercise<Identifiers> = {
   id: "addAndSub",
   connector: "=",
   label: "Additions et soustractions",

@@ -18,7 +18,7 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -32,7 +32,7 @@ type VEAProps = {
   d: number;
 };
 
-const getMultiplicationEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getMultiplicationEquation: QuestionGenerator<Identifiers> = () => {
   // (ax + b)(cx + d) = 0
   let a, b, c, d;
   do {
@@ -51,19 +51,22 @@ const getMultiplicationEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
     new DiscreteSetNode(sortedSols),
   ).toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Résoudre : $(${polynome1.toTex()})(${polynome2.toTex()}) = 0$`,
     startStatement: `(${polynome1.toTex()})(${polynome2.toTex()}) = 0`,
     answer,
     keys: ["x", "S", "equal", "lbrace", "rbrace", "semicolon", "ou"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b, c, d },
+    identifiers: { answer, a, b, c, d },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c, d }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, a, b, c, d },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -87,7 +90,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c, d }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c, d }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d }) => {
   const sol1 = new Rational(-b, a).simplify().toTree();
   const sol2 = new Rational(-d, c).simplify().toTree();
   const sortedSols = -b / a < -d / c ? [sol1, sol2] : [sol2, sol1];
@@ -98,7 +101,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c, d }) => {
   return texs.includes(ans);
 };
 
-export const multiplicationEquation: MathExercise<QCMProps, VEAProps> = {
+export const multiplicationEquation: MathExercise<Identifiers> = {
   id: "multiplicationEquation",
   connector: "\\iff",
   label: "Résoudre une équation produit nul",

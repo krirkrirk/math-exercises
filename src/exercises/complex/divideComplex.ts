@@ -12,7 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Complex, ComplexConstructor } from "#root/math/complex/complex";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   z1: number[];
   z2: number[];
@@ -22,7 +22,7 @@ type VEAProps = {
   z2: number[];
 };
 
-const getDivideComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getDivideComplexQuestion: QuestionGenerator<Identifiers> = () => {
   const z1 = ComplexConstructor.random();
   let z2: Complex;
   do {
@@ -31,7 +31,7 @@ const getDivideComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   const answerTex = z1.divideNode(z2).toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answerTex,
     instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2
       .toTree()
@@ -40,7 +40,7 @@ const getDivideComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
     answerFormat: "tex",
 
     startStatement: "\\frac{z}{z'}",
-    qcmGeneratorProps: {
+    identifiers: {
       answer: answerTex,
       z1: [z1.re, z1.im],
       z2: [z2.re, z2.im],
@@ -49,7 +49,7 @@ const getDivideComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -60,7 +60,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { z1, z2 }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { z1, z2 }) => {
   const complex1 = new Complex(z1[0], z1[1]);
   const complex2 = new Complex(z2[0], z2[1]);
   const divide = complex1.divideNode(complex2);
@@ -68,7 +68,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { z1, z2 }) => {
   return texs.includes(ans);
 };
 
-export const divideComplex: MathExercise<QCMProps, VEAProps> = {
+export const divideComplex: MathExercise<Identifiers> = {
   id: "divideComplex",
   connector: "=",
   label: "Diviser deux nombres complexes",

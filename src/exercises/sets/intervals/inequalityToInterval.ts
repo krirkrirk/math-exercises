@@ -25,10 +25,7 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-const getInequalityToIntervalQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getInequalityToIntervalQuestion: QuestionGenerator<Identifiers> = () => {
   const isIntervalToInequality = coinFlip();
   const interval = IntervalConstructor.random();
   const inequalityString = interval.toInequality();
@@ -39,7 +36,7 @@ const getInequalityToIntervalQuestion: QuestionGenerator<
     ? `Soit $x \\in ${interval.toTex()}$. Traduire cette appartenance en une inégalité.`
     : `Soit $${inequalityString}$. Traduire cette inégalité en appartenance à un intervalle.`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: instruction,
     keys: [
@@ -55,7 +52,7 @@ const getInequalityToIntervalQuestion: QuestionGenerator<
       "infty",
     ],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       isIntervalToInequality: isIntervalToInequality,
       intervalTex: interval.tex,
@@ -65,7 +62,7 @@ const getInequalityToIntervalQuestion: QuestionGenerator<
   return question;
 };
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   isIntervalToInequality: boolean;
   intervalTex: string;
@@ -75,7 +72,7 @@ type VEAProps = {
   intervalTex: string;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, isIntervalToInequality, intervalTex },
 ) => {
@@ -181,7 +178,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (
+const isAnswerValid: VEA<Identifiers> = (
   ans,
   { intervalTex, isIntervalToInequality },
 ) => {
@@ -200,7 +197,7 @@ const isAnswerValid: VEA<VEAProps> = (
   return texs.includes(ans);
 };
 
-export const inequalityToInterval: MathExercise<QCMProps, VEAProps> = {
+export const inequalityToInterval: MathExercise<Identifiers> = {
   id: "inequalityToInterval",
   connector: "=",
   label: "Traduire une inégalité en intervalle",

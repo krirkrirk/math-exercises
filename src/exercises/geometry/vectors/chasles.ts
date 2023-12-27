@@ -14,7 +14,7 @@ import { KeyId } from "#root/types/keyIds";
 import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   randLetters: string[];
 };
@@ -24,7 +24,7 @@ type VEAProps = {
 
 const letters = "ABCDEFGHIJKLMNPQRSTUVWXYZ";
 
-const getChaslesQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getChaslesQuestion: QuestionGenerator<Identifiers> = () => {
   const nbOfVectors = randint(2, 5);
   const randLetters = shuffle(letters.split("")).slice(0, nbOfVectors + 2);
   let vectors = [];
@@ -41,7 +41,7 @@ const getChaslesQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   let statement = vectors.join("");
   if (statement[0] === "+") statement = statement.slice(1, statement.length);
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Simplifier : $${statement}$`,
     keys: [
@@ -49,13 +49,13 @@ const getChaslesQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
       ...(randLetters.sort((a, b) => a.localeCompare(b)) as KeyId[]),
     ],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, randLetters },
+    identifiers: { answer, randLetters },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, randLetters },
 ) => {
@@ -72,10 +72,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const chasles: MathExercise<QCMProps, VEAProps> = {
+export const chasles: MathExercise<Identifiers> = {
   id: "chasles",
   connector: "=",
   label: "Relation de Chasles pour les vecteurs",

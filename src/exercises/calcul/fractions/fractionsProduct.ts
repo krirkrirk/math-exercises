@@ -17,30 +17,24 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
-  answer: string;
-  rationalNum: [number, number];
-  rationalDenum: [number, number];
-};
-type VEAProps = {
+type Identifiers = {
   rationalNum: [number, number];
   rationalDenum: [number, number];
 };
 
-const getFractionsProduct: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getFractionsProduct: QuestionGenerator<Identifiers> = () => {
   const rational = RationalConstructor.randomIrreductible();
   const rational2 = RationalConstructor.randomIrreductible();
   const statementTree = new MultiplyNode(rational.toTree(), rational2.toTree());
   const answerTree = rational.multiply(rational2).toTree();
   const answer = answerTree.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: {
-      answer,
+    identifiers: {
       rationalNum: [rational.num, rational.denum],
       rationalDenum: [rational2.num, rational2.denum],
     },
@@ -48,7 +42,7 @@ const getFractionsProduct: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, rationalNum, rationalDenum },
 ) => {
@@ -65,7 +59,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { rationalDenum, rationalNum }) => {
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { rationalDenum, rationalNum },
+) => {
   const rational = new Rational(rationalNum[0], rationalNum[1]);
   const rational2 = new Rational(rationalDenum[0], rationalDenum[1]);
   const answerTree = rational
@@ -76,7 +73,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { rationalDenum, rationalNum }) => {
   return texs.includes(ans);
 };
 
-export const fractionsProduct: MathExercise<QCMProps, VEAProps> = {
+export const fractionsProduct: MathExercise<Identifiers> = {
   id: "fractionsProduct",
   connector: "=",
   label: "Produits de fractions",

@@ -13,28 +13,28 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getTrianglePerimeter: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getTrianglePerimeter: QuestionGenerator<Identifiers> = () => {
   const sides = [randint(1, 13), randint(1, 13), randint(1, 13)];
   const answer = sides[0] + sides[1] + sides[2] + "";
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer le périmètre d'un triangle dont les côtés mesurent : $${sides[0]}$ cm, $${sides[1]}$ cm et $${sides[2]}$ cm.`,
     answer: answer + "\\text{cm}",
     answerFormat: "tex",
     keys: ["cm", "cm2"],
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer + "\\text{cm}");
   const perimeter = Number(answer);
@@ -47,11 +47,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   const texs = [answer + "", answer + "\\text{cm}"];
   return texs.includes(ans);
 };
-export const trianglePerimeter: MathExercise<QCMProps, VEAProps> = {
+export const trianglePerimeter: MathExercise<Identifiers> = {
   id: "trianglePerimeter",
   connector: "=",
   label: "Calculer le périmètre d'un triangle",

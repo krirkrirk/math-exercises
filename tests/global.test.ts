@@ -16,17 +16,23 @@ test("all exos", () => {
         expect(exo.isAnswerValid).not.toBe(undefined);
       }
       questions.forEach((question) => {
-        expect(question.instruction?.length).not.toBe(0);
-        if (exo.answerType !== "QCM") expect(question.keys).not.toBe(undefined);
+        expect(question.identifiers).not.toBe(undefined);
         const dotDecimalPattern = /\d+\.\d+/;
         expect(question.answer.match(dotDecimalPattern)).toBe(null);
-
+        expect(question.instruction?.length).not.toBe(0);
+        if (exo.answerType !== "QCM") {
+          expect(question.keys).not.toBe(undefined);
+          expect(
+            exo.isAnswerValid!(question.answer, question.identifiers),
+          ).toBe(true);
+        }
         if (exo.answerType !== "free") {
-          expect(question.qcmGeneratorProps).not.toBe(undefined);
-          const props = exo.getPropositions!(4, question.qcmGeneratorProps);
+          const props = exo.getPropositions!(4, question.identifiers);
           expect(props.length).toBe(4);
           expect(props.filter((prop) => prop.isRightAnswer).length).toBe(1);
-          //!check if is answervalid marche avec answer
+          props.forEach((prop) =>
+            expect(prop.statement.match(dotDecimalPattern)).toBe(null),
+          );
         }
       });
     } catch (err) {

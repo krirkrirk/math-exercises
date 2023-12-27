@@ -21,7 +21,7 @@ import { EqualNode } from "#root/tree/nodes/operators/equalNode";
 /**
  *  type x+a=b
  */
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -31,28 +31,25 @@ type VEAProps = {
   b: number;
 };
 
-const getEquationType1ExerciseQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getEquationType1ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const b = randint(-10, 11);
   const a = randint(-10, 11, [0]);
   const solution = b - a;
   const affine = new Affine(1, a).toTree();
   const tree = new EqualNode(affine, new NumberNode(b));
   const answer = `x=${solution}`;
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Résoudre : $${tree.toTex()}$`,
     startStatement: tree.toTex(),
     answer,
     keys: equationKeys,
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b },
+    identifiers: { answer, a, b },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const solution = b - a;
@@ -67,7 +64,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   const solution = b - a;
   const answerTree = new EquationSolutionNode(
     new DiscreteSetNode([new NumberNode(solution)]),
@@ -76,7 +73,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
   return validLatexs.includes(ans);
 };
 
-export const equationType1Exercise: MathExercise<QCMProps, VEAProps> = {
+export const equationType1Exercise: MathExercise<Identifiers> = {
   id: "equa1",
   connector: "\\iff",
   label: "Équations $x+a = b$",

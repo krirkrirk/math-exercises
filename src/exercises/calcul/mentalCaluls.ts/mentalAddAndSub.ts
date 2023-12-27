@@ -16,15 +16,11 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
-  answer: string;
-  sum: number;
-};
-type VEAProps = {
+type Identifiers = {
   sum: number;
 };
 
-const getMentalAddAndSub: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getMentalAddAndSub: QuestionGenerator<Identifiers> = () => {
   let numbers: number[] = [];
   const nbrOperations = coinFlip() ? 2 : 3;
 
@@ -52,18 +48,18 @@ const getMentalAddAndSub: QuestionGenerator<QCMProps, VEAProps> = () => {
   statementTree.shuffle();
   const statement = statementTree.toTex();
   const answer = (round(sum, 2) + "").replace(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer : $${statement}$`,
     startStatement: statement,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, sum },
+    identifiers: { sum },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, sum }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, sum }) => {
   const propositions: Proposition[] = [];
 
   addValidProp(propositions, answer);
@@ -79,13 +75,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, sum }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (studentAns, { sum }) => {
-  const answerTree = new NumberNode(sum);
+const isAnswerValid: VEA<Identifiers> = (studentAns, { sum }) => {
+  const answerTree = new NumberNode(round(sum, 2));
   const texs = answerTree.toAllValidTexs();
   return texs.includes(studentAns);
 };
 
-export const mentalAddAndSub: MathExercise<QCMProps, VEAProps> = {
+export const mentalAddAndSub: MathExercise<Identifiers> = {
   id: "mentalAddAndSub",
   connector: "=",
   label: "Effectuer mentalement des additions et des soustractions simples",

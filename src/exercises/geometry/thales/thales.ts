@@ -16,7 +16,7 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   vertices: string[];
 };
@@ -24,7 +24,7 @@ type VEAProps = {
   vertices: string[];
 };
 
-const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getThales: QuestionGenerator<Identifiers> = () => {
   const vertices: string[] = [];
   const code = 65 + randint(0, 22); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 5; i++) vertices.push(String.fromCharCode(code + i));
@@ -87,20 +87,23 @@ const getThales: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   const answer = `\\frac{${vertices[0]}${vertices[3]}}{${vertices[0]}${vertices[1]}}=\\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}}=\\frac{${vertices[3]}${vertices[4]}}{${vertices[1]}${vertices[2]}}`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `En utilisant le théoreme de Thalès, écrire l'égalité des quotients sachant que  $(${vertices[3]}${vertices[4]})//(${vertices[1]}${vertices[2]})$.`,
     answer,
     keys: [...(vertices as KeyId[]), "equal"],
     commands,
     coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, vertices },
+    identifiers: { answer, vertices },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, vertices }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, vertices },
+) => {
   const propositions: Proposition[] = [];
   const wrongQuotients = [
     vertices[0] + vertices[3],
@@ -130,7 +133,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, vertices }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { vertices }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { vertices }) => {
   const lengths = [
     new LengthNode(`${vertices[0]}${vertices[3]}`),
     new LengthNode(`${vertices[0]}${vertices[1]}`),
@@ -153,7 +156,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { vertices }) => {
   return texs.includes(ans);
 };
 
-export const thales: MathExercise<QCMProps, VEAProps> = {
+export const thales: MathExercise<Identifiers> = {
   id: "thales",
   connector: "=",
   label: "Ecrire l'égalité de Thalès",

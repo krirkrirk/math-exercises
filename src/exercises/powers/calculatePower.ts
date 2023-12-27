@@ -14,7 +14,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   int: number;
   power: number;
@@ -22,7 +22,7 @@ type QCMProps = {
 type VEAProps = {
   answer: string;
 };
-const getCalculatePowerQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getCalculatePowerQuestion: QuestionGenerator<Identifiers> = () => {
   const int = randint(-10, 11);
   const power = randint(0, 6);
   const statement = new PowerNode(
@@ -31,17 +31,20 @@ const getCalculatePowerQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   ).toTex();
   const answer = int ** power + "";
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Calculer : $${statement}$`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, int, power },
+    identifiers: { answer, int, power },
   };
 
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, int, power }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, int, power },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -69,10 +72,10 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, int, power }) => {
 
   return shuffleProps(propositions, n);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const calculatePower: MathExercise<QCMProps, VEAProps> = {
+export const calculatePower: MathExercise<Identifiers> = {
   id: "calculatePower",
   connector: "=",
   label: "Calculer une puissance",

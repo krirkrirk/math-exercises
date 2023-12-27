@@ -34,7 +34,7 @@ const higherFactor = (n: number): number => {
   return 1;
 };
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   randNbr: number;
 };
@@ -42,7 +42,7 @@ type VEAProps = {
   randNbr: number;
 };
 
-const getEquationSimpleSquare: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getEquationSimpleSquare: QuestionGenerator<Identifiers> = () => {
   let randNbr = randint(-20, 101);
 
   const rand = diceFlip(3);
@@ -68,18 +68,18 @@ const getEquationSimpleSquare: QuestionGenerator<QCMProps, VEAProps> = () => {
   }
 
   const answer = new EquationSolutionNode(solutionsSet!).toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction,
     answer,
     keys: equationKeys,
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, randNbr },
+    identifiers: { answer, randNbr },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randNbr }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, randNbr }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const half = new Rational(randNbr, 2).simplify().toTree();
@@ -143,11 +143,21 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randNbr }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { randNbr }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { randNbr }) => {
   let answerTrees: EquationSolutionNode[] = [];
   if (randNbr < 0) {
     answerTrees = [new EquationSolutionNode(EmptySet)];
-  } else {
+  } else if (randNbr === 0) {
+    answerTrees = [
+      new EquationSolutionNode(new DiscreteSetNode([new NumberNode(0)])),
+    ];
+  }
+  // else if (randNbr === 1) {
+  //   answerTrees = [
+  //     new EquationSolutionNode(new DiscreteSetNode([new NumberNode(1)])),
+  //   ];
+  // }
+  else {
     const sqrt = new SquareRoot(randNbr);
     const sqrtTree = sqrt.toTree();
     answerTrees.push(
@@ -166,14 +176,11 @@ const isAnswerValid: VEA<VEAProps> = (ans, { randNbr }) => {
     }
   }
   const texs = answerTrees.flatMap((tree) => tree.toAllValidTexs());
-  console.log(texs);
+  console.log(ans, texs);
   return texs.includes(ans);
-  // const answerTree = ;
-  // const validLatexs = answerTree.toAllValidTexs();
-  // return validLatexs.includes(ans);
 };
 
-export const equationSimpleSquare: MathExercise<QCMProps, VEAProps> = {
+export const equationSimpleSquare: MathExercise<Identifiers> = {
   id: "equationSimpleSquare",
   connector: "=",
   label: "Résoudre une équation du second degré du type $x^2 = a$",

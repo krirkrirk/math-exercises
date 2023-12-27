@@ -12,17 +12,14 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { shuffle } from "#root/utils/shuffle";
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getReciprocalPercentageQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getReciprocalPercentageQuestion: QuestionGenerator<Identifiers> = () => {
   const randPercent = randint(1, 50);
   const tab = ["hausse", "baisse"];
   let ans = 0;
@@ -37,18 +34,18 @@ const getReciprocalPercentageQuestion: QuestionGenerator<
     ? "+" + round(ans, 2)
     : "" + round(ans, 2)
   ).replace(".", ",")}\\%`;
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction,
     answer,
     keys: ["percent"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -73,13 +70,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   const allowedTex = [answer];
   if (answer[0] === "+") allowedTex.push(answer.slice(1));
   return allowedTex.includes(ans);
 };
 
-export const reciprocalPercentage: MathExercise<QCMProps, VEAProps> = {
+export const reciprocalPercentage: MathExercise<Identifiers> = {
   id: "reciprocalPercentage",
   connector: "=",
   label: "Calculer un taux d'évolution réciproque",

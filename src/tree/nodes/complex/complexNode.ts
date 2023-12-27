@@ -44,7 +44,7 @@ export class ComplexNode implements Node {
     return this.toTex();
   }
   toTex(): string {
-    if (this.im.toTex() === "0") return this.re.toString();
+    if (this.im.toTex() === "0") return this.re.toTex();
     if (this.re.toTex() === "0") {
       return new MultiplyNode(this.im, new VariableNode("i")).toTex();
     }

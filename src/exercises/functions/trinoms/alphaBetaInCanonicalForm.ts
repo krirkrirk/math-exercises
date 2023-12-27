@@ -16,7 +16,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   param: string;
   a: number;
@@ -30,8 +30,7 @@ type VEAProps = {
   beta: number;
 };
 const getAlphaBetaInCanonicalFormQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const trinom = TrinomConstructor.randomCanonical();
   const param = coinFlip() ? "\\alpha" : "\\beta";
@@ -42,7 +41,7 @@ const getAlphaBetaInCanonicalFormQuestion: QuestionGenerator<
 
   const answer = param === "\\alpha" ? alphaTex : betaTex;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Soit $f$ la fonction définie par $f(x) = ${trinom
       .getCanonicalForm()
       .toTex()}$. Que vaut $${param}$ ?`,
@@ -50,13 +49,13 @@ const getAlphaBetaInCanonicalFormQuestion: QuestionGenerator<
     keys: ["x", "alpha", "beta"],
     answerFormat: "tex",
     startStatement: param,
-    qcmGeneratorProps: { answer, param, a: trinom.a, alpha, beta },
+    identifiers: { answer, param, a: trinom.a, alpha, beta },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, param, alpha, beta, a },
 ) => {
@@ -80,7 +79,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, alpha, beta, param }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, alpha, beta, param }) => {
   if (param === "\\alpha") {
     return ans === alpha.toString();
   } else {
@@ -88,7 +87,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, alpha, beta, param }) => {
   }
 };
 
-export const alphaBetaInCanonicalForm: MathExercise<QCMProps, VEAProps> = {
+export const alphaBetaInCanonicalForm: MathExercise<Identifiers> = {
   id: "alphaInCanonicalForm",
   connector: "=",
   label: "Identifier $\\alpha$ et $\\beta$ dans la forme canonique",

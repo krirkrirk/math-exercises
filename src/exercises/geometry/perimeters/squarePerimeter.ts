@@ -12,7 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   side: number;
 };
@@ -20,21 +20,21 @@ type VEAProps = {
   answer: string;
 };
 
-const getSquarePerimeter: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getSquarePerimeter: QuestionGenerator<Identifiers> = () => {
   const side = randint(1, 21);
   const answer = side * 4 + "";
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer le périmètre d'un carré de $${side}$ cm de côté.`,
     answer: answer + "\\text{cm}",
     answerFormat: "tex",
     keys: ["cm", "cm2"],
-    qcmGeneratorProps: { answer, side },
+    identifiers: { answer, side },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, side }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, side }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer + "\\text{cm}");
   while (propositions.length < n) {
@@ -46,11 +46,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, side }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   const texs = [answer + "", answer + "\\text{cm}"];
   return texs.includes(ans);
 };
-export const squarePerimeter: MathExercise<QCMProps, VEAProps> = {
+export const squarePerimeter: MathExercise<Identifiers> = {
   id: "squarePerimeter",
   connector: "=",
   label: "Calculer le périmètre d'un carré",

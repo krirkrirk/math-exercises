@@ -19,7 +19,7 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -28,7 +28,7 @@ type VEAProps = {
   a: number;
 };
 
-const getLnDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getLnDerivative: QuestionGenerator<Identifiers> = () => {
   const a = randint(-9, 10, [0]);
   const b = randint(-9, 10, [0]);
 
@@ -38,19 +38,19 @@ const getLnDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
   );
   const derivative = new FractionNode(new NumberNode(a), new VariableNode("x"));
   const answer = derivative.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la dérivée de la fonction $f(x) = ${myfunction.toTex()}$.`,
     startStatement: "f'(x)",
     answer,
     keys: ["x", "ln", "epower"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b },
+    identifiers: { answer, a, b },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -81,13 +81,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a }) => {
   const derivative = new FractionNode(new NumberNode(a), new VariableNode("x"));
   const texs = derivative.toAllValidTexs();
   return texs.includes(ans);
 };
 
-export const lnDerivativeTwo: MathExercise<QCMProps, VEAProps> = {
+export const lnDerivativeTwo: MathExercise<Identifiers> = {
   id: "lnDerivativeTwo",
   connector: "=",
   label: "Dérivée de $a \\times \\ln(x) + b$",

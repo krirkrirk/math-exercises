@@ -21,7 +21,7 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
 };
@@ -29,7 +29,7 @@ type VEAProps = {
   a: number;
 };
 
-const getRootFunctionDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getRootFunctionDerivative: QuestionGenerator<Identifiers> = () => {
   const a = randint(-19, 20, [0]);
 
   let instruction = `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) =$ `;
@@ -43,19 +43,19 @@ const getRootFunctionDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
     answer = `${a < 0 ? "-" : ""}\\frac{${Math.abs(a / 2)}}{\\sqrt{x}}`;
   else answer = `${a < 0 ? "-" : ""}\\frac{${Math.abs(a)}}{2\\sqrt{x}}`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction,
     startStatement: `f'(x)`,
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a },
+    identifiers: { answer, a },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -76,7 +76,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a }) => {
   let answer: Node;
   if (a % 2 === 0)
     answer = new FractionNode(
@@ -92,7 +92,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a }) => {
   console.log(texs);
   return texs.includes(ans);
 };
-export const rootFunctionDerivative: MathExercise<QCMProps, VEAProps> = {
+export const rootFunctionDerivative: MathExercise<Identifiers> = {
   id: "rootFunctionDerivative",
   connector: "=",
   label: "Dérivée d'une fonction racine",

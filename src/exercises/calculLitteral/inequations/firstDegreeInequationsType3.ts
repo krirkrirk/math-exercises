@@ -24,14 +24,11 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   coeff: number;
   ineqType: string;
   result: string;
-};
-type VEAProps = {
-  ineqType: string;
   a: number;
   b: number;
   c: number;
@@ -39,8 +36,7 @@ type VEAProps = {
 };
 
 const getFirstDegreeInequationsQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const affine1 = new Affine(randint(-10, 10, [0]), randint(-10, 10));
   const affine2 = new Affine(
@@ -64,25 +60,27 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
       : "\\le";
   const answer = `x${coeff > 0 ? ineqType : invIneqType}${result}`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Résoudre l'inéquation : $${affine1.toTex()} ${ineqType} ${affine2.toTex()}$ `,
     keys: inequationKeys,
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, coeff, ineqType, result },
-    veaProps: {
+    identifiers: {
+      answer,
+      coeff,
+      ineqType,
+      result,
       a: affine1.a,
       b: affine1.b,
       c: affine2.a,
       d: affine2.b,
-      ineqType,
     },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, coeff, ineqType, result },
 ) => {
@@ -114,7 +112,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c, d, ineqType }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d, ineqType }) => {
   const trueIneqType =
     a - c < 0
       ? getInversedInequationSymbol(ineqType as InegalitySymbols)
@@ -132,7 +130,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c, d, ineqType }) => {
   return texs.includes(ans);
 };
 
-export const firstDegreeInequationsType3: MathExercise<QCMProps, VEAProps> = {
+export const firstDegreeInequationsType3: MathExercise<Identifiers> = {
   id: "firstDegreeInequationsType3",
   connector: "\\iff",
   label: "Résoudre une inéquation du type $ax+b<cx+d$",

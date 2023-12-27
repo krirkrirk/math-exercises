@@ -12,14 +12,13 @@ import { TrinomConstructor } from "#root/math/polynomials/trinom";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
 };
 type VEAProps = {};
 const getVariationsFromAlgebricFormQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const isDevForm = coinFlip();
   const trinom = isDevForm
@@ -30,19 +29,19 @@ const getVariationsFromAlgebricFormQuestion: QuestionGenerator<
       ? "Décroissante puis croissante"
       : "Croissante puis décroissante";
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Quelles sont les variations de la fonction $f$ définie par $f(x) = ${
       isDevForm ? trinom.toTree().toTex() : trinom.getCanonicalForm().toTex()
     }$ ?`,
     answerFormat: "raw",
-    qcmGeneratorProps: { answer, a: trinom.a },
+    identifiers: { answer, a: trinom.a },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer, "raw");
   addWrongProp(
@@ -57,7 +56,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a }) => {
   return shuffle(propositions);
 };
 
-export const variationsFromAlgebricForm: MathExercise<QCMProps, VEAProps> = {
+export const variationsFromAlgebricForm: MathExercise<Identifiers> = {
   id: "variationsFromAlgebricForm",
   label:
     "Déterminer les variations d'une fonction du second degré via sa forme algébrique",

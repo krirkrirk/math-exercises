@@ -7,18 +7,18 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Integer } from '#root/math/numbers/integer/integer';
-import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
-import { DiscreteSet } from '#root/math/sets/discreteSet';
-import { Interval } from '#root/math/sets/intervals/intervals';
-import { randint } from '#root/math/utils/random/randint';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { PowerNode, SquareNode } from '#root/tree/nodes/operators/powerNode';
-import { shuffle } from '#root/utils/shuffle';
-import { v4 } from 'uuid';
-type QCMProps = {
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Integer } from "#root/math/numbers/integer/integer";
+import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
+import { DiscreteSet } from "#root/math/sets/discreteSet";
+import { Interval } from "#root/math/sets/intervals/intervals";
+import { randint } from "#root/math/utils/random/randint";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { PowerNode, SquareNode } from "#root/tree/nodes/operators/powerNode";
+import { shuffle } from "#root/utils/shuffle";
+import { v4 } from "uuid";
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -28,31 +28,40 @@ type VEAProps = {
   b: number;
 };
 
-const getFactoType1Question: QuestionGenerator<QCMProps, VEAProps> = () => {
-  const intervalA = new Interval('[[0; 10]]').difference(new DiscreteSet([new Integer(0)]));
-  const intervalB = new Interval('[[-10; 0]]').difference(new DiscreteSet([new Integer(0)]));
+const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
+  const intervalA = new Interval("[[0; 10]]").difference(
+    new DiscreteSet([new Integer(0)]),
+  );
+  const intervalB = new Interval("[[-10; 0]]").difference(
+    new DiscreteSet([new Integer(0)]),
+  );
   const affine = AffineConstructor.random(intervalA, intervalB);
 
   const statementTree = affine.multiply(affine).toTree();
   const answerTree = new PowerNode(affine.toTree(), new NumberNode(2));
   const answer = answerTree.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Factoriser : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer,
-    keys: ['x'],
-    answerFormat: 'tex',
-    qcmGeneratorProps: { answer, a: affine.a, b: affine.b },
-    veaProps: { a: affine.a, b: affine.b },
+    keys: ["x"],
+    answerFormat: "tex",
+    identifiers: { answer, a: affine.a, b: affine.b },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  tryToAddWrongProp(propositions, new PowerNode(new Affine(-b, -a).toTree(), new NumberNode(2)).toTex());
-  tryToAddWrongProp(propositions, new PowerNode(new Affine(-a, b).toTree(), new NumberNode(2)).toTex());
+  tryToAddWrongProp(
+    propositions,
+    new PowerNode(new Affine(-b, -a).toTree(), new NumberNode(2)).toTex(),
+  );
+  tryToAddWrongProp(
+    propositions,
+    new PowerNode(new Affine(-a, b).toTree(), new NumberNode(2)).toTex(),
+  );
 
   while (propositions.length < n) {
     const wrongAnswer = new PowerNode(
@@ -65,20 +74,20 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   const affine = new Affine(a, b);
   const answerTree = new SquareNode(affine.toTree());
   const validLatexs = answerTree.toAllValidTexs();
   return validLatexs.includes(ans);
 };
 
-export const factoIdRmq2: MathExercise<QCMProps, VEAProps> = {
-  id: 'factoIdRmq2',
-  connector: '=',
+export const factoIdRmq2: MathExercise<Identifiers> = {
+  id: "factoIdRmq2",
+  connector: "=",
   isSingleStep: false,
-  label: 'Factorisation du type $a^2 - 2ab + b^2$',
-  levels: ['3ème', '2nde'],
-  sections: ['Calcul littéral'],
+  label: "Factorisation du type $a^2 - 2ab + b^2$",
+  levels: ["3ème", "2nde"],
+  sections: ["Calcul littéral"],
   generator: (nb: number) => getDistinctQuestions(getFactoType1Question, nb),
   qcmTimer: 60,
   freeTimer: 60,

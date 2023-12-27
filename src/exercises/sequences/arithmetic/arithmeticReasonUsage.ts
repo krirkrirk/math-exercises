@@ -12,31 +12,31 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getArithmeticReasonUsage: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getArithmeticReasonUsage: QuestionGenerator<Identifiers> = () => {
   const reason = randint(-10, 10, [0]);
   const startRank = randint(0, 20);
   const askedRank = startRank + 1;
   const startValue = randint(-10, 10);
   const answer = (startValue + reason).toString();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `$(u_n)$ est une suite arithmétique de raison $r = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer,
     keys: ["r", "n", "u", "underscore"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -45,10 +45,10 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const arithmeticReasonUsage: MathExercise<QCMProps, VEAProps> = {
+export const arithmeticReasonUsage: MathExercise<Identifiers> = {
   id: "arithmeticReasonUsage",
   connector: "=",
   label: "Utiliser la raison d'une suite arithmétique",

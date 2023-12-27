@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   firstValue: number;
   reason: number;
@@ -23,26 +23,25 @@ type VEAProps = {
 };
 
 const getGeometricRecurrenceFormulaUsage: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const firstRank = randint(1, 20);
   const firstValue = randint(1, 10);
   const reason = randint(2, 10);
   const askedRank = firstRank + 1;
   const answer = (firstValue * reason).toString();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `$(u_n)$ est une suite définie par $u_{n+1} = ${reason}\\times u_n$ et $u_{${firstRank}} = ${firstValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer: (firstValue * reason).toString(),
     keys: ["q", "n", "u", "underscore"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, firstValue, reason },
+    identifiers: { answer, firstValue, reason },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, firstValue, reason },
 ) => {
@@ -62,22 +61,21 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const geometricRecurrenceFormulaUsage: MathExercise<QCMProps, VEAProps> =
-  {
-    id: "geometricRecurrenceFormulaUsage",
-    connector: "=",
-    label: "Utiliser la formule de récurrence d'une suite géométrique",
-    levels: ["1reESM", "1reSpé", "1reTech", "1rePro", "TermTech", "TermPro"],
-    sections: ["Suites"],
-    isSingleStep: false,
-    qcmTimer: 60,
-    freeTimer: 60,
-    generator: (nb: number) =>
-      getDistinctQuestions(getGeometricRecurrenceFormulaUsage, nb),
-    getPropositions,
-    isAnswerValid,
-  };
+export const geometricRecurrenceFormulaUsage: MathExercise<Identifiers> = {
+  id: "geometricRecurrenceFormulaUsage",
+  connector: "=",
+  label: "Utiliser la formule de récurrence d'une suite géométrique",
+  levels: ["1reESM", "1reSpé", "1reTech", "1rePro", "TermTech", "TermPro"],
+  sections: ["Suites"],
+  isSingleStep: false,
+  qcmTimer: 60,
+  freeTimer: 60,
+  generator: (nb: number) =>
+    getDistinctQuestions(getGeometricRecurrenceFormulaUsage, nb),
+  getPropositions,
+  isAnswerValid,
+};

@@ -12,14 +12,14 @@ import {
 } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   randomValues: number[];
 };
 type VEAProps = {
   answer: string;
 };
-const getMedianWithTable: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getMedianWithTable: QuestionGenerator<Identifiers> = () => {
   const getRandomUniqueValues = (
     count: number,
     min: number,
@@ -55,7 +55,7 @@ const getMedianWithTable: QuestionGenerator<QCMProps, VEAProps> = () => {
   }
 
   const answer = (median + "").replace(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `On considère le tableau d'effectifs suivant : 
 
 | | | | | | |
@@ -68,13 +68,13 @@ Calculer la médiane de cette série de valeurs.`,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, randomValues },
+    identifiers: { answer, randomValues },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, randomValues },
 ) => {
@@ -91,10 +91,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const medianWithTable: MathExercise<QCMProps, VEAProps> = {
+export const medianWithTable: MathExercise<Identifiers> = {
   id: "medianWithTable",
   connector: "=",
   label: "Calcul de la médiane d'un tableau d'effectifs",

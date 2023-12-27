@@ -12,7 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   value1: number;
   value2: number;
@@ -21,7 +21,7 @@ type VEAProps = {
   answer: string;
 };
 
-const getGeometricFindReason: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getGeometricFindReason: QuestionGenerator<Identifiers> = () => {
   const rank1 = randint(0, 10);
   const rank2 = rank1 + 1;
   const reason = randint(2, 10);
@@ -29,18 +29,18 @@ const getGeometricFindReason: QuestionGenerator<QCMProps, VEAProps> = () => {
   const value2 = reason * value1;
 
   const answer = reason.toString();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `$(u_n)$ est une suite géométrique. On sait que $u_{${rank1}} = ${value1}$ et $u_{${rank2}} = ${value2}$. Quelle est la raison de la suite $(u_n)$ ?`,
     startStatement: "q",
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, value1, value2 },
+    identifiers: { answer, value1, value2 },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, value1, value2 },
 ) => {
@@ -56,10 +56,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const geometricFindReason: MathExercise<QCMProps, VEAProps> = {
+export const geometricFindReason: MathExercise<Identifiers> = {
   id: "geometricFindReason",
   connector: "=",
   label: "Déterminer la raison d'une suite géométrique",

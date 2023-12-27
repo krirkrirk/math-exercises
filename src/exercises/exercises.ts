@@ -122,12 +122,12 @@ import { quartilesList } from "#root/exercises/probaStat/stats1var/quartilesList
 import { euclideanDivision } from "#root/exercises/calcul/arithmetics/euclideanDivision";
 import { thirdDegreeFunctionVariation } from "#root/exercises/derivation/derivative/thirdDegreeFunctionVariation";
 import { polynomLimit } from "#root/exercises/limits/polynomLimit";
-import { constantPrimitive } from "#root/exercises/primitve/constantPrimitive";
-import { polynomialPrimitive } from "#root/exercises/primitve/polynomialPrimitive";
-import { sinCosPrimitive } from "#root/exercises/primitve/sinCosPrimitive";
-import { exponentialPrimitive } from "#root/exercises/primitve/exponentialPrimitive";
-import { logarithmePrimitive } from "#root/exercises/primitve/logarithmePrimitive";
-import { usualPrimitives } from "#root/exercises/primitve/usualPrimitives";
+import { constantPrimitive } from "#root/exercises/primitive/constantPrimitive";
+import { polynomialPrimitive } from "#root/exercises/primitive/polynomialPrimitive";
+import { sinCosPrimitive } from "#root/exercises/primitive/sinCosPrimitive";
+import { exponentialPrimitive } from "#root/exercises/primitive/exponentialPrimitive";
+import { logarithmePrimitive } from "#root/exercises/primitive/logarithmePrimitive";
+import { usualPrimitives } from "#root/exercises/primitive/usualPrimitives";
 import { exponentialDifferentialEquation } from "#root/exercises/equaDiff/equaDiffGeneralForme";
 import { exponentialDifferentialEquationWithIC } from "#root/exercises/equaDiff/equaDiffGeneralFormeWithIC";
 import { mainRemarkableValuesExercise } from "./trigonometry/mainRemarkableValues";
@@ -207,8 +207,8 @@ import { derivativeNumberCalcul } from "./derivation/derivativeNumberCalcul";
 import { averagePoint } from "./probaStat/stats2var/averagePoint";
 import { rationalFractionForbiddenValue } from "./functions/rationalFraction/rationalFractionForbiddenValue";
 import { moduloFromAlgebraicComplex } from "./complex/moduloFromAlgebraicComplex";
-import { sinUCosUPrimitive } from "./primitve/sinUCosUPrimitive";
-import { expUPrimitive } from "./primitve/expUPrimitive";
+import { sinUCosUPrimitive } from "./primitive/sinUCosUPrimitive";
+import { expUPrimitive } from "./primitive/expUPrimitive";
 
 export const exercises: MathExercise<any, any>[] = [
   /**

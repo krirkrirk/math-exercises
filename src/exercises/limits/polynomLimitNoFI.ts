@@ -15,7 +15,7 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   coeffs: number[];
 };
@@ -25,8 +25,7 @@ type VEAProps = {
 };
 
 const getSequencePolynomNoFILimitQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const length = randint(2, 5);
   const to = coinFlip() ? "+\\infty" : "-\\infty";
@@ -34,20 +33,20 @@ const getSequencePolynomNoFILimitQuestion: QuestionGenerator<
 
   const answer = poly.getLimit(to);
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Déterminer la limite en $${to}$ de la fonction $f$ définie par : $f(x) = ${poly
       .toTree()
       .toTex()}$.`,
     keys: ["infty"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, coeffs: poly.coefficients },
+    identifiers: { answer, coeffs: poly.coefficients },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, coeffs }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, coeffs }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -63,11 +62,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, coeffs }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const polynomLimitNoFI: MathExercise<QCMProps, VEAProps> = {
+export const polynomLimitNoFI: MathExercise<Identifiers> = {
   id: "polynomLimitNoFI",
   connector: "=",
   label: "Limite d'une fonction polynomiale (sans F.I.)",

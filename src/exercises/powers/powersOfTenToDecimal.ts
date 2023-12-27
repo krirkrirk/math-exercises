@@ -19,7 +19,7 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   randPower: number;
 };
@@ -27,10 +27,7 @@ type VEAProps = {
   answer: string;
 };
 
-const getPowersOfTenToDecimalQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getPowersOfTenToDecimalQuestion: QuestionGenerator<Identifiers> = () => {
   const randPower = randint(-9, 10);
 
   const statement = new PowerNode(
@@ -40,18 +37,21 @@ const getPowersOfTenToDecimalQuestion: QuestionGenerator<
   const answerTree = new Power(10, randPower).toDecimalWriting().toTree();
   const answer = answerTree.toTex().replace(".", ",");
   const statementTex = statement.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Donner l'écriture décimale de : $${statementTex}$`,
     startStatement: statementTex,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, randPower },
+    identifiers: { answer, randPower },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randPower }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, randPower },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -61,15 +61,15 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randPower }) => {
       .toDecimalWriting()
       .toTree();
     const wrongAnswer = wrongAnswerTree.toTex();
-    tryToAddWrongProp(propositions, wrongAnswer);
+    tryToAddWrongProp(propositions, wrongAnswer.replace(".", ","));
   }
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const powersOfTenToDecimal: MathExercise<QCMProps, VEAProps> = {
+export const powersOfTenToDecimal: MathExercise<Identifiers> = {
   id: "powersOfTenToDecimal",
   connector: "=",
   label: "Ecriture décimale d'une puissance de 10",

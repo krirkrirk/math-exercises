@@ -1,4 +1,6 @@
+import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
+import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
@@ -14,7 +16,7 @@ import {
 } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   x1: number;
   x2: number;
@@ -30,64 +32,95 @@ type VEAProps = {
   rand: number;
 };
 
-const getCalculs = (x1: number, x2: number, x3: number, x4: number) => {
+const getAnswer = (
+  rand: number,
+  x1: number,
+  x2: number,
+  x3: number,
+  x4: number,
+) => {
   const x = x1 + x2 + x3 + x4;
-  return [
-    (x1 + x3) / x,
-    (x2 + x4) / x,
-    (x1 + x2) / x,
-    (x3 + x4) / x,
-    x1 / (x1 + x2),
-    x3 / (x3 + x4),
-    x2 / (x1 + x2),
-    x4 / (x3 + x4),
-    x1 / (x1 + x3),
-    x3 / (x1 + x3),
-    x2 / (x2 + x4),
-    x4 / (x2 + x4),
-  ];
+  let freqString: string;
+  let frequence: string;
+  let answer: Node;
+  switch (rand) {
+    case 0:
+      freqString = "marginale de A";
+      frequence = "f(A)";
+      answer = new Rational(x1 + x3, x).simplify().toTree();
+      break;
+    case 1:
+      freqString = "marginale de B";
+      frequence = "f(B)";
+      answer = new Rational(x2 + x4, x).simplify().toTree();
+      break;
+    case 2:
+      freqString = "marginale de C";
+      frequence = "f(C)";
+      answer = new Rational(x1 + x2, x).simplify().toTree();
+      break;
+    case 3:
+      freqString = "marginale de D";
+      frequence = "f(D)";
+      answer = new Rational(x3 + x4, x).simplify().toTree();
+      break;
+    case 4:
+      freqString = "conditionnelle de A parmi C";
+      frequence = "f_C(A)";
+      answer = new Rational(x1, x1 + x2).simplify().toTree();
+      break;
+    case 5:
+      freqString = "conditionnelle de A parmi D";
+      frequence = "f_D(A)";
+      answer = new Rational(x3, x3 + x4).simplify().toTree();
+      break;
+    case 6:
+      freqString = "conditionnelle de B parmi D";
+      frequence = "f_D(B)";
+      answer = new Rational(x2, x1 + x2).simplify().toTree();
+      break;
+    case 7:
+      freqString = "conditionnelle de B parmi D";
+      frequence = "f_D(B)";
+      answer = new Rational(x4, x3 + x4).simplify().toTree();
+      break;
+    case 8:
+      freqString = "conditionnelle de C parmi A";
+      frequence = "f_A(C)";
+      answer = new Rational(x1, x1 + x3).simplify().toTree();
+      break;
+    case 9:
+      freqString = "conditionnelle de C parmi B";
+      frequence = "f_B(C)";
+      answer = new Rational(x3, x1 + x3).simplify().toTree();
+      break;
+    case 10:
+      freqString = "conditionnelle de D parmi A";
+      frequence = "f_A(D)";
+      answer = new Rational(x2, x2 + x4).simplify().toTree();
+      break;
+    case 11:
+      freqString = "conditionnelle de D parmi B";
+      frequence = "f_B(D)";
+      answer = new Rational(x4, x2 + x4).simplify().toTree();
+      break;
+    default:
+      throw Error("error");
+  }
+  return { answer, freqString, frequence };
 };
 const getMarginalAndConditionalFrequency: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const [x1, x2, x3, x4] = [1, 2, 3, 4].map((el) => randint(1, 100));
   const rand = randint(0, 12);
-
-  const freqString = [
-    "marginale de A",
-    "marginale de B",
-    "marginale de C",
-    "marginale de D",
-    "conditionnelle de A parmi C",
-    "conditionnelle de A parmi D",
-    "conditionnelle de B parmi C",
-    "conditionnelle de B parmi D",
-    "conditionnelle de C parmi A",
-    "conditionnelle de C parmi B",
-    "conditionnelle de D parmi A",
-    "conditionnelle de D parmi B",
-  ];
-
-  const frequences = [
-    "f(A)",
-    "f(B)",
-    "f(C)",
-    "f(D)",
-    "f_C(A)",
-    "f_D(A)",
-    "f_C(B)",
-    "f_D(B)",
-    "f_A(C)",
-    "f_B(C)",
-    "f_A(D)",
-    "f_B(D)",
-  ];
-
-  const calculs = getCalculs(x1, x2, x3, x4);
-  const chosenCalculNode = simplifyNode(new NumberNode(calculs[rand]));
-  const answer = chosenCalculNode.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const {
+    freqString,
+    frequence,
+    answer: answerTree,
+  } = getAnswer(rand, x1, x2, x3, x4);
+  const answer = answerTree.toTex();
+  const question: Question<Identifiers> = {
     instruction: `On considère le tableau d'effectifs suivant : 
 
 | |A|B|
@@ -95,52 +128,49 @@ const getMarginalAndConditionalFrequency: QuestionGenerator<
 |C|${x1}|${x2}|
 |D|${x3}|${x4}|
 
-Calculer la fréquence ${freqString[rand]}.`,
-    startStatement: `${frequences[rand]}`,
+Calculer la fréquence ${freqString}.`,
+    startStatement: `${frequence}`,
     answer,
     keys: ["f", "cap", "underscore"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, rand, x1, x2, x3, x4 },
+    identifiers: { answer, rand, x1, x2, x3, x4 },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, x1, x2, x3, x4 },
+  { answer, rand, x1, x2, x3, x4 },
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const calculs = getCalculs(x1, x2, x3, x4);
   while (propositions.length < n) {
     const rand = randint(0, 12);
-    tryToAddWrongProp(
-      propositions,
-      simplifyNode(new NumberNode(calculs[rand])).toTex(),
-    );
+    const { answer: answerTree } = getAnswer(rand, x1, x2, x3, x4);
+
+    tryToAddWrongProp(propositions, answerTree.toTex());
   }
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { rand, x1, x2, x3, x4 }) => {
-  const calculs = getCalculs(x1, x2, x3, x4);
-  const chosenCalculNode = simplifyNode(new NumberNode(calculs[rand]));
-  const answer = chosenCalculNode;
-  return true;
+const isAnswerValid: VEA<Identifiers> = (ans, { rand, x1, x2, x3, x4 }) => {
+  const { answer: answerTree } = getAnswer(rand, x1, x2, x3, x4);
+  const texs = answerTree.toAllValidTexs({ allowFractionToDecimal: true });
+  return texs.includes(ans);
 };
 
-export const marginalAndConditionalFrequency: MathExercise<QCMProps, VEAProps> =
-  {
-    id: "marginalAndConditionalFrequency",
-    connector: "=",
-    label: "Calculs de fréquences marginales et conditionnelles",
-    levels: ["1reESM", "1reSpé", "1reTech", "TermTech", "1rePro", "TermPro"],
-    isSingleStep: false,
-    sections: ["Statistiques"],
-    generator: (nb: number) =>
-      getDistinctQuestions(getMarginalAndConditionalFrequency, nb),
-    qcmTimer: 60,
-    freeTimer: 60,
-    getPropositions,
-  };
+export const marginalAndConditionalFrequency: MathExercise<Identifiers> = {
+  id: "marginalAndConditionalFrequency",
+  connector: "=",
+  label: "Calculs de fréquences marginales et conditionnelles",
+  levels: ["1reESM", "1reSpé", "1reTech", "TermTech", "1rePro", "TermPro"],
+  isSingleStep: false,
+  sections: ["Statistiques"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getMarginalAndConditionalFrequency, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+  isAnswerValid,
+};

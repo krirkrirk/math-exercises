@@ -11,16 +11,16 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from '#root/exercises/exercise';
-import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
-import { Affine, AffineConstructor } from '#root/math/polynomials/affine';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { MultiplyNode } from '#root/tree/nodes/operators/multiplyNode';
-import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
-import { random } from '#root/utils/random';
-import { shuffle } from '#root/utils/shuffle';
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { random } from "#root/utils/random";
+import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   affinesCoeffs: number[][];
   operation: string;
@@ -30,15 +30,18 @@ type VEAProps = {
   operation: string;
 };
 
-const getFactoType1Question: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
   const affines = AffineConstructor.differentRandoms(3);
 
-  const permut: Affine[][] = [shuffle([affines[0], affines[1]]), shuffle([affines[0], affines[2]])];
+  const permut: Affine[][] = [
+    shuffle([affines[0], affines[1]]),
+    shuffle([affines[0], affines[2]]),
+  ];
 
-  const operation = random(['add', 'substract']);
+  const operation = random(["add", "substract"]);
 
   const statementTree =
-    operation === 'add'
+    operation === "add"
       ? new AddNode(
           new MultiplyNode(permut[0][0].toTree(), permut[0][1].toTree()),
           new MultiplyNode(permut[1][0].toTree(), permut[1][1].toTree()),
@@ -48,47 +51,68 @@ const getFactoType1Question: QuestionGenerator<QCMProps, VEAProps> = () => {
           new MultiplyNode(permut[1][0].toTree(), permut[1][1].toTree()),
         );
 
-  const answerTree = new MultiplyNode(
-    affines[0].toTree(),
-    affines[1].add(operation === 'add' ? affines[2] : affines[2].opposite()).toTree(),
+  const affine1 = affines[0];
+  const affine2 = affines[1].add(
+    operation === "add" ? affines[2] : affines[2].opposite(),
   );
+
+  const answerTree =
+    affine2.coefficients[0] === 0
+      ? affine1.coefficients[0] === 0
+        ? affine1.multiply(affine2).toTree()
+        : new MultiplyNode(affine2.toTree(), affine1.toTree())
+      : new MultiplyNode(affine1.toTree(), affine2.toTree());
   const answer = answerTree.toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Factoriser : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer,
-    keys: ['x'],
-    answerFormat: 'tex',
-    veaProps: { affinesCoeffs: affines.map((affine) => affine.coefficients), operation },
-    qcmGeneratorProps: { answer, affinesCoeffs: affines.map((affine) => affine.coefficients), operation },
+    keys: ["x"],
+    answerFormat: "tex",
+    identifiers: {
+      answer,
+      affinesCoeffs: affines.map((affine) => affine.coefficients),
+      operation,
+    },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, affinesCoeffs, operation }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, affinesCoeffs, operation },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const affines = affinesCoeffs.map((coeffs) => new Affine(coeffs[1], coeffs[0]));
+  const affines = affinesCoeffs.map(
+    (coeffs) => new Affine(coeffs[1], coeffs[0]),
+  );
   tryToAddWrongProp(
     propositions,
     new MultiplyNode(
       affines[0].toTree(),
-      affines[1].add(operation !== 'add' ? affines[2] : affines[2].opposite()).toTree(),
+      affines[1]
+        .add(operation !== "add" ? affines[2] : affines[2].opposite())
+        .toTree(),
     ).toTex(),
   );
   tryToAddWrongProp(
     propositions,
     new MultiplyNode(
       affines[1].toTree(),
-      affines[0].add(operation === 'add' ? affines[2] : affines[2].opposite()).toTree(),
+      affines[0]
+        .add(operation === "add" ? affines[2] : affines[2].opposite())
+        .toTree(),
     ).toTex(),
   );
   tryToAddWrongProp(
     propositions,
     new MultiplyNode(
       affines[2].toTree(),
-      affines[0].add(operation === 'add' ? affines[2] : affines[2].opposite()).toTree(),
+      affines[0]
+        .add(operation === "add" ? affines[2] : affines[2].opposite())
+        .toTree(),
     ).toTex(),
   );
 
@@ -104,23 +128,35 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, affinesCoeffs, ope
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { affinesCoeffs, operation }) => {
-  const affines = affinesCoeffs.map((coeffs) => new Affine(coeffs[1], coeffs[0]));
-  const answerTree = new MultiplyNode(
-    affines[0].toTree(),
-    affines[1].add(operation === 'add' ? affines[2] : affines[2].opposite()).toTree(),
+const isAnswerValid: VEA<Identifiers> = (ans, { affinesCoeffs, operation }) => {
+  const affines = affinesCoeffs.map(
+    (coeffs) => new Affine(coeffs[1], coeffs[0]),
   );
+
+  const affine1 = affines[0];
+  const affine2 = affines[1].add(
+    operation === "add" ? affines[2] : affines[2].opposite(),
+  );
+
+  const answerTree =
+    affine2.coefficients[0] === 0
+      ? affine1.coefficients[0] === 0
+        ? affine1.multiply(affine2).toTree()
+        : new MultiplyNode(affine2.toTree(), affine1.toTree())
+      : new MultiplyNode(affine1.toTree(), affine2.toTree());
+  const answer = answerTree.toTex();
   const validLatexs = answerTree.toAllValidTexs();
+  console.log(ans, validLatexs);
   return validLatexs.includes(ans);
 };
 
-export const factoType1Exercise: MathExercise<QCMProps, VEAProps> = {
-  id: 'facto1',
-  connector: '=',
+export const factoType1Exercise: MathExercise<Identifiers> = {
+  id: "facto1",
+  connector: "=",
   isSingleStep: false,
-  label: 'Factorisation du type $(ax+b)(cx+d) \\pm (ax+b)(ex+f)$',
-  levels: ['3ème', '2nde'],
-  sections: ['Calcul littéral'],
+  label: "Factorisation du type $(ax+b)(cx+d) \\pm (ax+b)(ex+f)$",
+  levels: ["3ème", "2nde"],
+  sections: ["Calcul littéral"],
   generator: (nb: number) => getDistinctQuestions(getFactoType1Question, nb),
   qcmTimer: 60,
   freeTimer: 60,

@@ -11,6 +11,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Decimal } from "#root/math/numbers/decimals/decimal";
 import { Rational } from "#root/math/numbers/rationals/rational";
+import { frenchify } from "#root/math/utils/latex/frenchify";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { Node } from "#root/tree/nodes/node";
@@ -19,10 +20,7 @@ import { PercentNode } from "#root/tree/nodes/numbers/percentNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { shuffle } from "#root/utils/shuffle";
 
-const getFractionToPercentToDecimal: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getFractionToPercentToDecimal: QuestionGenerator<Identifiers> = () => {
   const denominator = 2 ** randint(0, 5) * 5 ** randint(0, 5);
   const numerator =
     denominator !== 1 ? randint(1, denominator) : randint(1, 100);
@@ -88,14 +86,13 @@ const getFractionToPercentToDecimal: QuestionGenerator<
       break;
     }
   }
-
-  const question: Question<QCMProps, VEAProps> = {
+  answer = frenchify(answer);
+  const question: Question<Identifiers> = {
     instruction,
-    answer: answer.replace(".", ","),
+    answer,
     keys: ["percent"],
     answerFormat: "tex",
-    qcmGeneratorProps: {
-      answer,
+    identifiers: {
       rand,
       numerator,
       denominator,
@@ -105,14 +102,13 @@ const getFractionToPercentToDecimal: QuestionGenerator<
   return question;
 };
 
-type QCMProps = {
-  answer: string;
+type Identifiers = {
   rand: number;
   numerator: number;
   denominator: number;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, rand, numerator, denominator },
 ) => {
@@ -126,7 +122,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
     switch (rand) {
       case 1:
         const temp1 = randint(-5, 3, [0]);
-        statement = `${round(percent * 10 ** temp1, -temp1 + 2)}\\%`;
+        statement = `${frenchify(round(percent * 10 ** temp1, -temp1 + 2))}\\%`;
         break;
       case 2:
         statement = `${new Rational(
@@ -139,7 +135,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
         break;
       case 3:
         const temp3 = randint(-5, 3, [0]);
-        statement = `${round(percent * 10 ** temp3, -temp3 + 2)}`;
+        statement = `${frenchify(round(percent * 10 ** temp3, -temp3 + 2))}`;
         break;
       case 4:
         statement = `${new Rational(
@@ -151,10 +147,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
           .toTex()}`;
         break;
       case 5:
-        statement = `${round(decimal + Math.random() * 10, 2)}`;
+        statement = `${frenchify(round(decimal + Math.random() * 10, 2))}`;
         break;
       case 6:
-        statement = `${round(percent + Math.random() * 10, 2)}\\%`;
+        statement = `${frenchify(round(percent + Math.random() * 10, 2))}\\%`;
         break;
     }
     tryToAddWrongProp(propositions, statement);
@@ -162,13 +158,8 @@ const getPropositions: QCMGenerator<QCMProps> = (
 
   return shuffle(propositions);
 };
-type VEAProps = {
-  rand: number;
-  numerator: number;
-  denominator: number;
-};
 
-const isAnswerValid: VEA<VEAProps> = (
+const isAnswerValid: VEA<Identifiers> = (
   ans,
   { rand, numerator, denominator },
 ) => {
@@ -202,7 +193,7 @@ const isAnswerValid: VEA<VEAProps> = (
   return texs.includes(ans);
 };
 
-export const fractionToPercentToDecimal: MathExercise<QCMProps, VEAProps> = {
+export const fractionToPercentToDecimal: MathExercise<Identifiers> = {
   id: "fractionToPercentToDecimal",
   connector: "\\iff",
   label: "Passer d'une écriture d'un nombre à une autre",

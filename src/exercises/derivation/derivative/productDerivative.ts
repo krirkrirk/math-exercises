@@ -16,7 +16,7 @@ import {
 } from "#root/math/polynomials/polynomial";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   poly1Coeffs: number[];
   poly2Coeffs: number[];
@@ -26,15 +26,12 @@ type VEAProps = {
   poly2Coeffs: number[];
 };
 
-const getProductDerivativeQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getProductDerivativeQuestion: QuestionGenerator<Identifiers> = () => {
   const poly1 = PolynomialConstructor.randomWithLength(3, 2);
   const poly2 = PolynomialConstructor.randomWithLength(3, 2);
   const answer = poly1.multiply(poly2).derivate().toTree().toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Déterminer la dérivée de la fonction $f$ définie par $f(x) = ${new MultiplyNode(
       poly1.toTree(),
@@ -42,7 +39,7 @@ const getProductDerivativeQuestion: QuestionGenerator<
     ).toTex()}$`,
     keys: ["x", "xsquare", "xcube"],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       poly1Coeffs: poly1.coefficients,
       poly2Coeffs: poly2.coefficients,
@@ -52,7 +49,7 @@ const getProductDerivativeQuestion: QuestionGenerator<
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, poly1Coeffs, poly2Coeffs },
 ) => {
@@ -77,7 +74,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
 
   return shuffleProps(propositions, n);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { poly1Coeffs, poly2Coeffs }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { poly1Coeffs, poly2Coeffs }) => {
   const poly1 = new Polynomial(poly1Coeffs);
   const poly2 = new Polynomial(poly2Coeffs);
   const answer = poly1
@@ -88,7 +85,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { poly1Coeffs, poly2Coeffs }) => {
   return texs.includes(ans);
 };
 
-export const productDerivative: MathExercise<QCMProps, VEAProps> = {
+export const productDerivative: MathExercise<Identifiers> = {
   id: "productDerivative",
   connector: "=",
   getPropositions,

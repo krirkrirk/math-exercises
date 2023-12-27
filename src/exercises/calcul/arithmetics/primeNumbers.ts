@@ -25,7 +25,7 @@ function prodNumbers(tab: number[]) {
 
 const primes = [2, 3, 5, 7, 11];
 
-const getPrimeNumbers: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getPrimeNumbers: QuestionGenerator<Identifiers> = () => {
   const rand = randint(3, 5);
   let chosenNumbers: number[] = [];
 
@@ -53,23 +53,21 @@ const getPrimeNumbers: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   let answer = tree.toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Donner la décomposition en nombres premiers de : $${prod}$`,
     startStatement: `${prod}`,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, chosenNumbers },
-    veaProps: { chosenNumbers },
+    identifiers: { chosenNumbers },
   };
   return question;
 };
 
-type QCMProps = {
-  answer: string;
+type Identifiers = {
   chosenNumbers: number[];
 };
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, chosenNumbers },
 ) => {
@@ -100,10 +98,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffleProps(propositions, n);
 };
 
-type VEAProps = {
-  chosenNumbers: number[];
-};
-const isAnswerValid: VEA<VEAProps> = (ans, { chosenNumbers }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { chosenNumbers }) => {
   //array of [nombre, power]
   const nbsToPower: [number, number][] = [];
   chosenNumbers.forEach((nb) => {
@@ -119,13 +114,14 @@ const isAnswerValid: VEA<VEAProps> = (ans, { chosenNumbers }) => {
       return new PowerNode(nbNode, new NumberNode(el[1]));
     }
   });
-  const answer = operatorComposition(MultiplyNode, nodes);
+  const answer =
+    nodes.length === 1 ? nodes[0] : operatorComposition(MultiplyNode, nodes);
   const texs = answer.toAllValidTexs();
   console.log(texs);
   return texs.includes(ans);
 };
 
-export const primeNumbers: MathExercise<QCMProps, VEAProps> = {
+export const primeNumbers: MathExercise<Identifiers> = {
   id: "primeNumbers",
   connector: "=",
   label: "Décomposition en nombres premiers",

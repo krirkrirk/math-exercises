@@ -17,7 +17,7 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   firstValue: number;
   reason: number;
@@ -27,10 +27,7 @@ type VEAProps = {
   answer: string;
 };
 
-const getGeometricExplicitFormulaUsage: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getGeometricExplicitFormulaUsage: QuestionGenerator<Identifiers> = () => {
   const askedRank = randint(0, 10);
   const firstValue = randint(1, 10);
   const reason = randint(2, 10);
@@ -40,22 +37,22 @@ const getGeometricExplicitFormulaUsage: QuestionGenerator<
   );
   const formulaTex = simplifyNode(formula).toTex();
   const answer = (firstValue * Math.pow(reason, askedRank)).toString();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `$(u_n)$ est une suite géométrique définie par $u_n = ${formulaTex}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, firstValue, reason, askedRank },
+    identifiers: { answer, firstValue, reason, askedRank },
   };
   return question;
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, firstValue, reason, askedRank },
 ) => {
@@ -72,7 +69,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-export const geometricExplicitFormulaUsage: MathExercise<QCMProps, VEAProps> = {
+export const geometricExplicitFormulaUsage: MathExercise<Identifiers> = {
   id: "geometricExplicitFormulaUsage",
   connector: "=",
   label: "Utiliser la formule générale d'une suite géométrique",

@@ -15,14 +15,14 @@ import { randint } from "#root/math/utils/random/randint";
 import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getTriangleArea: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getTriangleArea: QuestionGenerator<Identifiers> = () => {
   const vertices = [];
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i));
@@ -79,7 +79,7 @@ const getTriangleArea: QuestionGenerator<QCMProps, VEAProps> = () => {
     ".",
     ",",
   );
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer l'aire du triangle $${triangle.getTriangleName()}$ sachant que $${
       sides[randoms[0]]
     } = ${sidesLength[randoms[0]]}$ cm et $${
@@ -90,13 +90,13 @@ const getTriangleArea: QuestionGenerator<QCMProps, VEAProps> = () => {
     commands,
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer + "\\text{cm}^2");
   while (propositions.length < n) {
@@ -111,7 +111,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   const double = Number(answer.replace(",", ".")) * 2;
   const area = new Rational(double, 2)
     .simplify()
@@ -123,7 +123,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
   ];
   return texs.includes(ans);
 };
-export const triangleArea: MathExercise<QCMProps, VEAProps> = {
+export const triangleArea: MathExercise<Identifiers> = {
   id: "triangleArea",
   connector: "=",
   label: "Calculer l'aire d'un triangle (avec figure)",

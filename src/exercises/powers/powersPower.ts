@@ -19,7 +19,7 @@ import {
   tryToAddWrongProp,
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -32,8 +32,7 @@ type VEAProps = {
 };
 
 const getPowersPowerQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps,
+  Identifiers,
   { useOnlyPowersOfTen: boolean }
 > = (opts) => {
   const a = opts?.useOnlyPowersOfTen ? 10 : randint(-11, 11, [0, 1]);
@@ -46,31 +45,31 @@ const getPowersPowerQuestion: QuestionGenerator<
   let answerTree = new Power(a, b * c).simplify();
   const answer = answerTree.toTex();
   const statementTex = statement.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Simplifier : $${statementTex}$`,
 
     startStatement: statementTex,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b, c },
+    identifiers: { answer, a, b, c },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  if (a === 1 || a === 0 || a === -1) {
+  if (a === -1) {
     tryToAddWrongProp(propositions, "1");
     tryToAddWrongProp(propositions, "-1");
     tryToAddWrongProp(propositions, "0");
-    tryToAddWrongProp(propositions, b * c + "");
-    tryToAddWrongProp(propositions, b + c + "");
+    tryToAddWrongProp(propositions, "-2");
   }
 
   while (propositions.length < n) {
+    console.log("heeeeeer", a, b, c);
     const wrongExponent = b * c + randint(-11, 11, [0]);
     const wrongAnswerTree = new Power(a, wrongExponent).simplify();
     const wrongAnswer = wrongAnswerTree.toTex();
@@ -79,7 +78,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
 
   return shuffleProps(propositions, n);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
   const power = new Power(a, b * c);
   const answerTree = power.simplify();
   const texs = answerTree.toAllValidTexs();
@@ -87,7 +86,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
   if (!texs.includes(rawTex)) texs.push(rawTex);
   return texs.includes(ans);
 };
-export const powersOfTenPower: MathExercise<QCMProps, VEAProps> = {
+export const powersOfTenPower: MathExercise<Identifiers> = {
   id: "powersOfTenPower",
   connector: "=",
   label: "Puissance d'une puissance de 10 ",
@@ -117,7 +116,7 @@ export const powersOfTenPower: MathExercise<QCMProps, VEAProps> = {
   isAnswerValid,
 };
 
-export const powersPower: MathExercise<QCMProps, VEAProps> = {
+export const powersPower: MathExercise<Identifiers> = {
   id: "powersPower",
   connector: "=",
   label: "Puissance d'une puissance",

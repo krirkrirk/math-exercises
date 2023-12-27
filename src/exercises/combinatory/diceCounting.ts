@@ -13,14 +13,14 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   type: number;
 };
 type VEAProps = {
   answer: string;
 };
-const getDiceCountingQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getDiceCountingQuestion: QuestionGenerator<Identifiers> = () => {
   const type = randint(0, 8);
   let instruction = "";
   let answer = "";
@@ -68,18 +68,18 @@ const getDiceCountingQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
       break;
   }
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `On tire 3 fois consécutivement un dé à six faces numérotées de 1 à 6. Combien de tirages ${instruction} sont possibles ?`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, type },
+    identifiers: { answer, type },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, type }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, type }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -126,11 +126,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, type }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const diceCounting: MathExercise<QCMProps, VEAProps> = {
+export const diceCounting: MathExercise<Identifiers> = {
   id: "diceCounting",
   connector: "=",
   label: "Dénombrement avec des dés",

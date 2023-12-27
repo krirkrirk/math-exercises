@@ -27,7 +27,7 @@ const values = [
   "1",
 ];
 
-const getRemarkableValues: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getRemarkableValues: QuestionGenerator<Identifiers> = () => {
   const isCos = coinFlip();
   const remarkableValue = RemarkableValueConstructor.simplifiable();
   const valueIndex = remarkableValue.index;
@@ -40,27 +40,24 @@ const getRemarkableValues: QuestionGenerator<QCMProps, VEAProps> = () => {
   const statement = isCos
     ? `\\cos\\left(${remarkableValue.angle.toTex()}\\right)`
     : `\\sin\\left(${remarkableValue.angle.toTex()}\\right)`;
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Donner la valeur exacte de : $${statement}$`,
     startStatement: statement,
     answer: answer,
     keys: ["pi", "cos", "sin"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
-    veaProps: { isCos, valueIndex },
+    identifiers: { answer, isCos, valueIndex },
   };
   return question;
 };
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
-};
-type VEAProps = {
   valueIndex: number;
   isCos: boolean;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -69,13 +66,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   }
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { valueIndex, isCos }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { valueIndex, isCos }) => {
   const remarkableValue = remarkableTrigoValues[valueIndex];
   const answer = isCos ? remarkableValue.cos : remarkableValue.sin;
   const texs = answer.toAllValidTexs({ allowFractionToDecimal: true });
   return texs.includes(ans);
 };
-export const remarkableValuesExercise: MathExercise<QCMProps, VEAProps> = {
+export const remarkableValuesExercise: MathExercise<Identifiers> = {
   id: "remarkableValues",
   connector: "=",
   label: "Valeurs remarquables de $\\cos$ et $\\sin$",

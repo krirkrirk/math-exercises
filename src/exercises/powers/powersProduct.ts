@@ -21,7 +21,7 @@ import {
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -34,8 +34,7 @@ type VEAProps = {
 };
 
 const getPowersProductQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps,
+  Identifiers,
   { useOnlyPowersOfTen: boolean }
 > = (opts) => {
   const a = opts?.useOnlyPowersOfTen ? 10 : randint(-11, 11, [0]);
@@ -48,19 +47,19 @@ const getPowersProductQuestion: QuestionGenerator<
   const answerTree = new Power(a, b + c).simplify();
   const answer = answerTree.toTex();
   const statmentTex = statement.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer : $${statmentTex}$`,
 
     startStatement: statmentTex,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b, c },
+    identifiers: { answer, a, b, c },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -78,7 +77,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
   const power = new Power(a, b + c);
   const answerTree = power.simplify();
   const texs = answerTree.toAllValidTexs();
@@ -87,7 +86,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
   return texs.includes(ans);
 };
 
-export const powersOfTenProduct: MathExercise<QCMProps, VEAProps> = {
+export const powersOfTenProduct: MathExercise<Identifiers> = {
   id: "powersOfTenProduct",
   connector: "=",
   label: "Multiplication de puissances de 10",
@@ -117,7 +116,7 @@ export const powersOfTenProduct: MathExercise<QCMProps, VEAProps> = {
   isAnswerValid,
 };
 
-export const powersProduct: MathExercise<QCMProps, VEAProps> = {
+export const powersProduct: MathExercise<Identifiers> = {
   id: "powersProduct",
   connector: "=",
   label: "Multiplication de puissances",

@@ -13,7 +13,7 @@ import {
 } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   randomValues: number[];
 };
@@ -21,7 +21,7 @@ type VEAProps = {
   answer: string;
 };
 
-const getQuartiles: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getQuartiles: QuestionGenerator<Identifiers> = () => {
   let randomValues: number[] = [];
   const length = randint(5, 9);
 
@@ -58,7 +58,7 @@ const getQuartiles: QuestionGenerator<QCMProps, VEAProps> = () => {
   }
 
   const answer = choosenQuartile + "";
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `On considère la liste suivante : $${randomValues.join(
       ";\\ ",
     )}.$
@@ -66,13 +66,13 @@ const getQuartiles: QuestionGenerator<QCMProps, VEAProps> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, randomValues },
+    identifiers: { answer, randomValues },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, randomValues },
 ) => {
@@ -90,11 +90,11 @@ const getPropositions: QCMGenerator<QCMProps> = (
 
   return shuffleProps(propositions, n);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const quartilesList: MathExercise<QCMProps, VEAProps> = {
+export const quartilesList: MathExercise<Identifiers> = {
   id: "quartilesList",
   connector: "=",
   label: "Calcul des quartiles d'une liste",

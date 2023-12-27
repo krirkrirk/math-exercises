@@ -14,14 +14,12 @@ import {
   tryToAddWrongProp,
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
-type QCMProps = {
+type Identifiers = {
+  sqrtOperand: number;
   answer: string;
 };
-type VEAProps = {
-  sqrtOperand: number;
-};
 
-const getSimplifySquareRoot: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getSimplifySquareRoot: QuestionGenerator<Identifiers> = () => {
   const squareRoot = SquareRootConstructor.randomSimplifiable({
     allowPerfectSquare: false,
     maxSquare: 11,
@@ -29,19 +27,18 @@ const getSimplifySquareRoot: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   const sqrtTex = squareRoot.toTree().toTex();
   const answer = squareRoot.simplify().toTree().toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Simplifier : $${sqrtTex}$`,
     startStatement: sqrtTex,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
-    veaProps: { sqrtOperand: squareRoot.operand },
+    identifiers: { answer, sqrtOperand: squareRoot.operand },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -56,13 +53,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { sqrtOperand }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { sqrtOperand }) => {
   const answer = new SquareRoot(sqrtOperand).simplify().toTree();
   const texs = answer.toAllValidTexs();
   return texs.includes(ans);
 };
 
-export const simplifySquareRoot: MathExercise<QCMProps, VEAProps> = {
+export const simplifySquareRoot: MathExercise<Identifiers> = {
   id: "simplifySqrt",
   connector: "=",
   label: "Simplification de racines carrées",

@@ -17,14 +17,9 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
-  answer: string;
-};
-type VEAProps = {
-  answer: string;
-};
+type Identifiers = {};
 
-const getMentalDivisions: QuestionGenerator<QCMProps> = () => {
+const getMentalDivisions: QuestionGenerator<Identifiers> = () => {
   let a = 1,
     b = 1,
     c = 1;
@@ -81,19 +76,19 @@ const getMentalDivisions: QuestionGenerator<QCMProps> = () => {
   const statementTex = statementTree.toTex();
   const answer = rand === 6 ? a / (b / c) : a / b;
   const answerTex = (round(answer, 2) + "").replace(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer : $${statementTex}$`,
     startStatement: statementTex,
     answer: answerTex,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer: answerTex },
+    identifiers: {},
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const result = Number(answer.replace(",", "."));
@@ -112,13 +107,13 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (studentAns, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (studentAns, { answer }) => {
   const answerTree = new NumberNode(Number(answer.replace(",", ".")));
   const texs = answerTree.toAllValidTexs();
   return texs.includes(studentAns);
 };
 
-export const mentalDivisions: MathExercise<QCMProps, VEAProps> = {
+export const mentalDivisions: MathExercise<Identifiers> = {
   id: "mentalDivisions",
   connector: "=",
   label: "Effectuer mentalement des divisions simples",

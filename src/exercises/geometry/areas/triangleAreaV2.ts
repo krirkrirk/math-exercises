@@ -12,7 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   randomSide: number;
 };
@@ -39,22 +39,25 @@ const sides = [
   [65, 72, 97],
 ];
 
-const getTriangleAreaV2: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getTriangleAreaV2: QuestionGenerator<Identifiers> = () => {
   const randomSide = randint(0, sides.length);
   const area = (sides[randomSide][0] * sides[randomSide][1]) / 2;
   const answer = area + "";
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer l'aire du triangle rectangle dont les côtés mesurent : $${sides[randomSide][0]}$ cm, $${sides[randomSide][1]}$ cm et $${sides[randomSide][2]}$ cm.`,
     answer: answer + "\\text{cm}^2",
     answerFormat: "tex",
     keys: ["cm", "cm2"],
-    qcmGeneratorProps: { answer, randomSide },
+    identifiers: { answer, randomSide },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randomSide }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, randomSide },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer + "\\text{cm}^2");
   const area = Number(answer);
@@ -74,11 +77,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, randomSide }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   const texs = [answer + "", answer + "\\text{cm}^2"];
   return texs.includes(ans);
 };
-export const triangleAreaV2: MathExercise<QCMProps, VEAProps> = {
+export const triangleAreaV2: MathExercise<Identifiers> = {
   id: "triangleAreaV2",
   connector: "=",
   label: "Calculer l'aire d'un triangle (sans figure)",

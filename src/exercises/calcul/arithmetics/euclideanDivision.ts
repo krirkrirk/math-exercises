@@ -16,10 +16,7 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { EqualNode } from "#root/tree/nodes/operators/equalNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 
-const getEuclideanDivisionQuestions: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getEuclideanDivisionQuestions: QuestionGenerator<Identifiers> = () => {
   let dividend = randint(5, 100);
   let divisor = randint(2, 11);
 
@@ -39,24 +36,24 @@ const getEuclideanDivisionQuestions: QuestionGenerator<
     ),
   );
   const answerTex = answer.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Ecrire la division euclidienne de ${dividend} par ${divisor}.`,
     answer: answerTex,
     keys: ["equal"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer: answerTex, dividend },
-    veaProps: { dividend, divisor, quotient, remainder },
+    identifiers: { dividend, divisor, quotient, remainder },
   };
   return question;
 };
 
-type VEAProps = {
+type Identifiers = {
   dividend: number;
   divisor: number;
   quotient: number;
   remainder: number;
 };
-const isAnswerValid: VEA<VEAProps> = (
+
+const isAnswerValid: VEA<Identifiers> = (
   ans,
   { dividend, divisor, quotient, remainder },
 ) => {
@@ -72,11 +69,10 @@ const isAnswerValid: VEA<VEAProps> = (
   return validLatexs.includes(ans);
 };
 
-type QCMProps = {
-  answer: string;
-  dividend: number;
-};
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, dividend }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, dividend },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -95,7 +91,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, dividend }) => {
   return shuffleProps(propositions, n);
 };
 
-export const euclideanDivision: MathExercise<QCMProps, VEAProps> = {
+export const euclideanDivision: MathExercise<Identifiers> = {
   id: "euclideanDivision",
   connector: "=",
   label: "Ecrire une division euclidienne",

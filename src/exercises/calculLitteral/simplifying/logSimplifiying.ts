@@ -19,7 +19,7 @@ import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   pm: number;
   a: number;
@@ -31,7 +31,7 @@ type VEAProps = {
   b: number;
 };
 
-const getExpSimplifiying: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getExpSimplifiying: QuestionGenerator<Identifiers> = () => {
   let expression;
   let simplifiedExpression: LogNode;
   let pm = coinFlip() ? 1 : -1;
@@ -57,18 +57,18 @@ const getExpSimplifiying: QuestionGenerator<QCMProps, VEAProps> = () => {
   }
 
   const answer = simplifiedExpression.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Simplifier l'expression $${expression.toTex()}$.`,
     answer,
     keys: ["ln"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, pm, a, b },
+    identifiers: { answer, pm, a, b },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, pm }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, pm }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -85,7 +85,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, pm }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, pm }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, pm }) => {
   let answer: Node;
   if (pm === 1) {
     answer = new LogNode(new NumberNode(a * b));
@@ -98,7 +98,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, pm }) => {
   return texs.includes(ans);
 };
 
-export const logSimplifiying: MathExercise<QCMProps, VEAProps> = {
+export const logSimplifiying: MathExercise<Identifiers> = {
   id: "logSimplifiying",
   connector: "\\iff",
   label: "Simplifier des expressions avec $\\ln$",

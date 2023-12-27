@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   total: number;
   nbColorAsked: number;
@@ -23,10 +23,7 @@ type VEAProps = {
   nbColorAsked: number;
 };
 
-const getBallsBasicProbasQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getBallsBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
   const colors = ["rouge", "jaune", "verte"];
   const repartitions = [randint(1, 4), randint(1, 4), randint(1, 4)];
   const total = repartitions.reduce((acc, curr) => (acc += curr), 0);
@@ -35,7 +32,7 @@ const getBallsBasicProbasQuestion: QuestionGenerator<
   const nbColorAsked = repartitions[colorAskedIndex];
   const answer = new Rational(nbColorAsked, total).simplify().tex;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Dans un sac, il y a ${repartitions[0]} boules ${colors[0]}${
       repartitions[0] > 1 ? "s" : ""
@@ -47,13 +44,13 @@ const getBallsBasicProbasQuestion: QuestionGenerator<
     }. Quelle est la probabilité de tirer une boule ${colorAsked} ?`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, total, nbColorAsked },
+    identifiers: { answer, total, nbColorAsked },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, total, nbColorAsked },
 ) => {
@@ -72,7 +69,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { total, nbColorAsked }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { total, nbColorAsked }) => {
   const answer = new Rational(nbColorAsked, total)
     .simplify()
     .toTree({ allowFractionToDecimal: true });
@@ -80,7 +77,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { total, nbColorAsked }) => {
   return texs.includes(ans);
 };
 
-export const ballsBasicProbas: MathExercise<QCMProps, VEAProps> = {
+export const ballsBasicProbas: MathExercise<Identifiers> = {
   id: "ballsBasicProbas",
   connector: "=",
   label: "Calcul de probabilité simple avec des boules colorés",

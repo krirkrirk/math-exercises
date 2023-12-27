@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { randomLetter } from "#root/utils/randomLetter";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   A: number[];
   B: number[];
@@ -23,8 +23,7 @@ type VEAProps = {
 };
 
 const getVectorCoordinatesFromTwoPointsQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const A = [randint(-9, 9), randint(-9, 9)];
   const B = [randint(-9, 9), randint(-9, 9)];
@@ -36,18 +35,18 @@ const getVectorCoordinatesFromTwoPointsQuestion: QuestionGenerator<
 
   const answer = `\\left(${B[0] - A[0]};${B[1] - A[1]}\\right)`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Soit $${startLetter}\\left(${A[0]};${A[1]}\\right)$ et $${endLetter}\\left(${B[0]};${B[1]}\\right)$. Quelles sont les coordonnées du vecteur $\\overrightarrow{${startLetter}${endLetter}}$ ?`,
     keys: ["semicolon"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, A, B },
+    identifiers: { answer, A, B },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, A, B }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, A, B }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -73,21 +72,20 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, A, B }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const vectorCoordinatesFromTwoPoints: MathExercise<QCMProps, VEAProps> =
-  {
-    id: "vectorCoordinatesFromTwoPoints",
-    connector: "=",
-    label: "Déterminer les coordonnées d'un vecteur à partir de deux points",
-    levels: ["2nde"],
-    isSingleStep: true,
-    sections: ["Vecteurs"],
-    generator: (nb: number) =>
-      getDistinctQuestions(getVectorCoordinatesFromTwoPointsQuestion, nb),
-    qcmTimer: 60,
-    freeTimer: 60,
-    getPropositions,
-    isAnswerValid,
-  };
+export const vectorCoordinatesFromTwoPoints: MathExercise<Identifiers> = {
+  id: "vectorCoordinatesFromTwoPoints",
+  connector: "=",
+  label: "Déterminer les coordonnées d'un vecteur à partir de deux points",
+  levels: ["2nde"],
+  isSingleStep: true,
+  sections: ["Vecteurs"],
+  generator: (nb: number) =>
+    getDistinctQuestions(getVectorCoordinatesFromTwoPointsQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+  isAnswerValid,
+};

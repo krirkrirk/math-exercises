@@ -17,7 +17,7 @@ import {
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   randomUnitIndex: number;
   randomUnitInstructionIndex: number;
@@ -27,7 +27,7 @@ type VEAProps = {
   answer: string;
 };
 
-const getLengthConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getLengthConversion: QuestionGenerator<Identifiers> = () => {
   const units = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
 
   const randomUnitIndex = randint(0, 7);
@@ -38,7 +38,7 @@ const getLengthConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
       randomUnitIndex - randomUnitInstructionIndex,
     ).value + ""
   ).replace(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Compléter : $${randomLength.value
       .toString()
       .replace(".", ",")} \\textrm{${
@@ -47,7 +47,7 @@ const getLengthConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       randomLength: randomLength.value,
       randomUnitIndex,
@@ -58,7 +58,7 @@ const getLengthConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, randomLength, randomUnitIndex, randomUnitInstructionIndex },
 ) => {
@@ -78,11 +78,11 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const lengthConversion: MathExercise<QCMProps, VEAProps> = {
+export const lengthConversion: MathExercise<Identifiers> = {
   id: "lengthConversion",
   connector: "=",
   label: "Conversion de longueurs",

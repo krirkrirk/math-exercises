@@ -16,30 +16,24 @@ import {
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
-  answer: string;
-  rational: [number, number];
-  rational2: [number, number];
-};
-type VEAProps = {
+type Identifiers = {
   rational: [number, number];
   rational2: [number, number];
 };
 
-const getFractionsSum: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getFractionsSum: QuestionGenerator<Identifiers> = () => {
   const rational = RationalConstructor.randomIrreductible();
   const rational2 = RationalConstructor.randomIrreductible();
   const statementTree = new AddNode(rational.toTree(), rational2.toTree());
   const answerTree = rational.add(rational2).toTree();
   const answer = answerTree.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: {
-      answer,
+    identifiers: {
       rational: [rational.num, rational.denum],
       rational2: [rational2.num, rational2.denum],
     },
@@ -47,7 +41,7 @@ const getFractionsSum: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, rational, rational2 },
 ) => {
@@ -73,7 +67,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { rational, rational2 }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { rational, rational2 }) => {
   const rationalA = new Rational(rational[0], rational[1]);
   const rationalB = new Rational(rational2[0], rational2[1]);
 
@@ -85,7 +79,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { rational, rational2 }) => {
   return texs.includes(ans);
 };
 
-export const fractionsSum: MathExercise<QCMProps, VEAProps> = {
+export const fractionsSum: MathExercise<Identifiers> = {
   id: "fractionsSum",
   connector: "=",
   label: "Sommes de fractions",

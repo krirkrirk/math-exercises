@@ -11,25 +11,25 @@ import {
 } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps={}
 
-const get{{namePascal}}Question: QuestionGenerator<QCMProps, VEAProps>  = ()=>{
+const get{{namePascal}}Question: QuestionGenerator<Identifiers>  = ()=>{
  
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: ``,
     instruction: ``,
     keys: [],
     answerFormat: 'tex',
-    qcmGeneratorProps : {answer}
+    identifiers : {answer}
   };
 
   return question;
 }
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -37,7 +37,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   }
   return shuffleProps(propositions, n);
 };
-export const {{name}}: MathExercise<QCMProps, VEAProps> = {
+export const {{name}}: MathExercise<Identifiers> = {
   id: '{{name}}',
   connector: "",
   label: "",

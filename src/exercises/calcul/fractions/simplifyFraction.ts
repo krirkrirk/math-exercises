@@ -15,30 +15,27 @@ import {
 } from "#root/math/numbers/rationals/rational";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
-  answer: string;
-};
-type VEAProps = {
+type Identifiers = {
   num: number;
   denum: number;
 };
-const getSimplifyFraction: QuestionGenerator<QCMProps, VEAProps> = () => {
+
+const getSimplifyFraction: QuestionGenerator<Identifiers> = () => {
   const rational = RationalConstructor.randomSimplifiable(10);
   const rationalTex = rational.toTree().toTex();
   const answer = rational.simplify().toTree().toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Simplifier : $${rationalTex}$`,
     startStatement: rationalTex,
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
-    veaProps: { num: rational.num, denum: rational.denum },
+    identifiers: { num: rational.num, denum: rational.denum },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -52,7 +49,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { num, denum }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { num, denum }) => {
   const rational = new Rational(num, denum);
 
   const answerTree = rational
@@ -64,7 +61,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { num, denum }) => {
   return texs.includes(ans);
 };
 
-export const simplifyFraction: MathExercise<QCMProps, VEAProps> = {
+export const simplifyFraction: MathExercise<Identifiers> = {
   id: "simplifyFrac",
   connector: "=",
   label: "Simplification de fractions",

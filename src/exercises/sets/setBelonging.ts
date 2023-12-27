@@ -15,14 +15,14 @@ import { randint } from "#root/math/utils/random/randint";
 import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getSetBelongingQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getSetBelongingQuestion: QuestionGenerator<Identifiers> = () => {
   //N Z D Q R (racine2, pi)
   //fraction simplifiable en décimal/entier
   //racine carrée simplifiable en entier / Fraction
@@ -53,7 +53,7 @@ const getSetBelongingQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
       break;
   }
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Donner le plus petit ensemble auquel le nombre $${nb}$ appartient.`,
     keys: [
@@ -65,13 +65,13 @@ const getSetBelongingQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
       "reals",
     ],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   const availableSets = ["N", "Z", "D", "Q", "R"]
     .map((el) => `\\mathbb{${el}}`)
@@ -87,11 +87,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return [answer, answer.replace("mathbb", "mathrm")].includes(ans);
 };
 
-export const setBelonging: MathExercise<QCMProps, VEAProps> = {
+export const setBelonging: MathExercise<Identifiers> = {
   id: "setBelonging",
   connector: "\\iff",
   label: "Déterminer le plus petit ensemble auquel un nombre appartient",

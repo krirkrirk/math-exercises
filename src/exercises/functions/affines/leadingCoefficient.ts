@@ -18,7 +18,7 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 import { evaluate } from "mathjs";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   xA: number;
   yA: number;
@@ -32,10 +32,7 @@ type VEAProps = {
   yB: number;
 };
 
-const getLeadingCoefficientQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getLeadingCoefficientQuestion: QuestionGenerator<Identifiers> = () => {
   let xA, yA, xB, yB: number;
   let pointA, pointB: Point;
 
@@ -72,7 +69,7 @@ const getLeadingCoefficientQuestion: QuestionGenerator<
   }
 
   const answer = droite.getLeadingCoefficient();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction:
       "Déterminer le coefficient directeur de la droite représentée ci-dessous : ",
     answer,
@@ -80,13 +77,13 @@ const getLeadingCoefficientQuestion: QuestionGenerator<
     commands: [`f(x) = (${a}) * x + (${b})`],
     coords: [xmin, xmax, ymin, ymax],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, xA, xB, yA, yB },
+    identifiers: { answer, xA, xB, yA, yB },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, xA, xB, yA, yB },
 ) => {
@@ -109,7 +106,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { xA, xB, yA, yB }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { xA, xB, yA, yB }) => {
   const leadingCoeff = new Rational(yB - yA, xB - xA)
     .simplify()
     .toTree({ allowFractionToDecimal: true });
@@ -117,7 +114,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { xA, xB, yA, yB }) => {
   return texs.includes(ans);
 };
 
-export const leadingCoefficient: MathExercise<QCMProps, VEAProps> = {
+export const leadingCoefficient: MathExercise<Identifiers> = {
   id: "leadingCoefficient",
   connector: "=",
   label: "Lire le coefficient directeur",

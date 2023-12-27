@@ -22,7 +22,7 @@ import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   k: number;
@@ -32,7 +32,7 @@ type VEAProps = {
   k: number;
 };
 
-const getExpEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getExpEquation: QuestionGenerator<Identifiers> = () => {
   const a = randint(-9, 20, [0]);
   const k = a > 0 ? randint(1, 20) : randint(-20, 0);
 
@@ -44,7 +44,7 @@ const getExpEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
     new DiscreteSetNode([new LogNode(new Rational(k, a).simplify().toTree())]),
   ).toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Résoudre l'équation $${equation.toTex()}$.`,
     answer: answer,
     keys: [
@@ -59,13 +59,13 @@ const getExpEquation: QuestionGenerator<QCMProps, VEAProps> = () => {
       "rbrace",
     ],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, k },
+    identifiers: { answer, a, k },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -84,7 +84,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, k }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, k }) => {
   const answer = new EquationSolutionNode(
     new DiscreteSetNode(
       [
@@ -102,7 +102,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, k }) => {
   return texs.includes(ans);
 };
 
-export const expEquation: MathExercise<QCMProps, VEAProps> = {
+export const expEquation: MathExercise<Identifiers> = {
   id: "expEquation",
   connector: "=",
   label: "Résoudre des équations de type $a \\times \\exp(x) = k$",

@@ -14,9 +14,8 @@ import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
-import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   roots: number[];
   xValue: number;
@@ -24,12 +23,12 @@ type QCMProps = {
 };
 type VEAProps = {
   answer: string;
+  roots: number[];
+  xValue: number;
+  polynome1Coeffs: number[];
 };
 
-const getInverseImageFunctionGeogebra: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getInverseImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
   const rand = coinFlip();
   const xValue = randint(-5, 6);
   const yValue = randint(-5, 6);
@@ -153,14 +152,14 @@ const getInverseImageFunctionGeogebra: QuestionGenerator<
   ];
 
   answer = (answer + "").replaceAll(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: statement,
     answer,
     keys: ["S", "equal", "lbrace", "rbrace", "semicolon", "emptyset"],
     commands,
     coords: [xmin, xmax, ymin, ymax],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       roots,
       xValue,
@@ -170,7 +169,7 @@ const getInverseImageFunctionGeogebra: QuestionGenerator<
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, roots, xValue, polynome1Coeffs },
 ) => {
@@ -190,10 +189,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const inverseImageFunctionGeogebra: MathExercise<QCMProps, VEAProps> = {
+export const inverseImageFunctionGeogebra: MathExercise<Identifiers> = {
   id: "inverseImageFunctionGeogebra",
   connector: "\\iff",
   label: "Lecture d'antécédents",

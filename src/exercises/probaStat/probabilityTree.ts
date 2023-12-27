@@ -25,7 +25,7 @@ type GetAnswerNodeProps = {
   BD: number;
 };
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 } & GetAnswerNodeProps;
 
@@ -51,7 +51,7 @@ const getAnswerNode = ({ type, A, B, AC, AD, BC, BD }: GetAnswerNodeProps) => {
   }
 };
 
-const getProbabilityTree: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getProbabilityTree: QuestionGenerator<Identifiers> = () => {
   const A = randint(2, 9);
   const B = randint(2, 10 - A);
   const AC = randint(2, 9);
@@ -129,7 +129,7 @@ const getProbabilityTree: QuestionGenerator<QCMProps, VEAProps> = () => {
     'Text("D", (5.5 , -3.1))',
   ];
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction,
     startStatement,
     answer: answerTex,
@@ -137,13 +137,13 @@ const getProbabilityTree: QuestionGenerator<QCMProps, VEAProps> = () => {
     commands,
     coords: [-2, 8, -5, 5],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer: answerTex, A, AC, AD, B, BC, BD, type },
+    identifiers: { answer: answerTex, A, AC, AD, B, BC, BD, type },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, A, AC, AD, B, BC, BD, type },
 ) => {
@@ -158,14 +158,17 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { A, AC, AD, B, BC, BD, type }) => {
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { A, AC, AD, B, BC, BD, type },
+) => {
   const answer = getAnswerNode({ type, A, AC, AD, B, BC, BD });
   const texs = answer.toTree({ allowFractionToDecimal: true }).toAllValidTexs();
   console.log(texs);
   return texs.includes(ans);
 };
 
-export const probabilityTree: MathExercise<QCMProps, VEAProps> = {
+export const probabilityTree: MathExercise<Identifiers> = {
   id: "probabilityTree",
   connector: "=",
   label: "Calculs de probabilités à l'aide d'un arbre pondéré",

@@ -20,7 +20,7 @@ import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   numCoeffs: number[];
   denumCoeffs: number[];
@@ -31,8 +31,7 @@ type VEAProps = {
 };
 
 const getSequenceRationalFracLimitQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const polyNum = PolynomialConstructor.random(4, "n");
   const polyDenum = PolynomialConstructor.random(4, "n");
@@ -58,14 +57,14 @@ const getSequenceRationalFracLimitQuestion: QuestionGenerator<
     answer = tempPoly.getLimit(to);
   }
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Déterminer la limite de la suite $u$ définie par : $u_n = \\dfrac{${polyNum
       .toTree()
       .toTex()}}{${polyDenum.toTree().toTex()}}$.`,
     keys: ["infty"],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       numCoeffs: polyNum.coefficients,
       denumCoeffs: polyDenum.coefficients,
@@ -75,7 +74,7 @@ const getSequenceRationalFracLimitQuestion: QuestionGenerator<
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, numCoeffs, denumCoeffs },
 ) => {
@@ -103,7 +102,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { denumCoeffs, numCoeffs }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { denumCoeffs, numCoeffs }) => {
   const numDegree = numCoeffs.length - 1;
   const denumDegree = denumCoeffs.length - 1;
   const numLeadingCoeff = numCoeffs[numDegree];
@@ -129,7 +128,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { denumCoeffs, numCoeffs }) => {
   return texs.includes(ans);
 };
 
-export const sequenceRationalFracLimit: MathExercise<QCMProps, VEAProps> = {
+export const sequenceRationalFracLimit: MathExercise<Identifiers> = {
   id: "sequenceRationalFracLimit",
   connector: "=",
   label: "Limite d'une suite rationnelle",

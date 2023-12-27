@@ -13,14 +13,14 @@ import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getInverseImageFunction: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getInverseImageFunction: QuestionGenerator<Identifiers> = () => {
   const polynome1 = new Polynomial([randint(-9, 10), randint(-5, 6, [0])]);
   const xValue = randint(-9, 10);
 
@@ -29,18 +29,18 @@ const getInverseImageFunction: QuestionGenerator<QCMProps, VEAProps> = () => {
     .toTree()
     .toTex()}$. Déterminer le ou les antécédents de $${image}$ par $f$.`;
   const answer = "x=" + xValue;
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: statement,
     startStatement: `f(x) = ${image}`,
     answer,
     keys: ["x", "equal"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const xValue = Number(answer.split("=")[1]);
@@ -51,11 +51,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return [answer, answer.split("=")[1]].includes(ans);
 };
 
-export const inverseImageFunction: MathExercise<QCMProps, VEAProps> = {
+export const inverseImageFunction: MathExercise<Identifiers> = {
   id: "inverseImageFunction",
   connector: "\\iff",
   getPropositions,

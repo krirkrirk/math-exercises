@@ -12,7 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   final: number;
 };
@@ -20,24 +20,21 @@ type VEAProps = {
   answer: string;
 };
 
-const getFirstIntegersSumQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getFirstIntegersSumQuestion: QuestionGenerator<Identifiers> = () => {
   const final = randint(20, 100);
   const answer = `${(final * (final + 1)) / 2}`;
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Calculer la somme suivante : $1+2+3+\\ldots + ${final}$`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, final },
+    identifiers: { answer, final },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, final }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, final }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   tryToAddWrongProp(propositions, `${(final * (final - 1)) / 2}`);
@@ -50,11 +47,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, final }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const firstIntegersSum: MathExercise<QCMProps, VEAProps> = {
+export const firstIntegersSum: MathExercise<Identifiers> = {
   id: "firstIntegersSum",
   connector: "=",
   label: "Somme des $n$ premiers entiers",

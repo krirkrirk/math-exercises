@@ -14,14 +14,14 @@ import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getEvaluateExpression: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getEvaluateExpression: QuestionGenerator<Identifiers> = () => {
   const rand = coinFlip();
   const polynome1 = new Polynomial([randint(-9, 10), randint(-5, 6, [0])]);
   const polynome2 = new Polynomial([
@@ -39,16 +39,16 @@ const getEvaluateExpression: QuestionGenerator<QCMProps, VEAProps> = () => {
     ? polynome1.calculate(xValue) + ""
     : polynome2.calculate(xValue) + "";
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: statement,
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -61,11 +61,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const evaluateExpression: MathExercise<QCMProps, VEAProps> = {
+export const evaluateExpression: MathExercise<Identifiers> = {
   id: "evaluateExpression",
   connector: "=",
   label: "Evaluer une expression",

@@ -15,21 +15,21 @@ import {
 } from "#root/math/sets/intervals/intervals";
 import { shuffle } from "#root/utils/shuffle";
 
-const getIntervalsUnionQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getIntervalsUnionQuestion: QuestionGenerator<Identifiers> = () => {
   const [int1, int2] = IntervalConstructor.differentRandoms(2);
   const set = int1.union(int2);
   const answer = set.tex;
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Soit $I = ${int1.tex}$ et $J = ${int2.tex}$. Déterminer $I\\cup J$.`,
     keys: ["infty", "lbracket", "rbracket", "semicolon", "cup", "cap"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, int1Tex: int1.tex, int2Tex: int2.tex },
+    identifiers: { answer, int1Tex: int1.tex, int2Tex: int2.tex },
   };
 
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, int1Tex, int2Tex },
 ) => {
@@ -47,7 +47,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   int1Tex: string;
   int2Tex: string;
@@ -59,11 +59,11 @@ type VEAProps = {
   int2Tex: string;
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const intervalsUnion: MathExercise<QCMProps, VEAProps> = {
+export const intervalsUnion: MathExercise<Identifiers> = {
   id: "intervalsUnion",
   connector: "=",
   label: "Déterminer l'union de deux intervalles",

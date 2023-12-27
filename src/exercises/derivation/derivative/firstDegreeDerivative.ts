@@ -12,7 +12,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -20,26 +20,23 @@ type QCMProps = {
 type VEAProps = {
   answer: string;
 };
-export const getFirstDegreeDerivative: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+export const getFirstDegreeDerivative: QuestionGenerator<Identifiers> = () => {
   const [a, b] = [randint(-9, 10, [0]), randint(-9, 10)];
   const polynomial = new Polynomial([b, a]);
   const answer = a + "";
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
     startStatement: `f'(x)`,
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b },
+    identifiers: { answer, a, b },
   };
 
   return question;
 };
 
-export const getFirstDegreeDerivativePropositions: QCMGenerator<QCMProps> = (
+export const getFirstDegreeDerivativePropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, a, b },
 ) => {
@@ -58,14 +55,14 @@ export const getFirstDegreeDerivativePropositions: QCMGenerator<QCMProps> = (
 
   return shuffleProps(propositions, n);
 };
-export const isFirstDegreeDerivativeAnswerValid: VEA<VEAProps> = (
+export const isFirstDegreeDerivativeAnswerValid: VEA<Identifiers> = (
   ans,
   { answer },
 ) => {
   return ans === answer;
 };
 
-export const firstDegreeDerivative: MathExercise<QCMProps, VEAProps> = {
+export const firstDegreeDerivative: MathExercise<Identifiers> = {
   id: "firstDegreeDerivative",
   connector: "=",
   label: "Dérivée d'une fonction affine",

@@ -13,7 +13,7 @@ import { PolynomialConstructor } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   coeffs: number[];
 };
@@ -22,8 +22,7 @@ type VEAProps = {
 };
 
 const getSequencePolynomNoFILimitQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const length = randint(2, 5);
   const poly = PolynomialConstructor.randomWithLengthAndSameSigns(
@@ -34,20 +33,20 @@ const getSequencePolynomNoFILimitQuestion: QuestionGenerator<
   const to = "+\\infty";
   const answer = poly.getLimit(to);
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Déterminer la limite de la suite $u$ définie par : $u_n = ${poly
       .toTree()
       .toTex()}$.`,
     keys: ["infty"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, coeffs: poly.coefficients },
+    identifiers: { answer, coeffs: poly.coefficients },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, coeffs }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, coeffs }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -62,10 +61,10 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, coeffs }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const sequencePolynomNoFILimit: MathExercise<QCMProps, VEAProps> = {
+export const sequencePolynomNoFILimit: MathExercise<Identifiers> = {
   id: "sequencePolynomNoFILimit",
   connector: "=",
   label: "Limite d'une suite polynomiale (sans F.I.)",

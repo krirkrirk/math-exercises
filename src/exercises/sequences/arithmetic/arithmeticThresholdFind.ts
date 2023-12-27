@@ -13,7 +13,7 @@ import {
 } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   firstValue: number;
   reason: number;
@@ -23,10 +23,7 @@ type VEAProps = {
   answer: string;
 };
 
-const getArithmeticThresholdFind: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getArithmeticThresholdFind: QuestionGenerator<Identifiers> = () => {
   const firstValue = randint(-10, 10);
   const reason = randint(-10, 10, [0]);
   let randValue = firstValue;
@@ -44,19 +41,19 @@ const getArithmeticThresholdFind: QuestionGenerator<
   }
   const answer = (Math.floor((randValue - firstValue) / reason) + 1).toString();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction,
     startStatement: `n`,
     answer,
     keys: ["r", "n", "u", "underscore", "inf", "sup", "approx"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, randValue, firstValue, reason },
+    identifiers: { answer, randValue, firstValue, reason },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, randValue, firstValue, reason },
 ) => {
@@ -74,10 +71,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const arithmeticThresholdFind: MathExercise<QCMProps, VEAProps> = {
+export const arithmeticThresholdFind: MathExercise<Identifiers> = {
   id: "arithmeticThresholdFind",
   connector: "=",
   label: "Calculer un seuil à l'aide d'une suite arithmétique",

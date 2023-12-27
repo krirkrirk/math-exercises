@@ -13,7 +13,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   reason: number;
   startValue: number;
@@ -22,24 +22,24 @@ type VEAProps = {
   answer: string;
 };
 
-const getGeometricReasonUsage: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getGeometricReasonUsage: QuestionGenerator<Identifiers> = () => {
   const reason = randint(2, 10);
   const startRank = randint(0, 20);
   const askedRank = startRank + 1;
   const startValue = randint(1, 10);
   const answer = (startValue * reason).toString();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `$(u_n)$ est une suite géométrique de raison $q = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer,
     keys: ["q", "n", "u", "underscore"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, startValue, reason },
+    identifiers: { answer, startValue, reason },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, startValue, reason },
 ) => {
@@ -58,11 +58,11 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const geometricReasonUsage: MathExercise<QCMProps, VEAProps> = {
+export const geometricReasonUsage: MathExercise<Identifiers> = {
   id: "geometricReasonUsage",
   connector: "=",
   label: "Utiliser la raison d'une suite géométrique",

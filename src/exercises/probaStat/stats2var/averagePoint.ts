@@ -22,7 +22,7 @@ import { PointNode } from "#root/tree/nodes/geometry/pointNode";
 import { average } from "#root/utils/average";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   xValues: number[];
   yValues: number[];
@@ -32,7 +32,7 @@ type VEAProps = {
   yValues: number[];
 };
 
-const getAveragePointQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getAveragePointQuestion: QuestionGenerator<Identifiers> = () => {
   const points = distinctRandTupleInt(4, 2, { from: -9, to: 10 });
   const sortedPoints = points.sort((a, b) => a[0] - b[0]);
   const tab = `
@@ -48,12 +48,12 @@ const getAveragePointQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   const xG = frenchify(average(sortedPoints.map((el) => el[0])) + "");
   const yG = frenchify(average(sortedPoints.map((el) => el[1])) + "");
   const answer = `\\left(${xG};${yG}\\right)`;
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction,
     keys: ["semicolon"],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       xValues: sortedPoints.map((el) => el[0]),
       yValues: sortedPoints.map((el) => el[1]),
@@ -63,7 +63,7 @@ const getAveragePointQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -76,7 +76,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { xValues, yValues }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { xValues, yValues }) => {
   const x = new Rational(
     xValues.reduce((acc, curr) => acc + curr),
     xValues.length,
@@ -94,7 +94,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { xValues, yValues }) => {
   return texs.includes(ans);
 };
 
-export const averagePoint: MathExercise<QCMProps, VEAProps> = {
+export const averagePoint: MathExercise<Identifiers> = {
   id: "averagePoint",
   connector: "=",
   label: "Déterminer le point moyen",

@@ -17,7 +17,7 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -26,7 +26,7 @@ type VEAProps = {
   a: number;
 };
 
-const getExpDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getExpDerivative: QuestionGenerator<Identifiers> = () => {
   const a = randint(-9, 10, [0]);
   const b = randint(-9, 10);
 
@@ -39,19 +39,19 @@ const getExpDerivative: QuestionGenerator<QCMProps, VEAProps> = () => {
     new ExpNode(new VariableNode("x")),
   );
   const answer = derivative.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la dérivée de la fonction $f(x) = ${myfunction.toTex()}$.`,
     startStatement: "f'(x)",
     answer,
     keys: ["x", "epower", "exp"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b },
+    identifiers: { answer, a, b },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -75,7 +75,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a }) => {
   const derivative = new MultiplyNode(
     new NumberNode(a),
     new ExpNode(new VariableNode("x")),
@@ -84,7 +84,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a }) => {
   return texs.includes(ans);
 };
 
-export const expDerivativeTwo: MathExercise<QCMProps, VEAProps> = {
+export const expDerivativeTwo: MathExercise<Identifiers> = {
   id: "expDerivativeTwo",
   connector: "=",
   label: "Dérivée de $a \\times \\exp(x) + b$",

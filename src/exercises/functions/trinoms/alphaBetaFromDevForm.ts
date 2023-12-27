@@ -14,24 +14,21 @@ import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getAlphaBetaFromDevFormQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getAlphaBetaFromDevFormQuestion: QuestionGenerator<Identifiers> = () => {
   const trinom = TrinomConstructor.randomCanonical();
   const param = coinFlip() ? "\\alpha" : "\\beta";
   const alphaTex = trinom.getAlphaNode().toTex();
   const betaTex = trinom.getBetaNode().toTex();
   const answer = param === "\\alpha" ? alphaTex : betaTex;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     keys: ["x", "alpha", "beta"],
     instruction: `Soit $f$ la fonction définie par $f(x) = ${trinom
@@ -39,13 +36,13 @@ const getAlphaBetaFromDevFormQuestion: QuestionGenerator<
       .toTex()}$. Que vaut $${param}$ ?`,
     answerFormat: "tex",
     startStatement: param,
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -55,11 +52,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const alphaBetaFromDevForm: MathExercise<QCMProps, VEAProps> = {
+export const alphaBetaFromDevForm: MathExercise<Identifiers> = {
   id: "alphaBetaFromDevForm",
   connector: "=",
   label: "Déterminer $\\alpha$ ou $\\beta$ à partir de la forme développée",

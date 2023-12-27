@@ -17,7 +17,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { ClosureType, IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -30,8 +30,7 @@ type VEAProps = {
 };
 
 const getAbsoluteValueInequationsQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const poly = new Polynomial([randint(-9, 10, [0]), 1]);
   const a = randint(1, 10);
@@ -40,7 +39,7 @@ const getAbsoluteValueInequationsQuestion: QuestionGenerator<
   const isStrict = coinFlip();
   const answer = isStrict ? `S=]${b - a};${b + a}[` : `S=[${b - a};${b + a}]`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Résoudre l'inéquation $|${poly.toTree().toTex()}|${
       isStrict ? "<" : "\\le"
@@ -59,13 +58,13 @@ const getAbsoluteValueInequationsQuestion: QuestionGenerator<
       "inf",
     ],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b, isStrict },
+    identifiers: { answer, a, b, isStrict },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   tryToAddWrongProp(propositions, `S=]${b - a};${b + a}[`);
@@ -78,7 +77,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, isStrict }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, isStrict }) => {
   const answer = new InequationSolutionNode(
     new IntervalNode(
       new NumberNode(b - a),
@@ -91,7 +90,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, isStrict }) => {
   return texs.includes(ans);
 };
 
-export const absoluteValueInequations: MathExercise<QCMProps, VEAProps> = {
+export const absoluteValueInequations: MathExercise<Identifiers> = {
   id: "absoluteValueInequations",
   connector: "\\iff",
   label: "Résoudre une inéquation avec valeur absolue",

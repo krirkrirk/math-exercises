@@ -16,32 +16,29 @@ import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   tex: string;
 };
 type VEAProps = {};
 
-export const getConstanteDerivative: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+export const getConstanteDerivative: QuestionGenerator<Identifiers> = () => {
   const c = NombreConstructor.random();
   const tex = c.toTree().toTex();
   const answer = "0";
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${tex}$.`,
     startStatement: `f'(x)`,
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, tex },
+    identifiers: { answer, tex },
   };
 
   return question;
 };
 
-export const getConstanteDerivativePropositions: QCMGenerator<QCMProps> = (
+export const getConstanteDerivativePropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, tex },
 ) => {
@@ -61,11 +58,11 @@ export const getConstanteDerivativePropositions: QCMGenerator<QCMProps> = (
 
   return shuffleProps(propositions, n);
 };
-export const isConstanteDerivativeAnswerValid: VEA<VEAProps> = (ans, {}) => {
+export const isConstanteDerivativeAnswerValid: VEA<Identifiers> = (ans, {}) => {
   return ans === "0";
 };
 
-export const constanteDerivative: MathExercise<QCMProps, VEAProps> = {
+export const constanteDerivative: MathExercise<Identifiers> = {
   id: "constanteDerivative",
   connector: "=",
   label: "Dérivée d'une constante",

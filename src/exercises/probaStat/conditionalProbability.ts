@@ -12,14 +12,14 @@ import {
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { round } from "#root/math/utils/round";
 import { shuffle } from "#root/utils/shuffle";
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getConditionalProbability: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getConditionalProbability: QuestionGenerator<Identifiers> = () => {
   const pA = randint(2, 100);
   const pB = randint(2, 100);
   const pAB = randint(1, Math.min(pA, pB));
@@ -107,19 +107,19 @@ const getConditionalProbability: QuestionGenerator<QCMProps, VEAProps> = () => {
     }
   }
   answer = answer.replace(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction,
     startStatement,
     answer,
     keys: ["p", "cap", "underscore"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -132,11 +132,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const conditionalProbability: MathExercise<QCMProps, VEAProps> = {
+export const conditionalProbability: MathExercise<Identifiers> = {
   id: "conditionalProbability",
   connector: "=",
   label: "Calcul de probabilité conditionnelle avec la formule de Bayes",

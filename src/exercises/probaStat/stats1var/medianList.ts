@@ -14,7 +14,7 @@ import {
 } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   sortedValues: number[];
 };
@@ -22,7 +22,7 @@ type VEAProps = {
   answer: string;
 };
 
-const getMedianList: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getMedianList: QuestionGenerator<Identifiers> = () => {
   let randomValeurs: number[] = [];
   const length = randint(6, 10);
 
@@ -40,7 +40,7 @@ const getMedianList: QuestionGenerator<QCMProps, VEAProps> = () => {
     median = sortedValues[middleIndex];
   }
   const answer = (median + "").replace(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `On considère la liste suivante : $${randomValeurs.join(
       ";\\ ",
     )}.$
@@ -48,13 +48,13 @@ const getMedianList: QuestionGenerator<QCMProps, VEAProps> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, sortedValues },
+    identifiers: { answer, sortedValues },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, sortedValues },
 ) => {
@@ -70,11 +70,11 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const medianWithList: MathExercise<QCMProps, VEAProps> = {
+export const medianWithList: MathExercise<Identifiers> = {
   id: "medianWithList",
   connector: "=",
   label: "Calcul de la médiane d'une liste de valeurs",

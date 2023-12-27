@@ -68,6 +68,7 @@ export class SquareRoot extends Real {
   }
 
   isSimplifiable() {
+    if (this.operand === 0 || this.operand === 1) return true;
     const [a, b] = this.getSimplifiedCoeffs();
     return a !== 1;
   }
@@ -91,6 +92,7 @@ export class SquareRoot extends Real {
   }
   simplify(): Nombre {
     if (this.operand === 0) return new Integer(0);
+    if (this.operand === 1) return new Integer(1);
     const [outsideSqrt, insideSqrt] = this.getSimplifiedCoeffs();
 
     const simplified =

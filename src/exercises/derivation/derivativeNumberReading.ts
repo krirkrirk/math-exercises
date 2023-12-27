@@ -21,7 +21,7 @@ import { shuffle } from "#root/utils/shuffle";
 import { evaluate } from "mathjs";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   A: number[];
   B: number[];
@@ -31,10 +31,7 @@ type VEAProps = {
   B: number[];
 };
 
-const getDerivativeNumberReading: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getDerivativeNumberReading: QuestionGenerator<Identifiers> = () => {
   let xA, yA, xB, yB: number;
   let pointA, pointB: Point;
 
@@ -65,7 +62,7 @@ const getDerivativeNumberReading: QuestionGenerator<
   ];
 
   const answer = droite.getLeadingCoefficient();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction,
     startStatement: "a",
     answer,
@@ -73,13 +70,13 @@ const getDerivativeNumberReading: QuestionGenerator<
     coords: [xA - 5, xA + 5, yA - 5, yA + 5],
     answerFormat: "tex",
     keys: [],
-    qcmGeneratorProps: { answer, A: [xA, yA], B: [xB, yB] },
+    identifiers: { answer, A: [xA, yA], B: [xB, yB] },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, A, B }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, A, B }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -101,7 +98,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, A, B }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { A, B }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { A, B }) => {
   const answer = new Rational(B[1] - A[1], B[0] - A[0])
     .simplify()
     .toTree({ allowFractionToDecimal: true });
@@ -110,7 +107,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { A, B }) => {
   return texs.includes(ans);
 };
 
-export const derivativeNumberReading: MathExercise<QCMProps, VEAProps> = {
+export const derivativeNumberReading: MathExercise<Identifiers> = {
   id: "derivativeNumberReading",
   connector: "=",
   label: "Lecture de nombre dérivé",

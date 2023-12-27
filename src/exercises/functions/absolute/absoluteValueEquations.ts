@@ -18,7 +18,7 @@ import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { probaFlip } from "#root/utils/probaFlip";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -29,8 +29,7 @@ type VEAProps = {
 };
 
 const getAbsoluteValueEquationsQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const poly = new Polynomial([randint(-9, 10, [0]), 1]);
   const a = probaFlip(0.9) ? randint(1, 10) : coinFlip() ? 0 : randint(-9, 0);
@@ -43,18 +42,18 @@ const getAbsoluteValueEquationsQuestion: QuestionGenerator<
       ? `S=\\emptyset`
       : `S=\\left\\{${b - a};${b + a}\\right\\}`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Résoudre l'équation $|${poly.toTree().toTex()}| = ${a}$.`,
     keys: ["S", "equal", "emptyset", "lbrace", "semicolon", "rbrace"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, b },
+    identifiers: { answer, a, b },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -79,7 +78,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   const sols =
     a === 0
       ? [new NumberNode(b)]
@@ -91,7 +90,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
   return texs.includes(ans);
 };
 
-export const absoluteValueEquations: MathExercise<QCMProps, VEAProps> = {
+export const absoluteValueEquations: MathExercise<Identifiers> = {
   id: "absoluteValueEquation",
   connector: "\\iff",
   label: "Résoudre une équation avec valeur absolue",

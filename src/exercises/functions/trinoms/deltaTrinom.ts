@@ -12,7 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -26,24 +26,24 @@ type VEAProps = {
   c: number;
 };
 
-const getDeltaTrinomQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getDeltaTrinomQuestion: QuestionGenerator<Identifiers> = () => {
   const trinom = TrinomConstructor.random();
   const answer = trinom.getDelta() + "";
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Soit $f(x) = ${trinom
       .toTree()
       .toTex()}$. Calculer le discriminant $\\Delta$.`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
+    identifiers: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const bMinus4ac = b - 4 * a * c;
@@ -59,12 +59,12 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
   const delta = b ** 2 - 4 * a * c;
   return ans === delta.toString();
 };
 
-export const deltaTrinom: MathExercise<QCMProps, VEAProps> = {
+export const deltaTrinom: MathExercise<Identifiers> = {
   id: "deltaTrinom",
   connector: "=",
   getPropositions,

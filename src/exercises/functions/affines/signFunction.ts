@@ -21,7 +21,7 @@ import { ClosureType, IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -32,7 +32,7 @@ type VEAProps = {
   b: number;
   askingPositive: boolean;
 };
-const getSignFunction: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getSignFunction: QuestionGenerator<Identifiers> = () => {
   const a = randint(-9, 10, [0]);
   const b = randint(-9, 10);
   const affine = new Polynomial([b, a]);
@@ -59,18 +59,18 @@ const getSignFunction: QuestionGenerator<QCMProps, VEAProps> = () => {
     answer = a > 0 ? toLeftInfInteral : toRightInfInterval;
   }
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction,
     startStatement: "S",
     answer,
     keys: ["S", "equal", "lbracket", "rbracket", "semicolon", "infty"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a, askingPositive, b },
+    identifiers: { answer, a, askingPositive, b },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -95,7 +95,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, askingPositive }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, askingPositive }) => {
   const root = new Rational(-b, a)
     .simplify()
     .toTree({ allowFractionToDecimal: true });
@@ -119,7 +119,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, askingPositive }) => {
   return texs.includes(ans);
 };
 
-export const signFunction: MathExercise<QCMProps, VEAProps> = {
+export const signFunction: MathExercise<Identifiers> = {
   id: "signFunction",
   connector: "=",
   label: "Signe d'une fonction affine",

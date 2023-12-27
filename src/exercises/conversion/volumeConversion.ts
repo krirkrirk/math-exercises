@@ -16,7 +16,7 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   randomUnitIndex: number;
   randomUnitInstructionIndex: number;
@@ -25,7 +25,7 @@ type QCMProps = {
 type VEAProps = {
   answer: string;
 };
-const getVolumeConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getVolumeConversion: QuestionGenerator<Identifiers> = () => {
   const units = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
 
   const randomUnitIndex = randint(0, 7);
@@ -41,7 +41,7 @@ const getVolumeConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
       3 * (randomUnitIndex - randomUnitInstructionIndex),
     ).value + ""
   ).replace(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Compléter : $${randomVolume.value
       .toString()
       .replace(".", ",")} \\textrm{${
@@ -50,7 +50,7 @@ const getVolumeConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       randomUnitIndex,
       randomUnitInstructionIndex,
@@ -61,7 +61,7 @@ const getVolumeConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, randomUnitIndex, randomUnitInstructionIndex, randomVolume },
 ) => {
@@ -81,11 +81,11 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const volumeConversion: MathExercise<QCMProps, VEAProps> = {
+export const volumeConversion: MathExercise<Identifiers> = {
   id: "volumeConversion",
   connector: "=",
   label: "Conversion de volumes",

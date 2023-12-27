@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { RationalFrac } from "./math/polynomials/rationalFrac";
 import { Polynomial } from "./math/polynomials/polynomial";
+import { exponentialPrimitive } from "./exercises/primitive/exponentialPrimitive";
+import { expUPrimitive } from "./exercises/primitive/expUPrimitive";
 const jsonParser = bodyParser.json();
 
 const allExercises = [...exercises];
@@ -16,7 +18,14 @@ const runServer = () => {
   console.log(
     exercises.filter((exo) => !exo.isAnswerValid).map((exo) => exo.id),
   );
-
+  exercises.forEach((exo, index) => console.log(exo.id, index));
+  const exo = expUPrimitive;
+  const q = exo.generator(10);
+  const props = q.flatMap((question) =>
+    exo.getPropositions!(4, question.identifiers!),
+  );
+  console.log(exo.isAnswerValid!(q[0].answer, q[0].identifiers!));
+  console.log(props);
   // console.log(mul.toAllValidTexs());
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
@@ -48,7 +57,7 @@ const runServer = () => {
     const populatedQuestions = questions?.map((q) => {
       return {
         ...q,
-        propositions: exo.getPropositions?.(4, q.qcmGeneratorProps),
+        propositions: exo.getPropositions?.(4, q.identifiers),
       };
     });
     res.json({

@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   rank: number;
   u0: number;
@@ -24,8 +24,7 @@ type VEAProps = {
 };
 
 const getRecurrenceFormulaUsageQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const coeffs = [randint(-5, 6), randint(-5, 6), randint(-3, 4, [0])];
   const u = new Polynomial(coeffs, "u_n");
@@ -37,20 +36,20 @@ const getRecurrenceFormulaUsageQuestion: QuestionGenerator<
   }
   const answer = currentValue + "";
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Soit $u$ la suite définie par $u_0 = ${u0}$ et pour tout $n\\geq 1$, $u_{n+1} = ${u
       .toTree()
       .toTex()}$. Calculer $u_${rank}$.`,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, rank, u0, coeffs },
+    identifiers: { answer, rank, u0, coeffs },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n: number,
   { answer, rank, u0, coeffs },
 ) => {
@@ -65,10 +64,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
 
   return shuffleProps(propositions, n);
 };
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const recurrenceFormulaUsage: MathExercise<QCMProps, VEAProps> = {
+export const recurrenceFormulaUsage: MathExercise<Identifiers> = {
   id: "recurrenceFormulaUsage",
   connector: "=",
   label: "Utiliser la formule de récurrence d'une suite",

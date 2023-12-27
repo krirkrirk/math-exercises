@@ -16,7 +16,7 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   randomUnitIndex: number;
   randomUnitInstructionIndex: number;
@@ -25,7 +25,7 @@ type QCMProps = {
 type VEAProps = {
   answer: string;
 };
-const getAeraConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getAeraConversion: QuestionGenerator<Identifiers> = () => {
   const units = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
 
   const randomUnitIndex = randint(0, 7);
@@ -41,7 +41,7 @@ const getAeraConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
       2 * (randomUnitIndex - randomUnitInstructionIndex),
     ).value + ""
   ).replace(".", ",");
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Compléter : $${randomAera.value
       .toString()
       .replace(".", ",")} \\textrm{${
@@ -50,7 +50,7 @@ const getAeraConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       randomAera: randomAera.value,
       randomUnitIndex,
@@ -61,7 +61,7 @@ const getAeraConversion: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, randomAera, randomUnitIndex, randomUnitInstructionIndex },
 ) => {
@@ -81,11 +81,11 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const aeraConversion: MathExercise<QCMProps, VEAProps> = {
+export const aeraConversion: MathExercise<Identifiers> = {
   id: "aeraConversion",
   connector: "=",
   getPropositions,

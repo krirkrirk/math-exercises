@@ -15,7 +15,7 @@ import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutio
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -27,27 +27,24 @@ type VEAProps = {
   c: number;
 };
 
-const getRootsFromDevFormQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getRootsFromDevFormQuestion: QuestionGenerator<Identifiers> = () => {
   const trinom = TrinomConstructor.randomFactorized();
   const answer = trinom.getRootsEquationSolutionTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Soit $f(x) = ${trinom
       .toTree()
       .toTex()}$. Résoudre l'équation $f(x) = 0$.`,
     keys: ["S", "equal", "lbrace", "semicolon", "rbrace", "emptyset"],
-    qcmGeneratorProps: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
+    identifiers: { answer, a: trinom.a, b: trinom.b, c: trinom.c },
     answerFormat: "tex",
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -62,7 +59,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
   const trinom = new Trinom(a, b, c);
   const roots = trinom.getRootsNode();
   const answer = new EquationSolutionNode(new DiscreteSetNode(roots));
@@ -70,7 +67,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
   return texs.includes(ans);
 };
 
-export const niceRootsFromDevForm: MathExercise<QCMProps, VEAProps> = {
+export const niceRootsFromDevForm: MathExercise<Identifiers> = {
   id: "niceRootsFromDevForm",
   connector: "\\iff",
   getPropositions,

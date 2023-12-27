@@ -16,17 +16,14 @@ import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
   answer: string;
 };
 
-const getTrigonometryAngleCalcul: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getTrigonometryAngleCalcul: QuestionGenerator<Identifiers> = () => {
   const vertices = [];
   const code = 65 + randint(0, 24); // Générer un code de caractère majuscule aléatoire (A-Z)
   for (let i = 0; i < 3; i++) vertices.push(String.fromCharCode(code + i));
@@ -62,7 +59,7 @@ const getTrigonometryAngleCalcul: QuestionGenerator<
         );
   const answerTex = answer + "^{\\circ}";
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Le triangle $${triangle.getTriangleName()}$ rectangle en $${triangle.getRightAngle()}$ est tel que $${
       sides[randSides[0]]
     } = ${(sideLengths[randSides[0]] + "").replace(".", ",")}$ cm et $${
@@ -78,13 +75,13 @@ const getTrigonometryAngleCalcul: QuestionGenerator<
     ],
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    qcmGeneratorProps: { answer: answerTex },
+    identifiers: { answer: answerTex },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -94,10 +91,10 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return [answer, answer.split("^")[0]].includes(ans);
 };
-export const trigonometryAngleCalcul: MathExercise<QCMProps, VEAProps> = {
+export const trigonometryAngleCalcul: MathExercise<Identifiers> = {
   id: "trigonometryAngleCalcul",
   connector: "=",
   label: "Utiliser la trigonométrie pour calculer un angle",

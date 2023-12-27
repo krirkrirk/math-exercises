@@ -12,7 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Complex, ComplexConstructor } from "#root/math/complex/complex";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   z1Re: number;
   z1Im: number;
@@ -26,7 +26,7 @@ type VEAProps = {
   z2Im: number;
 };
 
-const getAddComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getAddComplexQuestion: QuestionGenerator<Identifiers> = () => {
   const z1 = ComplexConstructor.random();
   let z2: Complex;
   do {
@@ -35,7 +35,7 @@ const getAddComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
 
   const answer = z1.add(z2).toTree().toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction: `Soit $z=${z1.toTree().toTex()}$ et $z'=${z2
       .toTree()
@@ -43,7 +43,7 @@ const getAddComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
     keys: ["i", "z", "quote"],
     answerFormat: "tex",
     startStatement: "z+z'",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       z1Re: z1.re,
       z1Im: z1.im,
@@ -55,7 +55,7 @@ const getAddComplexQuestion: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, z1Re, z1Im, z2Re, z2Im },
 ) => {
@@ -71,15 +71,16 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { z1Im, z1Re, z2Im, z2Re }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { z1Im, z1Re, z2Im, z2Re }) => {
   const z1 = new Complex(z1Re, z1Im);
   const z2 = new Complex(z2Re, z2Im);
   const answer = z1.add(z2).toTree();
   const texs = answer.toAllValidTexs();
+  console.log(ans, texs);
   return texs.includes(ans);
 };
 
-export const addComplex: MathExercise<QCMProps, VEAProps> = {
+export const addComplex: MathExercise<Identifiers> = {
   id: "addComplex",
   connector: "=",
   label: "Additionner deux nombres complexes",

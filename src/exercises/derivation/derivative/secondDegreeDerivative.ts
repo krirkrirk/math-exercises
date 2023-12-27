@@ -14,38 +14,34 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   coefficients: number[];
 };
 type VEAProps = {
   coefficients: number[];
 };
-export const getSecondDegreeDerivative: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+export const getSecondDegreeDerivative: QuestionGenerator<Identifiers> = () => {
   const coefficients = [randint(-9, 10), randint(-9, 10), randint(-9, 10, [0])];
 
   const polynomial = new Polynomial(coefficients);
   const derivative = polynomial.derivate();
   const answer = derivative.toTree().toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
     startStatement: `f'(x)`,
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, coefficients },
+    identifiers: { answer, coefficients },
   };
 
   return question;
 };
 
-export const getSecondDegreeDerivativePropositions: QCMGenerator<QCMProps> = (
-  n,
-  { answer, coefficients },
-) => {
+export const getSecondDegreeDerivativePropositions: QCMGenerator<
+  Identifiers
+> = (n, { answer, coefficients }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -73,7 +69,7 @@ export const getSecondDegreeDerivativePropositions: QCMGenerator<QCMProps> = (
 
   return shuffle(propositions);
 };
-export const isSecondDegreeDerivativeAnswerValid: VEA<VEAProps> = (
+export const isSecondDegreeDerivativeAnswerValid: VEA<Identifiers> = (
   ans,
   { coefficients },
 ) => {
@@ -84,7 +80,7 @@ export const isSecondDegreeDerivativeAnswerValid: VEA<VEAProps> = (
   return texs.includes(ans);
 };
 
-export const secondDegreeDerivative: MathExercise<QCMProps, VEAProps> = {
+export const secondDegreeDerivative: MathExercise<Identifiers> = {
   id: "secondDegreeDerivative",
   connector: "=",
   label: "Dérivée d'un polynôme de degré 2",

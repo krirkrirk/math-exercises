@@ -19,7 +19,7 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { PowerNode, SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -29,7 +29,7 @@ type VEAProps = {
   b: number;
 };
 
-const getFactoType1Question: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
   const interval = new Interval("[[1; 10]]").difference(
     new DiscreteSet([new Integer(0)]),
   );
@@ -37,19 +37,18 @@ const getFactoType1Question: QuestionGenerator<QCMProps, VEAProps> = () => {
   const statementTree = affine.multiply(affine).toTree();
   const answerTree = new PowerNode(affine.toTree(), new NumberNode(2));
   const answer = answerTree.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Factoriser : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a: affine.a, b: affine.b },
-    veaProps: { a: affine.a, b: affine.b },
+    identifiers: { answer, a: affine.a, b: affine.b },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   tryToAddWrongProp(
@@ -70,14 +69,14 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   const affine = new Affine(a, b);
   const answerTree = new SquareNode(affine.toTree());
   const validLatexs = answerTree.toAllValidTexs();
   return validLatexs.includes(ans);
 };
 
-export const factoIdRmq1: MathExercise<QCMProps, VEAProps> = {
+export const factoIdRmq1: MathExercise<Identifiers> = {
   id: "factoIdRmq1",
   connector: "=",
   isSingleStep: false,

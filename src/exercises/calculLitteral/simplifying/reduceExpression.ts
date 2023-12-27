@@ -15,7 +15,7 @@ import { Node } from "#root/tree/nodes/node";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   rand: number;
   polynome1Coeffs: number[];
@@ -26,7 +26,7 @@ type VEAProps = {
   polynome1Coeffs: number[];
   polynome2Coeffs: number[];
 };
-const getReduceExpression: QuestionGenerator<QCMProps, VEAProps> = () => {
+const getReduceExpression: QuestionGenerator<Identifiers> = () => {
   const rand = randint(0, 7);
   let polynome1: Polynomial;
   let polynome2: Polynomial;
@@ -90,13 +90,13 @@ const getReduceExpression: QuestionGenerator<QCMProps, VEAProps> = () => {
   statement.shuffle();
   const statementTex = statement.toTex();
   const answer = polynome1.add(polynome2).toTree().toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Réduire l'expression suivante : $${statementTex}$`,
     startStatement: statementTex,
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       rand,
       polynome1Coeffs: polynome1.coefficients,
@@ -106,7 +106,7 @@ const getReduceExpression: QuestionGenerator<QCMProps, VEAProps> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, rand, polynome1Coeffs },
 ) => {
@@ -125,7 +125,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (
+const isAnswerValid: VEA<Identifiers> = (
   ans,
   { polynome1Coeffs, polynome2Coeffs, rand },
 ) => {
@@ -139,7 +139,7 @@ const isAnswerValid: VEA<VEAProps> = (
   return texs.includes(ans);
 };
 
-export const reduceExpression: MathExercise<QCMProps, VEAProps> = {
+export const reduceExpression: MathExercise<Identifiers> = {
   id: "reduceExpression",
   connector: "=",
   isSingleStep: false,

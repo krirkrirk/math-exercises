@@ -19,7 +19,7 @@ import {
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   k: number;
 };
@@ -27,24 +27,21 @@ type VEAProps = {
   k: number;
 };
 
-const getSquareRootEquationQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getSquareRootEquationQuestion: QuestionGenerator<Identifiers> = () => {
   const k = Math.random() < 0.2 ? randint(-20, 0) : randint(0, 11);
   const answer = k < 0 ? "S=\\emptyset" : `S=\\left\\{${k ** 2}\\right\\}`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Résoudre l'équation suivante : $\\sqrt x = ${k}$`,
     keys: ["S", "equal", "lbrace", "semicolon", "rbrace", "emptyset"],
     answerFormat: "tex",
-    qcmGeneratorProps: { k, answer },
+    identifiers: { k, answer },
   };
 
   return question;
 };
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, k }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, k }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -61,14 +58,14 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, k }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { k }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { k }) => {
   const solution =
     k < 0 ? EmptySet : new DiscreteSetNode([new NumberNode(k ** 2)]);
   const answerTree = new EquationSolutionNode(solution);
   const validLatexs = answerTree.toAllValidTexs();
   return validLatexs.includes(ans);
 };
-export const squareRootEquation: MathExercise<QCMProps, VEAProps> = {
+export const squareRootEquation: MathExercise<Identifiers> = {
   id: "squareRootEquation",
   connector: "\\iff",
   label: "Résoudre une équation du type $\\sqrt x = k$",

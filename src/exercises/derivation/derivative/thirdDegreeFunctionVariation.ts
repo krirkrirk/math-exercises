@@ -22,7 +22,7 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   coin: number;
@@ -36,10 +36,7 @@ type VEAProps = {
   coin: number;
 };
 
-const getThirdDegreeFunctionVariation: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getThirdDegreeFunctionVariation: QuestionGenerator<Identifiers> = () => {
   const a = randint(-3, 4, [0]);
   const c = randint(-2, 3);
   const racine1 = randint(-5, 4);
@@ -74,7 +71,7 @@ const getThirdDegreeFunctionVariation: QuestionGenerator<
     polynome.calculate(racine2),
   );
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction,
     startStatement: "S",
     answer,
@@ -88,12 +85,12 @@ const getThirdDegreeFunctionVariation: QuestionGenerator<
       ymax + ((ymax - ymin) * randint(7, 20)) / 10,
     ],
     commands,
-    qcmGeneratorProps: { answer, racine1, racine2, coin, a },
+    identifiers: { answer, racine1, racine2, coin, a },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, racine1, racine2 },
 ) => {
@@ -116,7 +113,10 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { racine1, racine2, coin, a }) => {
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { racine1, racine2, coin, a },
+) => {
   const r1 = new NumberNode(racine1);
   const r2 = new NumberNode(racine2);
   const answer =
@@ -132,7 +132,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { racine1, racine2, coin, a }) => {
   return texs.includes(ans);
 };
 
-export const thirdDegreeFunctionVariation: MathExercise<QCMProps, VEAProps> = {
+export const thirdDegreeFunctionVariation: MathExercise<Identifiers> = {
   id: "thirdDegreeFunctionVariation",
   connector: "=",
   label: "Lecture du signe de la dérivée via les variations d'une fonction",

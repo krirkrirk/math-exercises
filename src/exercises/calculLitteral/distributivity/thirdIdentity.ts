@@ -17,7 +17,7 @@ import { Interval } from "#root/math/sets/intervals/intervals";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   affine1Coeffs: number[];
   affine2Coeffs: number[];
@@ -31,22 +31,19 @@ const interval = new Interval("[[-10; 10]]").difference(
   new DiscreteSet([new Integer(0)]),
 );
 
-export const getThirdIdentityQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+export const getThirdIdentityQuestion: QuestionGenerator<Identifiers> = () => {
   const affine = AffineConstructor.random(interval, interval);
   const affine2 = new Affine(affine.a, -affine.b);
   const statementTree = new MultiplyNode(affine.toTree(), affine2.toTree());
   const answer = affine.multiply(affine2).toTree().toTex();
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Développer et réduire : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: ["x"],
     answerFormat: "tex",
-    qcmGeneratorProps: {
+    identifiers: {
       answer,
       affine1Coeffs: affine.coefficients,
       affine2Coeffs: affine2.coefficients,
@@ -55,7 +52,7 @@ export const getThirdIdentityQuestion: QuestionGenerator<
   return question;
 };
 
-export const getThirdIdentityPropositions: QCMGenerator<QCMProps> = (
+export const getThirdIdentityPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, affine1Coeffs, affine2Coeffs },
 ) => {
@@ -82,7 +79,7 @@ export const getThirdIdentityPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-export const isThirdIdentityAnswerValid: VEA<VEAProps> = (
+export const isThirdIdentityAnswerValid: VEA<Identifiers> = (
   ans,
   { affine1Coeffs, affine2Coeffs },
 ) => {
@@ -94,7 +91,7 @@ export const isThirdIdentityAnswerValid: VEA<VEAProps> = (
   return texs.includes(ans);
 };
 
-export const thirdIdentity: MathExercise<QCMProps, VEAProps> = {
+export const thirdIdentity: MathExercise<Identifiers> = {
   id: "idRmq3",
   connector: "=",
   label: "Identité remarquable $(a+b)(a-b)$",

@@ -26,21 +26,16 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
-type QCMProps = {
+type Identifiers = {
   answer: string;
-  a: number;
-  ineqType: string;
-  result: string;
-};
-type VEAProps = {
   a: number;
   b: number;
   ineqType: string;
+  result: string;
 };
 
 const getFirstDegreeInequationsQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const affine = new Affine(randint(-10, 10, [0, 1]), 0);
   const b = randint(-10, 11);
@@ -58,19 +53,18 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
       : "\\le";
   const answer = `x${affine.a > 0 ? ineqType : invIneqType}${result}`;
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Résoudre l'inéquation : $${affine.toTex()} ${ineqType} ${b}$ `,
     keys: inequationKeys,
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a: affine.a, ineqType, result },
-    veaProps: { a: affine.a, b, ineqType },
+    identifiers: { answer, a: affine.a, b, ineqType, result },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, a, ineqType, result },
 ) => {
@@ -100,7 +94,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, ineqType }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, ineqType }) => {
   const trueIneqType =
     a < 0
       ? getInversedInequationSymbol(ineqType as InegalitySymbols)
@@ -117,7 +111,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, ineqType }) => {
   return texs.includes(ans);
 };
 
-export const firstDegreeInequationsType1: MathExercise<QCMProps, VEAProps> = {
+export const firstDegreeInequationsType1: MathExercise<Identifiers> = {
   id: "firstDegreeInequationsType1",
   connector: "\\iff",
   getPropositions,

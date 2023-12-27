@@ -13,7 +13,7 @@ import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 
 import { shuffle } from "#root/utils/shuffle";
-type QCMProps = {
+type Identifiers = {
   answer: string;
   xA: number;
   xB: number;
@@ -28,25 +28,24 @@ type VEAProps = {
 };
 
 const getLeadingCoefficientCalculV1Question: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const [xA, yA] = [1, 2].map((el) => randint(-9, 10));
   const xB = randint(-9, 10, [xA]);
   const yB = randint(-9, 10);
   const answer = new Rational(yB - yA, xB - xA).simplify().toTree().toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Soit $f$ une fonction affine telle que $f(${xA})$ = $${yA}$ et $f(${xB})$ = $${yB}$.$\\\\$Quel est le coefficient directeur de $f$ ?`,
     startStatement: "a",
     answer,
     answerFormat: "tex",
     keys: [],
-    qcmGeneratorProps: { answer, xA, xB, yA, yB },
+    identifiers: { answer, xA, xB, yA, yB },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (
+const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, xA, xB, yA, yB },
 ) => {
@@ -55,7 +54,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   while (propositions.length < n) {
     const wrongAnswer = new Rational(
       yB - yA + randint(-3, 4, [0]),
-      xB - xA + randint(-3, 4, [0]),
+      xB - xA + randint(-3, 4, [xA - xB]),
     )
       .simplify()
       .toTree()
@@ -66,7 +65,7 @@ const getPropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { xA, xB, yA, yB }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { xA, xB, yA, yB }) => {
   const answer = new Rational(yB - yA, xB - xA)
     .simplify()
     .toTree({ allowFractionToDecimal: true });
@@ -74,7 +73,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { xA, xB, yA, yB }) => {
   return texs.includes(ans);
 };
 
-export const leadingCoefficientCalculV1: MathExercise<QCMProps, VEAProps> = {
+export const leadingCoefficientCalculV1: MathExercise<Identifiers> = {
   id: "leadingCoefficientCalculV1",
   connector: "=",
   label: "Calculer le coefficient directeur d'une fonction affine",

@@ -26,7 +26,7 @@ import { v4 } from "uuid";
 /**
  *  type ax+b=c
  */
-type QCMProps = {
+type Identifiers = {
   answer: string;
   a: number;
   b: number;
@@ -37,10 +37,7 @@ type VEAProps = {
   b: number;
   c: number;
 };
-const getEquationType3ExerciseQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+const getEquationType3ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const interval = new Interval("[[-10; 10]]");
   const intervalStar = new Interval("[[-10; 10]]").difference(
     new DiscreteSet([new Integer(0)]),
@@ -54,18 +51,18 @@ const getEquationType3ExerciseQuestion: QuestionGenerator<
   const statementTree = new EqualNode(affine, c.toTree());
   const answerTree = new EqualNode(new VariableNode("x"), solution.toTree());
   const answer = answerTree.toTex();
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Résoudre : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: equationKeys,
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, a: a.value, b: b.value, c: c.value },
+    identifiers: { answer, a: a.value, b: b.value, c: c.value },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
@@ -83,7 +80,7 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer, a, b, c }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
   const solution = new Rational(c - b, a).simplify().toTree();
   const answerTree = new EquationSolutionNode(new DiscreteSetNode([solution]), {
     opts: { allowFractionToDecimal: true, allowRawRightChildAsSolution: true },
@@ -92,7 +89,7 @@ const isAnswerValid: VEA<VEAProps> = (ans, { a, b, c }) => {
   return validLatexs.includes(ans);
 };
 
-export const equationType3Exercise: MathExercise<QCMProps, VEAProps> = {
+export const equationType3Exercise: MathExercise<Identifiers> = {
   id: "equa3",
 
   connector: "\\iff",

@@ -62,7 +62,7 @@
 //   return question;
 // }
 
-// export const intervalBelonging: MathExercise<QCMProps, VEAProps> = {
+// export const intervalBelonging: MathExercise<Identifiers> = {
 //   id: 'intervalBelonging',
 //   connector: '=',
 //   label: '=',

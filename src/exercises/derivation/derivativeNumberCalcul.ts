@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { PolynomialConstructor } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
 };
 type VEAProps = {
@@ -21,8 +21,7 @@ type VEAProps = {
 };
 
 const getDerivativeNumberCalculQuestion: QuestionGenerator<
-  QCMProps,
-  VEAProps
+  Identifiers
 > = () => {
   const x = randint(-9, 10);
   const trinom = PolynomialConstructor.randomWithOrder(2);
@@ -32,18 +31,18 @@ const getDerivativeNumberCalculQuestion: QuestionGenerator<
     .toTex()}$. Calculer $f'(${x})$.`;
   const answer = trinom.derivate().calculate(x) + "";
 
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     answer,
     instruction,
     keys: [],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer },
+    identifiers: { answer },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
@@ -54,11 +53,11 @@ const getPropositions: QCMGenerator<QCMProps> = (n, { answer }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<VEAProps> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const derivativeNumberCalcul: MathExercise<QCMProps, VEAProps> = {
+export const derivativeNumberCalcul: MathExercise<Identifiers> = {
   id: "derivativeNumberCalcul",
   connector: "=",
   label: "Calculer un nombre dérivé via la définition",

@@ -16,7 +16,7 @@ import {
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
-type QCMProps = {
+type Identifiers = {
   answer: string;
   coeffs: number[];
 };
@@ -24,29 +24,26 @@ type VEAProps = {
   coeffs: number[];
 };
 
-export const getPolynomialPrimitive: QuestionGenerator<
-  QCMProps,
-  VEAProps
-> = () => {
+export const getPolynomialPrimitive: QuestionGenerator<Identifiers> = () => {
   const degree = randint(1, 4);
   const polynomial = PolynomialConstructor.randomWithOrder(degree);
 
   const integralPolynomial = polynomial.integrateToNode();
 
   const answer = `${integralPolynomial.toTex()}`;
-  const question: Question<QCMProps, VEAProps> = {
+  const question: Question<Identifiers> = {
     instruction: `Déterminer la forme générale des primitives de la fonction polynomiale $f$ définie par $f(x) = ${polynomial.toTex()}$.`,
     startStatement: `F(x)`,
     answer,
     keys: ["x", "C"],
     answerFormat: "tex",
-    qcmGeneratorProps: { answer, coeffs: polynomial.coefficients },
+    identifiers: { answer, coeffs: polynomial.coefficients },
   };
 
   return question;
 };
 
-export const getPolynomialPrimitivePropositions: QCMGenerator<QCMProps> = (
+export const getPolynomialPrimitivePropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, coeffs },
 ) => {
@@ -63,7 +60,7 @@ export const getPolynomialPrimitivePropositions: QCMGenerator<QCMProps> = (
   return shuffle(propositions);
 };
 
-export const isPolynomialPrimitiveAnswerValid: VEA<VEAProps> = (
+export const isPolynomialPrimitiveAnswerValid: VEA<Identifiers> = (
   ans,
   { coeffs },
 ) => {
@@ -78,7 +75,7 @@ export const isPolynomialPrimitiveAnswerValid: VEA<VEAProps> = (
   return texs.includes(ans);
 };
 
-export const polynomialPrimitive: MathExercise<QCMProps, VEAProps> = {
+export const polynomialPrimitive: MathExercise<Identifiers> = {
   id: "polynomialPrimitive",
   connector: "=",
   label: "Primitive d'une fonction polynomiale",
