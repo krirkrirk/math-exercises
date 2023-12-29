@@ -11,12 +11,15 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { EqualNode } from "#root/tree/nodes/operators/equalNode";
+import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
-
+type Identifiers = {
+  reason: number;
+  firstValue: number;
+};
 const getGeometricFindExplicitFormula: QuestionGenerator<Identifiers> = () => {
   const firstRank = 0;
   const firstValue = randint(1, 10);
@@ -38,10 +41,6 @@ const getGeometricFindExplicitFormula: QuestionGenerator<Identifiers> = () => {
     identifiers: { reason, firstValue },
   };
   return question;
-};
-type Identifiers = {
-  reason: number;
-  firstValue: number;
 };
 
 const getPropositions: QCMGenerator<Identifiers> = (

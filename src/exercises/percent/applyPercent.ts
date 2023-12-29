@@ -15,7 +15,11 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
-type Identifiers = {};
+type Identifiers = {
+  randNbr: number;
+  randPercent: number;
+  isUp: boolean;
+};
 
 const getApplyPercentQuestion: QuestionGenerator<Identifiers> = () => {
   const randNbr = randint(1, 500);
@@ -23,7 +27,8 @@ const getApplyPercentQuestion: QuestionGenerator<Identifiers> = () => {
   let instruction = "";
   let ans = "";
   let ansNb = 0;
-  if (coinFlip()) {
+  const isUp = coinFlip();
+  if (isUp) {
     ansNb = round(randNbr * (1 + randPercent / 100), 2);
     ans = (ansNb + "").replace(".", ",");
     instruction = `Appliquer une hausse de $${randPercent}\\%$ à $${randNbr}$.`;
@@ -39,7 +44,7 @@ const getApplyPercentQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["percent"],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { isUp, randNbr, randPercent },
   };
 
   return question;

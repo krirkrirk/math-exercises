@@ -13,7 +13,9 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type Identifiers = {};
+type Identifiers = {
+  side: number;
+};
 
 const getSquareArea: QuestionGenerator<Identifiers> = () => {
   const side = randint(1, 21);
@@ -24,7 +26,7 @@ const getSquareArea: QuestionGenerator<Identifiers> = () => {
     answer: answerTex,
     answerFormat: "tex",
     keys: ["cm", "cm2"],
-    identifiers: {},
+    identifiers: { side },
   };
 
   return question;

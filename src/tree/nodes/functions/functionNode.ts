@@ -1,4 +1,9 @@
+import { AlgebraicNode } from "../algebraicNode";
 import { Node, NodeType } from "../node";
+
+export function isFunctionNode(a: Node): a is FunctionNode {
+  return a.type === NodeType.function;
+}
 
 export enum FunctionsIds {
   opposite,
@@ -10,9 +15,9 @@ export enum FunctionsIds {
   abs,
 }
 
-export interface FunctionNode extends Node {
+export interface FunctionNode extends AlgebraicNode {
   id: FunctionsIds;
-  child: Node;
+  child: AlgebraicNode;
   // tex: string;
   // constructor(id: FunctionsIds, child: Node, tex: string) {
   //   this.id = id;

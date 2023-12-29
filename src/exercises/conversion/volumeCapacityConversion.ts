@@ -17,12 +17,16 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { v4 } from "uuid";
-type Identifiers = {};
+type Identifiers = {
+  randomUnitIndex: number;
+  randomUnitInstructionIndex: number;
+  randomValue: number;
+  isVolumeToCapacity: boolean;
+};
+const volumeUnits = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
+const capacityUnits = ["mL", "cL", "dL", "L", "daL", "hL", "kL"];
 
 const getVolumeCapacityConversion: QuestionGenerator<Identifiers> = () => {
-  const volumeUnits = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
-  const capacityUnits = ["mL", "cL", "dL", "L", "daL", "hL", "kL"];
-
   const randomUnitInstructionIndex = randint(0, 7);
   const randomUnitIndex = randint(
     // cette manip a pour but d'éviter des conversion avec des nombres trop grand/petit
@@ -32,18 +36,18 @@ const getVolumeCapacityConversion: QuestionGenerator<Identifiers> = () => {
   const random = DecimalConstructor.random(0, 1000, randint(0, 4));
 
   let instructionUnit;
-  let AsnwerUnit;
+  let answerUnit;
   let answer: Decimal;
   const isVolumeToCapacity = coinFlip();
   if (isVolumeToCapacity) {
     instructionUnit = volumeUnits[randomUnitIndex];
-    AsnwerUnit = capacityUnits[randomUnitInstructionIndex];
+    answerUnit = capacityUnits[randomUnitInstructionIndex];
     answer = random.multiplyByPowerOfTen(
       3 * (randomUnitIndex - 2) + 3 - randomUnitInstructionIndex,
     );
   } else {
     instructionUnit = capacityUnits[randomUnitIndex];
-    AsnwerUnit = volumeUnits[randomUnitInstructionIndex];
+    answerUnit = volumeUnits[randomUnitInstructionIndex];
     answer = random.multiplyByPowerOfTen(
       randomUnitIndex - 3 + 3 * (2 - randomUnitInstructionIndex),
     );
@@ -54,11 +58,16 @@ const getVolumeCapacityConversion: QuestionGenerator<Identifiers> = () => {
       .toString()
       .replace(".", ",")} \\textrm{${instructionUnit}}${
       isVolumeToCapacity ? "^3" : ""
-    } = \\ldots \\textrm{${AsnwerUnit}}${!isVolumeToCapacity ? "^3" : ""}$`,
+    } = \\ldots \\textrm{${answerUnit}}${!isVolumeToCapacity ? "^3" : ""}$`,
     answer: answerTex,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: {
+      isVolumeToCapacity,
+      randomUnitIndex,
+      randomUnitInstructionIndex,
+      randomValue: random.value,
+    },
   };
 
   return question;
@@ -66,7 +75,6 @@ const getVolumeCapacityConversion: QuestionGenerator<Identifiers> = () => {
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  console.log("volume prop", answer);
   const decimal = new Decimal(Number(answer.replace(",", ".")));
   while (propositions.length < n) {
     const wrongAnswer = decimal.multiplyByPowerOfTen(randint(-3, 4, [0]));

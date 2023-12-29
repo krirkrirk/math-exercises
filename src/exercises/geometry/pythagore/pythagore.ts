@@ -14,7 +14,7 @@ import { TriangleConstructor } from "#root/math/geometry/triangles";
 import { randint } from "#root/math/utils/random/randint";
 import { LengthNode } from "#root/tree/nodes/geometry/lengthNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { EqualNode } from "#root/tree/nodes/operators/equalNode";
+import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { KeyId } from "#root/types/keyIds";
 

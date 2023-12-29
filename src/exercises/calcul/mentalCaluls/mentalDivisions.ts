@@ -17,7 +17,12 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type Identifiers = {};
+type Identifiers = {
+  rand: number;
+  a: number;
+  b: number;
+  c: number;
+};
 
 const getMentalDivisions: QuestionGenerator<Identifiers> = () => {
   let a = 1,
@@ -82,7 +87,7 @@ const getMentalDivisions: QuestionGenerator<Identifiers> = () => {
     answer: answerTex,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { rand, a, b, c },
   };
 
   return question;

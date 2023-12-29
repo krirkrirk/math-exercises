@@ -2,10 +2,7 @@ import { ComplexNode } from "#root/tree/nodes/complex/complexNode";
 import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { PiNode } from "#root/tree/nodes/numbers/piNode";
-import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { Rational } from "../numbers/rationals/rational";
 import { SquareRoot } from "../numbers/reals/real";
 import { randint } from "../utils/random/randint";
@@ -66,6 +63,9 @@ export class Complex {
       this.re * z.re - this.im * z.im,
       this.re * z.im + this.im * z.re,
     );
+  }
+  times(n: number) {
+    return new Complex(this.re * n, this.im * n);
   }
   opposite() {
     return new Complex(-this.re, -this.im);

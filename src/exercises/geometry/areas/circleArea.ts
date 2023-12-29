@@ -14,7 +14,11 @@ import { round } from "#root/math/utils/round";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {};
+type Identifiers = {
+  coin: boolean;
+  radius: number;
+  diametre: number;
+};
 
 const getCircleArea: QuestionGenerator<Identifiers> = () => {
   const radius = randint(1, 13);
@@ -33,7 +37,7 @@ const getCircleArea: QuestionGenerator<Identifiers> = () => {
     answer: answerTex,
     answerFormat: "tex",
     keys: ["cm", "cm2"],
-    identifiers: {},
+    identifiers: { coin, diametre, radius },
   };
 
   return question;

@@ -14,7 +14,12 @@ import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {};
+type Identifiers = {
+  rand: boolean;
+  poly1: number[];
+  poly2: number[];
+  xValue: number;
+};
 
 const getImageFunction: QuestionGenerator<Identifiers> = () => {
   const rand = coinFlip();
@@ -40,7 +45,12 @@ const getImageFunction: QuestionGenerator<Identifiers> = () => {
     answer: answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: {
+      poly1: polynome1.coefficients,
+      poly2: polynome2.coefficients,
+      rand,
+      xValue,
+    },
   };
   return question;
 };

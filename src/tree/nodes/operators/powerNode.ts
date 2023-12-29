@@ -1,16 +1,25 @@
 import { pow } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
-import { OperatorIds, OperatorNode } from "./operatorNode";
-import { NumberNode } from "../numbers/numberNode";
+import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
+import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { MultiplyNode } from "./multiplyNode";
+import { AlgebraicNode } from "../algebraicNode";
+
+export function isPowerNode(a: Node): a is PowerNode {
+  return isOperatorNode(a) && a.id === OperatorIds.power;
+}
 
 export class PowerNode implements OperatorNode {
   opts?: NodeOptions;
   id: OperatorIds;
-  leftChild: Node;
-  rightChild: Node;
+  leftChild: AlgebraicNode;
+  rightChild: AlgebraicNode;
   type: NodeType;
-  constructor(leftChild: Node, rightChild: Node, opts?: NodeOptions) {
+  constructor(
+    leftChild: AlgebraicNode,
+    rightChild: AlgebraicNode,
+    opts?: NodeOptions,
+  ) {
     this.id = OperatorIds.power;
     this.leftChild = leftChild;
     this.rightChild = rightChild;
@@ -29,11 +38,8 @@ export class PowerNode implements OperatorNode {
     rightNodes.forEach((rightNode) => {
       leftNodes.forEach((leftNode) => {
         res.push(new PowerNode(leftNode, rightNode));
-        if (
-          !this.opts?.forbidPowerToProduct &&
-          this.rightChild.type === NodeType.number
-        ) {
-          const power = (this.rightChild as NumberNode).value;
+        if (!this.opts?.forbidPowerToProduct && isNumberNode(this.rightChild)) {
+          const power = this.rightChild.value;
           if (Math.floor(power) !== power || power < 2) return;
           let tree = new MultiplyNode(leftNode, leftNode);
           for (let i = 2; i < power; i++) {
@@ -54,8 +60,7 @@ export class PowerNode implements OperatorNode {
     let rightTex = this.rightChild.toTex();
     let leftTex = this.leftChild.toTex();
     let needBrackets = leftTex[0] === "-";
-    if (this.leftChild.type === NodeType.operator) {
-      const childOperator = this.leftChild as OperatorNode;
+    if (isOperatorNode(this.leftChild)) {
       needBrackets ||= [
         OperatorIds.add,
         OperatorIds.substract,
@@ -63,7 +68,7 @@ export class PowerNode implements OperatorNode {
         OperatorIds.divide,
         OperatorIds.fraction,
         OperatorIds.power,
-      ].includes(childOperator.id);
+      ].includes(this.leftChild.id);
     }
     if (needBrackets) leftTex = `\\left(${leftTex}\\right)`;
     const needBrace = rightTex.length > 1;

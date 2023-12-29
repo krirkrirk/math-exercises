@@ -27,6 +27,10 @@ const values = [
   "1",
 ];
 
+type Identifiers = {
+  valueIndex: number;
+  isCos: boolean;
+};
 const getRemarkableValues: QuestionGenerator<Identifiers> = () => {
   const isCos = coinFlip();
   const remarkableValue = RemarkableValueConstructor.simplifiable();
@@ -49,11 +53,6 @@ const getRemarkableValues: QuestionGenerator<Identifiers> = () => {
     identifiers: { isCos, valueIndex },
   };
   return question;
-};
-
-type Identifiers = {
-  valueIndex: number;
-  isCos: boolean;
 };
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {

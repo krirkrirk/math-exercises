@@ -21,10 +21,9 @@ type Identifiers = {
   randomUnitInstructionIndex: number;
   randomCapacity: number;
 };
+const units = ["mL", "cL", "dL", "L", "daL", "hL", "kL"];
 
 const getCapacityConversion: QuestionGenerator<Identifiers> = () => {
-  const units = ["mL", "cL", "dL", "L", "daL", "hL", "kL"];
-
   const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(0, 7, [randomUnitIndex]);
   const randomCapacity = DecimalConstructor.random(0, 1000, randint(0, 4));

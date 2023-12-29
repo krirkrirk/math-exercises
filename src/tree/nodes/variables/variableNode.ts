@@ -1,5 +1,8 @@
-import { Node, NodeType } from '../node';
+import { Node, NodeType } from "../node";
 
+export function isVariableNode(a: Node): a is VariableNode {
+  return a.type === NodeType.variable;
+}
 export class VariableNode implements Node {
   name: string;
   type = NodeType.variable;

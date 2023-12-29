@@ -14,8 +14,8 @@ import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 
 type Identifiers = {
-  total: number;
-  nbColorAsked: number;
+  repartitions: number[];
+  colorAskedIndex: number;
 };
 
 const getBallsBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
@@ -39,7 +39,7 @@ const getBallsBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
     }. Quelle est la probabilité de tirer une boule ${colorAsked} ?`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { total, nbColorAsked },
+    identifiers: { colorAskedIndex, repartitions },
   };
 
   return question;
@@ -47,8 +47,11 @@ const getBallsBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, total, nbColorAsked },
+  { answer, colorAskedIndex, repartitions },
 ) => {
+  const total = repartitions.reduce((acc, curr) => (acc += curr), 0);
+  const nbColorAsked = repartitions[colorAskedIndex];
+
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   tryToAddWrongProp(propositions, nbColorAsked + "");
@@ -64,7 +67,13 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { total, nbColorAsked }) => {
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { colorAskedIndex, repartitions },
+) => {
+  const total = repartitions.reduce((acc, curr) => (acc += curr), 0);
+  const nbColorAsked = repartitions[colorAskedIndex];
+
   const answer = new Rational(nbColorAsked, total)
     .simplify()
     .toTree({ allowFractionToDecimal: true });

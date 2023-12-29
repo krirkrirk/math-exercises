@@ -33,7 +33,7 @@ const getTriangleArea: QuestionGenerator<Identifiers> = () => {
     triangle.getSideBName(),
     triangle.getSideCName(),
   ];
-  const sidesLength = [
+  const sidesLengths = [
     triangle.getSideAnumber(),
     triangle.getSideBnumber(),
     triangle.getSideCnumber(),
@@ -47,13 +47,13 @@ const getTriangleArea: QuestionGenerator<Identifiers> = () => {
   const randoms = shuffle([0, 1, 2]);
 
   const height = Math.round(
-    sidesLength[randoms[1]] * Math.sin(angles[randoms[2]]),
+    sidesLengths[randoms[1]] * Math.sin(angles[randoms[2]]),
   );
 
   const commands = [
     ...triangle.generateCommands({
       showLabels: [sides[randoms[0]]],
-      setCaptions: [sidesLength[randoms[0]] + ""],
+      setCaptions: [sidesLengths[randoms[0]] + ""],
     }),
     `poi = Intersect(PerpendicularLine(${vertices[randoms[0]]},${
       sides[randoms[0]]
@@ -70,7 +70,7 @@ const getTriangleArea: QuestionGenerator<Identifiers> = () => {
     `ShowLabel(alpha, false)`,
   ];
 
-  const answer = ((sidesLength[randoms[0]] * height) / 2 + "").replace(
+  const answer = ((sidesLengths[randoms[0]] * height) / 2 + "").replace(
     ".",
     ",",
   );
@@ -78,7 +78,7 @@ const getTriangleArea: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     instruction: `Calculer l'aire du triangle $${triangle.getTriangleName()}$ sachant que $${
       sides[randoms[0]]
-    } = ${sidesLength[randoms[0]]}$ cm et $${
+    } = ${sidesLengths[randoms[0]]}$ cm et $${
       vertices[randoms[0]]
     }${String.fromCharCode(code + 3)} = ${height}$ cm.`,
     answer: answerTex,
@@ -86,7 +86,7 @@ const getTriangleArea: QuestionGenerator<Identifiers> = () => {
     commands,
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { sidesLengths },
   };
 
   return question;

@@ -12,9 +12,11 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { TrinomConstructor } from "#root/math/polynomials/trinom";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
-import { v4 } from "uuid";
+
 type Identifiers = {
   a: number;
+  b: number;
+  c: number;
 };
 
 const getExtremumTypeFromAlgebricFormQuestion: QuestionGenerator<
@@ -33,7 +35,7 @@ const getExtremumTypeFromAlgebricFormQuestion: QuestionGenerator<
     }$ admet-elle un maximum ou un minimum ?`,
     answerFormat: "raw",
     keys: [],
-    identifiers: { a: trinom.a },
+    identifiers: { a: trinom.a, b: trinom.b, c: trinom.c },
   };
 
   return question;

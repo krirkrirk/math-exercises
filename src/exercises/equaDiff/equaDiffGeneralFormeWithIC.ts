@@ -12,7 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { ExpNode } from "#root/tree/nodes/functions/expNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { EqualNode } from "#root/tree/nodes/operators/equalNode";
+import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";

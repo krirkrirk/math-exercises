@@ -14,9 +14,11 @@ import { distinctRandTupleInt } from "#root/math/utils/random/randTupleInt";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { shuffle } from "#root/utils/shuffle";
-import { v4 } from "uuid";
 
-type Identifiers = {};
+type Identifiers = {
+  uCoords: string[];
+  vCoords: string[];
+};
 
 const getScalarProductViaCoordsQuestion: QuestionGenerator<
   Identifiers
@@ -40,7 +42,10 @@ const getScalarProductViaCoordsQuestion: QuestionGenerator<
     answer: answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: {
+      uCoords: [u.x.toTex(), u.y.toTex()],
+      vCoords: [v.x.toTex(), v.y.toTex()],
+    },
   };
   return question;
 };

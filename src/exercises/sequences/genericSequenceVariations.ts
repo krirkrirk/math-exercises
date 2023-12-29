@@ -15,6 +15,10 @@ import { PolynomialConstructor } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 import { v4 } from "uuid";
 
+type Identifiers = {
+  coeffs: number[];
+};
+
 const getGenericSequenceVariationsQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -35,17 +39,15 @@ const getGenericSequenceVariationsQuestion: QuestionGenerator<
       .toTex()}$. Quel est le sens de variations de $u$ ?`,
     keys: [],
     answerFormat: "raw",
-    identifiers: { root },
+    identifiers: { coeffs: u.coefficients },
   };
 
   return question;
 };
 
-type Identifiers = {
-  root: number;
-};
-
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer, root }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, coeffs }) => {
+  const [b, a] = coeffs.slice(1);
+  const root = Math.ceil((-a - b) / (2 * a));
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer, "raw");
 
@@ -65,9 +67,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, root }) => {
 
   return shuffleProps(propositions, n);
 };
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
-};
+
 export const genericSequenceVariations: MathExercise<Identifiers> = {
   id: "genericSequenceVariations",
   connector: "=",

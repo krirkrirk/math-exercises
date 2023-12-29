@@ -14,19 +14,21 @@ import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { shuffle } from "#root/utils/shuffle";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
-type Identifiers = {};
+type Identifiers = {
+  evolutions: string[];
+};
 
 const getGlobalPercentQuestion: QuestionGenerator<Identifiers> = () => {
   const tab = ["hausse", "baisse"];
   let ans = 1;
   let instruction = "Le prix d'un article subit une ";
   const indice = randint(2, 4);
-
+  const evolutions: string[] = [];
   for (let i = 0; i < indice; i++) {
     const randPercent = randint(1, 50);
     let a = randint(0, 2);
     instruction += `${tab[a]} de $${randPercent}\\%$`;
-
+    evolutions.push((a === 0 ? "+" : "-") + randPercent);
     if (i + 1 < indice) instruction += ", puis une ";
 
     if (a == 0) ans *= 1 + randPercent / 100;
@@ -44,7 +46,7 @@ const getGlobalPercentQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["percent"],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { evolutions },
   };
 
   return question;

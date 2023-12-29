@@ -7,11 +7,11 @@ import express, { Express, Request, Response } from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
-import { RationalFrac } from "./math/polynomials/rationalFrac";
-import { Polynomial } from "./math/polynomials/polynomial";
-import { exponentialPrimitive } from "./exercises/primitive/exponentialPrimitive";
-import { expUPrimitive } from "./exercises/primitive/expUPrimitive";
 import { MathExercise } from "./exercises/exercise";
+import { Rational } from "./math/numbers/rationals/rational";
+import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
+import { NumberNode } from "./tree/nodes/numbers/numberNode";
+import { OppositeNode } from "./tree/nodes/functions/oppositeNode";
 const jsonParser = bodyParser.json();
 
 const allExercises = [...exercises];
@@ -21,6 +21,12 @@ const runServer = () => {
   const app: Express = express();
   app.use(cors());
 
+  const frac = new Rational(-2, 3).simplify().toTree();
+  console.log(frac.toAllValidTexs());
+  const prod = new OppositeNode(
+    new MultiplyNode(new NumberNode(2), new NumberNode(3)),
+  );
+  console.log(prod.toAllValidTexs());
   console.log(exercises.length);
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);

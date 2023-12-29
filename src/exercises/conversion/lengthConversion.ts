@@ -22,10 +22,9 @@ type Identifiers = {
   randomUnitInstructionIndex: number;
   randomLength: number;
 };
+const units = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
 
 const getLengthConversion: QuestionGenerator<Identifiers> = () => {
-  const units = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
-
   const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(0, 7, [randomUnitIndex]);
   const randomLength = DecimalConstructor.random(0, 1000, randint(0, 4));

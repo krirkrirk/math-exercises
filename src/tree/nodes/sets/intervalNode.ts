@@ -2,7 +2,7 @@ import { getCartesiansProducts } from "#root/utils/cartesianProducts";
 import { permute } from "#root/utils/permutations";
 import { InequationNode } from "../inequations/inequationNode";
 import { Node, NodeOptions, NodeType } from "../node";
-import { ConstantNode } from "../numbers/constantNode";
+import { isConstantNode } from "../numbers/constantNode";
 import { VariableNode } from "../variables/variableNode";
 import { SetNode } from "./setNode";
 
@@ -53,19 +53,13 @@ export class IntervalNode implements SetNode {
 
   toInequality(middleChild?: Node) {
     let middle = middleChild ?? new VariableNode("x");
-    if (
-      this.a.type === NodeType.constant &&
-      (this.a as ConstantNode).tex.includes("infty")
-    ) {
+    if (isConstantNode(this.a) && this.a.tex.includes("infty")) {
       return new InequationNode(
         [middle, this.b],
         this.closure === ClosureType.OF ? "\\le" : "<",
       );
     }
-    if (
-      this.b.type === NodeType.constant &&
-      (this.b as ConstantNode).tex.includes("infty")
-    ) {
+    if (isConstantNode(this.b) && this.b.tex.includes("infty")) {
       return new InequationNode(
         [middle, this.a],
         this.closure === ClosureType.FO ? "\\ge" : ">",

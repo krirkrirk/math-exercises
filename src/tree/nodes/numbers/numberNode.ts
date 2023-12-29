@@ -1,7 +1,11 @@
-import { parse } from 'mathjs';
-import { Node, NodeType } from '../node';
+import { parse } from "mathjs";
+import { Node, NodeType } from "../node";
+import { AlgebraicNode } from "../algebraicNode";
+export function isNumberNode(a: Node): a is NumberNode {
+  return a.type === NodeType.number;
+}
 
-export class NumberNode implements Node {
+export class NumberNode implements AlgebraicNode {
   tex: string;
   mathString: string;
   value: number;
@@ -9,8 +13,8 @@ export class NumberNode implements Node {
 
   constructor(value: number, tex?: string, mathString?: string) {
     this.value = value;
-    this.tex = tex || (value + '').replace('.', ',');
-    this.mathString = mathString || this.value + '';
+    this.tex = tex || (value + "").replace(".", ",");
+    this.mathString = mathString || this.value + "";
   }
 
   toMathString(): string {
@@ -26,7 +30,7 @@ export class NumberNode implements Node {
     const res: string[] = [];
     res.push(this.tex);
     //!est-ce vraiment nécessaire sachant que les inputs students n'auront en théorie jamais de "."
-    if (this.tex.includes(',')) res.push(this.tex.replace(',', '.'));
+    if (this.tex.includes(",")) res.push(this.tex.replace(",", "."));
     return res;
   }
   toEquivalentNodes() {

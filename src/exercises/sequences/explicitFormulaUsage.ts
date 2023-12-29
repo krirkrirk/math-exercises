@@ -16,6 +16,10 @@ import {
 } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 
+type Identifiers = {
+  rank: number;
+  coeffs: number[];
+};
 const getExplicitFormulaUsageQuestion: QuestionGenerator<Identifiers> = () => {
   const u = PolynomialConstructor.randomWithOrder(2, "n");
   const rank = randint(0, 4);
@@ -31,11 +35,6 @@ const getExplicitFormulaUsageQuestion: QuestionGenerator<Identifiers> = () => {
     identifiers: { rank, coeffs: u.coefficients },
   };
   return question;
-};
-
-type Identifiers = {
-  rank: number;
-  coeffs: number[];
 };
 
 const getPropositions: QCMGenerator<Identifiers> = (

@@ -9,6 +9,8 @@ export enum NodeType {
   point,
   mesure,
   equality,
+  belongs,
+  vector,
 }
 export type NodeOptions = {
   forceTimesSign?: boolean;

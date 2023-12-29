@@ -25,13 +25,19 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {};
+type Identifiers = {
+  type: number;
+  a: number;
+  b: number;
+  c: number;
+  d: number;
+};
 
 const getPriorityQuestions: QuestionGenerator<Identifiers> = () => {
   const type = randint(1, 6);
   let startStatement = "";
   let answer: string = "";
-  let a, b, c, d: number;
+  let a: number, b: number, c: number, d: number;
   let statement: AddNode;
   switch (type) {
     case 1: // a*b ±c±d
@@ -123,6 +129,8 @@ const getPriorityQuestions: QuestionGenerator<Identifiers> = () => {
       startStatement = statement.toTex();
       answer = (a * b * c + d).toString();
       break;
+    default:
+      throw Error("impossible");
   }
 
   const question: Question<Identifiers> = {
@@ -131,7 +139,7 @@ const getPriorityQuestions: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { type, a, b, c, d },
   };
   return question;
 };

@@ -9,6 +9,7 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Vector } from "#root/math/geometry/vector";
 import { randint } from "#root/math/utils/random/randint";
 import { KeyId } from "#root/types/keyIds";
 import { random } from "#root/utils/random";
@@ -16,10 +17,13 @@ import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   randLetters: string[];
+  vectors: string[];
 };
 
 const letters = "ABCDEFGHIJKLMNPQRSTUVWXYZ";
-
+const invVec = (vec: string) => {
+  return `\\overrightarrow{${vec[1]}${vec[0]}}`;
+};
 const getChaslesQuestion: QuestionGenerator<Identifiers> = () => {
   const nbOfVectors = randint(2, 5);
   const randLetters = shuffle(letters.split("")).slice(0, nbOfVectors + 2);
@@ -28,9 +32,7 @@ const getChaslesQuestion: QuestionGenerator<Identifiers> = () => {
     vectors.push(`${randLetters[i]}${randLetters[i + 1]}`);
   }
   const answer = `\\overrightarrow{${randLetters[0]}${randLetters[nbOfVectors]}}`;
-  const invVec = (vec: string) => {
-    return `\\overrightarrow{${vec[1]}${vec[0]}}`;
-  };
+
   vectors = shuffle(vectors).map((vec) =>
     Math.random() < 0.4 ? "-" + invVec(vec) : `+\\overrightarrow{${vec}}`,
   );
@@ -45,7 +47,7 @@ const getChaslesQuestion: QuestionGenerator<Identifiers> = () => {
       ...(randLetters.sort((a, b) => a.localeCompare(b)) as KeyId[]),
     ],
     answerFormat: "tex",
-    identifiers: { randLetters },
+    identifiers: { randLetters, vectors },
   };
 
   return question;

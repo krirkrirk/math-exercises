@@ -1,13 +1,16 @@
-import { sin } from 'mathjs';
-import { Node, NodeType } from '../node';
-import { FunctionNode, FunctionsIds } from './functionNode';
-
+import { sin } from "mathjs";
+import { Node, NodeType } from "../node";
+import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
+import { AlgebraicNode } from "../algebraicNode";
+export function isSinNode(a: Node): a is SinNode {
+  return isFunctionNode(a) && a.id === FunctionsIds.sin;
+}
 export class SinNode implements FunctionNode {
   id: FunctionsIds;
-  child: Node;
+  child: AlgebraicNode;
   type: NodeType;
 
-  constructor(child: Node) {
+  constructor(child: AlgebraicNode) {
     this.id = FunctionsIds.opposite;
     this.child = child;
     this.type = NodeType.function;

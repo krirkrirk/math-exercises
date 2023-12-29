@@ -74,7 +74,7 @@ const getMentalPercentage: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { rand },
+    identifiers: { rand, a, b },
   };
 
   return question;
@@ -82,6 +82,8 @@ const getMentalPercentage: QuestionGenerator<Identifiers> = () => {
 
 type Identifiers = {
   rand: number;
+  a: number;
+  b: number;
 };
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer, rand }) => {
   const propositions: Proposition[] = [];

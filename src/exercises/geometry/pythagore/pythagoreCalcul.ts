@@ -21,6 +21,7 @@ import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   square: number;
+  sideLengths: number[];
 };
 
 const getPythagoreCalcul: QuestionGenerator<Identifiers> = () => {
@@ -81,7 +82,7 @@ const getPythagoreCalcul: QuestionGenerator<Identifiers> = () => {
     commands,
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    identifiers: { square },
+    identifiers: { square, sideLengths },
   };
 
   return question;

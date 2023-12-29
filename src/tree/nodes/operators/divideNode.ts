@@ -1,36 +1,46 @@
-import { divide } from 'mathjs';
-import { Node, NodeType } from '../node';
-import { OperatorIds, OperatorNode } from './operatorNode';
-
+import { divide } from "mathjs";
+import { Node, NodeOptions, NodeType } from "../node";
+import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
+import { AlgebraicNode } from "../algebraicNode";
+export function isDivideNode(a: Node): a is DivideNode {
+  return isOperatorNode(a) && a.id === OperatorIds.divide;
+}
 const divideNodeToTex = (leftChild: Node, rightChild: Node) => {
   let rightTex = rightChild.toTex();
   let leftTex = leftChild.toTex();
 
-  if (leftChild.type === NodeType.operator) {
-    if ([OperatorIds.add, OperatorIds.substract, OperatorIds.multiply].includes((leftChild as OperatorNode).id))
+  if (isOperatorNode(leftChild)) {
+    if (
+      [OperatorIds.add, OperatorIds.substract, OperatorIds.multiply].includes(
+        leftChild.id,
+      )
+    )
       leftTex = `\\left(${leftTex}\\right)`;
   }
-  let needBrackets = rightTex[0] === '-';
-  if (rightChild.type === NodeType.operator) {
-    const operatorRightChild = rightChild as OperatorNode;
-    needBrackets ||= [OperatorIds.add, OperatorIds.substract, OperatorIds.divide].includes(operatorRightChild.id);
+  let needBrackets = rightTex[0] === "-";
+  if (isOperatorNode(rightChild)) {
+    needBrackets ||= [
+      OperatorIds.add,
+      OperatorIds.substract,
+      OperatorIds.divide,
+    ].includes(rightChild.id);
   }
   if (needBrackets) rightTex = `\\left(${rightTex}\\right)`;
   const nextIsLetter = rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
-  return `${leftTex}\\div${nextIsLetter ? ' ' : ''}${rightTex}`;
+  return `${leftTex}\\div${nextIsLetter ? " " : ""}${rightTex}`;
 };
 
 export class DivideNode implements OperatorNode {
   id: OperatorIds;
-  leftChild: Node;
-  rightChild: Node;
+  leftChild: AlgebraicNode;
+  rightChild: AlgebraicNode;
   type: NodeType;
   /**
    * @param leftChild num
    * @param rightChild denum
    */
 
-  constructor(leftChild: Node, rightChild: Node) {
+  constructor(leftChild: AlgebraicNode, rightChild: AlgebraicNode) {
     this.id = OperatorIds.divide;
     this.leftChild = leftChild;
     this.rightChild = rightChild;
@@ -41,7 +51,7 @@ export class DivideNode implements OperatorNode {
     return `(${this.leftChild.toMathString()}) / (${this.rightChild.toMathString()})`;
   }
 
-  toEquivalentNodes() {
+  toEquivalentNodes(opts?: NodeOptions) {
     const res: Node[] = [];
     const rightNodes = this.rightChild.toEquivalentNodes();
     const leftNodes = this.leftChild.toEquivalentNodes();

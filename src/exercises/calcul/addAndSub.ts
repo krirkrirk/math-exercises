@@ -37,11 +37,11 @@ const getAddAndSubQuestions: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { numbers },
   };
   return question;
 };
-type Identifiers = {};
+type Identifiers = { numbers: number[] };
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];

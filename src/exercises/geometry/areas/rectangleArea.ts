@@ -11,7 +11,10 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
-type Identifiers = {};
+type Identifiers = {
+  length: number;
+  width: number;
+};
 
 const getRectangleArea: QuestionGenerator<Identifiers> = () => {
   const length = randint(3, 13);
@@ -23,7 +26,7 @@ const getRectangleArea: QuestionGenerator<Identifiers> = () => {
     answer: answerTex,
     answerFormat: "tex",
     keys: [],
-    identifiers: {},
+    identifiers: { length, width },
   };
 
   return question;

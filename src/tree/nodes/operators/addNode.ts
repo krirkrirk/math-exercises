@@ -4,22 +4,32 @@ import {
   CommutativeOperatorNode,
   OperatorIds,
   OperatorNode,
+  isOperatorNode,
 } from "./operatorNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { permute } from "#root/utils/permutations";
 import { getCartesiansProducts } from "#root/utils/cartesianProducts";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
+import { AlgebraicNode } from "../algebraicNode";
+
+export function isAddNode(a: Node): a is AddNode {
+  return isOperatorNode(a) && a.id === OperatorIds.add;
+}
 
 const addNodeToTex = (leftTex: string, rightTex: string) => {
   return `${leftTex}${rightTex[0] === "-" ? "" : "+"}${rightTex}`;
 };
 export class AddNode implements CommutativeOperatorNode {
   id: OperatorIds;
-  leftChild: Node;
-  rightChild: Node;
+  leftChild: AlgebraicNode;
+  rightChild: AlgebraicNode;
   type: NodeType;
   opts?: NodeOptions;
-  constructor(leftChild: Node, rightChild: Node, opts?: NodeOptions) {
+  constructor(
+    leftChild: AlgebraicNode,
+    rightChild: AlgebraicNode,
+    opts?: NodeOptions,
+  ) {
     this.id = OperatorIds.add;
     this.leftChild = leftChild;
     this.rightChild = rightChild;
@@ -44,12 +54,10 @@ export class AddNode implements CommutativeOperatorNode {
 
     //1: choper le sous arbre de type Non AddNode (ie les enfants nonAddNode des AddNode)
     const recursive = (node: Node) => {
-      if (node.type === NodeType.operator) {
-        const operatorNode = node as OperatorNode;
-        if (operatorNode.id === OperatorIds.add) {
-          const addNode = operatorNode as AddNode;
-          recursive(addNode.leftChild);
-          recursive(addNode.rightChild);
+      if (isOperatorNode(node)) {
+        if (isAddNode(node)) {
+          recursive(node.leftChild);
+          recursive(node.rightChild);
         } else addTree.push(node);
       } else addTree.push(node);
     };

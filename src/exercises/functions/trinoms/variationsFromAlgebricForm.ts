@@ -14,6 +14,8 @@ import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   a: number;
+  b: number;
+  c: number;
 };
 const getVariationsFromAlgebricFormQuestion: QuestionGenerator<
   Identifiers
@@ -33,7 +35,7 @@ const getVariationsFromAlgebricFormQuestion: QuestionGenerator<
       isDevForm ? trinom.toTree().toTex() : trinom.getCanonicalForm().toTex()
     }$ ?`,
     answerFormat: "raw",
-    identifiers: { a: trinom.a },
+    identifiers: { a: trinom.a, b: trinom.b, c: trinom.c },
   };
 
   return question;

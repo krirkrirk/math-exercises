@@ -15,7 +15,6 @@ import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutio
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { shuffle } from "#root/utils/shuffle";
-import { v4 } from "uuid";
 
 type Identifiers = {
   k: number;

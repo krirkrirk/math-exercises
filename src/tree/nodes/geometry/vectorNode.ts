@@ -1,15 +1,15 @@
 import { AlgebraicNode } from "../algebraicNode";
 import { NodeOptions, NodeType } from "../node";
 
-export class LengthNode implements AlgebraicNode {
+export class VectorNode implements AlgebraicNode {
   opts?: NodeOptions | undefined;
-  segmentName: string;
+  name: string;
   type: NodeType;
 
-  constructor(segmentName: string, opts?: NodeOptions) {
-    this.type = NodeType.mesure;
+  constructor(name: string, opts?: NodeOptions) {
+    this.type = NodeType.vector;
     this.opts = opts;
-    this.segmentName = segmentName;
+    this.name = name;
   }
 
   //   toAllTexs() {
@@ -20,10 +20,7 @@ export class LengthNode implements AlgebraicNode {
   }
 
   toEquivalentNodes(opts?: NodeOptions) {
-    return [
-      this,
-      new LengthNode(this.segmentName.split("").reverse().join("")),
-    ];
+    return [this];
   }
 
   toMathString() {
@@ -34,6 +31,6 @@ export class LengthNode implements AlgebraicNode {
   }
 
   toTex() {
-    return this.segmentName;
+    return `\\overrightarrow{${this.name}}`;
   }
 }

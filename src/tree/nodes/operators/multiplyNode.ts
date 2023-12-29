@@ -1,10 +1,9 @@
 import { multiply } from "mathjs";
-import { FunctionNode, FunctionsIds } from "../functions/functionNode";
 import { Node, NodeOptions, NodeType } from "../node";
 import {
   CommutativeOperatorNode,
   OperatorIds,
-  OperatorNode,
+  isOperatorNode,
 } from "./operatorNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { permute } from "#root/utils/permutations";
@@ -13,19 +12,26 @@ import {
   getFlatCartesianProducts,
 } from "#root/utils/cartesianProducts";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
-import { PowerNode } from "./powerNode";
-import { NumberNode } from "../numbers/numberNode";
+import { PowerNode, isPowerNode } from "./powerNode";
+import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { isInt } from "#root/utils/isInt";
-import { VariableNode } from "../variables/variableNode";
-
+import { isVariableNode } from "../variables/variableNode";
+import { AlgebraicNode } from "../algebraicNode";
+export function isMultiplyNode(a: Node): a is MultiplyNode {
+  return isOperatorNode(a) && a.id === OperatorIds.multiply;
+}
 export class MultiplyNode implements CommutativeOperatorNode {
   opts?: NodeOptions;
   id: OperatorIds;
-  leftChild: Node;
-  rightChild: Node;
+  leftChild: AlgebraicNode;
+  rightChild: AlgebraicNode;
   type: NodeType;
-  constructor(leftChild: Node, rightChild: Node, opts?: NodeOptions) {
-    let [left, right] = [leftChild, rightChild];
+  constructor(
+    leftChild: AlgebraicNode,
+    rightChild: AlgebraicNode,
+    opts?: NodeOptions,
+  ) {
+    // let [left, right] = [leftChild, rightChild];
     // const shouldSwitch =
     //   (rightChild.type === NodeType.function &&
     //     (rightChild as FunctionNode).id === FunctionsIds.opposite) ||
@@ -55,30 +61,30 @@ export class MultiplyNode implements CommutativeOperatorNode {
     let rightTex = this.rightChild.toTex();
 
     if (leftTex === "1") {
-      if (this.rightChild.type !== NodeType.number) {
+      if (isNumberNode(this.rightChild)) {
         return rightTex;
       }
     }
 
-    if (this.leftChild.type === NodeType.operator) {
+    if (isOperatorNode(this.leftChild)) {
       if (
         [OperatorIds.add, OperatorIds.substract, OperatorIds.divide].includes(
-          (this.leftChild as OperatorNode).id,
+          this.leftChild.id,
         )
       )
         leftTex = `\\left(${leftTex}\\right)`;
     }
 
     let needBrackets = rightTex[0] === "-";
-    if (this.rightChild.type === NodeType.operator) {
-      const operatorRightChild = this.rightChild as OperatorNode;
+    if (isOperatorNode(this.rightChild)) {
+      const operatorRightChild = this.rightChild;
       needBrackets ||= [OperatorIds.add, OperatorIds.substract].includes(
         operatorRightChild.id,
       );
     }
     if (needBrackets) rightTex = `\\left(${rightTex}\\right)`;
     if (leftTex === "-1") {
-      if (this.rightChild.type !== NodeType.number) {
+      if (!isNumberNode(this.rightChild)) {
         return "-" + rightTex;
       }
     }
@@ -86,14 +92,12 @@ export class MultiplyNode implements CommutativeOperatorNode {
     let showTimesSign =
       this.opts?.forceTimesSign ||
       !isNaN(+rightTex[0]) ||
-      this.rightChild.type === NodeType.number ||
-      (this.leftChild.type === NodeType.variable &&
-        this.rightChild.type === NodeType.variable &&
-        (this.leftChild as VariableNode).name ===
-          (this.rightChild as VariableNode).name);
-    if (this.rightChild.type === NodeType.operator) {
-      const operatorRightChild = this.rightChild as OperatorNode;
-      showTimesSign ||= [OperatorIds.fraction].includes(operatorRightChild.id);
+      isNumberNode(this.rightChild) ||
+      (isVariableNode(this.leftChild) &&
+        isVariableNode(this.rightChild) &&
+        this.leftChild.name === this.rightChild.name);
+    if (isOperatorNode(this.rightChild)) {
+      showTimesSign ||= [OperatorIds.fraction].includes(this.rightChild.id);
     }
     const nextIsLetter =
       rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
@@ -108,34 +112,33 @@ export class MultiplyNode implements CommutativeOperatorNode {
     let leftTex = this.leftChild.toTex();
     let rightTex = this.rightChild.toTex();
     if (leftTex === "1") {
-      if (this.rightChild.type !== NodeType.number) {
+      if (isNumberNode(this.rightChild)) {
         res.push(rightTex);
       }
     }
-    if (this.leftChild.type === NodeType.operator) {
+    if (isOperatorNode(this.leftChild)) {
       if (
         [OperatorIds.add, OperatorIds.substract, OperatorIds.divide].includes(
-          (this.leftChild as OperatorNode).id,
+          this.leftChild.id,
         )
       )
         leftTex = `\\left(${leftTex}\\right)`;
     }
 
     let needRightBrackets = rightTex[0] === "-";
-    if (this.rightChild.type === NodeType.operator) {
-      const operatorRightChild = this.rightChild as OperatorNode;
+    if (isOperatorNode(this.rightChild)) {
       needRightBrackets ||= [OperatorIds.add, OperatorIds.substract].includes(
-        operatorRightChild.id,
+        this.rightChild.id,
       );
     }
     if (needRightBrackets) rightTex = `\\left(${rightTex}\\right)`;
     if (leftTex === "-1") {
-      if (this.rightChild.type !== NodeType.number) {
+      if (isNumberNode(this.rightChild)) {
         res.push("-" + rightTex);
       }
     }
     let mustShowTimesSign =
-      !isNaN(+rightTex[0]) || this.rightChild.type === NodeType.number;
+      !isNaN(+rightTex[0]) || isNumberNode(this.rightChild);
 
     const nextIsLetter =
       rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
@@ -157,35 +160,35 @@ export class MultiplyNode implements CommutativeOperatorNode {
     const options = opts ?? this.opts;
     const res: MultiplyNode[] = [];
 
-    const multiplyTree: (Node | (Node | Node[])[])[] = [];
+    const multiplyTree: (
+      | AlgebraicNode
+      | (AlgebraicNode | AlgebraicNode[])[]
+    )[] = [];
     //ce seront des nodes qui ne sont pas des MultiNode
     //si l'élement est un array ca signifie qu'il faudra faire les produits cartésiens pour avoir toutes les possibilités
     //exp [2,[[5,5], 5^2], 3] -> il faudra faire les permutation sur [2,5,5,3] et sur [2,5^2,3]
     //!manque d'opti si [2,[5x5,5^2],[5x5,5^2]] par exp, mais par contruction on aura écrit ca [2,5^4]
 
     //1: choper le sous arbre de type Non Multi (ie les enfants nonMulti des Multi)
-    const recursive = (node: Node) => {
-      if (node.type === NodeType.operator) {
-        const operatorNode = node as OperatorNode;
-        if (operatorNode.id === OperatorIds.multiply) {
-          const multiplyNode = operatorNode as MultiplyNode;
-          recursive(multiplyNode.leftChild);
-          recursive(multiplyNode.rightChild);
+    const recursive = (node: AlgebraicNode) => {
+      if (isOperatorNode(node)) {
+        if (isMultiplyNode(node)) {
+          recursive(node.leftChild);
+          recursive(node.rightChild);
         } else if (
-          operatorNode.id === OperatorIds.power &&
+          isPowerNode(node) &&
           !options?.forbidPowerToProduct &&
-          (operatorNode as PowerNode).rightChild.type === NodeType.number
+          isNumberNode(node.rightChild)
         ) {
           //si power node avec power=int, créer un array contenant chaque décomposition de la puissnace possible
           //genre 5^2 : [[5,5], 5^2]
           //5^3  : [[5,5,5], [5,5^2], 5^3]
-          const powerNode = operatorNode as PowerNode;
-          const power = powerNode.rightChild;
-          if (power.type === NodeType.number) {
-            const powerNB = (power as NumberNode).value;
+          const power = node.rightChild;
+          if (isNumberNode(power)) {
+            const powerNB = power.value;
             if (isInt(powerNB) && powerNB > 1) {
-              const arr: (Node | Node[])[] = [
-                new PowerNode(powerNode.leftChild, powerNode.rightChild, {
+              const arr: (AlgebraicNode | AlgebraicNode[])[] = [
+                new PowerNode(node.leftChild, node.rightChild, {
                   forbidPowerToProduct: true,
                 }),
               ];
@@ -193,17 +196,19 @@ export class MultiplyNode implements CommutativeOperatorNode {
                 const newPower = powerNB - (i + 1);
                 if (newPower === 1) {
                   //que des nbs solos
-                  const nbs = Array<Node>(powerNB).fill(powerNode.leftChild);
+                  const nbs = Array<AlgebraicNode>(powerNB).fill(
+                    node.leftChild,
+                  );
                   arr.push(nbs);
                 } else {
                   //powerNb-newPower nbs solos
                   const newPowerNode = new PowerNode(
-                    powerNode.leftChild,
+                    node.leftChild,
                     new NumberNode(newPower),
                     { forbidPowerToProduct: true },
                   );
-                  const nbs = Array<Node>(powerNB - newPower).fill(
-                    powerNode.leftChild,
+                  const nbs = Array<AlgebraicNode>(powerNB - newPower).fill(
+                    node.leftChild,
                   );
                   arr.push([...nbs, newPowerNode]);
                 }
@@ -246,4 +251,6 @@ export class MultiplyNode implements CommutativeOperatorNode {
   toMathjs() {
     return multiply(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   }
+
+  simplify() {}
 }

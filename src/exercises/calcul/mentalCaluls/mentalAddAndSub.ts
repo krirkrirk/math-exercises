@@ -17,7 +17,7 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  sum: number;
+  numbers: number[];
 };
 
 const getMentalAddAndSub: QuestionGenerator<Identifiers> = () => {
@@ -54,13 +54,14 @@ const getMentalAddAndSub: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { sum },
+    identifiers: { numbers },
   };
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer, sum }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, numbers }) => {
   const propositions: Proposition[] = [];
+  const sum = numbers.reduce((acc, curr) => acc + curr);
 
   addValidProp(propositions, answer);
 
@@ -75,7 +76,9 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, sum }) => {
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<Identifiers> = (studentAns, { sum }) => {
+const isAnswerValid: VEA<Identifiers> = (studentAns, { numbers }) => {
+  const sum = numbers.reduce((acc, curr) => acc + curr);
+
   const answerTree = new NumberNode(round(sum, 2));
   const texs = answerTree.toAllValidTexs();
   return texs.includes(studentAns);

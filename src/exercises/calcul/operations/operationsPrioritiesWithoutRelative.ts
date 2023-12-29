@@ -25,7 +25,14 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {};
+type Identifiers = {
+  type: number;
+  flip: number;
+  a: number;
+  b: number;
+  c: number;
+  d: number;
+};
 
 const getOperationsPrioritiesWithoutRelative: QuestionGenerator<
   Identifiers
@@ -34,7 +41,10 @@ const getOperationsPrioritiesWithoutRelative: QuestionGenerator<
   const flip = randint(1, 4);
   let startStatement = "";
   let answer: string = "";
-  let a, b, c, d: number;
+  let a = 1,
+    b = 1,
+    c = 1,
+    d = 1;
   let statement: AddNode;
   switch (type) {
     case 1: // a*b ± c±d
@@ -258,6 +268,8 @@ const getOperationsPrioritiesWithoutRelative: QuestionGenerator<
         answer = (a * b * c + d).toString();
       }
       break;
+    default:
+      throw Error("impossible");
   }
 
   const question: Question<Identifiers> = {
@@ -266,7 +278,7 @@ const getOperationsPrioritiesWithoutRelative: QuestionGenerator<
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { a, b, c, d, flip, type },
   };
   return question;
 };

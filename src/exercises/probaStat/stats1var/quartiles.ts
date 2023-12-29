@@ -16,6 +16,8 @@ import { v4 } from "uuid";
 
 type Identifiers = {
   randomValues: number[];
+  randomEffectives: number[];
+  randomQuartile: number;
 };
 
 const getQuartiles: QuestionGenerator<Identifiers> = () => {
@@ -86,7 +88,7 @@ Calculer le ${quartileToString} de cette série de valeurs.`,
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { randomValues },
+    identifiers: { randomValues, randomEffectives, randomQuartile },
   };
 
   return question;

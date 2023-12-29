@@ -15,7 +15,12 @@ import { round } from "#root/math/utils/round";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
-type Identifiers = {};
+type Identifiers = {
+  sideLengths: number[];
+  randAngle: number;
+  randSide: number;
+  randSideQuestion: number;
+};
 
 const getTrigonometrySideCalcul: QuestionGenerator<Identifiers> = () => {
   const vertices = [];
@@ -43,8 +48,8 @@ const getTrigonometrySideCalcul: QuestionGenerator<Identifiers> = () => {
   const angle = [triangle.vertexB.name, triangle.vertexC.name];
 
   const randAngle = randint(0, 2);
-  const randside = randint(0, 3); // valeurs possible : 0 1 2
-  const randsideQuestion = randint(0, 3, [randside]); // si rand = 0, valeurs possible 1 2
+  const randSide = randint(0, 3); // valeurs possible : 0 1 2
+  const randSideQuestion = randint(0, 3, [randSide]); // si rand = 0, valeurs possible 1 2
 
   const angleValue = [
     round((Math.acos(sideLengths[0] / sideLengths[2]) * 180) / Math.PI, 1),
@@ -55,30 +60,30 @@ const getTrigonometrySideCalcul: QuestionGenerator<Identifiers> = () => {
     ...triangle.generateCommands({
       highlightedAngle: angle[randAngle],
       colorHighlightedAngle: "Black",
-      showLabels: [sides[randsideQuestion]],
+      showLabels: [sides[randSideQuestion]],
       setCaptions: ["?"],
-      highlightedSide: sides[randsideQuestion],
+      highlightedSide: sides[randSideQuestion],
     }),
   ];
 
-  const answer = `${(round(sideLengths[randsideQuestion], 1) + "").replace(
+  const answer = `${(round(sideLengths[randSideQuestion], 1) + "").replace(
     ".",
     ",",
   )}`;
   const question: Question<Identifiers> = {
     instruction: `Le triangle $${triangle.getTriangleName()}$ rectangle en $${triangle.getRightAngle()}$ est tel que $${
-      sides[randside]
-    } = ${(sideLengths[randside] + "").replace(".", ",")}$ cm et $\\widehat{${
+      sides[randSide]
+    } = ${(sideLengths[randSide] + "").replace(".", ",")}$ cm et $\\widehat{${
       angle[randAngle]
     }} = ${(angleValue[randAngle] + "").replace(".", ",")}^\\circ$. Calculer $${
-      sides[randsideQuestion]
+      sides[randSideQuestion]
     }$ à $0,1$ cm près.`,
     answer,
     keys: [],
     commands,
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { randAngle, randSide, randSideQuestion, sideLengths },
   };
 
   return question;

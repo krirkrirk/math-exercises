@@ -23,11 +23,10 @@ import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 const getAddAndSubWithoutRelatives: QuestionGenerator<Identifiers> = () => {
   let answer = -1;
   let statementTree: AddNode;
-
+  let numbers: number[] = [];
   while (answer < 0) {
     const nbOperations = randint(2, 4);
-    let numbers = [];
-
+    numbers = [];
     do {
       numbers = [];
       numbers.push(randint(1, 15));
@@ -53,12 +52,12 @@ const getAddAndSubWithoutRelatives: QuestionGenerator<Identifiers> = () => {
     answer: answerTex,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { numbers },
   };
   return question;
 };
 
-type Identifiers = {};
+type Identifiers = { numbers: number[] };
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];

@@ -13,7 +13,10 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { PolynomialConstructor } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 
-type Identifiers = {};
+type Identifiers = {
+  coeffs: number[];
+  x: number;
+};
 
 const getDerivativeNumberCalculQuestion: QuestionGenerator<
   Identifiers
@@ -31,7 +34,7 @@ const getDerivativeNumberCalculQuestion: QuestionGenerator<
     instruction,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { x, coeffs: trinom.coefficients },
   };
 
   return question;

@@ -1,18 +1,16 @@
 import { equal } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
-import { OperatorIds, OperatorNode } from "./operatorNode";
+import { OperatorIds, OperatorNode } from "../operators/operatorNode";
 
-export class EqualNode implements OperatorNode {
-  id: OperatorIds;
+export class EqualNode implements Node {
   leftChild: Node;
   rightChild: Node;
   opts?: NodeOptions;
   type: NodeType;
   constructor(leftChild: Node, rightChild: Node, opts?: NodeOptions) {
-    this.id = OperatorIds.equal;
     this.leftChild = leftChild;
     this.rightChild = rightChild;
-    this.type = NodeType.operator;
+    this.type = NodeType.equality;
     this.opts = opts;
   }
 

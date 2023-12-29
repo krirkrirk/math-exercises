@@ -15,7 +15,9 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
-type Identifiers = {};
+type Identifiers = {
+  numbers: number[];
+};
 
 const getMentalMultiplications: QuestionGenerator<Identifiers> = () => {
   const a = randint(-9, 10, [-1, 0, 1]);
@@ -55,7 +57,7 @@ const getMentalMultiplications: QuestionGenerator<Identifiers> = () => {
     answer: answerTex,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { numbers },
   };
 
   return question;

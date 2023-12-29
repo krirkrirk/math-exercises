@@ -1,16 +1,14 @@
 import { Node, NodeOptions, NodeType } from "../node";
-import { OperatorIds, OperatorNode } from "./operatorNode";
-import { SetNode } from "../sets/setNode";
+import { OperatorIds, OperatorNode } from "../operators/operatorNode";
+import { SetNode } from "./setNode";
 
-export class BelongsNode implements OperatorNode {
+export class BelongsNode implements Node {
   type: NodeType;
-  id: OperatorIds;
   opts?: NodeOptions | undefined;
   leftChild: Node;
   rightChild: SetNode;
   constructor(leftChild: Node, rightChild: SetNode, opts?: NodeOptions) {
-    this.type = NodeType.operator;
-    this.id = OperatorIds.belongs;
+    this.type = NodeType.belongs;
     this.leftChild = leftChild;
     this.rightChild = rightChild;
     this.opts = opts;

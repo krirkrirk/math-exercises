@@ -10,16 +10,12 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { Power } from "#root/math/numbers/integer/power";
 import { randint } from "#root/math/utils/random/randint";
 import { NodeOptions } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { simplifyNode } from "#root/tree/parsers/simplify";
-import { shuffle } from "#root/utils/shuffle";
-import { v4 } from "uuid";
 
 type Identifiers = {
   a: number;
@@ -62,13 +58,19 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  tryToAddWrongProp(
-    propositions,
-    new MultiplyNode(
-      new NumberNode(a),
-      new PowerNode(new VariableNode("x"), new NumberNode(power - 1)),
-    ).toTex(),
-  );
+  if (power === 2)
+    tryToAddWrongProp(
+      propositions,
+      new MultiplyNode(new NumberNode(a), new VariableNode("x")).toTex(),
+    );
+  if (power > 2)
+    tryToAddWrongProp(
+      propositions,
+      new MultiplyNode(
+        new NumberNode(a),
+        new PowerNode(new VariableNode("x"), new NumberNode(power - 1)),
+      ).toTex(),
+    );
   tryToAddWrongProp(
     propositions,
     new MultiplyNode(
@@ -76,29 +78,36 @@ const getPropositions: QCMGenerator<Identifiers> = (
       new PowerNode(new VariableNode("x"), new NumberNode(power)),
     ).toTex(),
   );
-  tryToAddWrongProp(
-    propositions,
-    new MultiplyNode(
-      new NumberNode(a - 1),
-      new PowerNode(new VariableNode("x"), new NumberNode(power)),
-    ).toTex(),
-  );
-  while (propositions.length < n) {
-    const wrongExponent = randint(2, 10);
-
+  if (a !== 1)
     tryToAddWrongProp(
       propositions,
-      simplifyNode(
+      new MultiplyNode(
+        new NumberNode(a - 1),
+        new PowerNode(new VariableNode("x"), new NumberNode(power)),
+      ).toTex(),
+    );
+  while (propositions.length < n) {
+    const wrongExponent = randint(2, 10);
+    if (wrongExponent === 2) {
+      tryToAddWrongProp(
+        propositions,
         new MultiplyNode(
           new NumberNode(a * wrongExponent),
-
+          new VariableNode("x"),
+        ).toTex(),
+      );
+    } else {
+      tryToAddWrongProp(
+        propositions,
+        new MultiplyNode(
+          new NumberNode(a * wrongExponent),
           new PowerNode(
             new VariableNode("x"),
             new NumberNode(wrongExponent - 1),
           ),
-        ),
-      ).toTex(),
-    );
+        ).toTex(),
+      );
+    }
   }
 
   return shuffleProps(propositions, n);

@@ -17,6 +17,7 @@ import { v4 } from "uuid";
 
 type Identifiers = {
   coeffs: number[];
+  to: string;
 };
 
 const getSequencePolynomNoFILimitQuestion: QuestionGenerator<
@@ -35,7 +36,7 @@ const getSequencePolynomNoFILimitQuestion: QuestionGenerator<
       .toTex()}$.`,
     keys: ["infty"],
     answerFormat: "tex",
-    identifiers: { coeffs: poly.coefficients },
+    identifiers: { coeffs: poly.coefficients, to },
   };
 
   return question;

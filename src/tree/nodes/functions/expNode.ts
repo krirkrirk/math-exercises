@@ -1,13 +1,16 @@
 import { exp } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
-import { FunctionNode, FunctionsIds } from "./functionNode";
-
+import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
+import { AlgebraicNode } from "../algebraicNode";
+export function isExpNode(a: Node): a is ExpNode {
+  return isFunctionNode(a) && a.id === FunctionsIds.exp;
+}
 export class ExpNode implements FunctionNode {
   opts?: NodeOptions;
   id: FunctionsIds;
-  child: Node;
+  child: AlgebraicNode;
   type: NodeType;
-  constructor(child: Node, opts?: NodeOptions) {
+  constructor(child: AlgebraicNode, opts?: NodeOptions) {
     this.id = FunctionsIds.exp;
     this.child = child;
     this.type = NodeType.function;

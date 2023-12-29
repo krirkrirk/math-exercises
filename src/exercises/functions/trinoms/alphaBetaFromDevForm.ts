@@ -14,7 +14,10 @@ import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {};
+type Identifiers = {
+  param: string;
+  coeffs: number[];
+};
 
 const getAlphaBetaFromDevFormQuestion: QuestionGenerator<Identifiers> = () => {
   const trinom = TrinomConstructor.randomCanonical();
@@ -31,7 +34,7 @@ const getAlphaBetaFromDevFormQuestion: QuestionGenerator<Identifiers> = () => {
       .toTex()}$. Que vaut $${param}$ ?`,
     answerFormat: "tex",
     startStatement: param,
-    identifiers: {},
+    identifiers: { coeffs: trinom.coefficients, param },
   };
 
   return question;

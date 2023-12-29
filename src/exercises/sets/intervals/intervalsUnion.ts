@@ -15,6 +15,11 @@ import {
 } from "#root/math/sets/intervals/intervals";
 import { shuffle } from "#root/utils/shuffle";
 
+type Identifiers = {
+  int1Tex: string;
+  int2Tex: string;
+};
+
 const getIntervalsUnionQuestion: QuestionGenerator<Identifiers> = () => {
   const [int1, int2] = IntervalConstructor.differentRandoms(2);
   const set = int1.union(int2);
@@ -45,11 +50,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
   }
 
   return shuffle(propositions);
-};
-
-type Identifiers = {
-  int1Tex: string;
-  int2Tex: string;
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {

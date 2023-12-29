@@ -30,7 +30,6 @@ type Identifiers = {
   a: number;
   b: number;
   ineqType: string;
-  result: string;
 };
 
 const getFirstDegreeInequationsQuestion: QuestionGenerator<
@@ -57,7 +56,7 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
     instruction: `Résoudre l'inéquation : $${affine.toTex()} ${ineqType} ${b}$ `,
     keys: inequationKeys,
     answerFormat: "tex",
-    identifiers: { a: affine.a, b, ineqType, result },
+    identifiers: { a: affine.a, b, ineqType },
   };
 
   return question;
@@ -65,7 +64,7 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, a, ineqType, result },
+  { answer, a, ineqType, b },
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
@@ -77,6 +76,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
       : ineqType === "\\le"
       ? "\\ge"
       : "\\le";
+  const result = new Rational(b, a).simplify().toTree().toTex();
 
   tryToAddWrongProp(
     propositions,

@@ -16,10 +16,14 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { simplifyComplex, simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {};
+type Identifiers = {
+  a: number;
+  b: number;
+  z1: number[];
+  z2: number[];
+};
 
 const getLinearCombinaisonComplexQuestion: QuestionGenerator<
   Identifiers
@@ -29,19 +33,12 @@ const getLinearCombinaisonComplexQuestion: QuestionGenerator<
   const a = randint(-10, 11, [0]);
   const b = randint(-10, 11, [0]);
 
-  const statement = simplifyNode(
-    new AddNode(
-      new MultiplyNode(new NumberNode(a), new VariableNode("z_1")),
-      new MultiplyNode(new NumberNode(b), new VariableNode("z_2")),
-    ),
+  const statement = new AddNode(
+    new MultiplyNode(new NumberNode(a), new VariableNode("z_1")),
+    new MultiplyNode(new NumberNode(b), new VariableNode("z_2")),
   );
-  //   const statement = simplify(`${a}z+${b}z'`);
-  const answer = simplifyComplex(
-    new AddNode(
-      new MultiplyNode(new NumberNode(a), z1.toTree()),
-      new MultiplyNode(new NumberNode(b), z2.toTree()),
-    ),
-  ).toTex();
+
+  const answer = z1.times(a).add(z2.times(b)).toTree().toTex();
 
   const question: Question<Identifiers> = {
     answer,
@@ -50,7 +47,7 @@ const getLinearCombinaisonComplexQuestion: QuestionGenerator<
       .toTex()}$. Calculer $${statement.toTex()}$.`,
     keys: ["i", "z", "quote"],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { a, b, z1: [z1.re, z1.im], z2: [z2.re, z2.im] },
   };
 
   return question;
@@ -61,15 +58,18 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   addValidProp(propositions, answer);
   while (propositions.length < n) {
     const wrongAnswer = ComplexConstructor.random();
-
     tryToAddWrongProp(propositions, wrongAnswer.toTree().toTex());
   }
 
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<Identifiers> = (n, { answer }) => {
-  return true;
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, a, b, z1, z2 }) => {
+  const complex1 = new Complex(z1[0], z1[1]);
+  const complex2 = new Complex(z2[0], z2[1]);
+  const answerTree = complex1.times(a).add(complex2.times(b)).toTree();
+  const texs = answerTree.toAllValidTexs();
+  return texs.includes(ans);
 };
 export const linearCombinaisonComplex: MathExercise<Identifiers> = {
   id: "linearCombinaisonComplex",

@@ -15,7 +15,7 @@ import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutio
 import { ExpNode } from "#root/tree/nodes/functions/expNode";
 import { LogNode } from "#root/tree/nodes/functions/logNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { EqualNode } from "#root/tree/nodes/operators/equalNode";
+import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";

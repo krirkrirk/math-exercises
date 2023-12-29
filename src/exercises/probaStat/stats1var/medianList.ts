@@ -19,25 +19,25 @@ type Identifiers = {
 };
 
 const getMedianList: QuestionGenerator<Identifiers> = () => {
-  let randomValeurs: number[] = [];
+  let randomValues: number[] = [];
   const length = randint(6, 10);
 
-  for (let i = 0; i < length; i++) randomValeurs.push(randint(1, 20));
+  for (let i = 0; i < length; i++) randomValues.push(randint(1, 20));
 
-  const sortedValues = randomValeurs.sort((a, b) => a - b);
+  const sortedValues = randomValues.sort((a, b) => a - b);
 
-  const middleIndex = Math.floor(randomValeurs.length / 2);
+  const middleIndex = Math.floor(randomValues.length / 2);
 
   let median: number;
 
-  if (randomValeurs.length % 2 === 0) {
+  if (randomValues.length % 2 === 0) {
     median = (sortedValues[middleIndex - 1] + sortedValues[middleIndex]) / 2;
   } else {
     median = sortedValues[middleIndex];
   }
   const answer = (median + "").replace(".", ",");
   const question: Question<Identifiers> = {
-    instruction: `On considère la liste suivante : $${randomValeurs.join(
+    instruction: `On considère la liste suivante : $${randomValues.join(
       ";\\ ",
     )}.$
     $\\\\$Calculer la médiane de cette liste de valeurs.`,

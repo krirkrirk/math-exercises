@@ -16,7 +16,11 @@ import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
-type Identifiers = {};
+type Identifiers = {
+  sideLengths: number[];
+  randAngle: number;
+  randSides: number[];
+};
 
 const getTrigonometryAngleCalcul: QuestionGenerator<Identifiers> = () => {
   const vertices = [];
@@ -70,7 +74,7 @@ const getTrigonometryAngleCalcul: QuestionGenerator<Identifiers> = () => {
     ],
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { randAngle, sideLengths, randSides },
   };
 
   return question;

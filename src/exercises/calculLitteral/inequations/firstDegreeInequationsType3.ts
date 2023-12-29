@@ -27,7 +27,6 @@ import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {
   coeff: number;
   ineqType: string;
-  result: string;
   a: number;
   b: number;
   c: number;
@@ -67,7 +66,6 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
     identifiers: {
       coeff,
       ineqType,
-      result,
       a: affine1.a,
       b: affine1.b,
       c: affine2.a,
@@ -80,8 +78,9 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, coeff, ineqType, result },
+  { answer, coeff, ineqType, a, b, c, d },
 ) => {
+  const result = new Rational(d - b, a - c).simplify().toTree().toTex();
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const invIneqType =

@@ -16,6 +16,7 @@ import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {
   firstValue: number;
   reason: number;
+  firstRank: number;
 };
 
 const getGeometricRecurrenceFormulaUsage: QuestionGenerator<
@@ -32,7 +33,7 @@ const getGeometricRecurrenceFormulaUsage: QuestionGenerator<
     answer,
     keys: ["q", "n", "u", "underscore"],
     answerFormat: "tex",
-    identifiers: { firstValue, reason },
+    identifiers: { firstValue, reason, firstRank },
   };
   return question;
 };

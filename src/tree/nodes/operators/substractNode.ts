@@ -1,9 +1,11 @@
 import { subtract } from "mathjs";
 import { Node, NodeType } from "../node";
-import { OperatorIds, OperatorNode } from "./operatorNode";
+import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { OppositeNode } from "../functions/oppositeNode";
 import { AddNode } from "./addNode";
-
+export function isSubstractNode(a: Node): a is SubstractNode {
+  return isOperatorNode(a) && a.id === OperatorIds.substract;
+}
 export class SubstractNode implements OperatorNode {
   id: OperatorIds;
   leftChild: Node;
@@ -41,9 +43,9 @@ export class SubstractNode implements OperatorNode {
     let leftTex = this.leftChild.toTex();
 
     const needBrackets =
-      (this.rightChild.type === NodeType.operator &&
+      (isOperatorNode(this.rightChild) &&
         [OperatorIds.add, OperatorIds.substract].includes(
-          (this.rightChild as OperatorNode).id,
+          this.rightChild.id,
         )) ||
       rightTex[0] === "-";
 

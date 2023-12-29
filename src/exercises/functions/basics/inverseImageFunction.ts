@@ -12,9 +12,10 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
-import { v4 } from "uuid";
-type Identifiers = {};
-
+type Identifiers = {
+  poly1: number[];
+  xValue: number;
+};
 const getInverseImageFunction: QuestionGenerator<Identifiers> = () => {
   const polynome1 = new Polynomial([randint(-9, 10), randint(-5, 6, [0])]);
   const xValue = randint(-9, 10);
@@ -30,7 +31,7 @@ const getInverseImageFunction: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["x", "equal"],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { poly1: polynome1.coefficients, xValue },
   };
   return question;
 };

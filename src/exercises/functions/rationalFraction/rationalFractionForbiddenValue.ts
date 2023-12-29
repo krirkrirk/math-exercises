@@ -6,14 +6,12 @@ import {
   QuestionGenerator,
   VEA,
   addValidProp,
-  shuffleProps,
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Rational } from "#root/math/numbers/rationals/rational";
-import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
+import { Affine } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
-import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { shuffle } from "#root/utils/shuffle";
 

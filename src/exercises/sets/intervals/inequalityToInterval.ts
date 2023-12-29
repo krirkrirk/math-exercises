@@ -20,10 +20,15 @@ import {
   PlusInfinityNode,
 } from "#root/tree/nodes/numbers/infiniteNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { BelongsNode } from "#root/tree/nodes/operators/belongsNode";
+import { BelongsNode } from "#root/tree/nodes/sets/belongsNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
+
+type Identifiers = {
+  isIntervalToInequality: boolean;
+  intervalTex: string;
+};
 
 const getInequalityToIntervalQuestion: QuestionGenerator<Identifiers> = () => {
   const isIntervalToInequality = coinFlip();
@@ -59,11 +64,6 @@ const getInequalityToIntervalQuestion: QuestionGenerator<Identifiers> = () => {
   };
 
   return question;
-};
-
-type Identifiers = {
-  isIntervalToInequality: boolean;
-  intervalTex: string;
 };
 
 const getPropositions: QCMGenerator<Identifiers> = (

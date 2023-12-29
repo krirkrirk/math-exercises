@@ -12,7 +12,12 @@ import {
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { round } from "#root/math/utils/round";
 import { shuffle } from "#root/utils/shuffle";
-type Identifiers = {};
+type Identifiers = {
+  flip: number;
+  pA: number;
+  pB: number;
+  pAB: number;
+};
 
 const getConditionalProbability: QuestionGenerator<Identifiers> = () => {
   const pA = randint(2, 100);
@@ -108,7 +113,7 @@ const getConditionalProbability: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["p", "cap", "underscore"],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { flip, pA, pAB, pB },
   };
 
   return question;

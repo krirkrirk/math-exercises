@@ -14,8 +14,12 @@ import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {};
-
+type Identifiers = {
+  rand: boolean;
+  poly1: number[];
+  poly2: number[];
+  xValue: number;
+};
 const getImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
   const rand = coinFlip();
   const xValue = randint(-5, 6);
@@ -74,7 +78,12 @@ const getImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
     commands,
     coords: [xmin, xmax, ymin, ymax],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: {
+      poly1: polynome1.coefficients,
+      poly2: polynome2.coefficients,
+      rand,
+      xValue,
+    },
   };
   return question;
 };

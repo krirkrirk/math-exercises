@@ -22,7 +22,7 @@ export const getFirstDegreeDerivative: QuestionGenerator<Identifiers> = () => {
   const polynomial = new Polynomial([b, a]);
   const answer = a + "";
   const question: Question<Identifiers> = {
-    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
+    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toTex()}$.`,
     startStatement: `f'(x)`,
     answer,
     keys: ["x"],

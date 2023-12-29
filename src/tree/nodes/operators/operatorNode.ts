@@ -1,4 +1,5 @@
 import { coinFlip } from "../../../utils/coinFlip";
+import { AlgebraicNode } from "../algebraicNode";
 import { Node, NodeType } from "../node";
 
 export enum OperatorIds {
@@ -8,14 +9,15 @@ export enum OperatorIds {
   fraction,
   divide,
   power,
-  equal,
-  belongs,
 }
 
-export interface OperatorNode extends Node {
+export interface OperatorNode extends AlgebraicNode {
   id: OperatorIds;
-  leftChild: Node;
-  rightChild: Node;
+  leftChild: AlgebraicNode;
+  rightChild: AlgebraicNode;
+}
+export function isOperatorNode(a: Node): a is OperatorNode {
+  return a.type === NodeType.operator;
 }
 
 export interface CommutativeOperatorNode extends OperatorNode {

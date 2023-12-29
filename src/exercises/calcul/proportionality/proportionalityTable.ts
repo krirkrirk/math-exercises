@@ -13,7 +13,13 @@ import { IntegerConstructor } from "#root/math/numbers/integer/integer";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {};
+type Identifiers = {
+  randQuation: number;
+  x1: string | number;
+  x2: string | number;
+  x3: string | number;
+  x4: string | number;
+};
 
 const getProportionalityTable: QuestionGenerator<Identifiers> = () => {
   const fact = randint(2, 10);
@@ -58,7 +64,7 @@ Déterminer le nombre manquant.`,
     answer: answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { randQuation, x1, x2, x3, x4 },
   };
 
   return question;

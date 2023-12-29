@@ -107,4 +107,19 @@ export class Integer implements Nombre {
         throw Error("not implemented");
     }
   }
+  opposite() {
+    return new Integer(-this.value);
+  }
+  add(nb: Nombre) {
+    switch (nb.type) {
+      case NumberType.Integer:
+        const int = nb as Integer;
+        return new Integer(this.value + int.value);
+      case NumberType.Rational:
+        const rational = nb as Rational;
+        return rational.add(this);
+      default:
+        throw Error("general integer add not implemented");
+    }
+  }
 }

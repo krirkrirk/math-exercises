@@ -12,19 +12,23 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { shuffle } from "#root/utils/shuffle";
-type Identifiers = {};
+import { coinFlip } from "#root/utils/coinFlip";
+type Identifiers = {
+  randPercent: number;
+  isUp: boolean;
+};
 
 const getReciprocalPercentageQuestion: QuestionGenerator<Identifiers> = () => {
   const randPercent = randint(1, 50);
-  const tab = ["hausse", "baisse"];
   let ans = 0;
-  let a = randint(0, 2);
-  let instruction = `Le prix d'un article subit une ${tab[a]} de $${randPercent}\\%$. Quelle évolution devra-t-il subir pour revenir à son prix initial (arrondir au centième de pourcentage) ?`;
+  const isUp = coinFlip();
+  let instruction = `Le prix d'un article subit une ${
+    isUp ? "hausse" : "baisse"
+  } de $${randPercent}\\%$. Quelle évolution devra-t-il subir pour revenir à son prix initial (arrondir au centième de pourcentage) ?`;
 
-  ans =
-    a == 0
-      ? (1 / (1 + randPercent / 100) - 1) * 100
-      : (1 / (1 - randPercent / 100) - 1) * 100;
+  ans = isUp
+    ? (1 / (1 + randPercent / 100) - 1) * 100
+    : (1 / (1 - randPercent / 100) - 1) * 100;
   const answer = `${(ans > 0
     ? "+" + round(ans, 2)
     : "" + round(ans, 2)
@@ -34,7 +38,7 @@ const getReciprocalPercentageQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["percent"],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { isUp, randPercent },
   };
 
   return question;

@@ -14,7 +14,8 @@ import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   value1: number;
-  value2: number;
+  reason: number;
+  rank1: number;
 };
 
 const getGeometricFindReason: QuestionGenerator<Identifiers> = () => {
@@ -31,15 +32,17 @@ const getGeometricFindReason: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { value1, value2 },
+    identifiers: { value1, rank1, reason },
   };
   return question;
 };
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, value1, value2 },
+  { answer, value1, rank1, reason },
 ) => {
+  const value2 = reason * value1;
+
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 

@@ -21,10 +21,9 @@ type Identifiers = {
   randomUnitInstructionIndex: number;
   randomMass: number;
 };
+const units = ["mg", "cg", "dg", "g", "dag", "hg", "kg"];
 
 const getMassConversion: QuestionGenerator<Identifiers> = () => {
-  const units = ["mg", "cg", "dg", "g", "dag", "hg", "kg"];
-
   const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(0, 7, [randomUnitIndex]);
   const randomMass = DecimalConstructor.random(0, 1000, randint(0, 4));

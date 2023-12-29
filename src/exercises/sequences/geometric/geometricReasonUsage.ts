@@ -15,6 +15,7 @@ import { v4 } from "uuid";
 
 type Identifiers = {
   reason: number;
+  startRank: number;
   startValue: number;
 };
 
@@ -30,7 +31,7 @@ const getGeometricReasonUsage: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["q", "n", "u", "underscore"],
     answerFormat: "tex",
-    identifiers: { startValue, reason },
+    identifiers: { startValue, reason, startRank },
   };
   return question;
 };

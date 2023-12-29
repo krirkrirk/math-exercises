@@ -1,18 +1,21 @@
 import { isIndex, sqrt } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
-import { FunctionNode, FunctionsIds } from "./functionNode";
+import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { SquareRoot } from "#root/math/numbers/reals/real";
-import { NumberNode } from "../numbers/numberNode";
+import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { MultiplyNode } from "../operators/multiplyNode";
 import { isInt } from "#root/utils/isInt";
-
+import { AlgebraicNode } from "../algebraicNode";
+export function isSqrtNode(a: Node): a is SqrtNode {
+  return isFunctionNode(a) && a.id === FunctionsIds.sqrt;
+}
 export class SqrtNode implements FunctionNode {
   id: FunctionsIds;
-  child: Node;
+  child: AlgebraicNode;
   type: NodeType;
   opts?: NodeOptions;
 
-  constructor(child: Node, opts?: NodeOptions) {
+  constructor(child: AlgebraicNode, opts?: NodeOptions) {
     this.id = FunctionsIds.sqrt;
     this.child = child;
     this.type = NodeType.function;
@@ -35,9 +38,8 @@ export class SqrtNode implements FunctionNode {
     childNodes.forEach((childNode) => {
       res.push(new SqrtNode(childNode));
     });
-    if (options?.allowSimplifySqrt && this.child.type === NodeType.number) {
-      const operand = this.child as NumberNode;
-      const sqrt = new SquareRoot(operand.value);
+    if (options?.allowSimplifySqrt && isNumberNode(this.child)) {
+      const sqrt = new SquareRoot(this.child.value);
       const coeffs = sqrt.getSimplifiedCoeffs();
       if (isInt(Math.sqrt(coeffs[1]))) {
         res.push(new NumberNode(coeffs[0]));

@@ -14,10 +14,10 @@ import { Monom } from "#root/math/polynomials/monom";
 import { PolynomialConstructor } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
-import { v4 } from "uuid";
 
 type Identifiers = {
-  leadingCoeffsRational: string;
+  polyNumCoeffs: number[];
+  polyDenumCoeffs: number[];
 };
 
 const getSequencePolynomProductLimitQuestion: QuestionGenerator<
@@ -47,18 +47,27 @@ const getSequencePolynomProductLimitQuestion: QuestionGenerator<
       .toTex()})(${polyDenum.toTree().toTex()})$.`,
     keys: ["infty"],
     answerFormat: "tex",
-    identifiers: { leadingCoeffsRational },
+    identifiers: {
+      polyDenumCoeffs: polyDenum.coefficients,
+      polyNumCoeffs: polyNum.coefficients,
+    },
   };
   return question;
 };
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, leadingCoeffsRational },
+  { answer, polyDenumCoeffs, polyNumCoeffs },
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
+  const numLeadingCoeff = polyNumCoeffs[polyNumCoeffs.length - 1];
+  const denumLeadingCoeff = polyDenumCoeffs[polyDenumCoeffs.length - 1];
 
+  let leadingCoeffsRational = new Rational(numLeadingCoeff, denumLeadingCoeff)
+    .simplify()
+    .toTree()
+    .toTex();
   tryToAddWrongProp(propositions, "+\\infty");
   tryToAddWrongProp(propositions, "-\\infty");
   tryToAddWrongProp(propositions, "0");

@@ -35,6 +35,6 @@ import { AddNode } from "./tree/nodes/operators/addNode";
 
 */
 import * as Exercises from "./exercises";
-const exercises = Object.values(Exercises);
+const mathExercises = Object.values(Exercises);
 
-export { exercises };
+export { mathExercises };

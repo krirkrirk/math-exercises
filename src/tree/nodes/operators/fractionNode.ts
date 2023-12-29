@@ -1,10 +1,14 @@
 import { fraction } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
-import { OperatorIds, OperatorNode } from "./operatorNode";
-import { NumberNode } from "../numbers/numberNode";
+import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
+import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { FunctionNode, FunctionsIds } from "../functions/functionNode";
 import { round } from "#root/math/utils/round";
-
+import { isOppositeNode } from "../functions/oppositeNode";
+import { AlgebraicNode } from "../algebraicNode";
+export function isFractionNode(a: Node): a is FractionNode {
+  return isOperatorNode(a) && a.id === OperatorIds.fraction;
+}
 export class FractionNode implements OperatorNode {
   opts?: NodeOptions;
   /**
@@ -12,10 +16,14 @@ export class FractionNode implements OperatorNode {
    * @param rightChild denum
    */
   id: OperatorIds;
-  leftChild: Node;
-  rightChild: Node;
+  leftChild: AlgebraicNode;
+  rightChild: AlgebraicNode;
   type: NodeType;
-  constructor(leftChild: Node, rightChild: Node, opts?: NodeOptions) {
+  constructor(
+    leftChild: AlgebraicNode,
+    rightChild: AlgebraicNode,
+    opts?: NodeOptions,
+  ) {
     this.id = OperatorIds.fraction;
     this.leftChild = leftChild;
     this.rightChild = rightChild;
@@ -40,13 +48,10 @@ export class FractionNode implements OperatorNode {
         res.push(new FractionNode(leftNode, rightNode));
         if (
           options?.allowFractionToDecimal &&
-          leftNode.type === NodeType.number &&
-          rightNode.type === NodeType.number
+          isNumberNode(leftNode) &&
+          isNumberNode(rightNode)
         ) {
-          const [num, denum] = [
-            (leftNode as NumberNode).value,
-            (rightNode as NumberNode).value,
-          ];
+          const [num, denum] = [leftNode.value, rightNode.value];
           const decimal = round(num / denum, 12);
           //on ne push pas les non décimaux (limite arbitraire : partie décimale de 12 => non décimal)
           if ((decimal + "").split(".")[1].length > 11) return;
@@ -66,11 +71,9 @@ export class FractionNode implements OperatorNode {
 
   toTex(): string {
     if (
-      (!this.opts?.allowMinusAnywhereInFraction &&
-        this.leftChild.type === NodeType.function &&
-        (this.leftChild as FunctionNode).id === FunctionsIds.opposite) ||
-      (this.leftChild.type === NodeType.number &&
-        (this.leftChild as NumberNode).value < 0)
+      !this.opts?.allowMinusAnywhereInFraction &&
+      (isOppositeNode(this.leftChild) ||
+        (isNumberNode(this.leftChild) && this.leftChild.value < 0))
     ) {
       return `-\\frac{${this.leftChild
         .toTex()

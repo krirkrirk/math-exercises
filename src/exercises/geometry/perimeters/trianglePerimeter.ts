@@ -12,7 +12,9 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {};
+type Identifiers = {
+  sides: number[];
+};
 
 const getTrianglePerimeter: QuestionGenerator<Identifiers> = () => {
   const sides = [randint(1, 13), randint(1, 13), randint(1, 13)];
@@ -23,7 +25,7 @@ const getTrianglePerimeter: QuestionGenerator<Identifiers> = () => {
     answer: answerTex,
     answerFormat: "tex",
     keys: ["cm", "cm2"],
-    identifiers: {},
+    identifiers: { sides },
   };
 
   return question;

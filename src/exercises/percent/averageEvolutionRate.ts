@@ -13,7 +13,10 @@ import {
 } from "../exercise";
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 
-type Identifiers = {};
+type Identifiers = {
+  rate: number;
+  nbMois: number;
+};
 
 const getAverageEvolutionRate: QuestionGenerator<Identifiers> = () => {
   const rate = randint(1, 100);
@@ -27,7 +30,7 @@ const getAverageEvolutionRate: QuestionGenerator<Identifiers> = () => {
     answer: answerTex,
     keys: ["percent"],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { nbMois, rate },
   };
 
   return question;

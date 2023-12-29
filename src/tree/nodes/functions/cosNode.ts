@@ -1,13 +1,16 @@
-import { cos } from 'mathjs';
-import { Node, NodeType } from '../node';
-import { FunctionNode, FunctionsIds } from './functionNode';
-
+import { cos } from "mathjs";
+import { Node, NodeType } from "../node";
+import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
+import { AlgebraicNode } from "../algebraicNode";
+export function isCosNode(a: Node): a is CosNode {
+  return isFunctionNode(a) && a.id === FunctionsIds.cos;
+}
 export class CosNode implements FunctionNode {
   id: FunctionsIds;
-  child: Node;
+  child: AlgebraicNode;
   type: NodeType;
 
-  constructor(child: Node) {
+  constructor(child: AlgebraicNode) {
     this.id = FunctionsIds.opposite;
     this.child = child;
     this.type = NodeType.function;

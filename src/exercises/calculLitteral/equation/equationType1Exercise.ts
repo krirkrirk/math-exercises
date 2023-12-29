@@ -16,7 +16,7 @@ import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutio
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { shuffle } from "#root/utils/shuffle";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
-import { EqualNode } from "#root/tree/nodes/operators/equalNode";
+import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 
 /**
  *  type x+a=b

@@ -29,9 +29,9 @@ import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
-  a: number;
+  b: number;
+  c: number;
   ineqType: string;
-  result: number;
 };
 
 const getFirstDegreeInequationsQuestion: QuestionGenerator<
@@ -50,15 +50,16 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
     instruction: `Résoudre l'inéquation : $${affine.toTex()} ${ineqType} ${c}$ `,
     keys: inequationKeys,
     answerFormat: "tex",
-    identifiers: { a: affine.a, ineqType, result },
+    identifiers: { ineqType, b: affine.b, c },
   };
 
   return question;
 };
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, a, ineqType, result },
+  { answer, ineqType, b, c },
 ) => {
+  const result = c - b;
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const invIneqType =
@@ -70,10 +71,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
       ? "\\ge"
       : "\\le";
 
-  tryToAddWrongProp(
-    propositions,
-    `x${a < 0 ? ineqType : invIneqType}${result}`,
-  );
+  tryToAddWrongProp(propositions, `x${invIneqType}${result}`);
   while (propositions.length < n) {
     const wrongAnswer = `x${coinFlip() ? ineqType : invIneqType}${randint(
       -10,
@@ -86,7 +84,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { a, ineqType, result }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { ineqType, b, c }) => {
+  const result = c - b;
   const ineq = new InequationNode(
     [new VariableNode("x"), new NumberNode(result)],
     ineqType as InegalitySymbols,

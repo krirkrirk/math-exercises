@@ -13,7 +13,10 @@ import {
 } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
-type Identifiers = {};
+type Identifiers = {
+  randomValues: number[];
+  randomEffectives: number[];
+};
 
 const getAverageWithTableQuestion: QuestionGenerator<Identifiers> = () => {
   const getRandomUniqueValues = (
@@ -30,14 +33,14 @@ const getAverageWithTableQuestion: QuestionGenerator<Identifiers> = () => {
     return Array.from(uniqueValues).sort((a, b) => a - b);
   };
 
-  const randomValeurs: number[] = getRandomUniqueValues(5, 1, 20);
+  const randomValues: number[] = getRandomUniqueValues(5, 1, 20);
   const randomEffectives = [1, 2, 3, 4, 5].map((el) => randint(1, 6));
 
   const sumEffectives = randomEffectives.reduce((sum, value) => sum + value, 0);
   let average = 0;
 
-  for (let i = 0; i < randomValeurs.length; i++)
-    average += randomValeurs[i] * randomEffectives[i];
+  for (let i = 0; i < randomValues.length; i++)
+    average += randomValues[i] * randomEffectives[i];
 
   average /= sumEffectives;
   average = round(average, 2);
@@ -48,7 +51,7 @@ const getAverageWithTableQuestion: QuestionGenerator<Identifiers> = () => {
 
 | | | | | | |
 |-|-|-|-|-|-|
-|Valeur|${randomValeurs[0]}|${randomValeurs[1]}|${randomValeurs[2]}|${randomValeurs[3]}|${randomValeurs[4]}|
+|Valeur|${randomValues[0]}|${randomValues[1]}|${randomValues[2]}|${randomValues[3]}|${randomValues[4]}|
 |Effectif|${randomEffectives[0]}|${randomEffectives[1]}|${randomEffectives[2]}|${randomEffectives[3]}|${randomEffectives[4]}|
 
 Calculer la moyenne de cette série de valeurs (arrondir au centième).`,
@@ -56,7 +59,7 @@ Calculer la moyenne de cette série de valeurs (arrondir au centième).`,
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { randomEffectives, randomValues },
   };
 
   return question;

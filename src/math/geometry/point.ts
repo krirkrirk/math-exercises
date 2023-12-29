@@ -1,12 +1,5 @@
-import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { Node, NodeType } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { PowerNode } from "#root/tree/nodes/operators/powerNode";
-import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
-import { simplifyNode } from "#root/tree/parsers/simplify";
-import { evaluate } from "mathjs";
 import { MathSet } from "../sets/mathSet";
 import { Interval } from "../sets/intervals/intervals";
 import { Rational } from "../numbers/rationals/rational";
@@ -46,11 +39,15 @@ export class Point {
   }
 
   getXnumber(): number {
-    return evaluate(this.x.toMathString());
+    if (this.x.type !== NodeType.number)
+      throw Error("general point not implemented yet");
+    return (this.x as NumberNode).value;
   }
 
   getYnumber(): number {
-    return evaluate(this.y.toMathString());
+    if (this.y.type !== NodeType.number)
+      throw Error("general point not implemented yet");
+    return (this.y as NumberNode).value;
   }
 
   midpoint(B: Point, name = "I"): Point {
@@ -74,23 +71,6 @@ export class Point {
     const dx = this.getXnumber() - B.getXnumber();
     const dy = this.getYnumber() - B.getYnumber();
     return Math.sqrt(dx ** 2 + dy ** 2);
-  }
-
-  distanceToNode(B: Point): Node {
-    const dx = new SubstractNode(this.x, B.x);
-    const dy = new SubstractNode(this.y, B.y);
-    const sum = new AddNode(
-      new PowerNode(dx, new NumberNode(2)),
-      new PowerNode(dy, new NumberNode(2)),
-    );
-    return new SqrtNode(simplifyNode(sum));
-  }
-
-  equalTo(B: Point): boolean {
-    return (
-      this.getXnumber() === B.getXnumber() &&
-      this.getYnumber() === B.getYnumber()
-    );
   }
 }
 

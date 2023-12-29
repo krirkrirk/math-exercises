@@ -19,6 +19,7 @@ import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 type Identifiers = {
   coeffs: number[];
+  to: string;
 };
 
 const getPolynomLimitQuestion: QuestionGenerator<Identifiers> = () => {
@@ -33,7 +34,7 @@ const getPolynomLimitQuestion: QuestionGenerator<Identifiers> = () => {
       .toTex()}$.`,
     keys: ["infty"],
     answerFormat: "tex",
-    identifiers: { coeffs: poly.coefficients },
+    identifiers: { coeffs: poly.coefficients, to },
   };
 
   return question;

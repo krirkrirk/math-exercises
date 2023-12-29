@@ -15,7 +15,9 @@ import { randint } from "#root/math/utils/random/randint";
 import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
 
-type Identifiers = {};
+type Identifiers = {
+  sidesLengths: number[];
+};
 
 const getRightTriangleArea: QuestionGenerator<Identifiers> = () => {
   const vertices = [];
@@ -28,7 +30,7 @@ const getRightTriangleArea: QuestionGenerator<Identifiers> = () => {
     names: vertices,
   });
 
-  const sidesLength = [
+  const sidesLengths = [
     Math.round(triangle.getSideBnumber() / 2),
     Math.round(triangle.getSideCnumber() / 2),
   ];
@@ -36,22 +38,25 @@ const getRightTriangleArea: QuestionGenerator<Identifiers> = () => {
   const commands = [
     ...triangle.generateCommands({
       showLabels: [triangle.getSideBName(), triangle.getSideCName()],
-      setCaptions: [sidesLength[0] + "", sidesLength[1] + ""],
+      setCaptions: [sidesLengths[0] + "", sidesLengths[1] + ""],
     }),
   ];
 
-  const answer = ((sidesLength[0] * sidesLength[1]) / 2 + "").replace(".", ",");
+  const answer = ((sidesLengths[0] * sidesLengths[1]) / 2 + "").replace(
+    ".",
+    ",",
+  );
   const answerTex = answer + "\\text{cm}^2";
   const question: Question<Identifiers> = {
     instruction: `Calculer l'aire du triangle $${triangle.getTriangleName()}$ rectangle en ${triangle.getRightAngle()} sachant que $${triangle.getSideBName()} = ${
-      sidesLength[0]
-    }$ cm et $${triangle.getSideCName()} = ${sidesLength[1]}$ cm.`,
+      sidesLengths[0]
+    }$ cm et $${triangle.getSideCName()} = ${sidesLengths[1]}$ cm.`,
     answer: answerTex,
     keys: ["cm", "cm2"],
     commands,
     coords: triangle.generateCoords(),
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { sidesLengths },
   };
 
   return question;

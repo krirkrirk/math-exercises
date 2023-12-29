@@ -20,10 +20,9 @@ type Identifiers = {
   randomUnitInstructionIndex: number;
   randomVolume: number;
 };
+const units = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
 
 const getVolumeConversion: QuestionGenerator<Identifiers> = () => {
-  const units = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
-
   const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(
     // cette manip a pour but d'éviter des conversion de type km³ --> cm³ ou le contraire (chiffre trop grand/petit)

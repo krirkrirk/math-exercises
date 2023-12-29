@@ -12,7 +12,10 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
-type Identifiers = {};
+type Identifiers = {
+  length: number;
+  width: number;
+};
 const getRectanglePerimeter: QuestionGenerator<Identifiers> = () => {
   const length = randint(3, 13);
   const width = randint(1, length);
@@ -23,7 +26,7 @@ const getRectanglePerimeter: QuestionGenerator<Identifiers> = () => {
     answer: answerTex,
     answerFormat: "tex",
     keys: ["cm", "cm2"],
-    identifiers: {},
+    identifiers: { length, width },
   };
 
   return question;

@@ -1,14 +1,18 @@
 import { log } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
-import { FunctionNode, FunctionsIds } from "./functionNode";
-
+import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
+import { isAbsNode } from "./absNode";
+import { AlgebraicNode } from "../algebraicNode";
+export function isLogNode(a: Node): a is LogNode {
+  return isFunctionNode(a) && a.id === FunctionsIds.log;
+}
 export class LogNode implements FunctionNode {
   id: FunctionsIds;
-  child: Node;
+  child: AlgebraicNode;
   type: NodeType;
   opts?: NodeOptions;
 
-  constructor(child: Node, opts?: NodeOptions) {
+  constructor(child: AlgebraicNode, opts?: NodeOptions) {
     this.id = FunctionsIds.opposite;
     this.child = child;
     this.type = NodeType.function;
@@ -24,9 +28,7 @@ export class LogNode implements FunctionNode {
     if (!this.opts?.allowLnOfOne && tex === "1") {
       return "0";
     }
-    const shouldntUseBrackets =
-      this.child.type === NodeType.function &&
-      (this.child as FunctionNode).id === FunctionsIds.abs;
+    const shouldntUseBrackets = isAbsNode(this.child);
     if (shouldntUseBrackets) return `\\ln${tex}`;
     else return `\\ln\\left(${tex}\\right)`;
   }

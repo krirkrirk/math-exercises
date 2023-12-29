@@ -148,7 +148,7 @@ const getInverseImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     instruction: statement,
     answer,
-    keys: ["S", "equal", "lbrace", "rbrace", "semicolon", "emptyset"],
+    keys: ["S", "equal", "lbrace", "rbrace", "semicolon", "emptyset", "et"],
     commands,
     coords: [xmin, xmax, ymin, ymax],
     answerFormat: "tex",

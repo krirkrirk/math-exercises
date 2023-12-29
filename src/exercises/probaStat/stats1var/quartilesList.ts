@@ -15,6 +15,7 @@ import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
 type Identifiers = {
   randomValues: number[];
+  randomQuartile: number;
 };
 
 const getQuartiles: QuestionGenerator<Identifiers> = () => {
@@ -62,7 +63,7 @@ const getQuartiles: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { randomValues },
+    identifiers: { randomValues, randomQuartile },
   };
 
   return question;

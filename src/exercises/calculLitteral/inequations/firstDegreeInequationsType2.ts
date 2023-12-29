@@ -32,7 +32,6 @@ type Identifiers = {
   a: number;
   b: number;
   c: number;
-  result: string;
 };
 
 const getFirstDegreeInequationsQuestion: QuestionGenerator<
@@ -62,15 +61,16 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
     instruction: `Résoudre l'inéquation : $${affine.toTex()} ${ineqType} ${c}$ `,
     keys: inequationKeys,
     answerFormat: "tex",
-    identifiers: { a: affine.a, b: affine.b, c, result, ineqType },
+    identifiers: { a: affine.a, b: affine.b, c, ineqType },
   };
 
   return question;
 };
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, a, ineqType, result },
+  { answer, a, ineqType, b, c },
 ) => {
+  const result = new Rational(c - b, a).simplify().toTree().toTex();
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const invIneqType =

@@ -9,15 +9,12 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { DroiteConstructor } from "#root/math/geometry/droite";
 import { Point } from "#root/math/geometry/point";
+import { Integer } from "#root/math/numbers/integer/integer";
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { simplifyNode } from "#root/tree/parsers/simplify";
 import { shuffle } from "#root/utils/shuffle";
-import { evaluate } from "mathjs";
 type Identifiers = {
   xA: number;
   yA: number;
@@ -27,19 +24,18 @@ type Identifiers = {
 
 const getLeadingCoefficientQuestion: QuestionGenerator<Identifiers> = () => {
   let xA, yA, xB, yB: number;
-  let pointA, pointB: Point;
 
   [xA, yA] = [1, 2].map((el) => randint(-5, 6));
   xB = xA > 0 ? randint(xA - 4, 6, [xA]) : randint(-4, xA + 5, [xA]); // l'écart entre les deux points ne soit pas grand
   yB = yA > 0 ? randint(yA - 4, 6) : randint(-4, yA + 5);
-  pointA = new Point("A", new NumberNode(xA), new NumberNode(yA));
-  pointB = new Point("B", new NumberNode(xB), new NumberNode(yB));
-
-  const droite = DroiteConstructor.fromTwoPoints(pointA, pointB, "D");
-  const a = droite.a.toMathString();
-  const b = droite.b.toMathString();
-  const aValue = evaluate(a);
-  const bValue = evaluate(b);
+  const a = new Rational(yB - yA, xB - xA).simplify();
+  const b = a.opposite().multiply(new Integer(xA)).add(new Integer(yA));
+  const aTree = a.toTree();
+  const bTree = b.toTree();
+  const aString = aTree.toMathString();
+  const bString = bTree.toMathString();
+  const aValue = a.value;
+  const bValue = b.value;
 
   let xmin, xmax, ymin, ymax: number;
 
@@ -59,13 +55,13 @@ const getLeadingCoefficientQuestion: QuestionGenerator<Identifiers> = () => {
     xmax = 1;
   }
 
-  const answer = droite.getLeadingCoefficient();
+  const answer = aTree.toTex();
   const question: Question<Identifiers> = {
     instruction:
       "Déterminer le coefficient directeur de la droite représentée ci-dessous : ",
     answer,
     keys: [],
-    commands: [`f(x) = (${a}) * x + (${b})`],
+    commands: [`f(x) = (${aString}) * x + (${bString})`],
     coords: [xmin, xmax, ymin, ymax],
     answerFormat: "tex",
     identifiers: { xA, xB, yA, yB },
@@ -80,17 +76,14 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const pointA = new Point("A", new NumberNode(xA), new NumberNode(yA));
-  const pointB = new Point("B", new NumberNode(xB), new NumberNode(yB));
-  const droite = DroiteConstructor.fromTwoPoints(pointA, pointB, "D");
-  const leadingCoefficient = droite.getLeadingCoefficient();
+  if (yB - yA !== 0)
+    tryToAddWrongProp(
+      propositions,
+      new Rational(xB - xA, yB - yA).simplify().toTree().toTex(),
+    );
+
   while (propositions.length < n) {
-    const wrongAnswer =
-      leadingCoefficient !== "0"
-        ? simplifyNode(
-            new FractionNode(droite.a, new NumberNode(randint(-4, 5, [0, 1]))),
-          )
-        : new NumberNode(randint(-4, 5, [0]));
+    const wrongAnswer = new NumberNode(randint(-4, 5, [0]));
     tryToAddWrongProp(propositions, wrongAnswer.toTex());
   }
 
@@ -98,12 +91,11 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { xA, xB, yA, yB }) => {
-  // const leadingCoeff = new Rational(yB - yA, xB - xA)
-  //   .simplify()
-  //   .toTree({ allowFractionToDecimal: true });
-  // const texs = leadingCoeff.toAllValidTexs();
-  // return texs.includes(ans);
-  return true;
+  const leadingCoeff = new Rational(yB - yA, xB - xA)
+    .simplify()
+    .toTree({ allowFractionToDecimal: true });
+  const texs = leadingCoeff.toAllValidTexs();
+  return texs.includes(ans);
 };
 
 export const leadingCoefficient: MathExercise<Identifiers> = {
