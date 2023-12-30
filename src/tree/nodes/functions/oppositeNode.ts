@@ -53,31 +53,26 @@ export class OppositeNode implements FunctionNode {
     const externalNodes: AlgebraicNode[] = [];
     //! est ce qu'il faut faire ici des simplifications du type -ln(2) => 1/ln(2)
     //! ou meme -(a+b) => -a - b
-    // if (isMultiplyNode(this.child))
-    //   res.push(
-    //     ...new MultiplyNode(
-    //       new OppositeNode(this.child.leftChild),
-    //       this.child.rightChild,
-    //     ).toEquivalentNodes(options),
-    //   );
-    // else if (isDivideNode(this.child))
-    //   res.push(
-    //     ...new DivideNode(
-    //       new OppositeNode(this.child.leftChild),
-    //       this.child.rightChild,
-    //     ).toEquivalentNodes(options),
-    //   );
-    // else if (isFractionNode(this.child))
-    //   res.push(
-    //     ...new FractionNode(
-    //       new OppositeNode(this.child.leftChild),
-    //       this.child.rightChild,
-    //     ).toEquivalentNodes(options),
-    //   );
-    // else {
+
+    //!version simplifiée pour juste gérer les fractions
+    //!la bonne solution serait de parse l'arbre et déplacer l'opposite sur chaque child d'un sous arbre multiplicatif
     const childNodes = this.child.toEquivalentNodes(options);
     childNodes.forEach((childNode) => {
       res.push(new OppositeNode(childNode));
+      if (isFractionNode(childNode)) {
+        res.push(
+          new FractionNode(
+            new OppositeNode(childNode.leftChild),
+            childNode.rightChild,
+            { allowMinusAnywhereInFraction: true },
+          ),
+          new FractionNode(
+            childNode.leftChild,
+            new OppositeNode(childNode.rightChild),
+            { allowMinusAnywhereInFraction: true },
+          ),
+        );
+      }
     });
     // }
 

@@ -17,7 +17,7 @@ import { Interval } from "../sets/intervals/intervals";
 import { MathSet } from "../sets/mathSet";
 import { Polynomial } from "./polynomial";
 import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
-import { multigcd } from "../utils/arithmetic/gcd";
+import { gcd } from "../utils/arithmetic/gcd";
 
 export abstract class TrinomConstructor {
   static random(
@@ -123,7 +123,7 @@ export class Trinom extends Polynomial {
     let [sqrtA, sqrtB] = new SquareRoot(delta).getSimplifiedCoeffs();
     let denum = 2 * this.a;
     let trueB = this.b;
-    const pgcd = multigcd(sqrtA, trueB, denum);
+    const pgcd = gcd(sqrtA, trueB, denum);
 
     [sqrtA, trueB, denum] = [sqrtA, trueB, denum].map((n) => n / pgcd);
 

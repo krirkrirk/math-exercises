@@ -3,7 +3,7 @@ import { Polynomial } from "./polynomial";
 import { Rational } from "../numbers/rationals/rational";
 import { NumberType } from "../numbers/nombre";
 import { Integer } from "../numbers/integer/integer";
-import { multigcd } from "../utils/arithmetic/gcd";
+import { gcd } from "../utils/arithmetic/gcd";
 
 export class RationalFrac {
   num: Polynomial;
@@ -19,11 +19,10 @@ export class RationalFrac {
     if (this.num.coefficients.length === 1 && this.num.coefficients[0] === 0)
       return new Integer(0);
     const numCoeffs = this.num.coefficients.filter((c) => c !== 0);
-    const numPGCD =
-      numCoeffs.length > 1 ? multigcd(...numCoeffs) : numCoeffs[0];
+    const numPGCD = numCoeffs.length > 1 ? gcd(...numCoeffs) : numCoeffs[0];
     const denumCoeffs = this.denum.coefficients.filter((c) => c !== 0);
     const denumPGCD =
-      denumCoeffs.length > 1 ? multigcd(...denumCoeffs) : denumCoeffs[0];
+      denumCoeffs.length > 1 ? gcd(...denumCoeffs) : denumCoeffs[0];
     const rational = new Rational(numPGCD, denumPGCD);
     if (rational.isIrreductible()) {
       return this;

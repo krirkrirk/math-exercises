@@ -18,82 +18,40 @@ import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {
   xValue: number;
   yValue: number;
-  affineCoeffs: number[];
-  trinomCoeffs: number[];
+  affineCoeffs?: number[];
+  trinomCoeffs?: number[];
   isAffine: boolean;
 };
 
 const getInverseImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
   const isAffine = coinFlip();
   const xValue = randint(-5, 6);
-  const yValue = randint(-5, 6);
-
+  // const yValue = randint(-5, 6);
+  let yValue: number;
   let affine: Polynomial;
-  do {
-    affine = new Polynomial([randint(-9, 10), randint(-5, 6, [0])]);
-  } while (affine.calculate(xValue) > 10 || affine.calculate(xValue) < -10);
-
-  let trinom = new Polynomial([
-    randint(-9, 10) - yValue,
-    randint(-9, 10),
-    randint(-4, 5, [0]),
-  ]);
-  let roots = trinom.getRoots();
-
-  if (roots.length === 2)
-    while (roots[0] > 10 || roots[0] < -10 || roots[1] > 10 || roots[1] < -10) {
-      trinom = new Polynomial([
-        randint(-9, 10) - yValue,
-        randint(-9, 10),
-        randint(-4, 5, [0]),
-      ]);
-      roots = trinom.getRoots();
-    }
-  else if (roots.length === 1)
-    while (roots[0] < -10 || roots[0] > 10) {
-      trinom = new Polynomial([
-        randint(-9, 10) - yValue,
-        randint(-9, 10),
-        randint(-4, 5, [0]),
-      ]);
-      roots = trinom.getRoots();
-    }
-
-  const statement = isAffine
-    ? `Déterminer le ou les antécédents de $${affine.calculate(
-        xValue,
-      )}$ par la fonction $f$ représentée ci dessous.`
-    : `Déterminer le ou les antécédents de $${yValue}$ par la fonction $f$ représentée ci dessous.`;
-
-  let answer = isAffine
-    ? xValue
-    : roots.length === 2
-    ? `${round(roots[0], 1).toString().replace(".", ",")}\\text{ et }${round(
-        roots[1],
-        1,
-      )
-        .toString()
-        .replace(".", ",")}`
-    : roots.length === 1
-    ? roots[0].toString().replace(".", ",")
-    : `\\text{Aucun}`;
-
-  const optimum = trinom.derivate().getRoots()[0];
-
-  let xmin = 0,
-    xmax = 0,
-    ymin = 0,
-    ymax = 0;
-
+  let trinom: Polynomial;
+  let statement = "";
+  let answer = "";
+  let xmin = -1;
+  let xmax = 1;
+  let ymin = -1;
+  let ymax = 1;
+  let commands: string[];
   if (isAffine) {
-    if (affine.calculate(xValue) > 0) {
-      ymax = affine.calculate(xValue) + 1;
+    do {
+      affine = new Polynomial([randint(-9, 10), randint(-5, 6, [0])]);
+      yValue = affine.calculate(xValue);
+    } while (Math.abs(yValue) > 10);
+
+    statement = `Déterminer le ou les antécédents de $${yValue}$ par la fonction $f$ représentée ci dessous.`;
+    answer = xValue.toString().replace(".", ",");
+    if (yValue > 0) {
+      ymax = yValue + 1;
       ymin = -1;
     } else {
-      ymin = affine.calculate(xValue) - 1;
+      ymin = yValue - 1;
       ymax = 1;
     }
-
     if (xValue > 0) {
       xmax = xValue + 1;
       xmin = -1;
@@ -101,14 +59,34 @@ const getInverseImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
       xmin = xValue - 1;
       xmax = 1;
     }
+    commands = [affine.toString()];
   } else {
+    let roots: number[];
+    yValue = randint(-5, 6);
+
+    do {
+      trinom = new Polynomial([
+        randint(-9, 10) - yValue,
+        randint(-9, 10),
+        randint(-4, 5, [0]),
+      ]);
+      roots = trinom.getRoots();
+    } while (roots.some((root) => Math.abs(root) > 10));
+    statement = `Déterminer le ou les antécédents de $${yValue}$ par la fonction $f$ représentée ci dessous.`;
+    answer = !roots.length
+      ? "\\text{Aucun}"
+      : roots
+          .map((r) => round(r, 1).toString().replace(".", ","))
+          .join("\\text{ et }");
+    const alpha = trinom.derivate().getRoots()[0];
+    const beta = trinom.calculate(alpha);
     if (roots.length === 2) {
-      if (yValue > trinom.calculate(optimum) + yValue) {
+      if (yValue > beta + yValue) {
         ymax = yValue + 2;
-        ymin = trinom.calculate(optimum) + yValue - 2;
+        ymin = beta + yValue - 2;
       } else {
         ymin = yValue - 2;
-        ymax = trinom.calculate(optimum) + yValue + 2;
+        ymax = beta + yValue + 2;
       }
       xmax = Math.max(roots[0], roots[1]) + 1;
       xmin = Math.min(roots[0], roots[1]) - 1;
@@ -122,32 +100,29 @@ const getInverseImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
         ymin = yValue - 5;
         ymax = yValue + 1;
       }
-      xmax = optimum + 5;
-      xmin = optimum - 5;
+      xmax = alpha + 5;
+      xmin = alpha - 5;
     }
 
     if (roots.length === 0) {
-      if (yValue > trinom.calculate(optimum) + yValue) {
+      if (yValue > beta + yValue) {
         ymax = yValue + 1;
-        ymin = trinom.calculate(optimum) + yValue - 3;
+        ymin = beta + yValue - 3;
       } else {
         ymin = yValue - 1;
-        ymax = trinom.calculate(optimum) + yValue + 3;
+        ymax = beta + yValue + 3;
       }
-      xmax = optimum + 5;
-      xmin = optimum - 5;
+      xmax = alpha + 5;
+      xmin = alpha - 5;
     }
+
+    commands = [
+      yValue !== 0
+        ? trinom.add(new Polynomial([yValue])).toString()
+        : trinom.toString(),
+    ];
   }
 
-  const commands = [
-    isAffine
-      ? affine.toString()
-      : yValue !== 0
-      ? trinom.add(new Polynomial([yValue])).toString()
-      : trinom.toString(),
-  ];
-
-  answer = (answer + "").replaceAll(".", ",");
   const question: Question<Identifiers> = {
     instruction: statement,
     answer,
@@ -157,8 +132,8 @@ const getInverseImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
     answerFormat: "tex",
     identifiers: {
       xValue,
-      affineCoeffs: affine.coefficients,
-      trinomCoeffs: trinom.coefficients,
+      affineCoeffs: isAffine ? affine!.coefficients : undefined,
+      trinomCoeffs: isAffine ? undefined : trinom!.coefficients,
       yValue,
       isAffine,
     },
@@ -172,21 +147,32 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const polynome1 = new Polynomial(affineCoeffs);
-  const roots = new Polynomial(trinomCoeffs).getRoots();
+  tryToAddWrongProp(propositions, "\\text{Aucun}");
+
+  if (isAffine) {
+    const affine = new Polynomial(affineCoeffs!);
+    tryToAddWrongProp(
+      propositions,
+      affine.calculate(yValue).toString().replace(".", ","),
+    );
+  } else {
+    const trinom = new Polynomial(trinomCoeffs!);
+    tryToAddWrongProp(
+      propositions,
+      trinom.calculate(yValue).toString().replace(".", ","),
+    );
+  }
+
   while (propositions.length < n) {
-    const wrongAnswer = isAffine
-      ? randint(-9, 10, [polynome1.calculate(xValue)])
-      : roots.length === 2
-      ? `${randint(-9, 10)}\\text{ et }${randint(-9, 10)}`.replaceAll(".", ",")
-      : roots.length === 1
-      ? randint(-9, 10, [roots[0]]).toString().replace(".", ",")
-      : `\\text{Aucun}`;
-    tryToAddWrongProp(propositions, wrongAnswer + "");
+    const wrongAnswer = coinFlip()
+      ? `${randint(-9, 10)}`
+      : `${randint(-9, 10)}\\text{ et }${randint(-9, 10)}`;
+    tryToAddWrongProp(propositions, wrongAnswer);
   }
 
   return shuffle(propositions);
 };
+
 const isAnswerValid: VEA<Identifiers> = (
   ans,
   { answer, xValue, affineCoeffs, trinomCoeffs, yValue, isAffine },
@@ -195,7 +181,7 @@ const isAnswerValid: VEA<Identifiers> = (
   if (isAffine) {
     antecedents.push(xValue);
   } else {
-    const trinom = new Polynomial(trinomCoeffs);
+    const trinom = new Polynomial(trinomCoeffs!);
     const roots = trinom.getRoots();
     antecedents.push(...roots);
   }

@@ -61,9 +61,9 @@ export class MultiplyNode implements CommutativeOperatorNode {
     let rightTex = this.rightChild.toTex();
 
     if (leftTex === "1") {
-      if (isNumberNode(this.rightChild)) {
-        return rightTex;
-      }
+      // if (isNumberNode(this.rightChild) || isVariableNode(this.rightChild)) {
+      return rightTex;
+      // }
     }
 
     if (isOperatorNode(this.leftChild)) {

@@ -8,11 +8,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import { MathExercise } from "./exercises/exercise";
-import { Rational } from "./math/numbers/rationals/rational";
-import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
-import { NumberNode } from "./tree/nodes/numbers/numberNode";
-import { OppositeNode } from "./tree/nodes/functions/oppositeNode";
-import { multigcd } from "./math/utils/arithmetic/gcd";
+
 const jsonParser = bodyParser.json();
 
 const allExercises = [...exercises];
@@ -21,13 +17,7 @@ const runServer = () => {
   dotenv.config();
   const app: Express = express();
   app.use(cors());
-  console.log(multigcd(5, 11, 15, 25, 55));
-  const frac = new Rational(-2, 3).simplify().toTree();
-  console.log(frac.toAllValidTexs());
-  const prod = new OppositeNode(
-    new MultiplyNode(new NumberNode(2), new NumberNode(3)),
-  );
-  console.log(prod.toAllValidTexs());
+
   console.log(exercises.length);
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);

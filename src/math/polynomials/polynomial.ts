@@ -292,26 +292,26 @@ export class Polynomial {
 
   integrateToNode(opts?: NodeOptions) {
     let integralPolynomial: Node = new VariableNode("C");
-
+    const varNode = new VariableNode(this.variable);
     for (let i = 0; i < this.degree + 1; i++) {
       const coeff = this.coefficients[i];
       if (coeff === 0) continue;
       const nodeCoeff = new Rational(coeff, i + 1).simplify().toTree();
       const powerNode =
         i + 1 === 1
-          ? new VariableNode("x")
-          : new PowerNode(new VariableNode("x"), new NumberNode(i + 1), opts);
+          ? varNode
+          : new PowerNode(varNode, new NumberNode(i + 1), opts);
 
       let terme;
-      if (nodeCoeff.toTex() === "1") terme = powerNode;
-      else if (nodeCoeff.toTex() === "-1")
-        terme = new OppositeNode(powerNode, opts);
+      const coeffTex = nodeCoeff.toTex();
+      if (coeffTex === "1") terme = powerNode;
+      else if (coeffTex === "-1") terme = new OppositeNode(powerNode, opts);
       else {
         terme = new MultiplyNode(
           nodeCoeff,
           i + 1 === 1
-            ? new VariableNode("x")
-            : new PowerNode(new VariableNode("x"), new NumberNode(i + 1), opts),
+            ? varNode
+            : new PowerNode(varNode, new NumberNode(i + 1), opts),
           opts,
         );
       }

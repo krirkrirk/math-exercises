@@ -1,8 +1,8 @@
-export function gcd(a: number, b: number): number {
+function pgcd(a: number, b: number): number {
   return b ? gcd(b, a % b) : a;
 }
 
-export function multigcd(...args: number[]): number {
-  if (args.length === 2) return gcd(args[0], args[1]);
-  else return gcd(args[0], multigcd(...args.slice(1)));
+export function gcd(...args: number[]): number {
+  if (args.length === 2) return pgcd(args[0], args[1]);
+  else return gcd(args[0], gcd(...args.slice(1)));
 }
