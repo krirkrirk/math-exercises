@@ -1,4 +1,3 @@
-import { parse } from "mathjs";
 import { Node, NodeType } from "../node";
 import { AlgebraicNode } from "../algebraicNode";
 export function isNumberNode(a: Node): a is NumberNode {

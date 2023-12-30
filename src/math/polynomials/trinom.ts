@@ -7,7 +7,6 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode, SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { gcd } from "mathjs";
 import { Point } from "../geometry/point";
 import { Integer } from "../numbers/integer/integer";
 import { Nombre } from "../numbers/nombre";
@@ -18,6 +17,7 @@ import { Interval } from "../sets/intervals/intervals";
 import { MathSet } from "../sets/mathSet";
 import { Polynomial } from "./polynomial";
 import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
+import { multigcd } from "../utils/arithmetic/gcd";
 
 export abstract class TrinomConstructor {
   static random(
@@ -123,7 +123,7 @@ export class Trinom extends Polynomial {
     let [sqrtA, sqrtB] = new SquareRoot(delta).getSimplifiedCoeffs();
     let denum = 2 * this.a;
     let trueB = this.b;
-    const pgcd = gcd(sqrtA, trueB, denum);
+    const pgcd = multigcd(sqrtA, trueB, denum);
 
     [sqrtA, trueB, denum] = [sqrtA, trueB, denum].map((n) => n / pgcd);
 

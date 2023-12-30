@@ -1,4 +1,4 @@
-import { fraction } from "mathjs";
+// import { fraction } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
@@ -83,7 +83,7 @@ export class FractionNode implements OperatorNode {
     return `\\frac{${this.leftChild.toTex()}}{${this.rightChild.toTex()}}`;
   }
 
-  toMathjs() {
-    return fraction(this.leftChild.toMathjs(), this.rightChild.toMathjs());
-  }
+  // toMathjs() {
+  //   return fraction(this.leftChild.toMathjs(), this.rightChild.toMathjs());
+  // }
 }

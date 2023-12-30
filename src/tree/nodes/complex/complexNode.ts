@@ -1,4 +1,4 @@
-import { complex, evaluate } from "mathjs";
+// import { complex, evaluate } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
 import { Complex } from "#root/math/complex/complex";
 import { NumberNode } from "../numbers/numberNode";
@@ -54,9 +54,9 @@ export class ComplexNode implements Node {
     ).toTex();
   }
 
-  toMathjs() {
-    return complex(evaluate(this.re.toMathjs()), evaluate(this.im.toMathjs()));
-  }
+  // toMathjs() {
+  //   return complex(evaluate(this.re.toMathjs()), evaluate(this.im.toMathjs()));
+  // }
   // toComplex() {
   //   return new Complex(this.re, this.im);
   // }

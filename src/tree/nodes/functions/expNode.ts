@@ -1,4 +1,4 @@
-import { exp } from "mathjs";
+// import { exp } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
@@ -33,9 +33,9 @@ export class ExpNode implements FunctionNode {
     if (needBraces) return `e^{${tex}}`;
     return `e^${tex}`;
   }
-  toMathjs() {
-    return exp(this.child.toMathjs());
-  }
+  // toMathjs() {
+  //   return exp(this.child.toMathjs());
+  // }
 
   toEquivalentNodes(): Node[] {
     const res: Node[] = [];

@@ -1,4 +1,4 @@
-import { add } from "mathjs";
+// import { add } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
 import {
   CommutativeOperatorNode,
@@ -94,7 +94,7 @@ export class AddNode implements CommutativeOperatorNode {
     const rightTex = this.rightChild.toTex();
     return addNodeToTex(this.leftChild.toTex(), rightTex);
   }
-  toMathjs() {
-    return add(this.leftChild.toMathjs(), this.rightChild.toMathjs());
-  }
+  // toMathjs() {
+  //   return add(this.leftChild.toMathjs(), this.rightChild.toMathjs());
+  // }
 }

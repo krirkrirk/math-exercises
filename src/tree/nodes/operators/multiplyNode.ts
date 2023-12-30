@@ -1,4 +1,4 @@
-import { multiply } from "mathjs";
+// import { multiply } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
 import {
   CommutativeOperatorNode,
@@ -133,7 +133,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
     }
     if (needRightBrackets) rightTex = `\\left(${rightTex}\\right)`;
     if (leftTex === "-1") {
-      if (isNumberNode(this.rightChild)) {
+      if (!isNumberNode(this.rightChild)) {
         res.push("-" + rightTex);
       }
     }
@@ -248,9 +248,9 @@ export class MultiplyNode implements CommutativeOperatorNode {
     return this.toEquivalentNodes(opts).flatMap((node) => node.toAllTexs());
   }
 
-  toMathjs() {
-    return multiply(this.leftChild.toMathjs(), this.rightChild.toMathjs());
-  }
+  // toMathjs() {
+  //   return multiply(this.leftChild.toMathjs(), this.rightChild.toMathjs());
+  // }
 
   simplify() {}
 }

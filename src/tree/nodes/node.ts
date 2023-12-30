@@ -30,6 +30,6 @@ export interface Node {
   toEquivalentNodes: (opts?: NodeOptions) => Node[];
   toAllValidTexs: (opts?: NodeOptions) => string[];
   toTex: () => string;
-  toMathjs: () => any;
+  // toMathjs: () => any;
   // simplify: () => Node;
 }

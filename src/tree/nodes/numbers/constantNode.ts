@@ -1,4 +1,4 @@
-import { parse } from "mathjs";
+// import { parse } from "mathjs";
 import { Node, NodeType } from "../node";
 import { AlgebraicNode } from "../algebraicNode";
 export function isConstantNode(a: Node): a is ConstantNode {
@@ -20,9 +20,9 @@ export class ConstantNode implements AlgebraicNode {
   toTex(): string {
     return `${this.tex}`;
   }
-  toMathjs() {
-    return parse(this.mathString);
-  }
+  // toMathjs() {
+  //   return parse(this.mathString);
+  // }
   toAllValidTexs() {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }

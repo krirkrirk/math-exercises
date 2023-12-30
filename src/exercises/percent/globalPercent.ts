@@ -1,5 +1,4 @@
 import { randint } from "#root/math/utils/random/randint";
-import { round } from "mathjs";
 import {
   MathExercise,
   Proposition,
@@ -13,6 +12,7 @@ import {
 import { getDistinctQuestions } from "../utils/getDistinctQuestions";
 import { shuffle } from "#root/utils/shuffle";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { round } from "#root/math/utils/round";
 
 type Identifiers = {
   evolutions: string[];

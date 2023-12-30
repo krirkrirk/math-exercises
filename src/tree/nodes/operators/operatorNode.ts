@@ -1,4 +1,3 @@
-import { coinFlip } from "../../../utils/coinFlip";
 import { AlgebraicNode } from "../algebraicNode";
 import { Node, NodeType } from "../node";
 

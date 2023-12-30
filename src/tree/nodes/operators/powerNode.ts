@@ -1,4 +1,4 @@
-import { pow } from "mathjs";
+// import { pow } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
@@ -76,9 +76,9 @@ export class PowerNode implements OperatorNode {
     else return `${leftTex}^${rightTex}`;
   }
 
-  toMathjs() {
-    return pow(this.leftChild.toMathjs(), this.rightChild.toMathjs());
-  }
+  // toMathjs() {
+  //   return pow(this.leftChild.toMathjs(), this.rightChild.toMathjs());
+  // }
 }
 
 export class SquareNode extends PowerNode {

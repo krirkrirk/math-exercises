@@ -1,4 +1,4 @@
-import { sin } from "mathjs";
+// import { sin } from "mathjs";
 import { Node, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
@@ -23,9 +23,9 @@ export class SinNode implements FunctionNode {
   toTex(): string {
     return `\\sin\\left(${this.child.toTex()}\\right)`;
   }
-  toMathjs() {
-    return sin(this.child.toMathjs());
-  }
+  // toMathjs() {
+  //   return sin(this.child.toMathjs());
+  // }
   toEquivalentNodes(): Node[] {
     const res: Node[] = [];
     const childNodes = this.child.toEquivalentNodes();

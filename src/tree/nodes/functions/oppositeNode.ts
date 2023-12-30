@@ -1,4 +1,4 @@
-import { unaryMinus } from "mathjs";
+// import { unaryMinus } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
 import {
   OperatorIds,
@@ -94,7 +94,7 @@ export class OppositeNode implements FunctionNode {
     return this.toEquivalentNodes(options).map((node) => node.toTex());
   }
 
-  toMathjs() {
-    return unaryMinus(this.child.toMathjs());
-  }
+  // toMathjs() {
+  //   return unaryMinus(this.child.toMathjs());
+  // }
 }

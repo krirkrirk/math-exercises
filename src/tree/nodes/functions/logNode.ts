@@ -1,4 +1,4 @@
-import { log } from "mathjs";
+// import { log } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { isAbsNode } from "./absNode";
@@ -32,9 +32,9 @@ export class LogNode implements FunctionNode {
     if (shouldntUseBrackets) return `\\ln${tex}`;
     else return `\\ln\\left(${tex}\\right)`;
   }
-  toMathjs() {
-    return log(this.child.toMathjs());
-  }
+  // toMathjs() {
+  //   return log(this.child.toMathjs());
+  // }
 
   toEquivalentNodes(): Node[] {
     const res: Node[] = [];

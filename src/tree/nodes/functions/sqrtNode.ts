@@ -1,4 +1,4 @@
-import { isIndex, sqrt } from "mathjs";
+// import { sqrt } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { SquareRoot } from "#root/math/numbers/reals/real";
@@ -24,9 +24,9 @@ export class SqrtNode implements FunctionNode {
   toMathString(): string {
     return `sqr(${this.child.toMathString()})`;
   }
-  toMathjs() {
-    return sqrt(this.child.toMathjs());
-  }
+  // toMathjs() {
+  //   return sqrt(this.child.toMathjs());
+  // }
   toTex(): string {
     return `\\sqrt{${this.child.toTex()}}`;
   }

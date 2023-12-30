@@ -1,4 +1,4 @@
-import { cos } from "mathjs";
+// import { cos } from "mathjs";
 import { Node, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
@@ -37,9 +37,9 @@ export class CosNode implements FunctionNode {
     return `\\cos\\left(${this.child.toTex()}\\right)`;
   }
 
-  toMathjs() {
-    return cos(this.child.toMathjs());
-  }
+  // toMathjs() {
+  //   return cos(this.child.toMathjs());
+  // }
 
   simplify(): Node {
     return this;

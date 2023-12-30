@@ -71,6 +71,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   const myfunction = new ExpNode(affine.toTree());
   const derivative = new MultiplyNode(new NumberNode(a), myfunction);
   const texs = derivative.toAllValidTexs();
+  console.log(ans, texs);
   return texs.includes(ans);
 };
 export const expDerivativeOne: MathExercise<Identifiers> = {

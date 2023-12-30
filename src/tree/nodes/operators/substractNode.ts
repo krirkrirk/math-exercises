@@ -1,4 +1,4 @@
-import { subtract } from "mathjs";
+// import { subtract } from "mathjs";
 import { Node, NodeType } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { OppositeNode } from "../functions/oppositeNode";
@@ -53,7 +53,7 @@ export class SubstractNode implements OperatorNode {
 
     return `${leftTex}-${rightTex}`;
   }
-  toMathjs() {
-    return subtract(this.leftChild.toMathjs(), this.rightChild.toMathjs());
-  }
+  // toMathjs() {
+  //   return subtract(this.leftChild.toMathjs(), this.rightChild.toMathjs());
+  // }
 }

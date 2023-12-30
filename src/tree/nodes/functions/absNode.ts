@@ -1,4 +1,4 @@
-import { abs } from "mathjs";
+// import { abs } from "mathjs";
 import { Node, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
@@ -23,9 +23,9 @@ export class AbsNode implements FunctionNode {
   toTex(): string {
     return `\\left|${this.child.toTex()}\\right|`;
   }
-  toMathjs() {
-    return abs(this.child.toMathjs());
-  }
+  // toMathjs() {
+  //   return abs(this.child.toMathjs());
+  // }
 
   toEquivalentNodes(): Node[] {
     const res: Node[] = [];

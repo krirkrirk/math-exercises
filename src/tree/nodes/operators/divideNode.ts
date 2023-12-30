@@ -1,4 +1,4 @@
-import { divide } from "mathjs";
+// import { divide } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { AlgebraicNode } from "../algebraicNode";
@@ -70,7 +70,7 @@ export class DivideNode implements OperatorNode {
   toTex(): string {
     return divideNodeToTex(this.leftChild, this.rightChild);
   }
-  toMathjs() {
-    return divide(this.leftChild.toMathjs(), this.rightChild.toMathjs());
-  }
+  // toMathjs() {
+  //   return divide(this.leftChild.toMathjs(), this.rightChild.toMathjs());
+  // }
 }

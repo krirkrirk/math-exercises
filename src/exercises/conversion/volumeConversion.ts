@@ -27,7 +27,7 @@ const getVolumeConversion: QuestionGenerator<Identifiers> = () => {
   const randomUnitInstructionIndex = randint(
     // cette manip a pour but d'éviter des conversion de type km³ --> cm³ ou le contraire (chiffre trop grand/petit)
     randomUnitIndex - 2 < 0 ? 0 : randomUnitIndex - 2,
-    randomUnitIndex + 2 > 7 ? 7 : randomUnitIndex + 2,
+    randomUnitIndex + 2 > 6 ? 6 : randomUnitIndex + 2,
     [randomUnitIndex],
   );
   const randomVolume = DecimalConstructor.random(0, 1000, randint(0, 4));
