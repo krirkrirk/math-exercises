@@ -84,9 +84,9 @@ export class MultiplyNode implements CommutativeOperatorNode {
     }
     if (needBrackets) rightTex = `\\left(${rightTex}\\right)`;
     if (leftTex === "-1") {
-      if (!isNumberNode(this.rightChild)) {
-        return "-" + rightTex;
-      }
+      // if (!isNumberNode(this.rightChild)) {
+      return "-" + rightTex;
+      // }
     }
 
     let showTimesSign =
@@ -112,9 +112,9 @@ export class MultiplyNode implements CommutativeOperatorNode {
     let leftTex = this.leftChild.toTex();
     let rightTex = this.rightChild.toTex();
     if (leftTex === "1") {
-      if (isNumberNode(this.rightChild)) {
-        res.push(rightTex);
-      }
+      // if (isNumberNode(this.rightChild)) {
+      res.push(rightTex);
+      // }
     }
     if (isOperatorNode(this.leftChild)) {
       if (
@@ -133,9 +133,9 @@ export class MultiplyNode implements CommutativeOperatorNode {
     }
     if (needRightBrackets) rightTex = `\\left(${rightTex}\\right)`;
     if (leftTex === "-1") {
-      if (!isNumberNode(this.rightChild)) {
-        res.push("-" + rightTex);
-      }
+      // if (!isNumberNode(this.rightChild)) {
+      res.push("-" + rightTex);
+      // }
     }
     let mustShowTimesSign =
       !isNaN(+rightTex[0]) || isNumberNode(this.rightChild);

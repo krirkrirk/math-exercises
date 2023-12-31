@@ -99,6 +99,9 @@ export class PowerNode implements OperatorNode {
   //     if (value === 0) return leftSimplified;
   //     if (value === 1) return leftSimplified;
   //   }
+  //   if(isNumberNode(rightSimplified) && isNumberNode(leftSimplified)){
+
+  //   }
   //   //!doit on simplifier 2^3 en 8, (-1)^20 en 1
   //   //! si left child est un power node il faut faire des simplifications
   // }
