@@ -1,6 +1,7 @@
 import { isSquare } from "#root/math/utils/arithmetic/isSquare";
 import { primeFactors } from "#root/math/utils/arithmetic/primeFactors";
 import { randint } from "#root/math/utils/random/randint";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -32,7 +33,7 @@ export class Real implements Nombre {
     this.tex = tex;
     this.type = NumberType.Real;
   }
-  toTree(): Node {
+  toTree(): AlgebraicNode {
     if (this.tex === "\\pi") return PiNode;
     return new NumberNode(this.value);
   }
@@ -102,7 +103,7 @@ export class SquareRoot extends Real {
             `${outsideSqrt === 1 ? "" : `${outsideSqrt}`}\\sqrt{${insideSqrt}}`,
           )
         : new Real(outsideSqrt, outsideSqrt + "");
-    simplified.toTree = (): Node => {
+    simplified.toTree = (): AlgebraicNode => {
       return insideSqrt !== 1
         ? outsideSqrt === 1
           ? new SqrtNode(new NumberNode(insideSqrt))
@@ -119,7 +120,7 @@ export class SquareRoot extends Real {
     return this.tex;
   }
 
-  toTree(): Node {
+  toTree() {
     return new SqrtNode(new NumberNode(this.operand));
   }
 }

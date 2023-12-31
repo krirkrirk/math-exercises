@@ -11,6 +11,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 
 import { randint } from "#root/math/utils/random/randint";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { CosNode } from "#root/tree/nodes/functions/cosNode";
 import { SinNode } from "#root/tree/nodes/functions/sinNode";
 import { Node } from "#root/tree/nodes/node";
@@ -29,8 +30,8 @@ type Identifiers = {
 export const getSinCosPrimitive: QuestionGenerator<Identifiers> = () => {
   const a = randint(-9, 10, [0]);
 
-  let selectedFunction: Node;
-  let integratedFuction: Node;
+  let selectedFunction: AlgebraicNode;
+  let integratedFuction: AlgebraicNode;
 
   const isCos = coinFlip();
   selectedFunction = isCos

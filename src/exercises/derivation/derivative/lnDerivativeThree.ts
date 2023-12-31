@@ -13,6 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Affine } from "#root/math/polynomials/affine";
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { LogNode } from "#root/tree/nodes/functions/logNode";
 import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -101,7 +102,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   const logNode = new LogNode(xNode);
   const raw = new AddNode(new MultiplyNode(aNode, logNode), fracNode);
   let developped = new AddNode(new MultiplyNode(aNode, logNode), fracNode);
-  let simplified: Node = new MultiplyNode(
+  let simplified: AlgebraicNode = new MultiplyNode(
     aNode,
     new AddNode(logNode, new NumberNode(1)),
   );

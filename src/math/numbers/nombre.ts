@@ -1,3 +1,4 @@
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { Node, NodeOptions } from "#root/tree/nodes/node";
 import { random } from "#root/utils/random";
 import { randint } from "../utils/random/randint";
@@ -17,7 +18,7 @@ export interface Nombre {
   value: number;
   tex: string;
   type: NumberType;
-  toTree: (opts?: NodeOptions) => Node;
+  toTree: (opts?: NodeOptions) => AlgebraicNode;
 }
 
 export abstract class NombreConstructor {

@@ -32,7 +32,7 @@ export class PowerNode implements OperatorNode {
   }
 
   toEquivalentNodes() {
-    const res: Node[] = [];
+    const res: AlgebraicNode[] = [];
     const rightNodes = this.rightChild.toEquivalentNodes();
     const leftNodes = this.leftChild.toEquivalentNodes();
     rightNodes.forEach((rightNode) => {
@@ -79,10 +79,33 @@ export class PowerNode implements OperatorNode {
   // toMathjs() {
   //   return pow(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   // }
+  evaluate(vars: Record<string, number>) {
+    return Math.pow(
+      this.leftChild.evaluate(vars),
+      this.rightChild.evaluate(vars),
+    );
+  }
+
+  simplify() {
+    const leftSimplified = this.leftChild.simplify();
+    const rightSimplified = this.rightChild.simplify();
+    if (isNumberNode(rightSimplified)) {
+      const value = rightSimplified.value;
+      if (value === 0) return new NumberNode(1);
+      if (value === 1) return leftSimplified;
+    }
+    if (isNumberNode(leftSimplified)) {
+      const value = leftSimplified.value;
+      if (value === 0) return leftSimplified;
+      if (value === 1) return leftSimplified;
+    }
+    //!doit on simplifier 2^3 en 8, (-1)^20 en 1
+    //! si left child est un power node il faut faire des simplifications
+  }
 }
 
 export class SquareNode extends PowerNode {
-  constructor(child: Node, opts?: NodeOptions) {
+  constructor(child: AlgebraicNode, opts?: NodeOptions) {
     super(child, new NumberNode(2), opts);
   }
 }

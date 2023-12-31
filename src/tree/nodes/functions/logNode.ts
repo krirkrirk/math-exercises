@@ -36,8 +36,8 @@ export class LogNode implements FunctionNode {
   //   return log(this.child.toMathjs());
   // }
 
-  toEquivalentNodes(): Node[] {
-    const res: Node[] = [];
+  toEquivalentNodes(): AlgebraicNode[] {
+    const res: AlgebraicNode[] = [];
     const childNodes = this.child.toEquivalentNodes();
     childNodes.forEach((childNode) => {
       res.push(new LogNode(childNode));
@@ -50,5 +50,8 @@ export class LogNode implements FunctionNode {
   }
   simplify(): Node {
     return this;
+  }
+  evaluate(vars: Record<string, number>) {
+    return Math.log(this.child.evaluate(vars));
   }
 }

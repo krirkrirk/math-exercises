@@ -43,7 +43,7 @@ export class Integer implements Nombre {
     this.type = NumberType.Integer;
   }
 
-  toTree(): Node {
+  toTree() {
     return new NumberNode(this.value, this.tex);
   }
 

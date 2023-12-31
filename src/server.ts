@@ -8,6 +8,11 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import { MathExercise } from "./exercises/exercise";
+import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
+import { NumberNode } from "./tree/nodes/numbers/numberNode";
+import { AddNode } from "./tree/nodes/operators/addNode";
+import { VariableNode } from "./tree/nodes/variables/variableNode";
+import { PowerNode, SquareNode } from "./tree/nodes/operators/powerNode";
 
 const jsonParser = bodyParser.json();
 
@@ -23,6 +28,14 @@ const runServer = () => {
     res.json(allExercises);
   });
 
+  const tree = new MultiplyNode(
+    new NumberNode(3),
+    new AddNode(
+      new SquareNode(new NumberNode(4)),
+      new PowerNode(new NumberNode(2), new NumberNode(3)),
+    ),
+  );
+  console.log(tree.evaluate({}));
   app.get("/exo", (req: Request, res: Response) => {
     const exoId = req.query.exoId;
     const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);

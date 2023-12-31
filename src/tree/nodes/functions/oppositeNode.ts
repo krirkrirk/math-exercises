@@ -92,4 +92,7 @@ export class OppositeNode implements FunctionNode {
   // toMathjs() {
   //   return unaryMinus(this.child.toMathjs());
   // }
+  evaluate(vars: Record<string, number>) {
+    return -this.child.evaluate(vars);
+  }
 }

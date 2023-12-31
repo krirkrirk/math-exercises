@@ -31,9 +31,9 @@ export class SqrtNode implements FunctionNode {
     return `\\sqrt{${this.child.toTex()}}`;
   }
 
-  toEquivalentNodes(opts?: NodeOptions): Node[] {
+  toEquivalentNodes(opts?: NodeOptions): AlgebraicNode[] {
     const options = opts ?? this.opts;
-    const res: Node[] = [];
+    const res: AlgebraicNode[] = [];
     const childNodes = this.child.toEquivalentNodes();
     childNodes.forEach((childNode) => {
       res.push(new SqrtNode(childNode));
@@ -57,5 +57,8 @@ export class SqrtNode implements FunctionNode {
 
   toAllValidTexs(): string[] {
     return this.toEquivalentNodes().map((node) => node.toTex());
+  }
+  evaluate(vars: Record<string, number>) {
+    return Math.sqrt(this.child.evaluate(vars));
   }
 }

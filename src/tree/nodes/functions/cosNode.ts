@@ -20,8 +20,8 @@ export class CosNode implements FunctionNode {
     return `cos(${this.child.toMathString()})`;
   }
 
-  toEquivalentNodes(): Node[] {
-    const res: Node[] = [];
+  toEquivalentNodes(): AlgebraicNode[] {
+    const res: AlgebraicNode[] = [];
     const childNodes = this.child.toEquivalentNodes();
     childNodes.forEach((childNode) => {
       res.push(new CosNode(childNode));
@@ -43,5 +43,8 @@ export class CosNode implements FunctionNode {
 
   simplify(): Node {
     return this;
+  }
+  evaluate(vars: Record<string, number>) {
+    return Math.cos(this.child.evaluate(vars));
   }
 }

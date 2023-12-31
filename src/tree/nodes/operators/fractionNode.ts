@@ -40,7 +40,7 @@ export class FractionNode implements OperatorNode {
   }
   toEquivalentNodes(opts?: NodeOptions) {
     const options = opts ?? this.opts;
-    const res: Node[] = [];
+    const res: AlgebraicNode[] = [];
     const rightNodes = this.rightChild.toEquivalentNodes();
     const leftNodes = this.leftChild.toEquivalentNodes();
     rightNodes.forEach((rightNode) => {
@@ -82,7 +82,9 @@ export class FractionNode implements OperatorNode {
 
     return `\\frac{${this.leftChild.toTex()}}{${this.rightChild.toTex()}}`;
   }
-
+  evaluate(vars: Record<string, number>) {
+    return this.leftChild.evaluate(vars) / this.rightChild.evaluate(vars);
+  }
   // toMathjs() {
   //   return fraction(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   // }

@@ -252,5 +252,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
   //   return multiply(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   // }
 
-  simplify() {}
+  evaluate(vars: Record<string, number>) {
+    return this.leftChild.evaluate(vars) * this.rightChild.evaluate(vars);
+  }
 }

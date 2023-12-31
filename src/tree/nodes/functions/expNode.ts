@@ -37,8 +37,8 @@ export class ExpNode implements FunctionNode {
   //   return exp(this.child.toMathjs());
   // }
 
-  toEquivalentNodes(): Node[] {
-    const res: Node[] = [];
+  toEquivalentNodes(): AlgebraicNode[] {
+    const res: AlgebraicNode[] = [];
     const childNodes = this.child.toEquivalentNodes();
     childNodes.forEach((childNode) => {
       res.push(new ExpNode(childNode));
@@ -53,5 +53,8 @@ export class ExpNode implements FunctionNode {
 
   simplify(): Node {
     return this;
+  }
+  evaluate(vars: Record<string, number>) {
+    return Math.exp(this.child.evaluate(vars));
   }
 }

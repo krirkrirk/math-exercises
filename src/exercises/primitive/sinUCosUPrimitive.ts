@@ -14,6 +14,7 @@ import {
   PolynomialConstructor,
 } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { CosNode } from "#root/tree/nodes/functions/cosNode";
 import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { SinNode } from "#root/tree/nodes/functions/sinNode";
@@ -33,8 +34,8 @@ type Identifiers = {
 export const getSinUCosUPrimitive: QuestionGenerator<Identifiers> = () => {
   const u = PolynomialConstructor.randomWithOrder(randint(1, 3));
 
-  let selectedFunction: Node;
-  let integratedFuction: Node;
+    let selectedFunction: AlgebraicNode;
+    let integratedFuction: AlgebraicNode;
   const isCos = coinFlip();
   selectedFunction = isCos
     ? new MultiplyNode(u.derivate().toTree(), new CosNode(u.toTree()))

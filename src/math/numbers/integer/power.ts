@@ -17,7 +17,7 @@ export class Power implements Nombre {
     this.tex = `${a}^{${b}}`;
     this.type = b < 0 ? NumberType.Rational : NumberType.Integer;
   }
-  simplify(): Node {
+  simplify() {
     if (this.power === 0) return new NumberNode(1);
     if (this.power === 1) return new NumberNode(this.operand);
     if (this.operand === 1) return new NumberNode(1);
@@ -45,7 +45,7 @@ export class Power implements Nombre {
 
     return new Integer(Number(s), s);
   }
-  toTree(): Node {
+  toTree() {
     return new PowerNode(
       new NumberNode(this.operand),
       new NumberNode(this.power),

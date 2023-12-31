@@ -154,7 +154,7 @@ export class Decimal implements Nombre {
     return DecimalConstructor.fromParts(newIntPart, newFracPart);
   }
 
-  toScientificPart(): Node {
+  toScientificPart() {
     const intString = this.intPart.toString();
     const intSize = intString.length;
     if (intSize === 0 && this.intPart !== 0) return this.toTree();
@@ -170,7 +170,7 @@ export class Decimal implements Nombre {
       Number(intString[0] + "." + intString.slice(1) + this.decimalPart),
     );
   }
-  toScientificNotation(): Node {
+  toScientificNotation() {
     const intString = this.intPart.toString();
     const intSize = intString.length;
     if (intSize === 0) return this.toTree();
@@ -189,7 +189,7 @@ export class Decimal implements Nombre {
     );
   }
 
-  toTree(): Node {
+  toTree() {
     return new NumberNode(this.value);
   }
 }

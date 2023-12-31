@@ -1,14 +1,18 @@
-import { Point } from './point';
-import { SubstractNode } from '#root/tree/nodes/operators/substractNode';
-import { Node } from '#root/tree/nodes/node';
-import { PowerNode } from '#root/tree/nodes/operators/powerNode';
-import { AddNode } from '#root/tree/nodes/operators/addNode';
-import { NumberNode } from '#root/tree/nodes/numbers/numberNode';
-import { SqrtNode } from '#root/tree/nodes/functions/sqrtNode';
-import { randint } from '../utils/random/randint';
+import { Point } from "./point";
+import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
+import { randint } from "../utils/random/randint";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 
 export abstract class TriangleConstructor {
-  static createRandomRightTriangle({ minRapport = 0, maxRapport = 5, names = ['A', 'B', 'C'] }): Triangle {
+  static createRandomRightTriangle({
+    minRapport = 0,
+    maxRapport = 5,
+    names = ["A", "B", "C"],
+  }): Triangle {
     let pointA, pointB, pointC, d1: number, d2: number;
     do {
       const xA = randint(-10, 11);
@@ -26,12 +30,28 @@ export abstract class TriangleConstructor {
     return new Triangle(pointA, pointB, pointC);
   }
 
-  static createRandomTriangle({ minAngle = 0.69, maxAngle = 1.5, names = ['A', 'B', 'C'] }): Triangle {
+  static createRandomTriangle({
+    minAngle = 0.69,
+    maxAngle = 1.5,
+    names = ["A", "B", "C"],
+  }): Triangle {
     let pointA, pointB, pointC, triangle;
     do {
-      pointA = new Point(names[0], new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
-      pointB = new Point(names[1], new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
-      pointC = new Point(names[2], new NumberNode(randint(-10, 11)), new NumberNode(randint(-10, 11)));
+      pointA = new Point(
+        names[0],
+        new NumberNode(randint(-10, 11)),
+        new NumberNode(randint(-10, 11)),
+      );
+      pointB = new Point(
+        names[1],
+        new NumberNode(randint(-10, 11)),
+        new NumberNode(randint(-10, 11)),
+      );
+      pointC = new Point(
+        names[2],
+        new NumberNode(randint(-10, 11)),
+        new NumberNode(randint(-10, 11)),
+      );
       triangle = new Triangle(pointA, pointB, pointC);
     } while (
       triangle.isRight() ||
@@ -91,61 +111,92 @@ export class Triangle {
     return this.vertexA.name + this.vertexB.name + this.vertexC.name;
   }
 
-  getSideAnode(): Node {
+  getSideAnode() {
     return new SqrtNode(
       new AddNode(
-        new PowerNode(new SubstractNode(this.vertexC.x, this.vertexB.x), new NumberNode(2)),
-        new PowerNode(new SubstractNode(this.vertexC.y, this.vertexB.y), new NumberNode(2)),
+        new PowerNode(
+          new SubstractNode(this.vertexC.x, this.vertexB.x),
+          new NumberNode(2),
+        ),
+        new PowerNode(
+          new SubstractNode(this.vertexC.y, this.vertexB.y),
+          new NumberNode(2),
+        ),
       ),
     );
   }
 
-  getSideBnode(): Node {
+  getSideBnode() {
     return new SqrtNode(
       new AddNode(
-        new PowerNode(new SubstractNode(this.vertexC.x, this.vertexA.x), new NumberNode(2)),
-        new PowerNode(new SubstractNode(this.vertexC.y, this.vertexA.y), new NumberNode(2)),
+        new PowerNode(
+          new SubstractNode(this.vertexC.x, this.vertexA.x),
+          new NumberNode(2),
+        ),
+        new PowerNode(
+          new SubstractNode(this.vertexC.y, this.vertexA.y),
+          new NumberNode(2),
+        ),
       ),
     );
   }
 
-  getSideCnode(): Node {
+  getSideCnode() {
     return new SqrtNode(
       new AddNode(
-        new PowerNode(new SubstractNode(this.vertexA.x, this.vertexB.x), new NumberNode(2)),
-        new PowerNode(new SubstractNode(this.vertexC.y, this.vertexB.y), new NumberNode(2)),
+        new PowerNode(
+          new SubstractNode(this.vertexA.x, this.vertexB.x),
+          new NumberNode(2),
+        ),
+        new PowerNode(
+          new SubstractNode(this.vertexC.y, this.vertexB.y),
+          new NumberNode(2),
+        ),
       ),
     );
   }
 
   getAngleA(): number {
     return Math.acos(
-      (this.getSideBnumber() ** 2 + this.getSideCnumber() ** 2 - this.getSideAnumber() ** 2) /
+      (this.getSideBnumber() ** 2 +
+        this.getSideCnumber() ** 2 -
+        this.getSideAnumber() ** 2) /
         (2 * this.getSideBnumber() * this.getSideCnumber()),
     );
   }
 
   getAngleB(): number {
     return Math.acos(
-      (this.getSideAnumber() ** 2 + this.getSideCnumber() ** 2 - this.getSideBnumber() ** 2) /
+      (this.getSideAnumber() ** 2 +
+        this.getSideCnumber() ** 2 -
+        this.getSideBnumber() ** 2) /
         (2 * this.getSideAnumber() * this.getSideCnumber()),
     );
   }
 
   getAngleC(): number {
     return Math.acos(
-      (this.getSideAnumber() ** 2 + this.getSideBnumber() ** 2 - this.getSideCnumber() ** 2) /
+      (this.getSideAnumber() ** 2 +
+        this.getSideBnumber() ** 2 -
+        this.getSideCnumber() ** 2) /
         (2 * this.getSideAnumber() * this.getSideBnumber()),
     );
   }
 
   getPerimeter(): number {
-    return this.getSideAnumber() + this.getSideBnumber() + this.getSideCnumber();
+    return (
+      this.getSideAnumber() + this.getSideBnumber() + this.getSideCnumber()
+    );
   }
 
   getArea(): number {
     const s = this.getPerimeter() / 2;
-    return Math.sqrt(s * (s - this.getSideAnumber()) * (s - this.getSideBnumber()) * (s - this.getSideCnumber()));
+    return Math.sqrt(
+      s *
+        (s - this.getSideAnumber()) *
+        (s - this.getSideBnumber()) *
+        (s - this.getSideCnumber()),
+    );
   }
 
   isRight(): Boolean {
@@ -156,7 +207,10 @@ export class Triangle {
   }
 
   isEquilateral(): Boolean {
-    return this.getSideAnumber() === this.getSideBnumber() && this.getSideAnumber() === this.getSideCnumber();
+    return (
+      this.getSideAnumber() === this.getSideBnumber() &&
+      this.getSideAnumber() === this.getSideCnumber()
+    );
   }
 
   isIsosceles(): Boolean {
@@ -179,7 +233,7 @@ export class Triangle {
     if (Math.abs(Math.cos(this.getAngleA())) < 0.001) return this.vertexA.name;
     if (Math.abs(Math.cos(this.getAngleB())) < 0.001) return this.vertexB.name;
     if (Math.abs(Math.cos(this.getAngleC())) < 0.001) return this.vertexC.name;
-    return '';
+    return "";
   }
 
   generateCommands({
@@ -193,15 +247,27 @@ export class Triangle {
     showGrid,
   }: GenerateCommandsProps): string[] {
     let commands = [
-      `${this.vertexA.name} = Point({${this.vertexA.getXnumber()}, ${this.vertexA.getYnumber()}})`,
-      `${this.vertexB.name} = Point({${this.vertexB.getXnumber()}, ${this.vertexB.getYnumber()}})`,
-      `${this.vertexC.name} = Point({${this.vertexC.getXnumber()}, ${this.vertexC.getYnumber()}})`,
+      `${
+        this.vertexA.name
+      } = Point({${this.vertexA.getXnumber()}, ${this.vertexA.getYnumber()}})`,
+      `${
+        this.vertexB.name
+      } = Point({${this.vertexB.getXnumber()}, ${this.vertexB.getYnumber()}})`,
+      `${
+        this.vertexC.name
+      } = Point({${this.vertexC.getXnumber()}, ${this.vertexC.getYnumber()}})`,
       `ShowLabel(${this.vertexA.name}, true)`,
       `ShowLabel(${this.vertexB.name}, true)`,
       `ShowLabel(${this.vertexC.name}, true)`,
-      `${this.getSideCName()} = Segment(${this.vertexA.name}, ${this.vertexB.name})`,
-      `${this.getSideBName()} = Segment(${this.vertexA.name}, ${this.vertexC.name})`,
-      `${this.getSideAName()} = Segment(${this.vertexC.name}, ${this.vertexB.name})`,
+      `${this.getSideCName()} = Segment(${this.vertexA.name}, ${
+        this.vertexB.name
+      })`,
+      `${this.getSideBName()} = Segment(${this.vertexA.name}, ${
+        this.vertexC.name
+      })`,
+      `${this.getSideAName()} = Segment(${this.vertexC.name}, ${
+        this.vertexB.name
+      })`,
       `ShowLabel(${this.getSideCName()}, false)`,
       `ShowLabel(${this.getSideBName()}, false)`,
       `ShowLabel(${this.getSideBName()}, false)`,
@@ -215,13 +281,16 @@ export class Triangle {
         `ShowLabel(alpha, false)`,
       );
 
-    const defautColor = 'Red';
+    const defautColor = "Red";
 
     if (highlightedAngle) {
-      let temp = [''];
-      if (highlightedAngle === this.vertexB.name) temp = [this.vertexA.name, this.vertexB.name, this.vertexC.name];
-      if (highlightedAngle === this.vertexC.name) temp = [this.vertexB.name, this.vertexC.name, this.vertexA.name];
-      if (highlightedAngle === this.vertexA.name) temp = [this.vertexC.name, this.vertexA.name, this.vertexB.name];
+      let temp = [""];
+      if (highlightedAngle === this.vertexB.name)
+        temp = [this.vertexA.name, this.vertexB.name, this.vertexC.name];
+      if (highlightedAngle === this.vertexC.name)
+        temp = [this.vertexB.name, this.vertexC.name, this.vertexA.name];
+      if (highlightedAngle === this.vertexA.name)
+        temp = [this.vertexC.name, this.vertexA.name, this.vertexB.name];
 
       commands.push(
         `be = Angle(${temp[0]}, ${temp[1]}, ${temp[2]}, Line(${temp[0]}, ${temp[1]}))`,
@@ -233,19 +302,41 @@ export class Triangle {
     if (showLabels)
       for (let i = 0; i < showLabels.length; i++) {
         commands.push(`ShowLabel(${showLabels[i]}, true)`);
-        if (setCaptions) commands.push(`SetCaption(${showLabels[i]}, "${setCaptions[i]}")`);
+        if (setCaptions)
+          commands.push(`SetCaption(${showLabels[i]}, "${setCaptions[i]}")`);
       }
-    if (highlightedSide) commands.push(`SetColor(${highlightedSide}, "${colorHighlightedSide ?? defautColor}")`);
+    if (highlightedSide)
+      commands.push(
+        `SetColor(${highlightedSide}, "${
+          colorHighlightedSide ?? defautColor
+        }")`,
+      );
 
     return commands;
   }
 
   generateCoords(): number[] {
     return [
-      Math.min(this.vertexA.getXnumber(), this.vertexB.getXnumber(), this.vertexC.getXnumber()) - 1,
-      Math.max(this.vertexA.getXnumber(), this.vertexB.getXnumber(), this.vertexC.getXnumber()) + 1,
-      Math.min(this.vertexA.getYnumber(), this.vertexB.getYnumber(), this.vertexC.getYnumber()) - 1,
-      Math.max(this.vertexA.getYnumber(), this.vertexB.getYnumber(), this.vertexC.getYnumber()) + 1,
+      Math.min(
+        this.vertexA.getXnumber(),
+        this.vertexB.getXnumber(),
+        this.vertexC.getXnumber(),
+      ) - 1,
+      Math.max(
+        this.vertexA.getXnumber(),
+        this.vertexB.getXnumber(),
+        this.vertexC.getXnumber(),
+      ) + 1,
+      Math.min(
+        this.vertexA.getYnumber(),
+        this.vertexB.getYnumber(),
+        this.vertexC.getYnumber(),
+      ) - 1,
+      Math.max(
+        this.vertexA.getYnumber(),
+        this.vertexB.getYnumber(),
+        this.vertexC.getYnumber(),
+      ) + 1,
     ];
   }
 

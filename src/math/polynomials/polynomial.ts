@@ -13,6 +13,7 @@ import {
   MinusInfinityNode,
   PlusInfinityNode,
 } from "#root/tree/nodes/numbers/infiniteNode";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 
 export abstract class PolynomialConstructor {
   static randomWithOrder(order: number, variable: string = "x") {
@@ -291,7 +292,7 @@ export class Polynomial {
   // }
 
   integrateToNode(opts?: NodeOptions) {
-    let integralPolynomial: Node = new VariableNode("C");
+    let integralPolynomial: AlgebraicNode = new VariableNode("C");
     const varNode = new VariableNode(this.variable);
     for (let i = 0; i < this.degree + 1; i++) {
       const coeff = this.coefficients[i];
@@ -362,8 +363,8 @@ export class Polynomial {
     }
   }
 
-  toTree(opts?: NodeOptions): Node {
-    const recursive = (cursor: number): Node => {
+  toTree(opts?: NodeOptions) {
+    const recursive = (cursor: number): AlgebraicNode => {
       const coeff = this.coefficients[cursor];
       if (coeff === 0) return recursive(cursor - 1);
 
@@ -380,7 +381,7 @@ export class Polynomial {
             )
           : new VariableNode(this.variable);
 
-      let res: Node;
+      let res: AlgebraicNode;
       if (coeff === 1) res = monome;
       else if (coeff === -1) res = new OppositeNode(monome);
       else res = new MultiplyNode(new NumberNode(coeff), monome, opts);

@@ -6,21 +6,22 @@ import { VariableNode } from "../variables/variableNode";
 import { OppositeNode } from "../functions/oppositeNode";
 import { MultiplyNode } from "../operators/multiplyNode";
 import { AddNode } from "../operators/addNode";
+import { AlgebraicNode } from "../algebraicNode";
 
 export class ComplexNode implements Node {
-  re: Node;
-  im: Node;
+  re: AlgebraicNode;
+  im: AlgebraicNode;
   opts?: NodeOptions;
   type: NodeType = NodeType.number;
 
-  constructor(re: Node, im: Node, opts?: NodeOptions) {
+  constructor(re: AlgebraicNode, im: AlgebraicNode, opts?: NodeOptions) {
     this.re = re;
     this.im = im;
     this.opts = opts;
   }
-  toEquivalentNodes(opts?: NodeOptions): Node[] {
+  toEquivalentNodes(opts?: NodeOptions): AlgebraicNode[] {
     const options = opts ?? this.opts;
-    const res: Node[] = [];
+    const res: AlgebraicNode[] = [];
     if (this.im.toTex() === "0") {
       return this.re.toEquivalentNodes(options);
     }

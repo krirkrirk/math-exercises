@@ -26,8 +26,8 @@ export class SinNode implements FunctionNode {
   // toMathjs() {
   //   return sin(this.child.toMathjs());
   // }
-  toEquivalentNodes(): Node[] {
-    const res: Node[] = [];
+  toEquivalentNodes(): AlgebraicNode[] {
+    const res: AlgebraicNode[] = [];
     const childNodes = this.child.toEquivalentNodes();
     childNodes.forEach((childNode) => {
       res.push(new SinNode(childNode));
@@ -41,5 +41,8 @@ export class SinNode implements FunctionNode {
 
   simplify(): Node {
     return this;
+  }
+  evaluate(vars: Record<string, number>) {
+    return Math.sin(this.child.evaluate(vars));
   }
 }

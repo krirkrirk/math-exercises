@@ -27,8 +27,8 @@ export class AbsNode implements FunctionNode {
   //   return abs(this.child.toMathjs());
   // }
 
-  toEquivalentNodes(): Node[] {
-    const res: Node[] = [];
+  toEquivalentNodes(): AlgebraicNode[] {
+    const res: AlgebraicNode[] = [];
     const childNodes = this.child.toEquivalentNodes();
     childNodes.forEach((childNode) => {
       res.push(new AbsNode(childNode));
@@ -41,5 +41,9 @@ export class AbsNode implements FunctionNode {
   }
   simplify(): Node {
     return this;
+  }
+
+  evaluate(vars: Record<string, number>) {
+    return Math.abs(this.child.evaluate(vars));
   }
 }

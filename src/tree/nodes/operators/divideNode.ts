@@ -52,7 +52,7 @@ export class DivideNode implements OperatorNode {
   }
 
   toEquivalentNodes(opts?: NodeOptions) {
-    const res: Node[] = [];
+    const res: AlgebraicNode[] = [];
     const rightNodes = this.rightChild.toEquivalentNodes();
     const leftNodes = this.leftChild.toEquivalentNodes();
     rightNodes.forEach((rightNode) => {
@@ -69,6 +69,9 @@ export class DivideNode implements OperatorNode {
 
   toTex(): string {
     return divideNodeToTex(this.leftChild, this.rightChild);
+  }
+  evaluate(vars: Record<string, number>) {
+    return this.leftChild.evaluate(vars) / this.rightChild.evaluate(vars);
   }
   // toMathjs() {
   //   return divide(this.leftChild.toMathjs(), this.rightChild.toMathjs());

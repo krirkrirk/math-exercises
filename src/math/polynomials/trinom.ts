@@ -1,5 +1,4 @@
 import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
-import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
@@ -18,6 +17,7 @@ import { MathSet } from "../sets/mathSet";
 import { Polynomial } from "./polynomial";
 import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { gcd } from "../utils/arithmetic/gcd";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 
 export abstract class TrinomConstructor {
   static random(
@@ -103,7 +103,7 @@ export class Trinom extends Polynomial {
     ];
   }
 
-  getRootsNode(): Node[] {
+  getRootsNode(): AlgebraicNode[] {
     const delta = this.getDelta();
     if (delta < 0) return [];
     if (delta === 0)
@@ -165,7 +165,7 @@ export class Trinom extends Polynomial {
   getAlpha() {
     return -this.b / (2 * this.a);
   }
-  getAlphaNode(): Node {
+  getAlphaNode() {
     return new Rational(-this.b, 2 * this.a).simplify().toTree();
   }
 
@@ -173,11 +173,11 @@ export class Trinom extends Polynomial {
     return -this.getDelta() / (4 * this.a);
   }
 
-  getBetaNode(): Node {
+  getBetaNode() {
     return new Rational(-this.getDelta(), 4 * this.a).simplify().toTree();
   }
 
-  getFactorizedForm(): Node {
+  getFactorizedForm() {
     const roots = this.getRootsNode();
     if (!roots.length) return this.toTree();
     if (roots.length === 1) {
@@ -221,9 +221,9 @@ export class Trinom extends Polynomial {
     }
   }
 
-  getCanonicalForm(): Node {
+  getCanonicalForm() {
     const alpha = this.getAlpha();
-    let square: Node;
+    let square: AlgebraicNode;
     if (alpha !== 0) {
       square = new SquareNode(
         new AddNode(

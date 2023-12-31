@@ -125,7 +125,7 @@ export class Rational implements Nombre {
     return new Rational(-this.num, this.denum);
   }
 
-  toTree(opts?: NodeOptions): Node {
+  toTree(opts?: NodeOptions) {
     if (this.num < 0)
       return new OppositeNode(
         new FractionNode(

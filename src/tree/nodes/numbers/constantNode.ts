@@ -7,11 +7,13 @@ export function isConstantNode(a: Node): a is ConstantNode {
 export class ConstantNode implements AlgebraicNode {
   tex: string;
   mathString: string;
+  value: number;
   type: NodeType = NodeType.constant;
 
-  constructor(tex: string, mathString: string) {
+  constructor(tex: string, mathString: string, value: number) {
     this.tex = tex;
     this.mathString = mathString;
+    this.value = value;
   }
 
   toMathString(): string {
@@ -28,5 +30,8 @@ export class ConstantNode implements AlgebraicNode {
   }
   toEquivalentNodes() {
     return [this];
+  }
+  evaluate(vars: Record<string, number>) {
+    return this.value;
   }
 }

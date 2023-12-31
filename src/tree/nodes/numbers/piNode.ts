@@ -1,4 +1,4 @@
-import { ConstantNode } from './constantNode';
-import { NumberNode } from './numberNode';
+import { ConstantNode } from "./constantNode";
+import { NumberNode } from "./numberNode";
 
-export const PiNode = new ConstantNode('\\pi', 'pi');
+export const PiNode = new ConstantNode("\\pi", "pi", Math.PI);

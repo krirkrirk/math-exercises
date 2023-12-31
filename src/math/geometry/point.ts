@@ -1,8 +1,9 @@
-import { Node, NodeType } from "#root/tree/nodes/node";
+import { NodeType } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MathSet } from "../sets/mathSet";
 import { Interval } from "../sets/intervals/intervals";
 import { Rational } from "../numbers/rationals/rational";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 
 export abstract class PointConstructor {
   static random(
@@ -19,9 +20,9 @@ export abstract class PointConstructor {
 
 export class Point {
   name: string;
-  x: Node;
-  y: Node;
-  constructor(name: string, x: Node, y: Node) {
+  x: AlgebraicNode;
+  y: AlgebraicNode;
+  constructor(name: string, x: AlgebraicNode, y: AlgebraicNode) {
     this.name = name;
     this.x = x;
     this.y = y;

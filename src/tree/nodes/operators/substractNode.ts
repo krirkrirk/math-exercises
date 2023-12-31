@@ -3,15 +3,16 @@ import { Node, NodeType } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { OppositeNode } from "../functions/oppositeNode";
 import { AddNode } from "./addNode";
+import { AlgebraicNode } from "../algebraicNode";
 export function isSubstractNode(a: Node): a is SubstractNode {
   return isOperatorNode(a) && a.id === OperatorIds.substract;
 }
 export class SubstractNode implements OperatorNode {
   id: OperatorIds;
-  leftChild: Node;
-  rightChild: Node;
+  leftChild: AlgebraicNode;
+  rightChild: AlgebraicNode;
   type: NodeType;
-  constructor(leftChild: Node, rightChild: Node) {
+  constructor(leftChild: AlgebraicNode, rightChild: AlgebraicNode) {
     this.id = OperatorIds.substract;
     this.leftChild = leftChild;
     this.rightChild = rightChild;
@@ -22,8 +23,8 @@ export class SubstractNode implements OperatorNode {
     return `${this.leftChild.toMathString()}-(${this.rightChild.toMathString()})`;
   }
 
-  toEquivalentNodes(): Node[] {
-    const res: Node[] = [];
+  toEquivalentNodes(): AlgebraicNode[] {
+    const res: AlgebraicNode[] = [];
     const rightNodes = this.rightChild.toEquivalentNodes();
     const leftNodes = this.leftChild.toEquivalentNodes();
     rightNodes.forEach((rightNode) => {
@@ -52,6 +53,9 @@ export class SubstractNode implements OperatorNode {
     if (needBrackets) rightTex = `(${rightTex})`;
 
     return `${leftTex}-${rightTex}`;
+  }
+  evaluate(vars: Record<string, number>) {
+    return this.leftChild.evaluate(vars) - this.rightChild.evaluate(vars);
   }
   // toMathjs() {
   //   return subtract(this.leftChild.toMathjs(), this.rightChild.toMathjs());

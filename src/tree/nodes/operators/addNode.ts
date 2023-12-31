@@ -45,15 +45,15 @@ export class AddNode implements CommutativeOperatorNode {
     return `${this.leftChild.toMathString()} + (${this.rightChild.toMathString()})`;
   }
 
-  toEquivalentNodes(opts?: NodeOptions): Node[] {
+  toEquivalentNodes(opts?: NodeOptions): AlgebraicNode[] {
     const options = opts ?? this.opts;
     const res: AddNode[] = [];
 
-    const addTree: Node[] = [];
+    const addTree: AlgebraicNode[] = [];
     //ce seront des nodes qui ne sont pas des AddNode
 
     //1: choper le sous arbre de type Non AddNode (ie les enfants nonAddNode des AddNode)
-    const recursive = (node: Node) => {
+    const recursive = (node: AlgebraicNode) => {
       if (isOperatorNode(node)) {
         if (isAddNode(node)) {
           recursive(node.leftChild);
@@ -93,6 +93,9 @@ export class AddNode implements CommutativeOperatorNode {
   toTex(): string {
     const rightTex = this.rightChild.toTex();
     return addNodeToTex(this.leftChild.toTex(), rightTex);
+  }
+  evaluate(vars: Record<string, number>) {
+    return this.leftChild.evaluate(vars) + this.rightChild.evaluate(vars);
   }
   // toMathjs() {
   //   return add(this.leftChild.toMathjs(), this.rightChild.toMathjs());
