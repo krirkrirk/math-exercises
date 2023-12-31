@@ -1,7 +1,7 @@
 import { AlgebraicNode } from "../algebraicNode";
-import { NodeOptions, NodeType } from "../node";
+import { Node, NodeOptions, NodeType } from "../node";
 
-export class VectorNode implements AlgebraicNode {
+export class VectorNode implements Node {
   opts?: NodeOptions | undefined;
   name: string;
   type: NodeType;
