@@ -4,3 +4,5 @@ export * from "./basics";
 export * from "./cube";
 export * from "./rationalFraction";
 export * from "./trinoms";
+export * from "./exponential";
+export * from "./logarithm";

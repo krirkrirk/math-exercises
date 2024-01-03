@@ -17,6 +17,7 @@ export function isAddNode(a: Node): a is AddNode {
 }
 
 const addNodeToTex = (leftTex: string, rightTex: string) => {
+  if (rightTex === "0") return leftTex;
   return `${leftTex}${rightTex[0] === "-" ? "" : "+"}${rightTex}`;
 };
 export class AddNode implements CommutativeOperatorNode {

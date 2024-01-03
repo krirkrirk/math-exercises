@@ -3,24 +3,24 @@ import { Node, NodeOptions, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { isAbsNode } from "./absNode";
 import { AlgebraicNode } from "../algebraicNode";
-export function isLogNode(a: Node): a is LogNode {
-  return isFunctionNode(a) && a.id === FunctionsIds.log;
+export function isLog10Node(a: Node): a is Log10Node {
+  return isFunctionNode(a) && a.id === FunctionsIds.log10;
 }
-export class LogNode implements FunctionNode {
+export class Log10Node implements FunctionNode {
   id: FunctionsIds;
   child: AlgebraicNode;
   type: NodeType;
   opts?: NodeOptions;
 
   constructor(child: AlgebraicNode, opts?: NodeOptions) {
-    this.id = FunctionsIds.log;
+    this.id = FunctionsIds.log10;
     this.child = child;
     this.type = NodeType.function;
     this.opts = opts;
   }
 
   toMathString(): string {
-    return `log(${this.child.toMathString()})`;
+    return `log_{10}(${this.child.toMathString()})`;
   }
 
   toTex(): string {
@@ -29,8 +29,8 @@ export class LogNode implements FunctionNode {
       return "0";
     }
     const shouldntUseBrackets = isAbsNode(this.child);
-    if (shouldntUseBrackets) return `\\ln${tex}`;
-    else return `\\ln\\left(${tex}\\right)`;
+    if (shouldntUseBrackets) return `\\log${tex}`;
+    else return `\\log\\left(${tex}\\right)`;
   }
   // toMathjs() {
   //   return log(this.child.toMathjs());
@@ -40,7 +40,7 @@ export class LogNode implements FunctionNode {
     const res: AlgebraicNode[] = [];
     const childNodes = this.child.toEquivalentNodes();
     childNodes.forEach((childNode) => {
-      res.push(new LogNode(childNode));
+      res.push(new Log10Node(childNode));
     });
     return res;
   }
@@ -52,6 +52,6 @@ export class LogNode implements FunctionNode {
     return this;
   }
   evaluate(vars: Record<string, number>) {
-    return Math.log(this.child.evaluate(vars));
+    return Math.log10(this.child.evaluate(vars));
   }
 }

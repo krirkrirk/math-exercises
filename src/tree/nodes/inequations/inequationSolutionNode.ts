@@ -1,14 +1,15 @@
 import { Node, NodeOptions, NodeType } from "../node";
-import { IntervalNode } from "../sets/intervalNode";
+import { IntervalNode, isIntervalNode } from "../sets/intervalNode";
+import { UnionIntervalNode } from "../sets/unionIntervalNode";
 
 type InequationSolutionNodeOptions = { variable?: string; opts?: NodeOptions };
 export class InequationSolutionNode implements Node {
   type: NodeType;
   variable: string;
-  intervalSolution: IntervalNode;
+  intervalSolution: IntervalNode | UnionIntervalNode;
   opts?: NodeOptions;
   constructor(
-    intervalSolution: IntervalNode,
+    intervalSolution: IntervalNode | UnionIntervalNode,
     params?: InequationSolutionNodeOptions,
   ) {
     this.type = NodeType.set;
@@ -27,7 +28,7 @@ export class InequationSolutionNode implements Node {
     const intervalTex = this.intervalSolution.toTex();
     const res = [
       this.toTex(),
-      this.intervalSolution.toTex(),
+      intervalTex,
       `${this.variable}\\in${intervalTex}`,
     ];
     return res;
@@ -38,11 +39,18 @@ export class InequationSolutionNode implements Node {
   }
 
   toEquivalentNodes(opts?: NodeOptions) {
-    const equivs = this.intervalSolution.toEquivalentNodes(opts ?? this.opts);
-    return equivs.flatMap((equiv) => [
-      new InequationSolutionNode(equiv, { variable: this.variable, opts }),
-      ...equiv.toInequality().toEquivalentNodes(),
-    ]);
+    if (isIntervalNode(this.intervalSolution)) {
+      const equivs = this.intervalSolution.toEquivalentNodes(opts ?? this.opts);
+      return equivs.flatMap((equiv) => [
+        new InequationSolutionNode(equiv, { variable: this.variable, opts }),
+        ...equiv.toInequality().toEquivalentNodes(),
+      ]);
+    } else {
+      const equivs = this.intervalSolution.toEquivalentNodes(opts ?? this.opts);
+      return equivs.flatMap((equiv) => [
+        new InequationSolutionNode(equiv, { variable: this.variable, opts }),
+      ]);
+    }
   }
 
   toMathString() {

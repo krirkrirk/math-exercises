@@ -4,6 +4,9 @@ import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { MultiplyNode } from "./multiplyNode";
 import { AlgebraicNode } from "../algebraicNode";
+import { isExpNode } from "../functions/expNode";
+import { isLogNode } from "../functions/logNode";
+import { isSqrtNode } from "../functions/sqrtNode";
 
 export function isPowerNode(a: Node): a is PowerNode {
   return isOperatorNode(a) && a.id === OperatorIds.power;
@@ -86,7 +89,7 @@ export class PowerNode implements OperatorNode {
     );
   }
 
-  // simplify() {
+  // simplify(): AlgebraicNode {
   //   const leftSimplified = this.leftChild.simplify();
   //   const rightSimplified = this.rightChild.simplify();
   //   if (isNumberNode(rightSimplified)) {
@@ -99,11 +102,29 @@ export class PowerNode implements OperatorNode {
   //     if (value === 0) return leftSimplified;
   //     if (value === 1) return leftSimplified;
   //   }
-  //   if(isNumberNode(rightSimplified) && isNumberNode(leftSimplified)){
-
+  //   if (isNumberNode(rightSimplified) && isNumberNode(leftSimplified)) {
+  //     const value = this.evaluate({});
+  //     // à partir de ^21 et de ^-7, javascript returns des écritures scientifiques
+  //     if (
+  //       Math.abs(value) < Math.pow(10, 21) ||
+  //       Math.abs(value) < Math.pow(10, -7)
+  //     ) {
+  //       return new NumberNode(value);
+  //     } else return this;
   //   }
-  //   //!doit on simplifier 2^3 en 8, (-1)^20 en 1
-  //   //! si left child est un power node il faut faire des simplifications
+  //   if (isExpNode(leftSimplified) && isLogNode(rightSimplified)) {
+  //     return rightSimplified.child;
+  //   }
+  //   if (isPowerNode(leftSimplified)) {
+  //     return new PowerNode(
+  //       leftSimplified.leftChild,
+  //       new MultiplyNode(leftSimplified.rightChild, rightSimplified),
+  //     ).simplify();
+  //   }
+  //   if (isSqrtNode(leftSimplified) && isNumberNode(rightSimplified)) {
+  //   }
+  //   //! simplifications possibles :
+  //   // puissances négatives ?
   // }
 }
 

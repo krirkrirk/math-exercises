@@ -136,6 +136,7 @@ export type MathSection =
   | "Intégration"
   | "Limites"
   | "Logarithme népérien"
+  | "Logarithme décimal"
   | "Nombres complexes"
   | "Périmètres"
   | "Pourcentages"

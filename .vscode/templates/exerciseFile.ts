@@ -12,18 +12,16 @@ import {
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 
 type Identifiers = {
-  answer: string;
 };
-type VEAProps={}
 
 const get{{namePascal}}Question: QuestionGenerator<Identifiers>  = ()=>{
  
   const question: Question<Identifiers> = {
-    answer: ``,
+    answer,
     instruction: ``,
     keys: [],
     answerFormat: 'tex',
-    identifiers : {answer}
+    identifiers : {}
   };
 
   return question;
@@ -37,6 +35,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   }
   return shuffleProps(propositions, n);
 };
+
+const isAnswerValid: VEA<Identifiers> = (ans, {answer})=>{
+
+}
 export const {{name}}: MathExercise<Identifiers> = {
   id: '{{name}}',
   connector: "",
@@ -48,4 +50,5 @@ export const {{name}}: MathExercise<Identifiers> = {
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
+  isAnswerValid,
 };

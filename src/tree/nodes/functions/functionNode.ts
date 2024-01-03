@@ -11,6 +11,7 @@ export enum FunctionsIds {
   cos,
   sin,
   log,
+  log10,
   exp,
   abs,
 }

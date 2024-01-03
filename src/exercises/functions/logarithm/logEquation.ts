@@ -21,6 +21,7 @@ import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 
+/**aln(x)=k */
 type Identifiers = {
   a: number;
   k: number;

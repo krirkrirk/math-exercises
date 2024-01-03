@@ -3,8 +3,6 @@ export * from "./equationType1Exercise";
 export * from "./equationType2Exercise";
 export * from "./equationType3Exercise";
 export * from "./equationType4Exercise";
-export * from "./expEquation";
 export * from "./firstDegreeEquation";
 export * from "./fractionEquation";
-export * from "./logEquation";
 export * from "./multiplicationEquation";

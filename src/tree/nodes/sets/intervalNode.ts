@@ -4,7 +4,7 @@ import { InequationNode } from "../inequations/inequationNode";
 import { Node, NodeOptions, NodeType } from "../node";
 import { isConstantNode } from "../numbers/constantNode";
 import { VariableNode } from "../variables/variableNode";
-import { SetNode } from "./setNode";
+import { SetIds, SetNode, isSetNode } from "./setNode";
 
 export enum ClosureType {
   FF,
@@ -12,15 +12,19 @@ export enum ClosureType {
   OF,
   OO,
 }
-
+export function isIntervalNode(a: Node): a is IntervalNode {
+  return isSetNode(a) && a.id === SetIds.interval;
+}
 export class IntervalNode implements SetNode {
   type: NodeType;
+  id: SetIds;
   opts?: NodeOptions | undefined;
   closure: ClosureType;
   a: Node;
   b: Node;
   constructor(a: Node, b: Node, closure: ClosureType, opts?: NodeOptions) {
     this.type = NodeType.set;
+    this.id = SetIds.interval;
     this.closure = closure;
     this.a = a;
     this.b = b;

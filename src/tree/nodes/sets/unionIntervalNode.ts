@@ -1,7 +1,7 @@
 import { getCartesiansProducts } from "#root/utils/cartesianProducts";
 import { permute } from "#root/utils/permutations";
 import { Node, NodeOptions, NodeType } from "../node";
-import { SetNode } from "./setNode";
+import { SetIds, SetNode, isSetNode } from "./setNode";
 
 export enum ClosureType {
   FF,
@@ -9,13 +9,17 @@ export enum ClosureType {
   OF,
   OO,
 }
-
+export function isUnionIntervalNode(a: Node): a is UnionIntervalNode {
+  return isSetNode(a) && a.id === SetIds.union;
+}
 export class UnionIntervalNode implements Node {
   type: NodeType;
+  id: SetIds;
   opts?: NodeOptions | undefined;
   sets: SetNode[];
   constructor(sets: SetNode[], opts?: NodeOptions) {
     this.type = NodeType.set;
+    this.id = SetIds.union;
     this.sets = sets;
     this.opts = opts;
   }

@@ -14,11 +14,6 @@ import {
   IntervalConstructor,
 } from "#root/math/sets/intervals/intervals";
 import { InequationNode } from "#root/tree/nodes/inequations/inequationNode";
-import { InequationSolutionNode } from "#root/tree/nodes/inequations/inequationSolutionNode";
-import {
-  MinusInfinityNode,
-  PlusInfinityNode,
-} from "#root/tree/nodes/numbers/infiniteNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { BelongsNode } from "#root/tree/nodes/sets/belongsNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
