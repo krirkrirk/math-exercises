@@ -17,34 +17,44 @@ import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { isInt } from "#root/utils/isInt";
 import { isVariableNode } from "../variables/variableNode";
 import { AlgebraicNode } from "../algebraicNode";
+import { SqrtNode, isSqrtNode } from "../functions/sqrtNode";
+import { OppositeNode, isOppositeNode } from "../functions/oppositeNode";
+import { FractionNode, isFractionNode } from "./fractionNode";
+import { isFunctionNode } from "../functions/functionNode";
 export function isMultiplyNode(a: Node): a is MultiplyNode {
   return isOperatorNode(a) && a.id === OperatorIds.multiply;
 }
+
+export const sortMultiplyNodes = (arr: AlgebraicNode[]) => {
+  arr.sort((a, b) => {
+    return (
+      Number(b.isNumeric) - Number(a.isNumeric) ||
+      Number(isNumberNode(b) && b.value === -1) -
+        Number(isNumberNode(a) && a.value === -1) ||
+      Number(isNumberNode(b)) - Number(isNumberNode(a)) ||
+      Number(isFunctionNode(b)) - Number(isFunctionNode(a)) ||
+      Number(isOperatorNode(b)) - Number(isOperatorNode(a))
+    );
+  });
+};
 export class MultiplyNode implements CommutativeOperatorNode {
   opts?: NodeOptions;
   id: OperatorIds;
   leftChild: AlgebraicNode;
   rightChild: AlgebraicNode;
   type: NodeType;
+  isNumeric: boolean;
   constructor(
     leftChild: AlgebraicNode,
     rightChild: AlgebraicNode,
     opts?: NodeOptions,
   ) {
-    // let [left, right] = [leftChild, rightChild];
-    // const shouldSwitch =
-    //   (rightChild.type === NodeType.function &&
-    //     (rightChild as FunctionNode).id === FunctionsIds.opposite) ||
-    //   (leftChild.type === NodeType.constant &&
-    //     rightChild.type === NodeType.number);
-    // if (shouldSwitch) {
-    //   [left, right] = [rightChild, leftChild];
-    // }
     this.id = OperatorIds.multiply;
     this.leftChild = leftChild;
     this.rightChild = rightChild;
     this.type = NodeType.operator;
     this.opts = opts;
+    this.isNumeric = leftChild.isNumeric && rightChild.isNumeric;
   }
 
   shuffle = () => {
@@ -254,5 +264,120 @@ export class MultiplyNode implements CommutativeOperatorNode {
 
   evaluate(vars: Record<string, number>) {
     return this.leftChild.evaluate(vars) * this.rightChild.evaluate(vars);
+  }
+
+  copy() {
+    return new MultiplyNode(this.leftChild, this.rightChild, this.opts);
+  }
+  simplify(): AlgebraicNode {
+    const leftSimplified = this.leftChild.simplify();
+    const rightSimplified = this.rightChild.simplify();
+    const copy = new MultiplyNode(leftSimplified, rightSimplified, this.opts);
+
+    /**get externals nodes
+     * les opposites sont supprimés et on ajoute *-1 à la fin si leur nb est impair
+     */
+    let externals: AlgebraicNode[] = [];
+    let oppositesCount = 0;
+    //TODO Fractions
+    const recursive = (node: AlgebraicNode) => {
+      if (isMultiplyNode(node)) {
+        recursive(node.leftChild);
+        recursive(node.rightChild);
+      } else if (isOppositeNode(node)) {
+        oppositesCount++;
+        recursive(node.child);
+      } else {
+        externals.push(node);
+      }
+    };
+    recursive(copy);
+    //si 0 on s'arrete
+    if (externals.some((node) => isNumberNode(node) && node.value === 0)) {
+      return new NumberNode(0);
+    }
+
+    if (oppositesCount % 2 === 1) {
+      externals.unshift(new NumberNode(-1));
+    }
+
+    //suppression des 1
+    externals = externals.filter(
+      (node) => !isNumberNode(node) || node.value !== 1,
+    );
+    if (!externals.length) return new NumberNode(1);
+    if (externals.length === 1) return externals[0];
+
+    //s'il y a une fraction on transforme en fracNode
+    if (externals.some((node) => isFractionNode(node))) {
+      const nums: AlgebraicNode[] = [];
+      const denums: AlgebraicNode[] = [];
+      externals.forEach((node) => {
+        if (isFractionNode(node)) {
+          nums.push(node.leftChild);
+          denums.push(node.rightChild);
+        } else nums.push(node);
+      });
+      if (nums.some((node) => isNumberNode(node) && node.value === 0)) {
+        return new NumberNode(0);
+      }
+      sortMultiplyNodes(nums);
+      sortMultiplyNodes(denums);
+      const numNode = operatorComposition(MultiplyNode, nums);
+      const denumNode =
+        denums.length === 1
+          ? denums[0]
+          : operatorComposition(MultiplyNode, denums);
+      return new FractionNode(numNode, denumNode).simplify();
+    }
+
+    sortMultiplyNodes(externals);
+    console.log(externals.map((n) => n.toTex()));
+    const simplifyExternalNodes = (a: AlgebraicNode, b: AlgebraicNode) => {
+      if (isNumberNode(a) && isNumberNode(b)) {
+        return new NumberNode(a.value * b.value);
+      }
+      if (isSqrtNode(a) && isSqrtNode(b)) {
+        return new SqrtNode(new MultiplyNode(a.child, b.child)).simplify();
+      }
+      //TODo continue
+      return null;
+    };
+
+    //pour chaque paire on essaye de simplifier,
+    //chaque simplification déclenche le reboot du process
+    const simplifyIteration = () => {
+      for (let i = 0; i < externals.length - 1; i++) {
+        const left = externals[i];
+        for (let j = i + 1; j < externals.length; j++) {
+          const right = externals[j];
+          const simplified = simplifyExternalNodes(left, right);
+          if (simplified) {
+            externals[i] = simplified;
+            externals.splice(j, 1);
+            if (isNumberNode(simplified) && simplified.value === 1) {
+              externals.splice(i, 1);
+            }
+            simplifyIteration();
+            return;
+          }
+        }
+      }
+    };
+    simplifyIteration();
+    if (!externals.length) return new NumberNode(1);
+    if (externals.length === 1) return externals[0];
+    return operatorComposition(MultiplyNode, externals);
+  }
+
+  equals(node: AlgebraicNode) {
+    //!incorrect, il faut plutot vérifier qu'ils ont les meme externals
+    return (
+      isMultiplyNode(node) &&
+      ((node.leftChild.equals(this.leftChild) &&
+        node.rightChild.equals(this.rightChild)) ||
+        (node.leftChild.equals(this.rightChild) &&
+          node.rightChild.equals(this.leftChild)))
+    );
   }
 }

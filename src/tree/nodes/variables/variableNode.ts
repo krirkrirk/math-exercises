@@ -7,9 +7,10 @@ export function isVariableNode(a: Node): a is VariableNode {
 export class VariableNode implements AlgebraicNode {
   name: string;
   type = NodeType.variable;
-
+  isNumeric: boolean;
   constructor(name: string) {
     this.name = name;
+    this.isNumeric = false;
   }
 
   toTex(): string {
@@ -37,4 +38,10 @@ export class VariableNode implements AlgebraicNode {
   // simplify(): Node {
   //   return this;
   // }
+  simplify() {
+    return this;
+  }
+  equals(node: AlgebraicNode) {
+    return isVariableNode(node) && node.name === this.name;
+  }
 }

@@ -9,11 +9,12 @@ export class ConstantNode implements AlgebraicNode {
   mathString: string;
   value: number;
   type: NodeType = NodeType.constant;
-
+  isNumeric: boolean;
   constructor(tex: string, mathString: string, value: number) {
     this.tex = tex;
     this.mathString = mathString;
     this.value = value;
+    this.isNumeric = true;
   }
 
   toMathString(): string {
@@ -33,5 +34,11 @@ export class ConstantNode implements AlgebraicNode {
   }
   evaluate(vars: Record<string, number>) {
     return this.value;
+  }
+  simplify() {
+    return this;
+  }
+  equals(node: AlgebraicNode) {
+    return isConstantNode(node) && node.tex === this.tex;
   }
 }

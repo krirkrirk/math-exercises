@@ -10,11 +10,13 @@ export class ExpNode implements FunctionNode {
   id: FunctionsIds;
   child: AlgebraicNode;
   type: NodeType;
+  isNumeric: boolean;
   constructor(child: AlgebraicNode, opts?: NodeOptions) {
     this.id = FunctionsIds.exp;
     this.child = child;
     this.type = NodeType.function;
     this.opts = opts;
+    this.isNumeric = child.isNumeric;
   }
 
   toMathString(): string {
@@ -51,10 +53,13 @@ export class ExpNode implements FunctionNode {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }
 
-  simplify(): Node {
+  simplify() {
     return this;
   }
   evaluate(vars: Record<string, number>) {
     return Math.exp(this.child.evaluate(vars));
+  }
+  equals(node: AlgebraicNode) {
+    return isExpNode(node) && node.child.equals(this.child);
   }
 }

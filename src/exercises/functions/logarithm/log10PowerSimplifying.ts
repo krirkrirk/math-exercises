@@ -23,7 +23,7 @@ type Identifiers = {
 };
 
 const getLog10PowerSimplifyingQuestion: QuestionGenerator<Identifiers> = () => {
-  const tenthPower = randint(-5, 6, [0]);
+  const tenthPower = randint(-5, 6, [0, 1]);
   const shouldEvaluate = probaFlip(0.7);
   const nb = shouldEvaluate
     ? new Decimal(1).multiplyByPowerOfTen(tenthPower).toTree()
@@ -65,9 +65,10 @@ export const log10PowerSimplifying: MathExercise<Identifiers> = {
   isSingleStep: true,
   sections: ["Logarithme décimal", "Puissances"],
   generator: (nb: number) =>
-    getDistinctQuestions(getLog10PowerSimplifyingQuestion, nb),
+    getDistinctQuestions(getLog10PowerSimplifyingQuestion, nb, 15),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  maxAllowedQuestions: 15,
 };

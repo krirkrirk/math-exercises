@@ -1,5 +1,7 @@
 import { RemarkableValueConstructor } from "#root/math/trigonometry/remarkableValue";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
+import { CosNode } from "#root/tree/nodes/functions/cosNode";
+import { SinNode } from "#root/tree/nodes/functions/sinNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
@@ -28,29 +30,28 @@ const values = [
 ];
 
 type Identifiers = {
-  valueIndex: number;
+  mainValue: number;
   isCos: boolean;
 };
 const getRemarkableValues: QuestionGenerator<Identifiers> = () => {
   const isCos = coinFlip();
   const remarkableValue = RemarkableValueConstructor.simplifiable();
-  const valueIndex = remarkableValue.index;
+  const mainValue = remarkableValue.mainAngle.evaluate({});
+  // const valueIndex = remarkableValue.index;
   const answer = isCos
     ? remarkableValue.cos.toTex()
     : remarkableValue.sin.toTex();
 
-  shuffle(values);
-
   const statement = isCos
-    ? `\\cos\\left(${remarkableValue.angle.toTex()}\\right)`
-    : `\\sin\\left(${remarkableValue.angle.toTex()}\\right)`;
+    ? new CosNode(remarkableValue.angle).toTex()
+    : new SinNode(remarkableValue.angle).toTex();
   const question: Question<Identifiers> = {
     instruction: `Donner la valeur exacte de : $${statement}$`,
     startStatement: statement,
     answer: answer,
     keys: ["pi", "cos", "sin"],
     answerFormat: "tex",
-    identifiers: { isCos, valueIndex },
+    identifiers: { isCos, mainValue },
   };
   return question;
 };
@@ -64,8 +65,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   }
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<Identifiers> = (ans, { valueIndex, isCos }) => {
-  const remarkableValue = remarkableTrigoValues[valueIndex];
+const isAnswerValid: VEA<Identifiers> = (ans, { mainValue, isCos }) => {
+  const remarkableValue = remarkableTrigoValues.find(
+    (point) => point.angle.evaluate({}) === mainValue,
+  )!;
   const answer = isCos ? remarkableValue.cos : remarkableValue.sin;
   const texs = answer.toAllValidTexs({ allowFractionToDecimal: true });
   return texs.includes(ans);

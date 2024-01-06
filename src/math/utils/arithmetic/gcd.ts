@@ -1,5 +1,5 @@
 function pgcd(a: number, b: number): number {
-  return b ? gcd(b, a % b) : a;
+  return b ? pgcd(b, a % b) : Math.abs(a);
 }
 
 export function gcd(...args: number[]): number {

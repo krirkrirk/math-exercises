@@ -35,6 +35,7 @@ export class DivideNode implements OperatorNode {
   leftChild: AlgebraicNode;
   rightChild: AlgebraicNode;
   type: NodeType;
+  isNumeric: boolean;
   /**
    * @param leftChild num
    * @param rightChild denum
@@ -45,6 +46,7 @@ export class DivideNode implements OperatorNode {
     this.leftChild = leftChild;
     this.rightChild = rightChild;
     this.type = NodeType.operator;
+    this.isNumeric = leftChild.isNumeric && rightChild.isNumeric;
   }
 
   toMathString(): string {
@@ -76,4 +78,14 @@ export class DivideNode implements OperatorNode {
   // toMathjs() {
   //   return divide(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   // }
+  simplify() {
+    return this;
+  }
+  equals(node: AlgebraicNode) {
+    return (
+      isDivideNode(node) &&
+      node.leftChild.equals(this.leftChild) &&
+      node.rightChild.equals(this.rightChild)
+    );
+  }
 }

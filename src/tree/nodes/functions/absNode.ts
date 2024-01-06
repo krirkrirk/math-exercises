@@ -9,11 +9,12 @@ export class AbsNode implements FunctionNode {
   id: FunctionsIds;
   child: AlgebraicNode;
   type: NodeType;
-
+  isNumeric: boolean;
   constructor(child: AlgebraicNode) {
     this.id = FunctionsIds.abs;
     this.child = child;
     this.type = NodeType.function;
+    this.isNumeric = child.isNumeric;
   }
 
   toMathString(): string {
@@ -39,11 +40,14 @@ export class AbsNode implements FunctionNode {
   toAllValidTexs(): string[] {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }
-  simplify(): Node {
-    return this;
+  simplify() {
+    return new AbsNode(this.child.simplify());
   }
 
   evaluate(vars: Record<string, number>) {
     return Math.abs(this.child.evaluate(vars));
+  }
+  equals(node: AlgebraicNode) {
+    return isAbsNode(node) && node.child.equals(this.child);
   }
 }

@@ -12,11 +12,13 @@ export class SubstractNode implements OperatorNode {
   leftChild: AlgebraicNode;
   rightChild: AlgebraicNode;
   type: NodeType;
+  isNumeric: boolean;
   constructor(leftChild: AlgebraicNode, rightChild: AlgebraicNode) {
     this.id = OperatorIds.substract;
     this.leftChild = leftChild;
     this.rightChild = rightChild;
     this.type = NodeType.operator;
+    this.isNumeric = leftChild.isNumeric && rightChild.isNumeric;
   }
 
   toMathString(): string {
@@ -60,4 +62,14 @@ export class SubstractNode implements OperatorNode {
   // toMathjs() {
   //   return subtract(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   // }
+  simplify() {
+    return this;
+  }
+  equals(node: AlgebraicNode) {
+    return (
+      isSubstractNode(node) &&
+      node.leftChild.equals(this.leftChild) &&
+      node.rightChild.equals(this.rightChild)
+    );
+  }
 }

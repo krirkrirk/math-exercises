@@ -6,6 +6,9 @@ import { FunctionNode, FunctionsIds } from "../functions/functionNode";
 import { round } from "#root/math/utils/round";
 import { isOppositeNode } from "../functions/oppositeNode";
 import { AlgebraicNode } from "../algebraicNode";
+import { MultiplyNode, isMultiplyNode } from "./multiplyNode";
+import { Rational } from "#root/math/numbers/rationals/rational";
+import { operatorComposition } from "#root/tree/utilities/operatorComposition";
 export function isFractionNode(a: Node): a is FractionNode {
   return isOperatorNode(a) && a.id === OperatorIds.fraction;
 }
@@ -19,6 +22,7 @@ export class FractionNode implements OperatorNode {
   leftChild: AlgebraicNode;
   rightChild: AlgebraicNode;
   type: NodeType;
+  isNumeric: boolean;
   constructor(
     leftChild: AlgebraicNode,
     rightChild: AlgebraicNode,
@@ -29,6 +33,7 @@ export class FractionNode implements OperatorNode {
     this.rightChild = rightChild;
     this.type = NodeType.operator;
     this.opts = opts;
+    this.isNumeric = leftChild.isNumeric && rightChild.isNumeric;
   }
 
   toMathString(): string {
@@ -88,4 +93,88 @@ export class FractionNode implements OperatorNode {
   // toMathjs() {
   //   return fraction(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   // }
+  simplify(): AlgebraicNode {
+    const simplifiedNum = this.leftChild.simplify();
+    const simplifiedDenum = this.rightChild.simplify();
+    const copy = new FractionNode(simplifiedNum, simplifiedDenum, this.opts);
+    const externalsNums: AlgebraicNode[] = [];
+    const externalsDenums: AlgebraicNode[] = [];
+
+    const recursiveNums = (node: AlgebraicNode) => {
+      if (isMultiplyNode(node)) {
+        recursiveNums(node.leftChild);
+        recursiveNums(node.rightChild);
+      } else {
+        externalsNums.push(node);
+      }
+    };
+    const recursiveDenums = (node: AlgebraicNode) => {
+      if (isMultiplyNode(node)) {
+        recursiveDenums(node.leftChild);
+        recursiveDenums(node.rightChild);
+      } else {
+        externalsDenums.push(node);
+      }
+    };
+    recursiveNums(copy.leftChild);
+    recursiveDenums(copy.rightChild);
+
+    const simplifyExternalNodes = (
+      num: AlgebraicNode,
+      denum: AlgebraicNode,
+    ) => {
+      if (isNumberNode(num) && isNumberNode(denum)) {
+        const frac = new Rational(num.value, denum.value);
+        console.log(frac.isIrreductible());
+        if (frac.isIrreductible()) return null;
+        return frac.simplify().toTree();
+      }
+      //!ya mieux à faire pour gérer tous les cas d'un coup
+      //! s'insiprer de multiply
+      if (num.equals(denum)) return new NumberNode(1);
+      return null;
+    };
+    console.log(externalsNums, externalsDenums);
+    const simplifyIteration = () => {
+      for (let i = 0; i < externalsNums.length; i++) {
+        const num = externalsNums[i];
+        for (let j = 0; j < externalsDenums.length; j++) {
+          const denum = externalsDenums[j];
+          const simplified = simplifyExternalNodes(num, denum);
+          if (simplified) {
+            if (isFractionNode(simplified)) {
+              externalsNums[i] = simplified.leftChild;
+              externalsDenums[j] = simplified.rightChild;
+            } else {
+              externalsNums[i] = simplified;
+              externalsDenums.splice(j, 1);
+            }
+            simplifyIteration();
+            return;
+          }
+        }
+      }
+    };
+    simplifyIteration();
+
+    const nums =
+      externalsNums.length === 1
+        ? externalsNums[0]
+        : operatorComposition(MultiplyNode, externalsNums).simplify();
+    if (externalsDenums.length === 0) {
+      return nums;
+    }
+    const denums =
+      externalsDenums.length === 1
+        ? externalsDenums[0]
+        : operatorComposition(MultiplyNode, externalsDenums);
+    return new FractionNode(nums, denums);
+  }
+  equals(node: AlgebraicNode) {
+    return (
+      isFractionNode(node) &&
+      node.leftChild.equals(this.leftChild) &&
+      node.rightChild.equals(this.rightChild)
+    );
+  }
 }

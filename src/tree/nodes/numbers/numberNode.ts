@@ -9,11 +9,12 @@ export class NumberNode implements AlgebraicNode {
   mathString: string;
   value: number;
   type: NodeType = NodeType.number;
-
+  isNumeric: boolean;
   constructor(value: number, tex?: string, mathString?: string) {
     this.value = value;
     this.tex = tex || (value + "").replace(".", ",");
     this.mathString = mathString || this.value + "";
+    this.isNumeric = true;
   }
 
   toMathString(): string {
@@ -37,5 +38,11 @@ export class NumberNode implements AlgebraicNode {
   }
   evaluate(vars: Record<string, number>) {
     return this.value;
+  }
+  simplify() {
+    return this;
+  }
+  equals(node: AlgebraicNode) {
+    return isNumberNode(node) && node.value === this.value;
   }
 }

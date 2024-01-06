@@ -3,9 +3,10 @@ import { Node, NodeOptions, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { SquareRoot } from "#root/math/numbers/reals/real";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
-import { MultiplyNode } from "../operators/multiplyNode";
+import { MultiplyNode, isMultiplyNode } from "../operators/multiplyNode";
 import { isInt } from "#root/utils/isInt";
 import { AlgebraicNode } from "../algebraicNode";
+import { operatorComposition } from "#root/tree/utilities/operatorComposition";
 export function isSqrtNode(a: Node): a is SqrtNode {
   return isFunctionNode(a) && a.id === FunctionsIds.sqrt;
 }
@@ -14,12 +15,13 @@ export class SqrtNode implements FunctionNode {
   child: AlgebraicNode;
   type: NodeType;
   opts?: NodeOptions;
-
+  isNumeric: boolean;
   constructor(child: AlgebraicNode, opts?: NodeOptions) {
     this.id = FunctionsIds.sqrt;
     this.child = child;
     this.type = NodeType.function;
     this.opts = opts;
+    this.isNumeric = child.isNumeric;
   }
   toMathString(): string {
     return `sqr(${this.child.toMathString()})`;
@@ -60,5 +62,43 @@ export class SqrtNode implements FunctionNode {
   }
   evaluate(vars: Record<string, number>) {
     return Math.sqrt(this.child.evaluate(vars));
+  }
+  simplify() {
+    const simplifiedChild = this.child.simplify();
+    const copy = new SqrtNode(simplifiedChild, this.opts);
+    const externals: AlgebraicNode[] = [];
+    //ex [3, x^2] pour sqrt(3x^2)
+    //TODO fractions
+    const recursive = (node: AlgebraicNode) => {
+      if (isMultiplyNode(node)) {
+        recursive(node.leftChild);
+        recursive(node.rightChild);
+      } else {
+        externals.push(node);
+      }
+    };
+    recursive(copy.child);
+    const simplifyExternalNodes = (a: AlgebraicNode) => {
+      if (isNumberNode(a)) {
+        const sqrt = new SquareRoot(a.value);
+        return sqrt.simplify().toTree();
+      }
+      //TODO diviser par 2 les puissances (dont exp)
+      return new SqrtNode(a);
+    };
+    const simplifyIteration = () => {
+      for (let i = 0; i < externals.length; i++) {
+        const simplified = simplifyExternalNodes(externals[i]);
+        externals[i] = simplified;
+        return;
+      }
+    };
+    simplifyIteration();
+
+    if (externals.length === 1) return externals[0];
+    return operatorComposition(MultiplyNode, externals).simplify();
+  }
+  equals(node: AlgebraicNode) {
+    return isSqrtNode(node) && node.child.equals(this.child);
   }
 }

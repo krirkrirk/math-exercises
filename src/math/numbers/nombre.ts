@@ -24,7 +24,7 @@ export interface Nombre {
 export abstract class NombreConstructor {
   static random() {
     const type = random([
-      NumberType.Decimal,
+      NumberType.Integer,
       NumberType.Decimal,
       NumberType.Rational,
       NumberType.Real,

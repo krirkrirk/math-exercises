@@ -4,6 +4,9 @@ export interface AlgebraicNode extends Node {
   // multiply: (n: AlgebraicNode) => AlgebraicNode;
   evaluate: (vars: Record<string, number>) => number;
   toEquivalentNodes: (opts?: NodeOptions) => AlgebraicNode[];
+  simplify: () => AlgebraicNode;
+  equals: (node: AlgebraicNode) => boolean;
+  isNumeric: boolean;
 }
 //tous les operators et function
 // tous les externals (number, variable, constant, length)

@@ -18,6 +18,7 @@ export class PowerNode implements OperatorNode {
   leftChild: AlgebraicNode;
   rightChild: AlgebraicNode;
   type: NodeType;
+  isNumeric: boolean;
   constructor(
     leftChild: AlgebraicNode,
     rightChild: AlgebraicNode,
@@ -28,6 +29,7 @@ export class PowerNode implements OperatorNode {
     this.rightChild = rightChild;
     this.type = NodeType.operator;
     this.opts = opts;
+    this.isNumeric = leftChild.isNumeric && rightChild.isNumeric;
   }
 
   toMathString(): string {
@@ -126,6 +128,17 @@ export class PowerNode implements OperatorNode {
   //   //! simplifications possibles :
   //   // puissances négatives ?
   // }
+
+  simplify() {
+    return this;
+  }
+  equals(node: AlgebraicNode) {
+    return (
+      isPowerNode(node) &&
+      node.leftChild.equals(this.leftChild) &&
+      node.rightChild.equals(this.rightChild)
+    );
+  }
 }
 
 export class SquareNode extends PowerNode {

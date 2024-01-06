@@ -9,3 +9,4 @@ export * from "./linearCombinaisonComplex";
 export * from "./moduloFromAlgebraicComplex";
 export * from "./mutiplyComplex";
 export * from "./reAndIm";
+export * from "./argumentFromAlgebraicComplex";

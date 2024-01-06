@@ -23,11 +23,13 @@ export class OppositeNode implements FunctionNode {
   child: AlgebraicNode;
   type: NodeType;
   opts?: NodeOptions;
+  isNumeric: boolean;
   constructor(child: AlgebraicNode, opts?: NodeOptions) {
     this.id = FunctionsIds.opposite;
     this.child = child;
     this.type = NodeType.function;
     this.opts = opts;
+    this.isNumeric = child.isNumeric;
   }
   toMathString(): string {
     return `-(${this.child.toMathString()})`;
@@ -94,5 +96,11 @@ export class OppositeNode implements FunctionNode {
   // }
   evaluate(vars: Record<string, number>) {
     return -this.child.evaluate(vars);
+  }
+  simplify() {
+    return this;
+  }
+  equals(node: AlgebraicNode) {
+    return isOppositeNode(node) && node.child.equals(this.child);
   }
 }

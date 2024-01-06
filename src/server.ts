@@ -13,6 +13,13 @@ import { NumberNode } from "./tree/nodes/numbers/numberNode";
 import { AddNode } from "./tree/nodes/operators/addNode";
 import { VariableNode } from "./tree/nodes/variables/variableNode";
 import { PowerNode, SquareNode } from "./tree/nodes/operators/powerNode";
+import { CosNode } from "./tree/nodes/functions/cosNode";
+import { FractionNode } from "./tree/nodes/operators/fractionNode";
+import { PiNode } from "./tree/nodes/numbers/piNode";
+import { SqrtNode } from "./tree/nodes/functions/sqrtNode";
+import { OppositeNode } from "./tree/nodes/functions/oppositeNode";
+import { gcd } from "./math/utils/arithmetic/gcd";
+import { Log10Node } from "./tree/nodes/functions/log10Node";
 
 const jsonParser = bodyParser.json();
 
@@ -23,19 +30,12 @@ const runServer = () => {
   const app: Express = express();
   app.use(cors());
 
-  console.log(exercises.length);
+  console.log(exercises.length + " exercices");
+
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });
 
-  const tree = new MultiplyNode(
-    new NumberNode(3),
-    new AddNode(
-      new SquareNode(new NumberNode(4)),
-      new PowerNode(new NumberNode(2), new NumberNode(3)),
-    ),
-  );
-  console.log(tree.evaluate({}));
   app.get("/exo", (req: Request, res: Response) => {
     const exoId = req.query.exoId;
     const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
