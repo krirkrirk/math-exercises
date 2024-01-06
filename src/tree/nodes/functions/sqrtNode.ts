@@ -98,7 +98,7 @@ export class SqrtNode implements FunctionNode {
     if (externals.length === 1) return externals[0];
     return operatorComposition(MultiplyNode, externals).simplify();
   }
-  equals(node: AlgebraicNode) {
+  equals(node: AlgebraicNode): boolean {
     return isSqrtNode(node) && node.child.equals(this.child);
   }
 }

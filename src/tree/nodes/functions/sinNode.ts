@@ -41,7 +41,7 @@ export class SinNode implements FunctionNode {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }
 
-  simplify() {
+  simplify(): AlgebraicNode {
     const simplifiedChild = this.child.simplify();
     if (!hasVariableNode(simplifiedChild)) {
       const value = simplifiedChild.evaluate({});
@@ -62,7 +62,7 @@ export class SinNode implements FunctionNode {
   evaluate(vars: Record<string, number>) {
     return Math.sin(this.child.evaluate(vars));
   }
-  equals(node: AlgebraicNode) {
+  equals(node: AlgebraicNode): boolean {
     return isSinNode(node) && node.child.equals(this.child);
   }
 }
