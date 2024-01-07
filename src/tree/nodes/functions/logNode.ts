@@ -87,7 +87,7 @@ export class LogNode implements FunctionNode {
   evaluate(vars: Record<string, number>) {
     return Math.log(this.child.evaluate(vars));
   }
-  equals(node: AlgebraicNode) {
+  equals(node: AlgebraicNode): boolean {
     return isLogNode(node) && node.child.equals(this.child);
   }
 }

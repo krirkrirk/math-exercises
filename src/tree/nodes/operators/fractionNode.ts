@@ -170,7 +170,7 @@ export class FractionNode implements OperatorNode {
         : operatorComposition(MultiplyNode, externalsDenums);
     return new FractionNode(nums, denums);
   }
-  equals(node: AlgebraicNode) {
+  equals(node: AlgebraicNode): boolean {
     return (
       isFractionNode(node) &&
       node.leftChild.equals(this.leftChild) &&
