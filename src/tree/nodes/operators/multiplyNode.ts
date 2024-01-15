@@ -332,7 +332,6 @@ export class MultiplyNode implements CommutativeOperatorNode {
     }
 
     sortMultiplyNodes(externals);
-    console.log(externals.map((n) => n.toTex()));
     const simplifyExternalNodes = (a: AlgebraicNode, b: AlgebraicNode) => {
       if (isNumberNode(a) && isNumberNode(b)) {
         return new NumberNode(a.value * b.value);

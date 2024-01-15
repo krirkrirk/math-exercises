@@ -125,7 +125,6 @@ export class FractionNode implements OperatorNode {
     ) => {
       if (isNumberNode(num) && isNumberNode(denum)) {
         const frac = new Rational(num.value, denum.value);
-        console.log(frac.isIrreductible());
         if (frac.isIrreductible()) return null;
         return frac.simplify().toTree();
       }
@@ -134,7 +133,6 @@ export class FractionNode implements OperatorNode {
       if (num.equals(denum)) return new NumberNode(1);
       return null;
     };
-    console.log(externalsNums, externalsDenums);
     const simplifyIteration = () => {
       for (let i = 0; i < externalsNums.length; i++) {
         const num = externalsNums[i];

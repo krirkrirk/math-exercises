@@ -98,7 +98,7 @@ export class OppositeNode implements FunctionNode {
     return -this.child.evaluate(vars);
   }
   simplify() {
-    return this;
+    return new OppositeNode(this.child.simplify());
   }
   equals(node: AlgebraicNode) {
     return isOppositeNode(node) && node.child.equals(this.child);

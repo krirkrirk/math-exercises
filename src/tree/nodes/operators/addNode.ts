@@ -239,13 +239,13 @@ export class AddNode implements CommutativeOperatorNode {
           ? new NumberNode(1)
           : aSubExternals.length === 1
           ? aSubExternals[0]
-          : operatorComposition(AddNode, aSubExternals);
+          : operatorComposition(MultiplyNode, aSubExternals);
       const bNode =
         bSubExternals.length === 0
           ? new NumberNode(1)
           : bSubExternals.length === 1
           ? bSubExternals[0]
-          : operatorComposition(AddNode, bSubExternals);
+          : operatorComposition(MultiplyNode, bSubExternals);
       const addNode = new AddNode(aNode, bNode);
       return new MultiplyNode(addNode, factorsNode).simplify();
     };

@@ -25,7 +25,8 @@ const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
   const interval = new Interval("[[-10; 10]]").difference(
     new DiscreteSet([new Integer(0)]),
   );
-  const affine = AffineConstructor.random(interval, interval);
+  const intervalPlus = new Interval("[[1; 10]]");
+  const affine = AffineConstructor.random(intervalPlus, interval);
   const affine2 = new Affine(affine.a, -affine.b);
 
   const statementTree = affine.multiply(affine2).toTree();
