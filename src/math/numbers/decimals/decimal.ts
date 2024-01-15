@@ -5,6 +5,7 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { Integer } from "../integer/integer";
 import { Nombre, NumberType } from "../nombre";
+import { Rational } from "../rationals/rational";
 
 export abstract class DecimalConstructor {
   static randomFracPart(precision: number, leadingZeros: number = 0): string {
@@ -25,6 +26,7 @@ export abstract class DecimalConstructor {
     return DecimalConstructor.fromParts(int, decimals);
   }
   static fromParts(intPart: string, decimalPart: string): Decimal {
+    if (decimalPart.length === 0) return new Decimal(Number("" + intPart));
     return new Decimal(Number("" + intPart + "." + decimalPart));
   }
   //returns X.YYYY where X € [0, 9] and first Y is not zero if X is zero
@@ -128,6 +130,7 @@ export class Decimal implements Nombre {
   }
 
   multiplyByPowerOfTen(power: number) {
+    if (power === 0) return this;
     let newIntPart = "",
       newFracPart = "";
 
@@ -189,6 +192,12 @@ export class Decimal implements Nombre {
     );
   }
 
+  toRational() {
+    return new Rational(
+      this.multiplyByPowerOfTen(this.precision).value,
+      10 ** this.precision,
+    ).simplify();
+  }
   toTree() {
     return new NumberNode(this.value);
   }

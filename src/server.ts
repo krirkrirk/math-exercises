@@ -8,18 +8,6 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import { MathExercise } from "./exercises/exercise";
-import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
-import { NumberNode } from "./tree/nodes/numbers/numberNode";
-import { AddNode } from "./tree/nodes/operators/addNode";
-import { VariableNode } from "./tree/nodes/variables/variableNode";
-import { PowerNode, SquareNode } from "./tree/nodes/operators/powerNode";
-import { CosNode } from "./tree/nodes/functions/cosNode";
-import { FractionNode } from "./tree/nodes/operators/fractionNode";
-import { PiNode } from "./tree/nodes/numbers/piNode";
-import { SqrtNode } from "./tree/nodes/functions/sqrtNode";
-import { OppositeNode } from "./tree/nodes/functions/oppositeNode";
-import { gcd } from "./math/utils/arithmetic/gcd";
-import { Log10Node } from "./tree/nodes/functions/log10Node";
 
 const jsonParser = bodyParser.json();
 
@@ -31,7 +19,7 @@ const runServer = () => {
   app.use(cors());
 
   console.log(exercises.length + " exercices");
-
+  console.log(exercises.filter((exo) => exo.isSingleStep).length);
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

@@ -6,3 +6,4 @@ export * from "./fractionsDivision";
 export * from "./fractionsProduct";
 export * from "./fractionsSum";
 export * from "./simplifyFraction";
+export * from "./periodicWritingToFraction";
