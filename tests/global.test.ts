@@ -83,6 +83,11 @@ test("all exos", () => {
           props.forEach((prop) =>
             expect(prop.statement.match(dotDecimalPattern)).toBe(null),
           );
+          if (question.coords) {
+            question.coords.forEach((element) => {
+              expect(Math.abs(element)).toBeLessThan(Infinity);
+            });
+          }
         }
       });
     } catch (err) {

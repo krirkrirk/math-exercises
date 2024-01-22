@@ -7,3 +7,4 @@ export * from "./sequencePolynomLimit";
 export * from "./sequencePolynomNoFILimit";
 export * from "./sequencePolynomProductLimit";
 export * from "./sequenceRationalFracLimit";
+export * from "./limitReading";

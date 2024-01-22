@@ -8,6 +8,11 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import { MathExercise } from "./exercises/exercise";
+import { AddNode } from "./tree/nodes/operators/addNode";
+import { NumberNode } from "./tree/nodes/numbers/numberNode";
+import { SquareNode } from "./tree/nodes/operators/powerNode";
+import { SqrtNode } from "./tree/nodes/functions/sqrtNode";
+import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
 
 const jsonParser = bodyParser.json();
 
@@ -19,7 +24,24 @@ const runServer = () => {
   app.use(cors());
 
   console.log(exercises.length + " exercices");
-  console.log(exercises.filter((exo) => exo.isSingleStep).length);
+  const firstTerm = new MultiplyNode(
+    new NumberNode(3),
+    new SqrtNode(new NumberNode(3)),
+  );
+  const secondTerm = new NumberNode(5);
+  const answer = new AddNode(
+    new SquareNode(firstTerm),
+    new AddNode(
+      new SquareNode(secondTerm),
+      new MultiplyNode(
+        new NumberNode(2),
+        new MultiplyNode(firstTerm, secondTerm),
+      ),
+    ),
+  )
+    .simplify()
+    .toTex();
+  console.log(answer);
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

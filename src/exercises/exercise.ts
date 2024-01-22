@@ -142,6 +142,7 @@ export type MathSection =
   | "Pourcentages"
   | "Primitives"
   | "Probabilités"
+  | "Produit scalaire"
   | "Proportionnalité"
   | "Puissances"
   | "Racines carrées"

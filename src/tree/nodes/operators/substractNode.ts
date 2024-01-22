@@ -3,7 +3,7 @@ import { Node, NodeType } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { OppositeNode } from "../functions/oppositeNode";
 import { AddNode } from "./addNode";
-import { AlgebraicNode } from "../algebraicNode";
+import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 export function isSubstractNode(a: Node): a is SubstractNode {
   return isOperatorNode(a) && a.id === OperatorIds.substract;
 }
@@ -62,8 +62,11 @@ export class SubstractNode implements OperatorNode {
   // toMathjs() {
   //   return subtract(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   // }
-  simplify() {
-    return this;
+  simplify(opts?: SimplifyOptions) {
+    return new AddNode(
+      this.leftChild,
+      new OppositeNode(this.rightChild),
+    ).simplify(opts);
   }
   equals(node: AlgebraicNode) {
     return (

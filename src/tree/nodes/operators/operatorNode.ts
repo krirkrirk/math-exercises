@@ -8,6 +8,7 @@ export enum OperatorIds {
   fraction,
   divide,
   power,
+  limit,
 }
 
 export interface OperatorNode extends AlgebraicNode {

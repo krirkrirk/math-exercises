@@ -1,9 +1,15 @@
 import { Node, NodeType } from "../node";
 import { AlgebraicNode } from "../algebraicNode";
+import { randint } from "#root/math/utils/random/randint";
 export function isNumberNode(a: Node): a is NumberNode {
   return a.type === NodeType.number;
 }
 
+export abstract class NumberNodeConstructor {
+  static random(min: number, max: number, excludes: number[] = []) {
+    return new NumberNode(randint(min, max, excludes));
+  }
+}
 export class NumberNode implements AlgebraicNode {
   tex: string;
   mathString: string;

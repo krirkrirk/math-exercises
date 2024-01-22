@@ -16,7 +16,7 @@ import { PowerNode, isPowerNode } from "./powerNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { isInt } from "#root/utils/isInt";
 import { isVariableNode } from "../variables/variableNode";
-import { AlgebraicNode } from "../algebraicNode";
+import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { SqrtNode, isSqrtNode } from "../functions/sqrtNode";
 import { OppositeNode, isOppositeNode } from "../functions/oppositeNode";
 import { FractionNode, isFractionNode } from "./fractionNode";
@@ -269,9 +269,9 @@ export class MultiplyNode implements CommutativeOperatorNode {
   copy() {
     return new MultiplyNode(this.leftChild, this.rightChild, this.opts);
   }
-  simplify(): AlgebraicNode {
-    const leftSimplified = this.leftChild.simplify();
-    const rightSimplified = this.rightChild.simplify();
+  simplify(opts?: SimplifyOptions): AlgebraicNode {
+    const leftSimplified = this.leftChild.simplify(opts);
+    const rightSimplified = this.rightChild.simplify(opts);
     const copy = new MultiplyNode(leftSimplified, rightSimplified, this.opts);
 
     /**get externals nodes
@@ -328,7 +328,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
         denums.length === 1
           ? denums[0]
           : operatorComposition(MultiplyNode, denums);
-      return new FractionNode(numNode, denumNode).simplify();
+      return new FractionNode(numNode, denumNode).simplify(opts);
     }
 
     sortMultiplyNodes(externals);
@@ -337,7 +337,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
         return new NumberNode(a.value * b.value);
       }
       if (isSqrtNode(a) && isSqrtNode(b)) {
-        return new SqrtNode(new MultiplyNode(a.child, b.child)).simplify();
+        return new SqrtNode(new MultiplyNode(a.child, b.child)).simplify(opts);
       }
       //TODo continue
       return null;

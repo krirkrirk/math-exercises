@@ -27,13 +27,17 @@ export type NodeOptions = {
   allowPowerOne?: boolean;
   allowSimplifySqrt?: boolean;
 };
+
+export type ToTexOptions = {
+  displayStyle?: boolean;
+};
 export interface Node {
   type: NodeType;
   opts?: NodeOptions;
   toMathString: () => string;
   toEquivalentNodes: (opts?: NodeOptions) => Node[];
   toAllValidTexs: (opts?: NodeOptions) => string[];
-  toTex: () => string;
+  toTex: (opts?: ToTexOptions) => string;
   // toMathjs: () => any;
   // simplify: () => Node;
 }

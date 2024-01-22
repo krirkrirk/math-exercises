@@ -70,7 +70,7 @@ export const scalarProductViaCoords: MathExercise<Identifiers> = {
   isSingleStep: false,
   label: "Calculer un produit scalaire à l'aide des coordonnées",
   levels: ["1reSpé", "TermSpé"],
-  sections: ["Vecteurs"],
+  sections: ["Vecteurs", "Produit scalaire"],
   generator: (nb: number) =>
     getDistinctQuestions(getScalarProductViaCoordsQuestion, nb),
   qcmTimer: 60,

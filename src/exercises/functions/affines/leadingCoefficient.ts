@@ -46,8 +46,10 @@ const getLeadingCoefficientQuestion: QuestionGenerator<Identifiers> = () => {
     ymin = bValue - 1;
     ymax = 1;
   }
-
-  if (-bValue / aValue > 0) {
+  if (aValue === 0) {
+    xmax = 5;
+    xmin = -5;
+  } else if (-bValue / aValue > 0) {
     xmax = -bValue / aValue + 1;
     xmin = -1;
   } else {

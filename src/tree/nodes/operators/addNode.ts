@@ -10,7 +10,7 @@ import { coinFlip } from "#root/utils/coinFlip";
 import { permute } from "#root/utils/permutations";
 import { getCartesiansProducts } from "#root/utils/cartesianProducts";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
-import { AlgebraicNode } from "../algebraicNode";
+import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { isSubstractNode } from "./substractNode";
 import { OppositeNode, isOppositeNode } from "../functions/oppositeNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
@@ -108,7 +108,7 @@ export class AddNode implements CommutativeOperatorNode {
   // toMathjs() {
   //   return add(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   // }
-  simplify(): AlgebraicNode {
+  simplify(opts?: SimplifyOptions): AlgebraicNode {
     const leftSimplified = this.leftChild.simplify();
     const rightSimplified = this.rightChild.simplify();
     const copy = new AddNode(leftSimplified, rightSimplified, this.opts);
@@ -184,6 +184,8 @@ export class AddNode implements CommutativeOperatorNode {
       }
       //gérer opposites, fractions
 
+      if (opts?.forbidFactorize) return null;
+
       const aSubExternals: AlgebraicNode[] = [];
       const bSubExternals: AlgebraicNode[] = [];
       const getAMultiplyExternals = (a: AlgebraicNode) => {
@@ -227,8 +229,8 @@ export class AddNode implements CommutativeOperatorNode {
           }
         }
       }
-      //si aucun facteur on return le add node simplifié
-      if (!factors.length) return copy;
+      //si aucun facteur on return
+      if (!factors.length) return null;
       const factorsNode =
         factors.length === 1
           ? factors[0]
@@ -271,6 +273,7 @@ export class AddNode implements CommutativeOperatorNode {
       }
     };
     simplifyIteration();
+
     if (!externals.length) return new NumberNode(0);
     if (externals.length === 1) return externals[0];
     return operatorComposition(AddNode, externals);

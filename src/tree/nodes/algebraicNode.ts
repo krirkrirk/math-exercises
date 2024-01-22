@@ -1,10 +1,13 @@
 import { Node, NodeOptions } from "./node";
 
+export type SimplifyOptions = {
+  forbidFactorize?: boolean;
+};
 export interface AlgebraicNode extends Node {
   // multiply: (n: AlgebraicNode) => AlgebraicNode;
   evaluate: (vars: Record<string, number>) => number;
   toEquivalentNodes: (opts?: NodeOptions) => AlgebraicNode[];
-  simplify: () => AlgebraicNode;
+  simplify: (opts?: SimplifyOptions) => AlgebraicNode;
   equals: (node: AlgebraicNode) => boolean;
   isNumeric: boolean;
 }

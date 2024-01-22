@@ -3,3 +3,4 @@ export * from "./coordinatesReading";
 export * from "./determinant";
 export * from "./scalarProductViaCoords";
 export * from "./vectorCoordinatesFromTwoPoints";
+export * from "./scalarProductViaCos";

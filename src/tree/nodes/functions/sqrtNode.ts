@@ -5,7 +5,7 @@ import { SquareRoot } from "#root/math/numbers/reals/real";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { MultiplyNode, isMultiplyNode } from "../operators/multiplyNode";
 import { isInt } from "#root/utils/isInt";
-import { AlgebraicNode } from "../algebraicNode";
+import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
 export function isSqrtNode(a: Node): a is SqrtNode {
   return isFunctionNode(a) && a.id === FunctionsIds.sqrt;
@@ -63,8 +63,8 @@ export class SqrtNode implements FunctionNode {
   evaluate(vars: Record<string, number>) {
     return Math.sqrt(this.child.evaluate(vars));
   }
-  simplify() {
-    const simplifiedChild = this.child.simplify();
+  simplify(opts?: SimplifyOptions) {
+    const simplifiedChild = this.child.simplify(opts);
     const copy = new SqrtNode(simplifiedChild, this.opts);
     const externals: AlgebraicNode[] = [];
     //ex [3, x^2] pour sqrt(3x^2)
@@ -96,7 +96,7 @@ export class SqrtNode implements FunctionNode {
     simplifyIteration();
 
     if (externals.length === 1) return externals[0];
-    return operatorComposition(MultiplyNode, externals).simplify();
+    return operatorComposition(MultiplyNode, externals).simplify(opts);
   }
   equals(node: AlgebraicNode): boolean {
     return isSqrtNode(node) && node.child.equals(this.child);
