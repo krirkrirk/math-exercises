@@ -68,7 +68,7 @@ export class SubstractNode implements OperatorNode {
       new OppositeNode(this.rightChild),
     ).simplify(opts);
   }
-  equals(node: AlgebraicNode) {
+  equals(node: AlgebraicNode): boolean {
     return (
       isSubstractNode(node) &&
       node.leftChild.equals(this.leftChild) &&
