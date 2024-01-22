@@ -137,7 +137,8 @@ const isAnswerValid: VEA<Identifiers> = (
 export const logPowerEquation: MathExercise<Identifiers> = {
   id: "logPowerEquation",
   connector: "\\iff",
-  label: "Résoudre une équation du type $a\\times b^x + c = d$",
+  label:
+    "Résoudre une équation du type $a\\times b^x + c = d$ grâce au logarithme décimal",
   levels: ["TermSpé", "MathComp"],
   isSingleStep: true,
   sections: ["Logarithme népérien", "Puissances"],
@@ -151,7 +152,8 @@ export const logPowerEquation: MathExercise<Identifiers> = {
 export const log10PowerEquation: MathExercise<Identifiers> = {
   id: "log10PowerEquation",
   connector: "\\iff",
-  label: "Résoudre une équation du type $a\\times b^x + c = d$",
+  label:
+    "Résoudre une équation du type $a\\times b^x + c = d$ grâce au logarithme népérien",
   levels: ["TermSpé", "MathComp"],
   isSingleStep: true,
   sections: ["Logarithme décimal", "Puissances"],
