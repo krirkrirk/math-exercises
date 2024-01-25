@@ -48,7 +48,7 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
 
   const ineqType = InequationSymbolConstructor.random();
   const invIneqType = ineqType.reversed();
-  const answer = `x${affine.a > 0 ? ineqType : invIneqType}${result}`;
+  const answer = `x${affine.a > 0 ? ineqType.symbol : invIneqType}${result}`;
 
   const question: Question<Identifiers> = {
     answer: answer,

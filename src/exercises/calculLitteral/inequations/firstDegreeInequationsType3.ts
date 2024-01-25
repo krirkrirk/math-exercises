@@ -50,7 +50,7 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
   const coeff = affine1.a - affine2.a;
   const ineqType = InequationSymbolConstructor.random();
   const invIneqType = ineqType.reversed();
-  const answer = `x${coeff > 0 ? ineqType : invIneqType}${result}`;
+  const answer = `x${coeff > 0 ? ineqType.symbol : invIneqType}${result}`;
 
   const question: Question<Identifiers> = {
     answer: answer,

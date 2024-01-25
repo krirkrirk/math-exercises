@@ -19,7 +19,7 @@ import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { gcd } from "../utils/arithmetic/gcd";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 
-export abstract class   TrinomConstructor {
+export abstract class TrinomConstructor {
   static random(
     domainA: MathSet = new Interval("[[-10; 10]]").difference(
       new DiscreteSet([new Integer(0)]),

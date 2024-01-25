@@ -25,7 +25,7 @@ const getSimplifyFraction: QuestionGenerator<Identifiers> = () => {
   const rationalTex = rational.toTree().toTex();
   const answer = rational.simplify().toTree().toTex();
   const question: Question<Identifiers> = {
-    instruction: `Simplifier : $${rationalTex}$`,
+    instruction: `Mettre sous forme irréductible : $${rationalTex}$`,
     startStatement: rationalTex,
     answer,
     keys: [],

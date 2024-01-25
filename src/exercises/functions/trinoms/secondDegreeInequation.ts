@@ -16,12 +16,14 @@ import {
   InequationSymbolConstructor,
 } from "#root/math/inequations/inequation";
 import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
+import { randint } from "#root/math/utils/random/randint";
 import { InequationSolutionNode } from "#root/tree/nodes/inequations/inequationSolutionNode";
 import { Node } from "#root/tree/nodes/node";
 import {
   MinusInfinityNode,
   PlusInfinityNode,
 } from "#root/tree/nodes/numbers/infiniteNode";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { ClosureType, IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { UnionIntervalNode } from "#root/tree/nodes/sets/unionIntervalNode";
 
@@ -71,11 +73,20 @@ const getAnswer = ({ a, roots, ineqType }: Props) => {
 const getSecondDegreeInequationQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const trinom = TrinomConstructor.randomFactorized();
-  const roots = trinom.getRootsNode();
+  const a = randint(-5, 6, [0]);
+  const x1 = randint(-5, 6);
+  const x2 = randint(-5, 6, [x1]);
+  const roots =
+    x1 < x2
+      ? [new NumberNode(x1), new NumberNode(x2)]
+      : [new NumberNode(x2), new NumberNode(x1)];
+  const c = a * x1 * x2;
+  const b = -a * x2 - a * x1;
+  const trinom = new Trinom(a, b, c);
   const ineqType = InequationSymbolConstructor.random();
 
   const answer = getAnswer({ a: trinom.a, roots, ineqType }).toTex();
+
   const question: Question<Identifiers> = {
     answer,
     instruction: `Soit $f(x) = ${trinom
@@ -101,6 +112,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const roots = new Trinom(a, b, c).getRootsNode();
+  console.log("prop", roots.length);
+
   const ineq = new InequationSymbol(ineqType);
   tryToAddWrongProp(
     propositions,
@@ -117,12 +130,18 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, ineqType }) => {
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { answer, a, b, c, ineqType },
+) => {
   const trinom = new Trinom(a, b, c);
   const roots = trinom.getRootsNode();
+  console.log("vea", roots.length);
   const ineq = new InequationSymbol(ineqType);
   const tree = getAnswer({ a, ineqType: ineq, roots });
   const texs = tree.toAllValidTexs();
+  console.log("2ndIneq VEA texs", texs);
+  console.log("2ndIneq VEA Answer", answer);
   return texs.includes(ans);
 };
 export const secondDegreeInequation: MathExercise<Identifiers> = {
