@@ -53,7 +53,7 @@ const getAffineExpressionReadingQuestion: QuestionGenerator<
   const question: Question<Identifiers> = {
     answer,
     instruction: `Ci-dessous est tracée la courbe représentative d'une fonction affine $f$. Déterminer graphiquement l'expression algébrique de $f(x)$.`,
-    keys: ["equal"],
+    keys: ["fx", "equal"],
     commands: [`Line((0, ${b}), (${secondPoint[0]}, ${secondPoint[1]}))`],
     coords,
     answerFormat: "tex",
@@ -75,7 +75,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
     new Rational(secondPoint[0], secondPoint[1] + b).simplify().toTree(),
     new Rational(secondPoint[1] - secondPoint[0], b).simplify().toTree(),
   ];
-  const wrongBs = [new NumberNode(0)];
   const fx = new VariableNode("f(x)");
   const x = new VariableNode("x");
   wrongAs.forEach((coeff) => {
