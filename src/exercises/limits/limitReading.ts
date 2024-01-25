@@ -101,7 +101,7 @@ const getLimitReadingQuestion: QuestionGenerator<Identifiers> = () => {
   }
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Ci-dessous est tracé la courbe représentative d'une fonction $f$. Déterminer la limite: $\\displaystyle ${new LimitNode(
+    instruction: `Ci-dessous est tracée la courbe représentative d'une fonction $f$. Déterminer la limite: $\\displaystyle ${new LimitNode(
       to,
       new VariableNode("f(x)"),
       from,
