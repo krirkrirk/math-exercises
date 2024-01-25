@@ -1,25 +1,13 @@
+import {
+  InegalitySymbols,
+  InequationSymbol,
+} from "#root/math/inequations/inequation";
 import { getCartesiansProducts } from "#root/utils/cartesianProducts";
 import { isLetter } from "#root/utils/isLetter";
+import { random } from "#root/utils/random";
 import { Node, NodeOptions, NodeType } from "../node";
 import { MinusInfinityNode, PlusInfinityNode } from "../numbers/infiniteNode";
 import { ClosureType, IntervalNode } from "../sets/intervalNode";
-
-export type InegalitySymbols = "<" | ">" | "\\le" | "\\ge";
-
-export const getInversedInequationSymbol = (
-  s: InegalitySymbols,
-): InegalitySymbols => {
-  switch (s) {
-    case "<":
-      return ">";
-    case ">":
-      return "<";
-    case "\\ge":
-      return "\\le";
-    case "\\le":
-      return "\\ge";
-  }
-};
 
 export class InequationNode implements Node {
   opts?: NodeOptions | undefined;
@@ -100,7 +88,9 @@ export class InequationNode implements Node {
   }
   toReversed() {
     const newChildren = [...this.children].reverse();
-    const newSymbols = this.symbols.map(getInversedInequationSymbol);
+    const newSymbols = this.symbols.map((el) =>
+      new InequationSymbol(el).reversed(),
+    );
 
     return new InequationNode(newChildren, newSymbols);
   }

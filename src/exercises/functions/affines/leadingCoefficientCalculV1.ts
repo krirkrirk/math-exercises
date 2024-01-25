@@ -72,7 +72,7 @@ export const leadingCoefficientCalculV1: MathExercise<Identifiers> = {
   label: "Calculer le coefficient directeur d'une fonction affine",
   levels: ["3ème", "2nde", "2ndPro", "1rePro", "1reTech"],
   isSingleStep: true,
-  sections: ["Fonctions affines"],
+  sections: ["Fonctions affines", "Droites"],
   generator: (nb: number) =>
     getDistinctQuestions(getLeadingCoefficientCalculV1Question, nb),
   qcmTimer: 60,

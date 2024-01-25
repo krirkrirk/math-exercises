@@ -109,8 +109,8 @@ export class AddNode implements CommutativeOperatorNode {
   //   return add(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   // }
   simplify(opts?: SimplifyOptions): AlgebraicNode {
-    const leftSimplified = this.leftChild.simplify();
-    const rightSimplified = this.rightChild.simplify();
+    const leftSimplified = this.leftChild.simplify(opts);
+    const rightSimplified = this.rightChild.simplify(opts);
     const copy = new AddNode(leftSimplified, rightSimplified, this.opts);
 
     /**get externals nodes
@@ -145,7 +145,7 @@ export class AddNode implements CommutativeOperatorNode {
         return new FractionNode(
           new AddNode(new MultiplyNode(c, f), new MultiplyNode(e, d)),
           new MultiplyNode(d, f),
-        ).simplify();
+        ).simplify(opts);
       }
       if (isFractionNode(a)) {
         //c/d + b
@@ -154,7 +154,7 @@ export class AddNode implements CommutativeOperatorNode {
         return new FractionNode(
           new AddNode(c, new MultiplyNode(d, b)),
           d,
-        ).simplify();
+        ).simplify(opts);
       }
       if (isFractionNode(b)) {
         //c/d + a
@@ -163,7 +163,7 @@ export class AddNode implements CommutativeOperatorNode {
         return new FractionNode(
           new AddNode(c, new MultiplyNode(d, a)),
           d,
-        ).simplify();
+        ).simplify(opts);
       }
       if (isNumberNode(a) && isNumberNode(b)) {
         return new NumberNode(a.value + b.value);

@@ -106,7 +106,7 @@ export const leadingCoefficient: MathExercise<Identifiers> = {
   label: "Lire le coefficient directeur",
   levels: ["3ème", "2nde", "1reESM", "2ndPro", "1rePro", "1reTech"],
   isSingleStep: false,
-  sections: ["Droites"],
+  sections: ["Droites", "Fonctions affines"],
   generator: (nb: number) =>
     getDistinctQuestions(getLeadingCoefficientQuestion, nb),
   qcmTimer: 60,

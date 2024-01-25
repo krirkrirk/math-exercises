@@ -279,7 +279,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
      */
     let externals: AlgebraicNode[] = [];
     let oppositesCount = 0;
-    //TODO Fractions
+
     const recursive = (node: AlgebraicNode) => {
       if (isMultiplyNode(node)) {
         recursive(node.leftChild);
@@ -308,28 +308,29 @@ export class MultiplyNode implements CommutativeOperatorNode {
     if (!externals.length) return new NumberNode(1);
     if (externals.length === 1) return externals[0];
 
-    //s'il y a une fraction on transforme en fracNode
-    if (externals.some((node) => isFractionNode(node))) {
-      const nums: AlgebraicNode[] = [];
-      const denums: AlgebraicNode[] = [];
-      externals.forEach((node) => {
-        if (isFractionNode(node)) {
-          nums.push(node.leftChild);
-          denums.push(node.rightChild);
-        } else nums.push(node);
-      });
-      if (nums.some((node) => isNumberNode(node) && node.value === 0)) {
-        return new NumberNode(0);
+    if (!opts?.forceDistributeFractions)
+      if (externals.some((node) => isFractionNode(node))) {
+        //s'il y a une fraction on transforme en fracNode
+        const nums: AlgebraicNode[] = [];
+        const denums: AlgebraicNode[] = [];
+        externals.forEach((node) => {
+          if (isFractionNode(node)) {
+            nums.push(node.leftChild);
+            denums.push(node.rightChild);
+          } else nums.push(node);
+        });
+        if (nums.some((node) => isNumberNode(node) && node.value === 0)) {
+          return new NumberNode(0);
+        }
+        sortMultiplyNodes(nums);
+        sortMultiplyNodes(denums);
+        const numNode = operatorComposition(MultiplyNode, nums);
+        const denumNode =
+          denums.length === 1
+            ? denums[0]
+            : operatorComposition(MultiplyNode, denums);
+        return new FractionNode(numNode, denumNode).simplify(opts);
       }
-      sortMultiplyNodes(nums);
-      sortMultiplyNodes(denums);
-      const numNode = operatorComposition(MultiplyNode, nums);
-      const denumNode =
-        denums.length === 1
-          ? denums[0]
-          : operatorComposition(MultiplyNode, denums);
-      return new FractionNode(numNode, denumNode).simplify(opts);
-    }
 
     sortMultiplyNodes(externals);
     const simplifyExternalNodes = (a: AlgebraicNode, b: AlgebraicNode) => {

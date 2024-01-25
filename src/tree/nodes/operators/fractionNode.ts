@@ -9,6 +9,7 @@ import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { MultiplyNode, isMultiplyNode } from "./multiplyNode";
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
+import { AddNode, isAddNode } from "./addNode";
 export function isFractionNode(a: Node): a is FractionNode {
   return isOperatorNode(a) && a.id === OperatorIds.fraction;
 }
@@ -166,6 +167,14 @@ export class FractionNode implements OperatorNode {
       externalsDenums.length === 1
         ? externalsDenums[0]
         : operatorComposition(MultiplyNode, externalsDenums);
+    if (opts?.forceDistributeFractions) {
+      if (isAddNode(nums)) {
+        return new AddNode(
+          new FractionNode(nums.leftChild, denums).simplify(opts),
+          new FractionNode(nums.rightChild, denums).simplify(opts),
+        );
+      }
+    }
     return new FractionNode(nums, denums);
   }
   equals(node: AlgebraicNode): boolean {

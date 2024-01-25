@@ -10,19 +10,16 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { inequationKeys } from "#root/exercises/utils/keys/inequationKeys";
-import { Affine } from "#root/math/polynomials/affine";
-import { randint } from "#root/math/utils/random/randint";
 import {
   InegalitySymbols,
-  InequationNode,
-} from "#root/tree/nodes/inequations/inequationNode";
+  InequationSymbol,
+  InequationSymbolConstructor,
+} from "#root/math/inequations/inequation";
+import { Affine } from "#root/math/polynomials/affine";
+import { randint } from "#root/math/utils/random/randint";
+import { InequationNode } from "#root/tree/nodes/inequations/inequationNode";
 import { InequationSolutionNode } from "#root/tree/nodes/inequations/inequationSolutionNode";
-import {
-  MinusInfinityNode,
-  PlusInfinityNode,
-} from "#root/tree/nodes/numbers/infiniteNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { ClosureType, IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { random } from "#root/utils/random";
@@ -31,7 +28,7 @@ import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {
   b: number;
   c: number;
-  ineqType: string;
+  ineqType: InegalitySymbols;
 };
 
 const getFirstDegreeInequationsQuestion: QuestionGenerator<
@@ -42,7 +39,7 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
 
   const result = c - affine.b;
 
-  const ineqType = random(["\\le", "<", "\\ge", ">"]);
+  const ineqType = InequationSymbolConstructor.random();
   const answer = `x${ineqType}${result}`;
 
   const question: Question<Identifiers> = {
@@ -50,7 +47,7 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
     instruction: `Résoudre l'inéquation : $${affine.toTex()} ${ineqType} ${c}$ `,
     keys: inequationKeys,
     answerFormat: "tex",
-    identifiers: { ineqType, b: affine.b, c },
+    identifiers: { ineqType: ineqType.symbol, b: affine.b, c },
   };
 
   return question;
@@ -62,14 +59,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const result = c - b;
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const invIneqType =
-    ineqType === "<"
-      ? ">"
-      : ineqType === ">"
-      ? "<"
-      : ineqType === "\\le"
-      ? "\\ge"
-      : "\\le";
+  const ineqSymbol = new InequationSymbol(ineqType);
+  const invIneqType = ineqSymbol.reversed();
 
   tryToAddWrongProp(propositions, `x${invIneqType}${result}`);
   while (propositions.length < n) {

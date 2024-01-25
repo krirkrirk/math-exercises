@@ -8,3 +8,4 @@ export * from "./niceRootsFromDevForm";
 export * from "./rootsFromDevForm";
 export * from "./rootsFromFactorizedForm";
 export * from "./variationsFromAlgebricForm";
+export * from "./secondDegreeInequation";

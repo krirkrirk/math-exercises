@@ -72,7 +72,7 @@ export const leadingCoefficientCalculV2: MathExercise<Identifiers> = {
   label: "Coefficient directeur à l'aide de deux points",
   levels: ["3ème", "2nde", "2ndPro", "1rePro", "1reTech"],
   isSingleStep: false,
-  sections: ["Droites"],
+  sections: ["Droites", "Fonctions affines"],
   generator: (nb: number) =>
     getDistinctQuestions(getLeadingCoefficientCalculV1Question, nb),
   qcmTimer: 60,

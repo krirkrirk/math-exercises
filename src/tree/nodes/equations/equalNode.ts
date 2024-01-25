@@ -14,25 +14,29 @@ export class EqualNode implements Node {
     this.opts = opts;
   }
 
-  toEquivalentNodes() {
+  toEquivalentNodes(opts?: NodeOptions) {
+    const options = opts ?? this.opts;
+
     const res: Node[] = [];
-    const rightNodes = this.rightChild.toEquivalentNodes();
+    const rightNodes = this.rightChild.toEquivalentNodes(options);
 
     if (this.opts?.allowRawRightChildAsSolution) {
       res.push(...rightNodes);
     }
-    const leftNodes = this.leftChild.toEquivalentNodes();
+    const leftNodes = this.leftChild.toEquivalentNodes(options);
     rightNodes.forEach((rightNode) => {
       leftNodes.forEach((leftNode) => {
-        res.push(new EqualNode(leftNode, rightNode));
-        res.push(new EqualNode(rightNode, leftNode));
+        res.push(new EqualNode(leftNode, rightNode, options));
+        res.push(new EqualNode(rightNode, leftNode, options));
       });
     });
     return res;
   }
 
-  toAllValidTexs(): string[] {
-    return this.toEquivalentNodes().map((node) => node.toTex());
+  toAllValidTexs(opts?: NodeOptions): string[] {
+    const options = opts ?? this.opts;
+
+    return this.toEquivalentNodes(options).map((node) => node.toTex());
   }
 
   toMathString(): string {

@@ -130,7 +130,7 @@ export const remarkableTrigoValues: RemarkableValue[] = [
   },
   {
     angle: new FractionNode(
-      new MultiplyNode(new NumberNode(7), PiNode),
+      new MultiplyNode(new NumberNode(4), PiNode),
       new NumberNode(3),
     ),
     cos: new OppositeNode(
