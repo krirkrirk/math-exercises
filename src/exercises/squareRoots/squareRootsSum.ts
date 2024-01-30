@@ -88,7 +88,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, b }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d, y, x, z }) => {
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { answer, a, b, c, d, y, x, z },
+) => {
   let coeff = a * Math.sqrt(x) + c * Math.sqrt(y);
   if (!!d && !!z) {
     coeff += d * Math.sqrt(z);
@@ -96,8 +99,9 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d, y, x, z }) => {
   const tree = new MultiplyNode(
     new NumberNode(coeff),
     new SqrtNode(new NumberNode(b)),
-  );
+  ).simplify();
   const texs = tree.toAllValidTexs();
+  console.log("vea SumSQRT answer: ", answer, "texs : ", texs);
   return texs.includes(ans);
 };
 

@@ -39,7 +39,7 @@ const getDiceBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     answer,
-    instruction: `On lance un dé à ${nbFaces} faces. Quelle est la probabilité d'obtenir ${target} ?`,
+    instruction: `On lance un dé équilibré à ${nbFaces} faces. Quelle est la probabilité d'obtenir ${target} ?`,
     keys: [],
     answerFormat: "tex",
     identifiers: { isParityQuestion, isEvenQuestion, nbFaces },

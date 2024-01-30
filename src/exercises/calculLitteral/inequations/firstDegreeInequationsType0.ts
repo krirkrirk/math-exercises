@@ -40,7 +40,7 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
   const result = c - affine.b;
 
   const ineqType = InequationSymbolConstructor.random();
-  const answer = `x${ineqType}${result}`;
+  const answer = `x${ineqType.symbol}${result}`;
 
   const question: Question<Identifiers> = {
     answer: answer,
@@ -75,14 +75,16 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { ineqType, b, c }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, ineqType, b, c }) => {
   const result = c - b;
   const ineq = new InequationNode(
     [new VariableNode("x"), new NumberNode(result)],
     ineqType as InegalitySymbols,
   );
-  const answer = new InequationSolutionNode(ineq.toInterval());
-  const texs = answer.toAllValidTexs();
+  console.log(answer);
+  const tree = new InequationSolutionNode(ineq.toInterval());
+  const texs = tree.toAllValidTexs();
+  console.log(texs);
   return texs.includes(ans);
 };
 

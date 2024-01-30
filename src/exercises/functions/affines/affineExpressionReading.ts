@@ -13,7 +13,9 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
+import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
@@ -53,7 +55,7 @@ const getAffineExpressionReadingQuestion: QuestionGenerator<
   const question: Question<Identifiers> = {
     answer,
     instruction: `Ci-dessous est tracée la courbe représentative d'une fonction affine $f$. Déterminer graphiquement l'expression algébrique de $f(x)$.`,
-    keys: ["equal"],
+    keys: ["fx", "equal"],
     commands: [`Line((0, ${b}), (${secondPoint[0]}, ${secondPoint[1]}))`],
     coords,
     answerFormat: "tex",
@@ -69,13 +71,23 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const wrongAs = [
-    new Rational(secondPoint[0], secondPoint[1] - b).simplify().toTree(),
-    new Rational(secondPoint[1] + b, secondPoint[0]).simplify().toTree(),
-    new Rational(secondPoint[0], secondPoint[1] + b).simplify().toTree(),
-    new Rational(secondPoint[1] - secondPoint[0], b).simplify().toTree(),
-  ];
-  const wrongBs = [new NumberNode(0)];
+  const wrongAs: AlgebraicNode[] = [];
+  if (secondPoint[1] - b !== 0)
+    wrongAs.push(
+      new Rational(secondPoint[0], secondPoint[1] - b).simplify().toTree(),
+    );
+  if (secondPoint[0] !== 0)
+    wrongAs.push(
+      new Rational(secondPoint[1] + b, secondPoint[0]).simplify().toTree(),
+    );
+  if (secondPoint[1] + b !== 0)
+    wrongAs.push(
+      new Rational(secondPoint[0], secondPoint[1] + b).simplify().toTree(),
+    );
+  if (b !== 0)
+    wrongAs.push(
+      new Rational(secondPoint[1] - secondPoint[0], b).simplify().toTree(),
+    );
   const fx = new VariableNode("f(x)");
   const x = new VariableNode("x");
   wrongAs.forEach((coeff) => {
