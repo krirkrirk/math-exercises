@@ -39,11 +39,11 @@ const getCubicEquationQuestion: QuestionGenerator<Identifiers> = () => {
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer, k }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  tryToAddWrongProp(propositions, `S=\\{${k ** 3}\\}`);
+  tryToAddWrongProp(propositions, `S=\\left\\{${k ** 3}\\right\\}`);
 
   while (propositions.length < n) {
     const wrongAnswer = randint(-10, 11) + "";
-    tryToAddWrongProp(propositions, `S=\\{${wrongAnswer}\\}`);
+    tryToAddWrongProp(propositions, `S=\\left\\{${wrongAnswer}\\right\\}`);
   }
 
   return shuffle(propositions);

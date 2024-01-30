@@ -46,7 +46,7 @@ const getCoordinatesReadingQuestion: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Lire les coordonnées du vecteur $\\overrightarrow u$ représenté ci-dessous :`,
-    keys: ["semicolon", "u", "overrightarrow", "equal"],
+    keys: ["semicolon", "vectorU"],
     answerFormat: "tex",
     commands,
     coords,
@@ -79,7 +79,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return [answer, "u" + answer, "\\overrightarrow{u}" + answer].includes(ans);
+  return [answer, "\\overrightarrow{u}" + answer].includes(ans);
 };
 
 export const coordinatesReading: MathExercise<Identifiers> = {

@@ -69,7 +69,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 const isAnswerValid: VEA<Identifiers> = (ans, { valueIndex, isCos }) => {
   const remarkableValue = remarkableTrigoValues[valueIndex];
   const answer = isCos ? remarkableValue.cos : remarkableValue.sin;
-  const texs = answer.toAllValidTexs({ allowFractionToDecimal: true });
+  const texs = answer.toAllValidTexs({
+    allowFractionToDecimal: true,
+    allowMinusAnywhereInFraction: true,
+  });
   return texs.includes(ans);
 };
 export const mainRemarkableValuesExercise: MathExercise<Identifiers> = {

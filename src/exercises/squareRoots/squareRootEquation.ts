@@ -43,10 +43,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, k }) => {
   if (k >= 0) tryToAddWrongProp(propositions, "S=\\emptyset");
 
   if (Math.sqrt(k) !== k ** 2)
-    tryToAddWrongProp(propositions, `S=\\{\\sqrt{${k}}\\}`);
+    tryToAddWrongProp(propositions, `S=\\left\\{\\sqrt{${k}}\\right\\}`);
 
   while (propositions.length < n) {
-    const wrongAnswer = `S=\\{${randint(1, 100)}\\}`;
+    const wrongAnswer = `S=\\left\\{${randint(1, 100)}\\right\\}`;
     tryToAddWrongProp(propositions, wrongAnswer);
   }
 

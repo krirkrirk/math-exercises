@@ -235,7 +235,7 @@ export class Interval implements MathSetInterface {
       } while (x.value === nb);
       return x;
     };
-    return new MathSet(this.toTex() + `\\{${nb}\\}`, rand);
+    return new MathSet(this.toTex() + `\\left\\{${nb}\\right\\}`, rand);
   }
 
   difference(set: DiscreteSet): MathSet {

@@ -70,7 +70,10 @@ const isAnswerValid: VEA<Identifiers> = (ans, { mainValue, isCos }) => {
     (point) => point.angle.evaluate({}) === mainValue,
   )!;
   const answer = isCos ? remarkableValue.cos : remarkableValue.sin;
-  const texs = answer.toAllValidTexs({ allowFractionToDecimal: true });
+  const texs = answer.toAllValidTexs({
+    allowFractionToDecimal: true,
+    allowMinusAnywhereInFraction: true,
+  });
   return texs.includes(ans);
 };
 export const remarkableValuesExercise: MathExercise<Identifiers> = {
