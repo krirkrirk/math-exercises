@@ -92,7 +92,16 @@ const getSecondDegreeInequationQuestion: QuestionGenerator<
     instruction: `Soit $f(x) = ${trinom
       .toTree()
       .toTex()}$. Résoudre l'inéquation $f(x) ${ineqType.symbol} 0$.`,
-    keys: ["S", "equal", "lbracket", "semicolon", "rbracket", "cup"],
+    keys: [
+      "S",
+      "equal",
+      "lbracket",
+      "semicolon",
+      "rbracket",
+      "cup",
+      "infty",
+      "emptyset",
+    ],
     answerFormat: "tex",
     identifiers: {
       a: trinom.a,

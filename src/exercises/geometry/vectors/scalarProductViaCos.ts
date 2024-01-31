@@ -41,7 +41,7 @@ const getScalarProductViaCosQuestion: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     answer,
     instruction: `Soient trois points $${letterA}$, $${letterB}$ et $${letterC}$ tels que $${letterA}${letterB} = ${AB}$, $${letterA}${letterC}= ${AC}$, et $\\widehat{${letterB}${letterA}${letterC}} = ${trigo.angle.toTex()}$. Calculer $\\overrightarrow{${letterA}${letterB}}\\cdot \\overrightarrow{${letterA}${letterC}}$.`,
-    keys: [],
+    keys: ["pi"],
     answerFormat: "tex",
     identifiers: { AB, AC, trigoPoint: trigo.point },
   };
