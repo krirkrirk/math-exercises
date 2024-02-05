@@ -106,7 +106,7 @@ const getLimitReadingQuestion: QuestionGenerator<Identifiers> = () => {
       new VariableNode("f(x)"),
       from,
     ).toTex()}$`,
-    keys: [],
+    keys: ["infty"],
     commands: [fct],
     coords: [-10, 10, -10, 10],
     answerFormat: "tex",
