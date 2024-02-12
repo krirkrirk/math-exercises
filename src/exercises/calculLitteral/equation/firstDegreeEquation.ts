@@ -70,7 +70,7 @@ export const firstDegreeEquation: MathExercise<Identifiers> = {
   connector: "=",
   label: "Résoudre une équation du premier degré du type $\\frac{a}{x} = b$",
   levels: ["2nde", "1reESM", "1reSpé"],
-  sections: ["Équations"],
+  sections: ["Équations", "Fonction inverse", "Fonctions de référence"],
   isSingleStep: false,
   generator: (nb: number) => getDistinctQuestions(getFirstDegreeEquation, nb),
   getPropositions,

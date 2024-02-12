@@ -76,7 +76,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 export const applyPercent: MathExercise<Identifiers> = {
   id: "applyPercent",
   connector: "=",
-  label: "Appliquer un pourcentage d'augmentation ou de diminution.",
+  label: "Appliquer un pourcentage d'augmentation ou de diminution",
   levels: [
     "4ème",
     "3ème",

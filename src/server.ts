@@ -13,6 +13,7 @@ import { NumberNode } from "./tree/nodes/numbers/numberNode";
 import { SquareNode } from "./tree/nodes/operators/powerNode";
 import { SqrtNode } from "./tree/nodes/functions/sqrtNode";
 import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
+import { parseLatex } from "./tree/parsers/latexParser";
 
 const jsonParser = bodyParser.json();
 
@@ -23,25 +24,13 @@ const runServer = () => {
   const app: Express = express();
   app.use(cors());
 
-  console.log(exercises.length + " exercices");
-  const firstTerm = new MultiplyNode(
-    new NumberNode(3),
-    new SqrtNode(new NumberNode(3)),
-  );
-  const secondTerm = new NumberNode(5);
-  const answer = new AddNode(
-    new SquareNode(firstTerm),
-    new AddNode(
-      new SquareNode(secondTerm),
-      new MultiplyNode(
-        new NumberNode(2),
-        new MultiplyNode(firstTerm, secondTerm),
-      ),
-    ),
-  )
-    .simplify()
-    .toTex();
-  console.log(answer);
+  // const latex = "\\sqrt{3,230982}";
+  // try {
+  //   const res = parseLatex(latex);
+  //   console.log(res.toTex());
+  // } catch (err) {
+  //   throw err;
+  // }
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });
