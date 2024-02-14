@@ -52,7 +52,7 @@ export class SubstractNode implements OperatorNode {
         )) ||
       rightTex[0] === "-";
 
-    if (needBrackets) rightTex = `(${rightTex})`;
+    if (needBrackets) rightTex = `\\left(${rightTex}\\right)`;
 
     return `${leftTex}-${rightTex}`;
   }

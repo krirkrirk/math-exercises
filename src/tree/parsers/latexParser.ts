@@ -1,14 +1,28 @@
-import { isLetter } from "#root/utils/isLetter";
 import { AlgebraicNode } from "../nodes/algebraicNode";
+import { OppositeNode } from "../nodes/functions/oppositeNode";
 import { SqrtNode } from "../nodes/functions/sqrtNode";
 import { NumberNode } from "../nodes/numbers/numberNode";
+import { AddNode } from "../nodes/operators/addNode";
+import { FractionNode } from "../nodes/operators/fractionNode";
+import { MultiplyNode, isMultiplyNode } from "../nodes/operators/multiplyNode";
+import { PowerNode } from "../nodes/operators/powerNode";
+import { SubstractNode } from "../nodes/operators/substractNode";
+import { VariableNode } from "../nodes/variables/variableNode";
 
-type Res = {
-  node: AlgebraicNode;
-  jump: number;
-};
-const isDyck = (latex: string) => {
-  const brackets = latex.split("").filter((el) => el === "(" || el === ")");
+//cmd that needs a child, like \exp{3}
+const functions = [
+  "\\exp",
+  "\\sqrt",
+  "\\log",
+  "\\ln",
+  "\\cos",
+  "\\sin",
+  "\\frac",
+];
+const operators = ["+", "-", "\\div", "\\times", "^"];
+
+const isDyck = (tokens: string[]) => {
+  const brackets = tokens.filter((el) => el === "(" || el === ")");
   while (brackets.length) {
     const rightIndex = brackets.findIndex((el) => el == ")");
     if (rightIndex === -1 || rightIndex === 0) return false;
@@ -26,158 +40,264 @@ const isDyck = (latex: string) => {
   return true;
 };
 
+export const tokenize = (latex: string) => {
+  const tokens: string[] = [];
+  for (let i = 0; i < latex.length; i++) {
+    const char = latex[i];
+    if (char === " ") continue;
+    const match = char.match(/[\+\-\(\)\^a-zA-Z_=\{\}]/);
+    if (match) {
+      tokens.push(char);
+      continue;
+    }
+
+    const substring = latex.substring(i);
+
+    const nbMatch = substring.match(/^[0-9]+,?[0-9]*/); //x nombres éventuellement séparés par une virgule
+    if (nbMatch) {
+      tokens.push(nbMatch[0].replace(",", "."));
+      i += nbMatch[0].length - 1;
+      continue;
+    }
+
+    const cmdMatch = substring.match(/^\\[a-z]+/i);
+    if (cmdMatch) {
+      tokens.push(cmdMatch[0]);
+      i += cmdMatch[0].length - 1;
+      continue;
+    }
+  }
+  return tokens;
+};
+
 export const parseLatex = (latex: string) => {
   const formattedLatex = latex
     .replaceAll("\\left", "")
     .replaceAll("\\right", "");
-  const isWellBracketed = isDyck(latex);
-  if (!isWellBracketed) throw Error("Problème de parenthèses.");
+  const tokens = tokenize(formattedLatex);
+  if (!isDyck(tokens)) throw Error("Problème de parenthèses.");
 
-  let currentTree: AlgebraicNode;
-  let currentItem: AlgebraicNode;
-  const length = formattedLatex.length;
   try {
-    const parsed = parseString(latex);
-    return parsed.node;
+    const parsed = buildTree(tokens);
+    return parsed;
   } catch (err) {
     throw err;
   }
 };
 
-const parseString = (latex: string): Res => {
-  let currentTree: AlgebraicNode;
-  let currentItem: AlgebraicNode;
-  let currentAddCandidate: AlgebraicNode;
-
-  const length = latex.length;
-  let jump = 0;
-  try {
-    for (let i = 0; i < length; i++) {
-      const char = latex[i];
-      const parsed = parseItem(latex);
-      currentItem = parsed.node;
-      currentTree = parsed.node;
-      jump = parsed.jump;
-      i += parsed.jump;
+const buildTree = (tokens: string[]) => {
+  let currentDepth = 0;
+  let maxDepth = 0;
+  const depthedTokens: { token: string | AlgebraicNode; depth: number }[] = [];
+  for (const token of tokens) {
+    if (token === "(" || token === "{") currentDepth++;
+    depthedTokens.push({
+      token,
+      depth: currentDepth,
+    });
+    if (currentDepth > maxDepth) maxDepth = currentDepth;
+    if (token === ")" || token === "}") currentDepth--;
+  }
+  console.log("depthed: ", depthedTokens);
+  while (true) {
+    if (maxDepth === 0) {
+      const tree = buildTreeForSameDepthTokens(
+        depthedTokens.map((el) => el.token),
+      );
+      return tree;
     }
-    return {
-      node: currentTree!,
-      jump,
-    };
-  } catch (err) {
-    throw err;
-  }
-};
-
-const parseItem = (latex: string): Res => {
-  const length = latex.length;
-  const char = latex[0];
-  if (charIsNumber(char)) {
-    return parseNumber(latex);
-  } else if (char === "\\") {
-    const cmdData = parseCommand(latex);
-    switch (cmdData.cmd) {
-      case "sqrt":
-        const childLatex = getChildLatex(latex.substring(cmdData.jump));
-        const parsedChild = parseString(childLatex);
-        return {
-          node: new SqrtNode(parsedChild.node),
-          jump: parsedChild.jump,
-        };
-      default:
-        throw Error(`Commande ${cmdData.cmd} non gérée`);
+    for (let i = 0; i < depthedTokens.length; i++) {
+      const token = depthedTokens[i];
+      if (token.depth < maxDepth) continue;
+      //le token est forcément ici ( ou {
+      //et on est sur qu'il n'y a aucun autre nestage à l'intérieur
+      const endIndex = depthedTokens.findIndex(
+        (el, index) => index > i && (el.token === ")" || el.token === "}"),
+      );
+      const tree = buildTreeForSameDepthTokens(
+        depthedTokens.slice(i + 1, endIndex).map((el) => el.token),
+      );
+      depthedTokens.splice(i, endIndex - i + 1, {
+        token: tree,
+        depth: token.depth - 1,
+      });
+      console.log(`depthed after iter ${i}`, depthedTokens);
     }
-  } else if (char === "+") {
+    maxDepth--;
   }
-  throw Error(`Symbole ${char} non géré`);
 };
 
-/**
- *
- * @param latex latex[0] must be {
- *
- *
- * cette fonction extrait le latex d'un child,
- * par ex elle renverra "x" dans \\sqrt{x}
- */
-const getChildLatex = (latex: string) => {
-  const childStartIndex = 1;
-  let leftBracesCount = 0;
-  let childEndIndex = -1;
-  for (let i = childStartIndex; i < latex.length; i++) {
-    if (latex[i] === "{") leftBracesCount++;
-    if (latex[i] === "}") {
-      if (leftBracesCount === 0) {
-        return latex.substring(1, i);
-      } else leftBracesCount--;
+const buildTreeForSameDepthTokens = (tokens: (string | AlgebraicNode)[]) => {
+  console.log("start: ", tokens);
+  let tempTokens: (string | AlgebraicNode)[] = [];
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+    if (typeof token !== "string") {
+      tempTokens[i] = token;
+      continue;
+    }
+    if (token[0].match(/[0-9]/)) {
+      tempTokens[i] = new NumberNode(Number(token));
+    } else if (token[0].match(/[a-z]/i))
+      tempTokens[i] = new VariableNode(token);
+    //! les fonctions qui attendent un child ne sont pas encore parsées
+    else if (functions.includes(token)) {
+      tempTokens[i] = token;
+    }
+    //!idem pour les opérators
+    else if (operators.includes(token)) tempTokens[i] = token;
+    else throw Error(`token not implemented: ${token}`);
+  }
+
+  console.log("after parses : ", tempTokens);
+  //1 build les fct
+  for (let i = 0; i < tempTokens.length; i++) {
+    if (typeof tempTokens[i] !== "string") continue;
+    const token = tempTokens[i] as string;
+
+    if (functions.includes(token)) {
+      if (typeof tempTokens[i + 1] === "string")
+        throw Error(`Function child has not been parsed at index ${i}`);
+      switch (token) {
+        case "\\sqrt":
+          tempTokens[i] = new SqrtNode(tempTokens[i + 1] as AlgebraicNode);
+          tempTokens.splice(i + 1, 1);
+          break;
+        case "\\frac":
+          tempTokens[i] = new FractionNode(
+            tempTokens[i + 1] as AlgebraicNode,
+            tempTokens[i + 2] as AlgebraicNode,
+          );
+          tempTokens.splice(i + 1, 2);
+      }
+    }
+    if (token === "^") {
+      if (
+        !tempTokens[i - 1] ||
+        typeof tempTokens[i - 1] === "string" ||
+        !tempTokens[i + 1] ||
+        typeof tempTokens[i + 1] === "string"
+      )
+        throw Error("Error parsing power node");
+      else {
+        tempTokens[i - 1] = new PowerNode(
+          tempTokens[i - 1] as AlgebraicNode,
+          tempTokens[i + 1] as AlgebraicNode,
+        );
+        tempTokens.splice(i, 2);
+      }
     }
   }
-  throw Error(`Erreur en récupérant un child dans ${latex}`);
-};
-/**
- *
- * @param latex latex[0] must be \
- */
-const parseCommand = (latex: string): { cmd: string; jump: number } => {
-  let nextChar = latex[1];
-  const length = latex.length;
-  if (!nextChar) throw Error("Antislash mais pas de nom de commande");
-  let j = 1;
-  let cmd = "";
-  while (j < length && isLetter(nextChar)) {
-    cmd += nextChar;
-    j++;
-    nextChar = latex[j];
-  }
-  return {
-    cmd,
-    jump: 1 + cmd.length,
-  };
-};
 
-/**
- *
- * @param latex latex[0] must be a number
- * @returns
- */
-const parseNumber = (latex: string): Res => {
-  const char = latex[0];
-  const length = latex.length;
-
-  let numberString = char;
-  let j = 1;
-  let nextChar = latex[j];
-  while (j < length && (charIsNumber(nextChar) || nextChar === ",")) {
-    numberString += nextChar;
-    j++;
-    nextChar = latex[j];
+  //2 build les opposites
+  for (let i = 0; i < tempTokens.length; i++) {
+    const token = tempTokens[i];
+    if (token === "-") {
+      if (
+        i === 0 ||
+        tempTokens[i - 1] === "\\times" ||
+        tempTokens[i - 1] === "+" ||
+        tempTokens[i - 1] === "-"
+      ) {
+        //faire la liste des - conéscutifs
+        let j = i + 1;
+        while (tempTokens[j] === "-" && j < tempTokens.length) {
+          j++;
+        }
+        if (j === tempTokens.length) throw Error("Nothing after minus");
+        const nextToken = tempTokens[j];
+        //! à ce stade, le nextToken est soit un node, soit : + ou \\times
+        //!on fait ici le choix d'interdire -+x
+        if (typeof nextToken === "string") {
+          throw Error("Opposé pas clair");
+        }
+        const oppositeCount = j - i;
+        let node = nextToken;
+        for (let k = 0; k < oppositeCount; k++) {
+          node = new OppositeNode(node);
+        }
+        tempTokens[i] = node;
+        tempTokens.splice(i + 1, oppositeCount);
+      }
+    }
   }
-  if (numberString[numberString.length - 1] === ",")
-    throw Error(
-      `Nombre ${numberString} avec virgule mais sans partie décimale`,
+
+  console.log("after fcts: ", tempTokens);
+  //3 build les *
+  let currentProduct: AlgebraicNode | undefined;
+  let currentProductStartIndex: number | undefined;
+  for (let i = 0; i < tempTokens.length; i++) {
+    const token = tempTokens[i];
+    if (token === "\\times") continue;
+    //la seule chose qui arrete un produit est + ou -
+    //y a t il d'autres cas ?
+    //? rappel ici on est sur une expression de niveau uniforme (sans parentheses ni childs)
+    if (token === "+" || token === "-") {
+      if (
+        currentProduct &&
+        isMultiplyNode(currentProduct) &&
+        currentProductStartIndex !== undefined
+      ) {
+        tempTokens[currentProductStartIndex] = currentProduct;
+        tempTokens.splice(
+          currentProductStartIndex + 1,
+          i - currentProductStartIndex - 1,
+        );
+        i = currentProductStartIndex + 1;
+      }
+      currentProduct = undefined;
+      currentProductStartIndex = undefined;
+      continue;
+    } else {
+      if (currentProduct) {
+        currentProduct = new MultiplyNode(
+          currentProduct,
+          token as AlgebraicNode,
+        );
+      } else {
+        currentProduct = token as AlgebraicNode;
+        currentProductStartIndex = i;
+      }
+    }
+  }
+  if (
+    currentProduct &&
+    isMultiplyNode(currentProduct) &&
+    currentProductStartIndex !== undefined
+  ) {
+    tempTokens[currentProductStartIndex] = currentProduct;
+    tempTokens.splice(
+      currentProductStartIndex + 1,
+      tempTokens.length - 1 - currentProductStartIndex,
     );
-  if (numberString.split(",").length > 2)
-    throw Error(`Trop de virgules dans le nombre ${numberString}`);
-  const number = Number(numberString.replace(",", "."));
-  return {
-    node: new NumberNode(number),
-    jump: numberString.length,
-  };
-};
+  }
 
-/***
- * Nombres
- * Constantes
- * Opérations :
- *  - +
- *  - -
- *  - *
- *  - /
- * Fonctions :
- *  - exp
- *  - ln
- */
-
-const charIsNumber = (s: string) => {
-  return ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(s);
+  //4 build les +
+  let currentAdd: AlgebraicNode | undefined;
+  console.log("beforeAdd", tempTokens);
+  for (let i = 0; i < tempTokens.length; i++) {
+    const token = tempTokens[i];
+    if (!currentAdd) {
+      if (typeof token === "string") {
+        if (token === "+" || token === "-") {
+          throw Error("Addition with no first term");
+        } else throw Error(`unexpected non parsed token ${token}`);
+      } else {
+        currentAdd = token;
+      }
+    } else {
+      if (typeof token !== "string" || (token !== "+" && token !== "-")) {
+        throw Error(`unexpected consecutive nodes without addition : ${token}`);
+      }
+      const next = tempTokens[i + 1];
+      if (typeof next === "string") {
+        throw Error(`unexpected non parsed token ${next}`);
+      } else {
+        if (token === "+") currentAdd = new AddNode(currentAdd, next);
+        else currentAdd = new SubstractNode(currentAdd, next);
+        i++;
+      }
+    }
+  }
+  return currentAdd as AlgebraicNode;
 };

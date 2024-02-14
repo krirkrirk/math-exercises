@@ -6,7 +6,7 @@ import {
   isOperatorNode,
 } from "../operators/operatorNode";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
-import { isNumberNode } from "../numbers/numberNode";
+import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { MultiplyNode, isMultiplyNode } from "../operators/multiplyNode";
 import { DivideNode, isDivideNode } from "../operators/divideNode";
@@ -98,7 +98,7 @@ export class OppositeNode implements FunctionNode {
     return -this.child.evaluate(vars);
   }
   simplify(opts?: SimplifyOptions) {
-    return new OppositeNode(this.child.simplify(opts));
+    return new MultiplyNode(new NumberNode(-1), this.child).simplify(opts);
   }
   equals(node: AlgebraicNode) {
     return isOppositeNode(node) && node.child.equals(this.child);

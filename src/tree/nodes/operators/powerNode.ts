@@ -182,12 +182,17 @@ export class PowerNode implements OperatorNode {
   // }
 
   simplify(opts?: SimplifyOptions): AlgebraicNode {
+    const leftSimplified = this.leftChild.simplify(opts);
+    const rightSimplified = this.rightChild.simplify(opts);
+    const copy = new PowerNode(leftSimplified, rightSimplified, this.opts);
+
     //! temporaire
-    if (isNumberNode(this.rightChild) && this.rightChild.value === 2) {
-      return new MultiplyNode(this.leftChild, this.leftChild).simplify(opts);
+    if (isNumberNode(copy.rightChild) && copy.rightChild.value === 2) {
+      return new MultiplyNode(copy.leftChild, copy.leftChild).simplify(opts);
     }
-    return this;
+    return copy;
   }
+
   equals(node: AlgebraicNode): boolean {
     return (
       isPowerNode(node) &&

@@ -13,7 +13,7 @@ import { NumberNode } from "./tree/nodes/numbers/numberNode";
 import { SquareNode } from "./tree/nodes/operators/powerNode";
 import { SqrtNode } from "./tree/nodes/functions/sqrtNode";
 import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
-import { parseLatex } from "./tree/parsers/latexParser";
+import { parseLatex, tokenize } from "./tree/parsers/latexParser";
 
 const jsonParser = bodyParser.json();
 
@@ -24,13 +24,16 @@ const runServer = () => {
   const app: Express = express();
   app.use(cors());
 
-  // const latex = "\\sqrt{3,230982}";
-  // try {
-  //   const res = parseLatex(latex);
-  //   console.log(res.toTex());
-  // } catch (err) {
-  //   throw err;
-  // }
+  const string = "4--8";
+  // const a = string.match(/^[0-9]+,?[0-9]*/);
+  const before = Date.now();
+  const parsed = parseLatex(string);
+  console.log("res", parsed);
+  console.log(parsed?.toTex());
+  console.log(parsed?.simplify().toTex());
+  console.log(parsed?.evaluate({ x: 1 }));
+  console.log("time", Date.now() - before);
+  // tokenize(string);
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });
