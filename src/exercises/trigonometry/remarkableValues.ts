@@ -67,7 +67,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { mainValue, isCos }) => {
   const remarkableValue = remarkableTrigoValues.find(
-    (point) => point.angle.evaluate({}) === mainValue,
+    (point) => Math.abs(point.angle.evaluate({}) - mainValue) < 0.0001,
   )!;
   const answer = isCos ? remarkableValue.cos : remarkableValue.sin;
   const texs = answer.toAllValidTexs({

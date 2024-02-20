@@ -8,12 +8,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import { MathExercise } from "./exercises/exercise";
-import { AddNode } from "./tree/nodes/operators/addNode";
-import { NumberNode } from "./tree/nodes/numbers/numberNode";
-import { SquareNode } from "./tree/nodes/operators/powerNode";
-import { SqrtNode } from "./tree/nodes/functions/sqrtNode";
-import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
-import { parseLatex, tokenize } from "./tree/parsers/latexParser";
+import { parseLatex } from "./tree/parsers/latexParser";
 
 const jsonParser = bodyParser.json();
 
@@ -24,15 +19,15 @@ const runServer = () => {
   const app: Express = express();
   app.use(cors());
 
-  const string = "4--8";
+  // const string = "\\frac{9}{12}";
   // const a = string.match(/^[0-9]+,?[0-9]*/);
-  const before = Date.now();
-  const parsed = parseLatex(string);
-  console.log("res", parsed);
-  console.log(parsed?.toTex());
-  console.log(parsed?.simplify().toTex());
-  console.log(parsed?.evaluate({ x: 1 }));
-  console.log("time", Date.now() - before);
+  // const before = Date.now();
+  // const parsed = parseLatex(string);
+  // console.log("res", parsed);
+  // console.log(parsed?.toTex());
+  // console.log(parsed?.simplify().toTex());
+  // console.log(parsed?.evaluate({ x: 1 }));
+  // console.log("time", Date.now() - before);
   // tokenize(string);
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
