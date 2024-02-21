@@ -5,3 +5,4 @@ export * from "./diceBasicProbas";
 export * from "./probabilityTree";
 export * from "./stats1var";
 export * from "./stats2var";
+export * from "./independancy";

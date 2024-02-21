@@ -1,5 +1,7 @@
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { Node, NodeType } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { randint } from "../utils/random/randint";
 import { Point } from "./point";
@@ -8,25 +10,25 @@ export abstract class VectorConstructor {
   static fromPoints(origin: Point, end: Point): Vector {
     return new Vector(
       `${origin.name}${end.name}`,
-      new SubstractNode(end.x, origin.x),
-      new SubstractNode(end.y, origin.y),
+      new SubstractNode(end.x, origin.x).simplify(),
+      new SubstractNode(end.y, origin.y).simplify(),
     );
   }
-  static random(name: string): Vector {
-    return new Vector(
-      name,
-      new NumberNode(randint(-10, 11)),
-      new NumberNode(randint(-10, 11)),
+  static random(name: string, allowNull = true): Vector {
+    const x = new NumberNode(randint(-10, 11));
+    const y = new NumberNode(
+      randint(-10, 11, !allowNull && x.value === 0 ? [0] : undefined),
     );
+    return new Vector(name, x, y);
   }
 }
 
 export class Vector {
   name: string;
   tex: string;
-  x: Node;
-  y: Node;
-  constructor(name: string, x: Node, y: Node) {
+  x: AlgebraicNode;
+  y: AlgebraicNode;
+  constructor(name: string, x: AlgebraicNode, y: AlgebraicNode) {
     this.name = name;
     this.tex = `\\overrightarrow{${name}}`;
     this.x = x;
@@ -43,7 +45,11 @@ export class Vector {
     }}\\begin{pmatrix}${this.x.toTex()} \\\\ ${this.y.toTex()} \\end{pmatrix}`;
   }
 
-  determinant(v: Vector): Node {
+  isColinear(v: Vector): boolean {
+    const det = this.determinant(v);
+    return det.evaluate({}) === 0;
+  }
+  determinant(v: Vector): AlgebraicNode {
     if (
       [this.x.type, this.y.type, v.x.type, v.y.type].some(
         (el) => el !== NodeType.number,
@@ -55,6 +61,14 @@ export class Vector {
     const vxValue = (v.x as NumberNode).value;
     const vyValue = (v.y as NumberNode).value;
     return new NumberNode(xValue * vyValue - yValue * vxValue);
+  }
+
+  times(k: AlgebraicNode, name?: string) {
+    return new Vector(
+      name ?? "v",
+      new MultiplyNode(this.x, k).simplify(),
+      new MultiplyNode(this.y, k).simplify(),
+    );
   }
   scalarProduct(v: Vector): Node {
     if (

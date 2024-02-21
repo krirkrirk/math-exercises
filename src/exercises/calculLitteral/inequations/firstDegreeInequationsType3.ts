@@ -54,7 +54,9 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Résoudre l'inéquation : $${affine1.toTex()} ${ineqType} ${affine2.toTex()}$ `,
+    instruction: `Résoudre l'inéquation : $${affine1.toTex()} ${
+      ineqType.symbol
+    } ${affine2.toTex()}$ `,
     keys: inequationKeys,
     answerFormat: "tex",
     identifiers: {

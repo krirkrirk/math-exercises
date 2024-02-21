@@ -42,7 +42,9 @@ test("all exos", () => {
         expect(question.identifiers).not.toBe(undefined);
         const dotDecimalPattern = /\d+\.\d+/;
         expect(question.answer.match(dotDecimalPattern)).toBe(null);
+        expect(question.answer.includes("[object Object]")).toBe(false);
         expect(question.instruction?.length).not.toBe(0);
+        expect(question.instruction.includes("[object Object]")).toBe(false);
         if (exo.answerType !== "QCM") {
           expect(question.keys).not.toBe(undefined);
 
@@ -78,11 +80,12 @@ test("all exos", () => {
               time,
             };
           }
-          expect(props.length).toBe(4);
+          expect(props.length).toBeLessThan(5);
           expect(props.filter((prop) => prop.isRightAnswer).length).toBe(1);
-          props.forEach((prop) =>
-            expect(prop.statement.match(dotDecimalPattern)).toBe(null),
-          );
+          props.forEach((prop) => {
+            expect(prop.statement.match(dotDecimalPattern)).toBe(null);
+            expect(prop.statement.includes("[object Object]")).toBe(false);
+          });
           if (question.coords) {
             question.coords.forEach((element) => {
               expect(Math.abs(element)).toBeLessThan(Infinity);

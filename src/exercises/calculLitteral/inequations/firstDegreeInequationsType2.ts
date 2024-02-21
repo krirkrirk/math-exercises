@@ -52,7 +52,9 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Résoudre l'inéquation : $${affine.toTex()} ${ineqType} ${c}$ `,
+    instruction: `Résoudre l'inéquation : $${affine.toTex()} ${
+      ineqType.symbol
+    } ${c}$ `,
     keys: inequationKeys,
     answerFormat: "tex",
     identifiers: { a: affine.a, b: affine.b, c, ineqType: ineqType.symbol },

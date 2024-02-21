@@ -1,9 +1,9 @@
 import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
 import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
-import { Integer } from "../integer/integer";
 import { Nombre, NumberType } from "../nombre";
 import { Rational } from "../rationals/rational";
 
@@ -19,6 +19,7 @@ export abstract class DecimalConstructor {
     return decimals;
   }
 
+  //! a refacto, pour inclure "-0" et des min/max décimaux
   static random(min: number, max: number, precision?: number): Decimal {
     let prec = precision ?? randint(1, 4);
     const int = randint(min, max) + "";
@@ -43,7 +44,7 @@ export class Decimal implements Nombre {
   tex: string;
   type = NumberType.Decimal;
   precision: number;
-  intPart: number;
+  intPart: number; // can be -0
   decimalPart: string;
   constructor(value: number) {
     this.value = value;
@@ -60,73 +61,7 @@ export class Decimal implements Nombre {
    * @returns
    */
   round(precision: number): Nombre {
-    const intPartString = this.intPart + "";
-
-    if (precision < 0) {
-      if (precision < -intPartString.length)
-        throw Error("can't round to higher precision");
-      return new Integer(this.intPart).round(-precision);
-    }
-
-    if (precision > this.precision)
-      throw Error("can't round to higher precision");
-    if (precision === this.precision) return this;
-
-    let newFracPart = "",
-      newIntPart = "";
-
-    const shouldRoundUp = Number(this.decimalPart[precision]) > 4;
-
-    if (shouldRoundUp) {
-      let retenue = true;
-      let i = precision - 1;
-      while (retenue) {
-        if (i > -1) {
-          const nb = (Number(this.decimalPart[i]) + 1) % 10;
-          if (nb || newFracPart) {
-            newFracPart = nb.toString() + newFracPart;
-          }
-          if (nb !== 0) {
-            retenue = false;
-            for (let j = i - 1; j > -1; j--) {
-              newFracPart = this.decimalPart[j] + newFracPart;
-            }
-            newIntPart = intPartString;
-          } else i--;
-        } else {
-          const nb = (Number(intPartString[i + intPartString.length]) + 1) % 10;
-          newIntPart = nb + "" + newIntPart;
-          if (nb !== 0) {
-            retenue = false;
-            for (let j = i + intPartString.length - 1; j > -1; j--) {
-              newIntPart = intPartString[j] + newIntPart;
-            }
-          } else i--;
-        }
-      }
-    } else {
-      let retenue = true;
-      let i = precision - 1;
-      while (retenue) {
-        if (i > -1) {
-          const nb = Number(this.decimalPart[i]);
-          if (nb || newFracPart) {
-            newFracPart = nb.toString() + newFracPart;
-          }
-          if (nb !== 0) {
-            retenue = false;
-            for (let j = i - 1; j > -1; j--) {
-              newFracPart = this.decimalPart[j] + newFracPart;
-            }
-            newIntPart = intPartString;
-          } else i--;
-        } else {
-          newIntPart = intPartString;
-          retenue = false;
-        }
-      }
-    }
-    return DecimalConstructor.fromParts(newIntPart, newFracPart);
+    return new Decimal(round(this.value, precision));
   }
 
   multiplyByPowerOfTen(power: number) {
@@ -134,15 +69,16 @@ export class Decimal implements Nombre {
     let newIntPart = "",
       newFracPart = "";
 
-    if (power > -1) {
-      newIntPart = this.intPart + "";
+    if (power > 0) {
+      newIntPart = (this.value + "").split(".")[0];
       for (let i = 0; i < power; i++) {
         newIntPart +=
           i > this.decimalPart.length - 1 ? "0" : this.decimalPart[i];
       }
       newFracPart = this.decimalPart.slice(power);
     } else {
-      const intPartString = this.intPart + "";
+      const intPartString = this.intPart.toString().replace("-", "");
+      const isNegative = this.value < 0;
       newFracPart = this.decimalPart;
       for (
         let i = intPartString.length - 1;
@@ -151,32 +87,49 @@ export class Decimal implements Nombre {
       ) {
         newFracPart = (i < 0 ? "0" : intPartString[i]) + newFracPart;
       }
-      if (power + intPartString.length < 1) newIntPart = "0";
-      else newIntPart = intPartString.slice(0, power + intPartString.length);
+      if (power + intPartString.length < 1)
+        newIntPart = isNegative ? "-0" : "0";
+      else
+        newIntPart =
+          (isNegative ? "-" : "") +
+          intPartString.slice(0, power + intPartString.length);
     }
+    console.log("in", newIntPart, newFracPart);
     return DecimalConstructor.fromParts(newIntPart, newFracPart);
   }
 
   toScientificPart() {
-    const intString = this.intPart.toString();
-    const intSize = intString.length;
-    if (intSize === 0 && this.intPart !== 0) return this.toTree();
+    if (!this.decimalPart.length) return new NumberNode(this.intPart);
+    // const intString = this.intPart.toString();
+    // const intSize = intString.length;
+    // if (intSize === 0 && this.intPart !== 0) return this.toTree();
     if (this.intPart === 0) {
+      //true for -0
       const firstNonZeroIndex = this.decimalPart
         .split("")
         .findIndex((el) => Number(el) !== 0);
       return new NumberNode(
-        Number("0." + this.decimalPart.slice(firstNonZeroIndex)),
+        Number(
+          (this.tex[0] === "-" ? "-0." : "0.") +
+            this.decimalPart.slice(firstNonZeroIndex),
+        ),
       );
     }
+    const intString = this.intPart + "";
     return new NumberNode(
-      Number(intString[0] + "." + intString.slice(1) + this.decimalPart),
+      Number(
+        (this.tex[0] === "-" ? "-" + this.tex[1] : this.tex[0]) +
+          "." +
+          (this.tex[0] === "-" ? intString.slice(2) : intString.slice(1)) +
+          this.decimalPart,
+      ),
     );
   }
   toScientificNotation() {
-    const intString = this.intPart.toString();
-    const intSize = intString.length;
-    if (intSize === 0) return this.toTree();
+    const intString = this.intPart + "";
+    // const intSize = intString.length + (this.value < 0 ? 1 : 0);
+    if (this.intPart > -10 && this.intPart < 10 && this.intPart !== 0)
+      return this.toTree();
     const decNode = this.toScientificPart();
     let leadingZeros = 0;
     const nbs = this.decimalPart.split("").map(Number);
@@ -184,7 +137,9 @@ export class Decimal implements Nombre {
       if (nbs[i] !== 0) break;
       leadingZeros++;
     }
-    const power = this.intPart === 0 ? -leadingZeros : intSize - 1;
+    const power =
+      this.intPart === 0 ? -leadingZeros : (this.intPart + "").length - 1;
+    if (power === 0) return this.toTree();
     if (power === 1) return new MultiplyNode(decNode, new NumberNode(10));
     return new MultiplyNode(
       decNode,

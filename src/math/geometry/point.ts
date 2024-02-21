@@ -4,17 +4,29 @@ import { MathSet } from "../sets/mathSet";
 import { Interval } from "../sets/intervals/intervals";
 import { Rational } from "../numbers/rationals/rational";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
+import { Vector, VectorConstructor } from "./vector";
+import { randint } from "../utils/random/randint";
 
 export abstract class PointConstructor {
-  static random(
-    domainX: MathSet = new Interval("[[-10; 10]]"),
-    domainY: MathSet = new Interval("[[-10; 10]]"),
-  ): Point {
-    const x = domainX.getRandomElement();
-    const y = domainY.getRandomElement();
-    if (x === null || y === null)
-      throw Error("can't build point with thoses sets");
-    return new Point("A", new NumberNode(x.value), new NumberNode(y.value));
+  static random(name: string): Point {
+    const x = randint(-10, 11);
+    const y = randint(-10, 11);
+    return new Point(name, new NumberNode(x), new NumberNode(y));
+  }
+  static randomDifferent(names: string[]) {
+    const res: Point[] = [];
+    const points: number[][] = [];
+    for (let i = 0; i < names.length; i++) {
+      let x: number;
+      let y: number;
+      do {
+        x = randint(-10, 11);
+        y = randint(-10, 11);
+      } while (points.some((point) => point[0] === x && point[1] === y));
+      res.push(new Point(names[i], new NumberNode(x), new NumberNode(y)));
+    }
+
+    return res;
   }
 }
 
@@ -73,18 +85,13 @@ export class Point {
     const dy = this.getYnumber() - B.getYnumber();
     return Math.sqrt(dx ** 2 + dy ** 2);
   }
+
+  equals(B: Point): boolean {
+    return this.x.equals(B.x) && this.y.equals(B.y);
+  }
+  isAligned(B: Point, C: Point) {
+    const AB = VectorConstructor.fromPoints(this, B);
+    const AC = VectorConstructor.fromPoints(this, C);
+    return AB.isColinear(AC);
+  }
 }
-
-/**
- * Droite{
- * constructor : 
- *  depuis 2 points : A,B --> Droite
- *  depuis 1 point + coeff dir --> Droite
- *  avec une équation de droite --> Droite
- * 
- * méthodes : 
- *    toEquation() --> y = 3x+2
- *    toCoeffDIr --> a
-
- * }
- */

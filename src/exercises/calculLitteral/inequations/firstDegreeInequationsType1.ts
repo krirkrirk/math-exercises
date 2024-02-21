@@ -20,13 +20,9 @@ import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
 import { InequationNode } from "#root/tree/nodes/inequations/inequationNode";
 import { InequationSolutionNode } from "#root/tree/nodes/inequations/inequationSolutionNode";
-import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
 import { shuffle } from "#root/utils/shuffle";
-import { v4 } from "uuid";
 type Identifiers = {
   a: number;
   b: number;
@@ -47,7 +43,9 @@ const getFirstDegreeInequationsQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Résoudre l'inéquation : $${affine.toTex()} ${ineqType} ${b}$ `,
+    instruction: `Résoudre l'inéquation : $${affine.toTex()} ${
+      ineqType.symbol
+    } ${b}$ `,
     keys: inequationKeys,
     answerFormat: "tex",
     identifiers: { a: affine.a, b, ineqType: ineqType.symbol },

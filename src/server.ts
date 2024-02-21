@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { MathExercise } from "./exercises/exercise";
 import { parseLatex } from "./tree/parsers/latexParser";
+import { Decimal, DecimalConstructor } from "./math/numbers/decimals/decimal";
 
 const jsonParser = bodyParser.json();
 
@@ -29,6 +30,24 @@ const runServer = () => {
   // console.log(parsed?.evaluate({ x: 1 }));
   // console.log("time", Date.now() - before);
   // tokenize(string);
+  // const a = DecimalConstructor.random(-4, 8);
+  // const a = new Decimal(-0.0009343);
+  // console.log(a.value, a.multiplyByPowerOfTen(-2).toTree().toTex());
+  // const b = new Decimal(0.0009343);
+  // console.log(b.value, b.multiplyByPowerOfTen(-2).toTree().toTex());
+  // const c = new Decimal(-2.00009343);
+  // console.log(c.value, c.multiplyByPowerOfTen(-2).toTree().toTex());
+  // const d = new Decimal(2.009343);
+  // console.log(d.value, d.multiplyByPowerOfTen(-2).toTree().toTex());
+  const power = 1;
+  const a = new Decimal(-0.00400250009343);
+  console.log(a.value, a.multiplyByPowerOfTen(power).toTree().toTex());
+  const b = new Decimal(0.04010009343);
+  console.log(b.value, b.multiplyByPowerOfTen(power).toTree().toTex());
+  const c = new Decimal(-23.00009343);
+  console.log(c.value, c.multiplyByPowerOfTen(power).toTree().toTex());
+  const d = new Decimal(20.4009343);
+  console.log(d.value, d.multiplyByPowerOfTen(power).toTree().toTex());
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

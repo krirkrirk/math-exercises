@@ -4,3 +4,5 @@ export * from "./determinant";
 export * from "./scalarProductViaCoords";
 export * from "./vectorCoordinatesFromTwoPoints";
 export * from "./scalarProductViaCos";
+export * from "./colinearity";
+// export * from "./alignementViaColinearity";
