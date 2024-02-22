@@ -31,10 +31,11 @@ type Identifiers = {
   ineqType: InegalitySymbols;
 };
 
+/**x +b < c */
 const getFirstDegreeInequationsQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const affine = new Affine(1, randint(-10, 11));
+  const affine = new Affine(1, randint(-10, 11, [0]));
   const c = randint(-10, 11);
 
   const result = c - affine.b;

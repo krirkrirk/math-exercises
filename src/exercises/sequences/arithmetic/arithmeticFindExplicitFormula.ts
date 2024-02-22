@@ -31,7 +31,7 @@ const getArithmeticFindExplicitFormula: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     instruction: `$(u_n)$ est une suite arithmétique de premier terme $u_{${firstRank}} = ${firstValue}$ et de raison $r = ${reason}$. $\\\\$ Donner l'expression de $u_n$ en fonction de $n$.`,
     answer,
-    keys: ["un", "equal", "r", "n", "u", "underscore"],
+    keys: ["un", "equal", "n"],
     answerFormat: "tex",
     identifiers: { firstValue, reason },
   };

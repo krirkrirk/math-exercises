@@ -35,6 +35,7 @@ type Identifiers = {
   c: number;
 };
 
+/**ax+b<c */
 const getFirstDegreeInequationsQuestion: QuestionGenerator<
   Identifiers
 > = () => {

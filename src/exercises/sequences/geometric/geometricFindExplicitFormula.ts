@@ -36,7 +36,7 @@ const getGeometricFindExplicitFormula: QuestionGenerator<Identifiers> = () => {
     instruction: `$(u_n)$ est une suite géométrique de premier terme $u_{${firstRank}} = ${firstValue}$ et de raison $q = ${reason}$. $\\\\$ Donner l'expression de $u_n$ en fonction de $n$.`,
 
     answer,
-    keys: ["un", "equal", "q", "n", "u", "underscore"],
+    keys: ["un", "equal", "n"],
     answerFormat: "tex",
     identifiers: { reason, firstValue },
   };

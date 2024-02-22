@@ -12,9 +12,12 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Line } from "#root/math/geometry/line";
 import { Point, PointConstructor } from "#root/math/geometry/point";
-import { VectorConstructor } from "#root/math/geometry/vector";
+import { Vector, VectorConstructor } from "#root/math/geometry/vector";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 
@@ -22,44 +25,55 @@ type Identifiers = {
   xA: number;
   xB: number;
   xC: number;
+  xD: number;
   yA: number;
   yB: number;
   yC: number;
+  yD: number;
 };
 
-const getAlignementViaColinearityQuestion: QuestionGenerator<
+const getParalellismViaColinearityQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const points = PointConstructor.randomDifferent(["A", "B"]);
-  const AB = VectorConstructor.fromPoints(points[0], points[1]);
-  let C: Point;
-  const isAligned = coinFlip();
-  const coeff = new NumberNode(randint(-4, 4, [0, 1]));
-  if (isAligned) {
-    console.log("1");
+  let points: Point[] = [];
+  do {
+    points = PointConstructor.randomDifferent(["A", "B"]);
+  } while (points[0].x.equals(points[1].x));
 
-    C = AB.times(coeff).getEndPoint(points[0], "C");
+  const line = new Line(points[0], points[1]);
+  let C: Point;
+  do {
+    C = PointConstructor.random("C");
+  } while (line.includes(C));
+  let D: Point;
+  const coeff = new NumberNode(randint(-4, 4, [0]));
+
+  const parallele = line.getParallele(C);
+  const isParallele = coinFlip();
+  if (isParallele) {
+    D = VectorConstructor.fromPoints(points[0], points[1])
+      .times(coeff)
+      .getEndPoint(C, "D");
   } else {
     do {
-      console.log(`2 : ${AB.x.toTex()} et ${AB.y.toTex()}`);
-
-      C = PointConstructor.random("C");
-    } while (AB.isColinear(VectorConstructor.fromPoints(points[0], C)));
+      D = PointConstructor.random("D");
+    } while (parallele.includes(D));
   }
-
-  const answer = isAligned ? "Oui" : "Non";
+  const answer = isParallele ? "Oui" : "Non";
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Soient trois points $${points[0].toTexWithCoords()}$, $${points[1].toTexWithCoords()}$ et $${C.toTexWithCoords()}$. Les points $A$, $B$ et $C$ sont-ils alignés ?`,
+    instruction: `Soient les points $${points[0].toTexWithCoords()}$, $${points[1].toTexWithCoords()}$, $${C.toTexWithCoords()}$ et $${D.toTexWithCoords()}$. Les droites $(AB)$ et $(CD)$ sont-elles parallèles ?`,
     keys: [],
     answerFormat: "raw",
     identifiers: {
       xA: points[0].x.evaluate({}),
       xB: points[1].x.evaluate({}),
       xC: C.x.evaluate({}),
+      xD: D.x.evaluate({}),
       yA: points[0].y.evaluate({}),
       yB: points[1].y.evaluate({}),
       yC: C.y.evaluate({}),
+      yD: D.y.evaluate({}),
     },
   };
 
@@ -75,14 +89,14 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   return shuffle(propositions);
 };
 
-export const alignementViaColinearity: MathExercise<Identifiers> = {
-  id: "alignementViaColinearity",
-  label: "Utiliser la colinéarité pour déterminer un alignement",
+export const paralellismViaColinearity: MathExercise<Identifiers> = {
+  id: "paralellismViaColinearity",
+  label: "Utiliser la colinéarité pour déterminer un parallélisme",
   levels: ["2nde", "1reSpé"],
   isSingleStep: true,
   sections: ["Vecteurs", "Droites"],
   generator: (nb: number) =>
-    getDistinctQuestions(getAlignementViaColinearityQuestion, nb),
+    getDistinctQuestions(getParalellismViaColinearityQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,

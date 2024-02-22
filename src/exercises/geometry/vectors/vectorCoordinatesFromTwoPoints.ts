@@ -69,7 +69,9 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, A, B }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+  return [ans, ans.replace(",", ";"), "\\left(" + ans + "\\right)"].includes(
+    answer,
+  );
 };
 export const vectorCoordinatesFromTwoPoints: MathExercise<Identifiers> = {
   id: "vectorCoordinatesFromTwoPoints",

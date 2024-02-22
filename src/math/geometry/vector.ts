@@ -1,6 +1,7 @@
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { Node, NodeType } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { randint } from "../utils/random/randint";
@@ -82,5 +83,16 @@ export class Vector {
     const vxValue = (v.x as NumberNode).value;
     const vyValue = (v.y as NumberNode).value;
     return new NumberNode(xValue * vxValue + yValue * vyValue);
+  }
+
+  getEndPoint(startPoint: Point, name?: string) {
+    return new Point(
+      name ?? "B",
+      new AddNode(startPoint.x, this.x).simplify(),
+      new AddNode(startPoint.y, this.y).simplify(),
+    );
+  }
+  equals(v: Vector) {
+    return this.x.equals(v.x) && this.y.equals(v.y);
   }
 }

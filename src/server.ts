@@ -10,6 +10,11 @@ import cors from "cors";
 import { MathExercise } from "./exercises/exercise";
 import { parseLatex } from "./tree/parsers/latexParser";
 import { Decimal, DecimalConstructor } from "./math/numbers/decimals/decimal";
+import { AddNode } from "./tree/nodes/operators/addNode";
+import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
+import { FractionNode } from "./tree/nodes/operators/fractionNode";
+import { NumberNode } from "./tree/nodes/numbers/numberNode";
+import { SubstractNode } from "./tree/nodes/operators/substractNode";
 
 const jsonParser = bodyParser.json();
 
@@ -20,34 +25,6 @@ const runServer = () => {
   const app: Express = express();
   app.use(cors());
 
-  // const string = "\\frac{9}{12}";
-  // const a = string.match(/^[0-9]+,?[0-9]*/);
-  // const before = Date.now();
-  // const parsed = parseLatex(string);
-  // console.log("res", parsed);
-  // console.log(parsed?.toTex());
-  // console.log(parsed?.simplify().toTex());
-  // console.log(parsed?.evaluate({ x: 1 }));
-  // console.log("time", Date.now() - before);
-  // tokenize(string);
-  // const a = DecimalConstructor.random(-4, 8);
-  // const a = new Decimal(-0.0009343);
-  // console.log(a.value, a.multiplyByPowerOfTen(-2).toTree().toTex());
-  // const b = new Decimal(0.0009343);
-  // console.log(b.value, b.multiplyByPowerOfTen(-2).toTree().toTex());
-  // const c = new Decimal(-2.00009343);
-  // console.log(c.value, c.multiplyByPowerOfTen(-2).toTree().toTex());
-  // const d = new Decimal(2.009343);
-  // console.log(d.value, d.multiplyByPowerOfTen(-2).toTree().toTex());
-  const power = 1;
-  const a = new Decimal(-0.00400250009343);
-  console.log(a.value, a.multiplyByPowerOfTen(power).toTree().toTex());
-  const b = new Decimal(0.04010009343);
-  console.log(b.value, b.multiplyByPowerOfTen(power).toTree().toTex());
-  const c = new Decimal(-23.00009343);
-  console.log(c.value, c.multiplyByPowerOfTen(power).toTree().toTex());
-  const d = new Decimal(20.4009343);
-  console.log(d.value, d.multiplyByPowerOfTen(power).toTree().toTex());
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

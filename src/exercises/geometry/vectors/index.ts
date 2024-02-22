@@ -5,4 +5,7 @@ export * from "./scalarProductViaCoords";
 export * from "./vectorCoordinatesFromTwoPoints";
 export * from "./scalarProductViaCos";
 export * from "./colinearity";
-// export * from "./alignementViaColinearity";
+export * from "./alignementViaColinearity";
+export * from "./paralellismViaColinearity";
+export * from "./parallelogramViaEqualVectors";
+export * from "./fourthParallelogramPoint";

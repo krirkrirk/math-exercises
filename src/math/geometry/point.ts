@@ -13,6 +13,7 @@ export abstract class PointConstructor {
     const y = randint(-10, 11);
     return new Point(name, new NumberNode(x), new NumberNode(y));
   }
+
   static randomDifferent(names: string[]) {
     const res: Point[] = [];
     const points: number[][] = [];
@@ -23,9 +24,9 @@ export abstract class PointConstructor {
         x = randint(-10, 11);
         y = randint(-10, 11);
       } while (points.some((point) => point[0] === x && point[1] === y));
+      points.push([x, y]);
       res.push(new Point(names[i], new NumberNode(x), new NumberNode(y)));
     }
-
     return res;
   }
 }

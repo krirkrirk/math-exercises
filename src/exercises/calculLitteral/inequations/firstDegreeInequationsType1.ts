@@ -28,7 +28,7 @@ type Identifiers = {
   b: number;
   ineqType: InegalitySymbols;
 };
-
+/**ax<b */
 const getFirstDegreeInequationsQuestion: QuestionGenerator<
   Identifiers
 > = () => {

@@ -2,6 +2,10 @@ import * as Exercises from "./../src/exercises";
 import { MathExercise } from "./../src/exercises/exercise";
 
 const exercises = Object.values(Exercises) as MathExercise<any>[];
+// const exercises = [
+// Exercises.alignementViaColinearity,
+// Exercises.parallelogramViaEqualVectors,
+// ] as MathExercise<any>[];
 type Worst = {
   exoId: string;
   time: number;
@@ -101,16 +105,16 @@ test("all exos", () => {
 
   console.log(
     "average vea",
-    veaTimes.reduce((acc, curr) => acc + curr) / veaTimes.length,
+    veaTimes.reduce((acc, curr) => acc + curr, 0) / veaTimes.length,
   );
   console.log(
     "average qcm",
-    qcmGenerationTimes.reduce((acc, curr) => acc + curr) /
+    qcmGenerationTimes.reduce((acc, curr) => acc + curr, 0) /
       qcmGenerationTimes.length,
   );
   console.log(
     "average generator",
-    questionsGenerationTimes.reduce((acc, curr) => acc + curr) /
+    questionsGenerationTimes.reduce((acc, curr) => acc + curr, 0) /
       questionsGenerationTimes.length,
   );
 

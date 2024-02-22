@@ -22,6 +22,7 @@ import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
 /**
  *  type ax+b=c
@@ -37,13 +38,13 @@ const getEquationType3ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const intervalStar = new Interval("[[-10; 10]]").difference(
     new DiscreteSet([new Integer(0)]),
   );
-  const b = intervalStar.getRandomElement()!;
-  const a = intervalStar.getRandomElement()!;
-  const c = interval.getRandomElement()!;
+  const b = randint(-10, 11, [0]);
+  const a = randint(-10, 11, [0, 1]);
+  const c = randint(-10, 11);
 
-  const affine = new Affine(a.value, b.value).toTree();
-  const solution = new Rational(c.value - b.value, a.value).simplify();
-  const statementTree = new EqualNode(affine, c.toTree());
+  const affine = new Affine(a, b).toTree();
+  const solution = new Rational(c - b, a).simplify();
+  const statementTree = new EqualNode(affine, new NumberNode(c));
   const answerTree = new EqualNode(new VariableNode("x"), solution.toTree());
   const answer = answerTree.toTex();
   const question: Question<Identifiers> = {
@@ -52,7 +53,7 @@ const getEquationType3ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: equationKeys,
     answerFormat: "tex",
-    identifiers: { a: a.value, b: b.value, c: c.value },
+    identifiers: { a, b, c },
   };
   return question;
 };

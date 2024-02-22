@@ -31,6 +31,16 @@ export class Line {
       ).simplify();
     }
   }
+  getParallele(point: Point) {
+    if (this.isVertical) {
+      console.log(this.pointA.toTexWithCoords(), this.pointB.toTexWithCoords());
+      throw Error("Parallel vertical lines not implemented");
+    }
+    const x = new AddNode(point.x, new NumberNode(1)).simplify();
+    const y = new AddNode(point.y, this.a!).simplify();
+    const secondPoint = new Point("D", x, y);
+    return new Line(point, secondPoint);
+  }
   includes(point: Point) {
     if (this.isVertical) {
       return point.x.equals(this.pointA.x);
@@ -42,6 +52,8 @@ export class Line {
       ).evaluate({}) === 0
     );
   }
+
+  //! caution: simplify ne gère pas bien ici
   getRandomPoint(name?: string) {
     if (this.isVertical) {
       return new Point(
@@ -52,6 +64,7 @@ export class Line {
     }
     const x = new NumberNode(randint(-10, 10));
     const y = new AddNode(new MultiplyNode(this.a!, x), this.b!).simplify();
+    console.log(y.toTex(), this.a!.toTex(), x.toTex(), this.b?.toTex());
     return new Point(name ?? "A", x, y);
   }
 }

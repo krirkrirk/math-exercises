@@ -4,7 +4,7 @@ import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { FunctionNode, FunctionsIds } from "../functions/functionNode";
 import { round } from "#root/math/utils/round";
-import { isOppositeNode } from "../functions/oppositeNode";
+import { OppositeNode, isOppositeNode } from "../functions/oppositeNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { MultiplyNode, isMultiplyNode } from "./multiplyNode";
 import { Rational } from "#root/math/numbers/rationals/rational";
@@ -98,6 +98,12 @@ export class FractionNode implements OperatorNode {
     const simplifiedNum = this.leftChild.simplify(opts);
     const simplifiedDenum = this.rightChild.simplify(opts);
     const copy = new FractionNode(simplifiedNum, simplifiedDenum, this.opts);
+    if (isNumberNode(simplifiedDenum) && simplifiedDenum.value === 1) {
+      return simplifiedNum;
+    }
+    if (isNumberNode(simplifiedDenum) && simplifiedDenum.value === -1) {
+      return new OppositeNode(simplifiedNum).simplify(opts);
+    }
     const externalsNums: AlgebraicNode[] = [];
     const externalsDenums: AlgebraicNode[] = [];
 
