@@ -8,6 +8,8 @@ import { isInt } from "#root/utils/isInt";
 import { isPowerNode } from "../operators/powerNode";
 import { MultiplyNode } from "../operators/multiplyNode";
 import { primeFactors } from "#root/math/utils/arithmetic/primeFactors";
+import { primeDecomposition } from "#root/math/utils/arithmetic/primeDecomposition";
+import { maxPowerDecomposition } from "#root/math/utils/arithmetic/maxPowerDecomposition";
 export function isLog10Node(a: Node): a is Log10Node {
   return isFunctionNode(a) && a.id === FunctionsIds.log10;
 }
@@ -61,13 +63,19 @@ export class Log10Node implements FunctionNode {
       const log10 = Math.log10(value);
       if (isInt(log10)) return new NumberNode(log10);
       if (isInt(value)) {
-        const factors = primeFactors(value);
-        if (factors.length === 1) return this; //isPrime
-        if (factors.every((nb) => nb === factors[0])) {
-          return new MultiplyNode(
-            new NumberNode(factors.length),
-            new Log10Node(new NumberNode(factors[0])),
-          ).simplify();
+        const decomposition = maxPowerDecomposition(value);
+        if (decomposition.length === 1) {
+          const el = decomposition[0];
+          if (el.power === 1) return this; //isPrime
+          else
+            return new MultiplyNode(
+              new NumberNode(el.power),
+              new Log10Node(new NumberNode(el.value)),
+            );
+        } else {
+          //! things like log(6) will return themselves
+          //! even true for log(12). Should they be simplified into 2ln(2)+ln(3) ?
+          return new Log10Node(simplifiedChild);
         }
       }
     }

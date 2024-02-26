@@ -9,6 +9,7 @@ import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { isInt } from "#root/utils/isInt";
 import { primeFactors } from "#root/math/utils/arithmetic/primeFactors";
 import { isExpNode } from "./expNode";
+import { maxPowerDecomposition } from "#root/math/utils/arithmetic/maxPowerDecomposition";
 export function isLogNode(a: Node): a is LogNode {
   return isFunctionNode(a) && a.id === FunctionsIds.log;
 }
@@ -59,16 +60,22 @@ export class LogNode implements FunctionNode {
     const simplifiedChild = this.child.simplify();
     if (isNumberNode(simplifiedChild)) {
       const value = simplifiedChild.value;
-      const log = Math.log(value);
-      if (isInt(log)) return new NumberNode(log);
+      const log10 = Math.log10(value);
+      if (isInt(log10)) return new NumberNode(log10);
       if (isInt(value)) {
-        const factors = primeFactors(value);
-        if (factors.length === 1) return this; //isPrime
-        if (factors.every((nb) => nb === factors[0])) {
-          return new MultiplyNode(
-            new NumberNode(factors.length),
-            new LogNode(new NumberNode(factors[0])),
-          ).simplify();
+        const decomposition = maxPowerDecomposition(value);
+        if (decomposition.length === 1) {
+          const el = decomposition[0];
+          if (el.power === 1) return this; //isPrime
+          else
+            return new MultiplyNode(
+              new NumberNode(el.power),
+              new LogNode(new NumberNode(el.value)),
+            );
+        } else {
+          //! things like log(6) will return themselves
+          //! even true for log(12). Should they be simplified into 2ln(2)+ln(3) ?
+          return new LogNode(simplifiedChild);
         }
       }
     }

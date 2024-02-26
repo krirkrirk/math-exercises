@@ -52,7 +52,7 @@ const getExpSimplifiying: QuestionGenerator<Identifiers> = () => {
 
   const answer = simplifiedExpression.toTex();
   const question: Question<Identifiers> = {
-    instruction: `Simplifier l'expression suivante : $${expression.toTex()}$.`,
+    instruction: `Ecrire le nombre suivant sous la forme $\\ln\\left(a\\right)$ : $\\newline ${expression.toTex()}$.`,
     answer,
     keys: ["ln"],
     answerFormat: "tex",

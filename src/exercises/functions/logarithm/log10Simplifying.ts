@@ -33,6 +33,7 @@ const getLog10SumSimplifyingQuestion: QuestionGenerator<
   { isLog10: boolean }
 > = (opts) => {
   const nb = randint(2, 10);
+  const trueNb = [2, 4, 8].includes(nb) ? 2 : [3, 9].includes(nb) ? 3 : nb;
   const nbTerms = randint(2, 4);
   const powers: number[] = [];
   const signs: number[] = [];
@@ -41,6 +42,7 @@ const getLog10SumSimplifyingQuestion: QuestionGenerator<
     powers.push(power);
     signs.push(random([-1, 1]));
   }
+
   const nbNode = new NumberNode(nb);
   const LNode = opts?.isLog10 ? Log10Node : LogNode;
   const logs = powers.map((power, index) =>
@@ -58,7 +60,9 @@ const getLog10SumSimplifyingQuestion: QuestionGenerator<
   const answer = statement.simplify();
   const question: Question<Identifiers> = {
     answer: answer.toTex(),
-    instruction: `Simplifier le plus possible l'expression suivante : $${statement.toTex()}$`,
+    instruction: `Exprimer le nombre suivant sous la forme $a${
+      opts?.isLog10 ? "\\log" : "\\ln"
+    }\\left(${trueNb}\\right)$ : $\\newline ${statement.toTex()}$`,
     keys: [opts?.isLog10 ? "log" : "ln"],
     answerFormat: "tex",
     identifiers: { nb, powers, signs, isLog10: opts?.isLog10 ?? false },
