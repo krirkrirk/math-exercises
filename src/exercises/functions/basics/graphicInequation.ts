@@ -126,6 +126,7 @@ const getGraphicInequationQuestion: QuestionGenerator<Identifiers> = () => {
       "cup",
       "lbrace",
       "rbrace",
+      "varnothing",
     ],
     answerFormat: "tex",
     commands: ggb.commands,

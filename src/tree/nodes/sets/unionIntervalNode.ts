@@ -62,6 +62,6 @@ export class UnionIntervalNode implements Node {
   }
 
   toTex() {
-    return this.sets.map((set) => set.toTex()).join("\\ \\cup\\ ");
+    return this.sets.map((set) => set.toTex()).join("\\cup\\ ");
   }
 }
