@@ -83,7 +83,7 @@ const getMatrixInversibilityDomainQuestion: QuestionGenerator<
     answer,
     instruction: `Soit $M = ${matrix.toTex()}$, où $x\\in \\mathbb{R}$. Sur quel ensemble la matrice $M$ est-elle inversible ?
     `,
-    keys: intervalKeys,
+    keys: [...intervalKeys, "reals", "varnothing"],
     answerFormat: "tex",
     identifiers: {
       a: elements[0][0].toTex(),
