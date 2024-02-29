@@ -13,6 +13,9 @@ export class Ln implements Nombre {
     this.tex = `\\ln(${operand})`;
     this.operand = operand;
   }
+  equals(n: Nombre) {
+    return this.value === n.value;
+  }
   toTree() {
     return new LogNode(this.operand.toTree());
   }
