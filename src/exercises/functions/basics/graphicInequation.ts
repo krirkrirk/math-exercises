@@ -99,8 +99,8 @@ const getGraphicInequationQuestion: QuestionGenerator<Identifiers> = () => {
   );
   const answer =
     intervalsNodes.length === 1
-      ? `S=${intervalsNodes[0].toTex()}`
-      : `S=${new UnionIntervalNode(intervalsNodes).toTex()}`;
+      ? `S=\\ ${intervalsNodes[0].toTex()}`
+      : `S=\\ ${new UnionIntervalNode(intervalsNodes).toTex()}`;
 
   const commands = [
     `S =Spline(${splinePoints
@@ -153,7 +153,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   tryToAddWrongProp(propositions, `S=\\varnothing`);
   tryToAddWrongProp(
     propositions,
-    `S=${new IntervalNode(
+    `S=\\ ${new IntervalNode(
       new NumberNode(splinePoints[0][0]),
       new NumberNode(yValue),
       ClosureType.FF,
@@ -164,7 +164,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
     const b = randint(3, 10, [a]);
     tryToAddWrongProp(
       propositions,
-      `S=${new IntervalNode(
+      `S=\\ ${new IntervalNode(
         new NumberNode(a),
         new NumberNode(b),
         ClosureType.FF,
