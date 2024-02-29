@@ -1,0 +1,17 @@
+export { constanteDerivative } from "./constanteDerivative";
+export * from "./expDerivativeOne";
+export * from "./expDerivativeThree";
+export * from "./expDerivativeTwo";
+export { firstDegreeDerivative } from "./firstDegreeDerivative";
+export * from "./inverseFunctionDerivative";
+export * from "./lnDerivativeOne";
+export * from "./lnDerivativeThree";
+export * from "./lnDerivativeTwo";
+export * from "./powerFunctionDerivative";
+export * from "./quotientDerivative";
+export * from "./productDerivative";
+export * from "./rootFunctionDerivative";
+export { secondDegreeDerivative } from "./secondDegreeDerivative";
+export { thirdDegreeDerivative } from "./thirdDegreeDerivative";
+export * from "./thirdDegreeFunctionVariation";
+export * from "./usualderivative";
