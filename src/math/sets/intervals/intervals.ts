@@ -148,7 +148,7 @@ export class Interval implements MathSetInterface {
       const firstInterval = this.min < interval.min ? this : interval;
       const secondInterval = this.min < interval.min ? interval : this;
       return new MathSet(
-        `${unionLeftBracket}\\ ${firstInterval.minTex};${firstInterval.maxTex}\\ ${firstInterval.rightBracket}\\ \\cup${secondInterval.leftBracket}\\ ${secondInterval.minTex};${secondInterval.maxTex}\\ ${unionRightBracket}\\ `,
+        `${unionLeftBracket}\\ ${firstInterval.minTex};${firstInterval.maxTex}\\ ${firstInterval.rightBracket}\\ \\cup\\ ${secondInterval.leftBracket}\\ ${secondInterval.minTex};${secondInterval.maxTex}\\ ${unionRightBracket}\\ `,
         () =>
           coinFlip()
             ? firstInterval.getRandomElement()
