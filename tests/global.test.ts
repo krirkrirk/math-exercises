@@ -60,6 +60,8 @@ test("all exos", () => {
       }
       questions.forEach((question) => {
         expect(question.identifiers).not.toBe(undefined);
+        expect(question.identifiers).not.toBe(undefined);
+
         const dotDecimalPattern = /\d+\.\d+/;
         expect(question.answer.match(dotDecimalPattern)).toBe(null);
         expect(question.answer.includes("[object Object]")).toBe(false);

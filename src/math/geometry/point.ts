@@ -94,4 +94,10 @@ export class Point {
     const AC = VectorConstructor.fromPoints(this, C);
     return AB.isColinear(AC);
   }
+
+  toGGBCommand() {
+    return `${
+      this.name
+    } = (${this.x.toMathString()}, ${this.y.toMathString()})`;
+  }
 }

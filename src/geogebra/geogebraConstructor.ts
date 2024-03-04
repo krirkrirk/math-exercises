@@ -5,6 +5,7 @@ type GeogebraOptions = {
   hideGrid?: boolean;
   isGridBold?: boolean;
   isGridSimple?: boolean;
+  isXAxesNatural?: boolean;
 };
 
 type GetAdaptedCoords = {
@@ -23,6 +24,8 @@ export class GeogebraConstructor {
   isGridSimple: boolean;
   isGridBold: boolean;
   isAxesRatioFixed: boolean;
+  isXAxesNatural: boolean;
+
   constructor(commands: string[], options: GeogebraOptions | undefined) {
     this.commands = commands;
     this.isAxesRatioFixed = options?.isAxesRatioFixed ?? true;
@@ -31,6 +34,7 @@ export class GeogebraConstructor {
     this.hideAxes = options?.hideAxes ?? false;
     this.isGridBold = options?.isGridBold ?? false;
     this.isGridSimple = options?.isGridSimple ?? false;
+    this.isXAxesNatural = options?.isXAxesNatural ?? false;
   }
 
   getAdaptedCoords({
@@ -66,6 +70,7 @@ export class GeogebraConstructor {
       isGridSimple: this.isGridSimple,
       gridDistance: this.gridDistance,
       isAxesRatioFixed: this.isAxesRatioFixed,
+      isXAxesNatural: this.isXAxesNatural,
     };
   }
 }

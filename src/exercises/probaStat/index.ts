@@ -6,3 +6,6 @@ export * from "./probabilityTree";
 export * from "./stats1var";
 export * from "./stats2var";
 export * from "./independancy";
+export * from "./issuesCountingForCards";
+export * from "./probaFromTableNoContext";
+export * from "./probaFromTableWithContext";

@@ -3,6 +3,7 @@ import { Node, NodeOptions } from "./node";
 export type SimplifyOptions = {
   forbidFactorize?: boolean;
   forceDistributeFractions?: boolean;
+  keepPowers?: boolean;
 };
 export interface AlgebraicNode extends Node {
   // multiply: (n: AlgebraicNode) => AlgebraicNode;

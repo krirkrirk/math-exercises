@@ -5,3 +5,7 @@ export * from "./arithmeticReasonUsage";
 export * from "./arithmeticRecurrenceFormulaUsage";
 export * from "./arithmeticThresholdFind";
 export * from "./firstIntegersSum";
+export * from "./recognizeArithmeticFromFirstTerms";
+export * from "./recognizeReasonFromFirstTerms";
+export * from "./recognizeReasonFromGraph";
+export * from "./recognizeArithmeticFromGraph";

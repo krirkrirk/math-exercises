@@ -32,6 +32,7 @@ export const getDistinctQuestions = (
       res.some(
         (q) =>
           q.instruction === question.instruction &&
+          q.answer === question.answer &&
           (!q.commands || equalTab(q.commands, question.commands!)),
       )
     );

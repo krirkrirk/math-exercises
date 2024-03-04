@@ -9,3 +9,6 @@ export * from "./rootsFromDevForm";
 export * from "./rootsFromFactorizedForm";
 export * from "./variationsFromAlgebricForm";
 export * from "./secondDegreeInequation";
+export * from "./rootsReading";
+export * from "./factorizedFormFromRoots";
+export * from "./summitReading";

@@ -68,6 +68,7 @@ export interface Question<TIdentifiers = {}> {
     isGridBold?: boolean;
     isGridSimple?: boolean;
     isAxesRatioFixed?: boolean;
+    isXAxesNatural?: boolean;
   };
   divisionFormat?: "fraction" | "obelus";
   identifiers: TIdentifiers;

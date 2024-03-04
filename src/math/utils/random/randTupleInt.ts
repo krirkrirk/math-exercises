@@ -10,7 +10,7 @@ interface randTupleIntOptions {
 /**
  * @param size tuple length
  * @param options
- * @returns array of size nb with contents = randint(from, to, exxcludes)
+ * @returns array of size "size" with elements = randint(from, to, exxcludes)
  */
 export const randTupleInt = (size: number, options: randTupleIntOptions): number[] => {
   const res = [];

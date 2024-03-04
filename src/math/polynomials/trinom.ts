@@ -97,6 +97,24 @@ export abstract class TrinomConstructor {
     //a*x^2 + ax*-x2 + a*-x1*x + a*-x1*-x2
     return new Trinom(a, -a * (x1 + x2), a * x1 * x2);
   }
+  static randomNiceRoots(nbOfRoots: number = 2) {
+    if (nbOfRoots === 0) {
+      //canonical +c
+      const a = randint(-9, 10, [0]);
+      const root = randint(-9, 10);
+      //a(x-root)^2 = ax^2 -2arootx + aroot^2
+      const c =
+        a > 0 ? a * root ** 2 + randint(1, 6) : a * root ** 2 - randint(1, 6);
+      return new Trinom(a, -2 * a * root, c);
+    } else if (nbOfRoots === 1) {
+      const a = randint(-9, 10, [0]);
+      const root = randint(-9, 10);
+      //a(x-root)^2 = ax^2 -2arootx + aroot^2
+      return new Trinom(a, -2 * a * root, a * root ** 2);
+    } else {
+      return TrinomConstructor.randomFactorized();
+    }
+  }
 }
 
 export class Trinom extends Polynomial {
@@ -271,5 +289,17 @@ export class Trinom extends Polynomial {
 
   getSommet() {
     return new Point("S", this.getAlphaNode(), this.getBetaNode());
+  }
+
+  getCoords() {
+    const alpha = this.getAlpha();
+    const beta = this.getBeta();
+    const roots = this.getRoots();
+
+    const xMin = Math.min(roots.length === 2 ? roots[0] - 2 : alpha - 2, -1);
+    const xMax = Math.max(1, roots.length === 2 ? roots[1] + 2 : alpha + 2);
+    const yMin = Math.min(-1, this.a > 0 ? beta - 2 : beta - 6);
+    const yMax = Math.max(1, this.a > 0 ? beta + 5 : beta + 2);
+    return [xMin, xMax, yMin, yMax];
   }
 }

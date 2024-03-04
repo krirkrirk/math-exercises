@@ -9,3 +9,4 @@ export * from "./alignementViaColinearity";
 export * from "./paralellismViaColinearity";
 export * from "./parallelogramViaEqualVectors";
 export * from "./fourthParallelogramPoint";
+export * from "./equalCaracteristicFromGraph";
