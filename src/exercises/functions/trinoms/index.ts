@@ -12,3 +12,5 @@ export * from "./secondDegreeInequation";
 export * from "./rootsReading";
 export * from "./factorizedFormFromRoots";
 export * from "./summitReading";
+export * from "./summitAbscissFromRoots";
+export * from "./summitAbscissFromDevForm";

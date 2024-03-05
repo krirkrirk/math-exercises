@@ -112,7 +112,10 @@ export abstract class TrinomConstructor {
       //a(x-root)^2 = ax^2 -2arootx + aroot^2
       return new Trinom(a, -2 * a * root, a * root ** 2);
     } else {
-      return TrinomConstructor.randomFactorized();
+      const a = randint(-9, 10, [0]);
+      const x1 = randint(-9, 10, []);
+      const x2 = randint(-9, 10, [x1]);
+      return new Trinom(a, -a * (x1 + x2), a * x1 * x2);
     }
   }
 }

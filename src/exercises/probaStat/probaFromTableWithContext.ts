@@ -49,7 +49,7 @@ const getProbaFromTableWithContextQuestion: QuestionGenerator<
       [event, proba] = random([
         ["une fille", [aTotal, total]],
         ["une élève qui porte des lunettes", [bTotal, total]],
-        ["un garçons", [aBarreTotal, total]],
+        ["un garçon", [aBarreTotal, total]],
         ["une élève qui ne porte pas de lunettes", [bBarreTotal, total]],
       ]);
       break;

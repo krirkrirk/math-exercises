@@ -54,7 +54,7 @@ const getFactorizedFormFromRootsQuestion: QuestionGenerator<
   const answerTex = answer.toTex();
   const question: Question<Identifiers> = {
     answer: answerTex,
-    instruction: `Soit $f$ un polynôme du second degré avec $a = ${a}$ et qui a ${
+    instruction: `Soit $f(x) = ax^2 + bx + c$ un polynôme du second degré avec $a = ${a}$ et qui a ${
       roots.length === 1
         ? `une racine : $${roots[0]}$`
         : `deux racines : $${roots[0]}$ et $${roots[1]}$`
