@@ -218,4 +218,5 @@ export const equalCaracteristicFromGraph: MathExercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   answerType: "QCM",
+  hasGeogebra: true,
 };

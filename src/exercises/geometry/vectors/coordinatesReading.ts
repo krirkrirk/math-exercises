@@ -102,4 +102,5 @@ export const coordinatesReading: MathExercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  hasGeogebra: true,
 };

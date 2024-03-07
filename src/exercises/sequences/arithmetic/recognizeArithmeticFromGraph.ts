@@ -108,4 +108,5 @@ export const recognizeArithmeticFromGraph: MathExercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   answerType: "QCM",
+  hasGeogebra: true,
 };

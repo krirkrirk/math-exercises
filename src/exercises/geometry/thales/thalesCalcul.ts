@@ -212,4 +212,5 @@ export const thalesCalcul: MathExercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  hasGeogebra: true,
 };

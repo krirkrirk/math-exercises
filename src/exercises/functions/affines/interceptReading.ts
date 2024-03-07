@@ -88,4 +88,5 @@ export const interceptReading: MathExercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  hasGeogebra: true,
 };

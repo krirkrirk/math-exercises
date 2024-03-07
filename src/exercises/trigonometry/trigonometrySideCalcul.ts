@@ -126,4 +126,5 @@ export const trigonometrySideCalcul: MathExercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  hasGeogebra: true,
 };

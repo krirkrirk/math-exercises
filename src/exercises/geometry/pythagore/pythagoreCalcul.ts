@@ -133,4 +133,5 @@ export const pythagoreCalcul: MathExercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  hasGeogebra: true,
 };

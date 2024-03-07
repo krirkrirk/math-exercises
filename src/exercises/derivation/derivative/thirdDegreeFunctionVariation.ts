@@ -171,4 +171,5 @@ export const thirdDegreeFunctionVariation: MathExercise<Identifiers> = {
   getPropositions,
 
   isAnswerValid,
+  hasGeogebra: true,
 };

@@ -9,3 +9,4 @@ export * from "./recognizeArithmeticFromFirstTerms";
 export * from "./recognizeReasonFromFirstTerms";
 export * from "./recognizeReasonFromGraph";
 export * from "./recognizeArithmeticFromGraph";
+export * from "./arithmeticFirstTermsSum";

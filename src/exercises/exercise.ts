@@ -99,6 +99,7 @@ export interface MathExercise<TIdentifiers = {}> {
   freeTimer: number;
   getPropositions?: QCMGenerator<{ answer: string } & TIdentifiers>;
   isAnswerValid?: VEA<TIdentifiers>;
+  hasGeogebra?: boolean;
 }
 
 export type MathLevel =

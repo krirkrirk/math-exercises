@@ -112,4 +112,5 @@ export const trigonometryAngleCalcul: MathExercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  hasGeogebra: true,
 };

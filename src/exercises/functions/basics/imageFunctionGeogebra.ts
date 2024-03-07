@@ -108,4 +108,5 @@ export const imageFunctionGeogebra: MathExercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  hasGeogebra: true,
 };
