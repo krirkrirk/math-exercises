@@ -25,7 +25,9 @@ export const getSecondDegreeDerivative: QuestionGenerator<Identifiers> = () => {
   const derivative = polynomial.derivate();
   const answer = derivative.toTree().toTex();
   const question: Question<Identifiers> = {
-    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
+    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial
+      .toTree()
+      .toTex()}$.`,
     startStatement: `f'(x)`,
     answer,
     keys: ["x"],
@@ -61,7 +63,10 @@ export const getSecondDegreeDerivativePropositions: QCMGenerator<
       coefficients[2] + randint(-3, 4, [0, -coefficients[2]]),
     ];
     const randomPolynomial = new Polynomial(randomCoefficients);
-    tryToAddWrongProp(propositions, randomPolynomial.derivate().toString());
+    tryToAddWrongProp(
+      propositions,
+      randomPolynomial.derivate().toTree().toTex(),
+    );
   }
 
   return shuffle(propositions);

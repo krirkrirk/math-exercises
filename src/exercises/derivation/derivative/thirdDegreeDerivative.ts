@@ -28,7 +28,9 @@ export const getThirdDegreeDerivative: QuestionGenerator<Identifiers> = () => {
   const answer = derivative.toTree().toTex();
 
   const question: Question<Identifiers> = {
-    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial.toString()}$.`,
+    instruction: `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par $f(x) = ${polynomial
+      .toTree()
+      .toTex()}$.`,
     startStatement: `f'(x)`,
     answer: answer,
     keys: ["x"],

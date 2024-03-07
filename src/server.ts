@@ -46,7 +46,7 @@ const runServer = () => {
   dotenv.config();
   const app: Express = express();
   app.use(cors());
-
+  console.log(exercises.length);
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

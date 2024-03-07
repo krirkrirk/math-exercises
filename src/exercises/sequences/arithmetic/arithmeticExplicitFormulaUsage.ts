@@ -30,7 +30,9 @@ const getArithmeticExplicitFormulaUsage: QuestionGenerator<
   const answer = (firstValue + askedRank * reason).toString();
 
   const question: Question<Identifiers> = {
-    instruction: `$(u_n)$ est une suite arithmétique définie par $u_n = ${polynomial.toString()}$. Calculer : $u_{${askedRank}}$`,
+    instruction: `$(u_n)$ est une suite arithmétique définie par $u_n = ${polynomial
+      .toTree()
+      .toTex()}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer,
     keys: ["r", "n", "u", "underscore"],

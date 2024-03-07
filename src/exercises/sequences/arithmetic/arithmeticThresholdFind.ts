@@ -26,7 +26,9 @@ const getArithmeticThresholdFind: QuestionGenerator<Identifiers> = () => {
 
   const formula = new Polynomial([firstValue, reason], "n");
 
-  let instruction = `$(u_n)$ est une suite arithmétique définie par $u_n = ${formula.toString()}$. `;
+  let instruction = `$(u_n)$ est une suite arithmétique définie par $u_n = ${formula
+    .toTree()
+    .toTex()}$. `;
 
   if (reason > 0) {
     randValue += randint(reason, 100);
