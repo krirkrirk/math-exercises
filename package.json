@@ -1,6 +1,6 @@
 {
   "name": "math-exercises",
-  "version": "2.0.37",
+  "version": "2.0.38",
   "description": "Math exercises generator for middle school and high school",
   "main": "lib/index.js",
   "files": [
