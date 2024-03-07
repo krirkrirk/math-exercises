@@ -52,7 +52,9 @@ const getPropositions: QCMGenerator<Identifiers> = (
       new Polynomial(
         [firstValue + randint(-3, 4), reason + randint(-3, 4, [-reason])],
         "n",
-      ).toString(),
+      )
+        .toTree()
+        .toTex(),
     );
   }
 
