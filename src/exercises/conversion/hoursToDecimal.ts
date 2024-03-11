@@ -38,7 +38,7 @@ const getHoursToDecimalQuestion: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     answer,
     instruction: `Convertir la durée suivante en ${
-      isDecimalToHours ? "heures et minutes" : "nombre décimal"
+      isDecimalToHours ? "heures et minutes" : "$\\text{h}$ (nombre décimal)"
     } : $${durationTex}$ (arrondir ${
       isDecimalToHours ? "à la minute près" : "au centième près"
     })`,
