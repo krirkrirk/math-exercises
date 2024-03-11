@@ -135,7 +135,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 };
 export const parityFromGraph: MathExercise<Identifiers> = {
   id: "parityFromGraph",
-  label: "",
+  label: "Reconnaître graphiquement la parité d'une fonction",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Fonctions"],

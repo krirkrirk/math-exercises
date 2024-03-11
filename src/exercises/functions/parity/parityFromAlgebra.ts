@@ -125,7 +125,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 };
 export const parityFromAlgebra: MathExercise<Identifiers> = {
   id: "parityFromAlgebra",
-  label: "",
+  label: "Déterminer algébriquement la parité d'une fonction",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Fonctions"],
