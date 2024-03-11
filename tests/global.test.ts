@@ -17,6 +17,7 @@ type Worst = {
 declare global {
   interface Number {
     toTree: () => AlgebraicNode;
+    frenchify: () => string;
   }
 }
 
@@ -26,6 +27,10 @@ Number.prototype.toTree = function (): AlgebraicNode {
   if (value === -Infinity) return MinusInfinityNode;
   return new NumberNode(value);
 };
+Number.prototype.frenchify = function (): string {
+  return (this.valueOf() + "").replace(".", ",");
+};
+
 test("all exos", () => {
   const questionsGenerationTimes: number[] = [];
   let worstQuestionGenerationTime: Worst = { exoId: "", time: 0 };

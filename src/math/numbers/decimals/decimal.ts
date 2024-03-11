@@ -2,6 +2,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { PercentNode } from "#root/tree/nodes/numbers/percentNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { Nombre, NumberType } from "../nombre";
@@ -159,5 +160,9 @@ export class Decimal implements Nombre {
   }
   toTree() {
     return new NumberNode(this.value);
+  }
+
+  toPercentNode() {
+    return new PercentNode(this.multiplyByPowerOfTen(2).value);
   }
 }

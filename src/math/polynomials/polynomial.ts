@@ -265,6 +265,21 @@ export class Polynomial {
       this.variable,
     );
   }
+
+  // divide(Q: Polynomial): Polynomial {
+  //   function n / d is
+  //   require d ≠ 0
+  //   q ← 0
+  //   r ← n             // At each step n = d × q + r
+
+  //   while r ≠ 0 and degree(r) ≥ degree(d) do
+  //       t ← lead(r) / lead(d)       // Divide the leading terms
+  //       q ← q + t
+  //       r ← r − t × d
+
+  //   return (q, r)
+
+  // }
   opposite(): Polynomial {
     return new Polynomial(
       this.coefficients.map((coeff) => -coeff),

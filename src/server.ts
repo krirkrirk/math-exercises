@@ -26,6 +26,7 @@ import {
 } from "./tree/nodes/numbers/infiniteNode";
 import { ClosureType } from "./tree/nodes/sets/intervalNode";
 import { Interval } from "./math/sets/intervals/intervals";
+import { round } from "./math/utils/round";
 
 const jsonParser = bodyParser.json();
 
@@ -33,6 +34,7 @@ const allExercises = [...exercises];
 declare global {
   interface Number {
     toTree: () => AlgebraicNode;
+    frenchify: () => string;
   }
 }
 
@@ -42,11 +44,15 @@ Number.prototype.toTree = function (): AlgebraicNode {
   if (value === -Infinity) return MinusInfinityNode;
   return new NumberNode(value);
 };
+Number.prototype.frenchify = function (): string {
+  return (this.valueOf() + "").replace(".", ",");
+};
 const runServer = () => {
   dotenv.config();
   const app: Express = express();
   app.use(cors());
   console.log(exercises.length);
+  console.log(round((35 * 10) / 6, 2) * 100);
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

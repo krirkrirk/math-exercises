@@ -4,6 +4,7 @@ import { AddNode } from "./tree/nodes/operators/addNode";
 declare global {
   interface Number {
     toTree: () => AlgebraicNode;
+    frenchify: () => string;
   }
 }
 
@@ -12,6 +13,9 @@ Number.prototype.toTree = function (): AlgebraicNode {
   if (value === Infinity) return PlusInfinityNode;
   if (value === -Infinity) return MinusInfinityNode;
   return new NumberNode(value);
+};
+Number.prototype.frenchify = function (): string {
+  return (this.valueOf() + "").replace(".", ",");
 };
 /**
  * TODO
