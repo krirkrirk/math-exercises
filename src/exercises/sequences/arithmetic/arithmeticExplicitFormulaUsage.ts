@@ -35,7 +35,7 @@ const getArithmeticExplicitFormulaUsage: QuestionGenerator<
       .toTex()}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer,
-    keys: ["r", "n", "u", "underscore"],
+    keys: ["u", "underscore", "equal"],
     answerFormat: "tex",
     identifiers: { firstValue, askedRank, reason },
   };
@@ -59,8 +59,12 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, askedRank }) => {
+  return [
+    answer,
+    `u_${askedRank}=${answer}`,
+    `u_{${askedRank}}=${answer}`,
+  ].includes(ans);
 };
 export const arithmeticExplicitFormulaUsage: MathExercise<Identifiers> = {
   id: "arithmeticExplicitFormulaUsage",

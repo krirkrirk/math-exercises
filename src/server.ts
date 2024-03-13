@@ -27,6 +27,7 @@ import {
 import { ClosureType } from "./tree/nodes/sets/intervalNode";
 import { Interval } from "./math/sets/intervals/intervals";
 import { round } from "./math/utils/round";
+import { PowerNode } from "./tree/nodes/operators/powerNode";
 
 const jsonParser = bodyParser.json();
 
@@ -52,7 +53,11 @@ const runServer = () => {
   const app: Express = express();
   app.use(cors());
   console.log(exercises.length);
-  console.log(round((35 * 10) / 6, 2) * 100);
+  console.log(
+    new MultiplyNode((7).toTree(), new PowerNode((7).toTree(), (3).toTree()))
+      .simplify()
+      .toTex(),
+  );
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

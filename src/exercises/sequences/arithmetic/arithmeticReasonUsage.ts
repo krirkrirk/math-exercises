@@ -11,7 +11,6 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/shuffle";
-import { v4 } from "uuid";
 type Identifiers = {
   reason: number;
   startRank: number;
@@ -28,7 +27,7 @@ const getArithmeticReasonUsage: QuestionGenerator<Identifiers> = () => {
     instruction: `$(u_n)$ est une suite arithmétique de raison $r = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer,
-    keys: ["r", "n", "u", "underscore"],
+    keys: ["u", "underscore", "equal"],
     answerFormat: "tex",
     identifiers: { reason, startRank, startValue },
   };
@@ -44,8 +43,12 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, startRank }) => {
+  return [
+    answer,
+    `u_${startRank + 1}=${answer}`,
+    `u_{${startRank + 1}}=${answer}`,
+  ].includes(ans);
 };
 export const arithmeticReasonUsage: MathExercise<Identifiers> = {
   id: "arithmeticReasonUsage",

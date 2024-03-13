@@ -29,7 +29,7 @@ const getGeometricReasonUsage: QuestionGenerator<Identifiers> = () => {
     instruction: `$(u_n)$ est une suite géométrique de raison $q = ${reason}$ et on sait que $u_{${startRank}} = ${startValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer,
-    keys: ["q", "n", "u", "underscore"],
+    keys: ["u", "underscore", "equal"],
     answerFormat: "tex",
     identifiers: { startValue, reason, startRank },
   };
@@ -55,8 +55,12 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, startRank }) => {
+  return [
+    answer,
+    `u_{${startRank}}=${answer}`,
+    `u_${startRank}=${answer}`,
+  ].includes(ans);
 };
 
 export const geometricReasonUsage: MathExercise<Identifiers> = {

@@ -37,7 +37,7 @@ const getRecurrenceFormulaUsageQuestion: QuestionGenerator<
     instruction: `Soit $u$ la suite définie par $u_0 = ${u0}$ et pour tout $n\\geq 1$, $u_{n+1} = ${u
       .toTree()
       .toTex()}$. Calculer $u_${rank}$.`,
-    keys: [],
+    keys: ["u", "underscore", "equal"],
     answerFormat: "tex",
     identifiers: { rank, u0, coeffs },
   };
@@ -60,8 +60,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
   return shuffleProps(propositions, n);
 };
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, rank }) => {
+  return [answer, `u_{${rank}}=${answer}`, `u_${rank}=${answer}`].includes(ans);
 };
 export const recurrenceFormulaUsage: MathExercise<Identifiers> = {
   id: "recurrenceFormulaUsage",

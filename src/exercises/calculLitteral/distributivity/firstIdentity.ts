@@ -27,10 +27,12 @@ type Identifiers = {
 export const getFirstIdentityQuestion: QuestionGenerator<Identifiers> = () => {
   const affine = AffineConstructor.random(
     {
-      excludes: [0],
+      min: 1,
+      max: 11,
     },
     {
-      excludes: [0],
+      min: 1,
+      max: 11,
     },
   );
 

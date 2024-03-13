@@ -29,7 +29,7 @@ const getArithmeticFindReason: QuestionGenerator<Identifiers> = () => {
     instruction: `$(u_n)$ est une suite arithmétique. On sait que $u_{${rank1}} = ${value1}$ et $u_{${rank2}} = ${value2}$. Quelle est la raison de la suite $(u_n)$ ?`,
     startStatement: "r",
     answer,
-    keys: ["r", "n", "u", "underscore"],
+    keys: [],
     answerFormat: "tex",
     identifiers: { rank1, reason, value1 },
   };

@@ -73,7 +73,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 export const imageFunction: MathExercise<Identifiers> = {
   id: "imageFunction",
   connector: "=",
-  label: "Image d'une fonction",
+  label: "Calcul d'image par une fonction",
   levels: ["3ème", "2nde", "CAP", "2ndPro", "1rePro", "1reTech"],
   sections: ["Fonctions"],
   isSingleStep: true,

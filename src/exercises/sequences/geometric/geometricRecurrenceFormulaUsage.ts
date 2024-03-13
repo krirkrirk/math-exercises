@@ -31,7 +31,7 @@ const getGeometricRecurrenceFormulaUsage: QuestionGenerator<
     instruction: `$(u_n)$ est une suite définie par $u_{n+1} = ${reason}\\times u_n$ et $u_{${firstRank}} = ${firstValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer,
-    keys: ["q", "n", "u", "underscore"],
+    keys: ["u", "underscore", "equal"],
     answerFormat: "tex",
     identifiers: { firstValue, reason, firstRank },
   };
@@ -58,7 +58,12 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, firstRank }) => {
+  return [
+    answer,
+    `u_{${firstRank + 1}}=${answer}`,
+    `u_${firstRank + 1}=${answer}`,
+  ].includes(ans);
   return ans === answer;
 };
 

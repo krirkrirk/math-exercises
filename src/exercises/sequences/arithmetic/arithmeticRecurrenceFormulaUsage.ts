@@ -31,7 +31,7 @@ const getArithmeticRecurrenceFormulaUsage: QuestionGenerator<
     instruction: `$(u_n)$ est une suite définie par $u_{n+1} = ${reason} + u_n$ et $u_{${firstRank}} = ${firstValue}$. Calculer : $u_{${askedRank}}$`,
     startStatement: `u_{${askedRank}}`,
     answer,
-    keys: ["r", "n", "u", "underscore"],
+    keys: ["u", "underscore", "equal"],
     answerFormat: "tex",
     identifiers: { firstRank, firstValue, reason },
   };
@@ -48,8 +48,12 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, firstRank }) => {
+  return [
+    answer,
+    `u_${firstRank + 1}=${answer}`,
+    `u_{${firstRank + 1}}=${answer}`,
+  ].includes(ans);
 };
 export const arithmeticRecurrenceFormulaUsage: MathExercise<Identifiers> = {
   id: "arithmeticRecurrenceFormulaUsage",

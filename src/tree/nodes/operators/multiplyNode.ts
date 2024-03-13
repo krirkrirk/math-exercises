@@ -21,6 +21,7 @@ import { SqrtNode, isSqrtNode } from "../functions/sqrtNode";
 import { OppositeNode, isOppositeNode } from "../functions/oppositeNode";
 import { FractionNode, isFractionNode } from "./fractionNode";
 import { isFunctionNode } from "../functions/functionNode";
+import { AddNode } from "./addNode";
 export function isMultiplyNode(a: Node): a is MultiplyNode {
   return isOperatorNode(a) && a.id === OperatorIds.multiply;
 }
@@ -339,6 +340,17 @@ export class MultiplyNode implements CommutativeOperatorNode {
       }
       if (isSqrtNode(a) && isSqrtNode(b)) {
         return new SqrtNode(new MultiplyNode(a.child, b.child)).simplify(opts);
+      }
+      if (
+        isNumberNode(a) &&
+        isPowerNode(b) &&
+        isNumberNode(b.leftChild) &&
+        a.value === b.leftChild.value
+      ) {
+        return new PowerNode(
+          b.leftChild,
+          new AddNode(b.rightChild, (1).toTree()),
+        ).simplify();
       }
       //TODo continue
       return null;

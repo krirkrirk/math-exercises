@@ -30,7 +30,7 @@ const getExplicitFormulaUsageQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Soit $u$ la suite définie pour tout $n\\geq 0$ par $u_n = ${u
       .toTree()
       .toTex()}$. Calculer $u_${rank}$.`,
-    keys: [],
+    keys: ["u", "underscore", "equal"],
     answerFormat: "tex",
     identifiers: { rank, coeffs: u.coefficients },
   };
@@ -52,8 +52,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
   }
   return shuffleProps(propositions, n);
 };
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, rank }) => {
+  return [answer, `u_{${rank}}=${answer}`, `u_${rank}=${answer}`].includes(ans);
 };
 export const explicitFormulaUsage: MathExercise<Identifiers> = {
   id: "explicitFormulaUsage",
