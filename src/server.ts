@@ -8,26 +8,16 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import { MathExercise } from "./exercises/exercise";
-import { parseLatex } from "./tree/parsers/latexParser";
-import { Decimal, DecimalConstructor } from "./math/numbers/decimals/decimal";
-import { AddNode } from "./tree/nodes/operators/addNode";
-import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
-import { FractionNode } from "./tree/nodes/operators/fractionNode";
 import { NumberNode } from "./tree/nodes/numbers/numberNode";
-import { SubstractNode } from "./tree/nodes/operators/substractNode";
 import { AlgebraicNode } from "./tree/nodes/algebraicNode";
-import { NombreConstructor, NumberType } from "./math/numbers/nombre";
-import { Integer } from "./math/numbers/integer/integer";
-import { RationalConstructor } from "./math/numbers/rationals/rational";
-import { VariableNode } from "./tree/nodes/variables/variableNode";
 import {
   MinusInfinityNode,
   PlusInfinityNode,
 } from "./tree/nodes/numbers/infiniteNode";
-import { ClosureType } from "./tree/nodes/sets/intervalNode";
-import { Interval } from "./math/sets/intervals/intervals";
-import { round } from "./math/utils/round";
-import { PowerNode } from "./tree/nodes/operators/powerNode";
+import { MultiEqualNode } from "./tree/nodes/equations/multiEqualNode";
+import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
+import { FractionNode } from "./tree/nodes/operators/fractionNode";
+import { SubstractNode } from "./tree/nodes/operators/substractNode";
 
 const jsonParser = bodyParser.json();
 
@@ -53,11 +43,6 @@ const runServer = () => {
   const app: Express = express();
   app.use(cors());
   console.log(exercises.length);
-  console.log(
-    new MultiplyNode((7).toTree(), new PowerNode((7).toTree(), (3).toTree()))
-      .simplify()
-      .toTex(),
-  );
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

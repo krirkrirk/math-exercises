@@ -10,11 +10,8 @@ import {
   PlusInfinityNode,
 } from "#root/tree/nodes/numbers/infiniteNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import {
-  ClosureType,
-  IntervalNode,
-  closureFromBrackets,
-} from "#root/tree/nodes/sets/intervalNode";
+import { Closure, ClosureType } from "#root/tree/nodes/sets/closure";
+import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { diceFlip } from "#root/utils/diceFlip";
 import { DiscreteSet } from "../discreteSet";
@@ -155,7 +152,7 @@ export class Interval implements MathSetInterface {
             : secondInterval.getRandomElement(),
       );
     } else {
-      const closure = closureFromBrackets(unionLeftBracket, unionRightBracket);
+      const closure = Closure.fromBrackets(unionLeftBracket, unionRightBracket);
       return new Interval(min, max, closure);
     }
   }
@@ -197,7 +194,7 @@ export class Interval implements MathSetInterface {
         ? this.rightBracket
         : interval.rightBracket;
 
-    const closure = closureFromBrackets(leftBracket, rightBracket);
+    const closure = Closure.fromBrackets(leftBracket, rightBracket);
     return new Interval(min, max, closure);
   }
 

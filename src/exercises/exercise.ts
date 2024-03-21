@@ -159,6 +159,7 @@ export type MathSection =
   | "Second degré"
   | "Statistiques"
   | "Suites"
+  | "Systèmes"
   | "Théorème de Pythagore"
   | "Théorème de Thalès"
   | "Trigonométrie"

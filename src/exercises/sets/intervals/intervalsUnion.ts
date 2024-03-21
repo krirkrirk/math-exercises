@@ -13,7 +13,7 @@ import {
   Interval,
   IntervalConstructor,
 } from "#root/math/sets/intervals/intervals";
-import { ClosureType } from "#root/tree/nodes/sets/intervalNode";
+import { ClosureType } from "#root/tree/nodes/sets/closure";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {

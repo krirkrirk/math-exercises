@@ -14,7 +14,8 @@ import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 import { InequationSolutionNode } from "#root/tree/nodes/inequations/inequationSolutionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { ClosureType, IntervalNode } from "#root/tree/nodes/sets/intervalNode";
+import { ClosureType } from "#root/tree/nodes/sets/closure";
+import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { coinFlip } from "#root/utils/coinFlip";
 type Identifiers = {
   a: number;

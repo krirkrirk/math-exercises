@@ -17,7 +17,8 @@ import {
   MinusInfinityNode,
   PlusInfinityNode,
 } from "#root/tree/nodes/numbers/infiniteNode";
-import { ClosureType, IntervalNode } from "#root/tree/nodes/sets/intervalNode";
+import { ClosureType } from "#root/tree/nodes/sets/closure";
+import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 

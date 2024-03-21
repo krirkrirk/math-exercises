@@ -22,8 +22,9 @@ import {
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { ClosureType } from "#root/tree/nodes/sets/closure";
 import { EmptySet } from "#root/tree/nodes/sets/discreteSetNode";
-import { ClosureType, IntervalNode } from "#root/tree/nodes/sets/intervalNode";
+import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import {
   UnionIntervalNode,
   UnionIntervalNodeBuilder,

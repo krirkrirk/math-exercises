@@ -4,3 +4,5 @@ export * from "./inverseImageFunction";
 export * from "./inverseImageFunctionGeogebra";
 export * from "./graphicEquation";
 export * from "./graphicInequation";
+export * from "./twoFunctionsEquation";
+export * from "./twoFunctionsInequation";

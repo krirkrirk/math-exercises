@@ -45,7 +45,7 @@ test("all exos", () => {
     try {
       expect(exo.sections.length).not.toBe(0);
       expect(exo.levels.length).not.toBe(0);
-      expect(exo.label.length).not.toBeGreaterThan(0);
+      expect(exo.label.length).toBeGreaterThan(0);
       let before = Date.now();
       const questions = exo.generator(30);
       let after = Date.now();

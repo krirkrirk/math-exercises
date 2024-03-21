@@ -16,8 +16,9 @@ import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { randint } from "#root/math/utils/random/randint";
 import { InequationSolutionNode } from "#root/tree/nodes/inequations/inequationSolutionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { ClosureType } from "#root/tree/nodes/sets/closure";
 
-import { ClosureType, IntervalNode } from "#root/tree/nodes/sets/intervalNode";
+import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { UnionIntervalNode } from "#root/tree/nodes/sets/unionIntervalNode";
 import { coinFlip } from "#root/utils/coinFlip";
 

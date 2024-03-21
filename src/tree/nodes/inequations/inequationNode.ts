@@ -7,7 +7,8 @@ import { isLetter } from "#root/utils/isLetter";
 import { random } from "#root/utils/random";
 import { Node, NodeOptions, NodeType } from "../node";
 import { MinusInfinityNode, PlusInfinityNode } from "../numbers/infiniteNode";
-import { ClosureType, IntervalNode } from "../sets/intervalNode";
+import { ClosureType } from "../sets/closure";
+import { IntervalNode } from "../sets/intervalNode";
 
 export class InequationNode implements Node {
   opts?: NodeOptions | undefined;

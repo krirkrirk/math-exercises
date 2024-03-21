@@ -15,3 +15,7 @@ export { secondDegreeDerivative } from "./secondDegreeDerivative";
 export { thirdDegreeDerivative } from "./thirdDegreeDerivative";
 export * from "./thirdDegreeFunctionVariation";
 export * from "./usualderivative";
+export * from "./sqrtCompositionDerivation";
+export * from "./cosCompositionDerivation";
+export * from "./sinCompositionDerivation";
+export * from "./powerCompositionDerivation";

@@ -3,22 +3,16 @@ import { permute } from "#root/utils/permutations";
 import { InequationNode } from "../inequations/inequationNode";
 import { Node, NodeOptions, NodeType } from "../node";
 import { isConstantNode } from "../numbers/constantNode";
+import {
+  MinusInfinityNode,
+  PlusInfinityNode,
+  isInfiniteNode,
+} from "../numbers/infiniteNode";
 import { VariableNode } from "../variables/variableNode";
+import { Closure, ClosureType } from "./closure";
 import { SetIds, SetNode, isSetNode } from "./setNode";
+import { UnionIntervalNode } from "./unionIntervalNode";
 
-export enum ClosureType {
-  FF,
-  FO,
-  OF,
-  OO,
-}
-export const closureFromBrackets = (left: "[" | "]", right: "]" | "[") => {
-  if (left === "[")
-    if (right === "]") return ClosureType.FF;
-    else return ClosureType.FO;
-  else if (right === "[") return ClosureType.OO;
-  else return ClosureType.OF;
-};
 export function isIntervalNode(a: Node): a is IntervalNode {
   return isSetNode(a) && a.id === SetIds.interval;
 }
@@ -98,6 +92,44 @@ export class IntervalNode implements SetNode {
     return this.toTex();
   }
 
+  toReversedClosure() {
+    return new IntervalNode(this.a, this.b, Closure.reverse(this.closure));
+  }
+
+  toComplement() {
+    if (isInfiniteNode(this.a) && isInfiniteNode(this.b)) return this;
+    if (isInfiniteNode(this.a)) {
+      return new IntervalNode(
+        this.b,
+        PlusInfinityNode,
+        this.closure === ClosureType.OF ? ClosureType.FO : ClosureType.OO,
+      );
+    }
+    if (isInfiniteNode(this.b)) {
+      return new IntervalNode(
+        MinusInfinityNode,
+        this.a,
+        this.closure === ClosureType.FO ? ClosureType.OO : ClosureType.OF,
+      );
+    }
+    const aClosed =
+      this.closure === ClosureType.FO || this.closure === ClosureType.FF;
+    const bClosed =
+      this.closure === ClosureType.FF || this.closure === ClosureType.OF;
+
+    return new UnionIntervalNode([
+      new IntervalNode(
+        MinusInfinityNode,
+        this.a,
+        aClosed ? ClosureType.OO : ClosureType.OF,
+      ),
+      new IntervalNode(
+        this.b,
+        PlusInfinityNode,
+        bClosed ? ClosureType.OO : ClosureType.FO,
+      ),
+    ]);
+  }
   toTex() {
     const left =
       this.closure === ClosureType.FF || this.closure === ClosureType.FO

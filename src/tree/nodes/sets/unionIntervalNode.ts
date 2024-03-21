@@ -1,17 +1,13 @@
+import { randint } from "#root/math/utils/random/randint";
 import { getCartesiansProducts } from "#root/utils/cartesianProducts";
 import { permute } from "#root/utils/permutations";
 import { AlgebraicNode } from "../algebraicNode";
 import { Node, NodeOptions, NodeType } from "../node";
 import { MinusInfinityNode } from "../numbers/infiniteNode";
+import { ClosureType } from "./closure";
 import { IntervalNode } from "./intervalNode";
 import { SetIds, SetNode, isSetNode } from "./setNode";
 
-export enum ClosureType {
-  FF,
-  FO,
-  OF,
-  OO,
-}
 export function isUnionIntervalNode(a: Node): a is UnionIntervalNode {
   return isSetNode(a) && a.id === SetIds.union;
 }

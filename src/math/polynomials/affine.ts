@@ -1,9 +1,5 @@
-import { Integer } from "../numbers/integer/integer";
 import { Nombre } from "../numbers/nombre";
 import { Rational } from "../numbers/rationals/rational";
-import { DiscreteSet } from "../sets/discreteSet";
-import { Interval } from "../sets/intervals/intervals";
-import { MathSet } from "../sets/mathSet";
 import { randint } from "../utils/random/randint";
 import { Polynomial } from "./polynomial";
 

@@ -149,10 +149,10 @@ export class FractionNode implements OperatorNode {
             return new FractionNode(
               new NumberNode(-num.value),
               new NumberNode(-denum.value),
-            );
+            ).simplify();
           }
           return new OppositeNode(
-            new FractionNode(num, new NumberNode(-denum.value)),
+            new FractionNode(num, new NumberNode(-denum.value)).simplify(),
           );
         }
         const frac = new Rational(num.value, denum.value);
@@ -191,7 +191,7 @@ export class FractionNode implements OperatorNode {
         ).simplify();
       }
       //!ya mieux à faire pour gérer tous les cas d'un coup
-      //! s'insiprer de multiply
+      //!s'insiprer de multiply
       if (num.equals(denum)) return new NumberNode(1);
       return null;
     };
