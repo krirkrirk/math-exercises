@@ -74,7 +74,6 @@ export class System {
       ),
     ).simplify();
     //y = c-ax/b
-    console.log("x", x.toTex());
     const y = new FractionNode(
       new SubstractNode(
         this.coeffs[0][2].toTree(),
@@ -94,11 +93,11 @@ export class System {
 ${new AddNode(
   new MultiplyNode(this.coeffs[0][0].toTree(), x),
   new MultiplyNode(this.coeffs[0][1].toTree(), y),
-).toTex()}&=&${this.coeffs[0][2]} \\\\
+).toTex()}=${this.coeffs[0][2]} \\\\
 ${new AddNode(
   new MultiplyNode(this.coeffs[1][0].toTree(), x),
   new MultiplyNode(this.coeffs[1][1].toTree(), y),
-).toTex()}&=&${this.coeffs[1][2]}
+).toTex()}=${this.coeffs[1][2]}
 \\end{matrix}\\right.`;
   }
 }

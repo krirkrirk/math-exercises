@@ -98,7 +98,7 @@ const isAnswerValid: VEA<Identifiers> = (
 export const powerCompositionDerivation: MathExercise<Identifiers> = {
   id: "powerCompositionDerivation",
   connector: "=",
-  label: "Dérivée de $\\left(ax+b\\right)^n",
+  label: "Dérivée de $\\left(ax+b\\right)^n$",
   levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],
