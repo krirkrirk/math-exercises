@@ -1,15 +1,15 @@
 import { AlgebraicNode } from "../src/tree/nodes/algebraicNode";
 import * as Exercises from "./../src/exercises";
-import { MathExercise } from "./../src/exercises/exercise";
+import { Exercise } from "./../src/exercises/exercise";
 import { NumberNode } from "./../src/tree/nodes/numbers/numberNode";
 import { MinusInfinityNode } from "./../src/tree/nodes/numbers/infiniteNode";
 import { PlusInfinityNode } from "./../src/tree/nodes/numbers/infiniteNode";
 
-const exercises = Object.values(Exercises) as MathExercise<any>[];
+const exercises = Object.values(Exercises) as Exercise<any>[];
 // const exercises = [
 // Exercises.alignementViaColinearity,
 // Exercises.parallelogramViaEqualVectors,
-// ] as MathExercise<any>[];
+// ] as Exercise<any>[];
 type Worst = {
   exoId: string;
   time: number;

@@ -1,6 +1,13 @@
 // import { exercises } from "./exercises/exercises";
 import { NumberNode } from "./tree/nodes/numbers/numberNode";
 import { AddNode } from "./tree/nodes/operators/addNode";
+import * as Exercises from "./exercises/math";
+import {
+  MinusInfinityNode,
+  PlusInfinityNode,
+} from "./tree/nodes/numbers/infiniteNode";
+import { AlgebraicNode } from "./tree/nodes/algebraicNode";
+
 declare global {
   interface Number {
     toTree: () => AlgebraicNode;
@@ -49,12 +56,7 @@ Number.prototype.frenchify = function (): string {
  * ! espace tous les 3 chiffres dans un nb (le clavier doit le fournir aussi!) 
 
 */
-import * as Exercises from "./exercises";
-import {
-  MinusInfinityNode,
-  PlusInfinityNode,
-} from "./tree/nodes/numbers/infiniteNode";
-import { AlgebraicNode } from "./tree/nodes/algebraicNode";
+
 const mathExercises = Object.values(Exercises);
 
 export { mathExercises };

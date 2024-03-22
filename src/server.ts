@@ -1,13 +1,13 @@
 // import { exercises } from "./exercises";
-import * as Exercises from "./exercises";
-const exercises = Object.values(Exercises) as MathExercise<any>[];
+import * as Exercises from "./exercises/math";
+const exercises = Object.values(Exercises) as Exercise<any>[];
 
 export { Exercises };
 import express, { Express, Request, Response } from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
-import { MathExercise } from "./exercises/exercise";
+import { Exercise } from "./exercises/exercise";
 import { NumberNode } from "./tree/nodes/numbers/numberNode";
 import { AlgebraicNode } from "./tree/nodes/algebraicNode";
 import {

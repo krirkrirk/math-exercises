@@ -85,11 +85,11 @@ export type VEA<TIdentifiers> = (
 export type QuestionGenerator<TIdentifiers = {}, TOptions = {}> = (
   opts?: TOptions,
 ) => Question<TIdentifiers>;
-export interface MathExercise<TIdentifiers = {}> {
+export interface Exercise<TIdentifiers = {}> {
   id: string;
   isSingleStep: boolean;
   label: string;
-  sections: MathSection[];
+  sections: (MathSection | PCSection)[];
   levels: MathLevel[];
   connector?: "=" | "\\iff" | "\\approx";
   generator: (n: number) => Question<TIdentifiers>[];
@@ -100,6 +100,7 @@ export interface MathExercise<TIdentifiers = {}> {
   getPropositions?: QCMGenerator<{ answer: string } & TIdentifiers>;
   isAnswerValid?: VEA<TIdentifiers>;
   hasGeogebra?: boolean;
+  subject: "Mathématiques" | "Chimie" | "Physique";
 }
 
 export type MathLevel =
@@ -165,3 +166,13 @@ export type MathSection =
   | "Trigonométrie"
   | "Valeur absolue"
   | "Vecteurs";
+
+export type PCSection =
+  | "Réaction chimique"
+  | "Chimie des solutions"
+  | "Chimie organique"
+  | "Mécanique"
+  | "Lumière"
+  | "Acide / Base"
+  | "Constitution et transformations de la matière"
+  | "Ondes";

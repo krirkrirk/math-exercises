@@ -1,5 +1,5 @@
 import {
-  MathExercise,
+  Exercise,
   Proposition,
   QCMGenerator,
   Question,
@@ -39,7 +39,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 const isAnswerValid: VEA<Identifiers> = (ans, {answer})=>{
 
 }
-export const {{name}}: MathExercise<Identifiers> = {
+export const {{name}}: Exercise<Identifiers> = {
   id: '{{name}}',
   connector: "",
   label: "",

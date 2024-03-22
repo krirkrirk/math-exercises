@@ -1,0 +1,92 @@
+import { randint } from "#root/math/utils/random/randint";
+import {
+  Exercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  VEA,
+  addValidProp,
+  tryToAddWrongProp,
+} from "../exercise";
+import { getDistinctQuestions } from "../utils/getDistinctQuestions";
+import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/coinFlip";
+import { round } from "#root/math/utils/round";
+type Identifiers = {
+  randPercent: number;
+  isUp: boolean;
+};
+
+const getReciprocalPercentageQuestion: QuestionGenerator<Identifiers> = () => {
+  const randPercent = randint(1, 50);
+  let ans = 0;
+  const isUp = coinFlip();
+  let instruction = `Le prix d'un article subit une ${
+    isUp ? "hausse" : "baisse"
+  } de $${randPercent}\\%$. Quelle évolution devra-t-il subir pour revenir à son prix initial (arrondir au centième de pourcentage) ?`;
+
+  ans = isUp
+    ? (1 / (1 + randPercent / 100) - 1) * 100
+    : (1 / (1 - randPercent / 100) - 1) * 100;
+  const answer = `${(ans > 0
+    ? "+" + round(ans, 2)
+    : "" + round(ans, 2)
+  ).replace(".", ",")}\\%`;
+  const question: Question<Identifiers> = {
+    instruction,
+    answer,
+    keys: ["percent"],
+    answerFormat: "tex",
+    identifiers: { isUp, randPercent },
+  };
+
+  return question;
+};
+
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  while (propositions.length < n) {
+    let wrongAnswer = Number(
+      answer.replace(",", ".").replace("+", "").replace(`\\%`, ""),
+    );
+    const deviation = Math.random() < 0.5 ? -1 : 1;
+    const percentDeviation = Math.random() * 20 + 1;
+
+    wrongAnswer += deviation * percentDeviation;
+    wrongAnswer = round(wrongAnswer, 2);
+    tryToAddWrongProp(
+      propositions,
+      `${(wrongAnswer > 0 ? "+" + wrongAnswer : "" + wrongAnswer).replace(
+        ".",
+        ",",
+      )} \\%`,
+    );
+  }
+
+  return shuffle(propositions);
+};
+
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
+  const allowedTex = [answer];
+  if (answer[0] === "+") allowedTex.push(answer.slice(1));
+  return allowedTex.includes(ans);
+};
+
+export const reciprocalPercentage: Exercise<Identifiers> = {
+  id: "reciprocalPercentage",
+  connector: "=",
+  label: "Calculer un taux d'évolution réciproque",
+  levels: ["2nde", "1rePro", "TermPro", "1reTech", "TermTech"],
+  sections: ["Pourcentages"],
+  isSingleStep: false,
+  generator: (nb: number) =>
+    getDistinctQuestions(getReciprocalPercentageQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+  isAnswerValid,
+  subject: "Mathématiques",
+};

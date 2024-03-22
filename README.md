@@ -22,7 +22,7 @@ Incoming improvements :
 
 ## Exercises format
 
-Each MathExercise has a `generator` that will return distinct questions for this exercise.
+Each Exercise has a `generator` that will return distinct questions for this exercise.
 
 The Question in itself has an `instruction`, a `startStatement` and an `answer` (which are all tex strings).
 
@@ -33,7 +33,7 @@ You can see all the exercises implemented so far [by playing with the select inp
 Example with (ax+b)^2 questions :
 
 ```js
-import { firstIdentity } from 'exercises/calculLitteral/distributivity/firstIdentity';
+import { firstIdentity } from "exercises/calculLitteral/distributivity/firstIdentity";
 
 console.log(firstIdentity.instruction);
 const question = firstIdentity.generator(1);
