@@ -20,7 +20,7 @@ export const addAndSubExercise: Exercise = {
   generator: (nb: number) => getDistinctQuestions(getAddAndSubQuestions, nb),
   keys: [],
 };
-
+//TEst commit
 export function getAddAndSubQuestions(): Question {
   const nbOperations = randint(2, 4);
   const numbers = [];
