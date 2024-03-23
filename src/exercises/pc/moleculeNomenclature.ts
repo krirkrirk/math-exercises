@@ -67,9 +67,11 @@ export const moleculeNomenclature: Exercise<Identifiers> = {
   sections: ["Chimie organique"],
   subject: "Chimie",
   isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getMoleculeNomenclature, nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(getMoleculeNomenclature, nb, 20),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  maxAllowedQuestions: 20,
 };

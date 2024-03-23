@@ -13,8 +13,8 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from "../exercise";
-import { getDistinctQuestions } from "../utils/getDistinctQuestions";
+} from "../../exercise";
+import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 
 type Identifiers = {
   randomUnitIndex: number;
@@ -24,6 +24,7 @@ type Identifiers = {
 const units = ["mL", "cL", "dL", "L", "daL", "hL", "kL"];
 
 const getCapacityConversion: QuestionGenerator<Identifiers> = () => {
+  console.log("capacity conv q");
   const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(0, 7, [randomUnitIndex]);
   const randomCapacity = DecimalConstructor.random(0, 1000, randint(0, 4));
@@ -59,6 +60,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   const capacityDecimal = new Decimal(randomCapacity);
   while (propositions.length < n) {
+    console.log("capactiy conv qcm");
     const wrongAnswer = capacityDecimal
       .multiplyByPowerOfTen(
         randint(-3, 4, [randomUnitIndex - randomUnitInstructionIndex]),

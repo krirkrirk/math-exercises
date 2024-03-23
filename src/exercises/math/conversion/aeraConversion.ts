@@ -13,8 +13,8 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from "../exercise";
-import { getDistinctQuestions } from "../utils/getDistinctQuestions";
+} from "../../exercise";
+import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 type Identifiers = {
   randomUnitIndex: number;
   randomUnitInstructionIndex: number;
@@ -23,6 +23,7 @@ type Identifiers = {
 const units = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
 
 const getAeraConversion: QuestionGenerator<Identifiers> = () => {
+  console.log("aera conv q");
   const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(
     // cette manip a pour but d'éviter des conversion de type km² --> cm² ou le contraire (chiffre trop grand/petit)
@@ -63,6 +64,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   const aeraDecimal = new Decimal(randomAera);
   while (propositions.length < n) {
+    console.log("aera conv qcm");
     const wrongAnswer = aeraDecimal
       .multiplyByPowerOfTen(
         2 * randint(-2, 4, [randomUnitIndex - randomUnitInstructionIndex]),

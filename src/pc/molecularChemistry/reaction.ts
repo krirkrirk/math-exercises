@@ -1,5 +1,5 @@
-import { randint } from "#root/exercises/utils/math/random/randint";
-import { KeyId } from "#root/types/keyId";
+import { randint } from "#root/math/utils/random/randint";
+import { KeyId } from "#root/types/keyIds";
 import { Molecule, molecules } from "./molecule";
 
 export interface ReactionSpecies {

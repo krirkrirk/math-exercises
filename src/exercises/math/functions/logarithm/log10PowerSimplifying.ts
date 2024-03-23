@@ -26,6 +26,7 @@ type Identifiers = {
 const getLog10PowerSimplifyingQuestion: QuestionGenerator<Identifiers> = () => {
   const tenthPower = randint(-5, 6, [0, 1]);
   const shouldEvaluate = probaFlip(0.7);
+  console.log("log10 power simp q");
   const nb = shouldEvaluate
     ? new Decimal(1).multiplyByPowerOfTen(tenthPower).toTree()
     : new PowerNode(new NumberNode(10), new NumberNode(tenthPower));

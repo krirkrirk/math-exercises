@@ -9,6 +9,7 @@ import {
   VEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { frenchify } from "#root/math/utils/latex/frenchify";
 import { round } from "#root/math/utils/round";
 import { shuffle } from "#root/utils/shuffle";
 
@@ -26,7 +27,7 @@ const getKineticEnergyQuestion: QuestionGenerator<Identifiers> = () => {
   const instruction = `Une voiture ayant une masse de $${mass}$ kg qui se déplace le long d'une route. La voiture accélère et atteint une vitesse de $${velocity}$ m/s.
    $\\\\$ Calculer l'énergie cinétique (en kJ) de la voiture lorsqu'elle atteint cette vitesse.`;
 
-  const answer = `${round(kineticEnergy / 1000, 2)} \\ kJ`;
+  const answer = `${frenchify(round(kineticEnergy / 1000, 2))} \\ kJ`;
   const question: Question<Identifiers> = {
     instruction,
     startStatement: "Ec",
@@ -49,7 +50,9 @@ const getPropositions: QCMGenerator<Identifiers> = (
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      round((kineticEnergy / 1000) * (0.3 + Math.random() * 1.5), 2) + " \\ kJ",
+      frenchify(
+        round((kineticEnergy / 1000) * (0.3 + Math.random() * 1.5), 2),
+      ) + " \\ kJ",
     );
   }
 

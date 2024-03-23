@@ -9,6 +9,7 @@ import {
   VEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { frenchify } from "#root/math/utils/latex/frenchify";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { shuffle } from "#root/utils/shuffle";
@@ -24,7 +25,7 @@ const getpH: QuestionGenerator<Identifiers> = () => {
   const concentrationHydrogene = randomNumber * 10 ** -randomTenPower;
 
   const instruction = `Calculer le pH d'une solution ayant une concentration en ions hydrogène ($H^+$) de $${randomNumber} \\times 10^{-${randomTenPower}}$ mol/L.`;
-  const answer = round(-Math.log10(concentrationHydrogene), 1) + "";
+  const answer = frenchify(round(-Math.log10(concentrationHydrogene), 1));
   const question: Question<Identifiers> = {
     instruction,
     startStatement: `pH`,
@@ -44,7 +45,8 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
     const randomNumber = randint(1, 10);
     const randomTenPower = randint(2, 10);
     const concentrationHydrogene = randomNumber * 10 ** -randomTenPower;
-    const wrongAnswer = round(-Math.log10(concentrationHydrogene), 1) + "";
+    const wrongAnswer =
+      frenchify(round(-Math.log10(concentrationHydrogene), 1)) + "";
     tryToAddWrongProp(propositions, wrongAnswer);
   }
 

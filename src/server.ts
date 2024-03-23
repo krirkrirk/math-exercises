@@ -1,8 +1,7 @@
 // import { exercises } from "./exercises";
-import * as Exercises from "./exercises/math";
-const exercises = Object.values(Exercises) as Exercise<any>[];
+import * as MathExercises from "./exercises/math";
+import * as PCExercises from "./exercises/pc";
 
-export { Exercises };
 import express, { Express, Request, Response } from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
@@ -14,14 +13,12 @@ import {
   MinusInfinityNode,
   PlusInfinityNode,
 } from "./tree/nodes/numbers/infiniteNode";
-import { MultiEqualNode } from "./tree/nodes/equations/multiEqualNode";
-import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
-import { FractionNode } from "./tree/nodes/operators/fractionNode";
-import { SubstractNode } from "./tree/nodes/operators/substractNode";
 
 const jsonParser = bodyParser.json();
+const mathExercises = Object.values(MathExercises) as Exercise<any>[];
+const pcExercises = Object.values(PCExercises) as Exercise<any>[];
 
-const allExercises = [...exercises];
+const allExercises = [...mathExercises, ...pcExercises];
 declare global {
   interface Number {
     toTree: () => AlgebraicNode;
@@ -42,7 +39,9 @@ const runServer = () => {
   dotenv.config();
   const app: Express = express();
   app.use(cors());
-  console.log(exercises.length);
+  console.log("math exos", mathExercises.length);
+  console.log("pc exos", pcExercises.length);
+
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

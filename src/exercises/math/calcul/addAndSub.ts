@@ -1,3 +1,4 @@
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
@@ -11,8 +12,7 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from "../exercise";
-import { getDistinctQuestions } from "../utils/getDistinctQuestions";
+} from "../../exercise";
 
 /**
  * a±b±c±d

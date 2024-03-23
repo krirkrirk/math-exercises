@@ -31,8 +31,7 @@ import {
 } from "#root/tree/nodes/sets/unionIntervalNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { parseLatex } from "#root/tree/parsers/latexParser";
-import { discreteSetKeys } from "../utils/keys/discreteSetKeys";
-import { intervalKeys } from "../utils/keys/intervalKeys";
+import { intervalKeys } from "../../utils/keys/intervalKeys";
 
 type Identifiers = {
   a: string;

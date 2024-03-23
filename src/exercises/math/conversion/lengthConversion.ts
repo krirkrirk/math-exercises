@@ -13,8 +13,8 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from "../exercise";
-import { getDistinctQuestions } from "../utils/getDistinctQuestions";
+} from "../../exercise";
+import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 import { v4 } from "uuid";
 
 type Identifiers = {
@@ -28,6 +28,7 @@ const getLengthConversion: QuestionGenerator<Identifiers> = () => {
   const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(0, 7, [randomUnitIndex]);
   const randomLength = DecimalConstructor.random(0, 1000, randint(0, 4));
+  console.log("length conv q");
   const answer = (
     randomLength.multiplyByPowerOfTen(
       randomUnitIndex - randomUnitInstructionIndex,
@@ -60,6 +61,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   const lengthDecimal = new Decimal(randomLength);
   while (propositions.length < n) {
+    console.log("length conv qcm");
     const wrongAnswer = lengthDecimal
       .multiplyByPowerOfTen(
         randint(-3, 4, [randomUnitIndex - randomUnitInstructionIndex]),

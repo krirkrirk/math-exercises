@@ -8,8 +8,8 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from "../exercise";
-import { getDistinctQuestions } from "../utils/getDistinctQuestions";
+} from "../../exercise";
+import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 import { shuffle } from "#root/utils/shuffle";
 import { coinFlip } from "#root/utils/coinFlip";
 import { round } from "#root/math/utils/round";

@@ -13,10 +13,10 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { probaLawFlip } from "#root/utils/probaLawFlip";
-import { CardsColor, CardsValues } from "../utils/cardsData";
 import { randomEnumValue } from "#root/utils/randomEnumValue";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { CardsColor, CardsValues } from "#root/exercises/utils/cardsData";
 
 type Identifiers = {
   questionType: string;

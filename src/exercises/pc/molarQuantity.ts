@@ -9,6 +9,7 @@ import {
   addValidProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { frenchify } from "#root/math/utils/latex/frenchify";
 import { round } from "#root/math/utils/round";
 import { atomes } from "#root/pc/molecularChemistry/atome";
 import { molecules } from "#root/pc/molecularChemistry/molecule";
@@ -49,7 +50,7 @@ const getMolarQuantityQuestion: QuestionGenerator<Identifiers> = () => {
   Déterminer la quantité de matière $n$ contenue dans cet échantillon de ${myRandomMolecule.name}. 
   $\\\\$ On donne : ${res}`;
 
-  const answer = `${round(nG, 2)}\\ mol`;
+  const answer = `${frenchify(round(nG, 2))}\\ mol`;
   const question: Question<Identifiers> = {
     instruction,
     startStatement: "n",
@@ -66,7 +67,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   addValidProp(propositions, answer);
 
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, round(Math.random() * 5, 2) + "\\ mol");
+    tryToAddWrongProp(
+      propositions,
+      frenchify(round(Math.random() * 5, 2)) + "\\ mol",
+    );
   }
 
   return shuffle(propositions);

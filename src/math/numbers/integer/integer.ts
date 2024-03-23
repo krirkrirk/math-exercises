@@ -1,4 +1,3 @@
-import { primeNumbers } from "#root/exercises/calcul/arithmetics/primeNumbers";
 import { randint } from "#root/math/utils/random/randint";
 import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";

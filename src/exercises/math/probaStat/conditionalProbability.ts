@@ -8,8 +8,8 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from "../exercise";
-import { getDistinctQuestions } from "../utils/getDistinctQuestions";
+} from "../../exercise";
+import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 import { round } from "#root/math/utils/round";
 import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {

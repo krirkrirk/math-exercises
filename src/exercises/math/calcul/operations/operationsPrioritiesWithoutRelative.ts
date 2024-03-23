@@ -313,4 +313,5 @@ export const operationsPrioritiesWithoutRelative: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  subject: "Mathématiques",
 };

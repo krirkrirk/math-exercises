@@ -14,8 +14,8 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from "../exercise";
-import { getDistinctQuestions } from "../utils/getDistinctQuestions";
+} from "../../exercise";
+import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 import { v4 } from "uuid";
 type Identifiers = {
   randomUnitIndex: number;
@@ -27,6 +27,7 @@ const volumeUnits = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
 const capacityUnits = ["mL", "cL", "dL", "L", "daL", "hL", "kL"];
 
 const getVolumeCapacityConversion: QuestionGenerator<Identifiers> = () => {
+  console.log("volume capacity q");
   const randomUnitInstructionIndex = randint(0, 7);
   const randomUnitIndex = randint(
     // cette manip a pour but d'éviter des conversion avec des nombres trop grand/petit
@@ -77,6 +78,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   addValidProp(propositions, answer);
   const decimal = new Decimal(Number(answer.replace(",", ".")));
   while (propositions.length < n) {
+    console.log("volume capactiy conv qcm");
     const wrongAnswer = decimal.multiplyByPowerOfTen(randint(-3, 4, [0]));
     tryToAddWrongProp(propositions, wrongAnswer.toTree().toTex());
   }

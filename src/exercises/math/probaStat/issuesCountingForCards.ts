@@ -14,7 +14,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { probaLawFlip } from "#root/utils/probaLawFlip";
 import { random } from "#root/utils/random";
 import { randomEnumValue } from "#root/utils/randomEnumValue";
-import { CardsColor, CardsValues } from "../utils/cardsData";
+import { CardsColor, CardsValues } from "../../utils/cardsData";
 
 type Identifiers = {
   questionType: string;

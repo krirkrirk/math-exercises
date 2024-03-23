@@ -6,8 +6,8 @@ import {
   Question,
   QuestionGenerator,
   VEA,
-} from "../../exercise";
-import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
+} from "../../../exercise";
+import { getDistinctQuestions } from "../../../utils/getDistinctQuestions";
 import {
   getConstanteDerivative,
   getConstanteDerivativePropositions,

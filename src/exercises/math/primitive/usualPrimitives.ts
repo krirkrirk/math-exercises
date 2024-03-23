@@ -6,29 +6,29 @@ import {
   QuestionGenerator,
   VEA,
 } from "#root/exercises/exercise";
+
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randint } from "#root/math/utils/random/randint";
 import {
   getConstantPrimitive,
   getConstantPrimitivePropositions,
   isConstantPrimitiveAnswerValid,
-} from "#root/exercises/primitive/constantPrimitive";
+} from "./constantPrimitive";
 import {
   getExponentialPrimitive,
   getExponentialPrimitivePropositions,
   isExponentialPrimitiveAnswerValid,
-} from "#root/exercises/primitive/exponentialPrimitive";
-
+} from "./exponentialPrimitive";
 import {
   getPolynomialPrimitive,
   getPolynomialPrimitivePropositions,
   isPolynomialPrimitiveAnswerValid,
-} from "#root/exercises/primitive/polynomialPrimitive";
+} from "./polynomialPrimitive";
 import {
   getSinCosPrimitive,
   getSinCosPrimitivePropositions,
   isSinCosPrimitiveAnswerValid,
-} from "#root/exercises/primitive/sinCosPrimitive";
-import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { randint } from "#root/math/utils/random/randint";
+} from "./sinCosPrimitive";
 type Identifiers = {
   type: number;
   a?: number;

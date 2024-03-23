@@ -10,8 +10,8 @@ import {
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
-} from "../../exercise";
-import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
+} from "../../../exercise";
+import { getDistinctQuestions } from "../../../utils/getDistinctQuestions";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";

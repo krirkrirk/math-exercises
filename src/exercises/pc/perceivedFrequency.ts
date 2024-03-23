@@ -9,6 +9,7 @@ import {
   Exercise,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { frenchify } from "#root/math/utils/latex/frenchify";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { shuffle } from "#root/utils/shuffle";
@@ -32,7 +33,7 @@ const getPerceivedFrequency: QuestionGenerator<Identifiers> = () => {
   s'approche d'un observateur à une vitesse de $${ambulanceSpeed}$ m/s. Si la vitesse du son
   dans l'air est de $340$ m/s, calculer la fréquence perçue par l'observateur.`;
 
-  const answer = `${round(perceivedFrequency, 0)} \\ Hz`;
+  const answer = `${frenchify(round(perceivedFrequency, 0))} \\ Hz`;
   const question: Question<Identifiers> = {
     instruction,
     answer,
@@ -55,7 +56,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      round(perceivedFrequency * (0.3 + Math.random() * 1.5), 0) + " \\ Hz",
+      frenchify(round(perceivedFrequency * (0.3 + Math.random() * 1.5), 0)) +
+        " \\ Hz",
     );
   }
 

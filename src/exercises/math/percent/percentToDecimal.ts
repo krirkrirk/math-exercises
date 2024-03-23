@@ -52,6 +52,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   const dec = new Decimal(nb);
   while (propositions.length < n) {
+    console.log("percent to decimal qcm");
     if (isPercentToDecimal) {
       tryToAddWrongProp(
         propositions,

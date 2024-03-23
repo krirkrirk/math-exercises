@@ -9,6 +9,7 @@ import {
   Exercise,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { frenchify } from "#root/math/utils/latex/frenchify";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { shuffle } from "#root/utils/shuffle";
@@ -31,7 +32,7 @@ const getDelution: QuestionGenerator<Identifiers> = () => {
   const instruction = `Soit une solution mère de concentration $C_1$ = $${concentrationMere}$ mol/L. On souhaite préparer
   une solution ﬁlle de volume $V_2$ = $${volumeFille}$ mL de concentration $C_2$ = $${concentrationFille}$ mol/L.
   $\\\\$ Calculer le volume $V_1$ à prélever.`;
-  const answer = volumeMere + " \\ mL";
+  const answer = frenchify(volumeMere) + " \\ mL";
   const question: Question<Identifiers> = {
     instruction,
     startStatement: `V_1`,
@@ -55,16 +56,23 @@ const getPropositions: QCMGenerator<Identifiers> = (
   );
   tryToAddWrongProp(
     propositions,
-    round((volumeFille * concentrationMere) / concentrationFille, 2) + " \\ mL",
+    frenchify(
+      round((volumeFille * concentrationMere) / concentrationFille, 2),
+    ) + " \\ mL",
   );
   tryToAddWrongProp(
     propositions,
-    round(concentrationMere / (volumeFille * concentrationFille), 2) + " \\ mL",
+    frenchify(
+      round(concentrationMere / (volumeFille * concentrationFille), 2),
+    ) + " \\ mL",
   );
 
   while (propositions.length < n) {
     const wrongAnswer = volumeMere + randint(-volumeMere, 11, [0]);
-    tryToAddWrongProp(propositions, wrongAnswer.toFixed(2) + " \\ mL");
+    tryToAddWrongProp(
+      propositions,
+      frenchify(wrongAnswer.toFixed(2)) + " \\ mL",
+    );
   }
 
   return shuffle(propositions);

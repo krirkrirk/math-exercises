@@ -9,8 +9,8 @@ import {
   VEA,
   addValidProp,
   tryToAddWrongProp,
-} from "../../exercise";
-import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
+} from "../../../exercise";
+import { getDistinctQuestions } from "../../../utils/getDistinctQuestions";
 
 type Identifiers = {
   randomValues: number[];

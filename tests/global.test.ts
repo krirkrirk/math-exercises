@@ -1,15 +1,15 @@
 import { AlgebraicNode } from "../src/tree/nodes/algebraicNode";
-import * as Exercises from "./../src/exercises";
+import * as MathExercises from "./../src/exercises/math";
+import * as PCExercises from "./../src/exercises/pc";
+
 import { Exercise } from "./../src/exercises/exercise";
 import { NumberNode } from "./../src/tree/nodes/numbers/numberNode";
 import { MinusInfinityNode } from "./../src/tree/nodes/numbers/infiniteNode";
 import { PlusInfinityNode } from "./../src/tree/nodes/numbers/infiniteNode";
 
-const exercises = Object.values(Exercises) as Exercise<any>[];
-// const exercises = [
-// Exercises.alignementViaColinearity,
-// Exercises.parallelogramViaEqualVectors,
-// ] as Exercise<any>[];
+const mathExercises = Object.values(MathExercises) as Exercise<any>[];
+const pcExercises = Object.values(PCExercises) as Exercise<any>[];
+
 type Worst = {
   exoId: string;
   time: number;
@@ -38,9 +38,8 @@ test("all exos", () => {
   let worstQCMGenerationTime: Worst = { exoId: "", time: 0 };
   const veaTimes: number[] = [];
   let worstVEATime: Worst = { exoId: "", time: 0 };
-
-  console.log(exercises.length);
-  exercises.forEach((exo) => {
+  const allExos = [...mathExercises, ...pcExercises];
+  allExos.forEach((exo) => {
     console.log(exo.id);
     try {
       expect(exo.sections.length).not.toBe(0);

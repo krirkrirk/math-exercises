@@ -9,7 +9,9 @@ import {
   Exercise,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { frenchify } from "#root/math/utils/latex/frenchify";
 import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
 import { shuffle } from "#root/utils/shuffle";
 
 const refractionIndex = [
@@ -88,7 +90,7 @@ const getSnellDescartes: QuestionGenerator<Identifiers> = () => {
 
   // Convertir l'angle de réfraction de radians à degrés
   const angleRefractionDeg = (angleRefractionRad * 180) / Math.PI;
-  const answer = `${angleRefractionDeg.toFixed(1)}°`;
+  const answer = `${frenchify(round(angleRefractionDeg, 1))}°`;
   const question: Question<Identifiers> = {
     instruction,
     answer,
@@ -104,7 +106,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   addValidProp(propositions, answer);
 
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, (randint(100, 900) / 10).toFixed(1) + "°");
+    tryToAddWrongProp(
+      propositions,
+      frenchify(round(randint(100, 900) / 10, 1)) + "°",
+    );
   }
 
   return shuffle(propositions);

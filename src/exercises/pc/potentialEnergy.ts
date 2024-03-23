@@ -9,6 +9,7 @@ import {
   Exercise,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { frenchify } from "#root/math/utils/latex/frenchify";
 import { round } from "#root/math/utils/round";
 import { shuffle } from "#root/utils/shuffle";
 
@@ -27,7 +28,7 @@ const getPotentialEnergy: QuestionGenerator<Identifiers> = () => {
   const instruction = `Un objet de masse ${mass} kg est suspendu à une hauteur de ${height} mètres. Il est ensuite relâché et tombe librement.
   $\\\\$ Calculer l'énergie potentielle de l'objet. (Supposons que l'accélération due à la gravité est de 9,81 m/s²)`;
 
-  const answer = `${round(potentialEnergy, 2)}  \\ J`;
+  const answer = `${frenchify(round(potentialEnergy, 2))}  \\ J`;
   const question: Question<Identifiers> = {
     instruction,
     startStatement: "Ep",
@@ -51,7 +52,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      round(potentialEnergy * (0.3 + Math.random() * 1.5), 2) + " \\ J",
+      frenchify(round(potentialEnergy * (0.3 + Math.random() * 1.5), 2)) +
+        " \\ J",
     );
   }
 
