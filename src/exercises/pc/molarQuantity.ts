@@ -1,5 +1,5 @@
 import {
-  ScienceExercise,
+  Exercise,
   Proposition,
   Question,
   QuestionGenerator,
@@ -9,10 +9,10 @@ import {
   addValidProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { round } from "#root/exercises/utils/math/round";
-import { atomes } from "#root/exercises/utils/molecularChemistry/atome";
-import { molecules } from "#root/exercises/utils/molecularChemistry/molecule";
-import { shuffle } from "#root/exercises/utils/shuffle";
+import { round } from "#root/math/utils/round";
+import { atomes } from "#root/pc/molecularChemistry/atome";
+import { molecules } from "#root/pc/molecularChemistry/molecule";
+import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   mG: number;
@@ -76,7 +76,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const molarQuantity: ScienceExercise<Identifiers> = {
+export const molarQuantity: Exercise<Identifiers> = {
   id: "molarQuantity",
   connector: "=",
   label: "Calculer une quantité de matière",

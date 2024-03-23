@@ -13,8 +13,8 @@ import {
   Reaction,
   ReactionConstructor,
   ReactionSpecies,
-} from "#root/exercises/utils/molecularChemistry/reaction";
-import { shuffle } from "#root/exercises/utils/shuffle";
+} from "#root/pc/molecularChemistry/reaction";
+import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   reactionArray: ReactionSpecies[];
@@ -52,7 +52,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const chemicalEquations: ScienceExercise<Identifiers> = {
+export const chemicalEquations: Exercise<Identifiers> = {
   id: "chemicalEquations",
   connector: "\\iff",
   label: "Équilibrer une réaction chimique",

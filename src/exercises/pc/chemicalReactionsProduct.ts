@@ -1,5 +1,5 @@
 import {
-  ScienceExercise,
+  Exercise,
   Proposition,
   Question,
   QuestionGenerator,
@@ -9,14 +9,13 @@ import {
   VEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { v4 } from "uuid";
+import { randint } from "#root/math/utils/random/randint";
 import {
   ReactionConstructor,
   ReactionSpecies,
   molecules,
-} from "#root/exercises/utils/molecularChemistry/reaction";
-import { shuffle } from "#root/exercises/utils/shuffle";
-import { randint } from "#root/exercises/utils/math/random/randint";
+} from "#root/pc/molecularChemistry/reaction";
+import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   reactionArray: ReactionSpecies[];
@@ -62,7 +61,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const chemicalReactionsProduct: ScienceExercise<Identifiers> = {
+export const chemicalReactionsProduct: Exercise<Identifiers> = {
   id: "chemicalReactionsProduct",
   connector: "\\iff",
   label:

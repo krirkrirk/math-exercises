@@ -48,6 +48,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, k }) => {
 
   return shuffle(propositions);
 };
+
 const isAnswerValid: VEA<Identifiers> = (ans, { k }) => {
   const sol = Math.cbrt(k);
   const answerTree = new EquationSolutionNode(
@@ -57,6 +58,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { k }) => {
   console.log(texs);
   return texs.includes(ans);
 };
+
 export const cubicEquation: Exercise<Identifiers> = {
   id: "cubicEquation",
   connector: "\\iff",

@@ -1,5 +1,5 @@
 import {
-  ScienceExercise,
+  Exercise,
   Proposition,
   Question,
   QuestionGenerator,
@@ -9,9 +9,8 @@ import {
   VEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { round } from "#root/exercises/utils/math/round";
-import { shuffle } from "#root/exercises/utils/shuffle";
-import { v4 } from "uuid";
+import { round } from "#root/math/utils/round";
+import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   mass: number;
@@ -59,7 +58,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const kineticEnergy: ScienceExercise<Identifiers> = {
+export const kineticEnergy: Exercise<Identifiers> = {
   id: "kineticEnergy",
   connector: "=",
   label: "Calculer l'énergie cinétique",

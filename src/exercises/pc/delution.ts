@@ -1,5 +1,4 @@
 import {
-  ScienceExercise,
   Proposition,
   Question,
   QuestionGenerator,
@@ -7,11 +6,12 @@ import {
   addValidProp,
   tryToAddWrongProp,
   VEA,
+  Exercise,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { randint } from "#root/exercises/utils/math/random/randint";
-import { round } from "#root/exercises/utils/math/round";
-import { shuffle } from "#root/exercises/utils/shuffle";
+import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
+import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   concentrationMere: number;
@@ -74,7 +74,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const delution: ScienceExercise<Identifiers> = {
+export const delution: Exercise<Identifiers> = {
   id: "delution",
   connector: "=",
   label: "Déterminer le volume d'une solution après dilution.",

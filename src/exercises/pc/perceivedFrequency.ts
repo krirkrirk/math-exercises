@@ -1,5 +1,4 @@
 import {
-  ScienceExercise,
   Proposition,
   Question,
   QuestionGenerator,
@@ -7,11 +6,12 @@ import {
   addValidProp,
   tryToAddWrongProp,
   VEA,
+  Exercise,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { randint } from "#root/exercises/utils/math/random/randint";
-import { round } from "#root/exercises/utils/math/round";
-import { shuffle } from "#root/exercises/utils/shuffle";
+import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
+import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   frequencyEmitted: number;
@@ -66,7 +66,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const perceivedFrequency: ScienceExercise<Identifiers> = {
+export const perceivedFrequency: Exercise<Identifiers> = {
   id: "perceivedFrequency",
   connector: "\\iff",
   label: "Calculer une fréquence perçue par un observateur",

@@ -1,5 +1,5 @@
 import {
-  ScienceExercise,
+  Exercise,
   Proposition,
   Question,
   QCMGenerator,
@@ -9,11 +9,11 @@ import {
   VEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { randint } from "#root/exercises/utils/math/random/randint";
-import { round } from "#root/exercises/utils/math/round";
-import { atomes } from "#root/exercises/utils/molecularChemistry/atome";
-import { molecules } from "#root/exercises/utils/molecularChemistry/molecule";
-import { shuffle } from "#root/exercises/utils/shuffle";
+import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
+import { atomes } from "#root/pc/molecularChemistry/atome";
+import { molecules } from "#root/pc/molecularChemistry/molecule";
+import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   randomMoleculeIndex: number;
@@ -105,7 +105,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const formulaFromComposition: ScienceExercise<Identifiers> = {
+export const formulaFromComposition: Exercise<Identifiers> = {
   id: "formulaFromComposition",
   connector: "\\iff",
   label: "Déterminer la formule brute à partir de la composition centésimale",

@@ -1,5 +1,4 @@
 import {
-  ScienceExercise,
   Proposition,
   Question,
   QuestionGenerator,
@@ -7,11 +6,11 @@ import {
   addValidProp,
   tryToAddWrongProp,
   VEA,
+  Exercise,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { molecules } from "#root/exercises/utils/molecularChemistry/molecule";
-import { shuffle } from "#root/exercises/utils/shuffle";
-import { v4 } from "uuid";
+import { molecules } from "#root/pc/molecularChemistry/molecule";
+import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   randomMoleculeIndex: number;
@@ -65,7 +64,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const moleculeFormula: ScienceExercise<Identifiers> = {
+export const moleculeFormula: Exercise<Identifiers> = {
   id: "moleculeFormula",
   connector: "\\iff",
   label:

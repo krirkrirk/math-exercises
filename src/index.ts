@@ -1,7 +1,9 @@
 // import { exercises } from "./exercises/exercises";
 import { NumberNode } from "./tree/nodes/numbers/numberNode";
 import { AddNode } from "./tree/nodes/operators/addNode";
-import * as Exercises from "./exercises/math";
+import * as MathExercises from "./exercises/math";
+import * as PCExercises from "./exercises/pc";
+
 import {
   MinusInfinityNode,
   PlusInfinityNode,
@@ -57,6 +59,7 @@ Number.prototype.frenchify = function (): string {
 
 */
 
-const mathExercises = Object.values(Exercises);
+const mathExercises = Object.values(MathExercises);
+const pcExercises = Object.values(PCExercises);
 
-export { mathExercises };
+export { mathExercises, pcExercises };

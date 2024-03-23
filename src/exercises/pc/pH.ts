@@ -1,5 +1,5 @@
 import {
-  ScienceExercise,
+  Exercise,
   Proposition,
   Question,
   QuestionGenerator,
@@ -9,10 +9,9 @@ import {
   VEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { randint } from "#root/exercises/utils/math/random/randint";
-import { round } from "#root/exercises/utils/math/round";
-import { shuffle } from "#root/exercises/utils/shuffle";
-import { v4 } from "uuid";
+import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
+import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   randomNumber: number;
@@ -56,7 +55,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const pH: ScienceExercise<Identifiers> = {
+export const pH: Exercise<Identifiers> = {
   id: "pH",
   connector: "=",
   label: "Calculer le pH d'une solution",

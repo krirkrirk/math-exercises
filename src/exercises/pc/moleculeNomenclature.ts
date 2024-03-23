@@ -1,5 +1,5 @@
 import {
-  ScienceExercise,
+  Exercise,
   Proposition,
   Question,
   QuestionGenerator,
@@ -9,8 +9,8 @@ import {
   VEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { molecules } from "#root/exercises/utils/molecularChemistry/molecule";
-import { shuffle } from "#root/exercises/utils/shuffle";
+import { molecules } from "#root/pc/molecularChemistry/molecule";
+import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   randomMoleculeIndex: number;
@@ -59,7 +59,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const moleculeNomenclature: ScienceExercise<Identifiers> = {
+export const moleculeNomenclature: Exercise<Identifiers> = {
   id: "moleculeNomenclature",
   connector: "\\iff",
   label: "Donner le nom d'une molécule à partir de sa formule développée",

@@ -1,5 +1,4 @@
 import {
-  ScienceExercise,
   Proposition,
   Question,
   QuestionGenerator,
@@ -7,11 +6,11 @@ import {
   addValidProp,
   tryToAddWrongProp,
   VEA,
+  Exercise,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { round } from "#root/exercises/utils/math/round";
-import { shuffle } from "#root/exercises/utils/shuffle";
-import { v4 } from "uuid";
+import { round } from "#root/math/utils/round";
+import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   mass: number;
@@ -62,7 +61,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const potentialEnergy: ScienceExercise<Identifiers> = {
+export const potentialEnergy: Exercise<Identifiers> = {
   id: "potentialEnergy",
   connector: "=",
   label: "Calculer l'énergie potentielle",

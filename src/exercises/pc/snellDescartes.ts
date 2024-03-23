@@ -1,5 +1,4 @@
 import {
-  ScienceExercise,
   Proposition,
   Question,
   QuestionGenerator,
@@ -7,10 +6,12 @@ import {
   addValidProp,
   tryToAddWrongProp,
   VEA,
+  Exercise,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { randint } from "#root/exercises/utils/math/random/randint";
-import { shuffle } from "#root/exercises/utils/shuffle";
+import { randint } from "#root/math/utils/random/randint";
+import { shuffle } from "#root/utils/shuffle";
+
 const refractionIndex = [
   { Material: "l'air", Material2: "d'air", Material3: "de l'air", n: 1 },
   { Material: "l'eau", Material2: "d'eau", Material3: "de l'eau", n: 1.33 },
@@ -111,7 +112,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
-export const snellDescartes: ScienceExercise<Identifiers> = {
+export const snellDescartes: Exercise<Identifiers> = {
   id: "snellDescartes",
   connector: "\\iff",
   label:
