@@ -30,9 +30,10 @@ const getRecognizeReasonFromGraphQuestion: QuestionGenerator<
 
   const yMin = Math.min(...sequence);
   const yMax = Math.max(...sequence);
-  const commands = sequence.map((nb, index) =>
+  const commands = sequence.flatMap((nb, index) => [
     new Point(`A_${index}`, index.toTree(), nb.toTree()).toGGBCommand(),
-  );
+    `SetFixed(A_${index}, true)`,
+  ]);
   const ggb = new GeogebraConstructor(commands, {
     isGridSimple: true,
     isXAxesNatural: true,

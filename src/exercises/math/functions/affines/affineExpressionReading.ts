@@ -52,6 +52,7 @@ const getAffineExpressionReadingQuestion: QuestionGenerator<
   const commands = [
     `l = Line((0, ${b}), (${secondPoint[0]}, ${secondPoint[1]}))`,
     `SetColor(l, "${randomColor()}")`,
+    "SetFixed(l, true)",
   ];
   const ggb = new GeogebraConstructor(commands, {
     gridDistance: [1, 1],
