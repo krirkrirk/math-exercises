@@ -30,6 +30,7 @@ export type NodeOptions = {
 
 export type ToTexOptions = {
   displayStyle?: boolean;
+  allowOneInProducts?: boolean;
 };
 export interface Node {
   type: NodeType;

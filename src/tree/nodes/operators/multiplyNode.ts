@@ -1,5 +1,5 @@
 // import { multiply } from "mathjs";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeOptions, NodeType, ToTexOptions } from "../node";
 import {
   CommutativeOperatorNode,
   OperatorIds,
@@ -67,14 +67,16 @@ export class MultiplyNode implements CommutativeOperatorNode {
     return `(${this.leftChild.toMathString()})*(${this.rightChild.toMathString()})`;
   }
 
-  toTex(): string {
+  toTex(opts?: ToTexOptions): string {
     let leftTex = this.leftChild.toTex();
     let rightTex = this.rightChild.toTex();
 
-    if (leftTex === "1") {
-      // if (isNumberNode(this.rightChild) || isVariableNode(this.rightChild)) {
+    if (
+      isNumberNode(this.leftChild) &&
+      this.leftChild.value === 1 &&
+      !opts?.allowOneInProducts
+    ) {
       return rightTex;
-      // }
     }
 
     if (isOperatorNode(this.leftChild)) {

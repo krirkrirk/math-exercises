@@ -2,9 +2,6 @@
 import { Node, NodeType, hasVariableNode } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
-import { NumberNode } from "../numbers/numberNode";
-import { FractionNode } from "../operators/fractionNode";
-import { SqrtNode } from "./sqrtNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
 export function isCosNode(a: Node): a is CosNode {
   return isFunctionNode(a) && a.id === FunctionsIds.cos;

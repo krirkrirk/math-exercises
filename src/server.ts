@@ -13,6 +13,7 @@ import {
   MinusInfinityNode,
   PlusInfinityNode,
 } from "./tree/nodes/numbers/infiniteNode";
+import { Decimal } from "./math/numbers/decimals/decimal";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
