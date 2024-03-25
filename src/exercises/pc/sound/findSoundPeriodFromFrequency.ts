@@ -33,7 +33,7 @@ const getFindSoundPeriodFromFrequencyQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Un signal sonore a une fréquence de ${frequency}Hz. Calculer la période de ce signal en secondes (en écriture scientifique avec 2 chiffres significatifs).`,
+    instruction: `Un signal sonore a une fréquence de $${frequency}\\ \\text{Hz}$. Calculer la période de ce signal en secondes (en écriture scientifique avec 2 chiffres significatifs).`,
     keys: ["timesTenPower"],
     answerFormat: "tex",
     identifiers: { frequency },
@@ -48,11 +48,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const propositions: Proposition[] = [];
   const period = 1 / frequency;
   const dec = new Decimal(period);
-  const wrongPeriod = new MultiplyNode(
-    round(dec.toScientificPart(), 1).toTree(),
-    new PowerNode(new NumberNode(10), new NumberNode(randint(-4, 1, [0]))),
-  ).toTex();
-  // ).toTex({ allowOneInProducts: true });
+  const wrongPeriod = dec
+    .multiplyByPowerOfTen(randint(-2, 2, [0]))
+    .toScientificNotation(1)
+    .toTex({ allowOneInProducts: true });
   addValidProp(propositions, answer);
   tryToAddWrongProp(propositions, wrongPeriod);
 
