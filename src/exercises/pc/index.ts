@@ -10,3 +10,4 @@ export * from "./pH";
 export * from "./perceivedFrequency";
 export * from "./potentialEnergy";
 export * from "./snellDescartes";
+export * from "./sound";

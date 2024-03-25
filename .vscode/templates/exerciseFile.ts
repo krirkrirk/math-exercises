@@ -51,5 +51,5 @@ export const {{name}}: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  section: "Mathématiques"
+  subject: "Mathématiques"
 };

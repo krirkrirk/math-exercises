@@ -175,4 +175,5 @@ export type PCSection =
   | "Lumière"
   | "Acide / Base"
   | "Constitution et transformations de la matière"
-  | "Ondes";
+  | "Ondes"
+  | "Son";
