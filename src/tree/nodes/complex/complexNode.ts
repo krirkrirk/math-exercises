@@ -1,9 +1,6 @@
 // import { complex, evaluate } from "mathjs";
 import { Node, NodeOptions, NodeType } from "../node";
-import { Complex } from "#root/math/complex/complex";
-import { NumberNode } from "../numbers/numberNode";
 import { VariableNode } from "../variables/variableNode";
-import { OppositeNode } from "../functions/oppositeNode";
 import { MultiplyNode } from "../operators/multiplyNode";
 import { AddNode } from "../operators/addNode";
 import { AlgebraicNode } from "../algebraicNode";

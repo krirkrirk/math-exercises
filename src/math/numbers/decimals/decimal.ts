@@ -1,5 +1,5 @@
 import { randint } from "#root/math/utils/random/randint";
-import { round } from "#root/math/utils/round";
+import { round, roundSignificant } from "#root/math/utils/round";
 import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { PercentNode } from "#root/tree/nodes/numbers/percentNode";
@@ -130,13 +130,20 @@ export class Decimal implements Nombre {
   }
   toScientificNotation(decimals?: number) {
     const intString = this.intPart + "";
-    // const intSize = intString.length + (this.value < 0 ? 1 : 0);
-    if (this.intPart > -10 && this.intPart < 10 && this.intPart !== 0)
-      return this.toTree();
+    if (this.intPart > -10 && this.intPart < 10 && this.intPart !== 0) {
+      if (decimals === undefined) return this.toTree();
+      return new NumberNode(
+        round(this.value, decimals),
+        roundSignificant(this.value, decimals),
+      );
+    }
     const decNode = new NumberNode(
       decimals !== undefined
         ? round(this.toScientificPart(), decimals)
         : this.toScientificPart(),
+      decimals !== undefined
+        ? roundSignificant(this.toScientificPart(), decimals)
+        : undefined,
     );
     let leadingZeros = 0;
     const nbs = this.decimalPart.split("").map(Number);
