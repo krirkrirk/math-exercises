@@ -63,7 +63,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, decimal }) => {
   const dec = new Decimal(decimal);
   while (propositions.length < n) {
     const wrongAnswer = new MultiplyNode(
-      dec.toScientificPart(),
+      dec.toScientificPart().toTree(),
       new PowerNode(new NumberNode(10), new NumberNode(randint(-5, 5, [0, 1]))),
     ).toTex();
     tryToAddWrongProp(propositions, wrongAnswer);
