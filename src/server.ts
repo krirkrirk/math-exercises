@@ -46,8 +46,6 @@ const runServer = () => {
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });
-  const dec = new Decimal(9999.99);
-  console.log(dec.toScientificNotation(1).toTex({ allowOneInProducts: true }));
   app.get("/exo", (req: Request, res: Response) => {
     const exoId = req.query.exoId;
     const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);

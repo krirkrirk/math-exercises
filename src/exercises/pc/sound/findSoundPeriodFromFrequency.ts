@@ -54,10 +54,15 @@ const getPropositions: QCMGenerator<Identifiers> = (
     .toTex({ allowOneInProducts: true });
   addValidProp(propositions, answer);
   tryToAddWrongProp(propositions, wrongPeriod);
-
+  console.log("wrong", frequency, wrongPeriod);
   while (propositions.length < n) {
     const period = 1 / randint(20, 20000);
     const periodDecimal = new Decimal(period);
+    console.log(
+      "in while",
+      period,
+      periodDecimal.toScientificNotation(1).toTex({ allowOneInProducts: true }),
+    );
     tryToAddWrongProp(
       propositions,
       periodDecimal.toScientificNotation(1).toTex({ allowOneInProducts: true }),

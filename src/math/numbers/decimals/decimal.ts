@@ -29,7 +29,7 @@ export abstract class DecimalConstructor {
   }
   static fromParts(intPart: string, decimalPart: string): Decimal {
     if (decimalPart.length === 0) return new Decimal(Number("" + intPart));
-    return new Decimal(Number("" + intPart + "." + decimalPart));
+    return new Decimal("" + intPart + "." + decimalPart);
   }
   //returns X.YYYY where X € [0, 9] and first Y is not zero if X is zero
   static randomScientific(precision?: number): Decimal {
@@ -47,8 +47,8 @@ export class Decimal implements Nombre {
   precision: number;
   intPart: number; // can be -0
   decimalPart: string;
-  constructor(value: number) {
-    this.value = value;
+  constructor(value: number | string) {
+    this.value = Number(value);
     this.tex = value + "";
     let [intPartString, decimalPartString] = (value + "").split(".");
     this.intPart = Number(intPartString);
@@ -175,7 +175,7 @@ export class Decimal implements Nombre {
     ).simplify();
   }
   toTree() {
-    return new NumberNode(this.value);
+    return new NumberNode(this.value, this.tex);
   }
 
   toPercentNode() {
