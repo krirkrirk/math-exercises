@@ -31,13 +31,13 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
- 
+    throw Error("QCM not implemented")
   }
   return shuffleProps(propositions, n);
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, {answer})=>{
-
+  throw Error("VEA not implemented")
 }
 export const {{name}}: Exercise<Identifiers> = {
   id: '{{name}}',

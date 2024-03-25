@@ -115,8 +115,10 @@ export class Decimal implements Nombre {
         .findIndex((el) => Number(el) !== 0);
       return new NumberNode(
         Number(
-          (this.tex[0] === "-" ? "-0." : "0.") +
-            this.decimalPart.slice(firstNonZeroIndex),
+          (this.tex[0] === "-"
+            ? `-${this.decimalPart[firstNonZeroIndex]}.`
+            : `${this.decimalPart[firstNonZeroIndex]}.`) +
+            this.decimalPart.slice(firstNonZeroIndex + 1),
         ),
       );
     }
