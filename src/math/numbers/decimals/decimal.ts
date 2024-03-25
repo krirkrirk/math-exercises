@@ -137,21 +137,28 @@ export class Decimal implements Nombre {
         roundSignificant(this.value, decimals),
       );
     }
+    let value =
+      decimals === undefined
+        ? this.toScientificPart()
+        : round(this.toScientificPart(), decimals);
+
+    let power = 0;
+    if (value >= 10) {
+      value = 1;
+      power = 1;
+    }
     const decNode = new NumberNode(
-      decimals !== undefined
-        ? round(this.toScientificPart(), decimals)
-        : this.toScientificPart(),
-      decimals !== undefined
-        ? roundSignificant(this.toScientificPart(), decimals)
-        : undefined,
+      value,
+      decimals !== undefined ? roundSignificant(value, decimals) : undefined,
     );
+
     let leadingZeros = 0;
     const nbs = this.decimalPart.split("").map(Number);
     for (let i = 0; i < nbs.length; i++) {
       if (nbs[i] !== 0) break;
       leadingZeros++;
     }
-    const power =
+    power +=
       this.intPart === 0 ? -(leadingZeros + 1) : (this.intPart + "").length - 1;
     if (power === 0) return this.toTree();
     if (power === 1) return new MultiplyNode(decNode, new NumberNode(10));
