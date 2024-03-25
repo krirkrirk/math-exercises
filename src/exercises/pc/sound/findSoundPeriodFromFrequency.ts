@@ -27,7 +27,9 @@ const getFindSoundPeriodFromFrequencyQuestion: QuestionGenerator<
   const frequency = randint(20, 20000);
   const period = 1 / frequency;
   const periodDecimal = new Decimal(period);
-  const answer = periodDecimal.toScientificNotation(1).toTex();
+  const answer = periodDecimal
+    .toScientificNotation(1)
+    .toTex({ allowOneInProducts: true });
 
   const question: Question<Identifiers> = {
     answer,
@@ -50,6 +52,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
     round(dec.toScientificPart(), 1).toTree(),
     new PowerNode(new NumberNode(10), new NumberNode(randint(-4, 1, [0]))),
   ).toTex();
+  // ).toTex({ allowOneInProducts: true });
   addValidProp(propositions, answer);
   tryToAddWrongProp(propositions, wrongPeriod);
 
@@ -58,7 +61,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
     const periodDecimal = new Decimal(period);
     tryToAddWrongProp(
       propositions,
-      periodDecimal.toScientificNotation(1).toTex(),
+      periodDecimal.toScientificNotation(1).toTex({ allowOneInProducts: true }),
     );
   }
   return shuffleProps(propositions, n);
