@@ -104,7 +104,7 @@ export class Decimal implements Nombre {
   }
 
   toScientificPart() {
-    if (!this.decimalPart.length) return new NumberNode(this.intPart);
+    if (!this.decimalPart.length) return this.intPart;
     // const intString = this.intPart.toString();
     // const intSize = intString.length;
     // if (intSize === 0 && this.intPart !== 0) return this.toTree();
@@ -113,31 +113,31 @@ export class Decimal implements Nombre {
       const firstNonZeroIndex = this.decimalPart
         .split("")
         .findIndex((el) => Number(el) !== 0);
-      return new NumberNode(
-        Number(
-          (this.tex[0] === "-"
-            ? `-${this.decimalPart[firstNonZeroIndex]}.`
-            : `${this.decimalPart[firstNonZeroIndex]}.`) +
-            this.decimalPart.slice(firstNonZeroIndex + 1),
-        ),
+      return Number(
+        (this.tex[0] === "-"
+          ? `-${this.decimalPart[firstNonZeroIndex]}.`
+          : `${this.decimalPart[firstNonZeroIndex]}.`) +
+          this.decimalPart.slice(firstNonZeroIndex + 1),
       );
     }
     const intString = this.intPart + "";
-    return new NumberNode(
-      Number(
-        (this.tex[0] === "-" ? "-" + this.tex[1] : this.tex[0]) +
-          "." +
-          (this.tex[0] === "-" ? intString.slice(2) : intString.slice(1)) +
-          this.decimalPart,
-      ),
+    return Number(
+      (this.tex[0] === "-" ? "-" + this.tex[1] : this.tex[0]) +
+        "." +
+        (this.tex[0] === "-" ? intString.slice(2) : intString.slice(1)) +
+        this.decimalPart,
     );
   }
-  toScientificNotation() {
+  toScientificNotation(decimals?: number) {
     const intString = this.intPart + "";
     // const intSize = intString.length + (this.value < 0 ? 1 : 0);
     if (this.intPart > -10 && this.intPart < 10 && this.intPart !== 0)
       return this.toTree();
-    const decNode = this.toScientificPart();
+    const decNode = new NumberNode(
+      decimals !== undefined
+        ? round(this.toScientificPart(), decimals)
+        : this.toScientificPart(),
+    );
     let leadingZeros = 0;
     const nbs = this.decimalPart.split("").map(Number);
     for (let i = 0; i < nbs.length; i++) {
@@ -145,7 +145,7 @@ export class Decimal implements Nombre {
       leadingZeros++;
     }
     const power =
-      this.intPart === 0 ? -leadingZeros : (this.intPart + "").length - 1;
+      this.intPart === 0 ? -(leadingZeros + 1) : (this.intPart + "").length - 1;
     if (power === 0) return this.toTree();
     if (power === 1) return new MultiplyNode(decNode, new NumberNode(10));
     return new MultiplyNode(
