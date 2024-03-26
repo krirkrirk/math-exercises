@@ -104,10 +104,14 @@ export class Decimal implements Nombre {
   }
 
   toScientificPart() {
-    if (!this.decimalPart.length) return this.intPart;
-    // const intString = this.intPart.toString();
-    // const intSize = intString.length;
-    // if (intSize === 0 && this.intPart !== 0) return this.toTree();
+    if (!this.decimalPart.length) {
+      if (this.intPart < 10 && this.intPart > -10) return this.intPart;
+      let nb = "";
+      const intString = this.intPart.toString();
+      if (this.intPart < 0) nb += "-" + intString[1] + "." + intString.slice(2);
+      else nb += this.intPart.toString()[0] + "." + intString.slice(1);
+      return Number(nb);
+    }
     if (this.intPart === 0) {
       //true for -0
       const firstNonZeroIndex = this.decimalPart
@@ -141,7 +145,7 @@ export class Decimal implements Nombre {
       decimals === undefined
         ? this.toScientificPart()
         : round(this.toScientificPart(), decimals);
-
+    console.log(value);
     let power = 0;
     if (value >= 10) {
       value = 1;

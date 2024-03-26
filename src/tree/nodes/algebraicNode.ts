@@ -4,6 +4,8 @@ export type SimplifyOptions = {
   forbidFactorize?: boolean;
   forceDistributeFractions?: boolean;
   keepPowers?: boolean;
+  //nb de chiffres significatifs
+  scientific?: number;
 };
 export interface AlgebraicNode extends Node {
   // multiply: (n: AlgebraicNode) => AlgebraicNode;

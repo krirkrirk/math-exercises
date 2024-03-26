@@ -5,3 +5,4 @@ export * from "./globalPercent";
 export * from "./reciprocalPercentage";
 export * from "./percentToDecimal";
 export * from "./valuePercent";
+export * from "./findProportion";

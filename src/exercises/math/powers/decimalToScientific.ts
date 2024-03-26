@@ -34,16 +34,16 @@ const getDecimalToScientificQuestion: QuestionGenerator<Identifiers> = () => {
   if (isZero) {
     dec = DecimalConstructor.fromParts(
       "0",
-      DecimalConstructor.randomFracPart(randint(2, 5), randint(1, 4)),
+      DecimalConstructor.randomFracPart(randint(2, 5), randint(1, 2)),
     );
   } else {
     intPart = IntegerConstructor.random(randint(2, 5));
     dec = DecimalConstructor.fromParts(
       intPart.toString(),
-      DecimalConstructor.randomFracPart(randint(1, 5)),
+      DecimalConstructor.randomFracPart(randint(1, 3)),
     );
   }
-  const decTex = dec.toTree().toTex();
+  const decTex = dec.toTree().toTex().replace(".", ",");
   const answer = dec.toScientificNotation().toTex();
 
   const question: Question<Identifiers> = {

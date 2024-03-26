@@ -24,6 +24,7 @@ declare global {
   interface Number {
     toTree: () => AlgebraicNode;
     frenchify: () => string;
+    toScientific: () => AlgebraicNode;
   }
 }
 
@@ -36,6 +37,21 @@ Number.prototype.toTree = function (): AlgebraicNode {
 Number.prototype.frenchify = function (): string {
   return (this.valueOf() + "").replace(".", ",");
 };
+// Number.prototype.toScientific = function(decimals?: number): AlgebraicNode {
+//   const value= this.valueOf();
+//   if(value === Infinity || value === -Infinity) throw Error("can't turn infinty into scientific")
+//   const [intPart, fracPart] = value.toString().split(".")
+//   if(!fracPart){
+//     let nb = "";
+//     if(value<0){
+//       nb+= "-"+intPart[1]+"."+intPart.slice(2)
+//       const
+//     }
+//   }
+//   else {
+
+//   }
+// }
 const runServer = () => {
   dotenv.config();
   const app: Express = express();
@@ -46,6 +62,7 @@ const runServer = () => {
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });
+  console.log(new Decimal(9467280000000000).toScientificNotation(1).toTex());
   app.get("/exo", (req: Request, res: Response) => {
     const exoId = req.query.exoId;
     const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
