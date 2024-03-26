@@ -16,3 +16,4 @@ export * from "../math/calcul/proportionality/proportionalityTable";
 export { powersOfTenDivision } from "../math/powers/powersDivision";
 export * from "../math/powers/decimalToScientific";
 export * from "./waves";
+export * from "./chemicalElements";
