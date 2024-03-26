@@ -15,3 +15,4 @@ export * from "../math/percent/findProportion";
 export * from "../math/calcul/proportionality/proportionalityTable";
 export { powersOfTenDivision } from "../math/powers/powersDivision";
 export * from "../math/powers/decimalToScientific";
+export * from "./waves";

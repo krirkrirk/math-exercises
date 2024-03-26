@@ -12,10 +12,6 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Decimal } from "#root/math/numbers/decimals/decimal";
 import { randint } from "#root/math/utils/random/randint";
-import { round } from "#root/math/utils/round";
-import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 
 type Identifiers = {
   frequency: number;
