@@ -15,6 +15,7 @@ import { round } from "#root/math/utils/round";
 import { AtomSymbols } from "#root/pc/molecularChemistry/atomSymbols";
 import { Atome, atomes } from "#root/pc/molecularChemistry/atome";
 import { random } from "#root/utils/random";
+import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
 
 type AtomicStructureElement = "proton" | "neutron" | "electron";
 
@@ -32,19 +33,21 @@ type Identifiers = {
 const getFindAtomicStructureElementQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const atom = random(atomes);
+  const atom = random(atomes.slice(0, 50));
   const elementToFind = possibleElements[randint(0, 2)];
-  const instruction = `L'écriture conventionnelle du noyau d'un atome de ${
-    atom.name
-  } est $^{${round(atom.masseAtomique, 0)}}_{${atom.numeroAtomique}}${
-    atom.symbole
-  }$ . Quel est le nombre ${
+  const instruction = `L'écriture conventionnelle du noyau d'un atome ${
+    requiresApostropheBefore(atom.name) ? "d'" : "de "
+  }${atom.name} est $^{${round(atom.masseAtomique, 0)}}_{${
+    atom.numeroAtomique
+  }}${atom.symbole}$ . Quel est le nombre ${
     elementToFind === "proton"
       ? "de protons"
       : elementToFind === "neutron"
       ? "de neutrons"
       : "d'électrons"
-  } de l'atome de ${atom.name}?`;
+  } de l'atome ${requiresApostropheBefore(atom.name) ? "d'" : "de "}${
+    atom.name
+  }?`;
 
   const protonsNumber = atom.numeroAtomique;
   // const electronsNumber = protonsNumber;
