@@ -18,7 +18,7 @@ export class NumberNode implements AlgebraicNode {
   isNumeric: boolean;
   constructor(value: number, tex?: string, mathString?: string) {
     this.value = value;
-    this.tex = tex || (value + "").replace(".", ",");
+    this.tex = tex?.replace(".", ",") || (value + "").replace(".", ",");
     this.mathString = mathString || this.value + "";
     this.isNumeric = true;
   }

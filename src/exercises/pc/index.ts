@@ -11,6 +11,7 @@ export * from "./perceivedFrequency";
 export * from "./potentialEnergy";
 export * from "./snellDescartes";
 export * from "./sound";
+export * from "./math";
 
 /**exos pris des maths */
 export * from "../math/percent/findProportion";
