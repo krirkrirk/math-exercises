@@ -14,6 +14,10 @@ import {
   PlusInfinityNode,
 } from "./tree/nodes/numbers/infiniteNode";
 import { Decimal } from "./math/numbers/decimals/decimal";
+import { round, roundSignificant } from "./math/utils/round";
+import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
+import { PowerNode } from "./tree/nodes/operators/powerNode";
+import { toScientific } from "./utils/numberPrototype/toScientific";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
@@ -24,7 +28,7 @@ declare global {
   interface Number {
     toTree: () => AlgebraicNode;
     frenchify: () => string;
-    toScientific: () => AlgebraicNode;
+    toScientific: (decimals?: number) => AlgebraicNode;
   }
 }
 
@@ -37,32 +41,19 @@ Number.prototype.toTree = function (): AlgebraicNode {
 Number.prototype.frenchify = function (): string {
   return (this.valueOf() + "").replace(".", ",");
 };
-// Number.prototype.toScientific = function(decimals?: number): AlgebraicNode {
-//   const value= this.valueOf();
-//   if(value === Infinity || value === -Infinity) throw Error("can't turn infinty into scientific")
-//   const [intPart, fracPart] = value.toString().split(".")
-//   if(!fracPart){
-//     let nb = "";
-//     if(value<0){
-//       nb+= "-"+intPart[1]+"."+intPart.slice(2)
-//       const
-//     }
-//   }
-//   else {
-
-//   }
-// }
+Number.prototype.toScientific = function (decimals?: number): AlgebraicNode {
+  return toScientific(this.valueOf(), decimals);
+};
 const runServer = () => {
   dotenv.config();
   const app: Express = express();
   app.use(cors());
   console.log("math exos", mathExercises.length);
   console.log("pc exos", pcExercises.length);
-
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });
-  console.log(new Decimal(9467280000000000).toScientificNotation(1).toTex());
+
   app.get("/exo", (req: Request, res: Response) => {
     const exoId = req.query.exoId;
     const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);

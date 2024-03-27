@@ -1,6 +1,6 @@
 // import { equal } from "mathjs";
+import { AlgebraicNode } from "../algebraicNode";
 import { Node, NodeOptions, NodeType } from "../node";
-import { OperatorIds, OperatorNode } from "../operators/operatorNode";
 
 export class EqualNode implements Node {
   leftChild: Node;
@@ -48,5 +48,8 @@ export class EqualNode implements Node {
 
   // toMathjs() {
   //   return equal(this.leftChild.toMathjs(), this.rightChild.toMathjs());
+  // }
+  // times(x: AlgebraicNode): EqualNode{
+
   // }
 }
