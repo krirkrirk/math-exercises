@@ -32,15 +32,13 @@ const getFindDistanceFromEarthQuestion: QuestionGenerator<Identifiers> = () => {
   const lightDistanceTravelledDecimalScientificNotation =
     lightDistanceTravelledDecimal.toScientificNotation(1);
 
-  const distanceFromEarth = new MultiplyNode(
-    lightYear.toTree(),
-    lightDistanceTravelledDecimalScientificNotation,
-  ).simplify();
-
+  const distanceFromEarth =
+    lightYear * lightDistanceTravelledDecimalScientificNotation.evaluate({});
+  // Aide : Passer par la distance parcourue par la lumière en une année. L'année-lumière est la distance parcourue par la lumière dans le vide en une année.
   const question: Question<Identifiers> = {
-    answer: `${distanceFromEarth.toTex()}`,
+    answer: `${distanceFromEarth.toScientific(1).toTex({ scientific: 1 })}`,
     instruction: `Une planète se trouve à ${lightYear.frenchify()} années-lumières de nous. Calculer à quelle distance de la Terre se trouve la planète en mètres (en écriture scientifique avec 2 chiffres significatifs). 
-    Aide : Passer par la distance parcourue par la lumière en une année. L'année-lumière est la distance parcourue par la lumière dans le vide en une année.`,
+    `,
     keys: ["timesTenPower"],
     answerFormat: "tex",
     identifiers: { lightYear },
@@ -58,28 +56,20 @@ const getPropositions: QCMGenerator<Identifiers> = (
   //error from not multiplying by distance in a lightYear
   const speed = 300000000;
   const distanceWithoutYearTime = lightYear * speed;
-  const distanceWithoutYearTimeDecimal = new Decimal(distanceWithoutYearTime);
   tryToAddWrongProp(
     propositions,
-    distanceWithoutYearTimeDecimal
-      .toScientificNotation(1)
-      .toTex({ allowOneInProducts: true }),
+    distanceWithoutYearTime.toScientific(1).toTex({ scientific: 1 }),
   );
 
   const secondsInAYear = 365.25 * 24 * 3600;
   //error from wrong distance found
   const wrongLightDistanceTravelled = speed / secondsInAYear;
-  const wrongLightDistanceTravelledDecimal = new Decimal(
-    wrongLightDistanceTravelled,
-  );
-  const wrongLightDistanceTravelledDecimalScientificNotation =
-    wrongLightDistanceTravelledDecimal.toScientificNotation(1);
+  const distanceFromEarth = lightYear * wrongLightDistanceTravelled;
 
-  const distanceFromEarth = new MultiplyNode(
-    lightYear.toTree(),
-    wrongLightDistanceTravelledDecimalScientificNotation,
-  ).simplify();
-  tryToAddWrongProp(propositions, distanceFromEarth.toTex());
+  tryToAddWrongProp(
+    propositions,
+    distanceFromEarth.toScientific(1).toTex({ scientific: 1 }),
+  );
 
   const speedDecimal = new Decimal(speed);
   while (propositions.length < n) {
@@ -87,15 +77,12 @@ const getPropositions: QCMGenerator<Identifiers> = (
     const wrongSpeed = speedDecimal.multiplyByPowerOfTen(randint(-2, 2, [0]));
 
     const lightDistanceTravelled = wrongSpeed.value * secondsInAYear;
-    const lightDistanceTravelledDecimal = new Decimal(lightDistanceTravelled);
-    const ligthDistanceTravelledDecimalScientificNotation =
-      lightDistanceTravelledDecimal.toScientificNotation(1);
 
-    const distanceFromEarth = new MultiplyNode(
-      lightYear.toTree(),
-      ligthDistanceTravelledDecimalScientificNotation,
-    ).simplify();
-    tryToAddWrongProp(propositions, distanceFromEarth.toTex());
+    const distanceFromEarth = lightYear * lightDistanceTravelled;
+    tryToAddWrongProp(
+      propositions,
+      distanceFromEarth.toScientific(1).toTex({ scientific: 1 }),
+    );
   }
   return shuffleProps(propositions, n);
 };

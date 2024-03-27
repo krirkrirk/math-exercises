@@ -44,7 +44,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const dec = new Decimal(period);
   const wrongPeriod = dec
     .multiplyByPowerOfTen(randint(-2, 2, [0]))
-    // .toScientificNotation(1)
     .value.toScientific(1)
     .toTex({ scientific: 1 });
   addValidProp(propositions, answer);
