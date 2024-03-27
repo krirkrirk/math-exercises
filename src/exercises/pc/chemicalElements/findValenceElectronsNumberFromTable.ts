@@ -1,0 +1,93 @@
+import {
+  Exercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  VEA,
+  addValidProp,
+  shuffleProps,
+  tryToAddWrongProp,
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randint } from "#root/math/utils/random/randint";
+import { AtomSymbols } from "#root/pc/molecularChemistry/atomSymbols";
+import { atomes } from "#root/pc/molecularChemistry/atome";
+import { random } from "#root/utils/random";
+import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
+
+type Identifiers = {
+  atomSymbol: AtomSymbols;
+};
+const atomesUntilThirdLine = atomes.slice(
+  0,
+  atomes.findIndex((a) => a.symbole === "Ar"),
+);
+
+const getFindValenceElectronsNumberFromTableQuestion: QuestionGenerator<
+  Identifiers
+> = () => {
+  const atom = random(atomesUntilThirdLine);
+  const instruction = `
+  À l'aide du tableau périodique simplifié, définir le nombre d'électrons de valence d'un atome ${
+    requiresApostropheBefore(atom.name) ? "d'" : "de "
+  }${atom.name}. 
+  ![](https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/periodicTable.png)`;
+
+  const question: Question<Identifiers> = {
+    answer: `${atom.valenceElectronsNumber}`,
+    instruction,
+    keys: [],
+    answerFormat: "tex",
+    identifiers: { atomSymbol: atom.symbole },
+  };
+
+  return question;
+};
+
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, atomSymbol },
+) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  const atom = atomes.find((a) => a.symbole === atomSymbol)!;
+  const atomsWithTheSameInitial = atomesUntilThirdLine.filter(
+    (a) => a.symbole[0] === atomSymbol[0],
+  );
+  if (atomsWithTheSameInitial?.length) {
+    atomsWithTheSameInitial.forEach(
+      (atom) =>
+        tryToAddWrongProp(propositions, `${atom.valenceElectronsNumber}`),
+      tryToAddWrongProp(propositions, `${atom.numeroAtomique}`),
+    );
+  }
+  if (atom.valenceElectronsNumber! - 2 >= 0) {
+    tryToAddWrongProp(propositions, `${atom.valenceElectronsNumber! - 2}`);
+  }
+  tryToAddWrongProp(propositions, `${atom.numeroAtomique}`);
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, `${randint(1, 19)}`);
+  }
+  return shuffleProps(propositions, n);
+};
+
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
+  return ans === answer;
+};
+export const findValenceElectronsNumberFromTable: Exercise<Identifiers> = {
+  id: "findValenceElectronsNumberFromTable",
+  label: "Dénombrer les électrons de valence à l'aide du tableau périodique",
+  levels: ["2nde"],
+  isSingleStep: true,
+  sections: ["Chimie organique"], //TODO change
+  generator: (nb: number) =>
+    getDistinctQuestions(getFindValenceElectronsNumberFromTableQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+  isAnswerValid,
+  subject: "Chimie",
+};

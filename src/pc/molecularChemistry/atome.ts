@@ -12,6 +12,7 @@ export class Atome {
   couleur: string;
   masseVolumique: number;
   pointFusion: number;
+  valenceElectronsNumber?: number;
 
   constructor(
     name: KeyId,
@@ -24,6 +25,7 @@ export class Atome {
     couleur: string,
     masseVolumique: number,
     pointFusion: number,
+    valenceElectronsNumber?: number,
   ) {
     this.name = name;
     this.symbole = symbole;
@@ -35,6 +37,7 @@ export class Atome {
     this.couleur = couleur;
     this.masseVolumique = masseVolumique;
     this.pointFusion = pointFusion;
+    this.valenceElectronsNumber = valenceElectronsNumber;
   }
 }
 
@@ -50,6 +53,7 @@ export const atomes: Atome[] = [
     "Incolore",
     0.08988,
     -259.16,
+    1,
   ),
   new Atome(
     "Hélium",
@@ -62,6 +66,7 @@ export const atomes: Atome[] = [
     "Incolore",
     0.1786,
     -272.2,
+    2,
   ),
   new Atome(
     "Lithium",
@@ -74,6 +79,7 @@ export const atomes: Atome[] = [
     "Argenté",
     0.534,
     180.54,
+    1,
   ),
   new Atome(
     "Béryllium",
@@ -86,6 +92,7 @@ export const atomes: Atome[] = [
     "Gris métallique",
     1.848,
     1287,
+    2,
   ),
   new Atome(
     "Bore",
@@ -98,6 +105,7 @@ export const atomes: Atome[] = [
     "Noir",
     2.46,
     2075,
+    3,
   ),
   new Atome(
     "Carbone",
@@ -110,6 +118,7 @@ export const atomes: Atome[] = [
     "Noir",
     2.267,
     3500,
+    4,
   ),
   new Atome(
     "Azote",
@@ -122,6 +131,7 @@ export const atomes: Atome[] = [
     "Incolore",
     0.001251,
     -210.01,
+    5,
   ),
   new Atome(
     "Oxygène",
@@ -134,6 +144,7 @@ export const atomes: Atome[] = [
     "Incolore",
     0.001429,
     -218.79,
+    6,
   ),
   new Atome(
     "Fluor",
@@ -146,6 +157,7 @@ export const atomes: Atome[] = [
     "Jaune pâle",
     0.001696,
     -219.62,
+    7,
   ),
   new Atome(
     "Néon",
@@ -158,6 +170,7 @@ export const atomes: Atome[] = [
     "Incolore",
     0.9002,
     -246.08,
+    8,
   ),
   new Atome(
     "Sodium",
@@ -170,6 +183,7 @@ export const atomes: Atome[] = [
     "Argenté",
     0.968,
     97.72,
+    1,
   ),
   new Atome(
     "Magnésium",
@@ -182,6 +196,7 @@ export const atomes: Atome[] = [
     "Gris métallique",
     1.738,
     650,
+    2,
   ),
   new Atome(
     "Aluminium",
@@ -194,6 +209,7 @@ export const atomes: Atome[] = [
     "Argenté",
     2.7,
     660.32,
+    3,
   ),
   new Atome(
     "Silicium",
@@ -206,6 +222,7 @@ export const atomes: Atome[] = [
     "Bleu-gris",
     2.3296,
     1414,
+    4,
   ),
   new Atome(
     "Phosphore",
@@ -218,6 +235,7 @@ export const atomes: Atome[] = [
     "Blanc",
     1.82,
     44.15,
+    5,
   ),
   new Atome(
     "Soufre",
@@ -230,6 +248,7 @@ export const atomes: Atome[] = [
     "Jaune",
     2.067,
     115.21,
+    6,
   ),
   new Atome(
     "Chlore",
@@ -242,6 +261,7 @@ export const atomes: Atome[] = [
     "Vert pâle",
     0.003214,
     -101.5,
+    7,
   ),
   new Atome(
     "Argon",
@@ -254,6 +274,7 @@ export const atomes: Atome[] = [
     "Incolore",
     1.3954,
     -189.34,
+    8,
   ),
   new Atome(
     "Potassium",
