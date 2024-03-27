@@ -30,7 +30,8 @@ export type NodeOptions = {
 
 export type ToTexOptions = {
   displayStyle?: boolean;
-  allowOneInProducts?: boolean;
+  //number est le nombre de décimals significatifs
+  scientific?: number;
 };
 export interface Node {
   type: NodeType;

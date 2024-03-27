@@ -11,7 +11,10 @@ export * from "./perceivedFrequency";
 export * from "./potentialEnergy";
 export * from "./snellDescartes";
 export * from "./sound";
+
+/**exos pris des maths */
 export * from "../math/percent/findProportion";
 export * from "../math/calcul/proportionality/proportionalityTable";
 export { powersOfTenDivision } from "../math/powers/powersDivision";
 export * from "../math/powers/decimalToScientific";
+export * from "../math/calcul/mentalCaluls/mentalAddAndSub";

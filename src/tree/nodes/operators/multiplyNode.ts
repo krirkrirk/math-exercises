@@ -22,6 +22,7 @@ import { OppositeNode, isOppositeNode } from "../functions/oppositeNode";
 import { FractionNode, isFractionNode } from "./fractionNode";
 import { isFunctionNode } from "../functions/functionNode";
 import { AddNode } from "./addNode";
+import { round } from "#root/math/utils/round";
 export function isMultiplyNode(a: Node): a is MultiplyNode {
   return isOperatorNode(a) && a.id === OperatorIds.multiply;
 }
@@ -74,7 +75,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
     if (
       isNumberNode(this.leftChild) &&
       this.leftChild.value === 1 &&
-      !opts?.allowOneInProducts
+      opts?.scientific === undefined
     ) {
       return rightTex;
     }
@@ -338,7 +339,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
     sortMultiplyNodes(externals);
     const simplifyExternalNodes = (a: AlgebraicNode, b: AlgebraicNode) => {
       if (isNumberNode(a) && isNumberNode(b)) {
-        return new NumberNode(a.value * b.value);
+        return new NumberNode(round(a.value * b.value, 12));
       }
       if (isSqrtNode(a) && isSqrtNode(b)) {
         return new SqrtNode(new MultiplyNode(a.child, b.child)).simplify(opts);
