@@ -12,6 +12,7 @@ export * from "./potentialEnergy";
 export * from "./snellDescartes";
 export * from "./sound";
 export * from "./math";
+export * from "./weight";
 
 /**exos pris des maths */
 export * from "../math/percent/findProportion";
