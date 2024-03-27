@@ -13,6 +13,7 @@ export * from "./snellDescartes";
 export * from "./sound";
 export * from "./math";
 export * from "./weight";
+export * from "./forces";
 
 /**exos pris des maths */
 export * from "../math/percent/findProportion";

@@ -1,13 +1,19 @@
+import { Measure } from "../measure/measure";
+
 type PhysicalConstant = {
-  value: number;
+  measure: Measure;
   unit: string;
 };
 
 export const earthGravity: PhysicalConstant = {
-  value: 9.80665,
+  measure: new Measure(9.80665, 0),
   unit: "\\text{N}\\cdot\\text{kg}^{-1}",
 };
 export const moonGravity: PhysicalConstant = {
-  value: 1.622,
+  measure: new Measure(1.622),
   unit: "\\text{N}\\cdot\\text{kg}^{-1}",
+};
+export const earthG: PhysicalConstant = {
+  measure: new Measure(6.67, -11),
+  unit: "\\text{N}\\cdot\\text{m}^2\\cdot\\text{kg}^{-2}",
 };
