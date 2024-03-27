@@ -9,11 +9,13 @@ import {
   PlusInfinityNode,
 } from "./tree/nodes/numbers/infiniteNode";
 import { AlgebraicNode } from "./tree/nodes/algebraicNode";
+import { toScientific } from "./utils/numberPrototype/toScientific";
 
 declare global {
   interface Number {
     toTree: () => AlgebraicNode;
     frenchify: () => string;
+    toScientific: (decimals?: number) => AlgebraicNode;
   }
 }
 
@@ -25,6 +27,9 @@ Number.prototype.toTree = function (): AlgebraicNode {
 };
 Number.prototype.frenchify = function (): string {
   return (this.valueOf() + "").replace(".", ",");
+};
+Number.prototype.toScientific = function (decimals?: number): AlgebraicNode {
+  return toScientific(this.valueOf(), decimals);
 };
 /**
  * TODO

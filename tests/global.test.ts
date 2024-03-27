@@ -6,6 +6,7 @@ import { Exercise } from "./../src/exercises/exercise";
 import { NumberNode } from "./../src/tree/nodes/numbers/numberNode";
 import { MinusInfinityNode } from "./../src/tree/nodes/numbers/infiniteNode";
 import { PlusInfinityNode } from "./../src/tree/nodes/numbers/infiniteNode";
+import { toScientific } from "../src/utils/numberPrototype/toScientific";
 
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
 const pcExercises = Object.values(PCExercises) as Exercise<any>[];
@@ -18,6 +19,7 @@ declare global {
   interface Number {
     toTree: () => AlgebraicNode;
     frenchify: () => string;
+    toScientific: (decimals?: number) => AlgebraicNode;
   }
 }
 
@@ -29,6 +31,9 @@ Number.prototype.toTree = function (): AlgebraicNode {
 };
 Number.prototype.frenchify = function (): string {
   return (this.valueOf() + "").replace(".", ",");
+};
+Number.prototype.toScientific = function (decimals?: number): AlgebraicNode {
+  return toScientific(this.valueOf(), decimals);
 };
 
 test("all exos", () => {
