@@ -127,8 +127,19 @@ const runServer = () => {
     console.log(`[server]: Server is running at http://localhost:5000`);
   });
 
-  // getAtoms(3).forEach((atom) => {
-  //   console.log(getElectronicConfigurationFromShells(atom.electronsShells!));
-  // });
+  getAtoms(3).forEach((atom) => {
+    console.log(getElectronicConfigurationFromShells(atom.electronsShells!));
+    console.log(
+      getElectronicConfigurationFromShells(atom.electronsShells!)
+        .split("2s^")
+        .join("2p^"),
+    );
+    const wrongShells = atom.electronsShells!.map((shell, index) => {
+      if (index === 0 || index > 2) return shell;
+      if (index === 1) return shell + 1;
+      if (index === 2) return shell - 1;
+    });
+    console.log(wrongShells);
+  });
 };
 runServer();
