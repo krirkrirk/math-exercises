@@ -9,6 +9,7 @@ import {
   shuffleProps,
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
+import { getAtoms } from "#root/exercises/utils/getAtoms";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { AtomSymbols } from "#root/pc/molecularChemistry/atomSymbols";
@@ -16,10 +17,6 @@ import { atomes } from "#root/pc/molecularChemistry/atome";
 import { random } from "#root/utils/random";
 import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
 
-const atomesUntilThirdLine = atomes.slice(
-  0,
-  atomes.findIndex((a) => a.symbole === "Ar") + 1,
-);
 type Identifiers = {
   atomSymbol: AtomSymbols;
 };
@@ -27,7 +24,7 @@ type Identifiers = {
 const getFindValenceElectronsNumberFromTableQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const atom = random(atomesUntilThirdLine);
+  const atom = random(getAtoms(3));
   const instruction = `
   À l'aide du tableau périodique simplifié, définir le nombre d'électrons de valence d'un atome ${
     requiresApostropheBefore(atom.name) ? "d'" : "de "
@@ -53,9 +50,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
 
   const atom = atomes.find((a) => a.symbole === atomSymbol)!;
-  const atomsWithTheSameInitial = atomesUntilThirdLine.filter(
+  const atomsWithTheSameInitial = getAtoms(3).filter(
     (a) => a.symbole[0] === atomSymbol[0],
   );
+  tryToAddWrongProp(propositions, `${atom.valenceElectronsNumber! + 10}`);
   if (atomsWithTheSameInitial?.length) {
     atomsWithTheSameInitial.forEach(
       (atom) =>

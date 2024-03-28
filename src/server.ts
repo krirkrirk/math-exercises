@@ -19,6 +19,9 @@ import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
 import { PowerNode } from "./tree/nodes/operators/powerNode";
 import { toScientific } from "./utils/numberPrototype/toScientific";
 import { Measure } from "./pc/measure/measure";
+import { atomes } from "./pc/molecularChemistry/atome";
+import { getElectronicConfigurationFromShells } from "./exercises/utils/getElectronicConfigurationFromShells";
+import { getAtoms } from "./exercises/utils/getAtoms";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
@@ -123,6 +126,9 @@ const runServer = () => {
   app.listen("5000", () => {
     console.log(`[server]: Server is running at http://localhost:5000`);
   });
-};
 
+  // getAtoms(3).forEach((atom) => {
+  //   console.log(getElectronicConfigurationFromShells(atom.electronsShells!));
+  // });
+};
 runServer();
