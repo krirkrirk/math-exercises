@@ -52,7 +52,7 @@ const runServer = () => {
   console.log("math exos", mathExercises.length);
   console.log("pc exos", pcExercises.length);
 
-  console.log(new Measure(1.43, 20).times(new Measure(1.2, -4)).toTex());
+  // console.log(new Measure(1.43, 20).times(new Measure(1.2, -4)).toTex());
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

@@ -9,7 +9,7 @@ export class Measure {
   significantPart: number;
 
   constructor(value: number, exponent: number = 0) {
-    console.log("bf", value, exponent);
+    // console.log("bf", value, exponent);
     if (value === 0) {
       this.significantPart = 0;
       this.exponent = 0;
@@ -56,7 +56,7 @@ export class Measure {
       this.significantPart = value;
       this.exponent = exponent;
     }
-    console.log("after", this.significantPart, this.exponent);
+    // console.log("after", this.significantPart, this.exponent);
   }
 
   times(n: number | Measure) {

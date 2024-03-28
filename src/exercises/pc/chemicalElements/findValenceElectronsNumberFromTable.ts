@@ -16,13 +16,13 @@ import { atomes } from "#root/pc/molecularChemistry/atome";
 import { random } from "#root/utils/random";
 import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
 
+const atomesUntilThirdLine = atomes.slice(
+  0,
+  atomes.findIndex((a) => a.symbole === "Ar") + 1,
+);
 type Identifiers = {
   atomSymbol: AtomSymbols;
 };
-const atomesUntilThirdLine = atomes.slice(
-  0,
-  atomes.findIndex((a) => a.symbole === "Ar"),
-);
 
 const getFindValenceElectronsNumberFromTableQuestion: QuestionGenerator<
   Identifiers
@@ -82,12 +82,17 @@ export const findValenceElectronsNumberFromTable: Exercise<Identifiers> = {
   label: "Dénombrer les électrons de valence à l'aide du tableau périodique",
   levels: ["2nde"],
   isSingleStep: true,
-  sections: ["Chimie organique"], //TODO change
+  sections: ["Chimie organique"],
   generator: (nb: number) =>
-    getDistinctQuestions(getFindValenceElectronsNumberFromTableQuestion, nb),
+    getDistinctQuestions(
+      getFindValenceElectronsNumberFromTableQuestion,
+      nb,
+      18,
+    ),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
   subject: "Chimie",
+  maxAllowedQuestions: 18,
 };

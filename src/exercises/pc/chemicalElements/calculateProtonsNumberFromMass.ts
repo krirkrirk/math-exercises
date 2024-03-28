@@ -70,6 +70,9 @@ const getPropositions: QCMGenerator<Identifiers> = (
     `${round(atom.masseAtomique, 0) - atom.numeroAtomique}`,
   );
   while (propositions.length < n) {
+    if (atom.numeroAtomique < 2) {
+      tryToAddWrongProp(propositions, `${randint(2, 5)}`);
+    }
     tryToAddWrongProp(
       propositions,
       `${
