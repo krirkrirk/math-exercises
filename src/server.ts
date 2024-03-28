@@ -18,6 +18,7 @@ import { round, roundSignificant } from "./math/utils/round";
 import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
 import { PowerNode } from "./tree/nodes/operators/powerNode";
 import { toScientific } from "./utils/numberPrototype/toScientific";
+import { Measure } from "./pc/measure/measure";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
@@ -50,6 +51,8 @@ const runServer = () => {
   app.use(cors());
   console.log("math exos", mathExercises.length);
   console.log("pc exos", pcExercises.length);
+
+  console.log(new Measure(1.43, 20).times(new Measure(1.2, -4)).toTex());
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

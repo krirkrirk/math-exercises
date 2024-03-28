@@ -170,6 +170,7 @@ export type MathSection =
 export type PCSection =
   | "Réaction chimique"
   | "Chimie des solutions"
+  | "Forces"
   | "Chimie organique"
   | "Mécanique"
   | "Lumière"
