@@ -322,5 +322,5 @@ export const isolateVariables: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  subject: "Mathématiques",
+  subject: "Physique",
 };

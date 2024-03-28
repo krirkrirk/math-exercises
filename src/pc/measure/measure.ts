@@ -7,7 +7,9 @@ import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 export class Measure {
   exponent: number;
   significantPart: number;
+
   constructor(value: number, exponent: number = 0) {
+    console.log("bf", value, exponent);
     if (value === 0) {
       this.significantPart = 0;
       this.exponent = 0;
@@ -31,7 +33,7 @@ export class Measure {
         .split("")
         .findIndex((el) => el.match(/[1-9]/));
       const length = firstSignificantIndex - 1;
-      this.exponent = -(exponent + length);
+      this.exponent = exponent - length;
       this.significantPart = Number(
         stringValue[firstSignificantIndex] +
           "." +
@@ -43,7 +45,7 @@ export class Measure {
         .split("")
         .findIndex((el) => el.match(/[1-9]/));
       const length = firstSignificantIndex - 2;
-      this.exponent = -(exponent + length);
+      this.exponent = exponent - length;
       this.significantPart = Number(
         "-" +
           stringValue[firstSignificantIndex] +
@@ -54,7 +56,9 @@ export class Measure {
       this.significantPart = value;
       this.exponent = exponent;
     }
+    console.log("after", this.significantPart, this.exponent);
   }
+
   times(n: number | Measure) {
     if (typeof n === "number")
       return new Measure(this.significantPart * n, this.exponent);
@@ -71,6 +75,7 @@ export class Measure {
       this.exponent - n.exponent,
     );
   }
+
   toTex(opts?: ToTexOptions) {
     const decimals = opts?.scientific;
     const nbTree =
@@ -81,7 +86,7 @@ export class Measure {
             roundSignificant(this.significantPart, decimals),
           );
     if (this.exponent === 0) {
-      nbTree.toTex();
+      return nbTree.toTex();
     }
     if (this.exponent === 1) {
       return new MultiplyNode(nbTree, (10).toTree()).toTex({
@@ -107,6 +112,9 @@ export class Measure {
       this.exponent,
     );
   }
+
+  //gravité = 9.32423432
+  //new Measure(9432432).toSignificant(1).times(39)
 
   evaluate() {
     return this.significantPart * Math.pow(10, this.exponent);

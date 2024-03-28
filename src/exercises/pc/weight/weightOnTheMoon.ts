@@ -85,15 +85,15 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 export const weightOnTheMoon: Exercise<Identifiers> = {
   id: "weightOnTheMoon",
   connector: "=",
-  label: "",
-  levels: [],
+  label: "Passer du poids sur la Lune au poids sur la Terre",
+  levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Forces"],
   generator: (nb: number) =>
     getDistinctQuestions(getWeightOnTheMoonQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  subject: "Mathématiques",
+  subject: "Physique",
 };
