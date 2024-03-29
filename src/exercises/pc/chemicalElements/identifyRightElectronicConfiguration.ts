@@ -60,7 +60,33 @@ const getPropositions: QCMGenerator<Identifiers> = (
     tryToAddWrongProp(propositions, `1s^2\\ 2p^1`);
     tryToAddWrongProp(propositions, `1s^3`);
   }
+  if (electrons === 4) {
+    tryToAddWrongProp(propositions, `1p^2\\ 2s^2`);
+  }
+
   while (propositions.length < n) {
+    const wrongNumberInShells = shells.map((shell, index) => {
+      if (electrons <= 4) {
+        if (index === 1) return shell + 1;
+        return shell;
+      }
+      if (electrons <= 10) {
+        if (index === 2) return shell + 1;
+        return shell;
+      }
+      if (electrons <= 12) {
+        if (index === 3) return shell + 1;
+        return shell;
+      }
+      if (index === 4) return shell + 1;
+
+      return shell;
+    });
+    tryToAddWrongProp(
+      propositions,
+      `${getElectronicConfigurationFromShells(wrongNumberInShells)}`,
+    );
+
     const wrongSecondLetter = getElectronicConfigurationFromShells(
       atom.electronsShells!,
     )
@@ -76,6 +102,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
         .join("2s^");
       tryToAddWrongProp(propositions, `${wrongThirdLetter}`);
     }
+
     if (electrons >= 6) {
       const wrongShells = shells.map((shell, index) => {
         if (index === 0 || index > 2) return shell;
