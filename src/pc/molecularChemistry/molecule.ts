@@ -9,9 +9,21 @@ type AtomsData = {
   atom: Atome;
   count: number;
 };
+
+const getId = (s: string) => {
+  return ("Mol-" +
+    s
+      .replaceAll("(", "")
+      .replaceAll(")", "")
+      .replaceAll("_", "")
+      .replaceAll("^", "")
+      .replaceAll("{", "")
+      .replaceAll("}", "")) as KeyId;
+};
 export class Molecule {
-  name: KeyId;
+  name: string;
   formula: string;
+  keyId: KeyId;
   weight: number;
   atoms: AtomsData[];
   isOrganic: boolean;
@@ -20,7 +32,7 @@ export class Molecule {
   type?: string;
 
   constructor(
-    name: KeyId,
+    name: string,
     formula: string,
     weight: number,
     atoms: AtomShortcut[],
@@ -31,6 +43,7 @@ export class Molecule {
   ) {
     this.name = name;
     this.formula = formula;
+    this.keyId = getId(formula);
     this.weight = weight;
     this.atoms = atoms.map((atomData) => {
       return {

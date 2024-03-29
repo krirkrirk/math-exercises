@@ -1,5 +1,6 @@
 import { randint } from "#root/math/utils/random/randint";
 import { KeyId } from "#root/types/keyIds";
+import { Key } from "readline";
 import { Molecule, molecules } from "./molecule";
 
 export interface ReactionSpecies {
@@ -503,12 +504,23 @@ export class Reaction {
 
     return speciesFormula;
   }
-  getSpeciesName(): KeyId[] {
-    const speciesFormula: KeyId[] = [];
+  getSpeciesName(): string[] {
+    const speciesFormula: string[] = [];
 
     for (const reactionSpecies of this.reactionArray) {
       if (reactionSpecies.species) {
         speciesFormula.push(reactionSpecies.species.name);
+      }
+    }
+
+    return speciesFormula;
+  }
+  getKeyIds(): KeyId[] {
+    const speciesFormula: KeyId[] = [];
+
+    for (const reactionSpecies of this.reactionArray) {
+      if (reactionSpecies.species) {
+        speciesFormula.push(reactionSpecies.species.keyId);
       }
     }
 

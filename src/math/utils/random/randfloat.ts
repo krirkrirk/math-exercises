@@ -2,16 +2,10 @@
  * @returns random [[a, b[[
  */
 
-export const randfloat = (
-  a: number,
-  b?: number,
-  excludes?: number[],
-): number => {
+import { round } from "../round";
+
+export const randfloat = (a: number, b?: number, roundTo?: number): number => {
   if (b === undefined) return Math.random() * a;
-  if (!excludes) return a + Math.random() * (b - a);
-  let res;
-  do {
-    res = a + Math.random() * (b - a);
-  } while (excludes.includes(res));
-  return res;
+  if (roundTo === undefined) return a + Math.random() * (b - a);
+  return round(a + Math.random() * (b - a), roundTo);
 };
