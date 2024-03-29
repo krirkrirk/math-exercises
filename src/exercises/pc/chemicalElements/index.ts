@@ -4,3 +4,4 @@ export * from "./calculateProtonsNumberFromMass";
 export * from "./findValenceElectronsNumberFromTable";
 export * from "./findValenceElectronsNumberFromElectronicConfiguration";
 export * from "./identifyRightElectronicConfiguration";
+export * from "./findAtomEntitiesNumberFromMass";

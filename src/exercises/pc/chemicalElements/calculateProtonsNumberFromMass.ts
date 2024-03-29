@@ -36,7 +36,7 @@ const getCalculateProtonsNumberFromMassQuestion: QuestionGenerator<
     requiresApostropheBefore(atom.name) ? "d'" : "de "
   }${atom.name} a pour masse $m = ${atomNucleusMass.toTex({
     scientific: 2,
-  })}$ et possède $${
+  })} kg$ et possède $${
     round(atom.masseAtomique, 0) - atom.numeroAtomique
   }$ neutrons. Déterminer le nombre de protons de cet atome.`;
 
