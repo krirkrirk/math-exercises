@@ -1,9 +1,12 @@
+import { Measure } from "../measure/measure";
+
 type PhysicalConstant = {
-  value: number;
+  value: Measure;
   unit: string;
 };
 
 export const nucleonMass: PhysicalConstant = {
-  value: 1.67 * Math.pow(10, -27),
+  value: new Measure(1.67, -27),
+  // value: 1.67 * Math.pow(10, -27),
   unit: "\\text{kg}",
 };

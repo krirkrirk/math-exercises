@@ -177,4 +177,5 @@ export type PCSection =
   | "Acide / Base"
   | "Constitution et transformations de la matière"
   | "Ondes"
-  | "Son";
+  | "Son"
+  | "Corps purs et mélanges";

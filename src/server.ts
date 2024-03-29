@@ -19,6 +19,9 @@ import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
 import { PowerNode } from "./tree/nodes/operators/powerNode";
 import { toScientific } from "./utils/numberPrototype/toScientific";
 import { Measure } from "./pc/measure/measure";
+import { atomes } from "./pc/molecularChemistry/atome";
+import { getElectronicConfigurationFromShells } from "./exercises/utils/getElectronicConfigurationFromShells";
+import { getAtoms } from "./exercises/utils/getAtoms";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
@@ -52,7 +55,7 @@ const runServer = () => {
   console.log("math exos", mathExercises.length);
   console.log("pc exos", pcExercises.length);
 
-  console.log(new Measure(1.43, 20).times(new Measure(1.2, -4)).toTex());
+  // console.log(new Measure(1.43, 20).times(new Measure(1.2, -4)).toTex());
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });
@@ -124,5 +127,4 @@ const runServer = () => {
     console.log(`[server]: Server is running at http://localhost:5000`);
   });
 };
-
 runServer();

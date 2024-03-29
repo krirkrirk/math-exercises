@@ -9,6 +9,7 @@ import {
   shuffleProps,
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
+import { getAtoms } from "#root/exercises/utils/getAtoms";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { AtomSymbols } from "#root/pc/molecularChemistry/atomSymbols";
@@ -19,15 +20,11 @@ import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
 type Identifiers = {
   atomSymbol: AtomSymbols;
 };
-const atomesUntilThirdLine = atomes.slice(
-  0,
-  atomes.findIndex((a) => a.symbole === "Ar"),
-);
 
 const getFindValenceElectronsNumberFromTableQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const atom = random(atomesUntilThirdLine);
+  const atom = random(getAtoms(3));
   const instruction = `
   À l'aide du tableau périodique simplifié, définir le nombre d'électrons de valence d'un atome ${
     requiresApostropheBefore(atom.name) ? "d'" : "de "
@@ -53,9 +50,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
 
   const atom = atomes.find((a) => a.symbole === atomSymbol)!;
-  const atomsWithTheSameInitial = atomesUntilThirdLine.filter(
+  const atomsWithTheSameInitial = getAtoms(3).filter(
     (a) => a.symbole[0] === atomSymbol[0],
   );
+  tryToAddWrongProp(propositions, `${atom.valenceElectronsNumber! + 10}`);
   if (atomsWithTheSameInitial?.length) {
     atomsWithTheSameInitial.forEach(
       (atom) =>
@@ -82,12 +80,17 @@ export const findValenceElectronsNumberFromTable: Exercise<Identifiers> = {
   label: "Dénombrer les électrons de valence à l'aide du tableau périodique",
   levels: ["2nde"],
   isSingleStep: true,
-  sections: ["Chimie organique"], //TODO change
+  sections: ["Chimie organique"],
   generator: (nb: number) =>
-    getDistinctQuestions(getFindValenceElectronsNumberFromTableQuestion, nb),
+    getDistinctQuestions(
+      getFindValenceElectronsNumberFromTableQuestion,
+      nb,
+      18,
+    ),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
   subject: "Chimie",
+  maxAllowedQuestions: 18,
 };

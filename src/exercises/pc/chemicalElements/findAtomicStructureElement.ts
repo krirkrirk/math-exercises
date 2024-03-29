@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { AtomSymbols } from "#root/pc/molecularChemistry/atomSymbols";
-import { Atome, atomes } from "#root/pc/molecularChemistry/atome";
+import { atomes } from "#root/pc/molecularChemistry/atome";
 import { random } from "#root/utils/random";
 import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
 
@@ -50,7 +50,6 @@ const getFindAtomicStructureElementQuestion: QuestionGenerator<
   }?`;
 
   const protonsNumber = atom.numeroAtomique;
-  // const electronsNumber = protonsNumber;
   const neutronsNumber = round(atom.masseAtomique, 0) - protonsNumber;
   const answer = elementToFind === "neutron" ? neutronsNumber : protonsNumber;
 

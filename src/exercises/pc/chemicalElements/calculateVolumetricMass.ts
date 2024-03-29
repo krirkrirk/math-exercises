@@ -82,12 +82,12 @@ export const calculateVolumetricMass: Exercise<Identifiers> = {
   label: "Utiliser la formule $m = t\\times V$",
   levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Corps purs et mélanges"],
   generator: (nb: number) =>
     getDistinctQuestions(getCalculateVolumetricMassQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  subject: "Mathématiques",
+  subject: "Chimie",
 };
