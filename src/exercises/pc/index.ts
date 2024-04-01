@@ -43,8 +43,8 @@ export * from "../math/equaDiff/equaDiffGeneralFormeWithIC";
 
 export * from "../math/derivation/derivativeNumberReading";
 export * from "../math/derivation/derivative/usualderivative";
-export * from "../math/derivation/derivative/thirdDegreeDerivative";
-export * from "../math/derivation/derivative/firstDegreeDerivative";
-export * from "../math/derivation/derivative/secondDegreeDerivative";
+export { thirdDegreeDerivative } from "../math/derivation/derivative/thirdDegreeDerivative";
+export { firstDegreeDerivative } from "../math/derivation/derivative/firstDegreeDerivative";
+export { secondDegreeDerivative } from "../math/derivation/derivative/secondDegreeDerivative";
 export * from "../math/trigonometry/trigonometrySideCalcul";
 export * from "../math/trigonometry/trigonometryAngleCalcul";
