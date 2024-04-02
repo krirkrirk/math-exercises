@@ -36,11 +36,9 @@ export * from "../math/geometry/vectors/coordinatesReading";
 export * from "../math/functions/affines/affineExpressionReading";
 export * from "../math/geometry/thales/thales";
 export * from "../math/geometry/thales/thalesCalcul";
-
 export * from "../math/equaDiff/equaDiffCheckSolutionFirstOrder";
 export * from "../math/equaDiff/equaDiffGeneralForme";
 export * from "../math/equaDiff/equaDiffGeneralFormeWithIC";
-
 export * from "../math/derivation/derivativeNumberReading";
 export * from "../math/derivation/derivative/usualderivative";
 export { thirdDegreeDerivative } from "../math/derivation/derivative/thirdDegreeDerivative";
