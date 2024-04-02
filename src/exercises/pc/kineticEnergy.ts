@@ -65,7 +65,7 @@ export const kineticEnergy: Exercise<Identifiers> = {
   id: "kineticEnergy",
   connector: "=",
   label: "Calculer l'énergie cinétique",
-  levels: ["4ème", "3ème", "2nde"],
+  levels: ["4ème", "3ème", "2nde", "1reSpé"],
   sections: ["Mécanique"],
   subject: "Physique",
   isSingleStep: true,

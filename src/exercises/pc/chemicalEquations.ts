@@ -27,7 +27,7 @@ const getChemicalEquations: QuestionGenerator<Identifiers> = () => {
       "Equilibrez la réaction suivante :$\\\\$ " +
       reaction.getReactionWithoutCoef(),
     answer,
-    keys: [...reaction.getSpeciesName(), "rightarrow"],
+    keys: [...reaction.getKeyIds(), "rightarrow"],
     answerFormat: "tex",
     identifiers: { reactionArray: reaction.reactionArray },
   };
