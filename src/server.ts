@@ -129,14 +129,5 @@ const runServer = () => {
   app.listen("5000", () => {
     console.log(`[server]: Server is running at http://localhost:5000`);
   });
-  // const atom = random(atomes);
-  // const atom = atomes.find((a) => a.symbole === "Cu")!;
-  // const sampleMass = 1.05;
-  // const sampleMassMeasure = new Measure(sampleMass, 0);
-  // const atomMass = nucleonMass.value.times(atom.masseAtomique).toSignificant(2);
-  // const entitiesNumber = sampleMassMeasure.divide(atomMass).toSignificant(2);
-  // console.log(atom, sampleMass, sampleMassMeasure, atomMass, entitiesNumber);
-  // console.log(atomMass.toTex({ scientific: 2 }));
-  // console.log(entitiesNumber.toTex({ scientific: 2 }));
 };
 runServer();

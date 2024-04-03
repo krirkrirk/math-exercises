@@ -29,13 +29,13 @@ const getCalculateSynthesisEfficiencyQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: `${roundSignificant(efficiency, 2)}`,
-    instruction: `Lors d'une synthèse chimique, ${roundSignificant(
+    instruction: `Lors d'une synthèse chimique, $${roundSignificant(
       maxQuantity,
       2,
-    )} mol de produit est attendu au maximum, et il se forme au final ${roundSignificant(
+    )}\\ \\text{mol}$ de produit est attendu au maximum, et il se forme au final $${roundSignificant(
       productQuantity,
       2,
-    )} mol de produit.
+    )}\\ \\text{mol}$ de produit.
     Calculer le rendement.
     `,
     keys: [],
