@@ -25,6 +25,7 @@ import { getAtoms } from "./exercises/utils/getAtoms";
 import { random } from "./utils/random";
 import { randfloat } from "./math/utils/random/randfloat";
 import { nucleonMass } from "./pc/constants/atoms";
+import { randint } from "./math/utils/random/randint";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];

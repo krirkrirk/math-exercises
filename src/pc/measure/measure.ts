@@ -106,9 +106,9 @@ export class Measure {
     const significantString = this.significantPart.toString();
     const [intPart, fracPart] = significantString.split(".");
     if (n === 0) return new Measure(Number(intPart), this.exponent);
-
+    const significantFractPart = fracPart?.slice(0, n) ?? "0".repeat(n);
     return new Measure(
-      Number(intPart + "." + fracPart.slice(0, n)),
+      Number(intPart + "." + significantFractPart),
       this.exponent,
     );
   }

@@ -34,6 +34,7 @@ const getFindAtomEntitiesNumberFromMassQuestion: QuestionGenerator<
   const sampleMassMeasure = new Measure(sampleMass, 0);
   const atomMass = nucleonMass.value.times(atom.masseAtomique).toSignificant(2);
   const entitiesNumber = sampleMassMeasure.divide(atomMass).toSignificant(2);
+  console.log("entitiesNumber", entitiesNumber);
 
   const instruction = `Un échantillon a une masse $m = ${frenchify(
     sampleMass,
@@ -47,7 +48,7 @@ const getFindAtomEntitiesNumberFromMassQuestion: QuestionGenerator<
   }${atom.name} composant l'échantillon.`;
 
   const question: Question<Identifiers> = {
-    answer: `${entitiesNumber.toTex({ scientific: 2 })}`,
+    answer: `${entitiesNumber.toSignificant(2).toTex()}`,
     instruction,
     keys: ["timesTenPower"],
     answerFormat: "tex",
@@ -66,9 +67,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
   const atom = atomes.find((a) => a.symbole === atomSymbol)!;
   const sampleMassMeasure = new Measure(sampleMass, 0);
-  const atomMass = nucleonMass.value.times(atom.masseAtomique).toSignificant(2);
-  const entitiesNumber = sampleMassMeasure.divide(atomMass).toSignificant(2);
 
+  const atomMass = nucleonMass.value.times(atom.masseAtomique).toSignificant(2);
+
+  const entitiesNumber = sampleMassMeasure.divide(atomMass).toSignificant(2);
   const wrongDivision = atomMass.divide(sampleMassMeasure).toSignificant(2);
   tryToAddWrongProp(propositions, `${wrongDivision.toTex({ scientific: 2 })}`);
 
@@ -77,7 +79,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
     propositions,
     `${wrongCalculation.toTex({ scientific: 2 })}`,
   );
-
   while (propositions.length < n) {
     const wrongPower = entitiesNumber
       .times(new Measure(1, randint(-2, 2, [0])))
