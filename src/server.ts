@@ -22,6 +22,10 @@ import { Measure } from "./pc/measure/measure";
 import { atomes } from "./pc/molecularChemistry/atome";
 import { getElectronicConfigurationFromShells } from "./exercises/utils/getElectronicConfigurationFromShells";
 import { getAtoms } from "./exercises/utils/getAtoms";
+import { CosNode } from "./tree/nodes/functions/cosNode";
+import { FractionNode } from "./tree/nodes/operators/fractionNode";
+import { PiNode } from "./tree/nodes/numbers/piNode";
+import { VariableNode } from "./tree/nodes/variables/variableNode";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
@@ -54,8 +58,17 @@ const runServer = () => {
   app.use(cors());
   console.log("math exos", mathExercises.length);
   console.log("pc exos", pcExercises.length);
+  // const node = new MultiplyNode(
+  //   (4).toTree(),
+  //   new CosNode(
+  //     new MultiplyNode(
+  //       new FractionNode(new MultiplyNode((2).toTree(), PiNode), (3).toTree()),
+  //       new VariableNode("x"),
+  //     ),
+  //   ),
+  // ).simplify();
+  // console.log(node);
 
-  // console.log(new Measure(1.43, 20).times(new Measure(1.2, -4)).toTex());
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

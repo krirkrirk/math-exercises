@@ -1,4 +1,4 @@
-import { roundSignificant } from "#root/math/utils/round";
+import { round, roundSignificant } from "#root/math/utils/round";
 import { ToTexOptions } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
@@ -103,14 +103,7 @@ export class Measure {
    * n = nb decimals
    */
   toSignificant(n: number) {
-    const significantString = this.significantPart.toString();
-    const [intPart, fracPart] = significantString.split(".");
-    if (n === 0) return new Measure(Number(intPart), this.exponent);
-
-    return new Measure(
-      Number(intPart + "." + fracPart.slice(0, n)),
-      this.exponent,
-    );
+    return new Measure(round(this.significantPart, n), this.exponent);
   }
 
   //gravité = 9.32423432
@@ -118,5 +111,17 @@ export class Measure {
 
   evaluate() {
     return this.significantPart * Math.pow(10, this.exponent);
+  }
+
+  equals(m: Measure) {
+    return (
+      this.exponent === m.exponent && this.significantPart === m.significantPart
+    );
+  }
+  toIdentifiers() {
+    return {
+      significantPart: this.significantPart,
+      exponent: this.exponent,
+    };
   }
 }

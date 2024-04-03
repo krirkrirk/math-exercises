@@ -34,6 +34,7 @@ export abstract class RemarkableValueConstructor {
       cos: randValue.cos,
       sin: randValue.sin,
       point: randValue.point,
+      degree: randValue.degree,
     };
   };
 }

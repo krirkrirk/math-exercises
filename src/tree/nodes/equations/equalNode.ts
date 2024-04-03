@@ -20,7 +20,7 @@ export class EqualNode implements Node {
     const res: Node[] = [];
     const rightNodes = this.rightChild.toEquivalentNodes(options);
 
-    if (this.opts?.allowRawRightChildAsSolution) {
+    if (options?.allowRawRightChildAsSolution) {
       res.push(...rightNodes);
     }
     const leftNodes = this.leftChild.toEquivalentNodes(options);
