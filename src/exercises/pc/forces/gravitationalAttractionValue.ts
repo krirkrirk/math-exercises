@@ -47,7 +47,7 @@ Données :
     }$
 
 + $G = ${earthG.measure.toTex({ scientific: 2 })}\\ ${earthG.unit}$`,
-    keys: ["N"],
+    keys: ["N", "timesTenPower"],
     answerFormat: "tex",
     identifiers: { mass },
   };

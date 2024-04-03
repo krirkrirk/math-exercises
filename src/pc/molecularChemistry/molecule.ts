@@ -303,7 +303,7 @@ export const molecules = [
     "solid",
   ),
   new Molecule(
-    "Soude caustique",
+    "Hydroxyde de sodium",
     "NaOH",
     40.0,
     [
@@ -339,7 +339,7 @@ export const molecules = [
     "solid",
   ),
   new Molecule(
-    "Vitamine C",
+    "Acide ascorbique",
     "C_6H_8O_6",
     176.124,
     [
@@ -444,7 +444,7 @@ export const molecules = [
     false,
     "solid",
   ),
-  new Molecule("Fer", "Fe", 55.845, [{ name: "Fe", count: 4 }], false, "solid"),
+  // new Molecule("Fer", "Fe", 55.845, [{ name: "Fe", count: 4 }], false, "solid"),
   new Molecule(
     "Oxyde de fer(III)",
     "Fe_2O_3",
@@ -801,7 +801,7 @@ export const molecules = [
     false,
     "solid",
   ),
-  new Molecule("Zinc", "Zn", 65.38, [{ name: "Zn", count: 1 }], false, "solid"),
+  // new Molecule("Zinc", "Zn", 65.38, [{ name: "Zn", count: 1 }], false, "solid"),
   new Molecule(
     "Chlorure de zinc",
     "ZnCl_2",

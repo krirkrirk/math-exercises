@@ -115,8 +115,13 @@ export class MultiplyNode implements CommutativeOperatorNode {
     }
     const nextIsLetter =
       rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
+    const prevIsCommand = leftTex.match(/\\[a-z]*$/);
     return `${leftTex}${
-      showTimesSign ? `\\times${nextIsLetter ? " " : ""}` : ""
+      showTimesSign
+        ? `\\times${nextIsLetter ? " " : ""}`
+        : prevIsCommand && nextIsLetter
+        ? " "
+        : ""
     }${rightTex}`;
   }
 
@@ -276,6 +281,8 @@ export class MultiplyNode implements CommutativeOperatorNode {
   simplify(opts?: SimplifyOptions): AlgebraicNode {
     const leftSimplified = this.leftChild.simplify(opts);
     const rightSimplified = this.rightChild.simplify(opts);
+    console.log("left", leftSimplified.toTex());
+    console.log("right", rightSimplified);
     const copy = new MultiplyNode(leftSimplified, rightSimplified, this.opts);
 
     /**get externals nodes
@@ -289,6 +296,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
         recursive(node.leftChild);
         recursive(node.rightChild);
       } else if (isOppositeNode(node)) {
+        console.log("is opp", node.toTex());
         oppositesCount++;
         recursive(node.child);
       } else {
@@ -296,6 +304,8 @@ export class MultiplyNode implements CommutativeOperatorNode {
       }
     };
     recursive(copy);
+    console.log("ext", externals);
+
     //si 0 on s'arrete
     if (externals.some((node) => isNumberNode(node) && node.value === 0)) {
       return new NumberNode(0);
@@ -358,7 +368,6 @@ export class MultiplyNode implements CommutativeOperatorNode {
       //TODo continue
       return null;
     };
-
     //pour chaque paire on essaye de simplifier,
     //chaque simplification déclenche le reboot du process
     const simplifyIteration = () => {

@@ -12,7 +12,7 @@ export class CosNode implements FunctionNode {
   type: NodeType;
   isNumeric: boolean;
   constructor(child: AlgebraicNode) {
-    this.id = FunctionsIds.opposite;
+    this.id = FunctionsIds.cos;
     this.child = child;
     this.type = NodeType.function;
     this.isNumeric = child.isNumeric;
@@ -51,7 +51,7 @@ export class CosNode implements FunctionNode {
       const trigoPoint = remarkableTrigoValues.find(
         (value) => value.angle.evaluate({}) === moduled,
       );
-      if (!trigoPoint) return this;
+      if (!trigoPoint) return new CosNode(simplifiedChild);
       else return trigoPoint.cos;
     } else {
       //écrire les regles albgeiruqe
@@ -59,7 +59,8 @@ export class CosNode implements FunctionNode {
       //cos(x+2PI)
       //cos(-x)
     }
-    return this;
+    console.log("simp c", simplifiedChild.toTex());
+    return new CosNode(simplifiedChild);
   }
   evaluate(vars: Record<string, number>) {
     return Math.cos(this.child.evaluate(vars));

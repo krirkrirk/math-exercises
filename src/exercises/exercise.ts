@@ -178,4 +178,5 @@ export type PCSection =
   | "Constitution et transformations de la matière"
   | "Ondes"
   | "Son"
-  | "Corps purs et mélanges";
+  | "Corps purs et mélanges"
+  | "Fluides";

@@ -12,7 +12,7 @@ export class SinNode implements FunctionNode {
   type: NodeType;
   isNumeric: boolean;
   constructor(child: AlgebraicNode) {
-    this.id = FunctionsIds.opposite;
+    this.id = FunctionsIds.sin;
     this.child = child;
     this.type = NodeType.function;
     this.isNumeric = child.isNumeric;
