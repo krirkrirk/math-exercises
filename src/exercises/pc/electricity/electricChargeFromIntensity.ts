@@ -1,4 +1,3 @@
-import { NumberNode } from "./../../../tree/nodes/numbers/numberNode";
 import { roundSignificant } from "#root/math/utils/round";
 import {
   Exercise,

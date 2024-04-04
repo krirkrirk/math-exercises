@@ -28,6 +28,7 @@ import { PiNode } from "./tree/nodes/numbers/piNode";
 import { VariableNode } from "./tree/nodes/variables/variableNode";
 import { randint } from "./math/utils/random/randint";
 import { coinFlip } from "./utils/coinFlip";
+import { random } from "./utils/random";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
