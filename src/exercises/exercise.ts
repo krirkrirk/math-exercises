@@ -180,4 +180,5 @@ export type PCSection =
   | "Son"
   | "Corps purs et mélanges"
   | "Fluides"
-  | "Mol";
+  | "Mol"
+  | "Électricité";

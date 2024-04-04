@@ -16,9 +16,11 @@ export * from "./weight";
 export * from "./forces";
 export * from "./waves";
 export * from "./chemicalElements";
+export * from "./chemicalReactions";
 export * from "./mole";
 export * from "./mecanicalWaves";
 export * from "./fluids";
+export * from "./electricity";
 
 /**exos pris des maths */
 export * from "../math/percent/findProportion";

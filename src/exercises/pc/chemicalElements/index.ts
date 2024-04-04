@@ -6,3 +6,4 @@ export * from "./weightPercent";
 export * from "./calculateVolumetricMass";
 export * from "./findValenceElectronsNumberFromElectronicConfiguration";
 export * from "./identifyRightElectronicConfiguration";
+export * from "./findAtomEntitiesNumberFromMass";
