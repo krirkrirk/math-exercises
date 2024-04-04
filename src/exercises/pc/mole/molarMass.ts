@@ -55,14 +55,14 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 export const molarMass: Exercise<Identifiers> = {
   id: "molarMass",
   connector: "=",
-  label: "",
-  levels: [],
+  label: "Calculer une masse molaire",
+  levels: ["1reSpé"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Mol"],
   generator: (nb: number) => getDistinctQuestions(getMolarMassQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  subject: "Mathématiques",
+  subject: "Chimie",
 };

@@ -59,7 +59,6 @@ export class CosNode implements FunctionNode {
       //cos(x+2PI)
       //cos(-x)
     }
-    console.log("simp c", simplifiedChild.toTex());
     return new CosNode(simplifiedChild);
   }
   evaluate(vars: Record<string, number>) {

@@ -125,14 +125,14 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 export const pressingForce: Exercise<Identifiers> = {
   id: "pressingForce",
   connector: "=",
-  label: "",
-  levels: [],
+  label: "Calculer la force pressante",
+  levels: ["1reSpé"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Forces"],
   generator: (nb: number) => getDistinctQuestions(getPressingForceQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  subject: "Mathématiques",
+  subject: "Physique",
 };

@@ -4,6 +4,9 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 
+export abstract class MeasureConstructor {
+  static random() {}
+}
 export class Measure {
   exponent: number;
   significantPart: number;

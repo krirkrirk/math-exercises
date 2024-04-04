@@ -26,6 +26,8 @@ import { CosNode } from "./tree/nodes/functions/cosNode";
 import { FractionNode } from "./tree/nodes/operators/fractionNode";
 import { PiNode } from "./tree/nodes/numbers/piNode";
 import { VariableNode } from "./tree/nodes/variables/variableNode";
+import { AddNode } from "./tree/nodes/operators/addNode";
+import { SubstractNode } from "./tree/nodes/operators/substractNode";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
