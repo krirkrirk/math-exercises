@@ -179,4 +179,5 @@ export type PCSection =
   | "Ondes"
   | "Son"
   | "Corps purs et mélanges"
+  | "Électricité"
   | "Fluides";
