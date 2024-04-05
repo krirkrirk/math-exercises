@@ -54,6 +54,12 @@ const getPropositions: QCMGenerator<Identifiers> = (
     propositions,
     `${roundSignificant(electricCharge * 0.1, 1)}`,
   );
+  while (propositions.length < n) {
+    tryToAddWrongProp(
+      propositions,
+      `${randfloat(0, electricCharge, 1).frenchify()}`,
+    );
+  }
 
   return shuffleProps(propositions, n);
 };
