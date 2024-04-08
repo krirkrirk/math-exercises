@@ -2,6 +2,8 @@ export { constanteDerivative } from "./constanteDerivative";
 export * from "./expDerivativeOne";
 export * from "./expDerivativeThree";
 export * from "./expDerivativeTwo";
+export * from "./expDerivativeFour";
+
 export { firstDegreeDerivative } from "./firstDegreeDerivative";
 export * from "./inverseFunctionDerivative";
 export * from "./lnDerivativeOne";

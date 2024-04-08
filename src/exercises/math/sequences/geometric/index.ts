@@ -4,3 +4,4 @@ export * from "./geometricFindReason";
 export * from "./geometricFirstTermsSum";
 export * from "./geometricReasonUsage";
 export * from "./geometricRecurrenceFormulaUsage";
+export * from "./geometricFindExplicitFormulaFirstTermRandom";
