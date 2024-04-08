@@ -50,7 +50,7 @@ const getElectricEnergyFromPowerQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: `${energy.toScientific(0).toTex({ scientific: 0 })}`,
-    instruction: `Un chargeur a une puissance maximale de $${power}\\ \\text{W}$. Calculer l'énergie électrique qu'il fournit durant $${seconds}\\ \\text{secondes}$ de fonctionnement (en $\\text{J}$).`,
+    instruction: `Un chargeur a une puissance maximale de $${power}\\ \\text{W}$. Calculer l'énergie électrique qu'il fournit durant $${seconds}\\ \\text{s}$ de fonctionnement (en $\\text{J}$).`,
     keys: ["timesTenPower"],
     answerFormat: "tex",
     identifiers: { power, seconds },

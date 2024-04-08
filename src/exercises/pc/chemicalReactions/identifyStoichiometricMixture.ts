@@ -66,7 +66,7 @@ const getIdentifyStoichiometricMixtureQuestion: QuestionGenerator<
 
   const instruction = `On considère l'état final d'un système chimique,
   pour lequel il y a eu transformation totale. Les quantités finales des
-  deux réactifs $\\text{A}$ et $\\text{B (en mmol)}$, sont $\\text{n}_{\\text{A}} = ${roundSignificant(
+  deux réactifs $\\text{A}$ et $\\text{B}$ (en $\\text{mol}$), sont $\\text{n}_{\\text{A}} = ${roundSignificant(
     firstReagentVariables[0],
     1,
   )} - ${

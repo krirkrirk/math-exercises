@@ -35,7 +35,9 @@ const getCalculateCombustionEnergyQuestion: QuestionGenerator<
   const instruction = `Calculer l'énergie libérée lors de la combustion de $${combustibleQuantity}\\ \\text{g}$ ${
     requiresApostropheBefore(combustible.name) ? "d'" : "de"
   }  
-  ${combustible.name} (en MJ). $\\text{PC(${combustible.name})} = ${
+  ${combustible.name} (en $\\text{MJ}$). 
+  
+  Données : $\\text{PC(${combustible.name})} = ${
     combustible.value
   }\\ \\text{MJ}\\cdot\\text{kg}^{-1}$`;
 

@@ -29,7 +29,7 @@ const getElectricChargeFromIntensityQuestion: QuestionGenerator<
     instruction: `Un conducteur électrique est parcouru par un courant d'intensité $${roundSignificant(
       intensity,
       1,
-    )}\\ \\text{A}$. Calculer la charge électrique $\\text{Q (en C)}$ ayant traversé la section de ce conducteur durant $${seconds}\\ \\text{s}$.`,
+    )}\\ \\text{A}$. Calculer la charge électrique $\\text{Q}$ (en $\\text{C}$) ayant traversé la section de ce conducteur durant $${seconds}\\ \\text{s}$.`,
     keys: [],
     answerFormat: "tex",
     identifiers: { intensity, seconds },
