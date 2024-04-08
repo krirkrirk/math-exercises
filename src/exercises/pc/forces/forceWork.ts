@@ -42,10 +42,10 @@ const getForceWorkQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Soit une force $\\overrightarrow F$ constante dont le point d'application se déplace d'une position $A$ à une position $B$ telle que $F = ${roundSignificant(
       forceValue,
       1,
-    )} \\text{N}$, $AB = ${roundSignificant(
+    )}\\ \\text{N}$, $AB = ${roundSignificant(
       length,
       1,
-    )} \\text{m}$ et $\\widehat{\\left(\\overrightarrow F ; \\overrightarrow{AB}\\right)} = ${
+    )}\\ \\text{m}$ et $\\widehat{\\left(\\overrightarrow F ; \\overrightarrow{AB}\\right)} = ${
       angle.degree
     }^°$. Calculer le travail de la force $\\overrightarrow F$ lors du déplacement de $A$ vers $B$.`,
     keys: ["J", "timesTenPower"],

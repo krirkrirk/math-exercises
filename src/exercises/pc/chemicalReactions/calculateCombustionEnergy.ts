@@ -92,7 +92,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 export const calculateCombustionEnergy: Exercise<Identifiers> = {
   id: "calculateCombustionEnergy",
   label: "Calculer l'énergie libérée par combustion",
-  levels: ["1reESM"],
+  levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Chimie des solutions"],
   generator: (nb: number) =>

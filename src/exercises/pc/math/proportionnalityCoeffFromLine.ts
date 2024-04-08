@@ -100,7 +100,7 @@ export const proportionnalityCoeffFromLine: Exercise<Identifiers> = {
   id: "proportionnalityCoeffFromLine",
   connector: "=",
   label: "Déterminer le coefficient de proportionnalité à l'aide d'une droite",
-  levels: ["3ème", "2nde", "1reESM", "2ndPro", "1rePro", "1reTech"],
+  levels: ["3ème", "2nde", "1reESM", "2ndPro", "1rePro", "1reTech", "1reSpé"],
   isSingleStep: false,
   sections: ["Droites", "Fonctions affines"],
   generator: (nb: number) =>

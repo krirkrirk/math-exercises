@@ -73,7 +73,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 export const calculateSynthesisEfficiency: Exercise<Identifiers> = {
   id: "calculateSynthesisEfficiency",
   label: "Calculer un rendement",
-  levels: ["1reESM"],
+  levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Chimie des solutions"],
   generator: (nb: number) =>

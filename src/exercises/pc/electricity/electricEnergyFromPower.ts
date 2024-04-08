@@ -82,7 +82,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 export const electricEnergyFromPower: Exercise<Identifiers> = {
   id: "electricEnergyFromPower",
   label: "Calculer une énergie électrique",
-  levels: ["1reESM"],
+  levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Électricité"],
   generator: (nb: number) =>

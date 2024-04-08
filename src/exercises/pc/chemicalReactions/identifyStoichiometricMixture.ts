@@ -103,7 +103,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 export const identifyStoichiometricMixture: Exercise<Identifiers> = {
   id: "identifyStoichiometricMixture",
   label: "Identifier un mélange stoechiométrique",
-  levels: ["1reESM"],
+  levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Chimie des solutions"],
   generator: (nb: number) =>

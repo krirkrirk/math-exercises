@@ -76,22 +76,23 @@ const getPropositions: QCMGenerator<Identifiers> = (
     period.toTree(),
     new CosNode(new MultiplyNode(frac, new VariableNode("t"))),
   );
-  tryToAddWrongProp(propositions, node.toTex());
+  tryToAddWrongProp(propositions, "y\\left(t\\right)=" + node.toTex());
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      new MultiplyNode(
-        randint(1, 10).toTree(),
-        new CosNode(
-          new MultiplyNode(
-            new FractionNode(
-              new MultiplyNode((2).toTree(), PiNode),
-              randint(1, 10).toTree(),
+      "y\\left(t\\right)=" +
+        new MultiplyNode(
+          randint(1, 10).toTree(),
+          new CosNode(
+            new MultiplyNode(
+              new FractionNode(
+                new MultiplyNode((2).toTree(), PiNode),
+                randint(1, 10).toTree(),
+              ),
+              new VariableNode("t"),
             ),
-            new VariableNode("t"),
           ),
-        ),
-      ).toTex(),
+        ).toTex(),
     );
   }
   return shuffleProps(propositions, n);

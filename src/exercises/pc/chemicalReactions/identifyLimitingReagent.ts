@@ -91,7 +91,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 export const identifyLimitingReagent: Exercise<Identifiers> = {
   id: "identifyLimitingReagent",
   label: "Identifier un réactif limitant",
-  levels: ["1reESM"],
+  levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Chimie des solutions"],
   generator: (nb: number) =>

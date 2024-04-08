@@ -70,7 +70,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 export const electricChargeFromIntensity: Exercise<Identifiers> = {
   id: "electricChargeFromIntensity",
   label: "Calculer une charge électrique",
-  levels: ["1reESM"],
+  levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Électricité"],
   generator: (nb: number) =>
