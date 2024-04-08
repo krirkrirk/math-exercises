@@ -30,7 +30,7 @@ const getMolFromMassQuestion: QuestionGenerator<Identifiers> = () => {
     )}\\ \\text{g}$ d'une espèce chimique de masse molaire $${roundSignificant(
       molarMass,
       1,
-    )}\\ \\text{g}\\cdot \\text{mol}^{-1}$. Quelle est la quantité de matière prélevée ?`,
+    )}\\ \\text{g}\\cdot \\text{mol}^{-1}$. Quelle est la quantité de matière prélevée, en $\\text{mol}$ ?`,
     keys: [],
     answerFormat: "tex",
     identifiers: { mass, molarMass },

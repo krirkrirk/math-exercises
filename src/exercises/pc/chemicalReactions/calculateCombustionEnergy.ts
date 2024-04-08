@@ -34,12 +34,11 @@ const getCalculateCombustionEnergyQuestion: QuestionGenerator<
 
   const instruction = `Calculer l'énergie libérée lors de la combustion de $${combustibleQuantity}\\ \\text{g}$ ${
     requiresApostropheBefore(combustible.name) ? "d'" : "de"
-  }  
-  ${combustible.name} (en $\\text{MJ}$). 
-  
-  Données : $\\text{PC(${combustible.name})} = ${
-    combustible.value
-  }\\ \\text{MJ}\\cdot\\text{kg}^{-1}$`;
+  } ${combustible.name} (en $\\text{MJ}$). 
+  $\\newline$
+  Données : $\\text{PC(${
+    combustible.name
+  })} = ${combustible.value.frenchify()}\\ \\text{MJ}\\cdot\\text{kg}^{-1}$`;
 
   const energy = roundSignificant(
     -combustibleQuantity * 0.001 * combustible.value,

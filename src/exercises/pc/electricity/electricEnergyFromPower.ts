@@ -69,9 +69,18 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const energy = power * seconds;
   const firstDivision = power / seconds;
   const secondDivision = seconds / power;
-  tryToAddWrongProp(propositions, `${roundSignificant(firstDivision, 1)}`);
-  tryToAddWrongProp(propositions, `${roundSignificant(secondDivision, 1)}`);
-  tryToAddWrongProp(propositions, `${roundSignificant(energy * 0.1, 0)}`);
+  tryToAddWrongProp(
+    propositions,
+    firstDivision.toScientific(0).toTex({ scientific: 0 }),
+  );
+  tryToAddWrongProp(
+    propositions,
+    secondDivision.toScientific(0).toTex({ scientific: 0 }),
+  );
+  tryToAddWrongProp(
+    propositions,
+    (energy * 0.1).toScientific(0).toTex({ scientific: 0 }),
+  );
 
   return shuffleProps(propositions, n);
 };
