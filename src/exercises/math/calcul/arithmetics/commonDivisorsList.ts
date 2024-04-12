@@ -41,7 +41,7 @@ const getCommonDivisorsListQuestion: QuestionGenerator<Identifiers> = () => {
   const answer = res.join(",");
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Donner la liste des diviseurs communs à ${a} et ${b} (séparer les valeurs par des virgules).`,
+    instruction: `Donner la liste des diviseurs communs à $${a}$ et $${b}$ (séparer les valeurs par des virgules).`,
     keys: [],
     answerFormat: "tex",
     identifiers: { a, b },

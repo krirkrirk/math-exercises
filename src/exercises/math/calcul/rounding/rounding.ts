@@ -39,7 +39,7 @@ const getRoundQuestions: QuestionGenerator<
   const decTex = dec.toTree().toTex();
   const answer = dec.round(precisionAsked).toTree().toTex();
   const question: Question<Identifiers> = {
-    instruction: `${instructions[precisionAsked]} ${decTex}`,
+    instruction: `${instructions[precisionAsked]} $${decTex}$`,
     startStatement: decTex,
     answer,
     keys: [],

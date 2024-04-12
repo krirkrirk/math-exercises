@@ -25,10 +25,10 @@ const getPotentialEnergy: QuestionGenerator<Identifiers> = () => {
 
   const potentialEnergy = mass * 9.81 * height;
 
-  const instruction = `Un objet de masse ${mass} kg est suspendu à une hauteur de ${height} mètres. Il est ensuite relâché et tombe librement.
-  $\\\\$ Calculer l'énergie potentielle de l'objet. (Supposons que l'accélération due à la gravité est de 9,81 m/s²)`;
+  const instruction = `Un objet de masse $${mass} \\ \\text{kg}$ est suspendu à une hauteur de $${height}\\ \\text{m}$. Il est ensuite relâché et tombe librement.
+  $\\\\$ Calculer l'énergie potentielle de l'objet. (Supposons que l'accélération due à la gravité est de $9,81 \\ \\text{m}\\cdot \\text{s}^{-2}$)`;
 
-  const answer = `${frenchify(round(potentialEnergy, 2))}  \\ J`;
+  const answer = `${frenchify(round(potentialEnergy, 2))}J`;
   const question: Question<Identifiers> = {
     instruction,
     startStatement: "Ep",
@@ -52,8 +52,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      frenchify(round(potentialEnergy * (0.3 + Math.random() * 1.5), 2)) +
-        " \\ J",
+      frenchify(round(potentialEnergy * (0.3 + Math.random() * 1.5), 2)) + "J",
     );
   }
 

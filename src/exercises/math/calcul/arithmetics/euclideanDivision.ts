@@ -37,7 +37,7 @@ const getEuclideanDivisionQuestions: QuestionGenerator<Identifiers> = () => {
   );
   const answerTex = answer.toTex();
   const question: Question<Identifiers> = {
-    instruction: `Ecrire la division euclidienne de ${dividend} par ${divisor}.`,
+    instruction: `Ecrire la division euclidienne de $${dividend}$ par $${divisor}$.`,
     answer: answerTex,
     keys: ["equal"],
     answerFormat: "tex",

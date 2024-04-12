@@ -64,5 +64,5 @@ export const molFromMolarMass: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  subject: "Mathématiques",
+  subject: "Chimie",
 };

@@ -32,7 +32,7 @@ const getPgcdCalculQuestion: QuestionGenerator<Identifiers> = () => {
   const pgcd = gcd(a, b);
   const question: Question<Identifiers> = {
     answer: pgcd + "",
-    instruction: `Donner le PGCD de ${a} et ${b}`,
+    instruction: `Donner le PGCD de $${a}$ et $${b}$`,
     keys: [],
     answerFormat: "tex",
     identifiers: { a, b },

@@ -26,7 +26,7 @@ const getFindProportionQuestion: QuestionGenerator<Identifiers> = () => {
   const answer = round((lefties / total) * 100, 2).frenchify() + "\\%";
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Dans un lycée de ${total} élèves, ${lefties} sont gauchers. Quel est le pourcentage de gauchers dans ce lycée ? (arrondir au centième de pourcentage)`,
+    instruction: `Dans un lycée de $${total}$ élèves, $${lefties}$ sont gauchers. Quel est le pourcentage de gauchers dans ce lycée ? (arrondir au centième de pourcentage)`,
     keys: ["percent"],
     answerFormat: "tex",
     identifiers: { total, lefties },

@@ -25,7 +25,7 @@ const getDivisorsListQuestion: QuestionGenerator<Identifiers> = () => {
   const answer = divisors.join(",");
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Donner la liste des diviseurs de ${a} (séparer les valeurs par des virgules).`,
+    instruction: `Donner la liste des diviseurs de $${a}$ (séparer les valeurs par des virgules).`,
     keys: [],
     answerFormat: "tex",
     identifiers: { a },
