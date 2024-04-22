@@ -23,7 +23,7 @@ import { reduceExpression } from "../../calculLitteral";
 
 type Identifiers = {
   a: number;
-  f: Trinom;
+  f: number[];
 };
 
 const getTangentEquationQuestion: QuestionGenerator<Identifiers> = () => {
@@ -50,7 +50,7 @@ const getTangentEquationQuestion: QuestionGenerator<Identifiers> = () => {
       .toTex()}$, $a = ${a}$. Déterminer l'équation de la tangente à la courbe de $f$ au point d'abscisse $a$`,
     keys: ["y", "x", "equal"],
     answerFormat: "tex",
-    identifiers: { a, f },
+    identifiers: { a: a, f: [f.a, f.b, f.c] },
   };
 
   return question;
@@ -76,8 +76,9 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, a, f }) => {
-  const b = f.calculate(a);
-  const df = f.derivate();
+  const ff = new Trinom(f[0], f[1], f[2]);
+  const b = ff.calculate(a);
+  const df = ff.derivate();
   const c = df.calculate(a);
   const ca = a * c;
   const d = ca - b;
