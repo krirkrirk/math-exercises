@@ -95,7 +95,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, a, f }) => {
 export const tangentEquations: Exercise<Identifiers> = {
   id: "tangentEquations",
   label: "Calcul de l'équation de la tangente",
-  levels: [],
+  levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],
   generator: (nb: number) =>
