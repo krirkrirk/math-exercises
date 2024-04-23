@@ -22,9 +22,9 @@ type Identifiers = {
 const getFirstDegreeEquationIntQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const a = randint(-30, 30, [0]);
-  const x = randint(-30, 30, [0]);
-  const c = randint(-30, 30, [0]);
+  const a = randint(-15, 15, [0]);
+  const x = randint(-15, 15, [0]);
+  const c = randint(-15, 15, [0]);
   const b = c - a * x;
   const answer = new EqualNode(new VariableNode("x"), x.toTree()).toTex();
   const question: Question<Identifiers> = {
@@ -42,7 +42,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
-    const random = randint(-99, 99, [0]);
+    const random = randint(-50, 50, [0]);
     const wrongAnswer = new EqualNode(
       new VariableNode("x"),
       random.toTree(),
@@ -57,10 +57,10 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
   const latexs = ans1.toAllValidTexs({ allowRawRightChildAsSolution: true });
   return latexs.includes(ans);
 };
-export const firstDegreeEquationInt2: Exercise<Identifiers> = {
+export const firstDegreeEquationIntType2: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType2",
   label:
-    "Résoudre une équation du premier degré du type ${a}{x} = b$, solution entière",
+    "Résoudre une équation du premier degré du type ${a}{x} + b = c$, solution entière",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Équations"],
