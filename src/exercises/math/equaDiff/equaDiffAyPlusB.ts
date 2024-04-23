@@ -66,18 +66,17 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const propos = generatePropositions(a, b);
-  tryToAddWrongProp(propositions, propos[0].toTex());
-  tryToAddWrongProp(propositions, propos[1].toTex());
-  tryToAddWrongProp(propositions, propos[2].toTex());
+  propos.forEach((value) => tryToAddWrongProp(propositions, value.toTex()));
+
   let generatedPropositions;
   while (propositions.length < n) {
     generatedPropositions = generatePropositions(
       a,
       randint(-11, 10, [0, 1, a]),
     );
-    tryToAddWrongProp(propositions, generatedPropositions[0].toTex());
-    tryToAddWrongProp(propositions, generatedPropositions[1].toTex());
-    tryToAddWrongProp(propositions, generatedPropositions[2].toTex());
+    generatedPropositions.forEach((value) =>
+      tryToAddWrongProp(propositions, value.toTex()),
+    );
   }
   return shuffleProps(propositions, n);
 };
