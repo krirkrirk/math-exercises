@@ -62,6 +62,26 @@ const getEquaDiffAyPlusBQuestion: QuestionGenerator<Identifiers> = () => {
   return question;
 };
 
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+  const propos = generatePropositions(a, b);
+  tryToAddWrongProp(propositions, propos[0].toTex());
+  tryToAddWrongProp(propositions, propos[1].toTex());
+  tryToAddWrongProp(propositions, propos[2].toTex());
+  let generatedPropositions;
+  while (propositions.length < n) {
+    generatedPropositions = generatePropositions(
+      a,
+      randint(-11, 10, [0, 1, a]),
+    );
+    tryToAddWrongProp(propositions, generatedPropositions[0].toTex());
+    tryToAddWrongProp(propositions, generatedPropositions[1].toTex());
+    tryToAddWrongProp(propositions, generatedPropositions[2].toTex());
+  }
+  return shuffleProps(propositions, n);
+};
+
 const generatePropositions = (a: number, b: number): EqualNode[] => {
   const bB = b != 0 ? b : randint(-10, 11, [0]);
   let fraction = new Rational(-a, bB).simplify().toTree();
@@ -95,23 +115,6 @@ const generatePropositions = (a: number, b: number): EqualNode[] => {
     new AddNode(new MultiplyNode(c, aMultx), fraction),
   );
   return [firstProps, secondProps, thirdProps];
-};
-
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
-  const propositions: Proposition[] = [];
-  addValidProp(propositions, answer);
-  const propos = generatePropositions(a, b);
-  tryToAddWrongProp(propositions, propos[0].toTex());
-  tryToAddWrongProp(propositions, propos[1].toTex());
-  tryToAddWrongProp(propositions, propos[2].toTex());
-  let generatePropositions;
-  while (propositions.length < n) {
-    generatePropositions = generatePropositions(a, randint(-11, 10, [0, 1, a]));
-    tryToAddWrongProp(propositions, generatePropositions[0].toTex());
-    tryToAddWrongProp(propositions, generatePropositions[1].toTex());
-    tryToAddWrongProp(propositions, generatePropositions[2].toTex());
-  }
-  return shuffleProps(propositions, n);
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
