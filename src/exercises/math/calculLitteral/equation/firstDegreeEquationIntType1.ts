@@ -16,6 +16,7 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
   a: number;
+  b: number;
   x: number;
 };
 
@@ -31,22 +32,35 @@ const getFirstDegreeEquationIntQuestion: QuestionGenerator<
     instruction: `Résoudre l'équation suivante : $${a}x = ${b}$`,
     keys: ["x", "equal"],
     answerFormat: "tex",
-    identifiers: { a: a, x: x },
+    identifiers: { a: a, x: x, b: b },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
-    const random = randint(-99, 99, [0]);
-    const wrongAnswer = new EqualNode(
+    const w1 = b - a;
+    const w2 = b + a;
+    const w3 = b * a;
+    const wrongAnswer1 = new EqualNode(
       new VariableNode("x"),
-      random.toTree(),
+      w1.toTree(),
     ).toTex();
-    tryToAddWrongProp(propositions, wrongAnswer);
+    const wrongAnswer2 = new EqualNode(
+      new VariableNode("x"),
+      w2.toTree(),
+    ).toTex();
+    const wrongAnswer3 = new EqualNode(
+      new VariableNode("x"),
+      w3.toTree(),
+    ).toTex();
+
+    tryToAddWrongProp(propositions, wrongAnswer1);
+    tryToAddWrongProp(propositions, wrongAnswer2);
+    tryToAddWrongProp(propositions, wrongAnswer3);
   }
   return shuffleProps(propositions, n);
 };
