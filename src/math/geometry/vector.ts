@@ -85,7 +85,7 @@ export class Vector {
     return new NumberNode(xValue * vxValue + yValue * vyValue);
   }
 
-  addVector(v: Vector): Vector {
+  add(v: Vector): Vector {
     const x = v.x;
     const y = v.y;
     const resultX = new AddNode(this.x,x);
