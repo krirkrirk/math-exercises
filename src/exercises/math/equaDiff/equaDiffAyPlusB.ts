@@ -39,14 +39,14 @@ const getEquaDiffAyPlusBQuestion: QuestionGenerator<Identifiers> = () => {
     new AddNode(new MultiplyNode(aNode, y), bNode),
   );
 
-  const fraction = new Rational(b, a).simplify().toTree();
+  const fraction = new Rational(-b, a).simplify().toTree();
 
   const correctAnswer = new EqualNode(
     y,
     b != 0
       ? new AddNode(
           new MultiplyNode(c, new ExpNode(new MultiplyNode(aNode, x))),
-          new MultiplyNode(new NumberNode(-1), fraction).simplify(),
+          fraction,
         )
       : new MultiplyNode(c, new ExpNode(new MultiplyNode(aNode, x))),
   );
@@ -85,10 +85,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
 
 const generatePropositions = (a: number, b: number): EqualNode[] => {
   const bB = b != 0 ? b : randint(-10, 11, [0]);
-  let fraction = new MultiplyNode(
-    new NumberNode(-1),
-    new Rational(a, bB).simplify().toTree(),
-  ).simplify();
+  let fraction = new Rational(-a, bB).simplify().toTree();
   const y = new VariableNode("y");
   const c = new VariableNode("C");
   const aMultx = new ExpNode(
@@ -100,10 +97,8 @@ const generatePropositions = (a: number, b: number): EqualNode[] => {
     new AddNode(new MultiplyNode(c, aMultx), fraction),
   );
 
-  fraction = new MultiplyNode(
-    new NumberNode(-1),
-    new Rational(bB, a).simplify().toTree(),
-  ).simplify();
+  fraction = new Rational(-bB, a).simplify().toTree();
+
   const secondProps = new EqualNode(
     y,
     new AddNode(
@@ -124,28 +119,14 @@ const generatePropositions = (a: number, b: number): EqualNode[] => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
-  let fraction = new MultiplyNode(
-    new NumberNode(-1),
-    new Rational(b, a).simplify().toTree(),
-  ).simplify();
+  let fraction = new Rational(-b, a).simplify().toTree();
+  const c = new VariableNode("C");
+  const aTimesX = new MultiplyNode(new NumberNode(a), new VariableNode("x"));
   const correctNode = new EqualNode(
     new VariableNode("y"),
     b != 0
-      ? new AddNode(
-          new MultiplyNode(
-            new VariableNode("C"),
-            new ExpNode(
-              new MultiplyNode(new NumberNode(a), new VariableNode("x")),
-            ),
-          ),
-          fraction,
-        )
-      : new MultiplyNode(
-          new VariableNode("C"),
-          new ExpNode(
-            new MultiplyNode(new NumberNode(a), new VariableNode("x")),
-          ),
-        ),
+      ? new AddNode(new MultiplyNode(c, new ExpNode(aTimesX)), fraction)
+      : new MultiplyNode(c, new ExpNode(aTimesX)),
   );
   const validAnswers = correctNode.toAllValidTexs({
     allowFractionToDecimal: true,
