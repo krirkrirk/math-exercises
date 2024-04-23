@@ -88,9 +88,13 @@ export class Vector {
   add(v: Vector): Vector {
     const x = v.x;
     const y = v.y;
-    const resultX = new AddNode(this.x,x);
-    const resultY = new AddNode(this.y,y);
-    return new Vector(`${this.name}+${v.name}`, resultX.simplify(),resultY.simplify());
+    const resultX = new AddNode(this.x, x);
+    const resultY = new AddNode(this.y, y);
+    return new Vector(
+      `${this.name}+${v.name}`,
+      resultX.simplify(),
+      resultY.simplify(),
+    );
   }
 
   getEndPoint(startPoint: Point, name?: string) {
