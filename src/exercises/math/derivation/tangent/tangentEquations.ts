@@ -22,35 +22,35 @@ import { equal } from "assert";
 import { reduceExpression } from "../../calculLitteral";
 
 type Identifiers = {
-  a: number;
-  f: number[];
+  abscisse: number;
+  trinome: number[];
 };
 
 const getTangentEquationQuestion: QuestionGenerator<Identifiers> = () => {
-  const f = TrinomConstructor.random();
-  const a = randint(-10, 10);
-  const b = f.calculate(a);
-  const df = f.derivate();
-  const c = df.calculate(a);
-  const ca = a * c;
-  const d = ca - b;
-  const eq = new EqualNode(
+  const trinome = TrinomConstructor.random();
+  const abscisse = randint(-10, 10);
+  const image = trinome.calculate(abscisse);
+  const derivee = trinome.derivate();
+  const imagederivee = derivee.calculate(abscisse);
+  const k = abscisse * imagederivee;
+  const constante = k - image;
+  const equation = new EqualNode(
     new VariableNode("y"),
     new SubstractNode(
-      new MultiplyNode(c.toTree(), new VariableNode("x")),
-      d.toTree(),
+      new MultiplyNode(imagederivee.toTree(), new VariableNode("x")),
+      constante.toTree(),
     ).simplify(),
   );
-  const ans = eq.toTex();
+  const ans = equation.toTex();
 
   const question: Question<Identifiers> = {
     answer: ans,
-    instruction: `Soit $f(x) = ${f
+    instruction: `Soit $f(x) = ${trinome
       .toTree()
-      .toTex()}$, $a = ${a}$. Déterminer l'équation de la tangente à la courbe de $f$ au point d'abscisse $a$`,
+      .toTex()}$. Déterminer l'équation de la tangente à la courbe de $f$ au point d'abscisse $${abscisse}$.`,
     keys: ["y", "x", "equal"],
     answerFormat: "tex",
-    identifiers: { a: a, f: [f.a, f.b, f.c] },
+    identifiers: { abscisse, trinome: [trinome.a, trinome.b, trinome.c] },
   };
 
   return question;
@@ -60,41 +60,46 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
-    const a = randint(-99, 99);
-    const b = randint(-99, 99);
-    const ww = new EqualNode(
+    const randomfactor1 = randint(-99, 99);
+    const randomfactor2 = randint(-99, 99);
+    const randomequation = new EqualNode(
       new VariableNode("y"),
       new SubstractNode(
-        new MultiplyNode(a.toTree(), new VariableNode("x")),
-        b.toTree(),
+        new MultiplyNode(randomfactor1.toTree(), new VariableNode("x")),
+        randomfactor2.toTree(),
       ).simplify(),
     );
-    const wrongAnswer = ww.toTex();
+    const wrongAnswer = randomequation.toTex();
     tryToAddWrongProp(propositions, wrongAnswer);
   }
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer, a, f }) => {
-  const ff = new Trinom(f[0], f[1], f[2]);
-  const b = ff.calculate(a);
-  const df = ff.derivate();
-  const c = df.calculate(a);
-  const ca = a * c;
-  const d = ca - b;
-  const eq = new EqualNode(
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { answer, abscisse, trinome },
+) => {
+  const trinome1 = new Trinom(trinome[0], trinome[1], trinome[2]);
+  const image1 = trinome1.calculate(abscisse);
+  const derivee1 = trinome1.derivate();
+  const imagederivee1 = derivee1.calculate(abscisse);
+  const k = abscisse * imagederivee1;
+  const constante = k - image1;
+  const equation1 = new EqualNode(
     new VariableNode("y"),
     new SubstractNode(
-      new MultiplyNode(c.toTree(), new VariableNode("x")),
-      d.toTree(),
+      new MultiplyNode(imagederivee1.toTree(), new VariableNode("x")),
+      constante.toTree(),
     ).simplify(),
   );
-  const latexs = eq.toAllValidTexs({ allowRawRightChildAsSolution: true });
+  const latexs = equation1.toAllValidTexs({
+    allowRawRightChildAsSolution: true,
+  });
   return latexs.includes(ans);
 };
 export const tangentEquations: Exercise<Identifiers> = {
   id: "tangentEquations",
-  label: "Calcul de l'équation de la tangente",
+  label: "Déterminer l'équation d'une tangente",
   levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],
