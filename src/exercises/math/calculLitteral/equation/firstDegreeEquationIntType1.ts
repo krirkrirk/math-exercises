@@ -41,26 +41,32 @@ const getFirstDegreeEquationIntQuestion: QuestionGenerator<
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  while (propositions.length < n) {
-    const w1 = b - a;
-    const w2 = b + a;
-    const w3 = b * a;
-    const wrongAnswer1 = new EqualNode(
-      new VariableNode("x"),
-      w1.toTree(),
-    ).toTex();
-    const wrongAnswer2 = new EqualNode(
-      new VariableNode("x"),
-      w2.toTree(),
-    ).toTex();
-    const wrongAnswer3 = new EqualNode(
-      new VariableNode("x"),
-      w3.toTree(),
-    ).toTex();
+  const w1 = b - a;
+  const w2 = b + a;
+  const w3 = Math.floor(a / b);
+  const wrongAnswer1 = new EqualNode(
+    new VariableNode("x"),
+    w1.toTree(),
+  ).toTex();
+  const wrongAnswer2 = new EqualNode(
+    new VariableNode("x"),
+    w2.toTree(),
+  ).toTex();
+  const wrongAnswer3 = new EqualNode(
+    new VariableNode("x"),
+    w3.toTree(),
+  ).toTex();
 
-    tryToAddWrongProp(propositions, wrongAnswer1);
-    tryToAddWrongProp(propositions, wrongAnswer2);
-    tryToAddWrongProp(propositions, wrongAnswer3);
+  tryToAddWrongProp(propositions, wrongAnswer1);
+  tryToAddWrongProp(propositions, wrongAnswer2);
+  tryToAddWrongProp(propositions, wrongAnswer3);
+  while (propositions.length < n) {
+    const random = randint(-15, 15);
+    const wrongAnswer = new EqualNode(
+      new VariableNode("x"),
+      random.toTree(),
+    ).toTex();
+    tryToAddWrongProp(propositions, wrongAnswer);
   }
   return shuffleProps(propositions, n);
 };
@@ -72,8 +78,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
 };
 export const firstDegreeEquationIntType1: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType1",
-  label:
-    "Résoudre une équation du premier degré du type ${a}{x} = b$, solution entière",
+  label: "Résoudre une équation du premier degré du type ${a}{x} = b$",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Équations"],

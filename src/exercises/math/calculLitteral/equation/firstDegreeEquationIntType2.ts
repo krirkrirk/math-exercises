@@ -12,11 +12,16 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
   a: number;
   x: number;
+  b: number;
+  c: number;
 };
 
 const getFirstDegreeEquationIntQuestion: QuestionGenerator<
@@ -27,22 +32,45 @@ const getFirstDegreeEquationIntQuestion: QuestionGenerator<
   const c = randint(-15, 15, [0]);
   const b = c - a * x;
   const answer = new EqualNode(new VariableNode("x"), x.toTree()).toTex();
+  const equation = new EqualNode(
+    new AddNode(
+      new MultiplyNode(a.toTree(), new VariableNode("x")),
+      b.toTree(),
+    ).simplify(),
+    c.toTree(),
+  );
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Résoudre l'équation suivante : $${a}x + ${b} = ${c}$`,
+    instruction: `Résoudre l'équation suivante : $${equation}$`,
     keys: ["x", "equal"],
     answerFormat: "tex",
-    identifiers: { a: a, x: x },
+    identifiers: { a: a, x: x, c: c, b: b },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
+  const w1 = b - c - a;
+  const w2 = new FractionNode(a.toTree(), (b - c).toTree());
+  const w3 = Math.floor(c / b - a);
+  const wrongAnswer1 = new EqualNode(
+    new VariableNode("x"),
+    w1.toTree(),
+  ).toTex();
+  const wrongAnswer2 = new EqualNode(new VariableNode("x"), w2).toTex();
+  const wrongAnswer3 = new EqualNode(
+    new VariableNode("x"),
+    w3.toTree(),
+  ).toTex();
+
+  tryToAddWrongProp(propositions, wrongAnswer1);
+  tryToAddWrongProp(propositions, wrongAnswer2);
+  tryToAddWrongProp(propositions, wrongAnswer3);
   while (propositions.length < n) {
-    const random = randint(-50, 50, [0]);
+    const random = randint(-15, 15);
     const wrongAnswer = new EqualNode(
       new VariableNode("x"),
       random.toTree(),
@@ -59,8 +87,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
 };
 export const firstDegreeEquationIntType2: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType2",
-  label:
-    "Résoudre une équation du premier degré du type ${a}{x} + b = c$, solution entière",
+  label: "Résoudre une équation du premier degré du type ${a}{x} + b = c$",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Équations"],
