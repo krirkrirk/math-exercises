@@ -29,28 +29,24 @@ const getEquaDiffAyPlusBQuestion: QuestionGenerator<Identifiers>  = ()=>{
   const b = randint(-10,11);
 
   const aNode = new NumberNode(a);
-  const bNode = new NumberNode(b)
+  const bNode = new NumberNode(b);
+  const y = new VariableNode('y');
+  const c = new VariableNode('C');
+  const x = new VariableNode('x');
 
   const equaDiff = new EqualNode( 
     new VariableNode("y'"), 
-    new AddNode( 
-      new MultiplyNode(aNode, new VariableNode('y')), bNode )
+    new AddNode( new MultiplyNode(aNode, y), bNode )
   );
 
   const fraction = new Rational(b,a).simplify().toTree();
   
-  const correctAnswer = new EqualNode(
-    new VariableNode('y'),
-    (b != 0) ? new AddNode(
-      new MultiplyNode( 
-        new VariableNode('C'), 
-        new ExpNode( new MultiplyNode(aNode,new VariableNode("x")) )
-      ),
-      new MultiplyNode(new NumberNode(-1),fraction).simplify()
-    ) : new MultiplyNode( 
-          new VariableNode('C'), 
-          new ExpNode( new MultiplyNode(aNode,new VariableNode("x")) )
-        )
+  const correctAnswer = new EqualNode( y, (b != 0) 
+              ? new AddNode( new MultiplyNode( c, new ExpNode( new MultiplyNode(aNode,x) ) ),
+              new MultiplyNode( new NumberNode(-1),fraction).simplify() ) 
+              : new MultiplyNode ( 
+                c, new ExpNode( new MultiplyNode(aNode,x) )
+              )
   );
 
   const question: Question<Identifiers> = {
@@ -68,9 +64,9 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const propos = generatePropositions(a,b);
-  tryToAddWrongProp(propositions,propos[2].toTex());
   tryToAddWrongProp(propositions,propos[0].toTex());
   tryToAddWrongProp(propositions,propos[1].toTex());
+  tryToAddWrongProp(propositions,propos[2].toTex());
  
   while (propositions.length < n) {
     tryToAddWrongProp(propositions,generatePropositions(a,randint(-11,10,[0,1,a]) )[0].toTex());
@@ -125,7 +121,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, {a, b})=>{
         new ExpNode( new MultiplyNode(new NumberNode(a),new VariableNode("x")) )
       ),
       fraction
-    ) : new MultiplyNode( 
+    ) : new MultiplyNode(
           new VariableNode('C'), 
           new ExpNode( new MultiplyNode(new NumberNode(a),new VariableNode("x")) )
         )
@@ -136,7 +132,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, {a, b})=>{
 export const equaDiffAyPlusB: Exercise<Identifiers> = {
   id: 'equaDiffAyPlusB',
   label: "Résoudre une équation différentielle du type $y' = ay + b$",
-  levels: ["TermSpé"],
+  levels: ["TermSpé", "MathComp"],
   isSingleStep: true,
   sections: ["Équations différentielles"],
   generator: (nb: number) => getDistinctQuestions(getEquaDiffAyPlusBQuestion, nb),
