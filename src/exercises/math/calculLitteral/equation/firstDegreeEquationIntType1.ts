@@ -56,7 +56,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
   const latexs = ans1.toAllValidTexs({ allowRawRightChildAsSolution: true });
   return latexs.includes(ans);
 };
-export const firstDegreeEquationInt: Exercise<Identifiers> = {
+export const firstDegreeEquationInt1: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType1",
   label:
     "Résoudre une équation du premier degré du type ${a}{x} = b$, solution entière",

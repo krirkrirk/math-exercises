@@ -7,3 +7,4 @@ export * from "./firstDegreeEquation";
 export * from "./fractionEquation";
 export * from "./multiplicationEquation";
 export * from "./firstDegreeEquationIntType1";
+export * from "./firstDegreeEquationIntType2";
