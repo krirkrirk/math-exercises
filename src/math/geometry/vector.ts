@@ -46,6 +46,12 @@ export class Vector {
     }}\\begin{pmatrix}${this.x.toTex()} \\\\ ${this.y.toTex()} \\end{pmatrix}`;
   }
 
+  toInlineCoordsTex(): string {
+    return `\\left(${this.x.simplify().toTex()};${this.y
+      .simplify()
+      .toTex()}\right)`;
+  }
+
   isColinear(v: Vector): boolean {
     const det = this.determinant(v);
     return det.evaluate({}) === 0;
