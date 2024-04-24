@@ -41,9 +41,17 @@ const getFirstDegreeEquationIntQuestion: QuestionGenerator<
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
+
   const w1 = b - a;
   const w2 = b + a;
-  const w3 = Math.floor(a / b);
+  let w3 = 0;
+  
+  if (b !== 0) {
+    w3 = Math.floor(a / b);
+  } else {
+    w3 = Math.floor(randint(-10, 10));
+  }
+
   const wrongAnswer1 = new EqualNode(
     new VariableNode("x"),
     w1.toTree(),
@@ -60,16 +68,19 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   tryToAddWrongProp(propositions, wrongAnswer1);
   tryToAddWrongProp(propositions, wrongAnswer2);
   tryToAddWrongProp(propositions, wrongAnswer3);
+  
   while (propositions.length < n) {
-    const random = randint(-15, 15);
+    const random = randint(-10, 10);
     const wrongAnswer = new EqualNode(
       new VariableNode("x"),
       random.toTree(),
     ).toTex();
     tryToAddWrongProp(propositions, wrongAnswer);
   }
+  
   return shuffleProps(propositions, n);
 };
+
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
   const ans1 = new EqualNode(new VariableNode("x"), x.toTree());
