@@ -106,6 +106,8 @@ const generateProposition = (
 
   aU.y = new MultiplyNode(a, u.y).simplify();
   bV.y = new MultiplyNode(b, v.y).simplify();
+  aU.x = u.x;
+  bV.x = v.x;
   aUPlusbV = aU.add(bV);
   const secondProposition = new Vector("au+bv", aUPlusbV.x, aUPlusbV.y);
 
