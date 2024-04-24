@@ -121,7 +121,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 export const linearCombination: Exercise<Identifiers> = {
   id: "linearCombination",
   label:
-    "Calcul des coordonnées du vecteur $a\\overrightarrow{u} + b\\overrightarrow{v}",
+    "Calcul des coordonnées du vecteur $a\\overrightarrow{u} + b\\overrightarrow{v}$",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Vecteurs"],
