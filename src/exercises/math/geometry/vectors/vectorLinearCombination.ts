@@ -13,22 +13,26 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Vector, VectorConstructor } from "#root/math/geometry/vector";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
-  a: NumberNode;
-  b: NumberNode;
+  a: number;
+  b: number;
   u: Vector;
   v: Vector;
 };
 
-const getLinearCombinationQuestion: QuestionGenerator<Identifiers> = () => {
+const getVectorLinearCombinationQuestion: QuestionGenerator<
+  Identifiers
+> = () => {
   const u = VectorConstructor.random("u", true);
   const v = VectorConstructor.random("v", true);
-  const a = new NumberNode(randint(-10, 11, [0]));
-  const b = new NumberNode(randint(-10, 11, [0]));
+  const a = randint(-10, 11, [0]);
+  const b = randint(-10, 11, [0]);
 
-  const instruction = `Soient $${u.toTex()}$ et $${v.toTex()}$ , deux vecteurs de coordonnées respectives $${u.toTexWithCoords()}, ${v.toTexWithCoords()}$. 
+  const instruction = `Soient deux vecteurs $${u.toTex()}${u.toInlineCoordsTex()}$ et $${v.toTex()}${v.toInlineCoordsTex()}$. 
   Calculer les coordonnées du vecteur $${getAddVectorTex(
     getMultiplyVectorTex(a, u),
     getMultiplyVectorTex(b, v),
@@ -39,7 +43,7 @@ const getLinearCombinationQuestion: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     answer: `${correctAnswer.toInlineCoordsTex()}`,
     instruction: instruction,
-    keys: ["semicolon", "comma"],
+    keys: ["semicolon"],
     answerFormat: "tex",
     identifiers: { a, b, u, v },
   };
@@ -47,14 +51,18 @@ const getLinearCombinationQuestion: QuestionGenerator<Identifiers> = () => {
   return question;
 };
 
-const getMultiplyVectorTex = (a: NumberNode, u: Vector): string => {
-  if (Math.abs(a.value) === 1)
-    return a.value === -1 ? `-${u.toTex()}` : u.toTex();
-  return a.toTex() + u.toTex();
+const getMultiplyVectorTex = (a: number, u: Vector): string => {
+  const node = new MultiplyNode(
+    new VariableNode(a + ""),
+    new VariableNode(u.name),
+  );
+  return node.simplify().toTex();
 };
 
 const getAddVectorTex = (u: string, v: string): string => {
-  return v.charAt(0) === "-" ? u + v : `${u}+${v}`;
+  return new AddNode(new VariableNode(u), new VariableNode(v))
+    .simplify()
+    .toTex();
 };
 
 const getPropositions: QCMGenerator<Identifiers> = (
@@ -69,8 +77,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
   let aRandom;
   let bRandom;
   while (propositions.length < n) {
-    aRandom = new NumberNode(randint(a.value - 2, a.value + 3, [a.value]));
-    bRandom = new NumberNode(randint(b.value - 2, b.value + 3, [b.value]));
+    aRandom = randint(a - 2, a + 3, [a]);
+    bRandom = randint(b - 2, b + 3, [b]);
     tryToAddWrongProp(
       propositions,
       calculateLinearCombination(aRandom, b, u, v).toInlineCoordsTex(),
@@ -84,28 +92,32 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const calculateLinearCombination = (
-  a: NumberNode,
-  b: NumberNode,
+  a: number,
+  b: number,
   u: Vector,
   v: Vector,
 ): Vector => {
-  const aUPlusBv = u.times(a).add(v.times(b));
+  const aNode = new NumberNode(a);
+  const bNode = new NumberNode(b);
+  const aUPlusBv = u.times(aNode).add(v.times(bNode));
   return new Vector("au+bv", aUPlusBv.x, aUPlusBv.y);
 };
 
 const generateProposition = (
-  a: NumberNode,
-  b: NumberNode,
+  a: number,
+  b: number,
   v: Vector,
   u: Vector,
 ): Vector[] => {
-  let aU = new Vector("au", new MultiplyNode(a, u.x).simplify(), u.y);
-  let bV = new Vector("bv", new MultiplyNode(b, v.x).simplify(), v.y);
+  const aNode = new NumberNode(a);
+  const bNode = new NumberNode(b);
+  let aU = new Vector("au", new MultiplyNode(aNode, u.x).simplify(), u.y);
+  let bV = new Vector("bv", new MultiplyNode(bNode, v.x).simplify(), v.y);
   let aUPlusbV = aU.add(bV);
   const firtPropostion = new Vector("au+bv", aUPlusbV.x, aUPlusbV.y);
 
-  aU.y = new MultiplyNode(a, u.y).simplify();
-  bV.y = new MultiplyNode(b, v.y).simplify();
+  aU.y = new MultiplyNode(aNode, u.y).simplify();
+  bV.y = new MultiplyNode(bNode, v.y).simplify();
   aU.x = u.x;
   bV.x = v.x;
   aUPlusbV = aU.add(bV);
@@ -115,18 +127,17 @@ const generateProposition = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  const ansSplitted = answer.split(";");
-  return answer === ans || ans === `${ansSplitted[0]},${ansSplitted[1]}`;
+  return answer === ans || [answer, answer.replace(";", ",")].includes(ans);
 };
-export const linearCombination: Exercise<Identifiers> = {
-  id: "linearCombination",
+export const vectorLinearCombination: Exercise<Identifiers> = {
+  id: "vectorLinearCombination",
   label:
     "Calcul des coordonnées du vecteur $a\\overrightarrow{u} + b\\overrightarrow{v}$",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Vecteurs"],
   generator: (nb: number) =>
-    getDistinctQuestions(getLinearCombinationQuestion, nb),
+    getDistinctQuestions(getVectorLinearCombinationQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,

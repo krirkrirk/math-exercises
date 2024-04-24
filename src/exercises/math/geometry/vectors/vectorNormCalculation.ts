@@ -11,7 +11,7 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { VectorConstructor } from "#root/math/geometry/vector";
-import { randint } from "#root/math/utils/random/randint";
+import { SquareRootConstructor } from "#root/math/numbers/reals/real";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -27,12 +27,7 @@ const getVectorNormCalculationQuestion: QuestionGenerator<Identifiers> = () => {
   const u = VectorConstructor.random("u", false);
   const x = (u.x.simplify() as NumberNode).value;
   const y = (u.y.simplify() as NumberNode).value;
-  const correctAnswer = new SqrtNode(
-    new AddNode(
-      new SquareNode(new NumberNode(x)),
-      new SquareNode(new NumberNode(y)),
-    ),
-  );
+  const correctAnswer = u.getNorm();
 
   const question: Question<Identifiers> = {
     answer: correctAnswer.simplify().toTex(),
@@ -51,15 +46,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, x, y }) => {
   generateProposition(x, y).forEach((value) => {
     tryToAddWrongProp(propositions, value.simplify().toTex());
   });
-  let generatedProposition;
+  let sqrtRand;
   while (propositions.length < n) {
-    generatedProposition = generateProposition(
-      randint(x - 3, x + 4, [x]),
-      randint(y - 3, y + 4, [y]),
-    );
-    generatedProposition.forEach((value) =>
-      tryToAddWrongProp(propositions, value.simplify().toTex()),
-    );
+    sqrtRand = SquareRootConstructor.randomSimplifiable({});
+    tryToAddWrongProp(propositions, sqrtRand.simplify().tex);
   }
   return shuffleProps(propositions, n);
 };
