@@ -10,3 +10,5 @@ export * from "./paralellismViaColinearity";
 export * from "./parallelogramViaEqualVectors";
 export * from "./fourthParallelogramPoint";
 export * from "./equalCaracteristicFromGraph";
+export * from "./linearCombination";
+export * from "./vectorNormCalculation";

@@ -49,7 +49,7 @@ export class Vector {
   toInlineCoordsTex(): string {
     return `\\left(${this.x.simplify().toTex()};${this.y
       .simplify()
-      .toTex()}\right)`;
+      .toTex()}\\right)`;
   }
 
   isColinear(v: Vector): boolean {
