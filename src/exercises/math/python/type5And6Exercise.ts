@@ -231,7 +231,7 @@ export const type5And6Exercice: Exercise<Identifiers> = {
   label: "Exercice python sur les boucle for",
   levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Python"],
   generator: (nb: number) =>
     getDistinctQuestions(getType5And6ExerciseQuestion, nb),
   qcmTimer: 60,
