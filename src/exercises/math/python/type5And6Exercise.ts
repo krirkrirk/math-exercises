@@ -24,9 +24,9 @@ type Identifiers = {
 type pyExercise = {
   instruction: string;
   type: string;
-  a: number;
   op: string;
   nbIteration: number;
+  a: number;
   b?: number;
 };
 
@@ -36,22 +36,17 @@ const getType5And6ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   let exercise: pyExercise = {
     instruction: "",
     type: "",
-    a: 1,
     op: "+",
     nbIteration: 1,
     b: 1,
+    a: 1,
   };
   let correctAnswer: AlgebraicNode = new NumberNode(1);
   const randType = types[0];
   switch (randType) {
     case "5":
       exercise = generateType5Exercise();
-      correctAnswer = getCorrectAnswer(
-        randType,
-        exercise.a,
-        exercise.op,
-        exercise.nbIteration,
-      );
+      correctAnswer = getCorrectAnswer(exercise);
       break;
     case "6":
       break;
@@ -73,44 +68,33 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  generatePropostion(
-    exercise.type,
-    exercise.a,
-    exercise.op,
-    exercise.nbIteration,
-    exercise.b,
-  ).forEach((value) =>
+  generatePropostion(exercise).forEach((value) =>
     tryToAddWrongProp(propositions, value.simplify().toTex()),
   );
 
   while (propositions.length < n) {
-    let b = exercise.b
+    let bRand = exercise.b
       ? randint(exercise.b - 3, exercise.b + 4, [exercise.b])
       : undefined;
-    generatePropostion(
-      exercise.type,
-      randint(exercise.a - 3, exercise.a + 4, [exercise.a]),
-      exercise.op,
-      exercise.nbIteration,
-      b,
-    ).forEach((value) =>
+    let aRand = randint(exercise.a - 3, exercise.a + 4, [exercise.a]);
+    let exo = { ...exercise, a: aRand, b: bRand };
+    generatePropostion(exo).forEach((value) =>
       tryToAddWrongProp(propositions, value.simplify().toTex()),
     );
   }
   return shuffleProps(propositions, n);
 };
 
-const generatePropostion = (
-  type: string,
-  a: number,
-  op: string,
-  nbIteration: number,
-  b?: number,
-): AlgebraicNode[] => {
+const generatePropostion = (exercise: pyExercise): AlgebraicNode[] => {
   let propositions: AlgebraicNode[] = [];
-  switch (type) {
+  switch (exercise.type) {
     case "5":
-      propositions = generateType5Proposition(a, op, nbIteration);
+      const a = exercise.a as number;
+      propositions = generateType5Proposition(
+        a,
+        exercise.op,
+        exercise.nbIteration,
+      );
       break;
     case "6":
       break;
@@ -124,11 +108,11 @@ const generateType5Proposition = (
   nbIteration: number,
 ): AlgebraicNode[] => {
   let firstPropostion = new AddNode(
-    getCorrectAnswer("5", a, op, nbIteration),
+    getType5CorrectAnswer(a, op, nbIteration),
     new NumberNode(1),
   );
   let secondProposition = new AddNode(
-    getCorrectAnswer("5", a, op, nbIteration),
+    getType5CorrectAnswer(a, op, nbIteration),
     new NumberNode(-1),
   );
   return [firstPropostion, secondProposition];
@@ -141,7 +125,8 @@ const generateType5Exercise = (): pyExercise => {
 
   const nbIteration = nbIterations[randint(0, nbIterations.length)];
   let op = operands[randint(0, operands.length)];
-  const instruction = `\`\`\`\
+  const instruction = `Qu’affichera le programme suivant ?
+  \`\`\`\
   exercise
   a=${a}
   for i in range (1,${nbIteration}):
@@ -149,20 +134,34 @@ const generateType5Exercise = (): pyExercise => {
   print(a)
   \`\`\`\
   `;
-  return { instruction, type: "5", a, op, nbIteration: nbIteration - 1 };
+  return { instruction, type: "5", op, nbIteration: nbIteration - 1, a };
 };
 
-const getCorrectAnswer = (
-  type: string,
-  a: number,
-  op: string,
-  nbIteration: number,
-  b?: number,
-): AlgebraicNode => {
+/*const generateType6Exercise = (): pyExercise => {
+  const a = randint(-10,11);
+  const b = randint(1,4);
+
+  const instruction = `\`\`\`\
+  test
+  b=${b}
+  a=int(input("Entrez un nombre"))
+  for i in range(1,4):
+      b=b*a  
+  print(a)
+  \`\`\`\
+  `
+}*/
+
+const getCorrectAnswer = (exercise: pyExercise): AlgebraicNode => {
   let correctAnswer: AlgebraicNode = new NumberNode(1);
-  switch (type) {
+  switch (exercise.type) {
     case "5":
-      correctAnswer = getType5CorrectAnswer(a, op, nbIteration);
+      const a = exercise.a as number;
+      correctAnswer = getType5CorrectAnswer(
+        a,
+        exercise.op,
+        exercise.nbIteration,
+      );
       break;
     case "6":
       break;
@@ -192,15 +191,7 @@ const getType5CorrectAnswer = (
   return correctAnswer;
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { exercise }) => {
-  return getCorrectAnswer(
-    exercise.type,
-    exercise.a,
-    exercise.op,
-    exercise.nbIteration,
-  )
-    .simplify()
-    .toAllValidTexs()
-    .includes(ans);
+  return getCorrectAnswer(exercise).simplify().toAllValidTexs().includes(ans);
 };
 export const type5And6Exercice: Exercise<Identifiers> = {
   id: "type5And6Exercice",
