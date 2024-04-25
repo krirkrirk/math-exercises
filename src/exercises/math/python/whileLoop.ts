@@ -98,7 +98,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, initialValue, s
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, {answer})=>{
-  throw Error("VEA not implemented")
+  return ans === answer
 }
 export const whileLoop: Exercise<Identifiers> = {
   id: 'whileLoop',
