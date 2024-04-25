@@ -28,10 +28,10 @@ type Identifiers = {
 const getFirstDegreeEquationIntQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const a = randint(-15, 15, [0]);
-  const x = randint(-15, 15, [0]);
-  const c = randint(-15, 15, [0]);
-  const d = randint(-15, 15, [0]);
+  const a = randint(-10, 10, [0]);
+  const x = randint(-10, 10, [0]);
+  const c = randint(-10, 10, [0]);
+  const d = randint(-10, 10, [0]);
   const b = d - (a - c) * x;
   const answer = new EqualNode(new VariableNode("x"), x.toTree()).toTex();
   const equation = new EqualNode(
@@ -46,7 +46,7 @@ const getFirstDegreeEquationIntQuestion: QuestionGenerator<
   );
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Résoudre l'équation suivante :$${equation.toTex()}$`,
+    instruction: `Résoudre l'équation suivante : $${equation.toTex()}$`,
     keys: ["x", "equal"],
     answerFormat: "tex",
     identifiers: { a: a, x: x, b: b, c: c, d: d },
@@ -106,7 +106,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
 export const firstDegreeEquationIntType3: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType3",
   label:
-    "Résoudre une équation du premier degré du type $ax + b = cx + d$",
+    "Résoudre une équation du premier degré du type $ax + b = cx + d$ (solutions entières)",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Équations"],

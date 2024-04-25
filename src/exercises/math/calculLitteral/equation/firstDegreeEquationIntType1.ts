@@ -12,6 +12,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
@@ -23,13 +24,15 @@ type Identifiers = {
 const getFirstDegreeEquationIntQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const a = randint(-15, 15, [0]);
-  const x = randint(-15, 15, [0]);
+  const a = randint(-10, 10, [0]);
+  const x = randint(-10, 10, [0]);
   const b = a * x;
   const answer = new EqualNode(new VariableNode("x"), x.toTree()).toTex();
+  const equation = new EqualNode(new MultiplyNode(a.toTree(),new VariableNode('x')), b.toTree())
+
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Résoudre l'équation suivante : $${a}x = ${b}$`,
+    instruction: `Résoudre l'équation suivante : $${equation.toTex()}$`,
     keys: ["x", "equal"],
     answerFormat: "tex",
     identifiers: { a: a, x: x, b: b },
@@ -89,7 +92,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
 };
 export const firstDegreeEquationIntType1: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType1",
-  label: "Résoudre une équation du premier degré du type $ax = b$",
+  label: "Résoudre une équation du premier degré du type $ax = b$ (solutions entières)",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Équations"],

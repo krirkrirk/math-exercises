@@ -27,9 +27,9 @@ type Identifiers = {
 const getFirstDegreeEquationIntQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const a = randint(-15, 15, [0]);
-  const x = randint(-15, 15, [0]);
-  const c = randint(-15, 15, [0]);
+  const a = randint(-10, 10, [0]);
+  const x = randint(-10, 10, [0]);
+  const c = randint(-10, 10, [0]);
   const b = c - a * x;
   const answer = new EqualNode(new VariableNode("x"), x.toTree()).toTex();
   const equation = new EqualNode(
@@ -57,11 +57,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   const w1 = b - c - a; 
 
   let wrongAnswer2 = "";
-  if (b !== c) {  // Assurez-vous que b - c n'est pas zéro
+  if (b !== c) {  
     const w2 = new FractionNode(a.toTree(), (b - c).toTree()).simplify();
     wrongAnswer2 = new EqualNode(new VariableNode("x"), w2).toTex();
   } else {
-    // Fournir une réponse alternative ou invalide si b - c est zéro
     wrongAnswer2 = new EqualNode(new VariableNode("x"), randint(-10, 10).toTree()).toTex();
   }
 
@@ -81,7 +80,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   tryToAddWrongProp(propositions, wrongAnswer2);
   tryToAddWrongProp(propositions, wrongAnswer3);
   while (propositions.length < n) {
-    const random = randint(-15, 15);
+    const random = randint(-10, 10);
     const wrongAnswer = new EqualNode(
       new VariableNode("x"),
       random.toTree(),
@@ -99,7 +98,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
 };
 export const firstDegreeEquationIntType2: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType2",
-  label: "Résoudre une équation du premier degré du type $ax + b = c$",
+  label: "Résoudre une équation du premier degré du type $ax + b = c$ (solutions entières)",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Équations"],
