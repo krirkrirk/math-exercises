@@ -15,76 +15,83 @@ import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
-  a: number,
-  b: number,
-  id1: number,
-  id2: number
+  initialValue: number,
+  operation: string,
+  step: number,
+  iterations: number,
+  finalValue: number,
+  opIndex: number,
 };
 
 const operations = [
-  { name: "+", func: (a: number, b: number) => a + b },
-  { name: "-", func: (a: number, b: number) => a - b },
-  { name: "*", func: (a: number, b: number) => a * b },
-  { name: "//", func: (a: number, b: number) => Math.floor(a / b) }
+  { name: "+", func: (x: number, step: number) => x + step },
+  { name: "-", func: (x: number, step: number) => x - step },
+  { name: "*", func: (x: number, step: number) => x * step },
+  { name: "//", func: (x: number, step: number) => Math.floor(x / step) }
 ];
 
-const getInOutCalculQuestion: QuestionGenerator<Identifiers> = () => {
-  const a = randint(-10, 10);
-  const b = randint(-10, 10);
+const getForLoopQuestion: QuestionGenerator<Identifiers> = () => {
+  const initialValue = randint(-10, 10);
+  const opIndex = randint(0, operations.length - 1);
+  const op = operations[opIndex];
+  const step = randint(-5, 5, [0]); 
+  const iterations = randint(1, 10);
   
-  const id1 = randint(0, operations.length)
-  const id2 = randint(0, operations.length)
-  const op1 = operations[id1];
-  const op2 = operations[id2];
-  const c = op1.func(a, b);
-  const d = op2.func(a, c);
+  let value = initialValue;
+  for (let i = 0; i < iterations; i++) {
+    value = op.func(value, step);
+  }
 
-  const answer = d.toString();
+  const answer = value.toString();
   const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Qu'affichera le programme suivant ?
 \`\`\`
-a = ${a}
-b = ${b}
-b = a ${op1.name} b 
-a = a ${op2.name} b
-print(a)     
+x = ${initialValue}
+for i in range(0, ${iterations}):
+  x = x ${op.name} ${step}
+print(x)
 \`\`\`
-`
-,
-    keys: ['a','b','equal'],
+`,
+    keys: ['a', 'equal'],
     answerFormat: "tex",
-    identifiers: { a, b, id1, id2 },
+    identifiers: { initialValue, operation: op.name, step, iterations, finalValue: value, opIndex},
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, id1, id2 }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, initialValue, step, iterations, opIndex }) => {
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer);
-  
+  const correctAnswer = answer;
+  addValidProp(propositions, correctAnswer);
 
-  const op1 = operations[id1];
-  const op2 = operations[id2];
-  
-  const w1 = op1.func(a, b)
-  const w2 = op2.func(a, b);
-  const w3 = a;
+  const op = operations[opIndex];
 
-  const wrongAnswer1 = w1.toString();
-  const wrongAnswer2 = w2.toString();
-  const wrongAnswer3 = w3.toString();
-
-  tryToAddWrongProp(propositions, wrongAnswer1);
-  tryToAddWrongProp(propositions, wrongAnswer2);
-  tryToAddWrongProp(propositions, wrongAnswer3);
-
-  while (propositions.length < n) {
-    const random = randint(-10,10);
-    const randomwrongAnswer = random.toString();
-    tryToAddWrongProp(propositions, randomwrongAnswer)
+  // Une itération en moins
+  let valueOneLess = initialValue;
+  for (let i = 0; i < iterations - 1; i++) {
+    valueOneLess = op.func(valueOneLess, step);
   }
+  const wrongAnswerOneLess = valueOneLess.toString();
+  tryToAddWrongProp(propositions, wrongAnswerOneLess);
+
+  // Une itération en plus
+  let valueOneMore = initialValue;
+  for (let i = 0; i < iterations + 1; i++) {
+    valueOneMore = op.func(valueOneMore, step);
+  }
+  const wrongAnswerOneMore = valueOneMore.toString();
+  tryToAddWrongProp(propositions, wrongAnswerOneMore);
+
+  // Deux itérations en plus
+  let valueTwoMore = initialValue;
+  for (let i = 0; i < iterations + 1; i++) {
+    valueOneMore = op.func(valueTwoMore, step);
+  }
+  const wrongAnswerTwoMore = valueTwoMore.toString();
+  tryToAddWrongProp(propositions, wrongAnswerTwoMore);
+  
   return shuffleProps(propositions, n);
 };
 
@@ -97,7 +104,7 @@ export const forLoop: Exercise<Identifiers> = {
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Python"],
-  generator: (nb: number) => getDistinctQuestions(getInOutCalculQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getForLoopQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
