@@ -16,7 +16,6 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { CANCELLED } from "dns";
 
 type Identifiers = {
   a: number;
