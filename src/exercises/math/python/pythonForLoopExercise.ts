@@ -22,11 +22,7 @@ type Identifiers = {
 
 type PyExercise = {
   instruction: string;
-  type: string;
-  op: string;
-  nbIteration: number;
-  a: number;
-  b?: number;
+  exoVariable: PyExoVariables;
 };
 
 type PyExoVariables = {
@@ -40,20 +36,15 @@ const types = ["5", "6"];
 
 const getPythonForLoopExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const exercise = generateRandomExercise();
-  const pyExoVariables = {
-    a: exercise.a,
-    nbIteration: exercise.nbIteration,
-    op: exercise.op,
-    b: exercise.b,
-  };
-  const correctAnswer = getCorrectAnswer(exercise);
+
+  const correctAnswer = getCorrectAnswer(exercise.exoVariable);
 
   const question: Question<Identifiers> = {
     answer: correctAnswer.simplify().toTex(),
     instruction: exercise.instruction,
     keys: [],
     answerFormat: "tex",
-    identifiers: { exercise: pyExoVariables },
+    identifiers: { exercise: exercise.exoVariable },
   };
 
   return question;
@@ -62,11 +53,12 @@ const getPythonForLoopExerciseQuestion: QuestionGenerator<Identifiers> = () => {
 const generateRandomExercise = (): PyExercise => {
   let exercise: PyExercise = {
     instruction: "",
-    type: "",
-    op: "+",
-    nbIteration: 1,
-    b: 1,
-    a: 1,
+    exoVariable: {
+      a: 1,
+      nbIteration: 1,
+      op: "+",
+      b: 2,
+    },
   };
   const randType = types[randint(0, types.length)];
   switch (randType) {
@@ -129,6 +121,11 @@ const generateType5Exercise = (): PyExercise => {
 
   const nbIteration = nbIterations[randint(0, nbIterations.length)];
   let op = operands[randint(0, operands.length)];
+  const exoVariable = {
+    a,
+    nbIteration,
+    op,
+  };
   const instruction = `Qu’affichera le programme suivant ?
   \`\`\`\
   exercise
@@ -138,13 +135,20 @@ const generateType5Exercise = (): PyExercise => {
   print(a)
   \`\`\`\
   `;
-  return { instruction, type: "5", op, nbIteration: nbIteration, a };
+  return { instruction, exoVariable };
 };
 
 const generateType6Exercise = (): PyExercise => {
   const a = randint(-4, 4, [0]);
   const b = randint(1, 4);
   const nbIteration = randint(3, 6);
+
+  const exoVariable = {
+    a,
+    nbIteration,
+    op: "*",
+    b,
+  };
   const instruction = `Qu'affiche le programme suivant, si l'utilisateur entre $${a}$ ?
   \`\`\`\
   test
@@ -155,7 +159,7 @@ const generateType6Exercise = (): PyExercise => {
   print(a)
   \`\`\`\
   `;
-  return { instruction, type: "6", op: "*", nbIteration, a, b };
+  return { instruction, exoVariable };
 };
 const generateType5Proposition = (
   a: number,
