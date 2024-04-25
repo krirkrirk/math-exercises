@@ -54,7 +54,7 @@ const getVectorLinearCombinationQuestion: QuestionGenerator<
 const getMultiplyVectorTex = (a: number, u: Vector): string => {
   const node = new MultiplyNode(
     new VariableNode(a + ""),
-    new VariableNode(u.name),
+    new VariableNode(u.toTex()),
   );
   return node.simplify().toTex();
 };
