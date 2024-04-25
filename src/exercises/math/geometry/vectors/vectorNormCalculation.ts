@@ -31,8 +31,8 @@ const getVectorNormCalculationQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     answer: correctAnswer.simplify().toTex(),
-    instruction: `Cacluler la norme du vecteur $${u.toTex()}${u.toInlineCoordsTex()}$`,
-    keys: ["sqrt", "power"],
+    instruction: `Cacluler la norme du vecteur $${u.toTexWithCoords()}$`,
+    keys: [],
     answerFormat: "tex",
     identifiers: { x, y },
   };
@@ -58,18 +58,11 @@ const generateProposition = (x: number, y: number): AlgebraicNode[] => {
   let xNode = new NumberNode(x);
   let yNode = new NumberNode(y);
 
-  const firstPropostion = new AddNode(
-    new SquareNode(xNode),
-    new SquareNode(yNode),
-  );
-
-  const secondProposition = new SqrtNode(
+  const firstProposition = new SqrtNode(
     new SquareNode(new AddNode(xNode, yNode)),
   );
 
-  const thirdProposition = new AddNode(xNode, yNode);
-
-  return [firstPropostion, secondProposition, thirdProposition];
+  return [firstProposition];
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { x, y }) => {
@@ -83,7 +76,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { x, y }) => {
 };
 export const vectorNormCalculation: Exercise<Identifiers> = {
   id: "vectorNormCalculation",
-  label: "Calculer la norme d'un vecteur $\\overrightarrow{u}$",
+  label: "Calculer la norme d'un vecteur",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Vecteurs"],

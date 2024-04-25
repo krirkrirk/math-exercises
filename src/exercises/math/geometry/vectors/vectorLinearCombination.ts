@@ -16,12 +16,18 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { CANCELLED } from "dns";
 
 type Identifiers = {
   a: number;
   b: number;
-  u: Vector;
-  v: Vector;
+  u: VectorCoords;
+  v: VectorCoords;
+};
+
+type VectorCoords = {
+  x: number;
+  y: number;
 };
 
 const getVectorLinearCombinationQuestion: QuestionGenerator<
@@ -32,7 +38,16 @@ const getVectorLinearCombinationQuestion: QuestionGenerator<
   const a = randint(-10, 11, [0]);
   const b = randint(-10, 11, [0]);
 
-  const instruction = `Soient deux vecteurs $${u.toTex()}${u.toInlineCoordsTex()}$ et $${v.toTex()}${v.toInlineCoordsTex()}$. 
+  const uCoords = {
+    x: (u.x as NumberNode).simplify().value,
+    y: (u.y as NumberNode).simplify().value,
+  };
+  const vCoords = {
+    x: (v.x as NumberNode).simplify().value,
+    y: (v.y as NumberNode).simplify().value,
+  };
+
+  const instruction = `Soient deux vecteurs $${u.toTexWithCoords()}$ et $${v.toTexWithCoords()}$. 
   Calculer les coordonnées du vecteur $${getAddVectorTex(
     getMultiplyVectorTex(a, u),
     getMultiplyVectorTex(b, v),
@@ -45,17 +60,14 @@ const getVectorLinearCombinationQuestion: QuestionGenerator<
     instruction: instruction,
     keys: ["semicolon"],
     answerFormat: "tex",
-    identifiers: { a, b, u, v },
+    identifiers: { a, b, u: uCoords, v: vCoords },
   };
 
   return question;
 };
 
 const getMultiplyVectorTex = (a: number, u: Vector): string => {
-  const node = new MultiplyNode(
-    new VariableNode(a + ""),
-    new VariableNode(u.toTex()),
-  );
+  const node = new MultiplyNode(new NumberNode(a), new VariableNode(u.toTex()));
   return node.simplify().toTex();
 };
 
@@ -71,7 +83,11 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  generateProposition(a, b, u, v).forEach((value) =>
+
+  const uVector = new Vector("u", new NumberNode(u.x), new NumberNode(u.y));
+  const vVector = new Vector("v", new NumberNode(v.x), new NumberNode(v.y));
+
+  generateProposition(a, b, uVector, vVector).forEach((value) =>
     tryToAddWrongProp(propositions, value.toInlineCoordsTex()),
   );
   let aRandom;
@@ -81,11 +97,21 @@ const getPropositions: QCMGenerator<Identifiers> = (
     bRandom = randint(b - 2, b + 3, [b]);
     tryToAddWrongProp(
       propositions,
-      calculateLinearCombination(aRandom, b, u, v).toInlineCoordsTex(),
+      calculateLinearCombination(
+        aRandom,
+        b,
+        uVector,
+        vVector,
+      ).toInlineCoordsTex(),
     );
     tryToAddWrongProp(
       propositions,
-      calculateLinearCombination(a, bRandom, u, v).toInlineCoordsTex(),
+      calculateLinearCombination(
+        a,
+        bRandom,
+        uVector,
+        vVector,
+      ).toInlineCoordsTex(),
     );
   }
   return shuffleProps(propositions, n);
@@ -127,7 +153,7 @@ const generateProposition = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return answer === ans || [answer, answer.replace(";", ",")].includes(ans);
+  return [answer, answer.replace(";", ",")].includes(ans);
 };
 export const vectorLinearCombination: Exercise<Identifiers> = {
   id: "vectorLinearCombination",
