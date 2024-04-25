@@ -26,7 +26,7 @@ type Identifiers = {
 
 const operations = [
   { name: "+", func: (x: number, step: number) => x + step, tree: (step: number) => new AddNode(new VariableNode('x'), step.toTree()).simplify()},
-  { name: "-", func: (x: number, step: number) => x - step, tree: (step: number) => new SubstractNode(new VariableNode('x'), step.toTree()).simplify() },
+  { name: "-", func: (x: number, step: number) => x - step, tree: (step: number) => new SubstractNode(new VariableNode('x'), step.toTree()).simplify()},
   { name: "*", func: (x: number, step: number) => x * step, tree: (step: number) => new MultiplyNode(new VariableNode('x'), step.toTree())},
   // { name: "//", func: (x: number, step: number) => Math.floor(x / step) }
 ];
@@ -36,7 +36,7 @@ const getForLoopQuestion: QuestionGenerator<Identifiers> = () => {
   const opIndex = randint(0, operations.length);
   const op = operations[opIndex];
   const step = randint(-10, 10, [0, 1]); 
-  const iterations = randint(1, 6);
+  const iterations = randint(1, 6, [1]);
   
   let value = initialValue;
   for (let i = 0; i < iterations; i++) {
