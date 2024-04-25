@@ -10,16 +10,17 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 
 type Identifiers = {
-  exercise: pyExercise;
+  exercise: PyExoVariables;
 };
 
-type pyExercise = {
+type PyExercise = {
   instruction: string;
   type: string;
   op: string;
@@ -28,10 +29,23 @@ type pyExercise = {
   b?: number;
 };
 
+type PyExoVariables = {
+  a: number;
+  nbIteration: number;
+  op: string;
+  b?: number;
+};
+
 const types = ["5", "6"];
 
 const getType5And6ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const exercise = generateRandomExercise();
+  const pyExoVariables = {
+    a: exercise.a,
+    nbIteration: exercise.nbIteration,
+    op: exercise.op,
+    b: exercise.b,
+  };
   const correctAnswer = getCorrectAnswer(exercise);
 
   const question: Question<Identifiers> = {
@@ -39,14 +53,14 @@ const getType5And6ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: exercise.instruction,
     keys: [],
     answerFormat: "tex",
-    identifiers: { exercise },
+    identifiers: { exercise: pyExoVariables },
   };
 
   return question;
 };
 
-const generateRandomExercise = (): pyExercise => {
-  let exercise: pyExercise = {
+const generateRandomExercise = (): PyExercise => {
+  let exercise: PyExercise = {
     instruction: "",
     type: "",
     op: "+",
@@ -77,29 +91,26 @@ const getPropositions: QCMGenerator<Identifiers> = (
   );
 
   while (propositions.length < n) {
-    let bRand = exercise.b
-      ? randint(exercise.b - 3, exercise.b + 4, [exercise.b])
-      : undefined;
-    let aRand = randint(exercise.a - 3, exercise.a + 4, [exercise.a]);
-    let exo = { ...exercise, a: aRand, b: bRand };
-    generatePropostion(exo).forEach((value) =>
-      tryToAddWrongProp(propositions, value),
+    let correctAnswer = getCorrectAnswer(exercise).value;
+    let random = new NumberNode(
+      randint(correctAnswer - 15, correctAnswer + 16, [correctAnswer]),
     );
+    tryToAddWrongProp(propositions, random.simplify().toTex());
   }
   return shuffleProps(propositions, n);
 };
 
-const generatePropostion = (exercise: pyExercise): string[] => {
+const generatePropostion = (exercise: PyExoVariables): string[] => {
   let propositions: string[] = [];
-  switch (exercise.type) {
-    case "5":
+  switch (typeof exercise.b) {
+    case "undefined":
       propositions = generateType5Proposition(
         exercise.a,
         exercise.op,
         exercise.nbIteration,
       );
       break;
-    case "6":
+    case "number":
       const b = exercise.b as number;
       propositions = generateType6Proposition(
         exercise.a,
@@ -111,7 +122,7 @@ const generatePropostion = (exercise: pyExercise): string[] => {
   return propositions;
 };
 
-const generateType5Exercise = (): pyExercise => {
+const generateType5Exercise = (): PyExercise => {
   const a = randint(-10, 11);
   const operands = ["+", "-"];
   const nbIterations = [1000, 100, 10];
@@ -130,10 +141,10 @@ const generateType5Exercise = (): pyExercise => {
   return { instruction, type: "5", op, nbIteration: nbIteration, a };
 };
 
-const generateType6Exercise = (): pyExercise => {
-  const a = randint(-4, 5, [0]);
+const generateType6Exercise = (): PyExercise => {
+  const a = randint(-4, 4, [0]);
   const b = randint(1, 4);
-  const nbIteration = randint(3, 7);
+  const nbIteration = randint(3, 6);
   const instruction = `Qu'affiche le programme suivant, si l'utilisateur entre $${a}$ ?
   \`\`\`\
   test
@@ -153,16 +164,13 @@ const generateType5Proposition = (
 ): string[] => {
   let firstPropostion = new AddNode(
     getType5CorrectAnswer(a, op, nbIteration),
-    new NumberNode(1),
+    new Rational(1, 2).toTree(),
   );
   let secondProposition = new AddNode(
     getType5CorrectAnswer(a, op, nbIteration),
-    new NumberNode(-1),
+    new Rational(-1, 2).toTree(),
   );
-  return [
-    firstPropostion.simplify().toTex(),
-    secondProposition.simplify().toTex(),
-  ];
+  return [firstPropostion.toTex(), secondProposition.toTex()];
 };
 
 const generateType6Proposition = (
@@ -182,16 +190,16 @@ const generateType6Proposition = (
   ];
 };
 
-const getCorrectAnswer = (exercise: pyExercise): NumberNode => {
-  switch (exercise.type) {
-    case "5":
+const getCorrectAnswer = (exercise: PyExoVariables): NumberNode => {
+  switch (typeof exercise.b) {
+    case "undefined":
       return getType5CorrectAnswer(
         exercise.a,
         exercise.op,
         exercise.nbIteration,
       );
       break;
-    case "6":
+    case "number":
       let b = exercise.b as number;
       return getType6CorrectAnswer(exercise.a, b, exercise.nbIteration);
       break;
@@ -209,7 +217,7 @@ const getType5CorrectAnswer = (
     case "+":
       return new NumberNode(a + multiplied);
     case "-":
-      return new NumberNode(a + multiplied);
+      return new NumberNode(a - multiplied);
   }
   return new NumberNode(1);
 };
