@@ -11,11 +11,6 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
-import { EqualNode } from "#root/tree/nodes/equations/equalNode";
-import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
-import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
   initialValue: number,
@@ -25,9 +20,9 @@ type Identifiers = {
 };
 
 const operations = [
-  { name: "+", func: (x: number, step: number) => x + step, tree: (step: number) => new AddNode(new VariableNode('x'), step.toTree()).simplify()},
-  { name: "-", func: (x: number, step: number) => x - step, tree: (step: number) => new SubstractNode(new VariableNode('x'), step.toTree()).simplify()},
-  { name: "*", func: (x: number, step: number) => x * step, tree: (step: number) => new MultiplyNode(new VariableNode('x'), step.toTree())},
+  { name: "+", func: (x: number, step: number) => x + step},
+  { name: "-", func: (x: number, step: number) => x - step},
+  { name: "*", func: (x: number, step: number) => x * step},
   // { name: "//", func: (x: number, step: number) => Math.floor(x / step) }
 ];
 
@@ -35,7 +30,7 @@ const getForLoopQuestion: QuestionGenerator<Identifiers> = () => {
   const initialValue = randint(-10, 10, [0,1]);
   const opIndex = randint(0, operations.length);
   const op = operations[opIndex];
-  const step = randint(-10, 10, [0, 1]); 
+  const step = randint(0, 10, [0, 1]); 
   const iterations = randint(1, 6, [1]);
   
   let value = initialValue;
@@ -44,14 +39,13 @@ const getForLoopQuestion: QuestionGenerator<Identifiers> = () => {
   }
 
   const answer = value.toString();
-  const equation = op.tree(step);
   const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Qu'affichera le programme suivant ?
 \`\`\`
 x = ${initialValue}
 for i in range(0, ${iterations}):
-  x = ${equation.toTex()}
+  x = x ${op.name} ${step}
 print(x)
 \`\`\`
 `,
