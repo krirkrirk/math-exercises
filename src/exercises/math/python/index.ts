@@ -1,1 +1,1 @@
-export * from "./pythonForLoopExercice";
+export * from "./pythonForLoopExercise";

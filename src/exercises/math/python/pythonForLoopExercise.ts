@@ -233,8 +233,8 @@ const getType6CorrectAnswer = (
 const isAnswerValid: VEA<Identifiers> = (ans, { exercise }) => {
   return getCorrectAnswer(exercise).toAllValidTexs().includes(ans);
 };
-export const pythonForLoopExercice: Exercise<Identifiers> = {
-  id: "pythonForLoopExercice",
+export const pythonForLoopExercise: Exercise<Identifiers> = {
+  id: "pythonForLoopExercise",
   label: "Exercice python sur les boucle for",
   levels: ["2nde"],
   isSingleStep: true,
