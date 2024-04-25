@@ -58,10 +58,7 @@ const generateProposition = (x: number, y: number): AlgebraicNode[] => {
   let xNode = new NumberNode(x);
   let yNode = new NumberNode(y);
 
-  const firstProposition = new SqrtNode(
-    new SquareNode(new AddNode(xNode, yNode)),
-  );
-
+  const firstProposition = new AddNode(xNode, yNode);
   return [firstProposition];
 };
 
