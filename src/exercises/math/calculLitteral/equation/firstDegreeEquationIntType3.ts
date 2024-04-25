@@ -30,7 +30,7 @@ const getFirstDegreeEquationIntQuestion: QuestionGenerator<
 > = () => {
   const a = randint(-10, 10, [0]);
   const x = randint(-10, 10, [0]);
-  const c = randint(-10, 10, [0]);
+  const c = randint(-10, 10, [0,a]);
   const d = randint(-10, 10, [0]);
   const b = d - (a - c) * x;
   const answer = new EqualNode(new VariableNode("x"), x.toTree()).toTex();

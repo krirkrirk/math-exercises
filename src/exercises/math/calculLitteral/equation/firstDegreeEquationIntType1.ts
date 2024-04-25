@@ -24,7 +24,7 @@ type Identifiers = {
 const getFirstDegreeEquationIntQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const a = randint(-10, 10, [0]);
+  const a = randint(-10, 10, [0,1]);
   const x = randint(-10, 10, [0]);
   const b = a * x;
   const answer = new EqualNode(new VariableNode("x"), x.toTree()).toTex();
