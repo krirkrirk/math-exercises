@@ -187,7 +187,7 @@ export const pyWhileLoopExercise: Exercise<Identifiers> = {
   label: "Exercise sur les boules while en python",
   levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Python"],
   generator: (nb: number) =>
     getDistinctQuestions(getPyWhileLoopExerciseQuestion, nb),
   qcmTimer: 60,
