@@ -18,7 +18,8 @@ type Identifiers = {
   step: number,
   iterations: number,
   opIndex: number,
-  a: number
+  a: number,
+  x: number
 };
 
 const operations = [
@@ -26,20 +27,25 @@ const operations = [
   { name: "*", func: (x: number, step: number) => x * step},
 ];
 
+const operationsreversed = [
+  { name: "-", func: (x: number, step: number) => x - step},
+  { name: "/", func: (x: number, step: number) => Math.floor(x / step)},
+];
+
 const getWhileLoopQuestion: QuestionGenerator<Identifiers> = () => {
-  const initialValue = randint(0, 10, [0,1]);
+  const initialValue = randint(0, 13, [0,1]);
   const opIndex = randint(0, operations.length);
   const op = operations[opIndex];
   const step = randint(1, 10, [0, 1]); 
   const iterations = randint(1, 6, [1]);
 
-  let n = initialValue;
+  let x = initialValue;
   const a = randint(10,30);
-  while (n <= a) {
-    n = op.func(n, step);
+  while (x <= a) {
+    x = op.func(x, step);
   }
 
-  const answer = n.toString();
+  const answer = x.toString();
   const question: Question<Identifiers> = {
     answer: answer,
     instruction: `Qu'affichera le programme suivant ?
@@ -53,37 +59,29 @@ print(n)
 `,
     keys: ['a', 'equal'],
     answerFormat: "tex",
-    identifiers: { initialValue, step, iterations, opIndex, a},
+    identifiers: { initialValue, step, iterations, opIndex, a, x},
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer, initialValue, step, iterations, opIndex, a}) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, step, opIndex, x}) => {
   const propositions: Proposition[] = [];
   const correctAnswer = answer;
   addValidProp(propositions, correctAnswer);
 
-  const op = operations[opIndex];
+  const opOneMore = operations[opIndex];
+  const opOneLess = operationsreversed[opIndex]
 
-  let w1 = initialValue
-  while (w1 < op.func(a,w1)) {
-    w1 = op.func(w1, step);
-  }
+  const w1 = opOneMore.func(x,step)
   const wrongAnswer1 = w1.toString();
   tryToAddWrongProp(propositions, wrongAnswer1);
 
 
-  let w2 = initialValue
-  while (w2 <= a-w2) {
-    w2 = op.func(w2, step);
-  }
+  const w2 = opOneLess.func(x,step)
   const wrongAnswer2 = w2.toString();
   tryToAddWrongProp(propositions, wrongAnswer2);
 
-  const valueNegative = -parseInt(answer);
-  const wrongAnswerNegative = valueNegative.toString();
-  tryToAddWrongProp(propositions, wrongAnswerNegative);
 
   while (propositions.length < n) {
     
