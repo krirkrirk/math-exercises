@@ -85,7 +85,7 @@ const generateProposition = (exo: PyExoVariables): NumberNode[] => {
   exoProposition.p = exo.p - 1;
   exoProposition.n = exo.n - 1;
   const secondProposition = getCorrectAnswer(exoProposition);
-  const thridProposition = new NumberNode(exo.p * exo.k);
+  const thridProposition = new NumberNode(exo.n * exo.k);
   return [firstProposition, secondProposition, thridProposition];
 };
 
