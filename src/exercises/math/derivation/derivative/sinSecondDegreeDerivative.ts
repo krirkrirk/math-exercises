@@ -10,15 +10,20 @@ import {
   tryToAddWrongProp,
 } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
+import { TrinomConstructor } from '#root/math/polynomials/trinom';
+import { SinNode } from '#root/tree/nodes/functions/sinNode';
 
 type Identifiers = {
 };
 
 const getSinSecondDegreeDerivativeQuestion: QuestionGenerator<Identifiers>  = ()=>{
+
+  const trinom = TrinomConstructor.random()
+  const sin = new SinNode()
  
   const question: Question<Identifiers> = {
-    answer,
-    instruction: ``,
+    answer: ,
+    instruction: `Calculer la dérivée seconde de $sin(u)$`,
     keys: [],
     answerFormat: 'tex',
     identifiers : {}
@@ -41,11 +46,10 @@ const isAnswerValid: VEA<Identifiers> = (ans, {answer})=>{
 }
 export const sinSecondDegreeDerivative: Exercise<Identifiers> = {
   id: 'sinSecondDegreeDerivative',
-  connector: "",
-  label: "",
-  levels: [],
+  label: "Calculer la dérivée seconde de sin(u)",
+  levels: ["TermSpé"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Dérivation"],
   generator: (nb: number) => getDistinctQuestions(getSinSecondDegreeDerivativeQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,

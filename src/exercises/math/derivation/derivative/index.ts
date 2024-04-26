@@ -21,3 +21,4 @@ export * from "./sqrtCompositionDerivation";
 export * from "./cosCompositionDerivation";
 export * from "./sinCompositionDerivation";
 export * from "./powerCompositionDerivation";
+export * from "./sinSecondDegreeDerivative";
