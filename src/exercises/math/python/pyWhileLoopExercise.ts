@@ -7,14 +7,11 @@ import {
   VEA,
   addValidProp,
   shuffleProps,
+  tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { OperatorNode } from "#root/tree/nodes/operators/operatorNode";
-import { PowerNode, SquareNode } from "#root/tree/nodes/operators/powerNode";
 
 type Identifiers = {
   exercise: PyExoVariables;
@@ -27,7 +24,7 @@ type PyExercise = {
 
 type PyExoVariables = {
   a: number;
-  n: number;
+  b: number;
   op: string;
 };
 
@@ -49,11 +46,27 @@ const getPyWhileLoopExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, exercise },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
+  generateProposition(answer, exercise).forEach((value) =>
+    tryToAddWrongProp(propositions, value.simplify().toTex()),
+  );
+  const correctAnswer = getCorrectAnswer(exercise).value;
   while (propositions.length < n) {
-    throw Error("QCM not implemented");
+    tryToAddWrongProp(
+      propositions,
+      new NumberNode(
+        randint(correctAnswer - randint(1, correctAnswer), correctAnswer + 11, [
+          correctAnswer,
+        ]),
+      )
+        .simplify()
+        .toTex(),
+    );
   }
   return shuffleProps(propositions, n);
 };
@@ -63,28 +76,58 @@ const isAnswerValid: VEA<Identifiers> = (ans, { exercise }) => {
   return correctAnswer.simplify().toAllValidTexs().includes(ans);
 };
 
+const generateProposition = (
+  answer: string,
+  exercise: PyExoVariables,
+): NumberNode[] => {
+  const firstProposition =
+    exercise.op === "*" ? +answer * exercise.b : +answer + exercise.b;
+  const secondProposition =
+    exercise.op === "*" ? +answer / exercise.b : +answer - exercise.b;
+  return [new NumberNode(firstProposition), new NumberNode(secondProposition)];
+};
+
 const getCorrectAnswer = (exercise: PyExoVariables): NumberNode => {
-  const nbIteration = exercise.a - exercise.n + 1;
   switch (exercise.op) {
     case "*":
       return new NumberNode(
-        exercise.n * Math.pow(2, Math.ceil(Math.log2(nbIteration))),
+        Math.pow(
+          exercise.b,
+          Math.ceil(Math.log(exercise.a) / Math.log(exercise.b)),
+        ),
       );
     case "+":
-      return new NumberNode(exercise.n + 2 * Math.ceil(nbIteration / 2));
+      return new NumberNode(
+        1 + exercise.b * Math.ceil(exercise.a / exercise.b),
+      );
   }
-  return new NumberNode(exercise.n);
+  return new NumberNode(exercise.b);
 };
 
 const generateRandomExercise = (): PyExercise => {
-  const a = randint(20, 61);
-  const n = 1;
+  const combination = {
+    times: [
+      { minB: 2, maxB: 2, maxIter: 10 },
+      { minB: 3, maxB: 5, maxIter: 5 },
+    ],
+    plus: [{ minB: 2, maxB: 8, maxIter: 10 }],
+  };
   const op = operators[randint(0, operators.length)];
+  const randCombination =
+    op === "*"
+      ? combination.times[randint(0, combination.times.length)]
+      : combination.plus[0];
+
+  const b = randint(randCombination.minB, randCombination.maxB + 1);
+  const nbIter = randint(2, randCombination.maxIter + 1);
+
+  const aA = op === "+" ? Math.ceil(b * nbIter) : Math.pow(b, nbIter);
+  const a = randint(aA - 10, aA + 11);
 
   const randomType = exoTypes[randint(0, exoTypes.length)];
-  const instruction = generateInstruction(randomType, a, n, op);
+  const instruction = generateInstruction(randomType, a, b, op);
 
-  return { instruction, exoVariables: { a, n, op } };
+  return { instruction, exoVariables: { a, b, op } };
 };
 
 const generateInstruction = (
@@ -104,16 +147,16 @@ const generateInstruction = (
 
 const generateType16Instruction = (
   a: number,
-  n: number,
+  b: number,
   op: string,
 ): string => {
   const instruction = `Qu’affichera le programme suivant ?
   \`\`\`\
   test
   a=${a}
-  n=${n}
+  n=1
   while n<=a:
-    n=2${op}n
+    n=${b}${op}n
   print(n) 
   \`\`\`
   `;
@@ -122,7 +165,7 @@ const generateType16Instruction = (
 
 const generateType17Instruction = (
   a: number,
-  n: number,
+  b: number,
   op: string,
 ): string => {
   const instruction = `Qu’affichera le programme suivant, si l'utilisateur entre ${a}
@@ -130,14 +173,15 @@ const generateType17Instruction = (
   test
   a=input("Entrez un entiel naturel non nul.")
   a=int(a)
-  n=${n}
+  n=1
   while n<=a:
-    n=2${op}n
+    n=${b}${op}n
   print(n) 
   \`\`\`
   `;
   return instruction;
 };
+
 export const pyWhileLoopExercise: Exercise<Identifiers> = {
   id: "pyWhileLoopExercise",
   label: "Exercise sur les boules while en python",
