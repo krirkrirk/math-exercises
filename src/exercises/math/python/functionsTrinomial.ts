@@ -78,10 +78,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, trinom, image})
   const w2 = new FractionNode(x2, (2*trinom[0]).toTree()).simplify();
   const w3 = new EqualNode(
     new VariableNode('y'),
-    image.toTree())
+    image.toTree());
   
   tryToAddWrongProp(propositions, w1.toTex());
-  tryToAddWrongProp(propositions, w2.toTex());
+  // tryToAddWrongProp(propositions, w2.toTex());
   tryToAddWrongProp(propositions, w3.toTex());
 
   while (propositions.length < n) {
