@@ -15,6 +15,9 @@ import {
   PolynomialConstructor,
 } from "#root/math/polynomials/polynomial";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
+import { EqualNode } from "#root/tree/nodes/equations/equalNode";
+import { FunctionsIds } from "#root/tree/nodes/functions/functionNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
   a: number;
@@ -29,7 +32,7 @@ const getSecondDerivativeOfThridDegreeFunction: QuestionGenerator<
   const funct = PolynomialConstructor.randomWithOrder(3, "x");
   const coefficients = funct.coefficients;
   const correctAnswer = funct.derivate().derivate().toTree();
-  const instruction = `Calculer la dérivéé seconde de la fonction $f=${funct
+  const instruction = `Calculer dérivée seconde de la fonction $f=${funct
     .toTree()
     .toTex()}$`;
   const coeff = {
@@ -86,7 +89,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d }) => {
 };
 export const secondDerivativeOfThridDegreeFunction: Exercise<Identifiers> = {
   id: "secondDerivativeOfThridDegreeFunction",
-  label: "Calcul de dérivé seconde d'une fonction du troisiéme degreé",
+  label: "Calcul de Dérivée seconde d'un trinome",
   levels: [],
   isSingleStep: true,
   sections: [],

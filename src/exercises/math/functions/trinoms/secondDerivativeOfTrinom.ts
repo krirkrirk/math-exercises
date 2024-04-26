@@ -45,7 +45,7 @@ const getSecondDerivativeOfTrinomQuestion: QuestionGenerator<
     },
   );
   const trinomTree = trinom.toTree();
-  const instruction = `Calculer la dérivé seconde de la fonction $${trinomTree.toTex()}$`;
+  const instruction = `Calculer la dérivée seconde de la fonction $f=${trinomTree.toTex()}$`;
 
   const correctAnswer = trinom.derivate().derivate().toTree();
   const question: Question<Identifiers> = {
@@ -94,7 +94,7 @@ const generateProposition = (
 
 export const secondDerivativeOfTrinom: Exercise<Identifiers> = {
   id: "secondDerivativeOfTrinom",
-  label: "Calcul de dérivé seconde d'un trinome",
+  label: "Calcul de Dérivée seconde d'un trinome",
   levels: [],
   isSingleStep: true,
   sections: ["Fonctions"],
