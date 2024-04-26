@@ -16,6 +16,7 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
   a: number;
+  b: number;
   x: number;
 };
 
@@ -31,25 +32,55 @@ const getFirstDegreeEquationIntQuestion: QuestionGenerator<
     instruction: `Résoudre l'équation suivante : $${a}x = ${b}$`,
     keys: ["x", "equal"],
     answerFormat: "tex",
-    identifiers: { a: a, x: x },
+    identifiers: { a: a, x: x, b: b },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
+
+  const w1 = b - a;
+  const w2 = b + a;
+  let w3 = 0;
+  
+  if (b !== 0) {
+    w3 = Math.floor(a / b);
+  } else {
+    w3 = Math.floor(randint(-10, 10));
+  }
+
+  const wrongAnswer1 = new EqualNode(
+    new VariableNode("x"),
+    w1.toTree(),
+  ).toTex();
+  const wrongAnswer2 = new EqualNode(
+    new VariableNode("x"),
+    w2.toTree(),
+  ).toTex();
+  const wrongAnswer3 = new EqualNode(
+    new VariableNode("x"),
+    w3.toTree(),
+  ).toTex();
+
+  tryToAddWrongProp(propositions, wrongAnswer1);
+  tryToAddWrongProp(propositions, wrongAnswer2);
+  tryToAddWrongProp(propositions, wrongAnswer3);
+  
   while (propositions.length < n) {
-    const random = randint(-99, 99, [0]);
+    const random = randint(-10, 10);
     const wrongAnswer = new EqualNode(
       new VariableNode("x"),
       random.toTree(),
     ).toTex();
     tryToAddWrongProp(propositions, wrongAnswer);
   }
+  
   return shuffleProps(propositions, n);
 };
+
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
   const ans1 = new EqualNode(new VariableNode("x"), x.toTree());
@@ -58,8 +89,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
 };
 export const firstDegreeEquationIntType1: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType1",
-  label:
-    "Résoudre une équation du premier degré du type ${a}{x} = b$, solution entière",
+  label: "Résoudre une équation du premier degré du type $ax = b$",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Équations"],

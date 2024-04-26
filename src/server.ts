@@ -28,6 +28,9 @@ import { PiNode } from "./tree/nodes/numbers/piNode";
 import { VariableNode } from "./tree/nodes/variables/variableNode";
 import { AddNode } from "./tree/nodes/operators/addNode";
 import { SubstractNode } from "./tree/nodes/operators/substractNode";
+import { EqualNode } from "./tree/nodes/equations/equalNode";
+import { ExpNode } from "./tree/nodes/functions/expNode";
+import { DivideNode } from "./tree/nodes/operators/divideNode";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
