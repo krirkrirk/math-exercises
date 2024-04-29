@@ -31,8 +31,8 @@ const getSecondDerivativeOfThridDegreeFunction: QuestionGenerator<
 > = () => {
   const funct = PolynomialConstructor.randomWithOrder(3, "x");
   const coefficients = funct.coefficients;
-  const correctAnswer = funct.derivate().derivate().toTree();
-  const instruction = `Calculer dérivée seconde de la fonction $f=${funct
+  const correctAnswer = funct.secondDerivate().toTree();
+  const instruction = `Calculer la dérivée seconde de la fonction $f=${funct
     .toTree()
     .toTex()}$`;
   const coeff = {
@@ -78,7 +78,7 @@ const generateProposition = (
 ): AlgebraicNode[] => {
   const polynom = new Polynomial([d, c, b, a], "x");
   const firstPropostion = polynom.derivate().toTree();
-  const secondProposition = new Polynomial([c, b, a], "x").toTree();
+  const secondProposition = new Polynomial([c + d, 2 * b, 3 * a], "x").toTree();
   const thirdProposition = new Polynomial([b, a], "x").toTree();
   return [firstPropostion, secondProposition, thirdProposition];
 };
@@ -89,10 +89,10 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d }) => {
 };
 export const secondDerivativeOfThridDegreeFunction: Exercise<Identifiers> = {
   id: "secondDerivativeOfThridDegreeFunction",
-  label: "Calcul de Dérivée seconde d'un trinome",
-  levels: [],
+  label: "Calcul de dérivée seconde d'une fonction (polynôme) de degré 3",
+  levels: ["TermSpé"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Fonctions"],
   generator: (nb: number) =>
     getDistinctQuestions(getSecondDerivativeOfThridDegreeFunction, nb),
   qcmTimer: 60,
