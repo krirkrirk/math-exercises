@@ -205,7 +205,7 @@ const getType6CorrectAnswer = (
 const isAnswerValid: VEA<Identifiers> = (ans, { exercise }) => {
   return getCorrectAnswer(exercise) + "" === ans;
 };
-export const pythonForLoopExercise: Exercise<Identifiers> = {
+export const pythonForLoop1Exercise: Exercise<Identifiers> = {
   id: "pyForLoop1Exercise",
   label: "Exercice python sur les boucle for 1",
   levels: ["2nde"],
