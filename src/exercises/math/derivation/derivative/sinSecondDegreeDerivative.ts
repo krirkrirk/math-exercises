@@ -15,6 +15,7 @@ import { TrinomConstructor } from "#root/math/polynomials/trinom";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { CosNode } from "#root/tree/nodes/functions/cosNode";
 import { SinNode } from "#root/tree/nodes/functions/sinNode";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
@@ -28,19 +29,20 @@ const getSinSecondDegreeDerivativeQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const affine = AffineConstructor.random();
-  const power = 2;
-  const ans = new EqualNode(
-    new VariableNode("f''(u)"),
+  const ans = new MultiplyNode(
     new MultiplyNode(
-      new PowerNode((-affine.a).toTree(), power.toTree()),
-      new SinNode(affine.toTree()),
-    ).simplify(),
-  ).toTex();
+      new PowerNode(affine.a.toTree(), new NumberNode(2)),
+      new NumberNode(-1),
+    ),
+    new SinNode(affine.toTree()),
+  )
+    .simplify()
+    .toTex();
 
   const question: Question<Identifiers> = {
     answer: ans,
     instruction: `Calculer la dérivée seconde de $sin(${affine.toTex()})$`,
-    keys: ["x", "u", "sin", "cos", "tan", "f"],
+    keys: ["x", "sin", "cos", "tan"],
     answerFormat: "tex",
     identifiers: { affine },
   };
@@ -52,41 +54,38 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, affine }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  const power = 2;
+  const wronganswer1 = new MultiplyNode(
+    new PowerNode(affine.a.toTree(), new NumberNode(2)),
+    new SinNode(affine.toTree()),
+  )
+    .simplify()
+    .toTex();
 
-  const wronganswer1 = new EqualNode(
-    new VariableNode("f''(u)"),
+  const wronganswer2 = new MultiplyNode(
     new MultiplyNode(
-      new PowerNode(affine.a.toTree(), power.toTree()),
-      new SinNode(affine.toTree()),
-    ).simplify(),
-  ).toTex();
+      new PowerNode(affine.a.toTree(), new NumberNode(2)),
+      new NumberNode(-1),
+    ),
+    new CosNode(affine.toTree()),
+  )
+    .simplify()
+    .toTex();
 
-  const wronganswer2 = new EqualNode(
-    new VariableNode("f''(u)"),
-    new MultiplyNode(
-      new PowerNode((-affine.a).toTree(), power.toTree()),
-      new CosNode(affine.toTree()),
-    ).simplify(),
-  ).toTex();
+  const wronganswer3 = new MultiplyNode(
+    affine.a.toTree(),
+    new CosNode(affine.toTree()),
+  )
+    .simplify()
+    .toTex();
 
-  const wronganswer3 = new EqualNode(
-    new VariableNode("f''(u)"),
-    new MultiplyNode(
-      affine.a.toTree(),
-      new CosNode(affine.toTree()),
-    ).simplify(),
-  ).toTex();
+  const wronganswer4 = new MultiplyNode(
+    affine.a.toTree(),
+    new SinNode(affine.toTree()),
+  )
+    .simplify()
+    .toTex();
 
-  const wronganswer4 = new EqualNode(
-    new VariableNode("f''(u)"),
-    new MultiplyNode(
-      affine.a.toTree(),
-      new SinNode(affine.toTree()),
-    ).simplify(),
-  ).toTex();
-
-  const wronganswer5 = affine.toTex();
+  const wronganswer5 = affine.toTree().toTex();
 
   tryToAddWrongProp(propositions, wronganswer1);
   tryToAddWrongProp(propositions, wronganswer2);
@@ -96,37 +95,33 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, affine }) => {
 
   while (propositions.length < n) {
     const random = AffineConstructor.random();
-    const randomwronganswer = new EqualNode(
-      new VariableNode("f''(u)"),
-      new MultiplyNode(
-        random.a.toTree(),
-        new CosNode(affine.toTree()),
-      ).simplify(),
-    ).toTex();
+    const randomwronganswer = new MultiplyNode(
+      random.a.toTree(),
+      new CosNode(affine.toTree()),
+    )
+      .simplify()
+      .toTex();
     tryToAddWrongProp(propositions, randomwronganswer);
   }
   return shuffleProps(propositions, n);
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, affine }) => {
-  const power = 2;
-  const validequation = new EqualNode(
-    new VariableNode("f''(u)"),
+  const validequation = new MultiplyNode(
     new MultiplyNode(
-      new PowerNode((-affine.a).toTree(), power.toTree()),
-      new SinNode(affine.toTree()),
-    ).simplify(),
-  );
+      new PowerNode(affine.a.toTree(), new NumberNode(2)),
+      new NumberNode(-1),
+    ),
+    new SinNode(affine.toTree()),
+  ).simplify();
 
-  const latexs = validequation.toAllValidTexs({
-    allowRawRightChildAsSolution: true,
-  });
+  const latexs = validequation.toAllValidTexs();
 
   return latexs.includes(ans);
 };
 export const sinSecondDegreeDerivative: Exercise<Identifiers> = {
   id: "sinSecondDegreeDerivative",
-  label: "Calculer la dérivée seconde de sin(u)",
+  label: "Dérivée seconde de sin(u)",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],
