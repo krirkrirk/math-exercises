@@ -15,8 +15,11 @@ import {
   PolynomialConstructor,
 } from "#root/math/polynomials/polynomial";
 import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
+import { randint } from "#root/math/utils/random/randint";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
+import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
   a: number;
@@ -27,23 +30,8 @@ type Identifiers = {
 const getSecondDerivativeOfTrinomQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const trinom = TrinomConstructor.random(
-    {
-      min: -11,
-      max: 11,
-      excludes: [0],
-    },
-    {
-      min: -11,
-      max: 11,
-      excludes: [0],
-    },
-    {
-      min: -11,
-      max: 11,
-      excludes: [0],
-    },
-  );
+  const trinom = TrinomConstructor.random();
+
   const trinomTree = trinom.toTree();
   const instruction = `Calculer la dérivée seconde de la fonction $f=${trinomTree.toTex()}$`;
 
@@ -65,18 +53,19 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   generateProposition(a, b, c).forEach((value) =>
     tryToAddWrongProp(propositions, value.toTex()),
   );
+  let correctAnswer = 2 * a;
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      PolynomialConstructor.random(1, "x").toTree().toTex(),
+      randint(correctAnswer - 11, correctAnswer + 11, [correctAnswer]) + "",
     );
   }
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
-  const correctAnswer = new Polynomial([b, 2 * a], "x").toTree();
-  return correctAnswer.toAllValidTexs().includes(ans);
+const isAnswerValid: VEA<Identifiers> = (ans, { a }) => {
+  const correctAnswer = 2 * a;
+  return correctAnswer + "" === ans;
 };
 
 const generateProposition = (
@@ -86,7 +75,7 @@ const generateProposition = (
 ): AlgebraicNode[] => {
   const trinom = new Trinom(a, b, c);
   const firstPropostion = trinom.derivate().toTree();
-  const secondProposition = new Polynomial([b, 2 * a], "x").toTree();
+  const secondProposition = new Polynomial([c + b, 2 * a], "x").toTree();
   const thirdProposition = new NumberNode(a + b + c);
 
   return [firstPropostion, secondProposition, thirdProposition];
@@ -95,7 +84,7 @@ const generateProposition = (
 export const secondDerivativeOfTrinom: Exercise<Identifiers> = {
   id: "secondDerivativeOfTrinom",
   label: "Calcul de Dérivée seconde d'un trinome",
-  levels: [],
+  levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Fonctions"],
   generator: (nb: number) =>
