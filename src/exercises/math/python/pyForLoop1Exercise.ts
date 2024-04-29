@@ -34,7 +34,9 @@ type PyExoVariables = {
   b?: number;
 };
 
-const getPythonForLoopExerciseQuestion: QuestionGenerator<Identifiers> = () => {
+const getPythonForLoop1ExerciseQuestion: QuestionGenerator<
+  Identifiers
+> = () => {
   const exercise = generateRandomExercise();
 
   const correctAnswer = getCorrectAnswer(exercise.exoVariable);
@@ -222,13 +224,13 @@ const isAnswerValid: VEA<Identifiers> = (ans, { exercise }) => {
   return getCorrectAnswer(exercise).toAllValidTexs().includes(ans);
 };
 export const pythonForLoopExercise: Exercise<Identifiers> = {
-  id: "pythonForLoopExercise",
+  id: "pythonForLoop1Exercise",
   label: "Exercice python sur les boucle for 1",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Python"],
   generator: (nb: number) =>
-    getDistinctQuestions(getPythonForLoopExerciseQuestion, nb),
+    getDistinctQuestions(getPythonForLoop1ExerciseQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
