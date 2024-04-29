@@ -42,7 +42,7 @@ const getPythonForLoop1ExerciseQuestion: QuestionGenerator<
   const correctAnswer = getCorrectAnswer(exercise.exoVariable);
 
   const question: Question<Identifiers> = {
-    answer: correctAnswer.simplify().toTex(),
+    answer: correctAnswer + "",
     instruction: exercise.instruction,
     keys: [],
     answerFormat: "tex",
@@ -53,25 +53,8 @@ const getPythonForLoop1ExerciseQuestion: QuestionGenerator<
 };
 
 const generateRandomExercise = (): PyExercise => {
-  let exercise: PyExercise = {
-    instruction: "",
-    exoVariable: {
-      a: 1,
-      nbIteration: 1,
-      op: "+",
-      b: 2,
-    },
-  };
   const isType5 = coinFlip();
-  switch (isType5) {
-    case true:
-      exercise = generateType5Exercise();
-      break;
-    case false:
-      exercise = generateType6Exercise();
-      break;
-  }
-  return exercise;
+  return isType5 ? generateType5Exercise() : generateType6Exercise();
 };
 
 const getPropositions: QCMGenerator<Identifiers> = (
@@ -85,11 +68,11 @@ const getPropositions: QCMGenerator<Identifiers> = (
   );
 
   while (propositions.length < n) {
-    let correctAnswer = getCorrectAnswer(exercise).value;
-    let random = new NumberNode(
-      randint(correctAnswer - 15, correctAnswer + 16, [correctAnswer]),
-    );
-    tryToAddWrongProp(propositions, random.simplify().toTex());
+    let correctAnswer = getCorrectAnswer(exercise);
+    let random = randint(correctAnswer - 15, correctAnswer + 16, [
+      correctAnswer,
+    ]);
+    tryToAddWrongProp(propositions, random + "");
   }
   return shuffleProps(propositions, n);
 };
@@ -146,7 +129,6 @@ const generateType6Exercise = (): PyExercise => {
   };
   const instruction = `Qu'affiche le programme suivant, si l'utilisateur entre $${a}$ ?
   \`\`\`
-  test
   b=${b}
   a=int(input("Entrez un nombre"))
   for i in range(1,${nbIteration + 1}):
@@ -162,11 +144,11 @@ const generateType5Proposition = (
   nbIteration: number,
 ): string[] => {
   let firstPropostion = new AddNode(
-    getType5CorrectAnswer(a, op, nbIteration),
+    new NumberNode(getType5CorrectAnswer(a, op, nbIteration)),
     new Rational(1, 2).toTree(),
   );
   let secondProposition = new AddNode(
-    getType5CorrectAnswer(a, op, nbIteration),
+    new NumberNode(getType5CorrectAnswer(a, op, nbIteration)),
     new Rational(-1, 2).toTree(),
   );
   return [firstPropostion.toTex(), secondProposition.toTex()];
@@ -184,12 +166,12 @@ const generateType6Proposition = (
   const thirdProposition = getType6CorrectAnswer(a, b, nbIteration - 1);
   return [
     firstPropostion.simplify().toTex(),
-    secondProposition.simplify().toTex(),
-    thirdProposition.simplify().toTex(),
+    secondProposition + "",
+    thirdProposition + "",
   ];
 };
 
-const getCorrectAnswer = (exercise: PyExoVariables): NumberNode => {
+const getCorrectAnswer = (exercise: PyExoVariables): number => {
   if (exercise.b !== undefined) {
     return getType6CorrectAnswer(exercise.a, exercise.b, exercise.nbIteration);
   } else {
@@ -201,30 +183,30 @@ const getType5CorrectAnswer = (
   a: number,
   op: string,
   nbIteration: number,
-): NumberNode => {
+): number => {
   const multiplied = nbIteration * 0.5;
   switch (op) {
     case "+":
-      return new NumberNode(a + multiplied);
+      return a + multiplied;
     case "-":
-      return new NumberNode(a - multiplied);
+      return a - multiplied;
   }
-  return new NumberNode(1);
+  return 1;
 };
 
 const getType6CorrectAnswer = (
   a: number,
   b: number,
   nbIteration: number,
-): NumberNode => {
+): number => {
   const multiplier = Math.pow(a, nbIteration);
-  return new NumberNode(multiplier * b);
+  return multiplier * b;
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { exercise }) => {
-  return getCorrectAnswer(exercise).toAllValidTexs().includes(ans);
+  return getCorrectAnswer(exercise) + "" === ans;
 };
 export const pythonForLoopExercise: Exercise<Identifiers> = {
-  id: "pythonForLoop1Exercise",
+  id: "pyForLoop1Exercise",
   label: "Exercice python sur les boucle for 1",
   levels: ["2nde"],
   isSingleStep: true,
