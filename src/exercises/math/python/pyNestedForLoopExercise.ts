@@ -11,7 +11,6 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
-import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { random } from "#root/utils/random";
 
 type Identifiers = {
