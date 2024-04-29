@@ -27,14 +27,7 @@ type PyExoVariables = {
   op: string;
   n: number;
   p: number;
-  s: number;
-  k: number;
 };
-
-enum DifficultyEnum {
-  MEDIUM,
-  HARD,
-}
 
 const operators = ["+", "-"];
 
@@ -77,14 +70,12 @@ const generateProposition = (exo: PyExoVariables): number[] => {
     op: exo.op,
     n: exo.n + 1,
     p: exo.p + 1,
-    s: exo.s,
-    k: exo.k,
   };
   const firstProposition = getCorrectAnswer(exoProposition);
   exoProposition.p = exo.p - 1;
   exoProposition.n = exo.n - 1;
   const secondProposition = getCorrectAnswer(exoProposition);
-  const thridProposition = exo.n * exo.k;
+  const thridProposition = exo.op === "+" ? exo.n : -exo.n;
   return [firstProposition, secondProposition, thridProposition];
 };
 
@@ -92,37 +83,25 @@ const isAnswerValid: VEA<Identifiers> = (ans, { exercise }) => {
   return getCorrectAnswer(exercise) + "" === ans;
 };
 
-const generateExercise = (difficulty?: DifficultyEnum): PyExercise => {
+const generateExercise = (): PyExercise => {
   const op = random(operators);
   const n = randint(2, 11);
   const p = randint(2, 11);
-  let s = 0;
-  let k = 1;
-  switch (difficulty) {
-    case DifficultyEnum.MEDIUM:
-      s = randint(1, 11);
-      break;
-    case DifficultyEnum.HARD:
-      s = randint(1, 11);
-      k = randint(2, 11);
-      break;
-  }
+
   const exoVariables = {
     op,
     n,
     p,
-    s,
-    k,
   };
 
   const instruction = `Qu’affichera le programme suivant ?
   \`\`\`
-  s=${s}
+  s=0
   n=${n}
   p=${p}
   for i in range(1,n+1):
     for j in range(1,p+1):
-      s=s${op}${k}
+      s=s${op}1
   print(s) 
   \`\`\`
   `;
@@ -131,9 +110,7 @@ const generateExercise = (difficulty?: DifficultyEnum): PyExercise => {
 
 const getCorrectAnswer = (exo: PyExoVariables): number => {
   const nbIteration = exo.p * exo.n;
-  return exo.op == "+"
-    ? nbIteration * exo.k + exo.s
-    : -nbIteration * exo.k + exo.s;
+  return exo.op == "+" ? nbIteration : -nbIteration;
 };
 export const pyNestedForLoopExercise: Exercise<Identifiers> = {
   id: "pyNestedForLoopExercise",
