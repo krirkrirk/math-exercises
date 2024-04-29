@@ -32,7 +32,7 @@ type PyExoVariables = {
 const exoTypes = ["16", "17"];
 const operators = ["+", "*"];
 
-const getPyWhileLoopExerciseQuestion: QuestionGenerator<Identifiers> = () => {
+const getPyWhileLoop1ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const exercise = generateRandomExercise();
   const correctAnswer = getCorrectAnswer(exercise.exoVariables);
 
@@ -143,7 +143,7 @@ const generateType16Instruction = (
   b: number,
   op: string,
 ): string => {
-  const instruction = `Qu’affichera le programme suivant ?\n
+  const instruction = `Qu’affichera le programme suivant ?
   \`\`\`
   a=${a}
   n=1
@@ -160,7 +160,7 @@ const generateType17Instruction = (
   b: number,
   op: string,
 ): string => {
-  const instruction = `Qu’affichera le programme suivant, si l'utilisateur entre ${a} ?\n
+  const instruction = `Qu’affichera le programme suivant, si l'utilisateur entre ${a} ?
   \`\`\`
   a=input("Entrez un entiel naturel non nul.")
   a=int(a)
@@ -173,14 +173,14 @@ const generateType17Instruction = (
   return instruction;
 };
 
-export const pyWhileLoopExercise: Exercise<Identifiers> = {
-  id: "pyWhileLoopExercise",
+export const pyWhileLoop1Exercise: Exercise<Identifiers> = {
+  id: "pyWhileLoop1Exercise",
   label: "Exercise sur les boules while 1 en python",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Python"],
   generator: (nb: number) =>
-    getDistinctQuestions(getPyWhileLoopExerciseQuestion, nb),
+    getDistinctQuestions(getPyWhileLoop1ExerciseQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,

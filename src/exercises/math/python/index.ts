@@ -1,1 +1,1 @@
-export * from "./pyWhileLoopExercise";
+export * from "./pyWhileLoop1Exercise";
