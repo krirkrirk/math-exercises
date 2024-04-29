@@ -143,14 +143,14 @@ const generateType6Exercise = (): PyExercise => {
     b,
   };
   const instruction = `Qu'affiche le programme suivant, si l'utilisateur entre $${a}$ ?
-  \`\`\`\
+  \`\`\`
   test
   b=${b}
   a=int(input("Entrez un nombre"))
   for i in range(1,${nbIteration + 1}):
       b=b*a  
   print(a)
-  \`\`\`\
+  \`\`\`
   `;
   return { instruction, exoVariable };
 };
