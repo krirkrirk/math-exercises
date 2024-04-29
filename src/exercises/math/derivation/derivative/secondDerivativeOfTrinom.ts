@@ -86,7 +86,7 @@ export const secondDerivativeOfTrinom: Exercise<Identifiers> = {
   label: "Calcul de Dérivée seconde d'un trinome",
   levels: ["TermSpé"],
   isSingleStep: true,
-  sections: ["Fonctions"],
+  sections: ["Dérivation"],
   generator: (nb: number) =>
     getDistinctQuestions(getSecondDerivativeOfTrinomQuestion, nb),
   qcmTimer: 60,

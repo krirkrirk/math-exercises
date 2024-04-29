@@ -92,7 +92,7 @@ export const secondDerivativeOfThridDegreeFunction: Exercise<Identifiers> = {
   label: "Calcul de dérivée seconde d'une fonction (polynôme) de degré 3",
   levels: ["TermSpé"],
   isSingleStep: true,
-  sections: ["Fonctions"],
+  sections: ["Dérivation"],
   generator: (nb: number) =>
     getDistinctQuestions(getSecondDerivativeOfThridDegreeFunction, nb),
   qcmTimer: 60,

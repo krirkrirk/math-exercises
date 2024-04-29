@@ -14,4 +14,3 @@ export * from "./factorizedFormFromRoots";
 export * from "./summitReading";
 export * from "./summitAbscissFromRoots";
 export * from "./summitAbscissFromDevForm";
-export * from "./secondDerivativeOfTrinom";

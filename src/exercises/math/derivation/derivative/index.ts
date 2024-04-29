@@ -21,3 +21,6 @@ export * from "./sqrtCompositionDerivation";
 export * from "./cosCompositionDerivation";
 export * from "./sinCompositionDerivation";
 export * from "./powerCompositionDerivation";
+export * from "./secondDerivativeOfTrinom";
+export * from "./secondDerivativeOfThridDegreeFunction";
+export * from "./secondDerivativeOfExpoFunction";

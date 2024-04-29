@@ -14,7 +14,6 @@ import {
   PlusInfinityNode,
 } from "#root/tree/nodes/numbers/infiniteNode";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
-import { factorial } from "../utils/arithmetic/factorial";
 
 export abstract class PolynomialConstructor {
   static randomWithOrder(order: number, variable: string = "x") {
@@ -300,7 +299,7 @@ export class Polynomial {
   }
 
   secondDerivate(): Polynomial {
-    if (this.coefficients.length === 1)
+    if (this.coefficients.length <= 2)
       return new Polynomial([0], this.variable);
     const res: number[] = [];
     for (let i = 2; i < this.coefficients.length; i++)
