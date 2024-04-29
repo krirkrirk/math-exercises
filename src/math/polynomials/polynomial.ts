@@ -390,11 +390,11 @@ export class Polynomial {
   toTree(opts?: NodeOptions) {
     const recursive = (cursor: number): AlgebraicNode => {
       const coeff = this.coefficients[cursor];
-      if (coeff === 0) return recursive(cursor - 1);
-
       if (cursor === 0) {
         return new NumberNode(coeff);
       }
+
+      if (coeff === 0) return recursive(cursor - 1);
 
       const monome =
         cursor > 1

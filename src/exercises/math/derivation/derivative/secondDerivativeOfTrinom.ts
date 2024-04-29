@@ -71,8 +71,7 @@ const generateProposition = (
   b: number,
   c: number,
 ): AlgebraicNode[] => {
-  const trinom = new Trinom(a, b, c);
-  const firstPropostion = trinom.derivate().toTree();
+  const firstPropostion = new Polynomial([b, 2 * a], "x").toTree();
   const secondProposition = new Polynomial([c + b, 2 * a], "x").toTree();
   const thirdProposition = new NumberNode(a + b + c);
 

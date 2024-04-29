@@ -10,8 +10,9 @@ export const expuSecondDerivative = (
   u: Polynomial,
 ): AlgebraicNode => {
   const uDerivated = u.derivate().toTree();
+  const uSecondDerivated = u.secondDerivate();
   return new AddNode(
-    e,
+    new MultiplyNode(uSecondDerivated.toTree(), e).simplify(),
     new MultiplyNode(uDerivated, expUDerivate(e, u)).simplify(),
-  );
+  ).simplify();
 };

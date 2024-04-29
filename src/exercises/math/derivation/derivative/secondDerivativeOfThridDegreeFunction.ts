@@ -61,7 +61,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      PolynomialConstructor.random(2, "x").toTree().toTex(),
+      PolynomialConstructor.random(1, "x").toTree().toTex(),
     );
   }
   return shuffleProps(propositions, n);
@@ -73,10 +73,9 @@ const generateProposition = (
   c: number,
   d: number,
 ): AlgebraicNode[] => {
-  const polynom = new Polynomial([d, c, b, a], "x");
-  const firstPropostion = polynom.derivate().toTree();
+  const firstPropostion = new Polynomial([c, 2 * b, 3 * a], "x").toTree();
   const secondProposition = new Polynomial([c + d, 2 * b, 3 * a], "x").toTree();
-  const thirdProposition = new Polynomial([b, a], "x").toTree();
+  const thirdProposition = new Polynomial([c, 2 * b, 3 * 2 * a], "x").toTree();
   return [firstPropostion, secondProposition, thirdProposition];
 };
 
