@@ -26,7 +26,7 @@ type Identifiers = {
   affine: Affine;
 };
 
-const getSinSecondDegreeDerivativeQuestion: QuestionGenerator<
+const getCosSecondDegreeDerivativeQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const affine = AffineConstructor.random();
@@ -35,14 +35,14 @@ const getSinSecondDegreeDerivativeQuestion: QuestionGenerator<
       new PowerNode(affine.a.toTree(), new NumberNode(2)),
       new NumberNode(-1),
     ),
-    new SinNode(affine.toTree()),
+    new CosNode(affine.toTree()),
   )
     .simplify()
     .toTex();
 
   const question: Question<Identifiers> = {
     answer: ans,
-    instruction: `Calculer la dérivée seconde de $sin(${affine.toTex()})$`,
+    instruction: `Calculer la dérivée seconde de $cos(${affine.toTex()})$`,
     keys: ["x", "sin", "cos", "tan"],
     answerFormat: "tex",
     identifiers: { affine },
@@ -57,7 +57,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, affine }) => {
 
   const wronganswer1 = new MultiplyNode(
     new PowerNode(affine.a.toTree(), new NumberNode(2)),
-    new SinNode(affine.toTree()),
+    new CosNode(affine.toTree()),
   )
     .simplify()
     .toTex();
@@ -67,21 +67,21 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, affine }) => {
       new PowerNode(affine.a.toTree(), new NumberNode(2)),
       new NumberNode(-1),
     ),
-    new CosNode(affine.toTree()),
+    new SinNode(affine.toTree()),
   )
     .simplify()
     .toTex();
 
   const wronganswer3 = new MultiplyNode(
     affine.a.toTree(),
-    new CosNode(affine.toTree()),
+    new SinNode(affine.toTree()),
   )
     .simplify()
     .toTex();
 
   const wronganswer4 = new MultiplyNode(
     affine.a.toTree(),
-    new SinNode(affine.toTree()),
+    new CosNode(affine.toTree()),
   )
     .simplify()
     .toTex();
@@ -98,7 +98,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, affine }) => {
     const random = AffineConstructor.random();
     const randomwronganswer = new MultiplyNode(
       random.a.toTree(),
-      new CosNode(affine.toTree()),
+      new SinNode(affine.toTree()),
     )
       .simplify()
       .toTex();
@@ -113,7 +113,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, affine }) => {
       new PowerNode(new NumberNode(affine.a), new NumberNode(2)),
       new NumberNode(-1),
     ),
-    new SinNode(
+    new CosNode(
       new AddNode(
         new MultiplyNode(new NumberNode(affine.a), new VariableNode("x")),
         new NumberNode(affine.b),
@@ -126,14 +126,14 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, affine }) => {
   return latexs.includes(ans);
 };
 
-export const sinSecondDegreeDerivative: Exercise<Identifiers> = {
-  id: "sinSecondDegreeDerivative",
-  label: "Dérivée seconde de sin(u)",
+export const cosSecondDegreeDerivative: Exercise<Identifiers> = {
+  id: "cosSecondDegreeDerivative",
+  label: "Dérivée seconde de cos(u)",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],
   generator: (nb: number) =>
-    getDistinctQuestions(getSinSecondDegreeDerivativeQuestion, nb),
+    getDistinctQuestions(getCosSecondDegreeDerivativeQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
