@@ -59,7 +59,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      randint(+answer - 10, +answer + 10, [+answer]) + "",
+      randint(+answer - 10, +answer + 11, [+answer]) + "",
     );
   }
   return shuffleProps(propositions, n);
