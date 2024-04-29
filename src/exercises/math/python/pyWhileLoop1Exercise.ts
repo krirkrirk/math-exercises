@@ -37,7 +37,7 @@ const getPyWhileLoop1ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const correctAnswer = getCorrectAnswer(exercise.exoVariables);
 
   const question: Question<Identifiers> = {
-    answer: correctAnswer.simplify().toTex(),
+    answer: correctAnswer + "",
     instruction: exercise.instruction,
     keys: [],
     answerFormat: "tex",
@@ -54,13 +54,13 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   generateProposition(answer, exercise).forEach((value) =>
-    tryToAddWrongProp(propositions, value.simplify().toTex()),
+    tryToAddWrongProp(propositions, value + ""),
   );
-  const correctAnswer = getCorrectAnswer(exercise).value;
+  const correctAnswer = getCorrectAnswer(exercise);
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      randint(correctAnswer - 11, correctAnswer + 11, [correctAnswer]) + "",
+      randint(correctAnswer - 11, correctAnswer + 11, [correctAnswer, 0]) + "",
     );
   }
   return shuffleProps(propositions, n);
@@ -68,35 +68,31 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
 const isAnswerValid: VEA<Identifiers> = (ans, { exercise }) => {
   const correctAnswer = getCorrectAnswer(exercise);
-  return correctAnswer.simplify().toAllValidTexs().includes(ans);
+  return "" + correctAnswer === ans;
 };
 
 const generateProposition = (
   answer: string,
   exercise: PyExoVariables,
-): NumberNode[] => {
+): number[] => {
   const firstProposition =
     exercise.op === "*" ? +answer * exercise.b : +answer + exercise.b;
   const secondProposition =
     exercise.op === "*" ? +answer / exercise.b : +answer - exercise.b;
-  return [new NumberNode(firstProposition), new NumberNode(secondProposition)];
+  return [firstProposition, secondProposition];
 };
 
-const getCorrectAnswer = (exercise: PyExoVariables): NumberNode => {
+const getCorrectAnswer = (exercise: PyExoVariables): number => {
   switch (exercise.op) {
     case "*":
-      return new NumberNode(
-        Math.pow(
-          exercise.b,
-          Math.ceil(Math.log(exercise.a) / Math.log(exercise.b)),
-        ),
+      return Math.pow(
+        exercise.b,
+        Math.ceil(Math.log(exercise.a) / Math.log(exercise.b)),
       );
     case "+":
-      return new NumberNode(
-        1 + exercise.b * Math.ceil(exercise.a / exercise.b),
-      );
+      return 1 + exercise.b * Math.ceil(exercise.a / exercise.b);
   }
-  return new NumberNode(exercise.b);
+  return exercise.b;
 };
 
 const generateRandomExercise = (): PyExercise => {
