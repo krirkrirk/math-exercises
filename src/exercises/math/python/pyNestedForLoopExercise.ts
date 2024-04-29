@@ -12,6 +12,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { random } from "#root/utils/random";
 
 type Identifiers = {
   exercise: PyExoVariables;
@@ -40,10 +41,10 @@ const operators = ["+", "-"];
 const getPyNestedForLoopExerciseQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const exercise = generateExercise(DifficultyEnum.HARD);
+  const exercise = generateExercise();
   const correctAnswer = getCorrectAnswer(exercise.exoVariables);
   const question: Question<Identifiers> = {
-    answer: correctAnswer.simplify().toTex(),
+    answer: correctAnswer + "",
     instruction: exercise.instruction,
     keys: [],
     answerFormat: "tex",
@@ -60,20 +61,18 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   generateProposition(exercise).forEach((value) =>
-    tryToAddWrongProp(propositions, value.simplify().toTex()),
+    tryToAddWrongProp(propositions, value + ""),
   );
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      new NumberNode(randint(+answer - 10, +answer + 10, [+answer]))
-        .simplify()
-        .toTex(),
+      randint(+answer - 10, +answer + 10, [+answer]) + "",
     );
   }
   return shuffleProps(propositions, n);
 };
 
-const generateProposition = (exo: PyExoVariables): NumberNode[] => {
+const generateProposition = (exo: PyExoVariables): number[] => {
   const exoProposition = {
     op: exo.op,
     n: exo.n + 1,
@@ -85,16 +84,16 @@ const generateProposition = (exo: PyExoVariables): NumberNode[] => {
   exoProposition.p = exo.p - 1;
   exoProposition.n = exo.n - 1;
   const secondProposition = getCorrectAnswer(exoProposition);
-  const thridProposition = new NumberNode(exo.n * exo.k);
+  const thridProposition = exo.n * exo.k;
   return [firstProposition, secondProposition, thridProposition];
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { exercise }) => {
-  return getCorrectAnswer(exercise).simplify().toAllValidTexs().includes(ans);
+  return getCorrectAnswer(exercise) + "" === ans;
 };
 
 const generateExercise = (difficulty?: DifficultyEnum): PyExercise => {
-  const op = operators[randint(0, operators.length)];
+  const op = random(operators);
   const n = randint(2, 11);
   const p = randint(2, 11);
   let s = 0;
@@ -116,7 +115,8 @@ const generateExercise = (difficulty?: DifficultyEnum): PyExercise => {
     k,
   };
 
-  const instruction = `\`\`\`\ Qu’affichera le programme suivant ?
+  const instruction = `Qu’affichera le programme suivant ?
+  \`\`\`
   s=${s}
   n=${n}
   p=${p}
@@ -129,11 +129,11 @@ const generateExercise = (difficulty?: DifficultyEnum): PyExercise => {
   return { instruction, exoVariables };
 };
 
-const getCorrectAnswer = (exo: PyExoVariables): NumberNode => {
+const getCorrectAnswer = (exo: PyExoVariables): number => {
   const nbIteration = exo.p * exo.n;
   return exo.op == "+"
-    ? new NumberNode(nbIteration * exo.k + exo.s)
-    : new NumberNode(-nbIteration * exo.k + exo.s);
+    ? nbIteration * exo.k + exo.s
+    : -nbIteration * exo.k + exo.s;
 };
 export const pyNestedForLoopExercise: Exercise<Identifiers> = {
   id: "pyNestedForLoopExercise",
