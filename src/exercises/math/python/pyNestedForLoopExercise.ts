@@ -100,10 +100,10 @@ const generateExercise = (difficulty?: DifficultyEnum): PyExercise => {
   let k = 1;
   switch (difficulty) {
     case DifficultyEnum.MEDIUM:
-      s = randint(2, 11);
+      s = randint(1, 11);
       break;
     case DifficultyEnum.HARD:
-      s = randint(2, 11);
+      s = randint(1, 11);
       k = randint(2, 11);
       break;
   }
@@ -138,9 +138,9 @@ const getCorrectAnswer = (exo: PyExoVariables): number => {
 export const pyNestedForLoopExercise: Exercise<Identifiers> = {
   id: "pyNestedForLoopExercise",
   label: "Exercise sur les boucles for imbriquée en python",
-  levels: [],
+  levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Python"],
   generator: (nb: number) =>
     getDistinctQuestions(getPyNestedForLoopExerciseQuestion, nb),
   qcmTimer: 60,
