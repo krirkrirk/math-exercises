@@ -32,7 +32,7 @@ const getSecondDerivativeOfExpoFunctionQuestion: QuestionGenerator<
   const correctAnswer = expuSecondDerivative(funct, polynom);
   const question: Question<Identifiers> = {
     answer: correctAnswer.toTex(),
-    instruction: `Calculer la dérivée seconde  de la fonction $f =${funct.toTex()} $`,
+    instruction: `Déterminer la fonction dérivée seconde $f''$ de la fonction $f$ définie par $f(x)=${funct.toTex()}$`,
     keys: ["epower", "x"],
     answerFormat: "tex",
     identifiers: { coeffs: polynom.coefficients },

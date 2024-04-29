@@ -17,9 +17,7 @@ import {
 import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
-import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
   a: number;
@@ -33,7 +31,7 @@ const getSecondDerivativeOfTrinomQuestion: QuestionGenerator<
   const trinom = TrinomConstructor.random();
 
   const trinomTree = trinom.toTree();
-  const instruction = `Calculer la dérivée seconde de la fonction $f=${trinomTree.toTex()}$`;
+  const instruction = `Déterminer la fonction dérivée seconde $f''$ de la fonction $f$ définie par $f(x)=${trinomTree.toTex()}$`;
 
   const correctAnswer = trinom.derivate().derivate().toTree();
   const question: Question<Identifiers> = {

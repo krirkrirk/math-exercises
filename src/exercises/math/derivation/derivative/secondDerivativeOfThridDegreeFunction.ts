@@ -15,9 +15,6 @@ import {
   PolynomialConstructor,
 } from "#root/math/polynomials/polynomial";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
-import { EqualNode } from "#root/tree/nodes/equations/equalNode";
-import { FunctionsIds } from "#root/tree/nodes/functions/functionNode";
-import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
   a: number;
@@ -32,7 +29,7 @@ const getSecondDerivativeOfThridDegreeFunction: QuestionGenerator<
   const funct = PolynomialConstructor.randomWithOrder(3, "x");
   const coefficients = funct.coefficients;
   const correctAnswer = funct.secondDerivate().toTree();
-  const instruction = `Calculer la dérivée seconde de la fonction $f=${funct
+  const instruction = `Déterminer la fonction dérivée seconde $f''$ de la fonction $f$ définie par $f(x)=${funct
     .toTree()
     .toTex()}$`;
   const coeff = {
