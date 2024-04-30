@@ -21,10 +21,10 @@ const getConvexityTrinomialsQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     answer: isConvex,
-    instruction: `Soit la fonction f(x) = ${trinom.toTex()}. Est-elle :`,
+    instruction: `Soit la fonction $f(x) = ${trinom.toTex()}$. Est-elle :`,
     keys: [],
     answerFormat: "raw",
-    identifiers: { trinom },
+    identifiers: {},
   };
 
   return question;
@@ -32,12 +32,12 @@ const getConvexityTrinomialsQuestion: QuestionGenerator<Identifiers> = () => {
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer);
+  addValidProp(propositions, answer, "raw");
 
-  tryToAddWrongProp(propositions, "Concave");
-  tryToAddWrongProp(propositions, "Convexe");
-  tryToAddWrongProp(propositions, "Ni l'un ni l'autre");
-  tryToAddWrongProp(propositions, "On ne peut pas savoir");
+  tryToAddWrongProp(propositions, "Concave", "raw");
+  tryToAddWrongProp(propositions, "Convexe", "raw");
+  tryToAddWrongProp(propositions, "Ni l'un ni l'autre", "raw");
+  tryToAddWrongProp(propositions, "On ne peut pas savoir", "raw");
   return shuffleProps(propositions, n);
 };
 
@@ -49,7 +49,7 @@ export const convexityTrinomials: Exercise<Identifiers> = {
   label: "Convexité des fonctions quadratiques",
   levels: ["TermSpé"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Dérivation"],
   generator: (nb: number) =>
     getDistinctQuestions(getConvexityTrinomialsQuestion, nb),
   qcmTimer: 60,

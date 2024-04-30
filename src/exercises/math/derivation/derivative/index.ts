@@ -24,3 +24,4 @@ export * from "./powerCompositionDerivation";
 export * from "./sinSecondDegreeDerivative";
 export * from "./cosSecondDegreeDerivative";
 export * from "./convexityTrinomials";
+export * from "./convexityQuadrinomials";
