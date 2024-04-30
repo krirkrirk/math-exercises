@@ -143,14 +143,14 @@ const generateType5Proposition = (
   op: string,
   nbIteration: number,
 ): string[] => {
-  let firstPropostion = new AddNode(
-    new NumberNode(getType5CorrectAnswer(a, op, nbIteration)),
-    new Rational(1, 2).toTree(),
+  let firstPropostion = new NumberNode(
+    getType5CorrectAnswer(a, op, nbIteration) + 0.5,
   );
-  let secondProposition = new AddNode(
-    new NumberNode(getType5CorrectAnswer(a, op, nbIteration)),
-    new Rational(-1, 2).toTree(),
+
+  let secondProposition = new NumberNode(
+    getType5CorrectAnswer(a, op, nbIteration) - 0.5,
   );
+
   return [firstPropostion.toTex(), secondProposition.toTex()];
 };
 

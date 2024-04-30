@@ -157,6 +157,7 @@ export type MathSection =
   | "Proportionnalité"
   | "Python"
   | "Puissances"
+  | "Python"
   | "Racines carrées"
   | "Second degré"
   | "Statistiques"

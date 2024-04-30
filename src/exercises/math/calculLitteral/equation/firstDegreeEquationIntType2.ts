@@ -36,7 +36,7 @@ const getFirstDegreeEquationIntQuestion: QuestionGenerator<
     new AddNode(
       new MultiplyNode(a.toTree(), new VariableNode("x")),
       b.toTree(),
-    ).simplify({forbidFactorize: true}),
+    ).simplify({ forbidFactorize: true }),
     c.toTree(),
   );
   const question: Question<Identifiers> = {
@@ -54,18 +54,21 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  const w1 = b - c - a; 
+  const w1 = b - c - a;
 
   let wrongAnswer2 = "";
-  if (b !== c) {  // Assurez-vous que b - c n'est pas zéro
+  if (b !== c) {
+    // Assurez-vous que b - c n'est pas zéro
     const w2 = new FractionNode(a.toTree(), (b - c).toTree()).simplify();
     wrongAnswer2 = new EqualNode(new VariableNode("x"), w2).toTex();
   } else {
     // Fournir une réponse alternative ou invalide si b - c est zéro
-    wrongAnswer2 = new EqualNode(new VariableNode("x"), randint(-10, 10).toTree()).toTex();
+    wrongAnswer2 = new EqualNode(
+      new VariableNode("x"),
+      randint(-10, 10).toTree(),
+    ).toTex();
   }
 
-  
   const w3 = b !== 0 ? Math.floor(c / b - a) : Math.floor(randint(-10, 10));
 
   const wrongAnswer1 = new EqualNode(
@@ -91,7 +94,6 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   return shuffleProps(propositions, n);
 };
 
-
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
   const ans1 = new EqualNode(new VariableNode("x"), x.toTree());
   const latexs = ans1.toAllValidTexs({ allowRawRightChildAsSolution: true });
@@ -99,7 +101,8 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
 };
 export const firstDegreeEquationIntType2: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType2",
-  label: "Résoudre une équation du premier degré du type $ax + b = c$",
+  label:
+    "Résoudre une équation du premier degré du type $ax + b = c$ (solution entière)",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Équations"],

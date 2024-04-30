@@ -1,8 +1,10 @@
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
+import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { Node, NodeType } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { randint } from "../utils/random/randint";
 import { Point } from "./point";
@@ -44,6 +46,12 @@ export class Vector {
     return `\\overrightarrow{${
       this.name
     }}\\begin{pmatrix}${this.x.toTex()} \\\\ ${this.y.toTex()} \\end{pmatrix}`;
+  }
+
+  toInlineCoordsTex(): string {
+    return `\\left(${this.x.simplify().toTex()};${this.y
+      .simplify()
+      .toTex()}\\right)`;
   }
 
   isColinear(v: Vector): boolean {
@@ -97,6 +105,16 @@ export class Vector {
     );
   }
 
+  getNorm(): AlgebraicNode {
+    const xValue = (this.x.simplify() as NumberNode).value;
+    const yValue = (this.y.simplify() as NumberNode).value;
+    return new SqrtNode(
+      new AddNode(
+        new SquareNode(new NumberNode(xValue)),
+        new SquareNode(new NumberNode(yValue)),
+      ),
+    );
+  }
   getEndPoint(startPoint: Point, name?: string) {
     return new Point(
       name ?? "B",

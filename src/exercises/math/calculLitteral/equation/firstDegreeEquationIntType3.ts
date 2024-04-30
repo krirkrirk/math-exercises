@@ -38,15 +38,15 @@ const getFirstDegreeEquationIntQuestion: QuestionGenerator<
     new AddNode(
       new MultiplyNode(a.toTree(), new VariableNode("x")),
       b.toTree(),
-    ).simplify({forbidFactorize: true}),
+    ).simplify({ forbidFactorize: true }),
     new AddNode(
       new MultiplyNode(c.toTree(), new VariableNode("x")),
       d.toTree(),
-    ).simplify({forbidFactorize: true}),
+    ).simplify({ forbidFactorize: true }),
   );
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Résoudre l'équation suivante :$${equation.toTex()}$`,
+    instruction: `Résoudre l'équation suivante : $${equation.toTex()}$`,
     keys: ["x", "equal"],
     answerFormat: "tex",
     identifiers: { a: a, x: x, b: b, c: c, d: d },
@@ -67,20 +67,27 @@ const getPropositions: QCMGenerator<Identifiers> = (
     const w1 = new FractionNode((d - b).toTree(), denomW1.toTree()).simplify();
     wrongAnswer1 = new EqualNode(new VariableNode("x"), w1).toTex();
   } else {
-    wrongAnswer1 = new EqualNode(new VariableNode("x"), randint(-10, 10).toTree()).toTex();
+    wrongAnswer1 = new EqualNode(
+      new VariableNode("x"),
+      randint(-10, 10).toTree(),
+    ).toTex();
   }
-  
+
   const denomW2 = b + d;
   let wrongAnswer2 = "";
   if (denomW2 !== 0) {
     const w2 = new FractionNode((a + c).toTree(), denomW2.toTree()).simplify();
     wrongAnswer2 = new EqualNode(new VariableNode("x"), w2).toTex();
   } else {
-    wrongAnswer2 = new EqualNode(new VariableNode("x"), randint(-10, 10).toTree()).toTex();
+    wrongAnswer2 = new EqualNode(
+      new VariableNode("x"),
+      randint(-10, 10).toTree(),
+    ).toTex();
   }
-  
+
   const wrongAnswer3 = new EqualNode(
-    new VariableNode("x"), Math.floor(((a + c) / (denomW1 === 0 ? 1 : denomW1))).toTree(),
+    new VariableNode("x"),
+    Math.floor((a + c) / (denomW1 === 0 ? 1 : denomW1)).toTree(),
   ).toTex();
 
   tryToAddWrongProp(propositions, wrongAnswer1);
@@ -97,7 +104,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
   const ans1 = new EqualNode(new VariableNode("x"), x.toTree());
   const latexs = ans1.toAllValidTexs({ allowRawRightChildAsSolution: true });
@@ -106,7 +112,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
 export const firstDegreeEquationIntType3: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType3",
   label:
-    "Résoudre une équation du premier degré du type $ax + b = cx + d$",
+    "Résoudre une équation du premier degré du type $ax + b = cx + d$ (solution entière)",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Équations"],

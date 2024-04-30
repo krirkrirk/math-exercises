@@ -45,7 +45,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const w1 = b - a;
   const w2 = b + a;
   let w3 = 0;
-  
+
   if (b !== 0) {
     w3 = Math.floor(a / b);
   } else {
@@ -68,7 +68,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   tryToAddWrongProp(propositions, wrongAnswer1);
   tryToAddWrongProp(propositions, wrongAnswer2);
   tryToAddWrongProp(propositions, wrongAnswer3);
-  
+
   while (propositions.length < n) {
     const random = randint(-10, 10);
     const wrongAnswer = new EqualNode(
@@ -77,10 +77,9 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
     ).toTex();
     tryToAddWrongProp(propositions, wrongAnswer);
   }
-  
+
   return shuffleProps(propositions, n);
 };
-
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
   const ans1 = new EqualNode(new VariableNode("x"), x.toTree());
@@ -89,7 +88,8 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
 };
 export const firstDegreeEquationIntType1: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType1",
-  label: "Résoudre une équation du premier degré du type $ax = b$",
+  label:
+    "Résoudre une équation du premier degré du type $ax = b$ (solution entière)",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Équations"],

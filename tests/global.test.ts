@@ -43,8 +43,8 @@ test("all exos", () => {
   let worstQCMGenerationTime: Worst = { exoId: "", time: 0 };
   const veaTimes: number[] = [];
   let worstVEATime: Worst = { exoId: "", time: 0 };
-  // const allExos = [...mathExercises, ...pcExercises];
-  const allExos = [MathExercises.probaFromTableNoContext];
+  const allExos = [...mathExercises, ...pcExercises];
+  // const allExos = [MathExercises.probaFromTableNoContext];
   allExos.forEach((exo) => {
     console.log(exo.id);
     try {
