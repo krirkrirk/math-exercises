@@ -32,7 +32,6 @@ import { coinFlip } from "#root/utils/coinFlip";
 type Identifiers = {
   askConvex: boolean;
   quadcoeffs: number[];
-  seconddcoeffs: number[];
 };
 
 const getConvexityQuadrinomialsQuestion: QuestionGenerator<
@@ -44,18 +43,15 @@ const getConvexityQuadrinomialsQuestion: QuestionGenerator<
   const seconddcoeffs = secondderivative.coefficients;
 
   const inflexionPoint = new FractionNode(
-    new MultiplyNode(
-      secondderivative.coefficients[0].toTree(),
-      new NumberNode(-1),
-    ),
-    secondderivative.coefficients[1].toTree(),
+    new MultiplyNode(seconddcoeffs[0].toTree(), new NumberNode(-1)),
+    seconddcoeffs[1].toTree(),
   ).simplify();
 
   const askConvex = coinFlip();
   let interval;
   if (askConvex) {
     interval =
-      quadrinomial.coefficients[3] > 0
+      quadcoeffs[3] > 0
         ? new IntervalNode(
             inflexionPoint,
             PlusInfinityNode,
@@ -68,7 +64,7 @@ const getConvexityQuadrinomialsQuestion: QuestionGenerator<
           ).toTex();
   } else {
     interval =
-      quadrinomial.coefficients[3] <= 0
+      quadcoeffs[3] <= 0
         ? new IntervalNode(
             inflexionPoint,
             PlusInfinityNode,
@@ -88,7 +84,7 @@ const getConvexityQuadrinomialsQuestion: QuestionGenerator<
     instruction: `Soit la fonction $f(x) = ${quadrinomial.toTex()}$. Sur quelle intervalle est-elle ${questionType} ?`,
     keys: ["rbracket", "lbracket", "semicolon", "infty", "reals"],
     answerFormat: "tex",
-    identifiers: { askConvex, quadcoeffs, seconddcoeffs },
+    identifiers: { askConvex, quadcoeffs },
   };
 
   return question;
@@ -96,10 +92,14 @@ const getConvexityQuadrinomialsQuestion: QuestionGenerator<
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, seconddcoeffs },
+  { answer, quadcoeffs },
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer, "tex");
+
+  const quadrinomial = new Polynomial(quadcoeffs);
+  const secondderivative = quadrinomial.derivate().derivate();
+  const seconddcoeffs = secondderivative.coefficients;
 
   const inflexionPoint = new FractionNode(
     new MultiplyNode(seconddcoeffs[0].toTree(), new NumberNode(-1)),
@@ -137,10 +137,11 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (
-  ans,
-  { askConvex, seconddcoeffs, quadcoeffs },
-) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { askConvex, quadcoeffs }) => {
+  const quadrinomial = new Polynomial(quadcoeffs);
+  const secondderivative = quadrinomial.derivate().derivate();
+  const seconddcoeffs = secondderivative.coefficients;
+
   const inflexionPoint = new FractionNode(
     new MultiplyNode(seconddcoeffs[0].toTree(), new NumberNode(-1)),
     seconddcoeffs[1].toTree(),
