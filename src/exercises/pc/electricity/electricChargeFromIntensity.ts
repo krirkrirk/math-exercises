@@ -19,7 +19,7 @@ type Identifiers = { intensity: number; seconds: number };
 const getElectricChargeFromIntensityQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const intensity = randfloat(0, 6, 1);
+  const intensity = randfloat(0.1, 6, 1);
   const seconds = randint(1, 30);
 
   const electricCharge = intensity * seconds;

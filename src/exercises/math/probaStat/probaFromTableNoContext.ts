@@ -29,9 +29,9 @@ const getProbaFromTableNoContextQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const aCapB = randint(1, 20);
-  const aCapBBarre = randint(1, 20);
-  const aBarreCapB = randint(1, 20);
-  const aBarreCapBBarre = randint(1, 20);
+  const aCapBBarre = randint(1, 20, [aCapB]);
+  const aBarreCapB = randint(1, 20, [aCapB, aCapBBarre]);
+  const aBarreCapBBarre = randint(1, 20, [aCapB, aCapBBarre, aBarreCapB]);
   const total = aBarreCapB + aBarreCapBBarre + aCapB + aCapBBarre;
   const aTotal = aCapB + aCapBBarre;
   const bTotal = aCapB + aBarreCapB;
