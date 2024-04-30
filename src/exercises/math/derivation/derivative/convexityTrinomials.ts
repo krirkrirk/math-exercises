@@ -14,7 +14,7 @@ import { TrinomConstructor } from "#root/math/polynomials/trinom";
 
 type Identifiers = {};
 
-const getConvexityIntervalsQuestion: QuestionGenerator<Identifiers> = () => {
+const getConvexityTrinomialsQuestion: QuestionGenerator<Identifiers> = () => {
   const trinom = TrinomConstructor.random();
 
   const isConvex = trinom.a > 0 ? "Convexe" : "Concave";
@@ -44,14 +44,14 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   throw Error("VEA not implemented");
 };
-export const convexityIntervals: Exercise<Identifiers> = {
-  id: "convexityIntervals",
+export const convexityTrinomials: Exercise<Identifiers> = {
+  id: "convexityTrinomials",
   label: "Convexité des fonctions quadratiques",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: [],
   generator: (nb: number) =>
-    getDistinctQuestions(getConvexityIntervalsQuestion, nb),
+    getDistinctQuestions(getConvexityTrinomialsQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   answerType: "QCM",
