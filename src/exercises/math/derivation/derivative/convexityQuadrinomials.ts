@@ -30,18 +30,19 @@ import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { coinFlip } from "#root/utils/coinFlip";
 
 type Identifiers = {
-  inflexionPoint: AlgebraicNode;
   askConvex: boolean;
-  quadrinomial: Polynomial;
+  quadcoeffs: number[];
+  seconddcoeffs: number[];
 };
 
 const getConvexityQuadrinomialsQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const quadrinomial = PolynomialConstructor.randomWithOrder(3);
+  const quadcoeffs = quadrinomial.coefficients;
   const secondderivative = quadrinomial.derivate().derivate();
+  const seconddcoeffs = secondderivative.coefficients;
 
-  // Calculate inflection point
   const inflexionPoint = new FractionNode(
     new MultiplyNode(
       secondderivative.coefficients[0].toTree(),
@@ -50,7 +51,6 @@ const getConvexityQuadrinomialsQuestion: QuestionGenerator<
     secondderivative.coefficients[1].toTree(),
   ).simplify();
 
-  // Randomly ask about convex or concave
   const askConvex = coinFlip();
   let interval;
   if (askConvex) {
@@ -88,7 +88,7 @@ const getConvexityQuadrinomialsQuestion: QuestionGenerator<
     instruction: `Soit la fonction $f(x) = ${quadrinomial.toTex()}$. Sur quelle intervalle est-elle ${questionType} ?`,
     keys: ["rbracket", "lbracket", "semicolon", "infty", "reals"],
     answerFormat: "tex",
-    identifiers: { inflexionPoint, askConvex, quadrinomial },
+    identifiers: { askConvex, quadcoeffs, seconddcoeffs },
   };
 
   return question;
@@ -96,10 +96,16 @@ const getConvexityQuadrinomialsQuestion: QuestionGenerator<
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, inflexionPoint },
+  { answer, seconddcoeffs },
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer, "tex");
+
+  const inflexionPoint = new FractionNode(
+    new MultiplyNode(seconddcoeffs[0].toTree(), new NumberNode(-1)),
+    seconddcoeffs[1].toTree(),
+  ).simplify();
+
   const wrongInterval1 = new IntervalNode(
     inflexionPoint,
     PlusInfinityNode,
@@ -119,9 +125,9 @@ const getPropositions: QCMGenerator<Identifiers> = (
   ).toTex();
 
   const wrongInterval4 = new IntervalNode(
-    new NumberNode(randint(-10, 10)),
-    new NumberNode(randint(-10, 10)),
-    ClosureType.FF,
+    new NumberNode(randint(-1, 2)),
+    PlusInfinityNode,
+    ClosureType.FO,
   ).toTex();
 
   tryToAddWrongProp(propositions, wrongInterval1);
@@ -133,22 +139,27 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
 const isAnswerValid: VEA<Identifiers> = (
   ans,
-  { askConvex, inflexionPoint, quadrinomial },
+  { askConvex, seconddcoeffs, quadcoeffs },
 ) => {
+  const inflexionPoint = new FractionNode(
+    new MultiplyNode(seconddcoeffs[0].toTree(), new NumberNode(-1)),
+    seconddcoeffs[1].toTree(),
+  ).simplify();
+
   let interval;
   if (askConvex) {
     interval =
-      quadrinomial.coefficients[3] > 0
+      quadcoeffs[3] > 0
         ? new IntervalNode(inflexionPoint, PlusInfinityNode, ClosureType.OO)
         : new IntervalNode(MinusInfinityNode, inflexionPoint, ClosureType.OO);
   } else {
     interval =
-      quadrinomial.coefficients[3] <= 0
+      quadcoeffs[3] <= 0
         ? new IntervalNode(inflexionPoint, PlusInfinityNode, ClosureType.OO)
         : new IntervalNode(MinusInfinityNode, inflexionPoint, ClosureType.OO);
   }
 
-  const latexs = interval.toEquivalentNodes().toString();
+  const latexs = interval.toAllValidTexs({ allowFractionToDecimal: true });
 
   return latexs.includes(ans);
 };
