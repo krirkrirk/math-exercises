@@ -17,13 +17,12 @@ type Identifiers = {};
 const getConvexityIntervalsQuestion: QuestionGenerator<Identifiers> = () => {
   const trinom = TrinomConstructor.random();
 
-  const isConvex = trinom.a > 0 ? "convexe" : "concave";
-  const interval = "]-∞, +∞[";
+  const isConvex = trinom.a > 0 ? "Convexe" : "Concave";
 
   const question: Question<Identifiers> = {
-    answer: interval,
-    instruction: `Déterminer sur quel intervalle la fonction f(x) = ${trinom.toTex()} est ${isConvex}.`,
-    keys: ["lbracket", "rbracket", "infty"],
+    answer: isConvex,
+    instruction: `Soit la fonction f(x) = ${trinom.toTex()}. Est-elle :`,
+    keys: [],
     answerFormat: "raw",
     identifiers: { trinom },
   };
@@ -34,9 +33,11 @@ const getConvexityIntervalsQuestion: QuestionGenerator<Identifiers> = () => {
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  while (propositions.length < n) {
-    throw Error("QCM not implemented");
-  }
+
+  tryToAddWrongProp(propositions, "Concave");
+  tryToAddWrongProp(propositions, "Convexe");
+  tryToAddWrongProp(propositions, "Ni l'un ni l'autre");
+  tryToAddWrongProp(propositions, "On ne peut pas savoir");
   return shuffleProps(propositions, n);
 };
 
@@ -45,14 +46,15 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 };
 export const convexityIntervals: Exercise<Identifiers> = {
   id: "convexityIntervals",
-  label: "",
-  levels: [],
+  label: "Convexité des fonctions quadratiques",
+  levels: ["TermSpé"],
   isSingleStep: true,
   sections: [],
   generator: (nb: number) =>
     getDistinctQuestions(getConvexityIntervalsQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
+  answerType: "QCM",
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
