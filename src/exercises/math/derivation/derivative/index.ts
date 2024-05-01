@@ -26,3 +26,6 @@ export * from "./cosSecondDegreeDerivative";
 export * from "./convexityTrinomials";
 export * from "./convexityQuadrinomials";
 export * from "./inflexionPointQuadrinomials";
+export * from "./secondDerivativeOfTrinom";
+export * from "./secondDerivativeOfThridDegreeFunction";
+export * from "./secondDerivativeOfExpoFunction";
