@@ -12,7 +12,9 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { TrinomConstructor } from "#root/math/polynomials/trinom";
 
-type Identifiers = {};
+type Identifiers = {
+  coeffs: number[];
+};
 
 const getConvexityTrinomialsQuestion: QuestionGenerator<Identifiers> = () => {
   const trinom = TrinomConstructor.random();
@@ -24,7 +26,7 @@ const getConvexityTrinomialsQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Soit la fonction $f(x) = ${trinom.toTex()}$. Est-elle :`,
     keys: [],
     answerFormat: "raw",
-    identifiers: {},
+    identifiers: { coeffs: trinom.coefficients },
   };
 
   return question;
@@ -36,7 +38,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 
   tryToAddWrongProp(propositions, "Concave", "raw");
   tryToAddWrongProp(propositions, "Convexe", "raw");
-  tryToAddWrongProp(propositions, "Ni l'un ni l'autre", "raw");
+  tryToAddWrongProp(propositions, "Ni concave, ni convexe", "raw");
   tryToAddWrongProp(propositions, "On ne peut pas savoir", "raw");
   return shuffleProps(propositions, n);
 };
