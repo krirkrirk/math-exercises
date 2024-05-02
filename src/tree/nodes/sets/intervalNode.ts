@@ -32,8 +32,10 @@ export class IntervalNode implements SetNode {
     this.opts = opts;
   }
 
-  toAllValidTexs() {
-    return this.toEquivalentNodes(this.opts).map((node) => node.toTex());
+  toAllValidTexs(opts?: NodeOptions) {
+    return this.toEquivalentNodes(opts ?? this.opts).map((node) =>
+      node.toTex(),
+    );
   }
 
   toEquivalentNodes(opts?: NodeOptions) {

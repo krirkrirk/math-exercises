@@ -17,27 +17,21 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 
-type Identifiers = {};
+type Identifiers = {
+  trinom: number[];
+};
 
 const getConvexityTrinomialsGeoQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const trinom = TrinomConstructor.random();
-
-  const firstDerivative = trinom.derivate();
-  const firstdcoeffs = firstDerivative.coefficients;
-  const criticalX = -firstdcoeffs[0] / firstdcoeffs[1];
-  const criticalY = trinom.calculate(criticalX);
-
-  const instruction = `Soit la fonction $f(x) = ${trinom.toTex()}$. Est-elle :`;
+  const instruction = `Ci-dessous sont tracées la courbe $\\mathcal C_f$ de la fonction $f$. Est-elle :`;
 
   const commands = [
     `f(x) = ${trinom.toString()}`,
     `SetColor(f, "${blueMain}")`,
     `SetCaption(f, "$\\mathcal C_f$")`,
     `ShowLabel(f, true)`,
-    `Critical = (${criticalX},${criticalY})`,
-    "SetFixed(Critical, true)",
   ];
 
   const ggb = new GeogebraConstructor(commands, {
@@ -54,7 +48,7 @@ const getConvexityTrinomialsGeoQuestion: QuestionGenerator<
     options: ggb.getOptions(),
     keys: [],
     answerFormat: "raw",
-    identifiers: {},
+    identifiers: { trinom: [trinom.a, trinom.b, trinom.c] },
   };
 
   return question;

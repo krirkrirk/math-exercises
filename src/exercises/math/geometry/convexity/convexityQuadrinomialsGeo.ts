@@ -10,14 +10,13 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { blueMain } from "#root/geogebra/colors";
+import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import {
   Polynomial,
   PolynomialConstructor,
 } from "#root/math/polynomials/polynomial";
-import { TrinomConstructor } from "#root/math/polynomials/trinom";
-import { Interval } from "#root/math/sets/intervals/intervals";
 import { randint } from "#root/math/utils/random/randint";
-import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import {
   MinusInfinityNode,
   PlusInfinityNode,
@@ -34,18 +33,38 @@ type Identifiers = {
   quadcoeffs: number[];
 };
 
+function generatePolynomialWithIntegerInflexionPoint(
+  degree: number,
+  inflexionPointX: number,
+): Polynomial {
+  let a, b, c, discriminant;
+
+  do {
+    a = randint(1, 5); // Choisissez 'a' aléatoirement
+    c = randint(-5, 5); // Choisissez 'c' aléatoirement
+    b = 3 * a * inflexionPointX;
+    discriminant = b * b - 4 * a * c;
+  } while (discriminant < 0); // Répétez jusqu'à obtenir un discriminant positif ou nul
+
+  const d = degree === 3 ? randint(-5, 5) : 0;
+
+  const coeffs = degree === 3 ? [d, c, b, a] : [c, b, a];
+  return new Polynomial(coeffs);
+}
+
 const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const quadrinomial = PolynomialConstructor.randomWithOrder(3);
+  const inflexionPointX = randint(-5, 5);
+  const quadrinomial = generatePolynomialWithIntegerInflexionPoint(
+    3,
+    inflexionPointX,
+  );
   const quadcoeffs = quadrinomial.coefficients;
-  const secondderivative = quadrinomial.derivate().derivate();
-  const seconddcoeffs = secondderivative.coefficients;
+  const inflexionPointY = quadrinomial.calculate(inflexionPointX);
 
-  const inflexionPoint = new FractionNode(
-    new MultiplyNode(seconddcoeffs[0].toTree(), new NumberNode(-1)),
-    seconddcoeffs[1].toTree(),
-  ).simplify();
+  const trinomial = quadrinomial.derivate();
+  const roots = trinomial.getRoots();
 
   const askConvex = coinFlip();
   let interval;
@@ -53,35 +72,60 @@ const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
     interval =
       quadcoeffs[3] > 0
         ? new IntervalNode(
-            inflexionPoint,
+            inflexionPointX.toTree(),
             PlusInfinityNode,
             ClosureType.OO,
           ).toTex()
         : new IntervalNode(
             MinusInfinityNode,
-            inflexionPoint,
+            inflexionPointX.toTree(),
             ClosureType.OO,
           ).toTex();
   } else {
     interval =
       quadcoeffs[3] <= 0
         ? new IntervalNode(
-            inflexionPoint,
+            inflexionPointX.toTree(),
             PlusInfinityNode,
             ClosureType.OO,
           ).toTex()
         : new IntervalNode(
             MinusInfinityNode,
-            inflexionPoint,
+            inflexionPointX.toTree(),
             ClosureType.OO,
           ).toTex();
   }
 
   const questionType = askConvex ? "convexe" : "concave";
+  const instruction = `Ci-dessous sont tracées la courbe $\\mathcal C_f$ de la fonction $f$. Sur quelle intervalle est-elle ${questionType} ?`;
+
+  const xMin = inflexionPointX - 10;
+  const yMin = inflexionPointY - 10;
+  const xMax = inflexionPointX + 10;
+  const yMax = inflexionPointY + 10;
+
+  const commands = [
+    `f(x) = ${quadrinomial.toString()}`,
+    `SetColor(f, "${blueMain}")`,
+    `SetCaption(f, "$\\mathcal C_f$")`,
+    `ShowLabel(f, true)`,
+    `I = (${inflexionPointX},${inflexionPointY})`,
+    "SetFixed(I, true)",
+    "SetVisibleInView(I, 1, true)",
+    `ZoomIn(${xMin}, ${yMin}, ${xMax}, ${yMax})`,
+  ];
+
+  const ggb = new GeogebraConstructor(commands, {
+    isGridSimple: true,
+    isAxesRatioFixed: false,
+  });
 
   const question: Question<Identifiers> = {
     answer: interval,
-    instruction: `Soit la fonction $f(x) = ${quadrinomial.toTex()}$. Sur quelle intervalle est-elle ${questionType} ?`,
+    instruction,
+    commands: ggb.commands,
+    coords: [xMin, xMax, yMin, yMax],
+    options: ggb.getOptions(),
     keys: ["rbracket", "lbracket", "semicolon", "infty", "reals"],
     answerFormat: "tex",
     identifiers: { askConvex, quadcoeffs },
