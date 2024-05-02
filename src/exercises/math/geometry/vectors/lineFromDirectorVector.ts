@@ -101,12 +101,14 @@ const generatePropositions = (
   aY: number,
 ) => {
   const y = new VariableNode("y");
+  const x = new VariableNode("x");
   const uXNode = new NumberNode(uX);
   const uYNode = new NumberNode(uY);
   const aYNode = new NumberNode(aY);
   const aXNode = new NumberNode(aX);
   const firstProposition = getFirstProposition(
     y,
+    x,
     uXNode,
     uYNode,
     aYNode,
@@ -114,6 +116,7 @@ const generatePropositions = (
   );
   const secondProposition = getSecondProposition(
     y,
+    x,
     uXNode,
     uYNode,
     aXNode,
@@ -124,6 +127,7 @@ const generatePropositions = (
 
 const getFirstProposition = (
   y: VariableNode,
+  x: VariableNode,
   uX: NumberNode,
   uY: NumberNode,
   aX: NumberNode,
@@ -135,8 +139,8 @@ const getFirstProposition = (
   const aXuY = new MultiplyNode(aX, uY).simplify();
   const rightSide = new AddNode(
     natural
-      ? new MultiplyNode(uYDivuX, new VariableNode("x")).simplify()
-      : new MultiplyNode(uYDivuX, new VariableNode("x")),
+      ? new MultiplyNode(uYDivuX, x).simplify()
+      : new MultiplyNode(uYDivuX, x),
     new FractionNode(new SubstractNode(aXuY, aYuX).simplify(), uX).simplify(),
   );
   const equation = new EqualNode(y, rightSide);
@@ -144,19 +148,20 @@ const getFirstProposition = (
 };
 const getSecondProposition = (
   y: VariableNode,
+  x: VariableNode,
   uX: NumberNode,
   uY: NumberNode,
   aX: NumberNode,
   aY: NumberNode,
 ) => {
   const uYDivuX = new FractionNode(uX, uY).simplify();
-  const natural = uY.value % uX.value === 0;
-  const aYuX = new MultiplyNode(aY, uX).simplify();
-  const aXuY = new MultiplyNode(aX, uY).simplify();
+  const natural = uX.value % uY.value === 0;
+  const aYuX = new MultiplyNode(aY, aX).simplify();
+  const aXuY = new MultiplyNode(uX, uY).simplify();
   const rightSide = new AddNode(
     natural
-      ? new MultiplyNode(uYDivuX, new VariableNode("x")).simplify()
-      : new MultiplyNode(uYDivuX, new VariableNode("x")),
+      ? new MultiplyNode(uYDivuX, x).simplify()
+      : new MultiplyNode(uYDivuX, x),
     new SubstractNode(aYuX, aXuY).simplify(),
   );
   const equation = new EqualNode(y, rightSide);
