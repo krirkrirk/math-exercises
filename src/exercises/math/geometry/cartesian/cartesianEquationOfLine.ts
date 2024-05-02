@@ -177,6 +177,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { aX, aY, bX, bY }) => {
     userAns.evaluate({ x: aX, y: aY }) + userAns.evaluate({ x: bX, y: bY })
   );
 };
+
 const getEquation = (
   aX: number,
   aY: number,
@@ -236,7 +237,6 @@ const getNodeFromString = (str: string[], op: string): AlgebraicNode => {
     if (varStr.includes("y")) {
       return getNodeFromVariableString(varStr.replace("minus", "-"), "y");
     }
-
     return isNaN(+varStr) ? new NumberNode(0) : new NumberNode(+varStr);
   } else {
     if (str[0].includes("-")) {
