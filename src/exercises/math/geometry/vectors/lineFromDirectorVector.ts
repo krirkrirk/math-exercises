@@ -194,7 +194,7 @@ const getCorrecAnswer = (uX: number, uY: number, aX: number, aY: number) => {
 export const lineFromDirectorVector: Exercise<Identifiers> = {
   id: "lineFromDirectorVector",
   label:
-    "Équation cartésienne de droite connaissant un point et un vecteur directeur",
+    "Équation réduite de droite connaissant un point et un vecteur directeur",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Droites"],
