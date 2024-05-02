@@ -74,7 +74,7 @@ export class Line {
     const u = new Vector(
       "u",
       new NumberNode(this.pointB.getXnumber() - this.pointA.getXnumber()),
-      new NumberNode(this.pointB.getYnumber() - this.pointB.getXnumber()),
+      new NumberNode(this.pointB.getYnumber() - this.pointA.getYnumber()),
     );
     const b = -u.getXAsNumber();
     const a = u.getYAsNumber();
@@ -88,7 +88,7 @@ export class Line {
           new MultiplyNode(new NumberNode(b), y).simplify(),
         ),
         new NumberNode(c),
-      ),
+      ).simplify({ forbidFactorize: true }),
       new NumberNode(0),
     );
   }
