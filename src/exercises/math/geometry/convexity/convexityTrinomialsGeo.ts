@@ -10,7 +10,7 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { blueMain, orange } from "#root/geogebra/colors";
+import { blueMain } from "#root/geogebra/colors";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { TrinomConstructor } from "#root/math/polynomials/trinom";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -23,28 +23,32 @@ const getConvexityTrinomialsGeoQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const trinom = TrinomConstructor.random();
-  const firstdderivative = trinom.derivate();
-  const critical = new FractionNode(
-    new MultiplyNode(
-      new NumberNode(-1),
-      firstdderivative.coefficients[0].toTree(),
-    ),
-    firstdderivative.coefficients[1].toTree(),
+
+  const firstDerivative = trinom.derivate();
+  const firstdcoeffs = firstDerivative.coefficients;
+  const criticalX = -firstdcoeffs[0] / firstdcoeffs[1];
+  const criticalY = trinom.calculate(criticalX);
+
+  const criticalXnode = new FractionNode(
+    new MultiplyNode(new NumberNode(-1), firstdcoeffs[0].toTree()),
+    firstdcoeffs[1].toTree(),
   ).simplify();
 
-  const instruction = `Ci-dessous sont tracées la courbe $\\mathcal C_f$ de la fonction $f$.`;
+  const xMin = criticalX - 10;
+  const xMax = criticalX + 10;
+  const yMin = criticalY - 10;
+  const yMax = criticalY + 10;
+
+  const instruction = `Soit la fonction $f(x) = ${trinom.toTex()}$. Est-elle :`;
+
   const commands = [
     `f(x) = ${trinom.toString()}`,
     `SetColor(f, "${blueMain}")`,
     `SetCaption(f, "$\\mathcal C_f$")`,
-    `Point Critique = (0,${critical.toTex()})`,
+    `Point Critique = (${criticalX},${criticalY})`,
     `ShowLabel(f, true)`,
+    `ZoomIn(${xMin}, ${yMin}, ${xMax}, ${yMax})`,
   ];
-
-  const xMin = Math.min(xA, xB);
-  const yMin = Math.min(yA, yB);
-  const xMax = Math.max(xA, xB);
-  const yMax = Math.max(yA, yB);
 
   const ggb = new GeogebraConstructor(commands, {
     isGridSimple: true,
@@ -53,10 +57,10 @@ const getConvexityTrinomialsGeoQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: isConvex,
-    instruction: `Soit la fonction $f(x) = ${trinom.toTex()}$. Est-elle :`,
+    instruction,
     commands: ggb.commands,
-    coords: ggb.getAdaptedCoords({ xMax, xMin, yMax, yMin }),
-    options: ggb.getOptions,
+    coords: [xMin, xMax, yMin, yMax],
+    options: ggb.getOptions(),
     keys: [],
     answerFormat: "raw",
     identifiers: {},
@@ -77,8 +81,9 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  throw Error("VEA not implemented");
+  return ans === answer;
 };
+
 export const convexityTrinomialsGeo: Exercise<Identifiers> = {
   id: "convexityTrinomialsGeo",
   label: "Convexité des fonctions quadratiques (GeoGebra)",
