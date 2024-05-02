@@ -46,7 +46,7 @@ const getInflexionPointQuadrinomialsQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: inflexionPoint,
-    instruction: `Soit la fonction $f(x) = ${quadrinomial.toTex()}$. Calculer son point d'inflexion I.`,
+    instruction: `Soit la fonction $f(x) = ${quadrinomial.toTex()}$. Calculer l'abscisse de son point d'inflexion.`,
     keys: [],
     answerFormat: "tex",
     identifiers: { quadcoeffs },
