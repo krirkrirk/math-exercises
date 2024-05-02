@@ -298,6 +298,15 @@ export class Polynomial {
     return new Polynomial(res, this.variable);
   }
 
+  secondDerivate(): Polynomial {
+    if (this.coefficients.length <= 2)
+      return new Polynomial([0], this.variable);
+    const res: number[] = [];
+    for (let i = 2; i < this.coefficients.length; i++)
+      res.push(i * (i - 1) * this.coefficients[i]);
+    return new Polynomial(res, this.variable);
+  }
+
   // integrate(): Polynomial {
   //   const newCoefficients = this.coefficients.map(
   //     (coeff, exp) => coeff / (exp + 1),
@@ -381,11 +390,11 @@ export class Polynomial {
   toTree(opts?: NodeOptions) {
     const recursive = (cursor: number): AlgebraicNode => {
       const coeff = this.coefficients[cursor];
-      if (coeff === 0) return recursive(cursor - 1);
-
       if (cursor === 0) {
         return new NumberNode(coeff);
       }
+
+      if (coeff === 0) return recursive(cursor - 1);
 
       const monome =
         cursor > 1
