@@ -29,29 +29,20 @@ const getConvexityTrinomialsGeoQuestion: QuestionGenerator<
   const criticalX = -firstdcoeffs[0] / firstdcoeffs[1];
   const criticalY = trinom.calculate(criticalX);
 
-  const criticalXnode = new FractionNode(
-    new MultiplyNode(new NumberNode(-1), firstdcoeffs[0].toTree()),
-    firstdcoeffs[1].toTree(),
-  ).simplify();
-
-  const xMin = criticalX - 10;
-  const xMax = criticalX + 10;
-  const yMin = criticalY - 10;
-  const yMax = criticalY + 10;
-
   const instruction = `Soit la fonction $f(x) = ${trinom.toTex()}$. Est-elle :`;
 
   const commands = [
     `f(x) = ${trinom.toString()}`,
     `SetColor(f, "${blueMain}")`,
     `SetCaption(f, "$\\mathcal C_f$")`,
-    `Point Critique = (${criticalX},${criticalY})`,
     `ShowLabel(f, true)`,
-    `ZoomIn(${xMin}, ${yMin}, ${xMax}, ${yMax})`,
+    `Critical = (${criticalX},${criticalY})`,
+    "SetFixed(Critical, true)",
   ];
 
   const ggb = new GeogebraConstructor(commands, {
     isGridSimple: true,
+    isAxesRatioFixed: false,
   });
   const isConvex = trinom.a > 0 ? "Convexe" : "Concave";
 
@@ -59,7 +50,7 @@ const getConvexityTrinomialsGeoQuestion: QuestionGenerator<
     answer: isConvex,
     instruction,
     commands: ggb.commands,
-    coords: [xMin, xMax, yMin, yMax],
+    coords: trinom.getCoords(),
     options: ggb.getOptions(),
     keys: [],
     answerFormat: "raw",
