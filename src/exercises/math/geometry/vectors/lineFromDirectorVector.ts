@@ -169,27 +169,15 @@ const getSecondProposition = (
 };
 
 const getCorrecAnswer = (uX: number, uY: number, aX: number, aY: number) => {
-  const y = new VariableNode("y");
-  const uXNode = new NumberNode(uX);
-  const uYNode = new NumberNode(uY);
-  const aYNode = new NumberNode(aY);
-  const aXNode = new NumberNode(aX);
-
-  const uYDivuX = new FractionNode(uYNode, uXNode).simplify();
-  const natural = uY % uX === 0;
-  const aYuX = new MultiplyNode(aYNode, uXNode).simplify();
-  const aXuY = new MultiplyNode(aXNode, uYNode).simplify();
-  const rightSide = new AddNode(
-    natural
-      ? new MultiplyNode(uYDivuX, new VariableNode("x")).simplify()
-      : new MultiplyNode(uYDivuX, new VariableNode("x")),
-    new FractionNode(
-      new SubstractNode(aYuX, aXuY).simplify(),
-      uXNode,
-    ).simplify(),
+  const a = new Point("A", new NumberNode(aX), new NumberNode(aY));
+  const u = new Vector("u", new NumberNode(uX), new NumberNode(uY));
+  const b = new Point(
+    "b",
+    new NumberNode(a.getXnumber() - u.getXAsNumber()),
+    new NumberNode(a.getYnumber() - u.getYAsNumber()),
   );
-  const equation = new EqualNode(y, rightSide);
-  return equation;
+  const line = new Line(a, b);
+  return line.getEquation(u, a);
 };
 export const lineFromDirectorVector: Exercise<Identifiers> = {
   id: "lineFromDirectorVector",
