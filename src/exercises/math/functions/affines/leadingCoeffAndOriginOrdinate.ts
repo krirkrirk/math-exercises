@@ -10,29 +10,32 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { Vector } from "#root/math/geometry/vector";
-import { AffineConstructor } from "#root/math/polynomials/affine";
+import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
-import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { coinFlip } from "#root/utils/coinFlip";
 
 type Identifiers = {
   a: number;
   b: number;
 };
 
+type ExerciseType = {
+  instruction: string;
+  correctAnwer: string;
+  f: Affine;
+};
+
 const getLeadingCoeffAndOriginOrdinateQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const f = AffineConstructor.random();
-  const a = f.a;
-  const b = f.b;
-  const quesiton = `Soit la fonction affine $f=${a}x+${b}$, déterminer la valeur du coefficient directeur et de l'ordonnée à l'origine.`;
+  const exercise = generateExercise();
+
   const question: Question<Identifiers> = {
-    answer: "",
-    instruction: ``,
+    answer: exercise.correctAnwer,
+    instruction: exercise.instruction,
     keys: [],
     answerFormat: "tex",
-    identifiers: { a, b },
+    identifiers: { a: exercise.f.a, b: exercise.f.b },
   };
 
   return question;
@@ -41,31 +44,40 @@ const getLeadingCoeffAndOriginOrdinateQuestion: QuestionGenerator<
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  generateProposition(a, b).forEach((value) =>
-    tryToAddWrongProp(propositions, value),
-  );
-  let random;
+  tryToAddWrongProp(propositions, a + "");
+  tryToAddWrongProp(propositions, b + "");
+  let random: number;
+  let flip: boolean;
   while (propositions.length < n) {
-    random = `\\left(${randint(a - 10, a + 11, [a])};${randint(b - 10, b + 11, [
-      b,
-    ])}\\right)`;
-    tryToAddWrongProp(propositions, random);
+    flip = coinFlip();
+    random = flip ? randint(a - 5, a + 6, [a]) : randint(b - 5, b + 6, [b]);
+    tryToAddWrongProp(propositions, random + "");
   }
   return shuffleProps(propositions, n);
 };
 
-const generateProposition = (a: number, b: number) => {
-  const firstProposition = `\\left(${b};${a}\\right)`;
-  const secondProposition = `\\left(${b};${b}\\right)`;
-  return [firstProposition, secondProposition];
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
+  return ans === answer;
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  throw Error("VEA not implemented");
+const generateExercise = (): ExerciseType => {
+  const flip = coinFlip();
+  const f = AffineConstructor.random();
+  const instruction = `Soit la fonction affine $f=${f.toTex()}$, ${
+    flip
+      ? `Déterminer la valeur du coefficient directeur`
+      : `Déterminer la valeur de l'ordonnée à l'origine.`
+  }`;
+  return {
+    instruction,
+    correctAnwer: flip ? f.a + "" : f.b + "",
+    f,
+  };
 };
 export const leadingCoeffAndOriginOrdinate: Exercise<Identifiers> = {
   id: "leadingCoeffAndOriginOrdinate",
-  label: "",
+  label:
+    "A partir de l'expression algébrique d'une fonction affine, déterminer la valeur du coefficient directeur ou de l'ordonnée à l'origine.",
   levels: ["2nde"],
   isSingleStep: true,
   sections: [],
