@@ -40,22 +40,33 @@ function generatePolynomialWithIntegerInflexionPoint(
   let a, b, c, discriminant;
 
   do {
-    a = randint(1, 5) * 0.5;
-    c = randint(-5, 5, [0]) * 0.5;
-    b = -3 * a * inflexionPointX * 0.5;
+    a = randint(1, 5);
+    c = randint(-5, 5, [0]);
+    b = -3 * a * inflexionPointX;
     discriminant = b * b - 4 * a * c;
   } while (discriminant < 0);
 
-  const d = degree === 3 ? randint(-5, 5, [0]) * 0.5 : 0;
+  const d = degree === 3 ? randint(-5, 5, [0]) : 0;
 
-  const coeffs = degree === 3 ? [d, c, b, a] : [c, b, a];
+  const coeffs =
+    degree === 3
+      ? [d * 0.1, c * 0.1, b * 0.1, a * 0.1]
+      : [c * 0.1, b * 0.1, a * 0.1];
   return new Polynomial(coeffs);
+}
+
+function generateEvenInflexionPoint() {
+  let inflexionPointX;
+  do {
+    inflexionPointX = randint(-50, 51);
+  } while (inflexionPointX % 10 !== 0);
+  return inflexionPointX;
 }
 
 const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const inflexionPointX = randint(-5, 5);
+  const inflexionPointX = generateEvenInflexionPoint() * 0.1;
   const quadrinomial = generatePolynomialWithIntegerInflexionPoint(
     3,
     inflexionPointX,
