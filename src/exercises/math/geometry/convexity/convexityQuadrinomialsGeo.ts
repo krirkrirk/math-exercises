@@ -40,13 +40,13 @@ function generatePolynomialWithIntegerInflexionPoint(
   let a, b, c, discriminant;
 
   do {
-    a = randint(1, 5); // Choisissez 'a' aléatoirement
-    c = randint(-5, 5); // Choisissez 'c' aléatoirement
-    b = 3 * a * inflexionPointX;
+    a = randint(1, 5) * 0.5;
+    c = randint(-5, 5, [0]) * 0.5;
+    b = -3 * a * inflexionPointX * 0.5;
     discriminant = b * b - 4 * a * c;
-  } while (discriminant < 0); // Répétez jusqu'à obtenir un discriminant positif ou nul
+  } while (discriminant < 0);
 
-  const d = degree === 3 ? randint(-5, 5) : 0;
+  const d = degree === 3 ? randint(-5, 5, [0]) * 0.5 : 0;
 
   const coeffs = degree === 3 ? [d, c, b, a] : [c, b, a];
   return new Polynomial(coeffs);
@@ -64,7 +64,14 @@ const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
   const inflexionPointY = quadrinomial.calculate(inflexionPointX);
 
   const trinomial = quadrinomial.derivate();
-  const roots = trinomial.getRoots();
+  const criticalPoints = trinomial.getRoots();
+
+  const yValues = criticalPoints.map((x) => quadrinomial.calculate(x));
+
+  const xMin = Math.min(...criticalPoints) - 5;
+  const xMax = Math.max(...criticalPoints) + 5;
+  const yMin = Math.min(...yValues, 0) - 5;
+  const yMax = Math.max(...yValues, 0) + 5;
 
   const askConvex = coinFlip();
   let interval;
@@ -99,20 +106,13 @@ const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
   const questionType = askConvex ? "convexe" : "concave";
   const instruction = `Ci-dessous sont tracées la courbe $\\mathcal C_f$ de la fonction $f$. Sur quelle intervalle est-elle ${questionType} ?`;
 
-  const xMin = inflexionPointX - 10;
-  const yMin = inflexionPointY - 10;
-  const xMax = inflexionPointX + 10;
-  const yMax = inflexionPointY + 10;
-
   const commands = [
     `f(x) = ${quadrinomial.toString()}`,
     `SetColor(f, "${blueMain}")`,
     `SetCaption(f, "$\\mathcal C_f$")`,
     `ShowLabel(f, true)`,
     `I = (${inflexionPointX},${inflexionPointY})`,
-    "SetFixed(I, true)",
-    "SetVisibleInView(I, 1, true)",
-    `ZoomIn(${xMin}, ${yMin}, ${xMax}, ${yMax})`,
+    `SetFixed(I, true)`,
   ];
 
   const ggb = new GeogebraConstructor(commands, {
@@ -182,26 +182,35 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { askConvex, quadcoeffs }) => {
-  const quadrinomial = new Polynomial(quadcoeffs);
-  const secondderivative = quadrinomial.derivate().derivate();
-  const seconddcoeffs = secondderivative.coefficients;
-
-  const inflexionPoint = new FractionNode(
-    new MultiplyNode(seconddcoeffs[0].toTree(), new NumberNode(-1)),
-    seconddcoeffs[1].toTree(),
-  ).simplify();
+  const inflexionPoint = -quadcoeffs[2] / (3 * quadcoeffs[3]);
 
   let interval;
   if (askConvex) {
     interval =
       quadcoeffs[3] > 0
-        ? new IntervalNode(inflexionPoint, PlusInfinityNode, ClosureType.OO)
-        : new IntervalNode(MinusInfinityNode, inflexionPoint, ClosureType.OO);
+        ? new IntervalNode(
+            inflexionPoint.toTree(),
+            PlusInfinityNode,
+            ClosureType.OO,
+          )
+        : new IntervalNode(
+            MinusInfinityNode,
+            inflexionPoint.toTree(),
+            ClosureType.OO,
+          );
   } else {
     interval =
       quadcoeffs[3] <= 0
-        ? new IntervalNode(inflexionPoint, PlusInfinityNode, ClosureType.OO)
-        : new IntervalNode(MinusInfinityNode, inflexionPoint, ClosureType.OO);
+        ? new IntervalNode(
+            inflexionPoint.toTree(),
+            PlusInfinityNode,
+            ClosureType.OO,
+          )
+        : new IntervalNode(
+            MinusInfinityNode,
+            inflexionPoint.toTree(),
+            ClosureType.OO,
+          );
   }
 
   const latexs = interval.toAllValidTexs({ allowFractionToDecimal: true });
