@@ -67,7 +67,7 @@ const getCartesianEquationOfLineQuestion: QuestionGenerator<
       yMax: Math.max(bY, aY) + 5,
     }),
     instruction: ``,
-    keys: [],
+    keys: ["x", "y", "equal"],
     answerFormat: "tex",
     identifiers: { aX, aY, bX, bY },
   };
@@ -169,13 +169,9 @@ const isAnswerValid: VEA<Identifiers> = (ans, { aX, aY, bX, bY }) => {
   let userAns = getEquationNodeFromString(ans);
   if (userAns === undefined) return false;
   userAns = userAns as AlgebraicNode;
-  const correctAnswer = getEquation(aX, aY, bX, bY);
-
-  return (
-    correctAnswer.evaluate({ x: aX, y: aY }) +
-      correctAnswer.evaluate({ x: bX, y: bY }) ===
-    userAns.evaluate({ x: aX, y: aY }) + userAns.evaluate({ x: bX, y: bY })
-  );
+  if (userAns.evaluate({ x: aX, y: aY }) !== 0) return false;
+  if (userAns.evaluate({ x: bX, y: bY }) !== 0) return false;
+  return true;
 };
 
 const getEquation = (
@@ -201,31 +197,14 @@ const getEquation = (
 
 const getEquationNodeFromString = (ans: string): AlgebraicNode | undefined => {
   if (!ans.includes("=")) return undefined;
-  const rightSide = ans.split("=")[0];
-  let op;
-  if (rightSide.charAt(0) === "-") {
-    op = rightSide.replace("-", "minus").split("+");
-  } else {
-    op = rightSide.split("+");
+
+  const leftSide = ans.split("=")[0];
+  const op =
+    leftSide.charAt(0) === "-" ? leftSide.replace("-", "minus") : leftSide;
+  if (op.includes("+")) {
+    return getNodeFromString(op.split("+"), "+");
   }
-  if (op.length === 3) {
-    const var1 = getNodeFromVariableString(op[0].replace("minus", "-"), "x");
-    const var2 = getNodeFromVariableString(op[1], "y");
-    return new AddNode(
-      new AddNode(var1, var2).simplify(),
-      new NumberNode(+op[2]),
-    );
-  }
-  if (op.length === 1) {
-    op = op[0].split("-");
-    const var1 = getNodeFromVariableString(op[0].replace("minus", "-"), "x");
-    const var2 = getNodeFromVariableString(op[1], "y");
-    return new SubstractNode(
-      new SubstractNode(var1, var2).simplify(),
-      new NumberNode(+op[2]),
-    );
-  }
-  return getNodeFromString(op, "+");
+  return getNodeFromString(op.split("-"), "-");
 };
 
 const getNodeFromString = (str: string[], op: string): AlgebraicNode => {
@@ -238,37 +217,29 @@ const getNodeFromString = (str: string[], op: string): AlgebraicNode => {
       return getNodeFromVariableString(varStr.replace("minus", "-"), "y");
     }
     return isNaN(+varStr) ? new NumberNode(0) : new NumberNode(+varStr);
-  } else {
-    if (str[0].includes("-")) {
-      return new AddNode(
-        getNodeFromString(str[0].split("-"), "-"),
-        getNodeFromString([str[1]], "-"),
-      ).simplify();
-    }
-    if (str[1].includes("-")) {
-      return new AddNode(
-        getNodeFromString([str[0]], "-"),
-        getNodeFromString(str[1].split("-"), "-"),
-      ).simplify();
-    }
-    if (str[0].includes("+")) {
-      return new AddNode(
-        getNodeFromString(str[0].split("+"), "+"),
-        getNodeFromString([str[1]], "+"),
-      ).simplify();
-    }
-    if (str[1].includes("+")) {
-      return new AddNode(
-        getNodeFromString([str[0]], "+"),
-        getNodeFromString(str[1].split("+"), "+"),
-      ).simplify();
-    }
-    const var1 = getNodeFromString([str[0]], op);
-    const var2 = getNodeFromString([str[1]], op);
+  } else if (str.length === 2) {
+    const op1 = findOpInSimpleOpString(str[0]);
+    const op2 = findOpInSimpleOpString(str[1]);
+    const leftSide = op1 !== "" ? str[0].split(op1) : [str[0]];
+    const rightSide = op2 !== "" ? str[1].split(op2) : [str[1]];
+    const var1 = getNodeFromString(leftSide, op1);
+    const var2 = getNodeFromString(rightSide, op2);
     return op === "+"
       ? new AddNode(var1, var2).simplify()
       : new SubstractNode(var1, var2).simplify();
+  } else {
+    const leftSide = getNodeFromString([str[0], str[1]], op);
+    const rightSide = getNodeFromString([str[2]], op);
+    return op === "+"
+      ? new AddNode(leftSide, rightSide)
+      : new SubstractNode(leftSide, rightSide);
   }
+};
+
+const findOpInSimpleOpString = (str: string): string => {
+  if (str.includes("-")) return "-";
+  if (str.includes("+")) return "+";
+  return "";
 };
 
 const getNodeFromVariableString = (
