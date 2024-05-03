@@ -77,6 +77,8 @@ const isAnswerValid: VEA<Identifiers> = (
   return correctAnswer.toAllValidTexs().includes(ans);
 };
 
+const generateProposition = () => {};
+
 const getCorrectAnswer = (
   type: number,
   randAdd: number,
