@@ -47,7 +47,7 @@ const getCartesianEquationOfLineQuestion: QuestionGenerator<
 
   const commands = [
     `d = Line((${a.getXnumber()},${a.getYnumber()}),(${b.getXnumber()},${b.getYnumber()}))`,
-    `SetCaption(d, "$\\mathcal C_d$")`,
+    `SetCaption(d, "$d$")`,
     `ShowLabel(d,true)`,
     `SetFixed(d,true)`,
   ];
@@ -180,15 +180,22 @@ const isAnswerValid: VEA<Identifiers> = (ans, { aX, aY, bX, bY }) => {
 };
 
 const getEquationNodeFromString = (ans: string): AlgebraicNode | undefined => {
-  if (!ans.includes("=")) return undefined;
-
-  const leftSide = ans.split("=")[0];
+  if (!isValidFormat(ans)) return undefined;
+  const splitted = ans.split("=");
+  const leftSide = splitted[0];
   const op =
     leftSide.charAt(0) === "-" ? leftSide.replace("-", "minus") : leftSide;
   if (op.includes("+")) {
     return getNodeFromString(op.split("+"), "+");
   }
   return getNodeFromString(op.split("-"), "-");
+};
+
+const isValidFormat = (ans: string) => {
+  if (!ans.includes("=")) return false;
+  const splitted = ans.split("=");
+  if (splitted.length !== 2 || splitted[1] !== "0") return false;
+  return true;
 };
 
 const getNodeFromString = (str: string[], op: string): AlgebraicNode => {
