@@ -47,6 +47,9 @@ const getCartesianEquationOfLineQuestion: QuestionGenerator<
 
   const commands = [
     `d = Line((${a.getXnumber()},${a.getYnumber()}),(${b.getXnumber()},${b.getYnumber()}))`,
+    `SetCaption(d, "$\\mathcal C_d$")`,
+    `ShowLabel(d,true)`,
+    `SetFixed(d,true)`,
   ];
 
   const ggb = new GeogebraConstructor(commands, { isGridSimple: true });
@@ -174,27 +177,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { aX, aY, bX, bY }) => {
   if (userAns.evaluate({ x: aX, y: aY }) !== 0) return false;
   if (userAns.evaluate({ x: bX, y: bY }) !== 0) return false;
   return true;
-};
-
-const getEquation = (
-  aX: number,
-  aY: number,
-  bX: number,
-  bY: number,
-): AlgebraicNode => {
-  const u = new Vector("u", new NumberNode(bX - aX), new NumberNode(bY - aY));
-  const b = -u.getXAsNumber();
-  const a = u.getYAsNumber();
-  const c = -a * aX - b * aY;
-  const x = new VariableNode("x");
-  const y = new VariableNode("y");
-  return new AddNode(
-    new AddNode(
-      new MultiplyNode(new NumberNode(a), x).simplify(),
-      new MultiplyNode(new NumberNode(b), y).simplify(),
-    ),
-    new NumberNode(c),
-  ).simplify({ forbidFactorize: true });
 };
 
 const getEquationNodeFromString = (ans: string): AlgebraicNode | undefined => {
