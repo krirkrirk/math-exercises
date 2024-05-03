@@ -46,7 +46,7 @@ const getCartesianEquationOfLineQuestion: QuestionGenerator<
   const line = new Line(a, b);
 
   const commands = [
-    `Line((${a.getXnumber()},${a.getYnumber()}),(${b.getXnumber()},${b.getYnumber()}))`,
+    `d = Line((${a.getXnumber()},${a.getYnumber()}),(${b.getXnumber()},${b.getYnumber()}))`,
   ];
 
   const ggb = new GeogebraConstructor(commands, { isGridSimple: true });
