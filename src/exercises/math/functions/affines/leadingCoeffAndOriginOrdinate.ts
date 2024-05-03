@@ -80,7 +80,7 @@ export const leadingCoeffAndOriginOrdinate: Exercise<Identifiers> = {
     "A partir de l'expression algébrique d'une fonction affine, déterminer la valeur du coefficient directeur ou de l'ordonnée à l'origine.",
   levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Fonctions affines"],
   generator: (nb: number) =>
     getDistinctQuestions(getLeadingCoeffAndOriginOrdinateQuestion, nb),
   qcmTimer: 60,
