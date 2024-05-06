@@ -6,6 +6,8 @@ import { NumberNode, isNumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { randint } from "../utils/random/randint";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 
 export abstract class CloudPointsConstructor {
   static random(nbPoints: number) {
@@ -14,6 +16,22 @@ export abstract class CloudPointsConstructor {
       names.push(`a${i}`);
     }
     return new CloudPoints(PointConstructor.randomDifferent(names));
+  }
+
+  static randomLinear(nbPoints: number) {
+    const points: Point[] = [];
+    for (let i = -nbPoints * 2; i < nbPoints * 4; i += 4) {
+      points.push(
+        new Point(`a${i + nbPoints * 2}`, new NumberNode(i), new NumberNode(i)),
+      );
+    }
+    points.forEach((point) => {
+      const x = point.getXnumber();
+      const y = point.getYnumber();
+      point.y = new NumberNode(y + randint(-10, 11, [0, 4, -4]));
+      point.x = new NumberNode(x + randint(-10, 11, [0, 4, -4]));
+    });
+    return new CloudPoints(points);
   }
 }
 
@@ -96,5 +114,45 @@ export class CloudPoints {
         b,
       ),
     );
+  }
+
+  getCorrelationCoeff() {
+    const xValues = this.points.map((point) => {
+      return point.getXnumber();
+    });
+    const yValues = this.points.map((point) => {
+      return point.getYnumber();
+    });
+    const lengthNode = new NumberNode(this.points.length);
+    const avgX = new FractionNode(
+      new NumberNode(
+        xValues.reduce((accumulator, nb) => {
+          return accumulator + nb;
+        }),
+      ),
+      lengthNode,
+    ).simplify();
+    const avgY = new FractionNode(
+      new NumberNode(
+        yValues.reduce((accumulator, nb) => {
+          return accumulator + nb;
+        }),
+      ),
+      lengthNode,
+    ).simplify();
+    let node: AlgebraicNode = new MultiplyNode(
+      new SubstractNode(new NumberNode(xValues[0]), avgX).simplify(),
+      new SubstractNode(new NumberNode(yValues[0]), avgY).simplify(),
+    ).simplify();
+    for (let i = 1; i < this.points.length; i++) {
+      node = new AddNode(
+        node,
+        new MultiplyNode(
+          new SubstractNode(new NumberNode(xValues[i]), avgX).simplify(),
+          new SubstractNode(new NumberNode(yValues[i]), avgY).simplify(),
+        ),
+      ).simplify();
+    }
+    node = new FractionNode(node, lengthNode);
   }
 }

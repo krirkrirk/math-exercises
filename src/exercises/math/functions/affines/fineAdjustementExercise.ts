@@ -25,7 +25,7 @@ type Identifiers = {
 const getFineAdjustementExerciseQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const cloudPoints = CloudPointsConstructor.random(5);
+  const cloudPoints = CloudPointsConstructor.randomLinear(8);
   const xValues = cloudPoints.points.map((element) => {
     return element.getXnumber();
   });
