@@ -70,6 +70,28 @@ export class Line {
     console.log(y.toTex(), this.a!.toTex(), x.toTex(), this.b?.toTex());
     return new Point(name ?? "A", x, y);
   }
+
+  getEquation = (u: Vector, a: Point): EqualNode => {
+    const x = new VariableNode("x");
+    const y = new VariableNode("y");
+
+    const uYDivuX = new FractionNode(u.y, u.x).simplify();
+    const natural = u.getYAsNumber() % u.getXAsNumber() === 0;
+    const aYuX = new MultiplyNode(a.y, u.x).simplify();
+    const aXuY = new MultiplyNode(a.x, u.y).simplify();
+    const rightSide = new AddNode(
+      natural
+        ? new MultiplyNode(uYDivuX, x).simplify()
+        : new MultiplyNode(uYDivuX, x),
+      new FractionNode(
+        new SubstractNode(aYuX, aXuY).simplify(),
+        u.x,
+      ).simplify(),
+    );
+    const equation = new EqualNode(y, rightSide);
+    return equation;
+  };
+
   getCartesianEquation(): EqualNode {
     const u = new Vector(
       "u",
