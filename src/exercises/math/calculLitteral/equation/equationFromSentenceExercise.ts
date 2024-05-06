@@ -256,7 +256,9 @@ const generateExercise = (): ExerciseType => {
       instruction = `On appelle $x$ le nombre à trouver. 
       Traduire par une équation la phrase "${
         flip ? `Le double` : `La moitié`
-      } du nombre à trouver ${op2} de $${randAdd}$ vaut $${resultNb}$"`;
+      } du nombre à trouver ${
+        flip ? op2 : op2 + "e"
+      } de $${randAdd}$ vaut $${resultNb}$"`;
       break;
   }
   const vars = { randAdd, resultNb, op2, flip };
