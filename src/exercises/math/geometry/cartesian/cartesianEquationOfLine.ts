@@ -226,8 +226,8 @@ const getNodeFromString = (tab: string[]): AlgebraicNode => {
 };
 
 const findOpInSimpleOpString = (str: string): string | undefined => {
-  if (str.includes("-")) return "-";
   if (str.includes("+")) return "+";
+  if (str.includes("-")) return "-";
   return undefined;
 };
 
