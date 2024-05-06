@@ -305,21 +305,39 @@ export class Trinom extends Polynomial {
     const yMax = Math.max(1, this.a > 0 ? beta + 5 : beta + 2);
     return [xMin, xMax, yMin, yMax];
   }
+
   toPython() {
-    const aString = this.a === 0 ? '' : 
-                    (this.a === 1 ? 'x**2' : 
-                    (this.a === -1 ? '-x**2' : `${this.a}*x**2`));
+    const aString =
+      this.a === 0
+        ? ""
+        : this.a === 1
+        ? "x**2"
+        : this.a === -1
+        ? "-x**2"
+        : `${this.a}*x**2`;
 
-    const bString = this.b === 0 ? '' : 
-                    (this.b === 1 ? ' + x' : 
-                    (this.b === -1 ? ' - x' : 
-                    (this.b > 0 ? ` + ${Math.abs(this.b)}*x` : ` - ${Math.abs(this.b)}*x`)));
+    const bString =
+      this.b === 0
+        ? ""
+        : this.b === 1
+        ? " + x"
+        : this.b === -1
+        ? " - x"
+        : this.b > 0
+        ? ` + ${Math.abs(this.b)}*x`
+        : ` - ${Math.abs(this.b)}*x`;
 
-    const cString = this.c === 0 ? '' : 
-                    (this.c === 1 ? ' + 1' : 
-                    (this.c === -1 ? ' - 1' :
-                    (this.c > 0 ? ` + ${Math.abs(this.c)}` : ` - ${Math.abs(this.c)}`)));
+    const cString =
+      this.c === 0
+        ? ""
+        : this.c === 1
+        ? " + 1"
+        : this.c === -1
+        ? " - 1"
+        : this.c > 0
+        ? ` + ${Math.abs(this.c)}`
+        : ` - ${Math.abs(this.c)}`;
 
     return `${aString}${bString}${cString}`;
-}
+  }
 }
