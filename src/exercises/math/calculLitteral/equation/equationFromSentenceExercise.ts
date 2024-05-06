@@ -12,7 +12,6 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { AffineConstructor } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
-import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
