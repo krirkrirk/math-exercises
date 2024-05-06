@@ -30,6 +30,7 @@ type Identifiers = {
   bY: number;
 };
 
+const one = new NumberNode(-1);
 const getCartesianEquationOfLineQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -181,14 +182,11 @@ const isAnswerValid: VEA<Identifiers> = (ans, { aX, aY, bX, bY }) => {
 
 const getEquationNodeFromString = (ans: string): AlgebraicNode | undefined => {
   if (!isValidFormat(ans)) return undefined;
-  const splitted = ans.split("=");
-  const leftSide = splitted[0];
-  const op =
+  const leftSide = ans.split("=")[0];
+  let op =
     leftSide.charAt(0) === "-" ? leftSide.replace("-", "minus") : leftSide;
-  if (op.includes("+")) {
-    return getNodeFromString(op.split("+"), "+");
-  }
-  return getNodeFromString(op.split("-"), "-");
+  op = op.includes("+") ? op : op.replaceAll("-", "+minus");
+  return getNodeFromString(op.split("+"));
 };
 
 const isValidFormat = (ans: string) => {
@@ -198,39 +196,39 @@ const isValidFormat = (ans: string) => {
   return true;
 };
 
-const getNodeFromString = (str: string[], op: string): AlgebraicNode => {
-  if (str.length === 1) {
-    const varStr = str[0];
+const getNodeFromString = (tab: string[]): AlgebraicNode => {
+  if (tab.length === 1) {
+    let varStr = tab[0];
+    const operator = findOpInSimpleOpString(varStr);
+    if (operator !== undefined) {
+      const modified =
+        operator === "-" ? varStr.replaceAll("-", "+minus") : varStr;
+      const separated = modified.split("+");
+      return getNodeFromString(separated).simplify();
+    }
+    varStr = varStr.replace("minus", "-");
     if (varStr.includes("x")) {
-      return getNodeFromVariableString(varStr.replace("minus", "-"), "x");
+      return getNodeFromVariableString(varStr, "x");
     }
     if (varStr.includes("y")) {
-      return getNodeFromVariableString(varStr.replace("minus", "-"), "y");
+      return getNodeFromVariableString(varStr, "y");
     }
     return isNaN(+varStr) ? new NumberNode(0) : new NumberNode(+varStr);
-  } else if (str.length === 2) {
-    const op1 = findOpInSimpleOpString(str[0]);
-    const op2 = findOpInSimpleOpString(str[1]);
-    const leftSide = op1 !== "" ? str[0].split(op1) : [str[0]];
-    const rightSide = op2 !== "" ? str[1].split(op2) : [str[1]];
-    const var1 = getNodeFromString(leftSide, op1);
-    const var2 = getNodeFromString(rightSide, op2);
-    return op === "+"
-      ? new AddNode(var1, var2).simplify()
-      : new SubstractNode(var1, var2).simplify();
   } else {
-    const leftSide = getNodeFromString([str[0], str[1]], op);
-    const rightSide = getNodeFromString([str[2]], op);
-    return op === "+"
-      ? new AddNode(leftSide, rightSide)
-      : new SubstractNode(leftSide, rightSide);
+    const middle = Math.floor(tab.length / 2);
+    const leftSide = tab.slice(0, middle);
+    const rightSide = tab.slice(middle);
+    return new AddNode(
+      getNodeFromString(leftSide).simplify(),
+      getNodeFromString(rightSide).simplify(),
+    ).simplify();
   }
 };
 
-const findOpInSimpleOpString = (str: string): string => {
+const findOpInSimpleOpString = (str: string): string | undefined => {
   if (str.includes("-")) return "-";
   if (str.includes("+")) return "+";
-  return "";
+  return undefined;
 };
 
 const getNodeFromVariableString = (
