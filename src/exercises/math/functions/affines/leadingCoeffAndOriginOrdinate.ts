@@ -17,6 +17,7 @@ import { coinFlip } from "#root/utils/coinFlip";
 type Identifiers = {
   a: number;
   b: number;
+  isAskingA: boolean;
 };
 
 type ExerciseType = {
@@ -29,23 +30,26 @@ const getLeadingCoeffAndOriginOrdinateQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const exercise = generateExercise();
+  const isAskingA = +exercise.correctAnwer === exercise.f.a ? true : false;
 
   const question: Question<Identifiers> = {
     answer: exercise.correctAnwer,
     instruction: exercise.instruction,
     keys: [],
     answerFormat: "tex",
-    identifiers: { a: exercise.f.a, b: exercise.f.b },
+    identifiers: { a: exercise.f.a, b: exercise.f.b, isAskingA },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, a, b, isAskingA },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  tryToAddWrongProp(propositions, a + "");
-  tryToAddWrongProp(propositions, b + "");
+  tryToAddWrongProp(propositions, isAskingA ? b + "" : a + "");
   let random: number;
   let flip: boolean;
   while (propositions.length < n) {
