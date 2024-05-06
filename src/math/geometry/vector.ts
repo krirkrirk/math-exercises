@@ -1,7 +1,7 @@
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { Node, NodeType } from "#root/tree/nodes/node";
-import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { NumberNode, isNumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
@@ -124,5 +124,18 @@ export class Vector {
   }
   equals(v: Vector) {
     return this.x.equals(v.x) && this.y.equals(v.y);
+  }
+
+  getXAsNumber() {
+    if (!isNumberNode(this.x)) {
+      throw Error("not implemented for nodes different from NumberNode");
+    }
+    return (this.x as NumberNode).value;
+  }
+  getYAsNumber() {
+    if (!isNumberNode(this.y)) {
+      throw Error("not implemented for nodes different from NumberNode");
+    }
+    return (this.y as NumberNode).value;
   }
 }

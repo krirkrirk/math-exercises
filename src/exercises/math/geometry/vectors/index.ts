@@ -12,3 +12,4 @@ export * from "./fourthParallelogramPoint";
 export * from "./equalCaracteristicFromGraph";
 export * from "./vectorLinearCombination";
 export * from "./vectorNormCalculation";
+export * from "./lineFromDirectorVector";
