@@ -15,6 +15,10 @@ import { Vector } from "#root/math/geometry/vector";
 import { randint } from "#root/math/utils/random/randint";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { VectorNode } from "#root/tree/nodes/geometry/vectorNode";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
   xValue: number;
@@ -35,7 +39,9 @@ function parseVector(input: string): { x: number; y: number } | null {
   return null;
 }
 
-const getDirectionVectorQuestion: QuestionGenerator<Identifiers> = () => {
+const getDirectionVectorEquationQuestion: QuestionGenerator<
+  Identifiers
+> = () => {
   const x1 = randint(-8, 8);
   const x2 = randint(-8, 8);
   const y1 = randint(-8, 8);
@@ -43,27 +49,23 @@ const getDirectionVectorQuestion: QuestionGenerator<Identifiers> = () => {
 
   const xValue = x2 - x1;
   const yValue = y2 - y1;
-
+  const c = randint(-5, 5);
   const vector = new Vector("V", xValue.toTree(), yValue.toTree());
 
-  const instruction = `Soit la droite tracée ci-dessous dans le plan cartésien. Déterminez les coordonnées d'un vecteur directeur $\\overrightarrow{V}$ de cette droite.`;
-  const commands = [`line = Line((${x1}, ${y1}), (${x2}, ${y2}))`];
-
-  const xMin = Math.min(x1, x2);
-  const yMin = Math.min(y1, y2);
-  const xMax = Math.max(x1, x2);
-  const yMax = Math.max(y1, y2);
-
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-  });
+  const equation = new EqualNode(
+    new AddNode(
+      new AddNode(
+        new MultiplyNode((-yValue).toTree(), new VariableNode("x")),
+        new MultiplyNode(xValue.toTree(), new VariableNode("y")),
+      ).simplify({ forbidFactorize: true }),
+      c.toTree(),
+    ),
+    new NumberNode(0),
+  ).toTex();
 
   const question: Question<Identifiers> = {
     answer: vector.toInlineCoordsTex(),
-    instruction,
-    commands: ggb.commands,
-    coords: [xMin - 10, xMax + 10, yMin - 10, yMax + 10],
-    options: ggb.getOptions(),
+    instruction: `Soit l'équation cartésienne $${equation}$. Déterminez les coordonnées d'un vecteur directeur $\\overrightarrow{V}$ de cette équation.`,
     keys: ["semicolon", "x", "y"],
     answerFormat: "tex",
     identifiers: { xValue, yValue },
@@ -127,14 +129,14 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, xValue, yValue }) => {
 
   return true;
 };
-export const directionVector: Exercise<Identifiers> = {
-  id: "directionVector",
-  label: "Coordonnées d'un vecteur directeur d'une droite",
+export const directionVectorEquation: Exercise<Identifiers> = {
+  id: "directionVectorEquation",
+  label: "Coordonnées d'un vecteur directeur d'une équation cartésienne",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Géométrie cartésienne"],
   generator: (nb: number) =>
-    getDistinctQuestions(getDirectionVectorQuestion, nb),
+    getDistinctQuestions(getDirectionVectorEquationQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
