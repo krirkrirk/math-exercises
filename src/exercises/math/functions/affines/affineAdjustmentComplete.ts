@@ -103,7 +103,7 @@ const getAffineAdjustmentCompleteQuestion: QuestionGenerator<
 | | | | | | | | | | | 
 |-|-|-|-|-|-|-|-|-|-| 
 | $x$ | ${xValues[0]} | ${xValues[1]} | ${xValues[2]} | ${xValues[3]} | ${xValues[4]} | ${xValues[5]} | ${xValues[6]} | ${xValues[7]} |${xValues[8]} |${xValues[9]} |
-| $y$ | ${xValues[0]} | ${xValues[1]} | ${xValues[2]} | ${xValues[3]} | ${xValues[4]} | ${xValues[5]} | ${xValues[6]} | ${xValues[7]} |${xValues[8]} |${xValues[9]} |
+| $y$ | ${yValues[0]} | ${yValues[1]} | ${yValues[2]} | ${yValues[3]} | ${yValues[4]} | ${yValues[5]} | ${yValues[6]} | ${yValues[7]} |${yValues[8]} |${yValues[9]} |
   `;
 
   const question: Question<Identifiers> = {
