@@ -25,7 +25,7 @@ type Identifiers = {
 const getFineAdjustementExerciseQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const cloudPoints = CloudPointsConstructor.randomLinear(8);
+  const cloudPoints = CloudPointsConstructor.randomLinear(5);
   const xValues = cloudPoints.points.map((element) => {
     return element.getXnumber();
   });
@@ -49,7 +49,7 @@ const getFineAdjustementExerciseQuestion: QuestionGenerator<
   const yMax = Math.max(...yValues);
 
   const question: Question<Identifiers> = {
-    answer: cloudPoints.getFineAdjustement().toTex(),
+    answer: cloudPoints.getCorrelationCoeff().simplify().toTex(),
     instruction: ``,
     commands: ggb.commands,
     coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),

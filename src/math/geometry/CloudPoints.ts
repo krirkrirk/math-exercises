@@ -4,10 +4,9 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { NumberNode, isNumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { randint } from "../utils/random/randint";
-import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
+import { covarianceXY } from "../utils/covariance";
+import { variance } from "../utils/variance";
 
 export abstract class CloudPointsConstructor {
   static random(nbPoints: number) {
@@ -20,16 +19,26 @@ export abstract class CloudPointsConstructor {
 
   static randomLinear(nbPoints: number) {
     const points: Point[] = [];
-    for (let i = -nbPoints * 2; i < nbPoints * 4; i += 4) {
+    const deltaX = randint(1, 4, [0]);
+    const deltaY = randint(1, 4, [0]);
+    const a = randint(-5, 6, [0]);
+    const b = randint(-5, 6);
+    for (let i = -nbPoints * 2; i < nbPoints * 2; i += 4) {
       points.push(
-        new Point(`a${i + nbPoints * 2}`, new NumberNode(i), new NumberNode(i)),
+        new Point(
+          `a${i + nbPoints * 2}`,
+          new NumberNode(i),
+          new NumberNode(a * i + b),
+        ),
       );
     }
     points.forEach((point) => {
       const x = point.getXnumber();
       const y = point.getYnumber();
-      point.y = new NumberNode(y + randint(-10, 11, [0, 4, -4]));
-      point.x = new NumberNode(x + randint(-10, 11, [0, 4, -4]));
+      point.y = new NumberNode(y + randint(-deltaX, deltaX + 1));
+      point.x = new NumberNode(
+        x + randint(-deltaY, deltaY + 1, [deltaX, -deltaX]),
+      );
     });
     return new CloudPoints(points);
   }
@@ -43,75 +52,47 @@ export class CloudPoints {
   }
 
   getFineAdjustement(): EqualNode {
-    const lengthNode = new NumberNode(this.points.length);
     const xValues = this.points.map((element) => {
       return element.getXnumber();
     });
     const yValues = this.points.map((element) => {
       return element.getYnumber();
     });
-    const avgX = new FractionNode(
-      new NumberNode(
-        xValues.reduce((accumulator, nb) => {
-          return accumulator + nb;
-        }),
-      ),
-      lengthNode,
-    ).simplify();
-    const avgY = new FractionNode(
-      new NumberNode(
-        yValues.reduce((accumulator, nb) => {
-          return accumulator + nb;
-        }),
-      ),
-      lengthNode,
-    ).simplify();
-    const avgXsquare = new FractionNode(
-      new NumberNode(
-        xValues
-          .map((point) => {
-            return point * point;
-          })
-          .reduce((acc, nb) => {
-            return acc + nb;
-          }),
-      ),
-      lengthNode,
-    ).simplify();
-    const avgXY = new FractionNode(
-      new NumberNode(
-        xValues
-          .map((point, i) => {
-            return point * yValues[i];
-          })
-          .reduce((acc, nb) => {
-            return acc + nb;
-          }),
-      ),
-      lengthNode,
-    ).simplify();
-    const a = new FractionNode(
-      new SubstractNode(
-        avgXY,
-        new MultiplyNode(avgX, avgY).simplify(),
-      ).simplify(),
-      new SubstractNode(
-        avgXsquare,
-        new MultiplyNode(avgX, avgX).simplify(),
-      ).simplify(),
-    ).simplify();
-    const b = new SubstractNode(
-      avgY,
-      new MultiplyNode(a, avgX).simplify(),
-    ).simplify();
+    const avgX =
+      xValues.reduce((accumulator, nb) => {
+        return accumulator + nb;
+      }) / this.points.length;
+    const avgY =
+      yValues.reduce((accumulator, nb) => {
+        return accumulator + nb;
+      }) / this.points.length;
+    const avgXsquare =
+      xValues
+        .map((point) => {
+          return point * point;
+        })
+        .reduce((acc, nb) => {
+          return acc + nb;
+        }) / this.points.length;
+    const avgXY =
+      xValues
+        .map((point, i) => {
+          return point * yValues[i];
+        })
+        .reduce((acc, nb) => {
+          return acc + nb;
+        }) / this.points.length;
+    const a = (avgXY - avgX * avgY) / (avgXsquare * Math.pow(avgX, avgX));
+    const b = avgY - a * avgX;
 
     return new EqualNode(
       new VariableNode("y"),
       new AddNode(
-        isNumberNode(a)
-          ? new MultiplyNode(a, new VariableNode("x")).simplify()
-          : new MultiplyNode(a, new VariableNode("x")),
-        b,
+        new MultiplyNode(
+          new NumberNode(+a.toFixed(2)),
+          new VariableNode("x"),
+        ).simplify(),
+        new NumberNode(+b.toFixed(2)),
       ),
     );
   }
@@ -123,36 +104,19 @@ export class CloudPoints {
     const yValues = this.points.map((point) => {
       return point.getYnumber();
     });
-    const lengthNode = new NumberNode(this.points.length);
-    const avgX = new FractionNode(
-      new NumberNode(
-        xValues.reduce((accumulator, nb) => {
-          return accumulator + nb;
-        }),
-      ),
-      lengthNode,
-    ).simplify();
-    const avgY = new FractionNode(
-      new NumberNode(
-        yValues.reduce((accumulator, nb) => {
-          return accumulator + nb;
-        }),
-      ),
-      lengthNode,
-    ).simplify();
-    let node: AlgebraicNode = new MultiplyNode(
-      new SubstractNode(new NumberNode(xValues[0]), avgX).simplify(),
-      new SubstractNode(new NumberNode(yValues[0]), avgY).simplify(),
-    ).simplify();
-    for (let i = 1; i < this.points.length; i++) {
-      node = new AddNode(
-        node,
-        new MultiplyNode(
-          new SubstractNode(new NumberNode(xValues[i]), avgX).simplify(),
-          new SubstractNode(new NumberNode(yValues[i]), avgY).simplify(),
-        ),
-      ).simplify();
-    }
-    node = new FractionNode(node, lengthNode);
+    const avgX =
+      xValues.reduce((accumulator, nb) => {
+        return accumulator + nb;
+      }) / this.points.length;
+    const avgY =
+      yValues.reduce((accumulator, nb) => {
+        return accumulator + nb;
+      }) / this.points.length;
+    const covXY = covarianceXY(xValues, avgX, yValues, avgY);
+    const xVariance = variance(xValues, avgX);
+    const yVariance = variance(yValues, avgY);
+    return new NumberNode(
+      +(covXY / Math.sqrt(xVariance * yVariance)).toFixed(2),
+    );
   }
 }
