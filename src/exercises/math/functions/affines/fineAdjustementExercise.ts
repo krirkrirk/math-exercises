@@ -7,6 +7,7 @@ import {
   VEA,
   addValidProp,
   shuffleProps,
+  tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
@@ -15,7 +16,9 @@ import {
   CloudPointsConstructor,
 } from "#root/math/geometry/CloudPoints";
 import { Point } from "#root/math/geometry/point";
+import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { coinFlip } from "#root/utils/coinFlip";
 
 type Identifiers = {
   xValues: number[];
@@ -64,8 +67,12 @@ const getFineAdjustementExerciseQuestion: QuestionGenerator<
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
+  let random: number;
+  let flip: boolean;
   while (propositions.length < n) {
-    throw Error("QCM not implemented");
+    flip = coinFlip();
+    random = flip ? Math.random() : -Math.random();
+    tryToAddWrongProp(propositions, +answer + random + "");
   }
   return shuffleProps(propositions, n);
 };
@@ -88,6 +95,7 @@ export const fineAdjustementExercise: Exercise<Identifiers> = {
   levels: [],
   isSingleStep: true,
   hasGeogebra: true,
+  answerType: "QCM",
   sections: [],
   generator: (nb: number) =>
     getDistinctQuestions(getFineAdjustementExerciseQuestion, nb),
