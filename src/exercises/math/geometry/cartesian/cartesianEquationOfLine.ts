@@ -22,6 +22,7 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { NUMBER_BINARY_OPERATORS } from "@babel/types";
 
 type Identifiers = {
   aX: number;
@@ -30,7 +31,8 @@ type Identifiers = {
   bY: number;
 };
 
-const one = new NumberNode(-1);
+const zero = new NumberNode(0);
+
 const getCartesianEquationOfLineQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -143,7 +145,7 @@ const getFirstProposition = (
       ),
       new NumberNode(c),
     ),
-    new NumberNode(0),
+    zero,
   );
 };
 
@@ -162,12 +164,12 @@ const getSecondPropoition = (
   return new EqualNode(
     new AddNode(
       new AddNode(
-        new MultiplyNode(new NumberNode(a), x).simplify(),
-        new MultiplyNode(new NumberNode(b), y).simplify(),
+        new MultiplyNode(new NumberNode(b), x).simplify(),
+        new MultiplyNode(new NumberNode(a), y).simplify(),
       ),
       new NumberNode(c),
     ),
-    new NumberNode(0),
+    zero,
   );
 };
 
