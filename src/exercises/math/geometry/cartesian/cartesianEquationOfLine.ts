@@ -20,9 +20,7 @@ import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { NUMBER_BINARY_OPERATORS } from "@babel/types";
 
 type Identifiers = {
   aX: number;
