@@ -6,3 +6,4 @@ export * from "./affineExpressionReading";
 export * from "./interceptReading";
 export * from "./affineAdjustment";
 export * from "./affineAdjustmentRsquared";
+export * from "./affineAdjustmentComplete";
