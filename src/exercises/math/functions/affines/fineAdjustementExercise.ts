@@ -137,7 +137,7 @@ export const fineAdjustementExercise: Exercise<Identifiers> = {
   isSingleStep: true,
   hasGeogebra: true,
   answerType: "QCM",
-  sections: ["Fonctions affines"],
+  sections: ["Statistiques"],
   generator: (nb: number) =>
     getDistinctQuestions(getFineAdjustementExerciseQuestion, nb),
   qcmTimer: 60,
