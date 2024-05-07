@@ -24,8 +24,7 @@ export function covXYAsNode(
       ).simplify(),
     ).simplify();
   }
-  node = new FractionNode(node, new NumberNode(xValues.length));
-  return node;
+  return new FractionNode(node, new NumberNode(xValues.length)).simplify();
 }
 
 export function covarianceXY(
@@ -34,8 +33,12 @@ export function covarianceXY(
   yValues: number[],
   avgY: number,
 ): number {
-  const covarianceXY = xValues.reduce((acc, current, index) => {
-    return acc + (current - avgX) * (yValues[index] - avgY);
+  const xy = xValues.map((value, index) => {
+    return (value - avgX) * (yValues[index] - avgY);
+  });
+
+  const covarianceXY = xy.reduce((acc, value) => {
+    return acc + value;
   });
   return covarianceXY / xValues.length;
 }

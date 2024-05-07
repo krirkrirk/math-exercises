@@ -116,7 +116,7 @@ export class CloudPoints {
     const xVariance = variance(xValues, avgX);
     const yVariance = variance(yValues, avgY);
     return new NumberNode(
-      +(covXY / Math.sqrt(xVariance * yVariance)).toFixed(2),
+      +(covXY / Math.sqrt(xVariance * yVariance)).toFixed(3),
     );
   }
 }

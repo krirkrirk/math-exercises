@@ -23,12 +23,15 @@ export function varianceAsNode(
       ).simplify(),
     ).simplify();
   }
-  return new FractionNode(result, new NumberNode(xValues.length));
+  return new FractionNode(result, new NumberNode(xValues.length)).simplify();
 }
 
 export function variance(xValues: number[], avgX: number): number {
-  const variance = xValues.reduce((acc, current) => {
-    return acc + Math.pow(current - avgX, 2);
+  const xPow = xValues.map((value) => {
+    return Math.pow(value - avgX, 2);
+  });
+  const variance = xPow.reduce((acc, value) => {
+    return acc + value;
   });
   return variance / xValues.length;
 }
