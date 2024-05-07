@@ -5,3 +5,4 @@ export * from "./signFunction";
 export * from "./affineExpressionReading";
 export * from "./interceptReading";
 export * from "./affineAdjustment";
+export * from "./affineAdjustmentRsquared";

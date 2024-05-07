@@ -30,8 +30,8 @@ type Identifiers = {
 };
 
 function generateLinearData(n: number) {
-  const slope = randint(-5, 5, [0]);
-  const intercept = randint(1, 50);
+  const slope = randint(-500, 500, [0]) / 100;
+  const intercept = randint(100, 5000) / 100;
   let data = [];
   for (let i = 0; i < n; i++) {
     let x = randint(1, 100);
@@ -70,18 +70,10 @@ const getAffineAdjustmentQuestion: QuestionGenerator<Identifiers> = () => {
   ).toTex();
 
   let dataTable = `
-|$x$ | $y$|
-|-|-|
-|${xValues[0]} | ${yValues[0]}  |
-|${xValues[1]} | ${yValues[1]}  |
-|${xValues[2]} | ${yValues[2]} |
-|${xValues[3]} | ${yValues[3]} |
-|${xValues[4]} | ${yValues[4]} |
-|${xValues[5]} | ${yValues[5]} |
-|${xValues[6]} | ${yValues[6]} |
-|${xValues[7]} | ${yValues[7]} |
-|${xValues[8]} | ${yValues[8]} |
-|${xValues[9]} | ${yValues[9]} |
+| | | | | | | | | | | 
+|-|-|-|-|-|-|-|-|-|-| 
+| $x$ | ${xValues[0]} | ${xValues[1]} | ${xValues[2]} | ${xValues[3]} | ${xValues[4]} | ${xValues[5]} | ${xValues[6]} | ${xValues[7]} |${xValues[8]} |${xValues[9]} |
+| $y$ | ${xValues[0]} | ${xValues[1]} | ${xValues[2]} | ${xValues[3]} | ${xValues[4]} | ${xValues[5]} | ${xValues[6]} | ${xValues[7]} |${xValues[8]} |${xValues[9]} |
   `;
 
   const question: Question<Identifiers> = {
