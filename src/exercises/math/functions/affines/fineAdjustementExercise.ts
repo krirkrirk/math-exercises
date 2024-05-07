@@ -24,8 +24,6 @@ import { random } from "#root/utils/random";
 
 type Identifiers = {
   isJustified: boolean;
-  xValues: number[];
-  yValues: number[];
 };
 
 type ExerciseType = {
@@ -56,8 +54,8 @@ const getFineAdjustementExerciseQuestion: QuestionGenerator<
   );
 
   const ggb = new GeogebraConstructor(commands, {
-    hideGrid: true,
     hideAxes: true,
+    hideGrid: true,
   });
 
   const xMin = Math.min(...xValues);
@@ -67,12 +65,13 @@ const getFineAdjustementExerciseQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: exercise.correctAnswer,
-    instruction: ``,
+    instruction: `Choisir la bonne réponse :`,
     commands: ggb.commands,
+    options: ggb.getOptions(),
     coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
     keys: [],
     answerFormat: "raw",
-    identifiers: { isJustified: exercise.isJustified, xValues, yValues },
+    identifiers: { isJustified: exercise.isJustified },
   };
 
   return question;
@@ -89,7 +88,11 @@ const getPropositions: QCMGenerator<Identifiers> = (
   );
   let randomNb: number;
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, randint(1, 20) + "");
+    randomNb = randfloat(-0.5, 0.5, 2);
+    tryToAddWrongProp(
+      propositions,
+      `Un ajustement affine est justifié. Le coefficient de détermination vaut ${randomNb}`,
+    );
   }
   return shuffleProps(propositions, n);
 };
@@ -129,12 +132,12 @@ const generateExercise = (): ExerciseType => {
 };
 export const fineAdjustementExercise: Exercise<Identifiers> = {
   id: "fineAdjustementExercise",
-  label: "",
-  levels: [],
+  label: "Proposition d'ajustement affine d'un nuage de points",
+  levels: ["TermSpé"],
   isSingleStep: true,
   hasGeogebra: true,
   answerType: "QCM",
-  sections: [],
+  sections: ["Fonctions affines"],
   generator: (nb: number) =>
     getDistinctQuestions(getFineAdjustementExerciseQuestion, nb),
   qcmTimer: 60,

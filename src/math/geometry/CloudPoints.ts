@@ -19,8 +19,8 @@ export abstract class CloudPointsConstructor {
 
   static randomLinear(nbPoints: number) {
     const points: Point[] = [];
-    const deltaX = randint(1, 4, [0]);
-    const deltaY = randint(1, 4, [0]);
+    const deltaX = randint(2, 6, [0]);
+    const deltaY = randint(2, 6, [0]);
     const a = randint(-5, 6, [0]);
     const b = randint(-5, 6);
     for (let i = -nbPoints * 2; i < nbPoints * 2; i += 4) {
@@ -116,7 +116,7 @@ export class CloudPoints {
     const xVariance = variance(xValues, avgX);
     const yVariance = variance(yValues, avgY);
     return new NumberNode(
-      +(covXY / Math.sqrt(xVariance * yVariance)).toFixed(3),
+      +(covXY / Math.sqrt(xVariance * yVariance)).toFixed(2),
     );
   }
 }
