@@ -36,7 +36,7 @@ const getBinomialsTrinomialsProposedSolutionsQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const degree = coinFlip();
-  const constante = randint(-10, 10, [0]);
+  const constante = randint(-10, 10);
   const root = randint(-10, 10, [0]);
 
   const trinomial = generateTrinomialFromRoot(root, constante);
@@ -71,7 +71,7 @@ const getBinomialsTrinomialsProposedSolutionsQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `$${solution}$ est-il solution de l'équation $${equation.toTex()}$ ?`,
+    instruction: `Soit $x_0 = ${solution}$. Est-ce une solution de l'équation $${equation.toTex()}$ ?`,
     keys: [],
     answerFormat: "raw",
     identifiers: {},
@@ -96,7 +96,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 };
 export const binomialsTrinomialsProposedSolutions: Exercise<Identifiers> = {
   id: "binomialsTrinomialsProposedSolutions",
-  label: "Proposer une équation et demander si un nombre est solution",
+  label: "Demander si un nombre est solution d'une équation",
   levels: ["1rePro"],
   isSingleStep: true,
   sections: ["Équations"],

@@ -31,10 +31,16 @@ function generateLinearData(n: number) {
   const slope = randint(-500, 500, [0]) / 100;
   const intercept = randint(100, 5000) / 100;
   let data = [];
-  for (let i = 0; i < n; i++) {
+  let generatedXs = new Set();
+
+  while (data.length < n) {
     let x = randint(1, 100);
+    while (generatedXs.has(x)) {
+      x = randint(1, 100);
+    }
+    generatedXs.add(x);
     let noise = Math.random() * 100;
-    let y = slope * x + intercept + noise;
+    let y = round(slope * x + intercept + noise, 2);
     data.push({ x, y });
   }
   return data;
@@ -62,6 +68,7 @@ const getAffineAdjustmentRsquaredQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const data = generateLinearData(10);
+  data.sort((a, b) => a.x - b.x);
 
   const xValues = data.map((point) => round(point.x, 2));
   const yValues = data.map((point) => round(point.y, 2));
@@ -74,17 +81,17 @@ const getAffineAdjustmentRsquaredQuestion: QuestionGenerator<
   ).toTex();
 
   let dataTable = `
-| | | | | | | | | | | 
-|-|-|-|-|-|-|-|-|-|-| 
-| $x$ | ${xValues[0]} | ${xValues[1]} | ${xValues[2]} | ${xValues[3]} | ${xValues[4]} | ${xValues[5]} | ${xValues[6]} | ${xValues[7]} |${xValues[8]} |${xValues[9]} |
-| $y$ | ${yValues[0]} | ${yValues[1]} | ${yValues[2]} | ${yValues[3]} | ${yValues[4]} | ${yValues[5]} | ${yValues[6]} | ${yValues[7]} |${yValues[8]} |${yValues[9]} |
+| | | | | | | | | | | |
+|-|-|-|-|-|-|-|-|-|-|-|
+| x | ${xValues.join(" | ")} |
+| y | ${yValues.join(" | ")} |
   `;
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Déterminez la valeur du coefficient de détermination pour les données fournies. Voici les valeurs de x et y des données : ${dataTable}
+    instruction: `À partir des données fournies ci-dessous, déterminez la valeur du coefficient de détermination : ${dataTable}
 `,
-    keys: ["R", "equal", "x", "y"],
+    keys: ["R", "equal"],
     answerFormat: "tex",
     identifiers: { rSquared },
   };
@@ -145,7 +152,8 @@ const isAnswerValid: VEA<Identifiers> = (ans, { rSquared }) => {
 
 export const affineAdjustmentRsquaredExercise: Exercise<Identifiers> = {
   id: "affineAdjustmentRsquared",
-  label: "Déterminer le coefficient de détermination de la droite d'ajustement",
+  label:
+    "Déterminer le coefficient de détermination à partir d'un tableau de données",
   levels: ["1rePro"],
   isSingleStep: true,
   sections: ["Statistiques"],
