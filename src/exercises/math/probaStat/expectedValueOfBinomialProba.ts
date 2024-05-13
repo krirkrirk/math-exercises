@@ -19,7 +19,7 @@ type Identifiers = {
   p: number;
 };
 
-const getExpectedValueProbaExerciseQuestion: QuestionGenerator<
+const getExpectedValueOfBinomialProbaQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const nX = randint(1, 9);
@@ -72,7 +72,7 @@ const generatePropositions = (n: number, p: number): string[] => {
     thirdProposition.toTex(),
   ];
 };
-export const expectedValueProbaExercise: Exercise<Identifiers> = {
+export const expectedValueOfBinomialProba: Exercise<Identifiers> = {
   id: "expectedValueProbaExercise",
   label:
     "Calcul de l'espérance d'une varialbe aleatoire $X$ qui suit une loi binomiale",
@@ -80,7 +80,7 @@ export const expectedValueProbaExercise: Exercise<Identifiers> = {
   isSingleStep: true,
   sections: ["Probabilités"],
   generator: (nb: number) =>
-    getDistinctQuestions(getExpectedValueProbaExerciseQuestion, nb),
+    getDistinctQuestions(getExpectedValueOfBinomialProbaQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
