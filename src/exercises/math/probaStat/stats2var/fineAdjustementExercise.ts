@@ -15,12 +15,9 @@ import {
   CloudPoints,
   CloudPointsConstructor,
 } from "#root/math/geometry/CloudPoints";
-import { Point } from "#root/math/geometry/point";
 import { randfloat } from "#root/math/utils/random/randfloat";
-import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
 
 type Identifiers = {
   isJustified: boolean;
