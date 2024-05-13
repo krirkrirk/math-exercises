@@ -19,16 +19,17 @@ type Identifiers = {
   p: number;
 };
 
-const getExpectedValueOfBinomialProbaQuestion: QuestionGenerator<
+const getVarianceOfBinomialProbaQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const nX = randint(1, 9);
-  const p = new NumberNode(randfloat(0.1, 0.9, 2));
-  const node = new NumberNode(+(nX * p.value).toFixed(2));
+  const p = new NumberNode(randfloat(0.1, 1, 2));
+
+  const correctAns = new NumberNode(+(nX * p.value * (1 - p.value)).toFixed(2));
 
   const question: Question<Identifiers> = {
-    answer: node.toTex(),
-    instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètre $n=${nX}$ et $p=${p.toTex()}$. Calculez l'espérance de $X$`,
+    answer: correctAns.toTex(),
+    instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètre $n=${nX}$ et $p=${p.toTex()}$. Calculez la variance de $X$`,
     keys: [],
     answerFormat: "tex",
     identifiers: { nX, p: p.value },
@@ -43,7 +44,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, nX, p }) => {
   generatePropositions(nX, p).forEach((value) =>
     tryToAddWrongProp(propositions, value),
   );
-  const correctAns = +(nX * p).toFixed(2);
+  const correctAns = +(n * p * (1 - p)).toFixed(2);
   let random;
   while (propositions.length < n) {
     random = new NumberNode(
@@ -59,24 +60,19 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 };
 
 const generatePropositions = (n: number, p: number): string[] => {
-  const firstProposition = new NumberNode(p);
-  const secondProposition = new NumberNode(+(n * p * (1 - p)).toFixed(2));
-  const thirdProposition = new NumberNode(+(n * (1 - p)).toFixed(2));
-  return [
-    firstProposition.toTex(),
-    secondProposition.toTex(),
-    thirdProposition.toTex(),
-  ];
+  const firstProposition = new NumberNode(+(n * p).toFixed(2));
+  const secondProposition = new NumberNode(+(n * p * p).toFixed(2));
+  return [firstProposition.toTex(), secondProposition.toTex()];
 };
-export const expectedValueOfBinomialProba: Exercise<Identifiers> = {
-  id: "expectedValueProbaExercise",
+export const varianceOfBinomialProba: Exercise<Identifiers> = {
+  id: "varianceOfBinomialProba",
   label:
-    "Calcul de l'espérance d'une varialbe aléatoire $X$ qui suit une loi binomiale",
-  levels: ["TermTech"],
+    "Calcul de la variance d'une variable aléatoire $X$ qui suit une loi binomiale",
+  levels: [],
   isSingleStep: true,
-  sections: ["Probabilités"],
+  sections: [],
   generator: (nb: number) =>
-    getDistinctQuestions(getExpectedValueOfBinomialProbaQuestion, nb),
+    getDistinctQuestions(getVarianceOfBinomialProbaQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
