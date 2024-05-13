@@ -29,7 +29,7 @@ const getPointCoordinatesQuestion: QuestionGenerator<Identifiers> = () => {
   const yMin = Math.min(y) - 5;
   const yMax = Math.max(y) + 5;
 
-  const instruction = `Déterminez les coordonnées du point A sur le repère ci-dessous : `;
+  const instruction = `Déterminez les coordonnées du point A dans le repère ci-dessous : `;
 
   const commands = [
     `A = (${x}, ${y})`,
@@ -55,7 +55,7 @@ const getPointCoordinatesQuestion: QuestionGenerator<Identifiers> = () => {
     instruction,
     options: ggb.getOptions(),
     coords: [xMin, xMax, yMin, yMax],
-    keys: ["x", "y", "leftParenthesis", "rightParenthesis"],
+    keys: ["x", "y", "semicolon"],
     answerFormat: "tex",
     identifiers: { x, y },
   };
@@ -67,14 +67,22 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, x, y }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer, "tex");
 
-  tryToAddWrongProp(propositions, `(${x + 1}, ${y + 1})`);
-  tryToAddWrongProp(propositions, `(${x - 1}, ${y - 1})`);
-  tryToAddWrongProp(propositions, `(${x - 1}, ${y + 1})`);
-  tryToAddWrongProp(propositions, `(${x + 1}, ${x - 1})`);
+  const points = [
+    new Point("A", (x + 1).toTree(), (y + 1).toTree()),
+    new Point("A", (x - 1).toTree(), (y - 1).toTree()),
+    new Point("A", (x - 1).toTree(), (y + 1).toTree()),
+    new Point("A", (x + 1).toTree(), (x - 1).toTree()),
+  ];
+
+  points.forEach((point) => tryToAddWrongProp(propositions, point.toCoords()));
 
   while (propositions.length < n) {
-    const wrongAnswer = `(${randint(-10, 10)}, ${randint(-10, 10)})`;
-    tryToAddWrongProp(propositions, wrongAnswer, "tex");
+    const wrongAnswer = new Point(
+      "A",
+      randint(-10, 10).toTree(),
+      randint(-10, 10).toTree(),
+    );
+    tryToAddWrongProp(propositions, wrongAnswer.toCoords(), "tex");
   }
 
   return shuffleProps(propositions, n);
