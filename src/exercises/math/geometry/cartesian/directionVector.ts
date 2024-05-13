@@ -36,17 +36,23 @@ function parseVector(input: string): { x: number; y: number } | null {
 }
 
 const getDirectionVectorQuestion: QuestionGenerator<Identifiers> = () => {
-  const x1 = randint(-8, 8);
-  const x2 = randint(-8, 8);
-  const y1 = randint(-8, 8);
-  const y2 = randint(-8, 8);
+  let x1 = randint(-8, 8);
+  let x2 = randint(-8, 8);
+  while (x2 === x1) {
+    x2 = randint(-8, 8);
+  }
 
+  let y1 = randint(-8, 8);
+  let y2 = randint(-8, 8);
+  while (y2 === y1) {
+    y2 = randint(-8, 8);
+  }
   const xValue = x2 - x1;
   const yValue = y2 - y1;
 
-  const vector = new Vector("V", xValue.toTree(), yValue.toTree());
+  const vector = new Vector("v", xValue.toTree(), yValue.toTree());
 
-  const instruction = `Soit la droite tracée ci-dessous dans le plan cartésien. Déterminez les coordonnées d'un vecteur directeur $\\overrightarrow{V}$ de cette droite.`;
+  const instruction = `Soit la droite tracée ci-dessous dans le plan cartésien. Déterminez les coordonnées d'un vecteur directeur $\\overrightarrow{v}$ de cette droite.`;
   const commands = [`line = Line((${x1}, ${y1}), (${x2}, ${y2}))`];
 
   const xMin = Math.min(x1, x2);
@@ -79,33 +85,40 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
+  const vector = new Vector("v", xValue.toTree(), yValue.toTree());
+
   const wrongAnswer1 = new Vector(
-    "V",
+    "v",
     (xValue - 1).toTree(),
     (yValue - 1).toTree(),
-  ).toInlineCoordsTex();
+  );
   const wrongAnswer2 = new Vector(
-    "V",
+    "v",
     (xValue + 1).toTree(),
     (yValue + 1).toTree(),
-  ).toInlineCoordsTex();
-  const wrongAnswer3 = new Vector(
-    "V",
-    yValue.toTree(),
-    xValue.toTree(),
-  ).toInlineCoordsTex();
+  );
+  const wrongAnswer3 = new Vector("v", yValue.toTree(), xValue.toTree());
 
-  tryToAddWrongProp(propositions, wrongAnswer1);
-  tryToAddWrongProp(propositions, wrongAnswer2);
-  tryToAddWrongProp(propositions, wrongAnswer3);
+  if (wrongAnswer1.isColinear(vector) === false) {
+    tryToAddWrongProp(propositions, wrongAnswer1.toInlineCoordsTex());
+  }
+  if (wrongAnswer2.isColinear(vector) === false) {
+    tryToAddWrongProp(propositions, wrongAnswer2.toInlineCoordsTex());
+  }
+  if (wrongAnswer3.isColinear(vector) === false) {
+    tryToAddWrongProp(propositions, wrongAnswer3.toInlineCoordsTex());
+  }
 
   while (propositions.length < n) {
     const wrongAnswer = new Vector(
-      "V",
+      "v",
       randint(-5, 5).toTree(),
       randint(-5, 5).toTree(),
-    ).toInlineCoordsTex();
-    tryToAddWrongProp(propositions, wrongAnswer);
+    );
+
+    if (wrongAnswer.isColinear(vector) === false) {
+      tryToAddWrongProp(propositions, wrongAnswer.toInlineCoordsTex());
+    }
   }
   return shuffleProps(propositions, n);
 };
@@ -118,8 +131,8 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, xValue, yValue }) => {
 
   const { x, y } = parsed;
 
-  const correctVector = new Vector("V", xValue.toTree(), yValue.toTree());
-  const studentVector = new Vector("V", x.toTree(), y.toTree());
+  const correctVector = new Vector("v", xValue.toTree(), yValue.toTree());
+  const studentVector = new Vector("v", x.toTree(), y.toTree());
 
   if (!studentVector.isColinear(correctVector)) {
     return false;
@@ -129,7 +142,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, xValue, yValue }) => {
 };
 export const directionVector: Exercise<Identifiers> = {
   id: "directionVector",
-  label: "Coordonnées d'un vecteur directeur d'une droite",
+  label: "Lire les coordonnées d'un vecteur directeur d'une droite",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Géométrie cartésienne"],
