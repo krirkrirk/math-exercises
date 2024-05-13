@@ -60,7 +60,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, nX, b }) => {
 
   let random;
   while (propositions.length < n) {
-    random = RationalConstructor.randomIrreductible(1).toTree();
+    random = RationalConstructor.randomIrreductible().toTree();
     tryToAddWrongProp(propositions, random.toTex());
   }
   return shuffleProps(propositions, n);

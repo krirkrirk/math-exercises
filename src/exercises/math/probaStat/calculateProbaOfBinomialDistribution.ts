@@ -10,42 +10,48 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import {
-  Rational,
-  RationalConstructor,
-} from "#root/math/numbers/rationals/rational";
-import { combinations } from "#root/math/utils/combinatorics/combinaison";
+import { Rational } from "#root/math/numbers/rationals/rational";
+import { combinations } from "#root/math/utils/combinatorics/combination";
+import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
-import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { PowerNode } from "#root/tree/nodes/operators/powerNode";
-import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 
 type Identifiers = {
-  nX: number;
-  b: number;
-  k: number;
+  exerciseVars: ExerciseVars;
 };
-const nbOneNode = new NumberNode(1);
+
+type ExerciseVars = {
+  n: number;
+  k: number;
+  a: number;
+  b: number;
+};
 
 const getCalculateProbaOfBinomialDistributionQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const nX = randint(1, 9);
-  const k = randint(1, 9);
+  /*const nX = randint(1, 9);
+  const k = randint(1, nX);
   const b = randint(2, 11);
-  const p = new Rational(1, b);
+  const a = randint(1, b);
+  const p = new Rational(a, b);
 
-  const correctAns = getCorrectAnswer(nX, p, k);
+  let correctAns = new NumberNode(getCorrectAnswer(nX, p.value, k));*/
+
+  const exercise = generateExercise();
+  const p = new Rational(exercise.a, exercise.b);
+  const correctAns = new NumberNode(
+    getCorrectAnswer(exercise.n, p.value, exercise.k),
+  );
 
   const question: Question<Identifiers> = {
     answer: correctAns.toTex(),
-    instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètre $n=${nX}$ et $p=${p.toTex()}$. Calculez $P(X=${k})$`,
+    instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètre $n=${
+      exercise.n
+    }$ et $p=${p.toTex()}$. Calculez $P(X=${exercise.k})$`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { nX, b, k },
+    identifiers: { exerciseVars: exercise },
   };
 
   return question;
@@ -53,48 +59,42 @@ const getCalculateProbaOfBinomialDistributionQuestion: QuestionGenerator<
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, nX, b, k },
+  { answer, exerciseVars },
 ) => {
   const propositions: Proposition[] = [];
+  const p = exerciseVars.a / exerciseVars.b;
   addValidProp(propositions, answer);
-  const p = new Rational(1, b);
-  generatePropositions(nX, p, k).forEach((value) =>
+  generatePropositions(exerciseVars.n, p, exerciseVars.k).forEach((value) =>
     tryToAddWrongProp(propositions, value),
   );
+  const correctAns = getCorrectAnswer(n, p, exerciseVars.k);
   let random;
   while (propositions.length < n) {
-    random = RationalConstructor.randomIrreductible();
+    random = new NumberNode(
+      randfloat(correctAns - Math.min(1, correctAns), correctAns + 1, 2),
+    );
     tryToAddWrongProp(propositions, random.toTex());
   }
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { nX, b, k }) => {
-  const p = new Rational(1, b);
-
-  const correctAns = getCorrectAnswer(nX, p, k);
-
-  return correctAns.toAllValidTexs().includes(ans);
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
+  return ans === answer;
 };
 
-const generatePropositions = (n: number, p: Rational, k: number): string[] => {
+const generatePropositions = (n: number, p: number, k: number): string[] => {
   const kChooseN = combinations(k, n);
-  const pNode = p.toTree();
-  const oneMinusP = new SubstractNode(nbOneNode, pNode).simplify();
-  const firstProposition = new MultiplyNode(
-    new PowerNode(pNode, new NumberNode(k)).simplify(),
-    new PowerNode(oneMinusP, new NumberNode(n - k)).simplify(),
-  ).simplify();
+  const firstProposition = new NumberNode(
+    +(Math.pow(p, k) * Math.pow(1 - p, n - k)).toFixed(2),
+  );
 
-  const secondProposition = new MultiplyNode(
-    new PowerNode(pNode, new NumberNode(n)).simplify(),
-    new PowerNode(oneMinusP, new NumberNode(k)).simplify(),
-  ).simplify();
+  const secondProposition = new NumberNode(
+    +(Math.pow(p, n) * Math.pow(1 - p, k)).toFixed(2),
+  );
 
-  const thirdProposition = new MultiplyNode(
-    new NumberNode(kChooseN),
-    new PowerNode(pNode, new NumberNode(k)).simplify(),
-  ).simplify();
+  const thirdProposition = new NumberNode(
+    +(kChooseN * Math.pow(p, k)).toFixed(2),
+  );
   return [
     firstProposition.toTex(),
     secondProposition.toTex(),
@@ -102,24 +102,32 @@ const generatePropositions = (n: number, p: Rational, k: number): string[] => {
   ];
 };
 
-const getCorrectAnswer = (n: number, p: Rational, k: number) => {
+const getCorrectAnswer = (n: number, p: number, k: number): number => {
   const kChooseN = combinations(k, n);
-  const pNode = p.toTree();
-  const oneMinusP = new SubstractNode(nbOneNode, pNode).simplify();
-  return new MultiplyNode(
-    new NumberNode(kChooseN),
-    new MultiplyNode(
-      new PowerNode(pNode, new NumberNode(k)).simplify(),
-      new PowerNode(oneMinusP, new NumberNode(n - k)).simplify(),
-    ).simplify(),
-  ).simplify();
+  return +(kChooseN * Math.pow(p, k) * Math.pow(1 - p, n - k)).toFixed(2);
+};
+
+const generateExercise = (): ExerciseVars => {
+  let n;
+  let k;
+  let a;
+  let b;
+  let correctAns;
+  do {
+    n = randint(1, 9);
+    k = randint(1, n);
+    b = randint(2, 11);
+    a = randint(1, b);
+    correctAns = getCorrectAnswer(n, a / b, k);
+  } while (correctAns === 0);
+  return { n, k, a, b };
 };
 export const calculateProbaOfBinomialDistribution: Exercise<Identifiers> = {
   id: "calculateProbaOfBinomialDistribution",
   label: "",
-  levels: [],
+  levels: ["TermTech"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Probabilités"],
   generator: (nb: number) =>
     getDistinctQuestions(getCalculateProbaOfBinomialDistributionQuestion, nb),
   qcmTimer: 60,
