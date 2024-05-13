@@ -33,9 +33,15 @@ function generateLinearData(n: number) {
   const slope = randint(-500, 500, [0]) / 100;
   const intercept = randint(100, 5000) / 100;
   let data = [];
-  for (let i = 0; i < n; i++) {
+  let generatedXs = new Set();
+
+  while (data.length < n) {
     let x = randint(1, 100);
-    let y = slope * x + intercept;
+    while (generatedXs.has(x)) {
+      x = randint(1, 100);
+    }
+    generatedXs.add(x);
+    let y = round(slope * x + intercept, 2);
     data.push({ x, y });
   }
   return data;
@@ -43,18 +49,27 @@ function generateLinearData(n: number) {
 
 const getAffineAdjustmentQuestion: QuestionGenerator<Identifiers> = () => {
   const data = generateLinearData(10);
+  data.sort((a, b) => a.x - b.x);
 
   const xValues = data.map((point) => point.x);
   const yValues = data.map((point) => point.y);
 
-  const G1x =
-    (xValues[0] + xValues[1] + xValues[2] + xValues[3] + xValues[4]) / 5;
-  const G2x =
-    (xValues[5] + xValues[6] + xValues[7] + xValues[8] + xValues[9]) / 5;
-  const G1y =
-    (yValues[0] + yValues[1] + yValues[2] + yValues[3] + yValues[4]) / 5;
-  const G2y =
-    (yValues[5] + yValues[6] + yValues[7] + yValues[8] + yValues[9]) / 5;
+  const G1x = round(
+    (xValues[0] + xValues[1] + xValues[2] + xValues[3] + xValues[4]) / 5,
+    2,
+  );
+  const G2x = round(
+    (xValues[5] + xValues[6] + xValues[7] + xValues[8] + xValues[9]) / 5,
+    2,
+  );
+  const G1y = round(
+    (yValues[0] + yValues[1] + yValues[2] + yValues[3] + yValues[4]) / 5,
+    2,
+  );
+  const G2y = round(
+    (yValues[5] + yValues[6] + yValues[7] + yValues[8] + yValues[9]) / 5,
+    2,
+  );
 
   const a = (G2y - G1y) / (G2x - G1x);
   const afixed = round(a, 2);
@@ -70,17 +85,17 @@ const getAffineAdjustmentQuestion: QuestionGenerator<Identifiers> = () => {
   ).toTex();
 
   let dataTable = `
-| | | | | | | | | | | 
-|-|-|-|-|-|-|-|-|-|-| 
-| $x$ | ${xValues[0]} | ${xValues[1]} | ${xValues[2]} | ${xValues[3]} | ${xValues[4]} | ${xValues[5]} | ${xValues[6]} | ${xValues[7]} |${xValues[8]} |${xValues[9]} |
-| $y$ | ${yValues[0]} | ${yValues[1]} | ${yValues[2]} | ${yValues[3]} | ${yValues[4]} | ${yValues[5]} | ${yValues[6]} | ${yValues[7]} |${yValues[8]} |${yValues[9]} |
+| | | | | | | | | | | |
+|-|-|-|-|-|-|-|-|-|-|-|
+| x | ${xValues.join(" | ")} |
+| y | ${yValues.join(" | ")} |
   `;
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Déterminez l'équation de la droite d'ajustement pour les données fournies. Voici les valeurs de x et y des données : ${dataTable}
+    instruction: `À partir des données fournies ci-dessous, déterminez l'équation de la droite d'ajustement : ${dataTable}
 `,
-    keys: ["equal", "y", "a", "b"],
+    keys: ["equal", "y", "x", "a", "b"],
     answerFormat: "tex",
     identifiers: { G1x, G2x, G1y, G2y },
   };
@@ -177,7 +192,8 @@ const isAnswerValid: VEA<Identifiers> = (ans, { G1x, G2x, G1y, G2y }) => {
 
 export const affineAdjustmentExercise: Exercise<Identifiers> = {
   id: "affineAdjustment",
-  label: "Déterminer l'équation de la droite d'ajustement",
+  label:
+    "Déterminer l'équation de la droite d'ajustement à partir d'un tableau de données",
   levels: ["1rePro"],
   isSingleStep: true,
   sections: ["Statistiques"],
