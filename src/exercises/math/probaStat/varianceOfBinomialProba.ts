@@ -68,9 +68,9 @@ export const varianceOfBinomialProba: Exercise<Identifiers> = {
   id: "varianceOfBinomialProba",
   label:
     "Calcul de la variance d'une variable aléatoire $X$ qui suit une loi binomiale",
-  levels: [],
+  levels: ["TermTech"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Probabilités"],
   generator: (nb: number) =>
     getDistinctQuestions(getVarianceOfBinomialProbaQuestion, nb),
   qcmTimer: 60,
