@@ -16,7 +16,9 @@ import {
 } from "#root/math/numbers/rationals/rational";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
+import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 
@@ -31,7 +33,7 @@ const getExpectedValueOfBinomialProbaQuestion: QuestionGenerator<
   const nX = randint(1, 9);
   const b = randint(2, 11);
   const p = new Rational(1, b);
-  const node = new MultiplyNode(p.toTree(), new NumberNode(nX)).simplify();
+  const node = getCorrectAnswer(nX, p);
 
   const question: Question<Identifiers> = {
     answer: node.toTex(),
@@ -59,11 +61,8 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, nX, b }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { nX, b }) => {
-  const rational = new Rational(1, b);
-  const correctAns = new MultiplyNode(
-    new NumberNode(nX),
-    rational.toTree(),
-  ).simplify();
+  const p = new Rational(1, b);
+  const correctAns = getCorrectAnswer(nX, p);
   return correctAns
     .toAllValidTexs({ allowFractionToDecimal: true })
     .includes(ans);
@@ -84,6 +83,11 @@ const generatePropositions = (n: number, b: number): string[] => {
     secondProposition.toTex(),
     thirdProposition.toTex(),
   ];
+};
+
+const getCorrectAnswer = (n: NumberNode | number, p: Rational) => {
+  const nNode = typeof n === "number" ? new NumberNode(n) : n;
+  return new MultiplyNode(nNode, p.toTree()).simplify();
 };
 export const expectedValueOfBinomialProba: Exercise<Identifiers> = {
   id: "expectedValueOfBinomialProba",
