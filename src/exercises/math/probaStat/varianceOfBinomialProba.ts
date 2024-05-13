@@ -10,58 +10,84 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import {
+  Rational,
+  RationalConstructor,
+} from "#root/math/numbers/rationals/rational";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 
 type Identifiers = {
   nX: number;
-  p: number;
+  b: number;
 };
+
+const nbOneNode = new NumberNode(1);
 
 const getVarianceOfBinomialProbaQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const nX = randint(1, 9);
-  const p = new NumberNode(randfloat(0.1, 1, 2));
-
-  const correctAns = new NumberNode(+(nX * p.value * (1 - p.value)).toFixed(2));
+  const nNode = new NumberNode(nX);
+  const b = randint(2, 11);
+  const p = new Rational(1, b).toTree();
+  const oneMinusP = new SubstractNode(nbOneNode, p).simplify();
+  const correctAns = new MultiplyNode(
+    nNode,
+    new MultiplyNode(nNode, oneMinusP).simplify(),
+  ).simplify();
 
   const question: Question<Identifiers> = {
     answer: correctAns.toTex(),
     instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètre $n=${nX}$ et $p=${p.toTex()}$. Calculez la variance de $X$`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { nX, p: p.value },
+    identifiers: { nX, b },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer, nX, p }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, nX, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  generatePropositions(nX, p).forEach((value) =>
+  generatePropositions(nX, b).forEach((value) =>
     tryToAddWrongProp(propositions, value),
   );
-  const correctAns = +(n * p * (1 - p)).toFixed(2);
+
   let random;
   while (propositions.length < n) {
-    random = new NumberNode(
-      randfloat(correctAns - Math.min(1, correctAns), correctAns + 1, 2),
-    );
+    random = RationalConstructor.randomIrreductible(1).toTree();
     tryToAddWrongProp(propositions, random.toTex());
   }
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, nX, b }) => {
+  const p = new Rational(1, b).toTree();
+  const nNode = new NumberNode(nX);
+  const oneMinusP = new SubstractNode(nbOneNode, p).simplify();
+  const correctAns = new MultiplyNode(
+    nNode,
+    new MultiplyNode(nNode, oneMinusP).simplify(),
+  ).simplify();
+  return correctAns
+    .toAllValidTexs({ allowFractionToDecimal: true })
+    .includes(ans);
 };
 
-const generatePropositions = (n: number, p: number): string[] => {
-  const firstProposition = new NumberNode(+(n * p).toFixed(2));
-  const secondProposition = new NumberNode(+(n * p * p).toFixed(2));
+const generatePropositions = (n: number, b: number): string[] => {
+  const p = new Rational(1, b).toTree();
+  const nNode = new NumberNode(n);
+  const firstProposition = new MultiplyNode(nNode, p).simplify();
+  const secondProposition = new MultiplyNode(
+    nNode,
+    new PowerNode(p, new NumberNode(2)).simplify(),
+  ).simplify();
   return [firstProposition.toTex(), secondProposition.toTex()];
 };
 export const varianceOfBinomialProba: Exercise<Identifiers> = {
