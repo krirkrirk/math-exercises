@@ -70,13 +70,13 @@ const isAnswerValid: VEA<Identifiers> = (ans, { nX, b }) => {
 };
 
 const generatePropositions = (n: number, b: number): string[] => {
-  const p = new Rational(1, b);
-  const oneMinusP = new SubstractNode(new NumberNode(1), p.toTree()).simplify();
+  const p = new Rational(1, b).toTree();
+  const oneMinusP = new SubstractNode(new NumberNode(1), p).simplify();
   const nNode = new NumberNode(n);
   const firstProposition = p;
   const secondProposition = new MultiplyNode(
     nNode,
-    new MultiplyNode(nNode, oneMinusP).simplify(),
+    new MultiplyNode(p, oneMinusP).simplify(),
   ).simplify();
   const thirdProposition = new MultiplyNode(nNode, oneMinusP).simplify();
   return [

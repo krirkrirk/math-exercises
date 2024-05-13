@@ -38,7 +38,7 @@ const getVarianceOfBinomialProbaQuestion: QuestionGenerator<
   const oneMinusP = new SubstractNode(nbOneNode, p).simplify();
   const correctAns = new MultiplyNode(
     nNode,
-    new MultiplyNode(nNode, oneMinusP).simplify(),
+    new MultiplyNode(p, oneMinusP).simplify(),
   ).simplify();
 
   const question: Question<Identifiers> = {
@@ -67,13 +67,13 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, nX, b }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer, nX, b }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { nX, b }) => {
   const p = new Rational(1, b).toTree();
   const nNode = new NumberNode(nX);
   const oneMinusP = new SubstractNode(nbOneNode, p).simplify();
   const correctAns = new MultiplyNode(
     nNode,
-    new MultiplyNode(nNode, oneMinusP).simplify(),
+    new MultiplyNode(p, oneMinusP).simplify(),
   ).simplify();
   return correctAns
     .toAllValidTexs({ allowFractionToDecimal: true })
