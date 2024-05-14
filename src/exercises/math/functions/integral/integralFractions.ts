@@ -19,6 +19,7 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { coinFlip } from "#root/utils/coinFlip";
+import { random } from "#root/utils/random";
 
 type Identifiers = {
   questionType: string;
@@ -37,12 +38,12 @@ const getIntegralFractionsQuestion: QuestionGenerator<Identifiers> = () => {
   );
   const affine = trinomial.derivate();
 
-  let lowerBound = randint(-5, 5);
-  let upperBound = randint(-5, 5);
+  let lowerBound = randint(-5, 5, [0]);
+  let upperBound = randint(-5, 5, [0]);
 
   while (lowerBound >= upperBound) {
-    lowerBound = randint(-5, 5);
-    upperBound = randint(-5, 5);
+    lowerBound = randint(-5, 5, [0]);
+    upperBound = randint(-5, 5, [0]);
   }
 
   const fraction =
@@ -60,12 +61,12 @@ const getIntegralFractionsQuestion: QuestionGenerator<Identifiers> = () => {
   const answer =
     questionType === "Trinomial"
       ? new SubstractNode(
-          new LogNode(trinomial.calculate(upperBound).toTree()),
-          new LogNode(trinomial.calculate(lowerBound).toTree()),
+          new LogNode(trinomial.calculate(upperBound).toTree()).simplify(),
+          new LogNode(trinomial.calculate(lowerBound).toTree()).simplify(),
         ).simplify()
       : new SubstractNode(
-          new LogNode(affine.calculate(upperBound).toTree()),
-          new LogNode(affine.calculate(lowerBound).toTree()),
+          new LogNode(affine.calculate(upperBound).toTree()).simplify(),
+          new LogNode(affine.calculate(lowerBound).toTree()).simplify(),
         ).simplify();
 
   const question: Question<Identifiers> = {
@@ -132,10 +133,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
   tryToAddWrongProp(propositions, wrongAnswer3.toTex());
 
   while (propositions.length < n) {
-    tryToAddWrongProp(
-      propositions,
-      new LogNode(randint(-10, 10).toTree()).simplify().toTex(),
-    );
+    const random = randint(-10, 10, [0]);
+    tryToAddWrongProp(propositions, new LogNode(random.toTree()).toTex());
   }
   return shuffleProps(propositions, n);
 };
@@ -164,13 +163,13 @@ const isAnswerValid: VEA<Identifiers> = (
           new FractionNode(
             trinomial1.calculate(upperBound).toTree(),
             trinomial1.calculate(lowerBound).toTree(),
-          ),
+          ).simplify(),
         ).simplify()
       : new LogNode(
           new FractionNode(
             affine.calculate(upperBound).toTree(),
             affine.calculate(lowerBound).toTree(),
-          ),
+          ).simplify(),
         ).simplify();
 
   const latexs = validanswer1
