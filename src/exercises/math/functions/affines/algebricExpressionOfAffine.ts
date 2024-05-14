@@ -12,8 +12,6 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
-import { EqualNode } from "#root/tree/nodes/equations/equalNode";
-import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
   a: number;
