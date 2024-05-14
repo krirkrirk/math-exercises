@@ -28,7 +28,9 @@ type Identifiers = {
   bU: number;
 };
 
-const getIntegralUDerivCosUQuestion: QuestionGenerator<Identifiers> = () => {
+const getIntegralDerivatedUCosUQuestion: QuestionGenerator<
+  Identifiers
+> = () => {
   const u = AffineConstructor.random();
   const cosU = new CosNode(u.toTree());
   const b = randint(-4, 6);
@@ -106,14 +108,14 @@ const generatePropositions = (
     thirdProposition.toTex(),
   ];
 };
-export const integralUDerivCosU: Exercise<Identifiers> = {
-  id: "integralUDerivCosU",
+export const IntegralDerivatedUCosU: Exercise<Identifiers> = {
+  id: "IntegralDerivatedUCosU",
   label: "",
   levels: [],
   isSingleStep: true,
   sections: [],
   generator: (nb: number) =>
-    getDistinctQuestions(getIntegralUDerivCosUQuestion, nb),
+    getDistinctQuestions(getIntegralDerivatedUCosUQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
