@@ -1,1 +1,2 @@
-export * from "./integralTest";
+export * from "./integralAffines";
+export * from "./integralTrinomials";
