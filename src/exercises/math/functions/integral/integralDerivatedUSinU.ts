@@ -13,7 +13,6 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
-import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { CosNode } from "#root/tree/nodes/functions/cosNode";
 import { IntegralNode } from "#root/tree/nodes/functions/integralNode";
 import { SinNode } from "#root/tree/nodes/functions/sinNode";
@@ -28,17 +27,21 @@ type Identifiers = {
   bU: number;
 };
 
-const getIntegralUDerivCosUQuestion: QuestionGenerator<Identifiers> = () => {
+const getIntegralDerivatedUSinUQuestion: QuestionGenerator<
+  Identifiers
+> = () => {
   const u = AffineConstructor.random();
-  const cosU = new CosNode(u.toTree());
+
   const b = randint(-4, 6);
   const a = randint(-5, b);
+
   const integral = new IntegralNode(
-    new MultiplyNode(u.derivate().toTree(), cosU),
+    new MultiplyNode(u.derivate().toTree(), new SinNode(u.toTree())),
     a.toTree(),
     b.toTree(),
     "x",
   );
+
   const correctAns = getCorrectAnswer(a, b, u);
 
   const question: Question<Identifiers> = {
@@ -58,30 +61,52 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   const u = new Affine(aU, bU, "x");
-  addValidProp(propositions, answer);
+
   generatePropositions(a, b, u).forEach((value) =>
     tryToAddWrongProp(propositions, value),
   );
-  let sinA;
-  let sinB;
+  addValidProp(propositions, answer);
+
+  let primitiveA;
+  let primitiveB;
+  const minusOne = (-1).toTree();
+
   while (propositions.length < n) {
-    sinA = new SinNode(randint(-11, 10, [0]).toTree());
-    sinB = new SinNode(randint(-11, 10, [0]).toTree());
-    tryToAddWrongProp(propositions, new SubstractNode(sinB, sinA).toTex());
+    primitiveA = new MultiplyNode(
+      minusOne,
+      new CosNode(randint(-10, 11, [0]).toTree()),
+    ).simplify();
+    primitiveB = new MultiplyNode(
+      minusOne,
+      new CosNode(randint(-10, 11, [0]).toTree()),
+    ).simplify();
+    tryToAddWrongProp(
+      propositions,
+      new SubstractNode(primitiveB, primitiveA).simplify().toTex(),
+    );
   }
   return shuffleProps(propositions, n);
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { a, b, aU, bU }) => {
   const u = new Affine(aU, bU, "x");
-  const correctAns = getCorrectAnswer(a, b, u);
+  const correctAns = getCorrectAnswer(a, b, u).simplify();
   return correctAns.toAllValidTexs().includes(ans);
 };
 
 const getCorrectAnswer = (a: number, b: number, u: Polynomial) => {
+  const minusOne = (-1).toTree();
   const uTree = u.toTree();
-  const primitiveA = new SinNode(uTree.evaluate({ x: a }).toTree());
-  const primitiveB = new SinNode(uTree.evaluate({ x: b }).toTree());
+
+  const primitiveA = new MultiplyNode(
+    minusOne,
+    new CosNode(uTree.evaluate({ x: a }).toTree()),
+  ).simplify();
+  const primitiveB = new MultiplyNode(
+    minusOne,
+    new CosNode(uTree.evaluate({ x: b }).toTree()),
+  ).simplify();
+
   return new SubstractNode(primitiveB, primitiveA);
 };
 
@@ -90,30 +115,36 @@ const generatePropositions = (
   b: number,
   u: Polynomial,
 ): string[] => {
+  const minusOne = (-1).toTree();
   const uTree = u.toTree();
-  const uDerivated = u.derivate();
-  const sinA = new SinNode(uTree.evaluate({ x: a }).toTree());
-  const sinB = new SinNode(uTree.evaluate({ x: b }).toTree());
-  const firstProposition = new AddNode(sinB, sinA).simplify();
-  const secondProposition = new SubstractNode(sinA, sinB).simplify();
-  const thirdProposition = new MultiplyNode(
-    uDerivated.toTree(),
-    new SinNode(uTree),
-  ).simplify();
+
+  const uA = uTree.evaluate({ x: a }).toTree();
+  const uB = uTree.evaluate({ x: b }).toTree();
+
+  const sinA = new SinNode(uA);
+  const sinB = new SinNode(uB);
+
+  const primitiveA = new MultiplyNode(minusOne, new CosNode(uA)).simplify();
+  const primitiveB = new MultiplyNode(minusOne, new CosNode(uB)).simplify();
+
+  const firstProposition = new AddNode(primitiveB, primitiveA);
+
+  const secondProposition = new AddNode(sinB, sinA).simplify();
+  const thirdProposition = new SubstractNode(sinB, sinA).simplify();
   return [
     firstProposition.toTex(),
     secondProposition.toTex(),
     thirdProposition.toTex(),
   ];
 };
-export const integralUDerivCosU: Exercise<Identifiers> = {
-  id: "integralUDerivCosU",
+export const integralDerivatedUSinU: Exercise<Identifiers> = {
+  id: "integralDerivatedUSinU",
   label: "",
   levels: [],
   isSingleStep: true,
   sections: [],
   generator: (nb: number) =>
-    getDistinctQuestions(getIntegralUDerivCosUQuestion, nb),
+    getDistinctQuestions(getIntegralDerivatedUSinUQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
