@@ -62,7 +62,7 @@ const getFineAdjustementExerciseQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: exercise.correctAnswer,
-    instruction: `Choisir la bonne réponse :`,
+    instruction: `À l'aide du graphique ci-dessous, choisir la bonne réponse`,
     commands: ggb.commands,
     options: ggb.getOptions(),
     coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
