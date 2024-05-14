@@ -10,7 +10,7 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { Affine } from "#root/math/polynomials/affine";
+import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { ExpNode } from "#root/tree/nodes/functions/expNode";
@@ -28,23 +28,22 @@ type Identifiers = {
 };
 
 const getIntegralExpAxPlusBQuestion: QuestionGenerator<Identifiers> = () => {
+  const f = AffineConstructor.random();
+
   const b = randint(-4, 6);
   const a = randint(-5, b);
 
-  const aX = randint(-10, 11, [0]);
-  const bX = randint(-10, 11, [0]);
+  const e = new ExpNode(new Affine(f.a, f.b, "x").toTree());
+  const integral = new IntegralNode(e, a.toTree(), b.toTree(), "x");
 
-  const e = new ExpNode(new Affine(aX, bX, "x").toTree());
-  const f = new IntegralNode(e, a.toTree(), b.toTree(), "x");
-
-  const correctAns = getCorrectAnswer(a, b, aX, bX);
+  const correctAns = getCorrectAnswer(a, b, f.a, f.b);
 
   const question: Question<Identifiers> = {
     answer: correctAns.toTex(),
-    instruction: `Calculez l'intégrale de $${f.toTex()}$`,
+    instruction: `Calculez l'intégrale de $${integral.toTex()}$`,
     keys: ["epower"],
     answerFormat: "tex",
-    identifiers: { a, b, aX, bX },
+    identifiers: { a, b, aX: f.a, bX: f.b },
   };
 
   return question;
