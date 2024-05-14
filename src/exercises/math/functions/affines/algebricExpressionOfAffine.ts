@@ -23,9 +23,9 @@ type Identifiers = {
 const getAlgebricExpressionOfAffineQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const a = randint(-10, 11, [0]);
-  const b = randint(-10, 11, [0]);
-  const f = new Affine(a, b, "x");
+  const f = AffineConstructor.random();
+  const a = f.a;
+  const b = f.b;
 
   const question: Question<Identifiers> = {
     answer: f.toTex(),
