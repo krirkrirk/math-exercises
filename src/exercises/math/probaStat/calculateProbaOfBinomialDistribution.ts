@@ -71,7 +71,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   let random;
   while (propositions.length < n) {
     random = new NumberNode(
-      randfloat(correctAns - Math.min(1, correctAns), correctAns + 1, 2),
+      +(correctAns + randfloat(0.1, 0.6, 2, [correctAns])).toFixed(2),
     );
     tryToAddWrongProp(propositions, random.toTex());
   }
@@ -85,7 +85,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 const generatePropositions = (n: number, p: number, k: number): string[] => {
   const kChooseN = combinations(k, n);
   const firstProposition = new NumberNode(
-    +(Math.pow(p, k) * Math.pow(1 - p, n - k)).toFixed(2),
+    +(Math.pow(p, n - k) * Math.pow(1 - p, k)).toFixed(2),
   );
 
   const secondProposition = new NumberNode(
@@ -99,7 +99,7 @@ const generatePropositions = (n: number, p: number, k: number): string[] => {
     firstProposition.toTex(),
     secondProposition.toTex(),
     thirdProposition.toTex(),
-  ];
+  ].filter((value) => +value !== 0);
 };
 
 const getCorrectAnswer = (n: number, p: number, k: number): number => {
