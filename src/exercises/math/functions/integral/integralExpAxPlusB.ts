@@ -124,12 +124,14 @@ const generatePropositions = (
     new MultiplyNode(aXNode, expFB).simplify(),
     new MultiplyNode(aXNode, expFA).simplify(),
   ).simplify();
+
   return [
     firstProposition.toTex(),
     secondProposition.toTex(),
     thirdProposition.toTex(),
   ];
 };
+
 export const integralExpAxPlusB: Exercise<Identifiers> = {
   id: "integralExpAxPlusB",
   label: "Calcul d'intégrale du type $exp(ax+b)$",

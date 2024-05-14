@@ -23,7 +23,7 @@ type Identifiers = {
 const getAlgebricExpressionOfAffineQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const f = AffineConstructor.random();
+  const f = AffineConstructor.random({ excludes: [0] }, { excludes: [0] });
   const a = f.a;
   const b = f.b;
 
@@ -46,7 +46,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   );
   let random;
   while (propositions.length < n) {
-    random = AffineConstructor.random();
+    random = AffineConstructor.random({ excludes: [0] }, { excludes: [0] });
     tryToAddWrongProp(propositions, random.toTree().toTex());
   }
   return shuffleProps(propositions, n);
