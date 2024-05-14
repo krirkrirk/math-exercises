@@ -128,13 +128,13 @@ export class Vector {
 
   getXAsNumber() {
     if (!isNumberNode(this.x)) {
-      throw Error("not implemented for nodes different from NumberNode");
+      throw Error("not implemented for nodes other than NumberNode");
     }
     return (this.x as NumberNode).value;
   }
   getYAsNumber() {
     if (!isNumberNode(this.y)) {
-      throw Error("not implemented for nodes different from NumberNode");
+      throw Error("not implemented for nodes other than NumberNode");
     }
     return (this.y as NumberNode).value;
   }

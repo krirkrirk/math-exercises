@@ -12,7 +12,6 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { AffineConstructor } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
-import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
@@ -256,7 +255,9 @@ const generateExercise = (): ExerciseType => {
       instruction = `On appelle $x$ le nombre à trouver. 
       Traduire par une équation la phrase "${
         flip ? `Le double` : `La moitié`
-      } du nombre à trouver ${op2} de $${randAdd}$ vaut $${resultNb}$"`;
+      } du nombre à trouver ${
+        flip ? op2 : op2 + "e"
+      } de $${randAdd}$ vaut $${resultNb}$"`;
       break;
   }
   const vars = { randAdd, resultNb, op2, flip };

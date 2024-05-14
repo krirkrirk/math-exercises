@@ -47,7 +47,7 @@ const getLineFromDirectorVectorQuestion: QuestionGenerator<
   const line = new Line(b, a);
   const correctAnswer = line.getEquation(u, a);
 
-  const instruction = `Soit $d$ une droite de vecteur directeur $${u.toTexWithCoords()}$ passant par le point $${a.toTexWithCoords()}$. Déterminer l'équation rédiute de la droite $d$`;
+  const instruction = `Soit $d$ une droite de vecteur directeur $${u.toTexWithCoords()}$ passant par le point $${a.toTexWithCoords()}$. Déterminer l'équation réduite de la droite $d$`;
 
   const question: Question<Identifiers> = {
     answer: correctAnswer.toTex(),
@@ -90,7 +90,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
 const isAnswerValid: VEA<Identifiers> = (ans, { uX, uY, aX, aY }) => {
   const correctAnswer = getCorrecAnswer(uX, uY, aX, aY);
   return correctAnswer
-    .toAllValidTexs({ allowRawRightChildAsSolution: true })
+    .toAllValidTexs({
+      allowRawRightChildAsSolution: true,
+      allowFractionToDecimal: true,
+    })
     .includes(ans);
 };
 
@@ -146,6 +149,7 @@ const getFirstProposition = (
   const equation = new EqualNode(y, rightSide);
   return equation;
 };
+
 const getSecondProposition = (
   y: VariableNode,
   x: VariableNode,
@@ -179,6 +183,7 @@ const getCorrecAnswer = (uX: number, uY: number, aX: number, aY: number) => {
   const line = new Line(a, b);
   return line.getEquation(u, a);
 };
+
 export const lineFromDirectorVector: Exercise<Identifiers> = {
   id: "lineFromDirectorVector",
   label:
