@@ -139,10 +139,10 @@ const generatePropositions = (
 };
 export const integralDerivatedUSinU: Exercise<Identifiers> = {
   id: "integralDerivatedUSinU",
-  label: "",
-  levels: [],
+  label: "Calcul d'intégral du type $u'sin(u)$",
+  levels: ["TermSpé"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Intégration"],
   generator: (nb: number) =>
     getDistinctQuestions(getIntegralDerivatedUSinUQuestion, nb),
   qcmTimer: 60,

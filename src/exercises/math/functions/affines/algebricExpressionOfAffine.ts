@@ -23,7 +23,7 @@ type Identifiers = {
 const getAlgebricExpressionOfAffineQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const f = AffineConstructor.random({ excludes: [0] }, { excludes: [0] });
+  const f = AffineConstructor.random();
   const a = f.a;
   const b = f.b;
 
@@ -46,7 +46,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   );
   let random;
   while (propositions.length < n) {
-    random = AffineConstructor.random({ excludes: [0] }, { excludes: [0] });
+    random = AffineConstructor.random();
     tryToAddWrongProp(propositions, random.toTree().toTex());
   }
   return shuffleProps(propositions, n);
@@ -58,7 +58,11 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
 };
 
 const generatePropositions = (a: number, b: number): string[] => {
-  const firstProposition = new Affine(b, a, "x");
+  const firstProposition = new Affine(
+    b !== 0 ? b : randint(-10, 11, [0]),
+    a,
+    "x",
+  );
   const secondProposition = new Affine(a, -b, "x");
   return [
     firstProposition.toTree().toTex(),

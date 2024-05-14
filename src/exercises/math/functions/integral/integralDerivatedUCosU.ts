@@ -13,7 +13,6 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
-import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { CosNode } from "#root/tree/nodes/functions/cosNode";
 import { IntegralNode } from "#root/tree/nodes/functions/integralNode";
 import { SinNode } from "#root/tree/nodes/functions/sinNode";
@@ -76,7 +75,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
 const isAnswerValid: VEA<Identifiers> = (ans, { a, b, aU, bU }) => {
   const u = new Affine(aU, bU, "x");
-  const correctAns = getCorrectAnswer(a, b, u);
+  const correctAns = getCorrectAnswer(a, b, u).simplify();
   return correctAns.toAllValidTexs().includes(ans);
 };
 
@@ -108,12 +107,13 @@ const generatePropositions = (
     thirdProposition.toTex(),
   ];
 };
+
 export const IntegralDerivatedUCosU: Exercise<Identifiers> = {
   id: "IntegralDerivatedUCosU",
-  label: "",
-  levels: [],
+  label: "Calcul d'intégrale du type $ucos(u)$",
+  levels: ["TermSpé"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Intégration"],
   generator: (nb: number) =>
     getDistinctQuestions(getIntegralDerivatedUCosUQuestion, nb),
   qcmTimer: 60,
