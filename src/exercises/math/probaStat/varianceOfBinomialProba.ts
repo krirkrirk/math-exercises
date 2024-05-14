@@ -14,17 +14,15 @@ import {
   Rational,
   RationalConstructor,
 } from "#root/math/numbers/rationals/rational";
-import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
-import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 
 type Identifiers = {
   nX: number;
+  a: number;
   b: number;
 };
 
@@ -34,63 +32,70 @@ const getVarianceOfBinomialProbaQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const nX = randint(1, 9);
-  const nNode = new NumberNode(nX);
   const b = randint(2, 11);
-  const p = new Rational(1, b).toTree();
+  const a = randint(1, b);
+  const p = new Rational(a, b);
 
-  const correctAns = getCorrectAnswer(nNode, p);
+  const correctAns = getCorrectAnswer(nX, p);
 
   const question: Question<Identifiers> = {
     answer: correctAns.toTex(),
-    instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètre $n=${nX}$ et $p=${p.toTex()}$. Calculez la variance de $X$`,
+    instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètre $n=${nX}$ et $p=${p
+      .toTree()
+      .simplify()
+      .toTex()}$. Calculez la variance de $X$`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { nX, b },
+    identifiers: { nX, a, b },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer, nX, b }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, nX, a, b },
+) => {
   const propositions: Proposition[] = [];
+  const p = new Rational(a, b);
   addValidProp(propositions, answer);
-  generatePropositions(nX, b).forEach((value) =>
+  generatePropositions(nX, p).forEach((value) =>
     tryToAddWrongProp(propositions, value),
   );
 
   let random;
   while (propositions.length < n) {
-    random = RationalConstructor.randomIrreductible().toTree();
+    random = RationalConstructor.randomIrreductible(10).toTree();
     tryToAddWrongProp(propositions, random.toTex());
   }
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { nX, b }) => {
-  const p = new Rational(1, b).toTree();
-  const nNode = new NumberNode(nX);
-  const correctAns = getCorrectAnswer(nNode, p);
+const isAnswerValid: VEA<Identifiers> = (ans, { nX, a, b }) => {
+  const p = new Rational(a, b);
+  const correctAns = getCorrectAnswer(nX, p);
   return correctAns
     .toAllValidTexs({ allowFractionToDecimal: true })
     .includes(ans);
 };
 
-const generatePropositions = (n: number, b: number): string[] => {
-  const p = new Rational(1, b).toTree();
+const generatePropositions = (n: number, p: Rational): string[] => {
+  const pTree = p.toTree().simplify();
   const nNode = new NumberNode(n);
-  const firstProposition = new MultiplyNode(nNode, p).simplify();
+  const firstProposition = new MultiplyNode(nNode, pTree).simplify();
   const secondProposition = new MultiplyNode(
     nNode,
-    new PowerNode(p, new NumberNode(2)).simplify(),
+    new PowerNode(pTree, new NumberNode(2)).simplify(),
   ).simplify();
   return [firstProposition.toTex(), secondProposition.toTex()];
 };
 
-const getCorrectAnswer = (n: NumberNode, p: OppositeNode | FractionNode) => {
-  const oneMinusP = new SubstractNode(nbOneNode, p);
+const getCorrectAnswer = (n: number, p: Rational) => {
+  const pTree = p.toTree().simplify();
+  const oneMinusP = new SubstractNode(nbOneNode, pTree);
   return new MultiplyNode(
-    n,
-    new MultiplyNode(p, oneMinusP).simplify(),
+    new NumberNode(n),
+    new MultiplyNode(pTree, oneMinusP).simplify(),
   ).simplify();
 };
 export const varianceOfBinomialProba: Exercise<Identifiers> = {
