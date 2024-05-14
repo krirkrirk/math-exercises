@@ -39,6 +39,11 @@ const getIntegralTrinomialsQuestion: QuestionGenerator<Identifiers> = () => {
   let lowerBound = randint(-3, 4);
   let upperBound = randint(-3, 4);
 
+  while (lowerBound >= upperBound) {
+    lowerBound = randint(-3, 4);
+    upperBound = randint(-3, 4);
+  }
+
   const integral = new IntegralNode(
     trinomial.toTree(),
     lowerBound.toTree(),

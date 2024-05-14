@@ -30,6 +30,11 @@ const getIntegralAffinesQuestion: QuestionGenerator<Identifiers> = () => {
   let lowerBound = randint(-5, 5);
   let upperBound = randint(-5, 5);
 
+  while (lowerBound >= upperBound) {
+    lowerBound = randint(-5, 5);
+    upperBound = randint(-5, 5);
+  }
+
   const integral = new IntegralNode(
     affine.toTree(),
     lowerBound.toTree(),

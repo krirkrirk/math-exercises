@@ -50,7 +50,7 @@ export class SinNode implements FunctionNode {
         (value) => value.angle.evaluate({}) === moduled,
       );
       if (!trigoPoint) return this;
-      else return trigoPoint.cos;
+      else return trigoPoint.sin;
     } else {
       //écrire les regles albgeiruqe
       //chaque simplification doit relancer tout le simplify

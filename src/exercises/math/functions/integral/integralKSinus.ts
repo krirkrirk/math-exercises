@@ -34,13 +34,10 @@ const trigValues = selectedIndices.map(
   (index) => remarkableTrigoValues[index].angle,
 );
 
-const getIntegralKCosinusQuestion: QuestionGenerator<Identifiers> = () => {
+const getIntegralKSinusQuestion: QuestionGenerator<Identifiers> = () => {
   const k = randint(-10, 10, [0]);
 
-  const cosine = new MultiplyNode(
-    k.toTree(),
-    new CosNode(new VariableNode("x")),
-  );
+  const sine = new MultiplyNode(k.toTree(), new SinNode(new VariableNode("x")));
 
   let lowerBoundIndex = randint(0, trigValues.length);
   let upperBoundIndex = randint(0, trigValues.length);
@@ -56,14 +53,14 @@ const getIntegralKCosinusQuestion: QuestionGenerator<Identifiers> = () => {
   const lowerBound = trigValues[lowerBoundIndex];
   const upperBound = trigValues[upperBoundIndex];
 
-  const integral = new IntegralNode(cosine, lowerBound, upperBound, "x");
+  const integral = new IntegralNode(sine, lowerBound, upperBound, "x");
 
-  const sina = new SinNode(lowerBound);
-  const sinb = new SinNode(upperBound);
+  const cosa = new CosNode(lowerBound);
+  const cosb = new CosNode(upperBound);
 
   const answer = new SubstractNode(
-    new MultiplyNode(k.toTree(), sinb),
-    new MultiplyNode(k.toTree(), sina),
+    new MultiplyNode(k.toTree(), cosa),
+    new MultiplyNode(k.toTree(), cosb),
   ).simplify();
 
   const question: Question<Identifiers> = {
@@ -87,25 +84,25 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const lowerBound = trigValues[lowerBoundIndex];
   const upperBound = trigValues[upperBoundIndex];
 
+  const sina = new SinNode(lowerBound);
+  const sinb = new SinNode(upperBound);
+
+  const wrongAnswer1 = new SubstractNode(
+    new MultiplyNode(k.toTree(), sinb),
+    new MultiplyNode(k.toTree(), sina),
+  ).simplify();
+
   const cosa = new CosNode(lowerBound);
   const cosb = new CosNode(upperBound);
 
-  const wrongAnswer1 = new SubstractNode(
+  const wrongAnswer2 = new SubstractNode(
     new MultiplyNode(k.toTree(), cosb),
     new MultiplyNode(k.toTree(), cosa),
   ).simplify();
 
-  const sina = new SinNode(lowerBound);
-  const sinb = new SinNode(upperBound);
-
-  const wrongAnswer2 = new SubstractNode(
-    new MultiplyNode(k.toTree(), sina),
-    new MultiplyNode(k.toTree(), sinb),
-  ).simplify();
-
   const wrongAnswer3 = new AddNode(
-    new MultiplyNode(k.toTree(), sinb),
-    new MultiplyNode(k.toTree(), sina),
+    new MultiplyNode(k.toTree(), cosa),
+    new MultiplyNode(k.toTree(), cosb),
   ).simplify();
 
   tryToAddWrongProp(propositions, wrongAnswer1.toTex());
@@ -126,25 +123,25 @@ const isAnswerValid: VEA<Identifiers> = (
   const lowerBound = trigValues[lowerBoundIndex];
   const upperBound = trigValues[upperBoundIndex];
 
-  const sina = new SinNode(lowerBound);
-  const sinb = new SinNode(upperBound);
+  const cosa = new CosNode(lowerBound);
+  const cosb = new CosNode(upperBound);
 
   const validanswer = new SubstractNode(
-    new MultiplyNode(k.toTree(), sinb),
-    new MultiplyNode(k.toTree(), sina),
+    new MultiplyNode(k.toTree(), cosa),
+    new MultiplyNode(k.toTree(), cosb),
   ).simplify();
 
   const latexs = validanswer.toAllValidTexs({ allowSimplifySqrt: true });
   return latexs.includes(ans);
 };
-export const integralKCosinus: Exercise<Identifiers> = {
-  id: "integralKCosinus",
-  label: "Calcul de l'intégral de fonctions kcos(x)",
+export const integralKSinus: Exercise<Identifiers> = {
+  id: "integralKSinus",
+  label: "Calcul de l'intégral de fonctions ksin(x)",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Intégration"],
   generator: (nb: number) =>
-    getDistinctQuestions(getIntegralKCosinusQuestion, nb),
+    getDistinctQuestions(getIntegralKSinusQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
