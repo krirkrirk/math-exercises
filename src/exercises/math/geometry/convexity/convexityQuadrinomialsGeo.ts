@@ -228,7 +228,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { askConvex, quadcoeffs }) => {
 
   return latexs.includes(ans);
 };
-export const convexityQuadrinomials: Exercise<Identifiers> = {
+export const convexityQuadrinomialsGeo: Exercise<Identifiers> = {
   id: "convexityQuadrinomialsGeo",
   label: "Convexité des fonctions polynomiales de degré 3 (Geogebra)",
   levels: ["TermSpé"],
