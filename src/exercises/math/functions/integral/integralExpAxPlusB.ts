@@ -12,6 +12,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Affine } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { ExpNode } from "#root/tree/nodes/functions/expNode";
 import { IntegralNode } from "#root/tree/nodes/functions/integralNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
@@ -39,9 +40,9 @@ const getIntegralExpAxPlusBQuestion: QuestionGenerator<Identifiers> = () => {
   const correctAns = getCorrectAnswer(a, b, aX, bX);
 
   const question: Question<Identifiers> = {
-    answer: correctAns.simplify().toTex(),
-    instruction: `Calculez l'integrale de $${f.toTex()}$`,
-    keys: [],
+    answer: correctAns.toTex(),
+    instruction: `Calculez l'intégrale de $${f.toTex()}$`,
+    keys: ["epower"],
     answerFormat: "tex",
     identifiers: { a, b, aX, bX },
   };
@@ -59,21 +60,25 @@ const getPropositions: QCMGenerator<Identifiers> = (
     tryToAddWrongProp(propositions, value),
   );
   let random;
-  const aXNode = aX.toTree();
+  const oneDivAx = new FractionNode((1).toTree(), aX.toTree()).simplify();
   while (propositions.length < n) {
     const a = randint(-10, 11).toTree();
     const b = randint(-10, 11).toTree();
-    random = new SubstractNode(
-      new FractionNode(new ExpNode(a).simplify(), aXNode).simplify(),
-      new FractionNode(new ExpNode(b).simplify(), aXNode).simplify(),
-    ).simplify();
+    random = new MultiplyNode(
+      oneDivAx,
+      new SubstractNode(
+        new ExpNode(a).simplify(),
+        new ExpNode(b).simplify(),
+      ).simplify(),
+    );
     tryToAddWrongProp(propositions, random.toTex());
   }
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (ans, { a, b, aX, bX }) => {
+  const correctAns = getCorrectAnswer(a, b, aX, bX);
+  return correctAns.toAllValidTexs().includes(ans);
 };
 
 const getCorrectAnswer = (
@@ -81,17 +86,15 @@ const getCorrectAnswer = (
   b: number,
   aX: number,
   bX: number,
-): SubstractNode => {
+): AlgebraicNode => {
   const f = new Affine(aX, bX, "x").toTree();
   const oneDivAx = new FractionNode((1).toTree(), aX.toTree()).simplify();
-  return new SubstractNode(
-    new MultiplyNode(
-      oneDivAx,
-      new ExpNode(f.evaluate({ x: b }).toTree()),
-    ).simplify(),
-    new MultiplyNode(
-      oneDivAx,
-      new ExpNode(f.evaluate({ x: a }).toTree()),
+
+  return new MultiplyNode(
+    oneDivAx,
+    new SubstractNode(
+      new ExpNode(f.evaluate({ x: b }).toTree()).simplify(),
+      new ExpNode(f.evaluate({ x: a }).toTree()).simplify(),
     ).simplify(),
   );
 };
@@ -105,7 +108,7 @@ const generatePropositions = (
   const f = new Affine(aX, bX, "x");
   const fTree = f.toTree();
   const aXNode = aX.toTree();
-  const oneDivAx = new FractionNode((1).toTree(), aXNode);
+  const oneDivAx = new FractionNode((1).toTree(), aXNode).simplify();
 
   const fA = fTree.evaluate({ x: a }).toTree();
   const fB = fTree.evaluate({ x: b }).toTree();
@@ -114,10 +117,10 @@ const generatePropositions = (
   const expFB = new ExpNode(fB).simplify();
 
   const firstProposition = new SubstractNode(expFB, expFA).simplify();
-  const secondProposition = new AddNode(
-    new MultiplyNode(oneDivAx, expFB).simplify(),
-    new MultiplyNode(oneDivAx, expFA).simplify(),
-  ).simplify();
+  const secondProposition = new MultiplyNode(
+    oneDivAx,
+    new AddNode(expFB, expFA).simplify(),
+  );
   const thirdProposition = new SubstractNode(
     new MultiplyNode(aXNode, expFB).simplify(),
     new MultiplyNode(aXNode, expFA).simplify(),
@@ -130,10 +133,10 @@ const generatePropositions = (
 };
 export const integralExpAxPlusB: Exercise<Identifiers> = {
   id: "integralExpAxPlusB",
-  label: "",
-  levels: [],
+  label: "Calcul d'intégrale du type $exp(ax+b)$",
+  levels: ["TermSpé"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Intégration"],
   generator: (nb: number) =>
     getDistinctQuestions(getIntegralExpAxPlusBQuestion, nb),
   qcmTimer: 60,

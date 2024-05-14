@@ -31,6 +31,8 @@ import { SubstractNode } from "./tree/nodes/operators/substractNode";
 import { EqualNode } from "./tree/nodes/equations/equalNode";
 import { ExpNode } from "./tree/nodes/functions/expNode";
 import { DivideNode } from "./tree/nodes/operators/divideNode";
+import { LogNode } from "./tree/nodes/functions/logNode";
+import { Affine } from "./math/polynomials/affine";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
