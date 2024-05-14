@@ -25,7 +25,7 @@ const getConvexityTrinomialsGeoQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const trinom = TrinomConstructor.random();
-  const instruction = `Ci-dessous sont tracées la courbe $\\mathcal C_f$ de la fonction $f$. Est-elle :`;
+  const instruction = `Ci-dessous est tracée la courbe $\\mathcal C_f$ de la fonction $f$. Est-elle :`;
 
   const commands = [
     `f(x) = ${trinom.toString()}`,

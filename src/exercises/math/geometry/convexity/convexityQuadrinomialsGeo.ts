@@ -40,7 +40,7 @@ function generatePolynomialWithIntegerInflexionPoint(
   let a, b, c, discriminant;
 
   do {
-    a = randint(1, 5);
+    a = randint(-5, 5, [0]);
     c = randint(-5, 5, [0]);
     b = -3 * a * inflexionPointX;
     discriminant = b * b - 4 * a * c;
@@ -72,7 +72,6 @@ const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
     inflexionPointX,
   );
   const quadcoeffs = quadrinomial.coefficients;
-  const inflexionPointY = quadrinomial.calculate(inflexionPointX);
 
   const trinomial = quadrinomial.derivate();
   const criticalPoints = trinomial.getRoots();
@@ -115,15 +114,13 @@ const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
   }
 
   const questionType = askConvex ? "convexe" : "concave";
-  const instruction = `Ci-dessous sont tracées la courbe $\\mathcal C_f$ de la fonction $f$. Sur quelle intervalle est-elle ${questionType} ?`;
+  const instruction = `Ci-dessous est tracée la courbe $\\mathcal C_f$ de la fonction $f$. Sur quel intervalle est-elle ${questionType} ?`;
 
   const commands = [
     `f(x) = ${quadrinomial.toString()}`,
     `SetColor(f, "${blueMain}")`,
     `SetCaption(f, "$\\mathcal C_f$")`,
     `ShowLabel(f, true)`,
-    `I = (${inflexionPointX},${inflexionPointY})`,
-    `SetFixed(I, true)`,
   ];
 
   const ggb = new GeogebraConstructor(commands, {
@@ -238,8 +235,8 @@ export const convexityQuadrinomialsGeo: Exercise<Identifiers> = {
     getDistinctQuestions(getConvexityQuadrinomialsGeoQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
-  answerType: "QCM",
   getPropositions,
+  answerType: "QCM",
   isAnswerValid,
   subject: "Mathématiques",
 };
