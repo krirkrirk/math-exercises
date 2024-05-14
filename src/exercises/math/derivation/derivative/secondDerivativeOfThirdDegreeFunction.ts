@@ -23,7 +23,7 @@ type Identifiers = {
   d: number;
 };
 
-const getSecondDerivativeOfThridDegreeFunction: QuestionGenerator<
+const getSecondDerivativeOfThirdDegreeFunction: QuestionGenerator<
   Identifiers
 > = () => {
   const funct = PolynomialConstructor.randomWithOrder(3, "x");
@@ -83,14 +83,15 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d }) => {
   const result = new Polynomial([d, c, b, a], "x");
   return result.derivate().derivate().toTree().toAllValidTexs().includes(ans);
 };
+
 export const secondDerivativeOfThridDegreeFunction: Exercise<Identifiers> = {
-  id: "secondDerivativeOfThridDegreeFunction",
+  id: "secondDerivativeOfThirdDegreeFunction",
   label: "Calcul de dérivée seconde d'une fonction (polynôme) de degré 3",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],
   generator: (nb: number) =>
-    getDistinctQuestions(getSecondDerivativeOfThridDegreeFunction, nb),
+    getDistinctQuestions(getSecondDerivativeOfThirdDegreeFunction, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
