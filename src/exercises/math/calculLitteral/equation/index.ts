@@ -9,3 +9,4 @@ export * from "./firstDegreeEquationIntType1";
 export * from "./firstDegreeEquationIntType2";
 export * from "./firstDegreeEquationIntType3";
 export * from "./equationFromSentenceExercise";
+export * from "./binomialsTrinomialsProposedSolutions";
