@@ -31,6 +31,7 @@ import { coinFlip } from "#root/utils/coinFlip";
 type Identifiers = {
   askConvex: boolean;
   quadcoeffs: number[];
+  inflexionPoint: number;
 };
 
 function generatePolynomialWithIntegerInflexionPoint(
@@ -136,7 +137,7 @@ const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
     options: ggb.getOptions(),
     keys: ["rbracket", "lbracket", "semicolon", "infty", "reals"],
     answerFormat: "tex",
-    identifiers: { askConvex, quadcoeffs },
+    identifiers: { askConvex, quadcoeffs, inflexionPoint: inflexionPointX },
   };
 
   return question;
@@ -189,9 +190,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { askConvex, quadcoeffs }) => {
-  const inflexionPoint = -quadcoeffs[2] / (3 * quadcoeffs[3]);
-
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { askConvex, quadcoeffs, inflexionPoint },
+) => {
   let interval;
   if (askConvex) {
     interval =
