@@ -11,6 +11,7 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Affine } from "#root/math/polynomials/affine";
+import { Polynomial } from "#root/math/polynomials/polynomial";
 import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
 import { IntegralNode } from "#root/tree/nodes/functions/IntegralNode";
@@ -28,23 +29,43 @@ type Identifiers = {
   lowerBound: number;
 };
 
+const doesTrinomialVanishInInterval = (
+  trinomial: Trinom,
+  a: number,
+  b: number,
+): boolean => {
+  const calculate = (x: number) => trinomial.calculate(x);
+  for (let x = a; x <= b; x++) {
+    if (calculate(x) === 0) {
+      return true;
+    }
+  }
+  return false;
+};
+
 const getIntegralFractionsQuestion: QuestionGenerator<Identifiers> = () => {
   const questionType = coinFlip() ? "Trinomial" : "Affine";
 
-  const trinomial = TrinomConstructor.random(
-    { min: -5, max: 5, excludes: [0] },
-    { min: -5, max: 5 },
-    { min: -5, max: 5 },
-  );
-  const affine = trinomial.derivate();
+  let trinomial: Trinom;
+  let affine: Polynomial;
+  let lowerBound: number;
+  let upperBound: number;
 
-  let lowerBound = randint(-5, 5, [0]);
-  let upperBound = randint(-5, 5, [0]);
-
-  while (lowerBound >= upperBound) {
+  do {
+    trinomial = TrinomConstructor.random(
+      { min: -5, max: 5, excludes: [0] },
+      { min: -5, max: 5 },
+      { min: -5, max: 5 },
+    );
+    affine = trinomial.derivate();
     lowerBound = randint(-5, 5, [0]);
     upperBound = randint(-5, 5, [0]);
-  }
+
+    while (lowerBound >= upperBound) {
+      lowerBound = randint(-5, 5, [0]);
+      upperBound = randint(-5, 5, [0]);
+    }
+  } while (doesTrinomialVanishInInterval(trinomial, lowerBound, upperBound));
 
   const fraction =
     questionType === "Trinomial"
@@ -178,6 +199,7 @@ const isAnswerValid: VEA<Identifiers> = (
 
   return latexs.includes(ans);
 };
+
 export const integralFractions: Exercise<Identifiers> = {
   id: "integralFractions",
   label: "Calcul d'intégrales de fonctions u'/u",
