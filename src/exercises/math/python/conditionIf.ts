@@ -16,6 +16,7 @@ type Identifiers = {
   a: number;
   b: number;
   opresult: number;
+  condition: string;
 };
 
 const operations = [
@@ -33,7 +34,12 @@ const getConditionIfQuestion: QuestionGenerator<Identifiers> = () => {
   const operation = operations[opIndex];
 
   const opresult = operation.func(a, b);
-  const answer = opresult <= b ? b : opresult;
+
+  // Choisir aléatoirement entre les deux conditions
+  const condition = randint(0, 2) === 0 ? "a <= b" : "b <= a";
+  const answer = (condition === "a <= b" ? opresult <= b : opresult >= b)
+    ? b
+    : opresult;
 
   const question: Question<Identifiers> = {
     answer: answer.toString(),
@@ -42,14 +48,14 @@ const getConditionIfQuestion: QuestionGenerator<Identifiers> = () => {
 a = ${a}
 b = ${b}
 a = a ${operation.name} b
-if a<=b :
+if ${condition} :
     a = b
 print(a)
 \`\`\`
 `,
     keys: ["a", "b", "equal"],
     answerFormat: "tex",
-    identifiers: { a, b, opresult },
+    identifiers: { a, b, opresult, condition },
   };
 
   return question;
@@ -67,9 +73,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   tryToAddWrongProp(propositions, opresult.toString());
 
   while (propositions.length < n) {
-    while (propositions.length < n) {
-      tryToAddWrongProp(propositions, randint(0, 10).toString());
-    }
+    tryToAddWrongProp(propositions, randint(0, 10).toString());
   }
   return shuffleProps(propositions, n);
 };

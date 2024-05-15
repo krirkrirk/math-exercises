@@ -221,7 +221,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { askConvex, quadcoeffs }) => {
           );
   }
 
-  const latexs = interval.toAllValidTexs({ allowFractionToDecimal: true });
+  const latexs = interval.toAllValidTexs({});
 
   return latexs.includes(ans);
 };
