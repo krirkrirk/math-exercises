@@ -110,7 +110,7 @@ const generatePropositions = (
 
 export const IntegralDerivatedUCosU: Exercise<Identifiers> = {
   id: "IntegralDerivatedUCosU",
-  label: "Calcul d'intégrale du type $ucos(u)$",
+  label: "Calcul d'intégrale du type $u'cos(u)$",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Intégration"],
