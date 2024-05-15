@@ -126,7 +126,7 @@ const generateRandomWrongProp = (
       ),
       c.toTree(),
     ),
-    (0).toTree(),
+    zero,
   );
 };
 
@@ -139,8 +139,7 @@ const generateProposition = (
   const x = new VariableNode("x");
   const y = new VariableNode("y");
   const firstProposition = getFirstProposition(x, y, aX, aY, bX, bY);
-  const secondProposition = getSecondPropoition(x, y, aX, aY, bX, bY);
-  return [firstProposition, secondProposition].filter((value) => {
+  return [firstProposition].filter((value) => {
     const leftChild = value.leftChild as AlgebraicNode;
     return (
       leftChild.evaluate({ x: aX, y: aY }) !== 0 ||
@@ -150,30 +149,6 @@ const generateProposition = (
 };
 
 const getFirstProposition = (
-  x: VariableNode,
-  y: VariableNode,
-  aX: number,
-  aY: number,
-  bX: number,
-  bY: number,
-) => {
-  const u = new Vector("u", new NumberNode(bX - aX), new NumberNode(bY - aY));
-  const b = u.getXAsNumber();
-  const a = -u.getYAsNumber();
-  const c = -a * aX - b * aY;
-  return new EqualNode(
-    new AddNode(
-      new AddNode(
-        new MultiplyNode(new NumberNode(a), x).simplify(),
-        new MultiplyNode(new NumberNode(b), y).simplify(),
-      ),
-      new NumberNode(c),
-    ),
-    zero,
-  );
-};
-
-const getSecondPropoition = (
   x: VariableNode,
   y: VariableNode,
   aX: number,
