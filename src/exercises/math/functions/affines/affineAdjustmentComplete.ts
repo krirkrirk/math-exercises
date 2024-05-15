@@ -117,13 +117,13 @@ const getAffineAdjustmentCompleteQuestion: QuestionGenerator<
   let dataTable = `
 | | | | | | | | | | | |
 |-|-|-|-|-|-|-|-|-|-|-|
-| x | ${xValues.join(" | ")} |
-| y | ${yValues.join(" | ")} |
+| $x$ | ${xValues.join(" | ")} |
+| $y$ | ${yValues.map((n) => n.frenchify()).join(" | ")} |
   `;
 
   const question: Question<Identifiers> = {
     answer: `${answerEq}\\qquad ${answerR}`,
-    instruction: `Déterminer l'équation de la droite d'ajustement et la valeur du coefficient de détermination avec la calculatrice. Arrondir au centième : ${dataTable}
+    instruction: `On considère la série statistique ci-dessous. A l'aide de la calculatrice, déterminer l'équation de la droite d'ajustement et la valeur du coefficient de détermination. Arrondir au centième. ${dataTable}
 `,
     keys: [],
     answerFormat: "tex",

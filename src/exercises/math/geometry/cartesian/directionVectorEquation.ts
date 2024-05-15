@@ -72,7 +72,7 @@ const getDirectionVectorEquationQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: vector.toInlineCoordsTex(),
-    instruction: `Soit l'équation cartésienne $${equation}$. Déterminez les coordonnées d'un vecteur directeur $\\overrightarrow{v}$ de cette équation.`,
+    instruction: `Soit une droite $d$ d'équation cartésienne $${equation}$. Déterminez les coordonnées d'un vecteur directeur de $d$.`,
     keys: ["semicolon", "x", "y"],
     answerFormat: "tex",
     identifiers: { xValue, yValue },

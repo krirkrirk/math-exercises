@@ -101,8 +101,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
 };
 export const firstDegreeEquationIntType2: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType2",
-  label:
-    "Résoudre une équation du premier degré du type $ax + b = c$ (solution entière)",
+  label: "Résoudre une équation du type $ax + b = c$ (solution entière)",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Équations"],

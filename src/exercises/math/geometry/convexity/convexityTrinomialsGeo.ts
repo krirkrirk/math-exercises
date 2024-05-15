@@ -25,7 +25,7 @@ const getConvexityTrinomialsGeoQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const trinom = TrinomConstructor.random();
-  const instruction = `Ci-dessous est tracée la courbe $\\mathcal C_f$ de la fonction $f$. Est-elle :`;
+  const instruction = `Ci-dessous est tracée la courbe représentative $\\mathcal C_f$ d'une fonction $f$. Sur $\\mathbb{R}$, la fonction $f$ est :`;
 
   const commands = [
     `f(x) = ${trinom.toString()}`,
@@ -71,7 +71,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 
 export const convexityTrinomialsGeo: Exercise<Identifiers> = {
   id: "convexityTrinomialsGeo",
-  label: "Convexité des fonctions quadratiques (GeoGebra)",
+  label: "Déterminer graphiquement la convexité d'un trinôme",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],

@@ -114,7 +114,7 @@ const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
   }
 
   const questionType = askConvex ? "convexe" : "concave";
-  const instruction = `Ci-dessous est tracée la courbe $\\mathcal C_f$ de la fonction $f$. Sur quel intervalle est-elle ${questionType} ?`;
+  const instruction = `Ci-dessous est tracée la courbe représentative $\\mathcal C_f$ d'une fonction $f$. Sur quel intervalle $f$ est-elle ${questionType} ?`;
 
   const commands = [
     `f(x) = ${quadrinomial.toString()}`,
@@ -227,7 +227,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { askConvex, quadcoeffs }) => {
 };
 export const convexityQuadrinomialsGeo: Exercise<Identifiers> = {
   id: "convexityQuadrinomialsGeo",
-  label: "Convexité des fonctions polynomiales de degré 3 (Geogebra)",
+  label: "Déterminer graphiquement la convexité d'un polynôme de degré $3$",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],

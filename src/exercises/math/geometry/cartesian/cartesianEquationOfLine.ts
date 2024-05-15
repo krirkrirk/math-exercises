@@ -56,7 +56,7 @@ const getCartesianEquationOfLineQuestion: QuestionGenerator<
   const ggb = new GeogebraConstructor(commands, { isGridSimple: true });
   const correctAnswer = line.getCartesianEquation();
 
-  const instruction = `Déterminer l'equation cartesienne de la droite $d$`;
+  const instruction = `Déterminer une équation cartesienne de la droite $d$ représentée ci-dessous :`;
 
   const aX = a.getXnumber();
   const aY = a.getYnumber();
@@ -251,7 +251,7 @@ const getNodeFromVariableString = (
 
 export const cartesianEquationOfLine: Exercise<Identifiers> = {
   id: "cartesianEquationOfLine",
-  label: "Déterminer une equation cartesienne de droite",
+  label: "Déterminer une équation cartesienne de droite par lecture graphique",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Droites"],

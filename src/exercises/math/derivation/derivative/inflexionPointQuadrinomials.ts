@@ -98,7 +98,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   }
 
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, randint(-1, 2).toString());
+    tryToAddWrongProp(propositions, randint(-10, 10).toString());
   }
   return shuffleProps(propositions, n);
 };
@@ -121,7 +121,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, quadcoeffs }) => {
 };
 export const inflexionPointQuadrinomials: Exercise<Identifiers> = {
   id: "inflexionPointQuadrinomials",
-  label: "Calcul du point d'inflexion (quadrinôme)",
+  label: "Calcul du point d'inflexion",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],

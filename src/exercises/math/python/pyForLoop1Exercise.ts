@@ -207,7 +207,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { exercise }) => {
 };
 export const pythonForLoop1Exercise: Exercise<Identifiers> = {
   id: "pyForLoop1Exercise",
-  label: "Exercice python sur les boucle for 1",
+  label: "Boucles for 1",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Python"],

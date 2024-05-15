@@ -171,7 +171,7 @@ const generateType17Instruction = (
 
 export const pyWhileLoop1Exercise: Exercise<Identifiers> = {
   id: "pyWhileLoop1Exercise",
-  label: "Exercise sur les boules while 1 en python",
+  label: "Boucles while 1",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Python"],

@@ -87,13 +87,13 @@ const getAffineAdjustmentQuestion: QuestionGenerator<Identifiers> = () => {
   let dataTable = `
 | | | | | | | | | | | |
 |-|-|-|-|-|-|-|-|-|-|-|
-| x | ${xValues.join(" | ")} |
-| y | ${yValues.join(" | ")} |
+| $x$ | ${xValues.join(" | ")} |
+| $y$ | ${yValues.map((n) => n.frenchify()).join(" | ")} |
   `;
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `À partir des données fournies ci-dessous, déterminez l'équation de la droite d'ajustement : ${dataTable}
+    instruction: `On considère la série statistique ci-dessous. Déterminez l'équation de la droite d'ajustement obtenue par la méthode des moindres carrés. ${dataTable}
 `,
     keys: ["equal", "y", "x", "a", "b"],
     answerFormat: "tex",
