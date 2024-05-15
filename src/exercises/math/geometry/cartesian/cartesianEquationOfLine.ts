@@ -90,24 +90,44 @@ const getPropositions: QCMGenerator<Identifiers> = (
   generateProposition(aX, aY, bX, bY).forEach((value) =>
     tryToAddWrongProp(propositions, value.toTex()),
   );
-  let aXrand;
-  let aYrand;
+  let a;
+  let b;
+  const x = new VariableNode("x");
+  const y = new VariableNode("y");
+  let node;
   while (propositions.length < n) {
-    aXrand = randint(-10, 11, [aX]);
-    aYrand = randint(-10, 11, [aY]);
-    tryToAddWrongProp(
-      propositions,
-      getCorrectAnswer(aXrand, aYrand, bX, bY).toTex(),
-    );
+    node = generateRandomWrongProp(aX, aY, bX, bY, x, y);
+    tryToAddWrongProp(propositions, node.toTex());
   }
   return shuffleProps(propositions, n);
 };
 
-const getCorrectAnswer = (aX: number, aY: number, bX: number, bY: number) => {
-  const a = new Point("A", new NumberNode(aX), new NumberNode(aY));
-  const b = new Point("B", new NumberNode(bX), new NumberNode(bY));
-  const line = new Line(a, b);
-  return line.getCartesianEquation();
+const generateRandomWrongProp = (
+  aX: number,
+  aY: number,
+  bX: number,
+  bY: number,
+  x: VariableNode,
+  y: VariableNode,
+) => {
+  let a;
+  let b;
+  let c;
+  do {
+    a = randint(-10, 11, [0]);
+    b = randint(-10, 11, [0]);
+    c = randint(-10, 11);
+  } while (a * aX + b * aY + c === 0 && a * bX + b * bY + c === 0);
+  return new EqualNode(
+    new AddNode(
+      new AddNode(
+        new MultiplyNode(a.toTree(), x).simplify(),
+        new MultiplyNode(b.toTree(), y).simplify(),
+      ),
+      c.toTree(),
+    ),
+    (0).toTree(),
+  );
 };
 
 const generateProposition = (
@@ -120,7 +140,13 @@ const generateProposition = (
   const y = new VariableNode("y");
   const firstProposition = getFirstProposition(x, y, aX, aY, bX, bY);
   const secondProposition = getSecondPropoition(x, y, aX, aY, bX, bY);
-  return [firstProposition, secondProposition];
+  return [firstProposition, secondProposition].filter((value) => {
+    const leftChild = value.leftChild as AlgebraicNode;
+    return (
+      leftChild.evaluate({ x: aX, y: aY }) !== 0 ||
+      leftChild.evaluate({ x: bX, y: bY }) !== 0
+    );
+  });
 };
 
 const getFirstProposition = (
