@@ -12,8 +12,6 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
-import { EqualNode } from "#root/tree/nodes/equations/equalNode";
-import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {
   a: number;
@@ -58,7 +56,11 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
 };
 
 const generatePropositions = (a: number, b: number): string[] => {
-  const firstProposition = new Affine(b, a, "x");
+  const firstProposition = new Affine(
+    b !== 0 ? b : randint(-10, 11, [0]),
+    a,
+    "x",
+  );
   const secondProposition = new Affine(a, -b, "x");
   return [
     firstProposition.toTree().toTex(),
