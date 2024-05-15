@@ -29,7 +29,7 @@ const getPointCoordinatesQuestion: QuestionGenerator<Identifiers> = () => {
   const yMin = Math.min(y) - 5;
   const yMax = Math.max(y) + 5;
 
-  const instruction = `Déterminez les coordonnées du point A dans le repère ci-dessous : `;
+  const instruction = `Lire les coordonnées du point $A$ représenté dans le repère ci-dessous : `;
 
   const commands = [
     `A = (${x}, ${y})`,
@@ -95,7 +95,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x, y }) => {
 
 export const pointCoordinates: Exercise<Identifiers> = {
   id: "pointCoordinates",
-  label: "Déterminer les coordonnées d'un point dans un repère",
+  label: "Lire les coordonnées d'un point",
   levels: ["1rePro"],
   isSingleStep: true,
   sections: ["Géométrie cartésienne"],

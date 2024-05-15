@@ -23,7 +23,7 @@ const getConvexityTrinomialsQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     answer: isConvex,
-    instruction: `Soit la fonction $f(x) = ${trinom.toTex()}$. Est-elle :`,
+    instruction: `Soit la fonction $f(x) = ${trinom.toTex()}$. Sur $\\mathbb{R}$, $f$ est :`,
     keys: [],
     answerFormat: "raw",
     identifiers: { coeffs: trinom.coefficients },
@@ -48,7 +48,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 };
 export const convexityTrinomials: Exercise<Identifiers> = {
   id: "convexityTrinomials",
-  label: "Convexité des fonctions quadratiques",
+  label: "Déterminer la convexité d'un trinôme",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],

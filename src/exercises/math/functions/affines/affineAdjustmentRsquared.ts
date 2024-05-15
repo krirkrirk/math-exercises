@@ -83,13 +83,13 @@ const getAffineAdjustmentRsquaredQuestion: QuestionGenerator<
   let dataTable = `
 | | | | | | | | | | | |
 |-|-|-|-|-|-|-|-|-|-|-|
-| x | ${xValues.join(" | ")} |
-| y | ${yValues.join(" | ")} |
+| $x$ | ${xValues.join(" | ")} |
+| $y$ | ${yValues.map((n) => n.frenchify()).join(" | ")} |
   `;
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `À partir des données fournies ci-dessous, déterminez la valeur du coefficient de détermination : ${dataTable}
+    instruction: `On considère la série statistique ci-dessous. Déterminez la valeur du coefficient de détermination. ${dataTable}
 `,
     keys: ["R", "equal"],
     answerFormat: "tex",

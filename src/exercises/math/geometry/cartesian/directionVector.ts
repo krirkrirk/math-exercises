@@ -52,8 +52,11 @@ const getDirectionVectorQuestion: QuestionGenerator<Identifiers> = () => {
 
   const vector = new Vector("v", xValue.toTree(), yValue.toTree());
 
-  const instruction = `Soit la droite tracée ci-dessous dans le plan cartésien. Déterminez les coordonnées d'un vecteur directeur $\\overrightarrow{v}$ de cette droite.`;
-  const commands = [`line = Line((${x1}, ${y1}), (${x2}, ${y2}))`];
+  const instruction = `Lire les coordonnées d'un vecteur directeur de la droite représentée ci-dessous :`;
+  const commands = [
+    `line = Line((${x1}, ${y1}), (${x2}, ${y2}))`,
+    `SetFixed(line, true)`,
+  ];
 
   const xMin = Math.min(x1, x2);
   const yMin = Math.min(y1, y2);
