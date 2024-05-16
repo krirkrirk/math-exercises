@@ -1,1 +1,2 @@
-export * from "./volumeOfPyramid";
+export * from "./volumeOfPyramidWithSquareOrRectBase";
+export * from "./volumeOfPyramidWithTriangleRectBase";
