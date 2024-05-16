@@ -16,18 +16,12 @@ import { round } from "#root/math/utils/round";
 
 type Identifiers = {
   radius: number;
-  height: number;
 };
 
-const getConeVolumeQuestion: QuestionGenerator<Identifiers> = () => {
-  let radius, height;
+const getSphereVolumeQuestion: QuestionGenerator<Identifiers> = () => {
+  const radius = randint(10, 110) / 10;
 
-  do {
-    radius = randint(1, 11);
-    height = randint(2, 12);
-  } while (height <= radius);
-
-  const volume = round((1 / 3) * Math.PI * Math.pow(radius, 2) * height, 2)
+  const volume = round((4 / 3) * Math.PI * Math.pow(radius, 3), 2)
     .toTree()
     .toTex();
 
@@ -35,14 +29,13 @@ const getConeVolumeQuestion: QuestionGenerator<Identifiers> = () => {
   const xMax = radius + 5;
   const yMin = -radius - 5;
   const yMax = radius + 5;
-  const zMax = height + 5;
+  const zMax = radius + 5;
+  const zMin = -radius - 5;
 
   const commands = [
     `A = (0, 0, 0)`,
-    `B = (0, 0, ${height})`,
+    `Sphere(A, ${radius})`,
     `SetFixed(A, true)`,
-    `SetFixed(B, true)`,
-    `Cone(A, B, ${radius})`,
   ];
 
   const ggb = new GeogebraConstructor(commands, {
@@ -53,52 +46,40 @@ const getConeVolumeQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     answer: volume,
-    instruction: `Calculez le volume d'un cône avec un rayon de base de $${radius}$ cm et une hauteur de $${height}$ cm. La figure ci-dessous représente le cône.`,
+    instruction: `Calculez le volume d'une sphère avec un rayon de $${radius}$ cm. La figure ci-dessous représente la sphère.`,
     commands: ggb.commands,
-    coords: [xMin, xMax, yMin, yMax, 0, zMax],
+    coords: [xMin, xMax, yMin, yMax, zMin, zMax],
     options: ggb.getOptions(),
     keys: [],
     answerFormat: "tex",
-    identifiers: { radius, height },
+    identifiers: { radius },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (
-  n,
-  { answer, radius, height },
-) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, radius }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  const wrongVolume1 = round(Math.PI * Math.pow(radius, 2) * height, 2)
+  const wrongVolume1 = round(Math.PI * Math.pow(radius, 2) * radius, 2)
     .toTree()
     .toTex();
   tryToAddWrongProp(propositions, wrongVolume1);
 
-  const wrongVolume2 = round((1 / 3) * Math.PI * radius * height, 2)
+  const wrongVolume2 = round((4 / 3) * Math.PI * radius * 3, 2)
     .toTree()
     .toTex();
   tryToAddWrongProp(propositions, wrongVolume2);
 
-  const wrongVolume3 = round(3 * Math.PI * Math.pow(radius, 2) * height, 2)
+  const wrongVolume3 = round((1 / 3) * Math.PI * Math.pow(radius, 3), 2)
     .toTree()
     .toTex();
   tryToAddWrongProp(propositions, wrongVolume3);
 
   while (propositions.length < n) {
-    let wrongRadius, wrongHeight;
-
-    do {
-      wrongRadius = randint(1, 5);
-      wrongHeight = randint(2, 10);
-    } while (wrongHeight <= wrongRadius);
-
-    const wrongVolume = round(
-      (1 / 3) * Math.PI * Math.pow(wrongRadius, 2) * wrongHeight,
-      2,
-    )
+    const wrongRadius = radius + 1;
+    const wrongVolume = round((4 / 3) * Math.PI * Math.pow(wrongRadius, 3), 2)
       .toTree()
       .toTex();
     tryToAddWrongProp(propositions, wrongVolume);
@@ -107,9 +88,9 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer, radius, height }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, radius }) => {
   const validanswer = round(
-    (1 / 3) * Math.PI * Math.pow(radius, 2) * height,
+    (4 / 3) * Math.PI * Math.pow(radius, 3),
     2,
   ).toTree();
   const latexs = validanswer.toAllValidTexs();
@@ -117,13 +98,13 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, radius, height }) => {
   return latexs.includes(ans);
 };
 
-export const coneVolume: Exercise<Identifiers> = {
-  id: "coneVolume",
-  label: "Calculer le volume d'un cône",
+export const sphereVolume: Exercise<Identifiers> = {
+  id: "sphereVolume",
+  label: "Calculer le volume d'une sphère",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Géométrie euclidienne"],
-  generator: (nb: number) => getDistinctQuestions(getConeVolumeQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getSphereVolumeQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
