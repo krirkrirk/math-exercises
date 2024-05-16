@@ -30,14 +30,6 @@ type ExerciseVars = {
 const getCalculateProbaOfBinomialDistributionQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  /*const nX = randint(1, 9);
-  const k = randint(1, nX);
-  const b = randint(2, 11);
-  const a = randint(1, b);
-  const p = new Rational(a, b);
-
-  let correctAns = new NumberNode(getCorrectAnswer(nX, p.value, k));*/
-
   const exercise = generateExercise();
   const p = new Rational(exercise.a, exercise.b);
   const correctAns = new NumberNode(
@@ -124,7 +116,7 @@ const generateExercise = (): ExerciseVars => {
 };
 export const calculateProbaOfBinomialDistribution: Exercise<Identifiers> = {
   id: "calculateProbaOfBinomialDistribution",
-  label: "",
+  label: "Calcul de probabilité de loi binomiale",
   levels: ["TermTech"],
   isSingleStep: true,
   sections: ["Probabilités"],
