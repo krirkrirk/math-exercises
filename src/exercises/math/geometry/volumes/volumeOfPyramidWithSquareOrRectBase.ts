@@ -146,9 +146,7 @@ const calculateVolume = (baseOfPyramidSides: number[], h: number) => {
   );
 };
 
-const generatePolygonWithGgbCmnds = (
-  polygonType: string,
-): { commands: string[]; sideSizes: number[] } => {
+const generatePolygonWithGgbCmnds = (polygonType: string) => {
   let sideOne = 0;
   let sideTwo = 0;
   switch (polygonType) {
