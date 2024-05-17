@@ -21,24 +21,20 @@ import { random } from "#root/utils/random";
 
 type Identifiers = {
   h: number;
-  baseOfPyramidSides: {
-    ABSide: number;
-    ACSide: number;
-    BCSide: number;
-    originX: number;
-  };
+  baseOfPyramidSides: TriangleSides;
 };
 
 type ExerciseVars = {
   ggbCommands: string[];
   h: number;
-  baseOfPyramidSides: {
-    ABSide: number;
-    ACSide: number;
-    BCSide: number;
-    originX: number;
-  };
+  baseOfPyramidSides: TriangleSides;
   originX: number;
+};
+
+type TriangleSides = {
+  ABSide: number;
+  ACSide: number;
+  BCSide: number;
 };
 
 const pythagoreTriplet = [
@@ -125,12 +121,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { h, baseOfPyramidSides }) => {
 };
 
 const generatePropositions = (
-  baseOfPyramidSides: {
-    ABSide: number;
-    ACSide: number;
-    BCSide: number;
-    originX: number;
-  },
+  baseOfPyramidSides: TriangleSides,
   h: number,
 ): string[] => {
   const firstProposition = new FractionNode(
@@ -149,10 +140,7 @@ const generatePropositions = (
   return [firstProposition, secondProposition];
 };
 
-const calculateVolume = (
-  sideSize: { ABSide: number; ACSide: number; BCSide: number; originX: number },
-  h: number,
-): AlgebraicNode => {
+const calculateVolume = (sideSize: TriangleSides, h: number): AlgebraicNode => {
   return new FractionNode(
     new MultiplyNode(
       new FractionNode(
@@ -202,7 +190,7 @@ const generateTriangleWithGGBCommands = () => {
       `SetFixed(C,true)`,
       `Poly=Polygon(A,B,C)`,
     ],
-    sideSizes: { ABSide, ACSide, BCSide, originX },
+    sideSizes: { ABSide, ACSide, BCSide },
     originX,
   };
 };
