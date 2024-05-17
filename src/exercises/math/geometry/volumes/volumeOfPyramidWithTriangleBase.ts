@@ -71,7 +71,7 @@ const getVolumeOfPyramidWithTriangleBaseQuestion: QuestionGenerator<
   const question: Question<Identifiers> = {
     answer: volume.simplify().toTex(),
     instruction: `Soit une pyramide à base triangulaire de hauteur $${exercise.h}$. 
-    Cacluler le volume de la pyramide en sachant $AB=${baseOfPyramidSides.ABSide}$ et $DC=${baseOfPyramidSides.ACSide}$, la droite $DC$ est perpendiculaire à $AB$.`,
+    Cacluler le volume de la pyramide en sachant que : $AB=${baseOfPyramidSides.ABSide}$, $CD=${baseOfPyramidSides.ACSide}$ et $(AB)$ est perpendiculaire à $(CD)$.`,
     keys: [],
     answerFormat: "tex",
     commands: ggb.commands,
