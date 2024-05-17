@@ -9,6 +9,7 @@ export enum OperatorIds {
   divide,
   power,
   limit,
+  integral,
 }
 
 export interface OperatorNode extends AlgebraicNode {
