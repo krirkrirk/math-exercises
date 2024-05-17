@@ -16,7 +16,7 @@ import {
 } from "#root/math/polynomials/polynomial";
 import { Trinom } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
-import { IntegralNode } from "#root/tree/nodes/functions/IntegralNode";
+import { IntegralNode } from "#root/tree/nodes/functions/integralNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {

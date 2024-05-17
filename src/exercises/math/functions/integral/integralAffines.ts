@@ -14,7 +14,7 @@ import { AffineConstructor } from "#root/math/polynomials/affine";
 import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
-import { IntegralNode } from "#root/tree/nodes/functions/IntegralNode";
+import { IntegralNode } from "#root/tree/nodes/functions/integralNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {

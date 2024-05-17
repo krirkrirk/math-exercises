@@ -14,7 +14,7 @@ import { Affine } from "#root/math/polynomials/affine";
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
-import { IntegralNode } from "#root/tree/nodes/functions/IntegralNode";
+import { IntegralNode } from "#root/tree/nodes/functions/integralNode";
 import { LogNode } from "#root/tree/nodes/functions/logNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
