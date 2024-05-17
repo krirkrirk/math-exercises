@@ -142,7 +142,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, affinecoeffs }) => {
 
 export const cosSecondDegreeDerivative: Exercise<Identifiers> = {
   id: "cosSecondDegreeDerivative",
-  label: "Dérivée seconde de cos(u)",
+  label: "Dérivée seconde de $\\cos(u)$",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],
