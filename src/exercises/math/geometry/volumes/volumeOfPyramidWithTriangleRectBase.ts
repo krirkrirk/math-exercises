@@ -185,10 +185,10 @@ const generatePolygonWithGgbCmnds = (): {
 };
 export const volumeOfPyramid: Exercise<Identifiers> = {
   id: "volumeOfPyramidWithTriangleRectBase",
-  label: "",
-  levels: [],
+  label: "Calcul du volume d'une pyramide avec une base triangle rectangle",
+  levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Géométrie euclidienne"],
   generator: (nb: number) =>
     getDistinctQuestions(getVolumeOfPyramidWithTriangleRectBase, nb),
   qcmTimer: 60,

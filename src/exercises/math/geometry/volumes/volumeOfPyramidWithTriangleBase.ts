@@ -38,7 +38,6 @@ type TriangleSides = {
 };
 
 const pythagoreTriplet = [
-  [3, 4, 5],
   [5, 12, 13],
   [8, 15, 17],
   [7, 24, 25],
@@ -59,8 +58,8 @@ const getVolumeOfPyramidWithTriangleBaseQuestion: QuestionGenerator<
   const volume = calculateVolume(baseOfPyramidSides, exercise.h);
 
   const ggb = new GeogebraConstructor(commands, {
-    hideAxes: false,
-    hideGrid: false,
+    hideAxes: true,
+    hideGrid: true,
     is3d: true,
   });
 
@@ -72,7 +71,7 @@ const getVolumeOfPyramidWithTriangleBaseQuestion: QuestionGenerator<
   const question: Question<Identifiers> = {
     answer: volume.simplify().toTex(),
     instruction: `Soit une pyramide à base triangulaire de hauteur $${exercise.h}$. 
-    Cacluler le volume de la pyramide en sachant que la base du triangle $AB=${baseOfPyramidSides.ABSide}$ et que sa hauteur vaut $${baseOfPyramidSides.ACSide}$`,
+    Cacluler le volume de la pyramide en sachant $AB=${baseOfPyramidSides.ABSide}$ et $DC=${baseOfPyramidSides.ACSide}$, la droite $DC$ est perpendiculaire à $AB$.`,
     keys: [],
     answerFormat: "tex",
     commands: ggb.commands,
@@ -154,12 +153,15 @@ const calculateVolume = (sideSize: TriangleSides, h: number): AlgebraicNode => {
 };
 
 const generateExercise = (): ExerciseVars => {
-  const h = randint(1, 21, [0]);
+  const h = randint(3, 21);
   const triangle = generateTriangleWithGGBCommands();
   const ggbCommands = triangle.commands.concat([
     `H=Point({0,${triangle.sideSizes.ACSide / 4},${h}})`,
-    `SetFixed(H,true)`,
+    `D=Point({0,0,0})`,
+    `ShowLabel(D,true)`,
     `ShowLabel(H,true)`,
+    `SetFixed(H,true)`,
+    `SetFixed(D,true)`,
     `Pyra=Pyramid(Poly,H)`,
   ]);
 
@@ -174,7 +176,7 @@ const generateExercise = (): ExerciseVars => {
 const generateTriangleWithGGBCommands = () => {
   const rectTriangle = random(pythagoreTriplet);
   const ABSide = rectTriangle[0];
-  const originX = randint(-ABSide + 2, 0, [0]);
+  const originX = randint(-ABSide + 4, -2);
   const ACSide = rectTriangle[1];
   const BCSide = rectTriangle[2];
   return {
@@ -196,10 +198,10 @@ const generateTriangleWithGGBCommands = () => {
 };
 export const volumeOfPyramidWithTriangleBase: Exercise<Identifiers> = {
   id: "volumeOfPyramidWithTriangleBase",
-  label: "",
-  levels: [],
+  label: "Calcul de volume d'une pyramide à base triangulaire",
+  levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Géométrie euclidienne"],
   generator: (nb: number) =>
     getDistinctQuestions(getVolumeOfPyramidWithTriangleBaseQuestion, nb),
   qcmTimer: 60,

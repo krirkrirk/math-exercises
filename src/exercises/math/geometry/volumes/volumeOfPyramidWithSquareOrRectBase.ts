@@ -193,7 +193,7 @@ const getPolygonNameInFr = (polygonType: string): string => {
 export const volumeOfPyramidWithSquareOrRectBase: Exercise<Identifiers> = {
   id: "volumeOfPyramidWithSquareOrRectBase",
   label: "Caclul de volume d'une pyramide à base carré ou rectangulaire",
-  levels: [],
+  levels: ["2nde"],
   isSingleStep: true,
   sections: ["Géométrie cartésienne"],
   generator: (nb: number) =>
