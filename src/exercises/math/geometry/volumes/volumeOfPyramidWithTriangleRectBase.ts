@@ -172,6 +172,8 @@ const generatePolygonWithGgbCmnds = (): {
       `A=Point({0,0,0})`,
       `B=Point({${ABSide},0,0})`,
       `C=Point({0,${ACSide},0})`,
+      `ang=Angle(C,A,B)`,
+      `ShowLabel(ang,false)`,
       `ShowLabel(A,True)`,
       `ShowLabel(B,True)`,
       `ShowLabel(C,True)`,
