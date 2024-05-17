@@ -40,7 +40,7 @@ const getCalculateProbaOfBinomialDistributionQuestion: QuestionGenerator<
     answer: correctAns.toTex(),
     instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètre $n=${
       exercise.n
-    }$ et $p=${p.toTree().simplify().toTex()}$. Calculez $P(X=${exercise.k})$`,
+    }$ et $p=${p.toTree().simplify().toTex()}$. Calculez $P(X=${exercise.k}).$`,
     keys: [],
     answerFormat: "tex",
     identifiers: { exerciseVars: exercise },
