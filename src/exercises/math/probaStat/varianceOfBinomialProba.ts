@@ -43,7 +43,7 @@ const getVarianceOfBinomialProbaQuestion: QuestionGenerator<
     instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètre $n=${nX}$ et $p=${p
       .toTree()
       .simplify()
-      .toTex()}$. Calculez la variance de $X$`,
+      .toTex()}$. Calculez la variance de $X$.`,
     keys: [],
     answerFormat: "tex",
     identifiers: { nX, a, b },

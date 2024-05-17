@@ -39,7 +39,7 @@ const getExpectedValueOfBinomialProbaQuestion: QuestionGenerator<
     instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètre $n=${nX}$ et $p=${p
       .toTree()
       .simplify()
-      .toTex()}$. Calculez l'espérance de $X$`,
+      .toTex()}$. Calculez l'espérance de $X$.`,
     keys: [],
     answerFormat: "tex",
     identifiers: { nX, a, b },
