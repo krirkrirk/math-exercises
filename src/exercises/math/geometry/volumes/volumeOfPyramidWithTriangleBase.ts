@@ -21,13 +21,23 @@ import { random } from "#root/utils/random";
 
 type Identifiers = {
   h: number;
-  baseOfPyramidSides: number[];
+  baseOfPyramidSides: {
+    ABSide: number;
+    ACSide: number;
+    BCSide: number;
+    originX: number;
+  };
 };
 
 type ExerciseVars = {
   ggbCommands: string[];
   h: number;
-  baseOfPyramidSides: number[];
+  baseOfPyramidSides: {
+    ABSide: number;
+    ACSide: number;
+    BCSide: number;
+    originX: number;
+  };
   originX: number;
 };
 
@@ -53,17 +63,20 @@ const getVolumeOfPyramidWithTriangleBaseQuestion: QuestionGenerator<
   const volume = calculateVolume(baseOfPyramidSides, exercise.h);
 
   const ggb = new GeogebraConstructor(commands, {
-    hideAxes: true,
-    hideGrid: true,
+    hideAxes: false,
+    hideGrid: false,
     is3d: true,
   });
 
-  const maxCoord = Math.max(baseOfPyramidSides[0], baseOfPyramidSides[1]);
+  const maxCoord = Math.max(
+    baseOfPyramidSides.ABSide,
+    baseOfPyramidSides.ACSide,
+  );
 
   const question: Question<Identifiers> = {
     answer: volume.simplify().toTex(),
     instruction: `Soit une pyramide à base triangulaire de hauteur $${exercise.h}$. 
-    Cacluler le volume de la pyramide en sachant $AC=${baseOfPyramidSides[0]}, AB=${baseOfPyramidSides[1]}, BC=${baseOfPyramidSides[2]}$`,
+    Cacluler le volume de la pyramide en sachant que la base du triangle $AB=${baseOfPyramidSides.ABSide}$ et que sa hauteur vaut $${baseOfPyramidSides.ACSide}$`,
     keys: [],
     answerFormat: "tex",
     commands: ggb.commands,
@@ -91,7 +104,9 @@ const getPropositions: QCMGenerator<Identifiers> = (
     tryToAddWrongProp(propositions, value),
   );
   const volume = calculateVolume(baseOfPyramidSides, h).simplify();
+
   let random;
+
   while (propositions.length < n) {
     random = isNumberNode(volume)
       ? randint(volume.value - 5, volume.value + 5, [volume.value]).toTree()
@@ -110,21 +125,22 @@ const isAnswerValid: VEA<Identifiers> = (ans, { h, baseOfPyramidSides }) => {
 };
 
 const generatePropositions = (
-  baseOfPyramidSides: number[],
+  baseOfPyramidSides: {
+    ABSide: number;
+    ACSide: number;
+    BCSide: number;
+    originX: number;
+  },
   h: number,
 ): string[] => {
   const firstProposition = new FractionNode(
-    (
-      baseOfPyramidSides[0] +
-      baseOfPyramidSides[1] +
-      baseOfPyramidSides[2]
-    ).toTree(),
+    (baseOfPyramidSides.ABSide * baseOfPyramidSides.ACSide).toTree(),
     (3).toTree(),
   )
     .simplify()
     .toTex();
   const secondProposition = new FractionNode(
-    (baseOfPyramidSides[0] * baseOfPyramidSides[1]).toTree(),
+    (baseOfPyramidSides.ABSide * baseOfPyramidSides.ACSide * h).toTree(),
     (2).toTree(),
   )
     .simplify()
@@ -133,10 +149,16 @@ const generatePropositions = (
   return [firstProposition, secondProposition];
 };
 
-const calculateVolume = (sideSize: number[], h: number): AlgebraicNode => {
+const calculateVolume = (
+  sideSize: { ABSide: number; ACSide: number; BCSide: number; originX: number },
+  h: number,
+): AlgebraicNode => {
   return new FractionNode(
     new MultiplyNode(
-      new FractionNode((sideSize[0] * sideSize[1]).toTree(), (2).toTree()),
+      new FractionNode(
+        (sideSize.ABSide * sideSize.ACSide).toTree(),
+        (2).toTree(),
+      ),
       h.toTree(),
     ),
     (3).toTree(),
@@ -147,7 +169,7 @@ const generateExercise = (): ExerciseVars => {
   const h = randint(1, 21, [0]);
   const triangle = generateTriangleWithGGBCommands();
   const ggbCommands = triangle.commands.concat([
-    `H=Point({${triangle.sideSizes[0] / 4},${triangle.sideSizes[1] / 4},${h}})`,
+    `H=Point({0,${triangle.sideSizes.ACSide / 4},${h}})`,
     `SetFixed(H,true)`,
     `ShowLabel(H,true)`,
     `Pyra=Pyramid(Poly,H)`,
@@ -164,7 +186,7 @@ const generateExercise = (): ExerciseVars => {
 const generateTriangleWithGGBCommands = () => {
   const rectTriangle = random(pythagoreTriplet);
   const ABSide = rectTriangle[0];
-  const originX = randint(-ABSide + 1, 0);
+  const originX = randint(-ABSide + 2, 0, [0]);
   const ACSide = rectTriangle[1];
   const BCSide = rectTriangle[2];
   return {
@@ -180,7 +202,7 @@ const generateTriangleWithGGBCommands = () => {
       `SetFixed(C,true)`,
       `Poly=Polygon(A,B,C)`,
     ],
-    sideSizes: [ABSide, ACSide, BCSide, originX],
+    sideSizes: { ABSide, ACSide, BCSide, originX },
     originX,
   };
 };

@@ -22,14 +22,16 @@ import { random } from "#root/utils/random";
 
 type Identifiers = {
   h: number;
-  baseOfPyramidSides: number[];
+  baseOfPyramidSides: TriangleSides;
 };
 
 type ExerciseVars = {
   commands: string[];
   h: number;
-  baseOfPyramidSides: number[];
+  baseOfPyramidSides: TriangleSides;
 };
+
+type TriangleSides = { ABSide: number; ACSide: number; BCSide: number };
 
 const pythagoreTriplet = [
   [3, 4, 5],
@@ -58,12 +60,15 @@ const getVolumeOfPyramidWithTriangleRectBase: QuestionGenerator<
     is3d: true,
   });
 
-  const maxCoord = Math.max(baseOfPyramidSides[0], baseOfPyramidSides[1]);
+  const maxCoord = Math.max(
+    baseOfPyramidSides.ABSide,
+    baseOfPyramidSides.ACSide,
+  );
 
   const question: Question<Identifiers> = {
     answer: volume.simplify().toTex(),
     instruction: `Soit une pyramide à base triangulaire de hauteur $${exercise.h}$. 
-    Cacluler le volume de la pyramide en sachant $AC=${baseOfPyramidSides[0]}, AB=${baseOfPyramidSides[1]}, BC=${baseOfPyramidSides[2]}$`,
+    Cacluler le volume de la pyramide en sachant $AB=${baseOfPyramidSides.ABSide}, AC=${baseOfPyramidSides.ACSide}, BC=${baseOfPyramidSides.BCSide}$`,
     keys: [],
     answerFormat: "tex",
     commands: ggb.commands,
@@ -104,21 +109,21 @@ const isAnswerValid: VEA<Identifiers> = (ans, { h, baseOfPyramidSides }) => {
 };
 
 const generatePropositions = (
-  baseOfPyramidSides: number[],
+  baseOfPyramidSides: TriangleSides,
   h: number,
 ): string[] => {
   const firstProposition = new FractionNode(
     (
-      baseOfPyramidSides[0] +
-      baseOfPyramidSides[1] +
-      baseOfPyramidSides[2]
+      baseOfPyramidSides.ABSide +
+      baseOfPyramidSides.ACSide +
+      baseOfPyramidSides.BCSide
     ).toTree(),
     (3).toTree(),
   )
     .simplify()
     .toTex();
   const secondProposition = new FractionNode(
-    (baseOfPyramidSides[0] * baseOfPyramidSides[1]).toTree(),
+    (baseOfPyramidSides.ABSide * baseOfPyramidSides.ACSide).toTree(),
     (2).toTree(),
   )
     .simplify()
@@ -130,7 +135,7 @@ const generateExercise = (): ExerciseVars => {
   const h = randint(1, 11);
   const base = generatePolygonWithGgbCmnds();
   const commands = base.commands.concat([
-    `H=Point({${base.sideSizes[0] / 4},${base.sideSizes[1] / 4},${h}})`,
+    `H=Point({${base.sideSizes.ABSide / 4},${base.sideSizes.ACSide / 4},${h}})`,
     `SetFixed(H,true)`,
     `ShowLabel(H,true)`,
     `Pyra=Pyramid(Poly,H)`,
@@ -142,10 +147,13 @@ const generateExercise = (): ExerciseVars => {
   };
 };
 
-const calculateVolume = (sideSize: number[], h: number): AlgebraicNode => {
+const calculateVolume = (sideSize: TriangleSides, h: number): AlgebraicNode => {
   return new FractionNode(
     new MultiplyNode(
-      new FractionNode((sideSize[0] * sideSize[1]).toTree(), (2).toTree()),
+      new FractionNode(
+        (sideSize.ABSide * sideSize.ACSide).toTree(),
+        (2).toTree(),
+      ),
       h.toTree(),
     ),
     (3).toTree(),
@@ -154,7 +162,7 @@ const calculateVolume = (sideSize: number[], h: number): AlgebraicNode => {
 
 const generatePolygonWithGgbCmnds = (): {
   commands: string[];
-  sideSizes: number[];
+  sideSizes: TriangleSides;
 } => {
   const values = random(pythagoreTriplet);
   const ABSide = values[0];
@@ -172,7 +180,7 @@ const generatePolygonWithGgbCmnds = (): {
       `SetFixed(C,true)`,
       `Poly=Polygon(A,B,C)`,
     ],
-    sideSizes: values,
+    sideSizes: { ABSide, ACSide, BCSide: values[2] },
   };
 };
 export const volumeOfPyramid: Exercise<Identifiers> = {
