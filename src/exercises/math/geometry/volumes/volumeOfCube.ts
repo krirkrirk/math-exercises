@@ -25,6 +25,9 @@ const getVolumeOfCubeQuestion: QuestionGenerator<Identifiers> = () => {
     `A=Point({0,0,0})`,
     `B=Point({0,0,${cubeSide}})`,
     `C=Point({${cubeSide},0,${cubeSide}})`,
+    `ShowLabel(A,true)`,
+    `ShowLabel(B,true)`,
+    `ShowLabel(C,true)`,
     `P=Cube(A,B,C)`,
   ];
   const ggb = new GeogebraConstructor(commands, {
@@ -36,7 +39,7 @@ const getVolumeOfCubeQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     answer: Math.pow(cubeSide, 3) + "",
-    instruction: `Soit un cube d'arête ${cubeSide}. Calculer son volume.`,
+    instruction: `Soit un cube d'arête $${cubeSide}$. Calculer son volume.`,
     keys: [],
     answerFormat: "tex",
     commands: ggb.commands,
@@ -69,7 +72,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, cubeSide }) => {
   const powerNode = new PowerNode(cubeSide.toTree(), (3).toTree());
-  return [answer, powerNode.toTex()].includes(ans);
+  return [answer, ...powerNode.toAllValidTexs()].includes(ans);
 };
 
 const generatePropositions = (cubeSide: number): string[] => {
@@ -80,10 +83,10 @@ const generatePropositions = (cubeSide: number): string[] => {
 };
 export const volumeOfCube: Exercise<Identifiers> = {
   id: "volumeOfCube",
-  label: "",
-  levels: [],
+  label: "Calcul du volume d'un cube",
+  levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Géométrie euclidienne"],
   generator: (nb: number) => getDistinctQuestions(getVolumeOfCubeQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
