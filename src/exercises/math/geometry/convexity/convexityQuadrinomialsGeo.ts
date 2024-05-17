@@ -145,29 +145,20 @@ const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, quadcoeffs },
+  { answer, inflexionPoint },
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer, "tex");
 
-  const quadrinomial = new Polynomial(quadcoeffs);
-  const secondderivative = quadrinomial.derivate().derivate();
-  const seconddcoeffs = secondderivative.coefficients;
-
-  const inflexionPoint = new FractionNode(
-    new MultiplyNode(seconddcoeffs[0].toTree(), new NumberNode(-1)),
-    seconddcoeffs[1].toTree(),
-  ).simplify();
-
   const wrongInterval1 = new IntervalNode(
-    inflexionPoint,
+    inflexionPoint.toTree(),
     PlusInfinityNode,
     ClosureType.OO,
   ).toTex();
 
   const wrongInterval2 = new IntervalNode(
     MinusInfinityNode,
-    inflexionPoint,
+    inflexionPoint.toTree(),
     ClosureType.OO,
   ).toTex();
 
