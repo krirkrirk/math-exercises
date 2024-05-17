@@ -81,9 +81,8 @@ const getAffineAdjustmentRsquaredQuestion: QuestionGenerator<
   ).toTex();
 
   let dataTable = `
-| | | | | | | | | | | |
-|-|-|-|-|-|-|-|-|-|-|-|
 | $x$ | ${xValues.join(" | ")} |
+|-|-|-|-|-|-|-|-|-|-|-|
 | $y$ | ${yValues.map((n) => n.frenchify()).join(" | ")} |
   `;
 
@@ -94,6 +93,7 @@ const getAffineAdjustmentRsquaredQuestion: QuestionGenerator<
     keys: ["R", "equal"],
     answerFormat: "tex",
     identifiers: { rSquared },
+    style: { tableHasNoHeader: true },
   };
 
   return question;

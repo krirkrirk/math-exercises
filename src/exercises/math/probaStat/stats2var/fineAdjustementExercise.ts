@@ -62,7 +62,7 @@ const getFineAdjustementExerciseQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: exercise.correctAnswer,
-    instruction: `On considère le nuage de points ci-dessous. Choisir la bonne réponse.`,
+    instruction: `On considère le nuage de points ci-dessous. Un ajustement affine semble-t-il justifié ? Quelle peut être la valeur du coefficient de détermination ?`,
     commands: ggb.commands,
     options: ggb.getOptions(),
     coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),

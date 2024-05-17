@@ -85,9 +85,8 @@ const getAffineAdjustmentQuestion: QuestionGenerator<Identifiers> = () => {
   ).toTex();
 
   let dataTable = `
-| | | | | | | | | | | |
-|-|-|-|-|-|-|-|-|-|-|-|
 | $x$ | ${xValues.join(" | ")} |
+|-|-|-|-|-|-|-|-|-|-|-|
 | $y$ | ${yValues.map((n) => n.frenchify()).join(" | ")} |
   `;
 
@@ -98,6 +97,7 @@ const getAffineAdjustmentQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["equal", "y", "x", "a", "b"],
     answerFormat: "tex",
     identifiers: { G1x, G2x, G1y, G2y },
+    style: { tableHasNoHeader: true },
   };
 
   return question;
