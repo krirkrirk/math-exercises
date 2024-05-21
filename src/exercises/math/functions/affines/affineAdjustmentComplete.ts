@@ -115,19 +115,19 @@ const getAffineAdjustmentCompleteQuestion: QuestionGenerator<
   ).toTex();
 
   let dataTable = `
-| | | | | | | | | | | |
+| $x$ | ${xValues.join(" | ")} |
 |-|-|-|-|-|-|-|-|-|-|-|
-| x | ${xValues.join(" | ")} |
-| y | ${yValues.join(" | ")} |
+| $y$ | ${yValues.map((n) => n.frenchify()).join(" | ")} |
   `;
 
   const question: Question<Identifiers> = {
-    answer: `${answerEq}\\qquad ${answerR}`,
-    instruction: `Déterminer l'équation de la droite d'ajustement et la valeur du coefficient de détermination avec la calculatrice. Arrondir au centième : ${dataTable}
+    answer: `${answerEq}\\newline ${answerR}`,
+    instruction: `On considère la série statistique ci-dessous. A l'aide de la calculatrice, déterminer l'équation de la droite d'ajustement et la valeur du coefficient de détermination. Arrondir au centième. ${dataTable}
 `,
     keys: [],
     answerFormat: "tex",
     identifiers: { G1x, G2x, G1y, G2y, rSquared },
+    style: { tableHasNoHeader: true },
   };
 
   return question;
@@ -186,10 +186,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
     (-round(rSquared, 2)).toTree(),
   ).toTex();
 
-  const wrongAnswer1 = `${answerEq}\\qquad ${wrongAnswerR1}`;
-  const wrongAnswer2 = `${answerEq}\\qquad ${wrongAnswerR2}`;
-  const wrongAnswer3 = `${wrongAnswerEq1}\\qquad ${answerR}`;
-  const wrongAnswer4 = `${wrongAnswerEq2}\\qquad ${answerR}`;
+  const wrongAnswer1 = `${answerEq}\\newline ${wrongAnswerR1}`;
+  const wrongAnswer2 = `${answerEq}\\newline ${wrongAnswerR2}`;
+  const wrongAnswer3 = `${wrongAnswerEq1}\\newline ${answerR}`;
+  const wrongAnswer4 = `${wrongAnswerEq2}\\newline ${answerR}`;
 
   tryToAddWrongProp(propositions, wrongAnswer1);
   tryToAddWrongProp(propositions, wrongAnswer2);
@@ -211,7 +211,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
       round(Math.random(), 2).toTree(),
     ).toTex();
 
-    const wrongAnswer = `${wrongAnswerEq}\\qquad ${wrongAnswerR}`;
+    const wrongAnswer = `${wrongAnswerEq}\\newline ${wrongAnswerR}`;
     tryToAddWrongProp(propositions, wrongAnswer);
   }
 

@@ -31,9 +31,8 @@ const getAveragePointQuestion: QuestionGenerator<Identifiers> = () => {
   const points = distinctRandTupleInt(4, 2, { from: -9, to: 10 });
   const sortedPoints = points.sort((a, b) => a[0] - b[0]);
   const tab = `
-| | | | | |
-|-|-|-|-|-|
 |x|${sortedPoints[0][0]}|${sortedPoints[1][0]}|${sortedPoints[2][0]}|${sortedPoints[3][0]}|
+|-|-|-|-|-|
 |y|${sortedPoints[0][1]}|${sortedPoints[1][1]}|${sortedPoints[2][1]}|${sortedPoints[3][1]}|
   `;
   const instruction = `On considère la liste de points suivante : ${tab}
@@ -52,6 +51,7 @@ const getAveragePointQuestion: QuestionGenerator<Identifiers> = () => {
       xValues: sortedPoints.map((el) => el[0]),
       yValues: sortedPoints.map((el) => el[1]),
     },
+    style: { tableHasNoHeader: true },
   };
 
   return question;

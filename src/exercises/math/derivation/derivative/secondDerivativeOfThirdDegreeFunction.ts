@@ -31,7 +31,7 @@ const getSecondDerivativeOfThirdDegreeFunction: QuestionGenerator<
   const correctAnswer = funct.secondDerivate().toTree();
   const instruction = `Déterminer la fonction dérivée seconde $f''$ de la fonction $f$ définie par $f(x)=${funct
     .toTree()
-    .toTex()}$`;
+    .toTex()}$.`;
   const coeff = {
     a: coefficients[3],
     b: coefficients[2],
@@ -41,7 +41,7 @@ const getSecondDerivativeOfThirdDegreeFunction: QuestionGenerator<
   const question: Question<Identifiers> = {
     answer: correctAnswer.toTex(),
     instruction: instruction,
-    keys: ["x", "power"],
+    keys: ["x"],
     answerFormat: "tex",
     identifiers: { ...coeff },
   };
@@ -86,7 +86,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d }) => {
 
 export const secondDerivativeOfThridDegreeFunction: Exercise<Identifiers> = {
   id: "secondDerivativeOfThirdDegreeFunction",
-  label: "Calcul de dérivée seconde d'une fonction (polynôme) de degré 3",
+  label: "Dérivée seconde d'un polynôme de degré 3",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],

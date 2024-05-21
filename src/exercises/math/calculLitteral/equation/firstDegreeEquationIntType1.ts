@@ -88,8 +88,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
 };
 export const firstDegreeEquationIntType1: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType1",
-  label:
-    "Résoudre une équation du premier degré du type $ax = b$ (solution entière)",
+  label: "Résoudre une équation du type $ax = b$ (solution entière)",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Équations"],

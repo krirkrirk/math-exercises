@@ -31,6 +31,7 @@ import { coinFlip } from "#root/utils/coinFlip";
 type Identifiers = {
   askConvex: boolean;
   quadcoeffs: number[];
+  inflexionPoint: number;
 };
 
 function generatePolynomialWithIntegerInflexionPoint(
@@ -114,7 +115,7 @@ const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
   }
 
   const questionType = askConvex ? "convexe" : "concave";
-  const instruction = `Ci-dessous est tracée la courbe $\\mathcal C_f$ de la fonction $f$. Sur quel intervalle est-elle ${questionType} ?`;
+  const instruction = `Ci-dessous est tracée la courbe représentative $\\mathcal C_f$ d'une fonction $f$. Sur quel intervalle $f$ est-elle ${questionType} ?`;
 
   const commands = [
     `f(x) = ${quadrinomial.toString()}`,
@@ -136,7 +137,7 @@ const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
     options: ggb.getOptions(),
     keys: ["rbracket", "lbracket", "semicolon", "infty", "reals"],
     answerFormat: "tex",
-    identifiers: { askConvex, quadcoeffs },
+    identifiers: { askConvex, quadcoeffs, inflexionPoint: inflexionPointX },
   };
 
   return question;
@@ -144,29 +145,20 @@ const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, quadcoeffs },
+  { answer, inflexionPoint },
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer, "tex");
 
-  const quadrinomial = new Polynomial(quadcoeffs);
-  const secondderivative = quadrinomial.derivate().derivate();
-  const seconddcoeffs = secondderivative.coefficients;
-
-  const inflexionPoint = new FractionNode(
-    new MultiplyNode(seconddcoeffs[0].toTree(), new NumberNode(-1)),
-    seconddcoeffs[1].toTree(),
-  ).simplify();
-
   const wrongInterval1 = new IntervalNode(
-    inflexionPoint,
+    inflexionPoint.toTree(),
     PlusInfinityNode,
     ClosureType.OO,
   ).toTex();
 
   const wrongInterval2 = new IntervalNode(
     MinusInfinityNode,
-    inflexionPoint,
+    inflexionPoint.toTree(),
     ClosureType.OO,
   ).toTex();
 
@@ -189,9 +181,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { askConvex, quadcoeffs }) => {
-  const inflexionPoint = -quadcoeffs[2] / (3 * quadcoeffs[3]);
-
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { askConvex, quadcoeffs, inflexionPoint },
+) => {
   let interval;
   if (askConvex) {
     interval =
@@ -221,13 +214,13 @@ const isAnswerValid: VEA<Identifiers> = (ans, { askConvex, quadcoeffs }) => {
           );
   }
 
-  const latexs = interval.toAllValidTexs({ allowFractionToDecimal: true });
+  const latexs = interval.toAllValidTexs({});
 
   return latexs.includes(ans);
 };
 export const convexityQuadrinomialsGeo: Exercise<Identifiers> = {
   id: "convexityQuadrinomialsGeo",
-  label: "Convexité des fonctions polynomiales de degré 3 (Geogebra)",
+  label: "Déterminer graphiquement la convexité d'un polynôme de degré $3$",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],
@@ -236,7 +229,6 @@ export const convexityQuadrinomialsGeo: Exercise<Identifiers> = {
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
-  answerType: "QCM",
   isAnswerValid,
   subject: "Mathématiques",
 };

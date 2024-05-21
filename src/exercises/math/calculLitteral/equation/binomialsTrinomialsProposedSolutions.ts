@@ -71,7 +71,7 @@ const getBinomialsTrinomialsProposedSolutionsQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Soit $x_0 = ${solution}$. Est-ce une solution de l'équation $${equation.toTex()}$ ?`,
+    instruction: `Le nombre $${solution}$ est-il une solution de l'équation $${equation.toTex()}$ ?`,
     keys: [],
     answerFormat: "raw",
     identifiers: {},
@@ -96,7 +96,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 };
 export const binomialsTrinomialsProposedSolutions: Exercise<Identifiers> = {
   id: "binomialsTrinomialsProposedSolutions",
-  label: "Demander si un nombre est solution d'une équation",
+  label: "Vérifier si un nombre est solution d'une équation",
   levels: ["1rePro"],
   isSingleStep: true,
   sections: ["Équations"],

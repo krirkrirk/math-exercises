@@ -30,7 +30,7 @@ const getFirstDegreeEquationIntQuestion: QuestionGenerator<
 > = () => {
   const a = randint(-15, 15, [0]);
   const x = randint(-15, 15, [0]);
-  const c = randint(-15, 15, [0]);
+  const c = randint(-15, 15, [0, a]);
   const d = randint(-15, 15, [0]);
   const b = d - (a - c) * x;
   const answer = new EqualNode(new VariableNode("x"), x.toTree()).toTex();
@@ -111,8 +111,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, x }) => {
 };
 export const firstDegreeEquationIntType3: Exercise<Identifiers> = {
   id: "firstDegreeEquationIntType3",
-  label:
-    "Résoudre une équation du premier degré du type $ax + b = cx + d$ (solution entière)",
+  label: "Résoudre une équation du type $ax + b = cx + d$ (solution entière)",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Équations"],

@@ -81,19 +81,19 @@ const getAffineAdjustmentRsquaredQuestion: QuestionGenerator<
   ).toTex();
 
   let dataTable = `
-| | | | | | | | | | | |
+| $x$ | ${xValues.join(" | ")} |
 |-|-|-|-|-|-|-|-|-|-|-|
-| x | ${xValues.join(" | ")} |
-| y | ${yValues.join(" | ")} |
+| $y$ | ${yValues.map((n) => n.frenchify()).join(" | ")} |
   `;
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `À partir des données fournies ci-dessous, déterminez la valeur du coefficient de détermination : ${dataTable}
+    instruction: `On considère la série statistique ci-dessous. Déterminez la valeur du coefficient de détermination. ${dataTable}
 `,
     keys: ["R", "equal"],
     answerFormat: "tex",
     identifiers: { rSquared },
+    style: { tableHasNoHeader: true },
   };
 
   return question;
