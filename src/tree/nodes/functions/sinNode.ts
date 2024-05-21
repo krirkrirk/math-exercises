@@ -1,7 +1,7 @@
 // import { sin } from "mathjs";
 import { Node, NodeType, hasVariableNode } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
-import { AlgebraicNode } from "../algebraicNode";
+import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
 export function isSinNode(a: Node): a is SinNode {
   return isFunctionNode(a) && a.id === FunctionsIds.sin;
@@ -41,16 +41,23 @@ export class SinNode implements FunctionNode {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }
 
-  simplify(): AlgebraicNode {
+  simplify(opts?: SimplifyOptions): AlgebraicNode {
     const simplifiedChild = this.child.simplify();
     if (!hasVariableNode(simplifiedChild)) {
       const value = simplifiedChild.evaluate({});
-      const moduled = Math.abs(value % (2 * Math.PI));
-      const trigoPoint = remarkableTrigoValues.find(
-        (value) => value.angle.evaluate({}) === moduled,
+      const moduled = opts?.isDegree
+        ? Math.abs(value % 360)
+        : Math.abs(value % (2 * Math.PI));
+      const trigoPoint = remarkableTrigoValues.find((value) =>
+        opts?.isDegree
+          ? value.degree === moduled
+          : value.angle.evaluate({}) === moduled,
       );
       if (!trigoPoint) return this;
-      else return trigoPoint.cos;
+      else
+        return opts?.isDegree
+          ? Math.sin(trigoPoint.degree).toTree()
+          : trigoPoint.sin;
     } else {
       //écrire les regles albgeiruqe
       //chaque simplification doit relancer tout le simplify

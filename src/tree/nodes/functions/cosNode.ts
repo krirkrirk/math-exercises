@@ -1,7 +1,7 @@
 // import { cos } from "mathjs";
 import { Node, NodeType, hasVariableNode } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
-import { AlgebraicNode } from "../algebraicNode";
+import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
 export function isCosNode(a: Node): a is CosNode {
   return isFunctionNode(a) && a.id === FunctionsIds.cos;
@@ -43,16 +43,25 @@ export class CosNode implements FunctionNode {
   //   return cos(this.child.toMathjs());
   // }
 
-  simplify() {
+  simplify(opts?: SimplifyOptions) {
     const simplifiedChild = this.child.simplify();
     if (!hasVariableNode(simplifiedChild)) {
       const value = simplifiedChild.evaluate({});
-      const moduled = Math.abs(value % (2 * Math.PI));
-      const trigoPoint = remarkableTrigoValues.find(
-        (value) => value.angle.evaluate({}) === moduled,
+      const moduled = opts?.isDegree
+        ? Math.abs(value % 360)
+        : Math.abs(value % (2 * Math.PI));
+      const trigoPoint = remarkableTrigoValues.find((value) =>
+        opts?.isDegree
+          ? value.degree === moduled
+          : value.angle.evaluate({}) === moduled,
       );
-      if (!trigoPoint) return new CosNode(simplifiedChild);
-      else return trigoPoint.cos;
+      if (!trigoPoint) {
+        return new CosNode(simplifiedChild);
+      } else {
+        return opts?.isDegree
+          ? Math.cos(trigoPoint.degree).toTree()
+          : trigoPoint.cos;
+      }
     } else {
       //écrire les regles albgeiruqe
       //chaque simplification doit relancer tout le simplify
