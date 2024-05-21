@@ -16,6 +16,7 @@ import { TrinomConstructor } from "#root/math/polynomials/trinom";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
   trinom: number[];
@@ -57,12 +58,12 @@ const getConvexityTrinomialsGeoQuestion: QuestionGenerator<
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer, "raw");
-
   tryToAddWrongProp(propositions, "Concave", "raw");
   tryToAddWrongProp(propositions, "Convexe", "raw");
+  shuffle(propositions);
   tryToAddWrongProp(propositions, "Ni l'un ni l'autre", "raw");
   tryToAddWrongProp(propositions, "On ne peut pas savoir", "raw");
-  return shuffleProps(propositions, n);
+  return propositions;
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {

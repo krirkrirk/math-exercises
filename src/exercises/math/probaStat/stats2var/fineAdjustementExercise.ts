@@ -62,7 +62,7 @@ const getFineAdjustementExerciseQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: exercise.correctAnswer,
-    instruction: `On considère le nuage de points ci-dessous. Choisir la bonne réponse.`,
+    instruction: `On considère le nuage de points ci-dessous. Un ajustement affine semble-t-il justifié ? Quelle peut être la valeur du coefficient de détermination ?`,
     commands: ggb.commands,
     options: ggb.getOptions(),
     coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
@@ -85,7 +85,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   );
   let randomNb: number;
   while (propositions.length < n) {
-    randomNb = randfloat(-0.5, 0.5, 2);
+    randomNb = randfloat(0, 0.5, 2);
     tryToAddWrongProp(
       propositions,
       `Un ajustement affine est justifié. Le coefficient de détermination vaut ${randomNb}`,
@@ -95,13 +95,13 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const generateProposition = (isJustified: boolean): string[] => {
-  let randCoeff = randfloat(-0.5, 0.5, 2);
+  let randCoeff = randfloat(0, 0.7, 2);
   let node = new NumberNode(randCoeff);
   const firstProposition = `Un ajustement affine est justifié. Le coefficient de détermination vaut ${node.toTex()}`;
   randCoeff = randfloat(0.9, 1.0, 2);
   node = new NumberNode(randCoeff);
   const secondProposition = `Un ajustement affine n'est pas justifié. Le coefficient de détermination vaut ${node.toTex()}`;
-  randCoeff = isJustified ? randfloat(-0.5, 0.5, 2) : randfloat(0.9, 1.0, 2);
+  randCoeff = isJustified ? randfloat(0, 0.7, 2) : randfloat(0.9, 1.0, 2);
   node = new NumberNode(randCoeff);
   const thirdProposition = `Un ajustement affine ${
     isJustified ? `n'est pas justifié` : `est justifié`
@@ -119,13 +119,24 @@ const generateExercise = (): ExerciseType => {
   const cloudPoints = flip
     ? CloudPointsConstructor.random(8)
     : CloudPointsConstructor.randomLinear(8);
-  const coeff = cloudPoints.getCorrelationCoeff();
+  const coeff = cloudPoints.getCorrelationCoeff().value;
+  let determinationCoeff = new NumberNode(+(coeff * coeff).toFixed(2));
+  if (determinationCoeff.value === 0) {
+    determinationCoeff = new NumberNode(0.1);
+  }
+  if (determinationCoeff.value === 1) {
+    determinationCoeff = new NumberNode(0.99);
+  }
   const correctAnswer =
-    Math.abs(coeff.value) >= 0.9
-      ? `Un ajustement affine est justifié. Le coefficient de détermination vaut ${coeff.toTex()}`
-      : `Un ajustement affine n'est pas justifié. Le coefficient de détermination vaut ${coeff.toTex()}`;
+    determinationCoeff.value >= 0.9
+      ? `Un ajustement affine est justifié. Le coefficient de détermination vaut ${determinationCoeff.toTex()}`
+      : `Un ajustement affine n'est pas justifié. Le coefficient de détermination vaut ${determinationCoeff.toTex()}`;
 
-  return { cloudPoints, isJustified: !flip, correctAnswer };
+  return {
+    cloudPoints,
+    isJustified: determinationCoeff.value >= 0.9,
+    correctAnswer,
+  };
 };
 export const fineAdjustementExercise: Exercise<Identifiers> = {
   id: "fineAdjustementExercise",

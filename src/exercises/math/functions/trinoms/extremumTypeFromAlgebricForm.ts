@@ -45,9 +45,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer, "raw");
   tryToAddWrongProp(propositions, a < 0 ? "Un minimum" : "Un maximum", "raw");
-  addWrongProp(propositions, "Ni l'un ni l'autre", "raw");
+  shuffle(propositions);
   addWrongProp(propositions, "On ne peut pas savoir", "raw");
-  return shuffle(propositions);
+  addWrongProp(propositions, "Ni l'un ni l'autre", "raw");
+  return propositions;
 };
 
 export const extremumTypeFromAlgebricForm: Exercise<Identifiers> = {
