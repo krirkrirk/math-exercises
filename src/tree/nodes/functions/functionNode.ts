@@ -14,6 +14,8 @@ export enum FunctionsIds {
   log10,
   exp,
   abs,
+  arcsin,
+  arccos,
 }
 
 export interface FunctionNode extends AlgebraicNode {
