@@ -14,7 +14,6 @@ import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 import { random } from "#root/utils/random";
-import { time } from "console";
 
 type Identifiers = {
   triangleSides: TriangleSides;
@@ -36,7 +35,11 @@ const pythagoreTriplet = [
   [28, 45, 53],
   [11, 60, 61],
   [16, 63, 65],
-];
+].map((value) => {
+  return value.map((nb) => {
+    return nb / 2;
+  });
+});
 
 const almostRightTriangle = [
   [5, 1, 4.9],
@@ -62,14 +65,18 @@ const getIsTriangleRightQuestion: QuestionGenerator<Identifiers> = () => {
     triangle.sides.ACSide,
     triangle.sides.BCSide,
   );
+
+  const correctAnswer = triangle.isRight
+    ? "Le triangle est rectangle en C."
+    : "Le triangle n'est pas rectangle.";
   const question: Question<Identifiers> = {
-    answer: randint(1, 10) + "",
-    instruction: `test${randint(1, 100)}`,
+    answer: correctAnswer,
+    instruction: `Le triangle $ABC$ est-il rectangle, en sachant que : $AB=${triangle.sides.ABSide},AC=${triangle.sides.ACSide}$ et $BC=${triangle.sides.BCSide}$`,
     keys: [],
     commands: ggb.commands,
     options: ggb.getOptions(),
     coords: [-5, maxCoord + 5, -5, maxCoord + 5],
-    answerFormat: "tex",
+    answerFormat: "raw",
     identifiers: { triangleSides: triangle.sides },
   };
 
@@ -78,15 +85,15 @@ const getIsTriangleRightQuestion: QuestionGenerator<Identifiers> = () => {
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer);
-  while (propositions.length < n) {
-    throw Error("QCM not implemented");
-  }
+  addValidProp(propositions, answer, "raw");
+  tryToAddWrongProp(propositions, "Le triangle n'est pas rectangle.", "raw");
+  tryToAddWrongProp(propositions, "Le triangle est rectangle en C.", "raw");
+  tryToAddWrongProp(propositions, "on ne peut pas savoir.", "raw");
   return shuffleProps(propositions, n);
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  throw Error("VEA not implemented");
+  return ans === answer;
 };
 
 const generateTriangle = () => {
@@ -95,9 +102,9 @@ const generateTriangle = () => {
     const randomRectTriangle = random(pythagoreTriplet);
     return {
       ggbCommands: [
-        `A=Point({0,0})`,
-        `B=Point({${randomRectTriangle[1]},0})`,
-        `C=Point({0,${randomRectTriangle[2]}})`,
+        `C=Point({0,0})`,
+        `A=Point({${randomRectTriangle[1]},0})`,
+        `B=Point({0,${randomRectTriangle[2]}})`,
         `ShowLabel(A,True)`,
         `ShowLabel(B,True)`,
         `ShowLabel(C,True)`,
@@ -108,6 +115,7 @@ const generateTriangle = () => {
         ACSide: randomRectTriangle[1],
         BCSide: randomRectTriangle[2],
       },
+      isRight: true,
     };
   } else {
     const triangle = random(almostRightTriangle);
@@ -122,6 +130,8 @@ const generateTriangle = () => {
         `ShowLabel(B,True)`,
         `ShowLabel(A,True)`,
         `ShowLabel(C,True)`,
+        `SetColor(A,"Black")`,
+        `SetColor(B,"Black")`,
         `SetColor(C,"Black")`,
         `Poly=Polygon(A,B,C)`,
       ],
@@ -130,38 +140,25 @@ const generateTriangle = () => {
         ACSide: triangle[1],
         BCSide: triangle[2],
       },
+      isRight: false,
     };
   }
 };
 
-const getCloseRightTriangle = (bC: number): { aB: number; aC: number } => {
-  for (let aB = 2; aB <= bC / 2; aB++) {
-    for (let aC = aB; aC <= bC - 1; aC++) {
-      const result = Math.pow(aB, 2) + Math.pow(aC, 2);
-      const bCPowTwo = Math.pow(bC, 2);
-      if (
-        result >= bCPowTwo - 4 &&
-        result <= bCPowTwo + 4 &&
-        result !== bCPowTwo
-      )
-        return { aB, aC };
-    }
-  }
-  return { aB: 0, aC: 0 };
-};
-
 export const isTriangleRight: Exercise<Identifiers> = {
   id: "isTriangleRight",
-  label: "",
-  levels: [],
+  label:
+    "Determiner si un triangle est rectangle à l'aide du theoreme de pythagore",
+  levels: ["4ème"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Théorème de Pythagore"],
   generator: (nb: number) =>
     getDistinctQuestions(getIsTriangleRightQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  answerType: "QCM",
   hasGeogebra: true,
   subject: "Mathématiques",
 };
