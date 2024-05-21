@@ -102,17 +102,17 @@ const generateTriangle = () => {
     return {
       ggbCommands: [
         `C=Point({0,0})`,
-        `A=Point({${randomRectTriangle[1]},0})`,
-        `B=Point({0,${randomRectTriangle[2]}})`,
+        `A=Point({${randomRectTriangle[0]},0})`,
+        `B=Point({0,${randomRectTriangle[1]}})`,
         `ShowLabel(A,True)`,
         `ShowLabel(B,True)`,
         `ShowLabel(C,True)`,
         `Poly=Polygon(A,B,C)`,
       ],
       sides: {
-        ABSide: randomRectTriangle[0],
-        ACSide: randomRectTriangle[1],
-        BCSide: randomRectTriangle[2],
+        ABSide: randomRectTriangle[2],
+        ACSide: randomRectTriangle[0],
+        BCSide: randomRectTriangle[1],
       },
       isRight: true,
     };
