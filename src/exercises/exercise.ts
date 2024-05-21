@@ -85,6 +85,10 @@ export type VEA<TIdentifiers> = (
   studentAnswer: string,
   args: { answer: string } & TIdentifiers,
 ) => boolean;
+export type GGBVEA<TIdentifiers> = {
+  studentAnswer: string[];
+  args: { answer: string } & TIdentifiers;
+};
 export type QuestionGenerator<TIdentifiers = {}, TOptions = {}> = (
   opts?: TOptions,
 ) => Question<TIdentifiers>;
@@ -102,6 +106,7 @@ export interface Exercise<TIdentifiers = {}> {
   freeTimer: number;
   getPropositions?: QCMGenerator<{ answer: string } & TIdentifiers>;
   isAnswerValid?: VEA<TIdentifiers>;
+  isGGBValid?: GGBVEA<TIdentifiers>;
   hasGeogebra?: boolean;
   subject: "Mathématiques" | "Chimie" | "Physique";
 }
