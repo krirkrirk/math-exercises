@@ -140,7 +140,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, affinecoeffs }) => {
 
 export const sinSecondDegreeDerivative: Exercise<Identifiers> = {
   id: "sinSecondDegreeDerivative",
-  label: "Dérivée seconde de sin(u)",
+  label: "Dérivée seconde de $\\sin(u)$",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],

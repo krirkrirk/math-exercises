@@ -81,7 +81,7 @@ const generateExercise = (): ExerciseType => {
 export const leadingCoeffAndOriginOrdinate: Exercise<Identifiers> = {
   id: "leadingCoeffAndOriginOrdinate",
   label:
-    "A partir de l'expression algébrique d'une fonction affine, déterminer la valeur du coefficient directeur ou de l'ordonnée à l'origine.",
+    "Identifier le coefficient directeur ou l'ordonnée à l'origine d'une fonction affine",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Fonctions affines"],
