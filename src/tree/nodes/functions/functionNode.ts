@@ -10,6 +10,7 @@ export enum FunctionsIds {
   sqrt,
   cos,
   sin,
+  tan,
   log,
   log10,
   exp,

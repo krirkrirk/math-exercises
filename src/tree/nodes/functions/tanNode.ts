@@ -1,38 +1,32 @@
-// import { sin } from "mathjs";
+// import { cos } from "mathjs";
 import { Node, NodeType, hasVariableNode } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
-export function isSinNode(a: Node): a is SinNode {
-  return isFunctionNode(a) && a.id === FunctionsIds.sin;
+export function isTanNode(a: Node): a is TanNode {
+  return isFunctionNode(a) && a.id === FunctionsIds.tan;
 }
-export class SinNode implements FunctionNode {
+export class TanNode implements FunctionNode {
   id: FunctionsIds;
   child: AlgebraicNode;
   type: NodeType;
   isNumeric: boolean;
   constructor(child: AlgebraicNode) {
-    this.id = FunctionsIds.sin;
+    this.id = FunctionsIds.tan;
     this.child = child;
     this.type = NodeType.function;
     this.isNumeric = child.isNumeric;
   }
 
   toMathString(): string {
-    return `sin(${this.child.toMathString()})`;
+    return `tan(${this.child.toMathString()})`;
   }
 
-  toTex(): string {
-    return `\\sin\\left(${this.child.toTex()}\\right)`;
-  }
-  // toMathjs() {
-  //   return sin(this.child.toMathjs());
-  // }
   toEquivalentNodes(): AlgebraicNode[] {
     const res: AlgebraicNode[] = [];
     const childNodes = this.child.toEquivalentNodes();
     childNodes.forEach((childNode) => {
-      res.push(new SinNode(childNode));
+      res.push(new TanNode(childNode));
     });
     return res;
   }
@@ -41,7 +35,11 @@ export class SinNode implements FunctionNode {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }
 
-  simplify(opts?: SimplifyOptions): AlgebraicNode {
+  toTex(): string {
+    return `\\tan\\left(${this.child.toTex()}\\right)`;
+  }
+
+  simplify(opts?: SimplifyOptions) {
     const simplifiedChild = this.child.simplify();
     if (!hasVariableNode(simplifiedChild)) {
       const value = simplifiedChild.evaluate({});
@@ -53,23 +51,25 @@ export class SinNode implements FunctionNode {
           ? value.degree === moduled
           : value.angle.evaluate({}) === moduled,
       );
-      if (!trigoPoint) return new SinNode(this);
-      else
+      if (!trigoPoint) {
+        return new TanNode(simplifiedChild);
+      } else {
         return opts?.isDegree
-          ? Math.sin(trigoPoint.degree).toTree()
-          : trigoPoint.sin;
+          ? Math.tan(trigoPoint.degree).toTree()
+          : trigoPoint.cos;
+      }
     } else {
       //écrire les regles albgeiruqe
       //chaque simplification doit relancer tout le simplify
       //cos(x+2PI)
       //cos(-x)
     }
-    return this;
+    return new TanNode(simplifiedChild);
   }
   evaluate(vars: Record<string, number>) {
-    return Math.sin(this.child.evaluate(vars));
+    return Math.tan(this.child.evaluate(vars));
   }
-  equals(node: AlgebraicNode): boolean {
-    return isSinNode(node) && node.child.equals(this.child);
+  equals(node: AlgebraicNode) {
+    return isTanNode(node) && node.child.equals(this.child);
   }
 }

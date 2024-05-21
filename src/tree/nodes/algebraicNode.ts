@@ -6,7 +6,7 @@ export type SimplifyOptions = {
   keepPowers?: boolean;
   //nb de chiffres significatifs
   scientific?: number;
-  isDegree: boolean;
+  isDegree?: boolean;
 };
 export interface AlgebraicNode extends Node {
   // multiply: (n: AlgebraicNode) => AlgebraicNode;
