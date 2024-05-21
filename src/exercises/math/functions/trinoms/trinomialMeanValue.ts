@@ -10,7 +10,7 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { Trinom } from "#root/math/polynomials/trinom";
+import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
@@ -20,20 +20,20 @@ import { ClosureType } from "#root/tree/nodes/sets/closure";
 import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 
 type Identifiers = {
-  trinomial: number[];
+  quadrinomial: number[];
   leftbound: number;
   rightbound: number;
 };
 
-const getAffineMeanValueQuestion: QuestionGenerator<Identifiers> = () => {
-  const a = randint(-10, 10, [0]);
-  const b = randint(-10, 10);
-  const trinomial = new Trinom(a, b, randint(-10, 10));
+const getTrinomialMeanValueQuestion: QuestionGenerator<Identifiers> = () => {
+  const a = randint(-5, 7, [0]);
+  const b = randint(-5, 7);
+  const quadrinomial = new Polynomial([randint(-5, 7), randint(-5, 7), b, a]);
 
   const leftbound = randint(-5, 6);
   const rightbound = randint(leftbound + 1, leftbound + 1);
 
-  const func = trinomial.derivate().toTree().toTex();
+  const func = quadrinomial.derivate().toTree().toTex();
   const interval = new IntervalNode(
     leftbound.toTree(),
     rightbound.toTree(),
@@ -42,7 +42,9 @@ const getAffineMeanValueQuestion: QuestionGenerator<Identifiers> = () => {
 
   const answer = new MultiplyNode(
     new FractionNode(new NumberNode(1), (rightbound - leftbound).toTree()),
-    (trinomial.calculate(rightbound) - trinomial.calculate(leftbound)).toTree(),
+    (
+      quadrinomial.calculate(rightbound) - quadrinomial.calculate(leftbound)
+    ).toTree(),
   )
     .simplify()
     .toTex();
@@ -53,7 +55,7 @@ const getAffineMeanValueQuestion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: {
-      trinomial: [trinomial.a, trinomial.b, trinomial.c],
+      quadrinomial: quadrinomial.coefficients,
       rightbound,
       leftbound,
     },
@@ -64,12 +66,11 @@ const getAffineMeanValueQuestion: QuestionGenerator<Identifiers> = () => {
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, trinomial, leftbound, rightbound },
+  { answer, quadrinomial, leftbound, rightbound },
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-
-  const trinomial1 = new Trinom(trinomial[0], trinomial[1], trinomial[2]);
+  const quadrinomial1 = new Polynomial(quadrinomial);
 
   const wrongAnswer1 = new AddNode(
     new FractionNode(
@@ -77,7 +78,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
       (rightbound - leftbound).toTree(),
     ).simplify(),
     (
-      trinomial1.calculate(rightbound) - trinomial1.calculate(leftbound)
+      quadrinomial1.calculate(rightbound) - quadrinomial1.calculate(leftbound)
     ).toTree(),
   )
     .simplify({ forbidFactorize: true })
@@ -86,14 +87,14 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const wrongAnswer2 = new MultiplyNode(
     new FractionNode(new NumberNode(1), (leftbound - rightbound).toTree()),
     (
-      trinomial1.calculate(rightbound) - trinomial1.calculate(leftbound)
+      quadrinomial1.calculate(rightbound) - quadrinomial1.calculate(leftbound)
     ).toTree(),
   )
     .simplify()
     .toTex();
 
   const wrongAnswer3 = (
-    trinomial1.calculate(rightbound) - trinomial1.calculate(leftbound)
+    quadrinomial1.calculate(rightbound) - quadrinomial1.calculate(leftbound)
   )
     .toTree()
     .toTex();
@@ -110,13 +111,13 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
 const isAnswerValid: VEA<Identifiers> = (
   ans,
-  { answer, trinomial, leftbound, rightbound },
+  { answer, quadrinomial, leftbound, rightbound },
 ) => {
-  const trinomial1 = new Trinom(trinomial[0], trinomial[1], trinomial[2]);
+  const quadrinomial1 = new Polynomial(quadrinomial);
   const validanswer = new MultiplyNode(
     new FractionNode(new NumberNode(1), (rightbound - leftbound).toTree()),
     (
-      trinomial1.calculate(rightbound) - trinomial1.calculate(leftbound)
+      quadrinomial1.calculate(rightbound) - quadrinomial1.calculate(leftbound)
     ).toTree(),
   ).simplify();
 
@@ -124,14 +125,14 @@ const isAnswerValid: VEA<Identifiers> = (
 
   return latexs.includes(ans);
 };
-export const affineMeanValue: Exercise<Identifiers> = {
-  id: "affineMeanValue",
-  label: "Calcul de la valeur moyenne d'une fonction affine",
+export const trinomialMeanValue: Exercise<Identifiers> = {
+  id: "trinomialMeanValue",
+  label: "Calcul de la valeur moyenne d'une fonction trinôme",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Intégration"],
   generator: (nb: number) =>
-    getDistinctQuestions(getAffineMeanValueQuestion, nb),
+    getDistinctQuestions(getTrinomialMeanValueQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
