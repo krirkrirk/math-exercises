@@ -14,6 +14,7 @@ import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { CosNode } from "#root/tree/nodes/functions/cosNode";
 import { TanNode } from "#root/tree/nodes/functions/tanNode";
+import { DegreeNode } from "#root/tree/nodes/geometry/degree";
 import { random } from "#root/utils/random";
 
 type Identifiers = {
@@ -29,7 +30,9 @@ const getCalculateCosSinAndTanQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     answer: getCorrectAnswer(degree, trigoFunct),
-    instruction: `Calculer $${trigoFunct}(${degree})$, arrondir la valeur au dixième.`,
+    instruction: `Calculer $${trigoFunct}(${new DegreeNode(
+      degree,
+    ).toTex()})$, arrondir la valeur au dixième.`,
     keys: [],
     answerFormat: "tex",
     identifiers: { degree },
