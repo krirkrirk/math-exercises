@@ -33,6 +33,7 @@ export abstract class RemarkableValueConstructor {
       angle: newRadian,
       cos: randValue.cos,
       sin: randValue.sin,
+      tan: randValue.tan,
       point: randValue.point,
       degree: randValue.degree,
     };
