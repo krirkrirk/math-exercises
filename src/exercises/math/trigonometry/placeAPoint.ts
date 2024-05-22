@@ -12,19 +12,19 @@ type Identifiers = {};
 
 const getPlaceAPointQuestion: QuestionGenerator<Identifiers> = () => {
   const point = PointConstructor.random("A");
-
+  const xMax = point.getXnumber() + 2;
+  const xMin = point.getXnumber() - 2;
+  const yMin = point.getYnumber() - 2;
+  const yMax = point.getYnumber() + 2;
   const question: Question<Identifiers> = {
     ggbAnswer: [`(${point.getXnumber()},${point.getYnumber()})`],
     instruction: `Placer le point $A=(${point.getXnumber()},${point.getYnumber()})$`,
     keys: [],
     studentGgbOptions: {
       //customToolBar: ToolBarConstructor.default(),
-      coords: [
-        point.getXnumber() - 2,
-        point.getXnumber() + 2,
-        point.getYnumber() - 2,
-        point.getYnumber() + 2,
-      ],
+      coords: [xMin, xMax, yMin, yMax],
+      isGridSimple: true,
+      isXAxesNatural: true,
     },
     identifiers: {},
   };
