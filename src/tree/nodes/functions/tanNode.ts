@@ -2,6 +2,7 @@ import { Node, NodeType, hasVariableNode } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
+import { SimplifyOptions } from "./sinNode";
 
 export function isTanNode(a: Node): a is TanNode {
   return isFunctionNode(a) && a.id === FunctionsIds.tan;
@@ -41,23 +42,26 @@ export class TanNode implements FunctionNode {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }
 
-  simplify(): AlgebraicNode {
+  simplify(opts: SimplifyOptions = {}): AlgebraicNode {
     const simplifiedChild = this.child.simplify();
     if (!hasVariableNode(simplifiedChild)) {
-      const value = simplifiedChild.evaluate({});
-      const moduled = Math.abs(value % Math.PI); // Tangente est périodique avec une période de PI
+      let value = simplifiedChild.evaluate({});
+      if (opts.isDegree) {
+        value = (value * Math.PI) / 180;
+      }
+      const moduled = Math.abs(value % Math.PI);
       const trigoPoint = remarkableTrigoValues.find(
-        (value) => value.angle.evaluate({}) === moduled,
+        (val) => val.angle.evaluate({}) === moduled,
       );
-      if (!trigoPoint) return this;
+      if (!trigoPoint) return new TanNode(simplifiedChild);
       else return trigoPoint.tan;
     } else {
-      //écrire les règles algébriques
-      //chaque simplification doit relancer tout le simplify
-      //tan(x + PI)
-      //tan(-x) = -tan(x)
+      // Écrire les règles algébriques spécifiques à tan ici
+      // Exemples :
+      // tan(x + π) -> tan(x)
+      // tan(-x) -> -tan(x)
     }
-    return this;
+    return new TanNode(simplifiedChild);
   }
 
   evaluate(vars: Record<string, number>) {
