@@ -61,28 +61,28 @@ function calculateRSquared(xValues: number[], yValues: number[]) {
   const r = numerator / denominator;
   const rSquared = r * r;
 
-  return rSquared;
+  return round(rSquared, 2);
 }
 
 const getAffineAdjustmentRsquaredQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const data = generateLinearData(10);
+  const data = generateLinearData(6);
   data.sort((a, b) => a.x - b.x);
 
-  const xValues = data.map((point) => round(point.x, 2));
-  const yValues = data.map((point) => round(point.y, 2));
+  const xValues = data.map((point) => round(point.x, 1));
+  const yValues = data.map((point) => round(point.y, 1));
 
   const rSquared = calculateRSquared(xValues, yValues);
 
   const answer = new EqualNode(
     new PowerNode(new VariableNode("R"), new NumberNode(2)),
-    round(rSquared, 2).toTree(),
+    rSquared.toTree(),
   ).toTex();
 
   let dataTable = `
 | $x$ | ${xValues.join(" | ")} |
-|-|-|-|-|-|-|-|-|-|-|-|
+|-|-|-|-|-|-|-|
 | $y$ | ${yValues.map((n) => n.frenchify()).join(" | ")} |
   `;
 
@@ -108,17 +108,17 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
   const wrongAnswer1 = new EqualNode(
     new VariableNode("R"),
-    round(rSquared, 2).toTree(),
+    rSquared.toTree(),
   ).toTex();
 
   const wrongAnswer2 = new EqualNode(
     new PowerNode(new VariableNode("R"), new NumberNode(2)),
-    (-round(rSquared, 2)).toTree(),
+    (rSquared + 0.01).toTree(),
   ).toTex();
 
   const wrongAnswer3 = new EqualNode(
     new VariableNode("R"),
-    (-round(rSquared, 2)).toTree(),
+    (rSquared - 0.01).toTree(),
   ).toTex();
 
   tryToAddWrongProp(propositions, wrongAnswer1);
@@ -127,7 +127,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
   while (propositions.length < n) {
     const wrongAnswer = new EqualNode(
-      new PowerNode(new VariableNode("R"), new NumberNode(2)),
+      new PowerNode(new VariableNode("R"), new NumberNode(1)),
       round(Math.random(), 2).toTree(),
     ).toTex();
     tryToAddWrongProp(propositions, wrongAnswer);
@@ -137,12 +137,12 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { rSquared }) => {
-  const valid = new EqualNode(
+  const validanswer = new EqualNode(
     new PowerNode(new VariableNode("R"), new NumberNode(2)),
-    round(rSquared, 2).toTree(),
+    rSquared.toTree(),
   );
 
-  const latexs = valid.toAllValidTexs({
+  const latexs = validanswer.toAllValidTexs({
     allowRawRightChildAsSolution: true,
     allowFractionToDecimal: true,
   });
