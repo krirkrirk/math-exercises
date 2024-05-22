@@ -56,8 +56,9 @@ export type Proposition = {
 export interface Question<TIdentifiers = {}> {
   instruction: string;
   startStatement?: string;
-  answer: string;
-  answerFormat: "tex" | "raw";
+  answer?: string;
+  answerFormat?: "tex" | "raw";
+  ggbAnswer?: string[];
   keys?: KeyId[];
   commands?: string[];
   coords?: number[];
@@ -69,6 +70,17 @@ export interface Question<TIdentifiers = {}> {
     isGridSimple?: boolean;
     isAxesRatioFixed?: boolean;
     isXAxesNatural?: boolean;
+  };
+  studentGgbOptions?: {
+    customToolBar?: string;
+    gridDistance?: [number, number] | false;
+    hideGrid?: boolean;
+    hideAxes?: boolean;
+    isGridBold?: boolean;
+    isGridSimple?: boolean;
+    isAxesRatioFixed?: boolean;
+    isXAxesNatural?: boolean;
+    coords?: number[];
   };
   style?: {
     tableHasNoHeader?: boolean;
@@ -85,10 +97,10 @@ export type VEA<TIdentifiers> = (
   studentAnswer: string,
   args: { answer: string } & TIdentifiers,
 ) => boolean;
-export type GGBVEA<TIdentifiers> = {
-  studentAnswer: string[];
-  args: { answer: string } & TIdentifiers;
-};
+export type GGBVEA<TIdentifiers> = (
+  studentAnswer: string[],
+  args: { ggbAnswer: string[] } & TIdentifiers,
+) => boolean;
 export type QuestionGenerator<TIdentifiers = {}, TOptions = {}> = (
   opts?: TOptions,
 ) => Question<TIdentifiers>;
@@ -101,12 +113,12 @@ export interface Exercise<TIdentifiers = {}> {
   connector?: "=" | "\\iff" | "\\approx";
   generator: (n: number) => Question<TIdentifiers>[];
   maxAllowedQuestions?: number;
-  answerType?: "QCM" | "free";
+  answerType?: "GGB" | "QCM" | "free";
   qcmTimer: number;
   freeTimer: number;
   getPropositions?: QCMGenerator<{ answer: string } & TIdentifiers>;
   isAnswerValid?: VEA<TIdentifiers>;
-  isGGBValid?: GGBVEA<TIdentifiers>;
+  isGGBAnswerValid?: GGBVEA<TIdentifiers>;
   hasGeogebra?: boolean;
   subject: "Mathématiques" | "Chimie" | "Physique";
 }

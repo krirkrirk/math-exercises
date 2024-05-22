@@ -1,52 +1,54 @@
 import {
   Exercise,
-  Proposition,
-  QCMGenerator,
+  GGBVEA,
   Question,
   QuestionGenerator,
-  VEA,
-  addValidProp,
-  shuffleProps,
-  tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { ToolBarConstructor } from "#root/geogebra/toolBarConstructor";
+import { PointConstructor } from "#root/math/geometry/point";
+import { arrayEqual } from "#root/utils/arrayEqual";
 
 type Identifiers = {};
 
 const getTestGgbAnswerQuestion: QuestionGenerator<Identifiers> = () => {
+  const point = PointConstructor.random("A");
+
   const question: Question<Identifiers> = {
-    answer: "",
-    instruction: ``,
+    ggbAnswer: [`(${point.getXnumber()},${point.getYnumber()})`],
+    instruction: `Placer le point $A=(${point.getXnumber()},${point.getYnumber()})$`,
     keys: [],
-    answerFormat: "tex",
+    studentGgbOptions: {
+      //customToolBar: ToolBarConstructor.default(),
+      coords: [
+        point.getXnumber() - 2,
+        point.getXnumber() + 2,
+        point.getYnumber() - 2,
+        point.getYnumber() + 2,
+      ],
+    },
     identifiers: {},
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
-  const propositions: Proposition[] = [];
-  addValidProp(propositions, answer);
-  while (propositions.length < n) {
-    throw Error("QCM not implemented");
-  }
-  return shuffleProps(propositions, n);
+const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
+  if (arrayEqual(ans, ggbAnswer)) return true;
+  if (ans.includes(ggbAnswer[0])) return true;
+  return false;
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  throw Error("VEA not implemented");
-};
 export const testGGBAnswer: Exercise<Identifiers> = {
   id: "testGGBAnswer",
-  label: "",
-  levels: [],
+  label: "Placer un point dans un repère orthonormé",
+  levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Géométrie euclidienne"],
   generator: (nb: number) => getDistinctQuestions(getTestGgbAnswerQuestion, nb),
+  answerType: "GGB",
   qcmTimer: 60,
   freeTimer: 60,
-  getPropositions,
-  isAnswerValid,
+  isGGBAnswerValid,
   subject: "Mathématiques",
 };

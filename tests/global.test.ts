@@ -43,6 +43,8 @@ test("all exos", () => {
   let worstQCMGenerationTime: Worst = { exoId: "", time: 0 };
   const veaTimes: number[] = [];
   let worstVEATime: Worst = { exoId: "", time: 0 };
+  const ggbVeaTimes: number[] = [];
+  let worstGGBVEATime: Worst = { exoId: "", time: 0 };
   const allExos = [...mathExercises, ...pcExercises];
   // const allExos = [MathExercises.inflexionPointQuadrinomials];
   allExos.forEach((exo) => {
@@ -63,28 +65,56 @@ test("all exos", () => {
           time,
         };
       }
-      if (exo.answerType !== "free") {
+      if (exo.answerType !== "free" && exo.answerType !== "GGB") {
         expect(exo.getPropositions).not.toBe(undefined);
       }
-      if (exo.answerType !== "QCM") {
+      if (exo.answerType !== "QCM" && exo.answerType !== "GGB") {
         expect(exo.isAnswerValid).not.toBe(undefined);
+      }
+      if (exo.answerType === "GGB") {
+        expect(exo.isGGBAnswerValid).not.toBe(undefined);
       }
       questions.forEach((question) => {
         expect(question.identifiers).not.toBe(undefined);
         expect(question.identifiers).not.toBe(undefined);
 
         const dotDecimalPattern = /\d+\.\d+/;
-        expect(question.answer.match(dotDecimalPattern)).toBe(null);
-        expect(question.answer.includes("[object Object]")).toBe(false);
+        if (exo.answerType === "GGB") {
+          expect(question.ggbAnswer).not.toBe(undefined);
+        } else expect(question.answer).not.toBe(undefined);
+        if (question.answer) {
+          expect(question.answer.match(dotDecimalPattern)).toBe(null);
+          expect(question.answer.includes("[object Object]")).toBe(false);
+        }
+
         expect(question.instruction?.length).not.toBe(0);
         expect(question.instruction.includes("[object Object]")).toBe(false);
-        if (exo.answerType !== "QCM") {
+        if (exo.answerType === "GGB") {
+          let before = Date.now();
+          console.log("will test ggbVea");
+          expect(
+            exo.isGGBAnswerValid!(question.ggbAnswer!, {
+              ggbAnswer: question.ggbAnswer,
+              ...question.identifiers,
+            }),
+          ).toBe(true);
+          let after = Date.now();
+          let time = after - before;
+          ggbVeaTimes.push(time);
+          if (worstGGBVEATime.time < time) {
+            worstGGBVEATime = {
+              exoId: exo.id,
+              time,
+            };
+          }
+        }
+        if (exo.answerType !== "QCM" && exo.answerType !== "GGB") {
           expect(question.keys).not.toBe(undefined);
 
           let before = Date.now();
           console.log("will test vea");
           expect(
-            exo.isAnswerValid!(question.answer, {
+            exo.isAnswerValid!(question.answer!, {
               answer: question.answer,
               ...question.identifiers,
             }),
@@ -99,7 +129,7 @@ test("all exos", () => {
             };
           }
         }
-        if (exo.answerType !== "free") {
+        if (exo.answerType !== "free" && exo.answerType !== "GGB") {
           let before = Date.now();
           console.log("will generate props");
           const props = exo.getPropositions!(4, {
@@ -133,7 +163,10 @@ test("all exos", () => {
       throw err;
     }
   });
-
+  console.log(
+    "average ggbVea",
+    ggbVeaTimes.reduce((acc, curr) => acc + curr, 0) / ggbVeaTimes.length,
+  );
   console.log(
     "average vea",
     veaTimes.reduce((acc, curr) => acc + curr, 0) / veaTimes.length,
@@ -148,8 +181,8 @@ test("all exos", () => {
     questionsGenerationTimes.reduce((acc, curr) => acc + curr, 0) /
       questionsGenerationTimes.length,
   );
-
   console.log("worst qcm", worstQCMGenerationTime);
   console.log("worst vea", worstVEATime);
+  console.log("worst ggbVea", worstGGBVEATime);
   console.log("worst generator", worstQuestionGenerationTime);
 });
