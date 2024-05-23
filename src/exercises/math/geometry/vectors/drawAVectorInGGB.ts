@@ -46,7 +46,7 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer, x, y }) => {
 export const drawAVectorInGGB: Exercise<Identifiers> = {
   id: "drawAVectorInGGB",
   label: "Tracer un vecteur",
-  levels: [],
+  levels: ["2nde"],
   isSingleStep: true,
   sections: ["Géométrie cartésienne"],
   generator: (nb: number) =>
