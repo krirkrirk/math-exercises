@@ -2,41 +2,38 @@ import { Node, NodeType, hasVariableNode } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
+import { SimplifyOptions } from "./sinNode";
 
-export interface SimplifyOptions {
-  isDegree?: boolean;
+export function isTanNode(a: Node): a is TanNode {
+  return isFunctionNode(a) && a.id === FunctionsIds.tan;
 }
 
-export function isSinNode(a: Node): a is SinNode {
-  return isFunctionNode(a) && a.id === FunctionsIds.sin;
-}
-
-export class SinNode implements FunctionNode {
+export class TanNode implements FunctionNode {
   id: FunctionsIds;
   child: AlgebraicNode;
   type: NodeType;
   isNumeric: boolean;
 
   constructor(child: AlgebraicNode) {
-    this.id = FunctionsIds.sin;
+    this.id = FunctionsIds.tan;
     this.child = child;
     this.type = NodeType.function;
     this.isNumeric = child.isNumeric;
   }
 
   toMathString(): string {
-    return `sin(${this.child.toMathString()})`;
+    return `tan(${this.child.toMathString()})`;
   }
 
   toTex(): string {
-    return `\\sin\\left(${this.child.toTex()}\\right)`;
+    return `\\tan\\left(${this.child.toTex()}\\right)`;
   }
 
   toEquivalentNodes(): AlgebraicNode[] {
     const res: AlgebraicNode[] = [];
     const childNodes = this.child.toEquivalentNodes();
     childNodes.forEach((childNode) => {
-      res.push(new SinNode(childNode));
+      res.push(new TanNode(childNode));
     });
     return res;
   }
@@ -52,26 +49,26 @@ export class SinNode implements FunctionNode {
       if (opts.isDegree) {
         value = (value * Math.PI) / 180;
       }
-      const moduled = Math.abs(value % (2 * Math.PI));
+      const moduled = Math.abs(value % Math.PI);
       const trigoPoint = remarkableTrigoValues.find(
         (val) => val.angle.evaluate({}) === moduled,
       );
-      if (!trigoPoint) return new SinNode(simplifiedChild);
-      else return trigoPoint.sin;
+      if (!trigoPoint) return new TanNode(simplifiedChild);
+      else return trigoPoint.tan;
     } else {
-      // Écrire les règles algébriques spécifiques à sin ici
+      // Écrire les règles algébriques spécifiques à tan ici
       // Exemples :
-      // sin(x + 2π) -> sin(x)
-      // sin(-x) -> -sin(x)
+      // tan(x + π) -> tan(x)
+      // tan(-x) -> -tan(x)
     }
-    return new SinNode(simplifiedChild);
+    return new TanNode(simplifiedChild);
   }
 
   evaluate(vars: Record<string, number>) {
-    return Math.sin(this.child.evaluate(vars));
+    return Math.tan(this.child.evaluate(vars));
   }
 
   equals(node: AlgebraicNode): boolean {
-    return isSinNode(node) && node.child.equals(this.child);
+    return isTanNode(node) && node.child.equals(this.child);
   }
 }

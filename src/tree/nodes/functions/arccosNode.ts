@@ -3,40 +3,36 @@ import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
 
-export interface SimplifyOptions {
-  isDegree?: boolean;
+export function isArccosNode(a: Node): a is ArccosNode {
+  return isFunctionNode(a) && a.id === FunctionsIds.arccos;
 }
 
-export function isSinNode(a: Node): a is SinNode {
-  return isFunctionNode(a) && a.id === FunctionsIds.sin;
-}
-
-export class SinNode implements FunctionNode {
+export class ArccosNode implements FunctionNode {
   id: FunctionsIds;
   child: AlgebraicNode;
   type: NodeType;
   isNumeric: boolean;
 
   constructor(child: AlgebraicNode) {
-    this.id = FunctionsIds.sin;
+    this.id = FunctionsIds.arccos;
     this.child = child;
     this.type = NodeType.function;
     this.isNumeric = child.isNumeric;
   }
 
   toMathString(): string {
-    return `sin(${this.child.toMathString()})`;
+    return `arccos(${this.child.toMathString()})`;
   }
 
   toTex(): string {
-    return `\\sin\\left(${this.child.toTex()}\\right)`;
+    return `\\arccos\\left(${this.child.toTex()}\\right)`;
   }
 
   toEquivalentNodes(): AlgebraicNode[] {
     const res: AlgebraicNode[] = [];
     const childNodes = this.child.toEquivalentNodes();
     childNodes.forEach((childNode) => {
-      res.push(new SinNode(childNode));
+      res.push(new ArccosNode(childNode));
     });
     return res;
   }
@@ -45,33 +41,29 @@ export class SinNode implements FunctionNode {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }
 
-  simplify(opts: SimplifyOptions = {}): AlgebraicNode {
+  simplify(): AlgebraicNode {
     const simplifiedChild = this.child.simplify();
     if (!hasVariableNode(simplifiedChild)) {
-      let value = simplifiedChild.evaluate({});
-      if (opts.isDegree) {
-        value = (value * Math.PI) / 180;
-      }
-      const moduled = Math.abs(value % (2 * Math.PI));
+      const value = simplifiedChild.evaluate({});
       const trigoPoint = remarkableTrigoValues.find(
-        (val) => val.angle.evaluate({}) === moduled,
+        (remarkableValue) => remarkableValue.cos.evaluate({}) === value,
       );
-      if (!trigoPoint) return new SinNode(simplifiedChild);
-      else return trigoPoint.sin;
+      if (!trigoPoint) return this;
+      else return trigoPoint.angle;
     } else {
-      // Écrire les règles algébriques spécifiques à sin ici
+      // Écrire les règles algébriques spécifiques à arccos ici
       // Exemples :
-      // sin(x + 2π) -> sin(x)
-      // sin(-x) -> -sin(x)
+      // arccos(cos(x)) -> x
+      // arccos(-x) -> π - arccos(x)
     }
-    return new SinNode(simplifiedChild);
+    return this;
   }
 
   evaluate(vars: Record<string, number>) {
-    return Math.sin(this.child.evaluate(vars));
+    return Math.acos(this.child.evaluate(vars));
   }
 
   equals(node: AlgebraicNode): boolean {
-    return isSinNode(node) && node.child.equals(this.child);
+    return isArccosNode(node) && node.child.equals(this.child);
   }
 }
