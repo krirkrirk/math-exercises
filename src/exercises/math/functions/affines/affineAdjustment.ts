@@ -48,33 +48,21 @@ function generateLinearData(n: number) {
 }
 
 const getAffineAdjustmentQuestion: QuestionGenerator<Identifiers> = () => {
-  const data = generateLinearData(10);
+  const data = generateLinearData(6);
   data.sort((a, b) => a.x - b.x);
 
   const xValues = data.map((point) => point.x);
   const yValues = data.map((point) => point.y);
 
-  const G1x = round(
-    (xValues[0] + xValues[1] + xValues[2] + xValues[3] + xValues[4]) / 5,
-    2,
-  );
-  const G2x = round(
-    (xValues[5] + xValues[6] + xValues[7] + xValues[8] + xValues[9]) / 5,
-    2,
-  );
-  const G1y = round(
-    (yValues[0] + yValues[1] + yValues[2] + yValues[3] + yValues[4]) / 5,
-    2,
-  );
-  const G2y = round(
-    (yValues[5] + yValues[6] + yValues[7] + yValues[8] + yValues[9]) / 5,
-    2,
-  );
+  const G1x = round((xValues[0] + xValues[1] + xValues[2]) / 3, 1);
+  const G2x = round((xValues[3] + xValues[4] + xValues[5]) / 3, 1);
+  const G1y = round((yValues[0] + yValues[1] + yValues[2]) / 3, 1);
+  const G2y = round((yValues[3] + yValues[4] + yValues[5]) / 3, 1);
 
   const a = (G2y - G1y) / (G2x - G1x);
-  const afixed = round(a, 2);
+  const afixed = round(a, 1);
   const b = G2y - a * G2x;
-  const bfixed = round(b, 2);
+  const bfixed = round(b, 1);
 
   const answer = new EqualNode(
     new VariableNode("y"),
@@ -85,19 +73,19 @@ const getAffineAdjustmentQuestion: QuestionGenerator<Identifiers> = () => {
   ).toTex();
 
   let dataTable = `
-| | | | | | | | | | | |
-|-|-|-|-|-|-|-|-|-|-|-|
-| x | ${xValues.join(" | ")} |
-| y | ${yValues.join(" | ")} |
+| $x$ | ${xValues.map((n) => n.frenchify()).join(" | ")} |
+|-|-|-|-|-|-|-|
+| $y$ | ${yValues.map((n) => n.frenchify()).join(" | ")} |
   `;
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `À partir des données fournies ci-dessous, déterminez l'équation de la droite d'ajustement : ${dataTable}
+    instruction: `On considère la série statistique ci-dessous. Déterminez l'équation de la droite d'ajustement obtenue par la méthode des moindres carrés. ${dataTable}
 `,
     keys: ["equal", "y", "x", "a", "b"],
     answerFormat: "tex",
     identifiers: { G1x, G2x, G1y, G2y },
+    style: { tableHasNoHeader: true },
   };
 
   return question;
@@ -111,9 +99,9 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer, "tex");
 
   const a = (G2y - G1y) / (G2x - G1x);
-  const afixed = round(a, 2);
+  const afixed = round(a, 1);
   const b = G2y - a * G2x;
-  const bfixed = round(b, 2);
+  const bfixed = round(b, 1);
 
   const wrongAnswer1 = new EqualNode(
     new VariableNode("y"),
@@ -129,7 +117,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const wrongAnswer2 = new EqualNode(
     new VariableNode("y"),
     new AddNode(
-      new MultiplyNode(new NumberNode(round(awrong, 2)), new VariableNode("x")),
+      new MultiplyNode(new NumberNode(round(awrong, 1)), new VariableNode("x")),
       new NumberNode(bfixed),
     ).simplify({ forbidFactorize: true }),
   );
@@ -138,15 +126,15 @@ const getPropositions: QCMGenerator<Identifiers> = (
     new VariableNode("y"),
     new AddNode(
       new MultiplyNode(new NumberNode(afixed), new VariableNode("x")),
-      new NumberNode(round(bwrong, 2)),
+      new NumberNode(round(bwrong, 1)),
     ).simplify({ forbidFactorize: true }),
   );
 
   const wrongAnswer4 = new EqualNode(
     new VariableNode("y"),
     new AddNode(
-      new MultiplyNode(new NumberNode(round(awrong, 2)), new VariableNode("x")),
-      new NumberNode(round(bwrong, 2)),
+      new MultiplyNode(new NumberNode(round(awrong, 1)), new VariableNode("x")),
+      new NumberNode(round(bwrong, 1)),
     ).simplify({ forbidFactorize: true }),
   );
 
@@ -173,9 +161,9 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
 const isAnswerValid: VEA<Identifiers> = (ans, { G1x, G2x, G1y, G2y }) => {
   const a = (G2y - G1y) / (G2x - G1x);
-  const afixed = round(a, 2);
+  const afixed = round(a, 1);
   const b = G2y - a * G2x;
-  const bfixed = round(b, 2);
+  const bfixed = round(b, 1);
 
   const valid = new EqualNode(
     new VariableNode("y"),

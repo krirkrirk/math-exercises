@@ -70,8 +70,7 @@ const generatePropositions = (a: number, b: number): string[] => {
 
 export const algebricExpressionOfAffine: Exercise<Identifiers> = {
   id: "algebricExpressionOfAffine",
-  label:
-    "Écrire l'expression algébrique d'une fonction affine connaissant les valeurs de son coefficient directeur et de son ordonnée à l'origine",
+  label: "Écrire l'expression algébrique d'une fonction affine",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Fonctions affines"],

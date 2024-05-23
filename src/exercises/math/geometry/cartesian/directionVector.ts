@@ -12,6 +12,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { Vector } from "#root/math/geometry/vector";
+import { gcd } from "#root/math/utils/arithmetic/gcd";
 import { randint } from "#root/math/utils/random/randint";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { VectorNode } from "#root/tree/nodes/geometry/vectorNode";
@@ -35,6 +36,17 @@ function parseVector(input: string): { x: number; y: number } | null {
   return null;
 }
 
+function normalizeVector(x: number, y: number): { x: number; y: number } {
+  const divisor = gcd(Math.abs(x), Math.abs(y));
+  let newX = x / divisor;
+  let newY = y / divisor;
+  if (newX < 0) {
+    newX = -newX;
+    newY = -newY;
+  }
+  return { x: newX, y: newY };
+}
+
 const getDirectionVectorQuestion: QuestionGenerator<Identifiers> = () => {
   let x1 = randint(-8, 8);
   let x2 = randint(-8, 8);
@@ -47,13 +59,18 @@ const getDirectionVectorQuestion: QuestionGenerator<Identifiers> = () => {
   while (y2 === y1) {
     y2 = randint(-8, 8);
   }
-  const xValue = x2 - x1;
-  const yValue = y2 - y1;
+  const rawXValue = x2 - x1;
+  const rawYValue = y2 - y1;
+
+  const { x: xValue, y: yValue } = normalizeVector(rawXValue, rawYValue);
 
   const vector = new Vector("v", xValue.toTree(), yValue.toTree());
 
-  const instruction = `Soit la droite tracée ci-dessous dans le plan cartésien. Déterminez les coordonnées d'un vecteur directeur $\\overrightarrow{v}$ de cette droite.`;
-  const commands = [`line = Line((${x1}, ${y1}), (${x2}, ${y2}))`];
+  const instruction = `Lire les coordonnées d'un vecteur directeur de la droite représentée ci-dessous :`;
+  const commands = [
+    `line = Line((${x1}, ${y1}), (${x2}, ${y2}))`,
+    `SetFixed(line, true)`,
+  ];
 
   const xMin = Math.min(x1, x2);
   const yMin = Math.min(y1, y2);
@@ -110,11 +127,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
   }
 
   while (propositions.length < n) {
-    const wrongAnswer = new Vector(
-      "v",
-      randint(-5, 5).toTree(),
-      randint(-5, 5).toTree(),
-    );
+    const randomX = randint(-5, 5);
+    const randomY = randint(-5, 5);
+    const { x: wrongX, y: wrongY } = normalizeVector(randomX, randomY);
+    const wrongAnswer = new Vector("v", wrongX.toTree(), wrongY.toTree());
 
     if (wrongAnswer.isColinear(vector) === false) {
       tryToAddWrongProp(propositions, wrongAnswer.toInlineCoordsTex());
@@ -140,6 +156,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, xValue, yValue }) => {
 
   return true;
 };
+
 export const directionVector: Exercise<Identifiers> = {
   id: "directionVector",
   label: "Lire les coordonnées d'un vecteur directeur d'une droite",

@@ -5,6 +5,7 @@ export * from "./equationType3Exercise";
 export * from "./equationType4Exercise";
 export * from "./fractionEquation";
 export * from "./multiplicationEquation";
+export * from "./firstDegreeEquation";
 export * from "./firstDegreeEquationIntType1";
 export * from "./firstDegreeEquationIntType2";
 export * from "./firstDegreeEquationIntType3";

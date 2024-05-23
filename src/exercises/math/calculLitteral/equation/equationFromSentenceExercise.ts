@@ -240,14 +240,14 @@ const generateExercise = (): ExerciseType => {
       instruction = `On appelle $x$ le nombre à trouver. 
       Traduire par une équation la phrase "${
         flip ? `Le double` : `La moitié`
-      } du nombre à trouver vaut $${resultNb}$"`;
+      } du nombre à trouver vaut $${resultNb}$".`;
       break;
     case 2:
       randAdd = randint(1, 11);
       instruction = `On appelle $x$ le nombre à trouver. 
       Traduire par une équation la phrase "${
         flip ? `La somme` : `La différence`
-      } du nombre à trouver et de $${randAdd}$ a pour résultat $${resultNb}$"`;
+      } du nombre à trouver et de $${randAdd}$ a pour résultat $${resultNb}$".`;
       break;
     case 3:
       randAdd = randint(1, 11);
@@ -257,7 +257,7 @@ const generateExercise = (): ExerciseType => {
         flip ? `Le double` : `La moitié`
       } du nombre à trouver ${
         flip ? op2 : op2 + "e"
-      } de $${randAdd}$ vaut $${resultNb}$"`;
+      } de $${randAdd}$ vaut $${resultNb}$".`;
       break;
   }
   const vars = { randAdd, resultNb, op2, flip };
@@ -266,7 +266,7 @@ const generateExercise = (): ExerciseType => {
 };
 export const equationFromSentenceExericse: Exercise<Identifiers> = {
   id: "equationFromSentenceExercise",
-  label: "Traduire une phrase en une equation Mathématique.",
+  label: "Traduire une phrase en une équation mathématique",
   levels: ["5ème"],
   isSingleStep: true,
   sections: ["Calcul littéral"],

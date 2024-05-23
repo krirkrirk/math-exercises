@@ -47,7 +47,7 @@ const getLineFromDirectorVectorQuestion: QuestionGenerator<
   const line = new Line(b, a);
   const correctAnswer = line.getEquation(u, a);
 
-  const instruction = `Soit $d$ une droite de vecteur directeur $${u.toTexWithCoords()}$ passant par le point $${a.toTexWithCoords()}$. Déterminer l'équation réduite de la droite $d$`;
+  const instruction = `Soit $d$ une droite de vecteur directeur $${u.toTexWithCoords()}$ passant par le point $${a.toTexWithCoords()}$. Déterminer l'équation réduite de la droite $d$.`;
 
   const question: Question<Identifiers> = {
     answer: correctAnswer.toTex(),
@@ -187,7 +187,7 @@ const getCorrecAnswer = (uX: number, uY: number, aX: number, aY: number) => {
 export const lineFromDirectorVector: Exercise<Identifiers> = {
   id: "lineFromDirectorVector",
   label:
-    "Équation réduite de droite connaissant un point et un vecteur directeur",
+    "Équation réduite d'une droite connaissant un point et un vecteur directeur",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Droites"],

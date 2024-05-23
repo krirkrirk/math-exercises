@@ -70,6 +70,9 @@ export interface Question<TIdentifiers = {}> {
     isAxesRatioFixed?: boolean;
     isXAxesNatural?: boolean;
   };
+  style?: {
+    tableHasNoHeader?: boolean;
+  };
   divisionFormat?: "fraction" | "obelus";
   identifiers: TIdentifiers;
 }
