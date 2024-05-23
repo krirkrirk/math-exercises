@@ -4,11 +4,9 @@ import {
   QuestionGenerator,
   GGBVEA,
 } from "#root/exercises/exercise";
-import { getVectorFromGGB } from "#root/exercises/utils/geogebra/getVectorFromGGB";
-import { isGGBPoint } from "#root/exercises/utils/geogebra/isGGBPoint";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { toolBarConstructor } from "#root/geogebra/toolBarConstructor";
-import { Vector, VectorConstructor } from "#root/math/geometry/vector";
+import { Vector } from "#root/math/geometry/vector";
 import { randint } from "#root/math/utils/random/randint";
 
 type Identifiers = {};
@@ -19,7 +17,7 @@ const getDrawAVectorInGgbQuestion: QuestionGenerator<Identifiers> = () => {
   const vector = new Vector("u", x.toTree(), y.toTree());
 
   const question: Question<Identifiers> = {
-    ggbAnswer: [`(${x};${y})`],
+    ggbAnswer: [``, ``, `(${x};${y})`],
     instruction: `Tracer le vecteur $${vector.toTex()}${vector.toInlineCoordsTex()}$`,
     keys: [],
     studentGgbOptions: {
