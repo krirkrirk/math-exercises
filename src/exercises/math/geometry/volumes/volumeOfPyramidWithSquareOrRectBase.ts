@@ -55,7 +55,7 @@ const getVolumeOfPyramidWithSquareOrRectBaseQuestion: QuestionGenerator<
 
   const instruction = `Soit une pyramide à base ${getPolygonNameInFr(
     baseOfPyramid.type,
-  )} de hauteur $${h}$. Calculer son volume en sachant ${
+  )} de hauteur $${h}$. Calculer son volume en sachant que : ${
     baseOfPyramid.type === "Square"
       ? `$AB=${baseOfPyramid.sideSizes[0]}$`
       : `$AB=${baseOfPyramid.sideSizes[0]}$ et $BC=${baseOfPyramid.sideSizes[1]}$`
