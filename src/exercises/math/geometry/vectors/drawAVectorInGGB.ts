@@ -5,7 +5,7 @@ import {
   GGBVEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { toolBarConstructor } from "#root/geogebra/toolBarConstructor";
+import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstructor";
 import { Vector } from "#root/math/geometry/vector";
 import { randint } from "#root/math/utils/random/randint";
 

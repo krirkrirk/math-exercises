@@ -5,7 +5,7 @@ import {
   QuestionGenerator,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { toolBarConstructor } from "#root/geogebra/toolBarConstructor";
+import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstructor";
 import { PointConstructor } from "#root/math/geometry/point";
 import { arrayHasSameElements } from "#root/utils/arrayHasSameElement";
 

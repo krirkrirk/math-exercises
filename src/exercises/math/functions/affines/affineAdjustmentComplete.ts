@@ -65,41 +65,29 @@ function calculateRSquared(xValues: number[], yValues: number[]) {
   const r = numerator / denominator;
   const rSquared = r * r;
 
-  return rSquared;
+  return round(rSquared, 2);
 }
 
 const getAffineAdjustmentCompleteQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const data = generateLinearData(10);
+  const data = generateLinearData(6);
   data.sort((a, b) => a.x - b.x);
 
   const xValues = data.map((point) => point.x);
   const yValues = data.map((point) => point.y);
 
-  const G1x = round(
-    (xValues[0] + xValues[1] + xValues[2] + xValues[3] + xValues[4]) / 5,
-    2,
-  );
-  const G2x = round(
-    (xValues[5] + xValues[6] + xValues[7] + xValues[8] + xValues[9]) / 5,
-    2,
-  );
-  const G1y = round(
-    (yValues[0] + yValues[1] + yValues[2] + yValues[3] + yValues[4]) / 5,
-    2,
-  );
-  const G2y = round(
-    (yValues[5] + yValues[6] + yValues[7] + yValues[8] + yValues[9]) / 5,
-    2,
-  );
+  const G1x = round((xValues[0] + xValues[1] + xValues[2]) / 3, 1);
+  const G2x = round((xValues[3] + xValues[4] + xValues[5]) / 3, 1);
+  const G1y = round((yValues[0] + yValues[1] + yValues[2]) / 3, 1);
+  const G2y = round((yValues[3] + yValues[4] + yValues[5]) / 3, 1);
 
   const rSquared = calculateRSquared(xValues, yValues);
 
   const a = (G2y - G1y) / (G2x - G1x);
-  const afixed = round(a, 2);
+  const afixed = round(a, 1);
   const b = G2y - a * G2x;
-  const bfixed = round(b, 2);
+  const bfixed = round(b, 1);
 
   const answerEq = new EqualNode(
     new VariableNode("y"),
@@ -111,12 +99,12 @@ const getAffineAdjustmentCompleteQuestion: QuestionGenerator<
 
   const answerR = new EqualNode(
     new PowerNode(new VariableNode("R"), new NumberNode(2)),
-    round(rSquared, 2).toTree(),
+    rSquared.toTree(),
   ).toTex();
 
   let dataTable = `
 | $x$ | ${xValues.join(" | ")} |
-|-|-|-|-|-|-|-|-|-|-|-|
+|-|-|-|-|-|-|-|
 | $y$ | ${yValues.map((n) => n.frenchify()).join(" | ")} |
   `;
 
@@ -141,9 +129,9 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer, "tex");
 
   const a = (G2y - G1y) / (G2x - G1x);
-  const afixed = round(a, 2);
+  const afixed = round(a, 1);
   const b = G2y - a * G2x;
-  const bfixed = round(b, 2);
+  const bfixed = round(b, 1);
 
   const answerEq = new EqualNode(
     new VariableNode("y"),
@@ -155,7 +143,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
   const answerR = new EqualNode(
     new PowerNode(new VariableNode("R"), new NumberNode(2)),
-    round(rSquared, 2).toTree(),
+    rSquared.toTree(),
   ).toTex();
 
   const wrongAnswerEq1 = new EqualNode(
@@ -171,19 +159,19 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const wrongAnswerEq2 = new EqualNode(
     new VariableNode("y"),
     new AddNode(
-      new MultiplyNode(new NumberNode(round(awrong, 2)), new VariableNode("x")),
+      new MultiplyNode(new NumberNode(round(awrong, 1)), new VariableNode("x")),
       new NumberNode(bfixed),
     ).simplify({ forbidFactorize: true }),
   ).toTex();
 
   const wrongAnswerR1 = new EqualNode(
     new VariableNode("R"),
-    round(rSquared, 2).toTree(),
+    rSquared.toTree(),
   ).toTex();
 
   const wrongAnswerR2 = new EqualNode(
     new PowerNode(new VariableNode("R"), new NumberNode(2)),
-    (-round(rSquared, 2)).toTree(),
+    (rSquared + 0.01).toTree(),
   ).toTex();
 
   const wrongAnswer1 = `${answerEq}\\newline ${wrongAnswerR1}`;
