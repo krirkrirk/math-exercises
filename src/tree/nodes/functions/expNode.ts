@@ -28,6 +28,9 @@ export class ExpNode implements FunctionNode {
     if (!this.opts?.allowPowerOne && tex === "1") {
       return "e";
     }
+    if (tex === "0") {
+      return "1";
+    }
     if (this.opts?.useExpNotation) {
       return `\\exp\\left(${tex}\\right)`;
     }
