@@ -113,7 +113,7 @@ const getCorrectAnswer = (exo: PyExoVariables): number => {
 };
 export const pyNestedForLoopExercise: Exercise<Identifiers> = {
   id: "pyNestedForLoopExercise",
-  label: "Exercise sur les boucles for imbriquée en python",
+  label: "Boucles for imbriquées",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Python"],

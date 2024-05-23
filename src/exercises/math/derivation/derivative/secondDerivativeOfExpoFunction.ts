@@ -33,7 +33,7 @@ const getSecondDerivativeOfExpoFunctionQuestion: QuestionGenerator<
   const question: Question<Identifiers> = {
     answer: correctAnswer.toTex(),
     instruction: `Déterminer la fonction dérivée seconde $f''$ de la fonction $f$ définie par $f(x)=${funct.toTex()}$`,
-    keys: ["epower", "x"],
+    keys: ["epower", "x", "ln"],
     answerFormat: "tex",
     identifiers: { coeffs: polynom.coefficients },
   };
@@ -73,7 +73,7 @@ const generateProposition = (coeffs: number[]): AlgebraicNode[] => {
 };
 export const secondDerivativeOfExpoFunction: Exercise<Identifiers> = {
   id: "secondDerivativeOfExpoFunction",
-  label: "Calcul de la dérivée seconde d'une fonction exp(u)",
+  label: "Dérivée seconde d'une fonction de type $\\exp(u)$",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],

@@ -63,13 +63,10 @@ const generateProposition = (x: number, y: number): AlgebraicNode[] => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { x, y }) => {
-  const correctAnswer = new SqrtNode(
-    new AddNode(
-      new SquareNode(new NumberNode(x)),
-      new SquareNode(new NumberNode(y)),
-    ),
-  );
-  return correctAnswer.simplify().toAllValidTexs().includes(ans);
+  const correctAnswer = new SqrtNode((x ** 2 + y ** 2).toTree());
+  return correctAnswer
+    .toAllValidTexs({ allowSimplifySqrt: true })
+    .includes(ans);
 };
 export const vectorNormCalculation: Exercise<Identifiers> = {
   id: "vectorNormCalculation",

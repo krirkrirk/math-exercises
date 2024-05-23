@@ -44,7 +44,7 @@ test("all exos", () => {
   const veaTimes: number[] = [];
   let worstVEATime: Worst = { exoId: "", time: 0 };
   const allExos = [...mathExercises, ...pcExercises];
-  // const allExos = [MathExercises.probaFromTableNoContext];
+  // const allExos = [MathExercises.inflexionPointQuadrinomials];
   allExos.forEach((exo) => {
     console.log(exo.id);
     try {
@@ -52,6 +52,7 @@ test("all exos", () => {
       expect(exo.levels.length).not.toBe(0);
       expect(exo.label.length).toBeGreaterThan(0);
       let before = Date.now();
+      console.log("generate questions");
       const questions = exo.generator(30);
       let after = Date.now();
       let time = after - before;
@@ -81,6 +82,7 @@ test("all exos", () => {
           expect(question.keys).not.toBe(undefined);
 
           let before = Date.now();
+          console.log("will test vea");
           expect(
             exo.isAnswerValid!(question.answer, {
               answer: question.answer,
@@ -99,6 +101,7 @@ test("all exos", () => {
         }
         if (exo.answerType !== "free") {
           let before = Date.now();
+          console.log("will generate props");
           const props = exo.getPropositions!(4, {
             answer: question.answer,
             ...question.identifiers,

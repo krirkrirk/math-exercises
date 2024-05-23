@@ -31,13 +31,13 @@ const getSecondDerivativeOfTrinomQuestion: QuestionGenerator<
   const trinom = TrinomConstructor.random();
 
   const trinomTree = trinom.toTree();
-  const instruction = `Déterminer la fonction dérivée seconde $f''$ de la fonction $f$ définie par $f(x)=${trinomTree.toTex()}$`;
+  const instruction = `Déterminer la fonction dérivée seconde $f''$ de la fonction $f$ définie par $f(x)=${trinomTree.toTex()}$.`;
 
   const correctAnswer = trinom.derivate().derivate().toTree();
   const question: Question<Identifiers> = {
     answer: correctAnswer.toTex(),
     instruction: instruction,
-    keys: ["power", "x"],
+    keys: ["x"],
     answerFormat: "tex",
     identifiers: { a: trinom.a, b: trinom.b, c: trinom.c },
   };
@@ -80,7 +80,7 @@ const generateProposition = (
 
 export const secondDerivativeOfTrinom: Exercise<Identifiers> = {
   id: "secondDerivativeOfTrinom",
-  label: "Calcul de Dérivée seconde d'un trinome",
+  label: "Dérivée seconde d'un trinôme",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],
