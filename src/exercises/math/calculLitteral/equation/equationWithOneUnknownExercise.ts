@@ -48,9 +48,9 @@ const getEquationWithOneUnknownExerciseQuestion: QuestionGenerator<
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer, "raw");
-  tryToAddWrongProp(propositions, "oui.", "raw");
-  tryToAddWrongProp(propositions, "non.", "raw");
-  tryToAddWrongProp(propositions, "on ne peut pas savoir.", "raw");
+  tryToAddWrongProp(propositions, "Oui.", "raw");
+  tryToAddWrongProp(propositions, "Non.", "raw");
+  tryToAddWrongProp(propositions, "On ne peut pas savoir.", "raw");
   return shuffleProps(propositions, n);
 };
 
@@ -82,10 +82,10 @@ const generateExercise = (): {
         aNode,
       ).simplify(),
     );
-    return { equation, solution, answer: "oui." };
+    return { equation, solution, answer: "Oui." };
   } else {
     const solution = random(generateFalseSolutions(aNode, bNode, resultNode));
-    return { equation, solution, answer: "non." };
+    return { equation, solution, answer: "Non." };
   }
 };
 
@@ -115,9 +115,9 @@ const generateFalseSolutions = (
 export const equationWithOneUnknownExercise: Exercise<Identifiers> = {
   id: "equationWithOneUnknownExercise",
   label: "Equation à une inconnue",
-  levels: [],
+  levels: ["3ème"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Arithmétique"],
   generator: (nb: number) =>
     getDistinctQuestions(getEquationWithOneUnknownExerciseQuestion, nb),
   qcmTimer: 60,
