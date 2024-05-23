@@ -195,7 +195,7 @@ export const volumeOfPyramidWithSquareOrRectBase: Exercise<Identifiers> = {
   label: "Caclul de volume d'une pyramide à base carré ou rectangulaire",
   levels: ["2nde"],
   isSingleStep: true,
-  sections: ["Géométrie cartésienne"],
+  sections: ["Géométrie euclidienne"],
   generator: (nb: number) =>
     getDistinctQuestions(getVolumeOfPyramidWithSquareOrRectBaseQuestion, nb),
   qcmTimer: 60,
