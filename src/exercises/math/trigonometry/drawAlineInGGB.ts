@@ -10,6 +10,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { toolBarConstructor } from "#root/geogebra/toolBarConstructor";
 import { Point } from "#root/math/geometry/point";
 import { AffineConstructor } from "#root/math/polynomials/affine";
+import { arrayEqual } from "#root/utils/arrayEqual";
 
 type Identifiers = {
   correctA: number;
@@ -23,7 +24,7 @@ const getDrawAlineInGgbQuestion: QuestionGenerator<Identifiers> = () => {
   const yMax = Math.max(yA, yB, 0);
   const yMin = Math.min(yA, yB, 0);
   const question: Question<Identifiers> = {
-    ggbAnswer: [`(0;${yA})`, `(1;${yB})`, `Line(A,B)`],
+    ggbAnswer: [`(0;${yA})`, `(1;${yB})`, `Line(A, B)`],
     instruction: `Dessiner la droite d'equation $f(x)=${f.toTex()}$`,
     keys: [],
     answerFormat: "tex",
@@ -32,8 +33,6 @@ const getDrawAlineInGgbQuestion: QuestionGenerator<Identifiers> = () => {
         join: true,
       }),
       coords: [-4, 4, yMin - 1, yMax + 1],
-      xAxisSteps: 1,
-      yAxisSteps: 1,
       isGridSimple: true,
     },
     identifiers: { correctA: f.a, correctB: f.b },
@@ -42,15 +41,20 @@ const getDrawAlineInGgbQuestion: QuestionGenerator<Identifiers> = () => {
   return question;
 };
 
-const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { correctA, correctB }) => {
+const isGGBAnswerValid: GGBVEA<Identifiers> = (
+  ans,
+  { ggbAnswer, correctA, correctB },
+) => {
+  if (arrayEqual(ans, ggbAnswer)) return true;
   if (ans.length !== 3) return false;
   if (!isGGBPoint(ans[0]) || !isGGBPoint(ans[1]) || !isGGBLine(ans[2]))
     return false;
-  const A = getPoint(ans[0], "A");
-  const B = getPoint(ans[1], "B");
+  const A = getPoint(ans[0], "A"); //(-1,1)
+  const B = getPoint(ans[1], "B"); //(0,3)
   const a =
     (B.getYnumber() - A.getYnumber()) / (B.getXnumber() - A.getXnumber());
-  const b = a * A.getXnumber() - -A.getYnumber();
+  const b = A.getYnumber() - a * A.getXnumber();
+  console.log(a, b);
   return a === correctA && b === correctB;
 };
 
@@ -63,11 +67,11 @@ const getPoint = (command: string, pointName: string) => {
 
 export const drawAlineInGGB: Exercise<Identifiers> = {
   id: "drawAlineInGGB",
-  label: "test",
+  label: "Tracer une droite à partie d'une equation de droite.",
   levels: ["2nde"],
   isSingleStep: true,
   answerType: "GGB",
-  sections: [],
+  sections: ["Géométrie cartésienne"],
   generator: (nb: number) =>
     getDistinctQuestions(getDrawAlineInGgbQuestion, nb),
   qcmTimer: 60,
