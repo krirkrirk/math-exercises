@@ -11,10 +11,7 @@ import { toolBarConstructor } from "#root/geogebra/toolBarConstructor";
 import { Vector, VectorConstructor } from "#root/math/geometry/vector";
 import { randint } from "#root/math/utils/random/randint";
 
-type Identifiers = {
-  x: number;
-  y: number;
-};
+type Identifiers = {};
 
 const getDrawAVectorInGgbQuestion: QuestionGenerator<Identifiers> = () => {
   const x = randint(-3, 3);
@@ -33,13 +30,13 @@ const getDrawAVectorInGgbQuestion: QuestionGenerator<Identifiers> = () => {
       isGridSimple: true,
     },
     answerFormat: "tex",
-    identifiers: { x, y },
+    identifiers: {},
   };
 
   return question;
 };
 
-const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer, x, y }) => {
+const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
   return ans.length === 3 && ans.includes(ggbAnswer[0]);
 };
 
