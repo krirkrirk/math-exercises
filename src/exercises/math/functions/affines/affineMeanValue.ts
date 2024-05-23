@@ -49,7 +49,7 @@ const getAffineMeanValueQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Soit $f(x) = ${func}$. Quel est la valeur moyenne de $f$ sur l'intervalle $${interval}$`,
+    instruction: `Soit $f(x) = ${func}$. Quelle est la valeur moyenne de $f$ sur $${interval}$ ?`,
     keys: [],
     answerFormat: "tex",
     identifiers: {
