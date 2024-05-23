@@ -82,17 +82,25 @@ const getIntegralFractionsQuestion: QuestionGenerator<Identifiers> = () => {
   const answer =
     questionType === "Trinomial"
       ? new SubstractNode(
-          new LogNode(trinomial.calculate(upperBound).toTree()).simplify(),
-          new LogNode(trinomial.calculate(lowerBound).toTree()).simplify(),
+          new LogNode(
+            Math.abs(trinomial.calculate(upperBound)).toTree(),
+          ).simplify(),
+          new LogNode(
+            Math.abs(trinomial.calculate(lowerBound)).toTree(),
+          ).simplify(),
         ).simplify()
       : new SubstractNode(
-          new LogNode(affine.calculate(upperBound).toTree()).simplify(),
-          new LogNode(affine.calculate(lowerBound).toTree()).simplify(),
+          new LogNode(
+            Math.abs(affine.calculate(upperBound)).toTree(),
+          ).simplify(),
+          new LogNode(
+            Math.abs(affine.calculate(lowerBound)).toTree(),
+          ).simplify(),
         ).simplify();
 
   const question: Question<Identifiers> = {
     answer: answer.toTex(),
-    instruction: `Calculez la valeur de l'intégrale suivante : $${integral.toTex()}$`,
+    instruction: `Calculer : $${integral.toTex()}$`,
     keys: ["ln"],
     answerFormat: "tex",
     identifiers: {
@@ -202,7 +210,7 @@ const isAnswerValid: VEA<Identifiers> = (
 
 export const integralFractions: Exercise<Identifiers> = {
   id: "integralFractions",
-  label: "Calcul d'intégrales de fonctions u'/u",
+  label: "Calcul d'intégrales de fonctions du tye $\\frac{u'}{u}$",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Intégration"],

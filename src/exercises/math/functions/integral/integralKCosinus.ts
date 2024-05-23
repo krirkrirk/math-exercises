@@ -139,7 +139,7 @@ const isAnswerValid: VEA<Identifiers> = (
 };
 export const integralKCosinus: Exercise<Identifiers> = {
   id: "integralKCosinus",
-  label: "Calcul de l'intégral de fonctions kcos(x)",
+  label: "Calcul d'intégrales de fonctions du type $k\\cos(x)$",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Intégration"],

@@ -88,8 +88,8 @@ const getIntegralExpUQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     answer: answer.toTex(),
-    instruction: `Calculez la valeur de l'intégrale suivante : $${integral.toTex()}$`,
-    keys: ["e"],
+    instruction: `Calculer : $${integral.toTex()}$`,
+    keys: ["epower", "e"],
     answerFormat: "tex",
     identifiers: {
       questionType,
@@ -161,7 +161,7 @@ const isAnswerValid: VEA<Identifiers> = (
 
 export const integralExpU: Exercise<Identifiers> = {
   id: "integralExpU",
-  label: "Calcul d'intégrales de fonctions u'e^u",
+  label: "Calcul d'intégrales de fonctions du type $u'e^u$",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Intégration"],

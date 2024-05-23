@@ -65,7 +65,7 @@ const getIntegralKSinusQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     answer: answer.toTex(),
-    instruction: `Calculez la valeur de l'intégrale suivante : $${integral.toTex()}$`,
+    instruction: `Calculer : $${integral.toTex()}$`,
     keys: [],
     answerFormat: "tex",
     identifiers: { lowerBoundIndex, upperBoundIndex, k },
@@ -136,7 +136,7 @@ const isAnswerValid: VEA<Identifiers> = (
 };
 export const integralKSinus: Exercise<Identifiers> = {
   id: "integralKSinus",
-  label: "Calcul de l'intégral de fonctions ksin(x)",
+  label: "Calcul d'intégrales de fonctions du type $k\\sin(x)$",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Intégration"],

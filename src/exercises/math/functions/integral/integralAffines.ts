@@ -50,7 +50,7 @@ const getIntegralAffinesQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Calculez la valeur de l'intégrale suivante : $${integral}$`,
+    instruction: `Calculer : $${integral}$`,
     keys: [],
     answerFormat: "tex",
     identifiers: {
