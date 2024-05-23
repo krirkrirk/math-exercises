@@ -2,6 +2,8 @@
 import { Node, NodeOptions, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
+import { isNumberNode } from "../numbers/numberNode";
+import { isLogNode } from "./logNode";
 export function isExpNode(a: Node): a is ExpNode {
   return isFunctionNode(a) && a.id === FunctionsIds.exp;
 }
@@ -56,8 +58,12 @@ export class ExpNode implements FunctionNode {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }
 
-  simplify() {
-    return this;
+  simplify(): AlgebraicNode {
+    const simplifiedChild = this.child.simplify();
+    if (isNumberNode(simplifiedChild) && simplifiedChild.value === 0)
+      return (1).toTree();
+    if (isLogNode(simplifiedChild)) return simplifiedChild.child;
+    return new ExpNode(simplifiedChild);
   }
   evaluate(vars: Record<string, number>) {
     return Math.exp(this.child.evaluate(vars));
