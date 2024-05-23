@@ -40,7 +40,7 @@ const getVarianceOfBinomialProbaQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: correctAns.toTex(),
-    instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètre $n=${nX}$ et $p=${p
+    instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètres $n=${nX}$ et $p=${p
       .toTree()
       .simplify()
       .toTex()}$. Calculez la variance de $X$.`,
@@ -100,8 +100,7 @@ const getCorrectAnswer = (n: number, p: Rational) => {
 };
 export const varianceOfBinomialProba: Exercise<Identifiers> = {
   id: "varianceOfBinomialProba",
-  label:
-    "Calcul de la variance d'une variable aléatoire $X$ qui suit une loi binomiale",
+  label: "Calcul de la variance d'une loi binomiale",
   levels: ["TermTech"],
   isSingleStep: true,
   sections: ["Probabilités"],

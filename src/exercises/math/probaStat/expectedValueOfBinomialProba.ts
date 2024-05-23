@@ -97,8 +97,7 @@ const getCorrectAnswer = (n: number, p: Rational) => {
 };
 export const expectedValueOfBinomialProba: Exercise<Identifiers> = {
   id: "expectedValueOfBinomialProba",
-  label:
-    "Calcul de l'espérance d'une varialbe aléatoire $X$ qui suit une loi binomiale",
+  label: "Calcul de l'espérance d'une loi binomiale",
   levels: ["TermTech"],
   isSingleStep: true,
   sections: ["Probabilités"],

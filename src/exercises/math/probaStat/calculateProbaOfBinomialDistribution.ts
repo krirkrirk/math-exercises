@@ -38,9 +38,14 @@ const getCalculateProbaOfBinomialDistributionQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: correctAns.toTex(),
-    instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètre $n=${
+    instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètres $n=${
       exercise.n
-    }$ et $p=${p.toTree().simplify().toTex()}$. Calculez $P(X=${exercise.k}).$`,
+    }$ et $p=${p
+      .toTree()
+      .simplify()
+      .toTex()}$. Donner une valeur arrondie au centième de $P(X=${
+      exercise.k
+    }).$`,
     keys: [],
     answerFormat: "tex",
     identifiers: { exerciseVars: exercise },
@@ -116,7 +121,7 @@ const generateExercise = (): ExerciseVars => {
 };
 export const calculateProbaOfBinomialDistribution: Exercise<Identifiers> = {
   id: "calculateProbaOfBinomialDistribution",
-  label: "Calcul de probabilité de loi binomiale",
+  label: "Calculer une probabilité avec la loi binomiale",
   levels: ["TermTech"],
   isSingleStep: true,
   sections: ["Probabilités"],
