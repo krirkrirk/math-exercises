@@ -13,6 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { CosNode } from "#root/tree/nodes/functions/cosNode";
+import { SinNode } from "#root/tree/nodes/functions/sinNode";
 import { TanNode } from "#root/tree/nodes/functions/tanNode";
 import { DegreeNode } from "#root/tree/nodes/geometry/degree";
 import { random } from "#root/utils/random";
@@ -32,7 +33,7 @@ const getCalculateCosSinAndTanQuestion: QuestionGenerator<Identifiers> = () => {
     answer: getCorrectAnswer(degree, trigoFunct),
     instruction: `Calculer $${trigoFunct}(${new DegreeNode(
       degree,
-    ).toTex()})$, arrondir la valeur au dixième.`,
+    ).toTex()})$, arrondir le resultat au dixième.`,
     keys: [],
     answerFormat: "tex",
     identifiers: { degree },
@@ -65,7 +66,7 @@ const getCorrectAnswer = (degree: number, trigoFunct: string): string => {
       ans = +cos.evaluate({}).toFixed(2);
       return ans.toTree().toTex();
     case "sin":
-      const sin = new CosNode(degree.toTree());
+      const sin = new SinNode(degree.toTree());
       ans = +sin.evaluate({}).toFixed(2);
       return ans.toTree().toTex();
     case "tan":
