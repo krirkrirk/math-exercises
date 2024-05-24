@@ -1,16 +1,19 @@
-// import { cos } from "mathjs";
 import { Node, NodeType, hasVariableNode } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
+import { SimplifyOptions } from "./sinNode";
+
 export function isCosNode(a: Node): a is CosNode {
   return isFunctionNode(a) && a.id === FunctionsIds.cos;
 }
+
 export class CosNode implements FunctionNode {
   id: FunctionsIds;
   child: AlgebraicNode;
   type: NodeType;
   isNumeric: boolean;
+
   constructor(child: AlgebraicNode) {
     this.id = FunctionsIds.cos;
     this.child = child;
@@ -20,6 +23,10 @@ export class CosNode implements FunctionNode {
 
   toMathString(): string {
     return `cos(${this.child.toMathString()})`;
+  }
+
+  toTex(): string {
+    return `\\cos\\left(${this.child.toTex()}\\right)`;
   }
 
   toEquivalentNodes(): AlgebraicNode[] {
@@ -35,15 +42,7 @@ export class CosNode implements FunctionNode {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }
 
-  toTex(): string {
-    return `\\cos\\left(${this.child.toTex()}\\right)`;
-  }
-
-  // toMathjs() {
-  //   return cos(this.child.toMathjs());
-  // }
-
-  simplify(opts?: SimplifyOptions) {
+  simplify(opts: SimplifyOptions = {}): AlgebraicNode {
     const simplifiedChild = this.child.simplify();
     if (!hasVariableNode(simplifiedChild)) {
       const value = simplifiedChild.evaluate({});
@@ -54,6 +53,13 @@ export class CosNode implements FunctionNode {
         opts?.isDegree
           ? value.degree === moduled
           : value.angle.evaluate({}) === moduled,
+      let value = simplifiedChild.evaluate({});
+      if (opts.isDegree) {
+        value = (value * Math.PI) / 180;
+      }
+      const moduled = Math.abs(value % (2 * Math.PI));
+      const trigoPoint = remarkableTrigoValues.find(
+        (val) => val.angle.evaluate({}) === moduled,
       );
       if (!trigoPoint) {
         return new CosNode(simplifiedChild);
@@ -63,17 +69,19 @@ export class CosNode implements FunctionNode {
           : trigoPoint.cos;
       }
     } else {
-      //écrire les regles albgeiruqe
-      //chaque simplification doit relancer tout le simplify
-      //cos(x+2PI)
-      //cos(-x)
+      // Écrire les règles algébriques spécifiques à cos ici
+      // Exemples :
+      // cos(x + 2π) -> cos(x)
+      // cos(-x) -> cos(x)
     }
     return new CosNode(simplifiedChild);
   }
+
   evaluate(vars: Record<string, number>) {
     return Math.cos(this.child.evaluate(vars));
   }
-  equals(node: AlgebraicNode) {
+
+  equals(node: AlgebraicNode): boolean {
     return isCosNode(node) && node.child.equals(this.child);
   }
 }
