@@ -12,6 +12,7 @@ import {
 } from "#root/exercises/exercise";
 import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstructor";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { arrayHasSameElements } from "#root/utils/arrayHasSameElements";
 import { random } from "#root/utils/random";
 
 type Identifiers = {};
@@ -37,15 +38,11 @@ const getDrawATriangleQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     ggbAnswer: [
-      "(1;1)",
+      `(1;1)`,
+      `(1;${ab + 1})`,
       `Circle(A, ${ab})`,
-      `Circle(B, ${ac})`,
-      "Line(B, C)",
-      "Line(C, B)",
-      "Line(B, A)",
-      "Line(A, B)",
-      "Line(A, C)",
-      "Line(C, A)",
+      `Circle(A, ${ac})`,
+      `Circle(B, ${bc})`,
     ],
     instruction: `Dessiner le triangle $ABC$ en sachant que : $AB=${ab}$, $AC=${ac}$ et $BC=${bc}$`,
     keys: [],
@@ -59,7 +56,12 @@ const getDrawATriangleQuestion: QuestionGenerator<Identifiers> = () => {
       }),
       enableShiftDragZoom: true,
       coords: [-6, 6, -10, 10],
-      initialCommands: ["A=Point({1,1})", "ShowLabel(A,true)"],
+      initialCommands: [
+        "A=Point({1,1})",
+        "ShowLabel(A,true)",
+        `B=Point({1,${ab + 1}})`,
+        "ShowLabel(B,true)",
+      ],
     },
     identifiers: {},
   };
@@ -69,7 +71,7 @@ const getDrawATriangleQuestion: QuestionGenerator<Identifiers> = () => {
 
 const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
   console.log(ans);
-  return false;
+  return ggbAnswer.every((cmnd) => ans.includes(cmnd));
 };
 
 export const drawATriangle: Exercise<Identifiers> = {
