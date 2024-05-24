@@ -4,5 +4,4 @@ export * from "./trigonometry";
 export * from "./trigonometryAngleCalcul";
 export * from "./trigonometrySideCalcul";
 export * from "./associatePoint";
-export * from "./placeAPoint";
-export * from "./drawAlineInGGB";
+export * from "./arcValue";

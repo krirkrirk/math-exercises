@@ -9,3 +9,4 @@ export * from "./leadingCoeffAndOriginOrdinate";
 export * from "./affineAdjustment";
 export * from "./affineAdjustmentRsquared";
 export * from "./affineAdjustmentComplete";
+export * from "./affineMeanValue";
