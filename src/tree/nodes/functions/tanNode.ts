@@ -1,16 +1,18 @@
-// import { cos } from "mathjs";
 import { Node, NodeType, hasVariableNode } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
+
 export function isTanNode(a: Node): a is TanNode {
   return isFunctionNode(a) && a.id === FunctionsIds.tan;
 }
+
 export class TanNode implements FunctionNode {
   id: FunctionsIds;
   child: AlgebraicNode;
   type: NodeType;
   isNumeric: boolean;
+
   constructor(child: AlgebraicNode) {
     this.id = FunctionsIds.tan;
     this.child = child;
@@ -20,6 +22,10 @@ export class TanNode implements FunctionNode {
 
   toMathString(): string {
     return `tan(${this.child.toMathString()})`;
+  }
+
+  toTex(): string {
+    return `\\tan\\left(${this.child.toTex()}\\right)`;
   }
 
   toEquivalentNodes(): AlgebraicNode[] {
@@ -35,41 +41,33 @@ export class TanNode implements FunctionNode {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }
 
-  toTex(): string {
-    return `\\tan\\left(${this.child.toTex()}\\right)`;
-  }
-
-  simplify(opts?: SimplifyOptions) {
+  simplify(opts: SimplifyOptions = {}): AlgebraicNode {
     const simplifiedChild = this.child.simplify();
     if (!hasVariableNode(simplifiedChild)) {
-      const value = simplifiedChild.evaluate({});
-      const moduled = opts?.isDegree
-        ? Math.abs(value % 360)
-        : Math.abs(value % (2 * Math.PI));
-      const trigoPoint = remarkableTrigoValues.find((value) =>
-        opts?.isDegree
-          ? value.degree === moduled
-          : value.angle.evaluate({}) === moduled,
-      );
-      if (!trigoPoint) {
-        return new TanNode(simplifiedChild);
-      } else {
-        return opts?.isDegree
-          ? Math.tan(trigoPoint.degree).toTree()
-          : trigoPoint.cos;
+      let value = simplifiedChild.evaluate({});
+      if (opts.isDegree) {
+        value = (value * Math.PI) / 180;
       }
+      const moduled = Math.abs(value % Math.PI);
+      const trigoPoint = remarkableTrigoValues.find(
+        (val) => val.angle.evaluate({}) === moduled,
+      );
+      if (!trigoPoint) return new TanNode(simplifiedChild);
+      else return trigoPoint.tan;
     } else {
-      //écrire les regles albgeiruqe
-      //chaque simplification doit relancer tout le simplify
-      //cos(x+2PI)
-      //cos(-x)
+      // Écrire les règles algébriques spécifiques à tan ici
+      // Exemples :
+      // tan(x + π) -> tan(x)
+      // tan(-x) -> -tan(x)
     }
     return new TanNode(simplifiedChild);
   }
+
   evaluate(vars: Record<string, number>) {
     return Math.tan(this.child.evaluate(vars));
   }
-  equals(node: AlgebraicNode) {
+
+  equals(node: AlgebraicNode): boolean {
     return isTanNode(node) && node.child.equals(this.child);
   }
 }
