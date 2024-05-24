@@ -23,70 +23,84 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { secondDegreeDerivative } from "./secondDegreeDerivative";
 
 type Identifiers = {
-  affine: Affine;
+  affinecoeffs: number[];
 };
 
 const getCosSecondDegreeDerivativeQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const affine = AffineConstructor.random();
+  const affinecoeffs = affine.coefficients;
+
   const ans = new MultiplyNode(
     new MultiplyNode(
-      new PowerNode(affine.a.toTree(), new NumberNode(2)),
+      new PowerNode(affinecoeffs[1].toTree(), new NumberNode(2)),
       new NumberNode(-1),
     ),
-    new CosNode(affine.toTree()),
+    new CosNode(affine.toTree().simplify({ forbidFactorize: true })),
   )
     .simplify()
     .toTex();
 
+  const func = new CosNode(
+    affine.toTree().simplify({ forbidFactorize: true }),
+  ).toTex();
+
   const question: Question<Identifiers> = {
     answer: ans,
-    instruction: `Calculer la dérivée seconde de $cos(${affine.toTex()})$`,
+    instruction: `Calculez la dérivée seconde de la fonction $f(x) = ${func}$.`,
     keys: ["x", "sin", "cos", "tan"],
     answerFormat: "tex",
-    identifiers: { affine },
+    identifiers: { affinecoeffs },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer, affine }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, affinecoeffs },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
+  const affine = new AddNode(
+    new MultiplyNode(new NumberNode(affinecoeffs[1]), new VariableNode("x")),
+    new NumberNode(affinecoeffs[0]),
+  ).simplify({ forbidFactorize: true });
+
   const wronganswer1 = new MultiplyNode(
-    new PowerNode(affine.a.toTree(), new NumberNode(2)),
-    new CosNode(affine.toTree()),
+    new PowerNode(affinecoeffs[1].toTree(), new NumberNode(2)),
+    new CosNode(affine),
   )
     .simplify()
     .toTex();
 
   const wronganswer2 = new MultiplyNode(
     new MultiplyNode(
-      new PowerNode(affine.a.toTree(), new NumberNode(2)),
+      new PowerNode(affinecoeffs[1].toTree(), new NumberNode(2)),
       new NumberNode(-1),
     ),
-    new SinNode(affine.toTree()),
+    new SinNode(affine),
   )
     .simplify()
     .toTex();
 
   const wronganswer3 = new MultiplyNode(
-    affine.a.toTree(),
-    new SinNode(affine.toTree()),
+    affinecoeffs[1].toTree(),
+    new SinNode(affine),
   )
     .simplify()
     .toTex();
 
   const wronganswer4 = new MultiplyNode(
-    affine.a.toTree(),
-    new CosNode(affine.toTree()),
+    affinecoeffs[1].toTree(),
+    new CosNode(affine),
   )
     .simplify()
     .toTex();
 
-  const wronganswer5 = affine.toTree().toTex();
+  const wronganswer5 = affine.toTex();
 
   tryToAddWrongProp(propositions, wronganswer1);
   tryToAddWrongProp(propositions, wronganswer2);
@@ -98,7 +112,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, affine }) => {
     const random = AffineConstructor.random();
     const randomwronganswer = new MultiplyNode(
       random.a.toTree(),
-      new SinNode(affine.toTree()),
+      new SinNode(random.toTree().simplify({ forbidFactorize: true })),
     )
       .simplify()
       .toTex();
@@ -107,28 +121,28 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, affine }) => {
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer, affine }) => {
-  const validequation = new MultiplyNode(
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, affinecoeffs }) => {
+  const affine = new AddNode(
+    new MultiplyNode(new NumberNode(affinecoeffs[1]), new VariableNode("x")),
+    new NumberNode(affinecoeffs[0]),
+  ).simplify({ forbidFactorize: true });
+
+  const validanswer = new MultiplyNode(
     new MultiplyNode(
-      new PowerNode(new NumberNode(affine.a), new NumberNode(2)),
+      new PowerNode(new NumberNode(affinecoeffs[1]), new NumberNode(2)),
       new NumberNode(-1),
     ),
-    new CosNode(
-      new AddNode(
-        new MultiplyNode(new NumberNode(affine.a), new VariableNode("x")),
-        new NumberNode(affine.b),
-      ),
-    ),
+    new CosNode(affine),
   ).simplify();
 
-  const latexs = validequation.toAllValidTexs();
+  const latexs = validanswer.toAllValidTexs();
 
   return latexs.includes(ans);
 };
 
 export const cosSecondDegreeDerivative: Exercise<Identifiers> = {
   id: "cosSecondDegreeDerivative",
-  label: "Dérivée seconde de cos(u)",
+  label: "Dérivée seconde de $\\cos(u)$",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Dérivation"],

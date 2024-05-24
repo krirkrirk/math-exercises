@@ -57,8 +57,8 @@ export class SqrtNode implements FunctionNode {
     return res;
   }
 
-  toAllValidTexs(): string[] {
-    return this.toEquivalentNodes().map((node) => node.toTex());
+  toAllValidTexs(opts?: NodeOptions): string[] {
+    return this.toEquivalentNodes(opts).map((node) => node.toTex());
   }
   evaluate(vars: Record<string, number>) {
     return Math.sqrt(this.child.evaluate(vars));

@@ -55,9 +55,8 @@ const getMedianWithTable: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     instruction: `On considère le tableau d'effectifs suivant : 
 
-| | | | | | |
-|-|-|-|-|-|-|
 |Valeur|${randomValues[0]}|${randomValues[1]}|${randomValues[2]}|${randomValues[3]}|${randomValues[4]}|
+|-|-|-|-|-|-|
 |Effectif|${randomEffectives[0]}|${randomEffectives[1]}|${randomEffectives[2]}|${randomEffectives[3]}|${randomEffectives[4]}|
 
 Calculer la médiane de cette série de valeurs.`,
@@ -66,6 +65,7 @@ Calculer la médiane de cette série de valeurs.`,
     keys: [],
     answerFormat: "tex",
     identifiers: { randomValues },
+    style: { tableHasNoHeader: true },
   };
 
   return question;

@@ -1,16 +1,22 @@
-// import { sin } from "mathjs";
 import { Node, NodeType, hasVariableNode } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
+
+export interface SimplifyOptions {
+  isDegree?: boolean;
+}
+
 export function isSinNode(a: Node): a is SinNode {
   return isFunctionNode(a) && a.id === FunctionsIds.sin;
 }
+
 export class SinNode implements FunctionNode {
   id: FunctionsIds;
   child: AlgebraicNode;
   type: NodeType;
   isNumeric: boolean;
+
   constructor(child: AlgebraicNode) {
     this.id = FunctionsIds.sin;
     this.child = child;
@@ -25,9 +31,7 @@ export class SinNode implements FunctionNode {
   toTex(): string {
     return `\\sin\\left(${this.child.toTex()}\\right)`;
   }
-  // toMathjs() {
-  //   return sin(this.child.toMathjs());
-  // }
+
   toEquivalentNodes(): AlgebraicNode[] {
     const res: AlgebraicNode[] = [];
     const childNodes = this.child.toEquivalentNodes();
@@ -41,27 +45,32 @@ export class SinNode implements FunctionNode {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }
 
-  simplify(): AlgebraicNode {
+  simplify(opts: SimplifyOptions = {}): AlgebraicNode {
     const simplifiedChild = this.child.simplify();
     if (!hasVariableNode(simplifiedChild)) {
-      const value = simplifiedChild.evaluate({});
+      let value = simplifiedChild.evaluate({});
+      if (opts.isDegree) {
+        value = (value * Math.PI) / 180;
+      }
       const moduled = Math.abs(value % (2 * Math.PI));
       const trigoPoint = remarkableTrigoValues.find(
-        (value) => value.angle.evaluate({}) === moduled,
+        (val) => val.angle.evaluate({}) === moduled,
       );
-      if (!trigoPoint) return this;
-      else return trigoPoint.cos;
+      if (!trigoPoint) return new SinNode(simplifiedChild);
+      else return trigoPoint.sin;
     } else {
-      //écrire les regles albgeiruqe
-      //chaque simplification doit relancer tout le simplify
-      //cos(x+2PI)
-      //cos(-x)
+      // Écrire les règles algébriques spécifiques à sin ici
+      // Exemples :
+      // sin(x + 2π) -> sin(x)
+      // sin(-x) -> -sin(x)
     }
-    return this;
+    return new SinNode(simplifiedChild);
   }
+
   evaluate(vars: Record<string, number>) {
     return Math.sin(this.child.evaluate(vars));
   }
+
   equals(node: AlgebraicNode): boolean {
     return isSinNode(node) && node.child.equals(this.child);
   }
