@@ -12,7 +12,6 @@ import {
 } from "#root/exercises/exercise";
 import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstructor";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { randint } from "#root/math/utils/random/randint";
 import { random } from "#root/utils/random";
 
 type Identifiers = {};
@@ -24,10 +23,10 @@ const triangles = [
   { AB: 4, AC: 6, BC: 7 },
   { AB: 5, AC: 7, BC: 8 },
   { AB: 6, AC: 7, BC: 8 },
-  { AB: 5, AC: 6, BC: 7.5 },
-  { AB: 4.5, AC: 5.5, BC: 6.5 },
   { AB: 5, AC: 5, BC: 7 },
   { AB: 6, AC: 6, BC: 8 },
+  { AB: 5, AC: 5, BC: 8 },
+  { AB: 2, AC: 2, BC: 4 },
 ];
 
 const getDrawATriangleQuestion: QuestionGenerator<Identifiers> = () => {
@@ -37,7 +36,17 @@ const getDrawATriangleQuestion: QuestionGenerator<Identifiers> = () => {
   const bc = triangle.BC;
 
   const question: Question<Identifiers> = {
-    ggbAnswer: [""],
+    ggbAnswer: [
+      "(1;1)",
+      `Circle(A, ${ab})`,
+      `Circle(B, ${ac})`,
+      "Line(B, C)",
+      "Line(C, B)",
+      "Line(B, A)",
+      "Line(A, B)",
+      "Line(A, C)",
+      "Line(C, A)",
+    ],
     instruction: `Dessiner le triangle $ABC$ en sachant que : $AB=${ab}$, $AC=${ac}$ et $BC=${bc}$`,
     keys: [],
     answerFormat: "tex",
@@ -48,6 +57,7 @@ const getDrawATriangleQuestion: QuestionGenerator<Identifiers> = () => {
         intersect: true,
         circleWithRadius: true,
       }),
+      enableShiftDragZoom: true,
       coords: [-6, 6, -10, 10],
       initialCommands: ["A=Point({1,1})", "ShowLabel(A,true)"],
     },
