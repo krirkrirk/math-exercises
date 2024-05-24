@@ -10,6 +10,7 @@ import {
   shuffleProps,
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
+import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstructor";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 
@@ -25,8 +26,13 @@ const getDrawATriangleQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Dessiner le triangle $ABC$ en sachant que : $AB=${ab}$, $AC=${ac}$ et $BC=${bc}$`,
     keys: [],
     answerFormat: "tex",
-    studentGgbOptions:{
-      customToolBar:
+    studentGgbOptions: {
+      customToolBar: toolBarConstructor({
+        point: true,
+        join: true,
+        intersect: true,
+        circleWithRadius: true,
+      }),
     },
     identifiers: {},
   };
@@ -34,22 +40,11 @@ const getDrawATriangleQuestion: QuestionGenerator<Identifiers> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
-  const propositions: Proposition[] = [];
-  addValidProp(propositions, answer);
-  while (propositions.length < n) {
-    throw Error("QCM not implemented");
-  }
-  return shuffleProps(propositions, n);
-};
-
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  throw Error("VEA not implemented");
-};
-
 const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
-  throw Error("VEA not implemented");
+  console.log(ans);
+  return false;
 };
+
 export const drawATriangle: Exercise<Identifiers> = {
   id: "drawATriangle",
   label: "",
@@ -59,8 +54,7 @@ export const drawATriangle: Exercise<Identifiers> = {
   generator: (nb: number) => getDistinctQuestions(getDrawATriangleQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
-  getPropositions,
-  isAnswerValid,
   isGGBAnswerValid,
+  answerType: "GGB",
   subject: "Mathématiques",
 };
