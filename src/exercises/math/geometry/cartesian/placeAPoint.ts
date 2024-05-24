@@ -20,8 +20,8 @@ const getPlaceAPointQuestion: QuestionGenerator<Identifiers> = () => {
   const yMax = point.getYnumber() + 2;
 
   const question: Question<Identifiers> = {
-    ggbAnswer: [`(${point.getXnumber()},${point.getYnumber()})`],
-    instruction: `Placer le point ${point.toTexWithCoords()}$`,
+    ggbAnswer: [`(${point.getXnumber()};${point.getYnumber()})`],
+    instruction: `Placer le point $${point.toTexWithCoords()}$`,
     keys: [],
     studentGgbOptions: {
       customToolBar: toolBarConstructor({
@@ -37,9 +37,7 @@ const getPlaceAPointQuestion: QuestionGenerator<Identifiers> = () => {
 };
 
 const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
-  if (arrayHasSameElements(ans, ggbAnswer)) return true;
-  if (ans.includes(ggbAnswer[0])) return true;
-  return false;
+  return arrayHasSameElements(ans, ggbAnswer);
 };
 
 export const testGGBAnswer: Exercise<Identifiers> = {

@@ -32,7 +32,7 @@ const getDrawAlineInGgbQuestion: QuestionGenerator<Identifiers> = () => {
       customToolBar: toolBarConstructor({
         join: true,
       }),
-      coords: [-4, 4, yMin - 1, yMax + 1],
+      coords: [-6, 6, yMin - 5, yMax + 5],
       isGridSimple: true,
     },
     identifiers: { correctA: f.a, correctB: f.b },
