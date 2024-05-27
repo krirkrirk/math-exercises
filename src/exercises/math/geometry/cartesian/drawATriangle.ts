@@ -11,13 +11,13 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getPointFromGGB } from "#root/exercises/utils/geogebra/getPointFromGGB";
+import { isGGBLine } from "#root/exercises/utils/geogebra/isGGBLine";
+import { isGGBPoint } from "#root/exercises/utils/geogebra/isGGBPoint";
 import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstructor";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { Point } from "#root/math/geometry/point";
 import { distBetweenTwoPoints } from "#root/math/utils/distBetweenTwoPoints";
 import { random } from "#root/utils/random";
-import { distanceBetweenTwoPoints } from "./distanceBetweenTwoPoints";
 
 type Identifiers = {
   ac: number;
@@ -43,13 +43,7 @@ const getDrawATriangleQuestion: QuestionGenerator<Identifiers> = () => {
   const bc = triangle.BC;
 
   const question: Question<Identifiers> = {
-    ggbAnswer: [
-      `(1;1)`,
-      `(1;${ab + 1})`,
-      `Circle(A, ${ab})`,
-      `Circle(A, ${ac})`,
-      `Circle(B, ${bc})`,
-    ],
+    ggbAnswer: [`Circle(A, ${ab})`, `Circle(A, ${ac})`, `Circle(B, ${bc})`],
     instruction: `Dessiner le triangle $ABC$ en sachant que : $AB=${ab}$, $AC=${ac}$ et $BC=${bc}$`,
     keys: [],
     answerFormat: "tex",
@@ -77,40 +71,42 @@ const getDrawATriangleQuestion: QuestionGenerator<Identifiers> = () => {
 
 const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer, ac }) => {
   if (ggbAnswer.length > ans.length) return false;
-  const c = getCPoint(ans);
-  if (!c) return false;
-  const acAns = Math.floor(
-    distBetweenTwoPoints(new Point("x", (1).toTree(), (1).toTree()), c),
-  );
-  return (
-    ggbAnswer.every((cmnd) => ans.includes(cmnd)) &&
-    checkLines(ans) &&
-    acAns === ac
-  );
-};
-
-const checkLines = (ans: string[]): boolean => {
-  const regex = /Line\([A-D], [A-D]\)/;
-  let k = 0;
-  for (let i = 0; i < ans.length; i++) {
-    if (ans[i].match(regex)) k += 1;
-  }
-  return k === 3;
-};
-
-const getCPoint = (ans: string[]) => {
-  const regex = /\(-?\d*\.?\d+\;-?\d*\.?\d+\)/;
+  let c = undefined;
+  let lines = [];
   for (let i = 2; i < ans.length; i++) {
-    if (ans[i].match(regex)) return getPointFromGGB(ans[i], "C");
+    if (
+      !isGGBPoint(ans[i]) &&
+      !isGGBLine(ans[i]) &&
+      !ggbAnswer.includes(ans[i])
+    )
+      return false;
+    if (isGGBLine(ans[i])) lines.push(ans[i]);
+    if (isGGBPoint(ans[i]) && c === undefined) c = getPointFromGGB(ans[i], "C");
   }
+  const ansAc = Math.floor(
+    distBetweenTwoPoints(new Point("x", (1).toTree(), (1).toTree()), c!),
+  );
+  return ansAc === ac && checkLines(lines);
+};
+
+const checkLines = (lines: string[]): boolean => {
+  const forcedLines = ["Line(A, B)", "Line(B, A)"];
+
+  if (lines.length !== 3) return false;
+  if (!lines.includes(forcedLines[0]) && !lines.includes(forcedLines[1]))
+    return false;
+  if (lines.includes("Line(A, C)") || lines.includes("Line(C, A)")) {
+    return lines.includes("Line(B, C)") || lines.includes("Line(C, B)");
+  }
+  return lines.includes("Line(B, D)") || lines.includes("Line(D, B)");
 };
 
 export const drawATriangle: Exercise<Identifiers> = {
   id: "drawATriangle",
-  label: "",
-  levels: [],
+  label: "Dessiner un triangle à partir de deux points.",
+  levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Géométrie cartésienne"],
   generator: (nb: number) => getDistinctQuestions(getDrawATriangleQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
