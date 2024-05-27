@@ -10,12 +10,18 @@ import {
   shuffleProps,
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
+import { getPointFromGGB } from "#root/exercises/utils/geogebra/getPointFromGGB";
 import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstructor";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
+import { Point } from "#root/math/geometry/point";
+import { distBetweenTwoPoints } from "#root/math/utils/distBetweenTwoPoints";
 import { random } from "#root/utils/random";
+import { distanceBetweenTwoPoints } from "./distanceBetweenTwoPoints";
 
-type Identifiers = {};
+type Identifiers = {
+  ac: number;
+};
 
 const triangles = [
   { AB: 3, AC: 4, BC: 5 },
@@ -63,16 +69,24 @@ const getDrawATriangleQuestion: QuestionGenerator<Identifiers> = () => {
         "ShowLabel(B,true)",
       ],
     },
-    identifiers: {},
+    identifiers: { ac },
   };
 
   return question;
 };
 
-const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
-  if (ans.length !== 9) return false;
-
-  return ggbAnswer.every((cmnd) => ans.includes(cmnd)) && checkLines(ans);
+const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer, ac }) => {
+  if (ggbAnswer.length > ans.length) return false;
+  const c = getCPoint(ans);
+  if (!c) return false;
+  const acAns = Math.floor(
+    distBetweenTwoPoints(new Point("x", (1).toTree(), (1).toTree()), c),
+  );
+  return (
+    ggbAnswer.every((cmnd) => ans.includes(cmnd)) &&
+    checkLines(ans) &&
+    acAns === ac
+  );
 };
 
 const checkLines = (ans: string[]): boolean => {
@@ -84,8 +98,11 @@ const checkLines = (ans: string[]): boolean => {
   return k === 3;
 };
 
-const getPoints = (ans: string[]) => {
-  const regex = /\(d;d\)/;
+const getCPoint = (ans: string[]) => {
+  const regex = /\(-?\d*\.?\d+\;-?\d*\.?\d+\)/;
+  for (let i = 2; i < ans.length; i++) {
+    if (ans[i].match(regex)) return getPointFromGGB(ans[i], "C");
+  }
 };
 
 export const drawATriangle: Exercise<Identifiers> = {
