@@ -1,8 +1,7 @@
 import { Node, NodeType, hasVariableNode } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
-import { AlgebraicNode } from "../algebraicNode";
+import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
-import { SimplifyOptions } from "./sinNode";
 
 export function isTanNode(a: Node): a is TanNode {
   return isFunctionNode(a) && a.id === FunctionsIds.tan;
