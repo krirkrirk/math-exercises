@@ -73,13 +73,16 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer, ac }) => {
   if (ans.length > 10) return false;
   let c = undefined;
   let lines = [];
+
   for (let i = 2; i < ans.length; i++) {
     if (isGGBLine(ans[i])) lines.push(ans[i]);
     if (isGGBPoint(ans[i]) && c === undefined) c = getPointFromGGB(ans[i], "C");
   }
+
   const ansAc = Math.floor(
     distBetweenTwoPoints(new Point("x", (1).toTree(), (1).toTree()), c!),
   );
+
   return ansAc === ac && checkLines(lines);
 };
 
