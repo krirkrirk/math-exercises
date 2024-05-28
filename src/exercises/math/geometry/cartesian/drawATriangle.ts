@@ -43,7 +43,7 @@ const getDrawATriangleQuestion: QuestionGenerator<Identifiers> = () => {
   const bc = triangle.BC;
 
   const question: Question<Identifiers> = {
-    ggbAnswer: [`Circle(A, ${ab})`, `Circle(A, ${ac})`, `Circle(B, ${bc})`],
+    ggbAnswer: [`Line(A, B)`, `Line(A, C)`, `Circle(B, C)`],
     instruction: `Dessiner le triangle $ABC$ en sachant que : $AB=${ab}$, $AC=${ac}$ et $BC=${bc}$`,
     keys: [],
     answerFormat: "tex",
@@ -70,16 +70,10 @@ const getDrawATriangleQuestion: QuestionGenerator<Identifiers> = () => {
 };
 
 const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer, ac }) => {
-  if (ggbAnswer.length > ans.length) return false;
+  if (ans.length > 10) return false;
   let c = undefined;
   let lines = [];
   for (let i = 2; i < ans.length; i++) {
-    if (
-      !isGGBPoint(ans[i]) &&
-      !isGGBLine(ans[i]) &&
-      !ggbAnswer.includes(ans[i])
-    )
-      return false;
     if (isGGBLine(ans[i])) lines.push(ans[i]);
     if (isGGBPoint(ans[i]) && c === undefined) c = getPointFromGGB(ans[i], "C");
   }
