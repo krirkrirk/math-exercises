@@ -80,8 +80,6 @@ export interface Question<TIdentifiers = {}> {
     isGridSimple?: boolean;
     isAxesRatioFixed?: boolean;
     isXAxesNatural?: boolean;
-    xAxisSteps?: number;
-    yAxisSteps?: number;
     enableShiftDragZoom?: boolean;
     coords?: number[];
   };
