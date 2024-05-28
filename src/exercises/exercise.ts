@@ -74,6 +74,7 @@ export interface Question<TIdentifiers = {}> {
     tableHasNoHeader?: boolean;
   };
   divisionFormat?: "fraction" | "obelus";
+  variationTable?: { xValues: number[]; fValues: number[] };
   identifiers: TIdentifiers;
 }
 
