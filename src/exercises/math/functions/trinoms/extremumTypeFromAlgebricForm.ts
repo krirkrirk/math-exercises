@@ -60,7 +60,7 @@ export const extremumTypeFromAlgebricForm: Exercise<Identifiers> = {
   sections: ["Second degré"],
   generator: (nb: number) =>
     getDistinctQuestions(getExtremumTypeFromAlgebricFormQuestion, nb),
-  answerType: "QCM",
+  answerType: "QCU",
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,

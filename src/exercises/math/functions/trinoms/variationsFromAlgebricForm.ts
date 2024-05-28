@@ -65,7 +65,7 @@ export const variationsFromAlgebricForm: Exercise<Identifiers> = {
   sections: ["Second degré"],
   generator: (nb: number) =>
     getDistinctQuestions(getVariationsFromAlgebricFormQuestion, nb),
-  answerType: "QCM",
+  answerType: "QCU",
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,

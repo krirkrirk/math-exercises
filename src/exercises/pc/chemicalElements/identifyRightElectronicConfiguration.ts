@@ -146,6 +146,6 @@ export const identifyRightElectronicConfiguration: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Chimie",
-  answerType: "QCM",
+  answerType: "QCU",
   maxAllowedQuestions: 16,
 };
