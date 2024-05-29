@@ -57,7 +57,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 const generateVariations = (): FunctionVariations => {
   const flip = coinFlip();
   const start = randint(-10, 11);
-  const end = randint(start + 10, 31);
+  const end = randint(21, 31);
 
   const middle = Math.floor(end / 2);
 
@@ -110,5 +110,6 @@ export const signVariationFunction: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  answerType: "QCM",
   subject: "Mathématiques",
 };
