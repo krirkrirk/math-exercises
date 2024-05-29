@@ -51,7 +51,7 @@ const getFunctionMinMaxQuestion: QuestionGenerator<Identifiers> = () => {
   let startIndex = randint(0, valuesnumber - 2);
   let endIndex = randint(startIndex + 1, valuesnumber - 1);
 
-  const closureTypes1 = [
+  const closureTypes = [
     ClosureType.OO,
     ClosureType.OF,
     ClosureType.FO,
@@ -62,8 +62,8 @@ const getFunctionMinMaxQuestion: QuestionGenerator<Identifiers> = () => {
 
   const closureType =
     endIndex - startIndex === 1
-      ? closureTypes2[randint(0, closureTypes2.length - 1)]
-      : closureTypes1[randint(0, closureTypes1.length - 1)];
+      ? ClosureType.FF
+      : closureTypes[randint(0, closureTypes.length - 1)];
 
   const interval = new IntervalNode(
     xValues[startIndex].toTree(),
