@@ -10,16 +10,20 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { randint } from "#root/math/utils/random/randint";
 import { ClosureType } from "#root/tree/nodes/sets/closure";
 import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { coinFlip } from "#root/utils/coinFlip";
 
-type Identifiers = {};
+type Identifiers = {
+  xValues: number[];
+  fValues: number[];
+  questionType: string;
+  valuesnumber: number;
+};
 
 const getFunctionMinMaxQuestion: QuestionGenerator<Identifiers> = () => {
-  const valuesnumber = randint(3, 6); // Assurer au moins 3 valeurs pour garantir 2 variations
+  const valuesnumber = randint(2, 6);
   const minormax = coinFlip();
   const questionType = minormax ? `maximum` : `minimum`;
 
@@ -44,24 +48,22 @@ const getFunctionMinMaxQuestion: QuestionGenerator<Identifiers> = () => {
     isIncreasing = !isIncreasing;
   }
 
-  // Sélectionner aléatoirement des indices pour l'intervalle
   let startIndex = randint(0, valuesnumber - 2);
   let endIndex = randint(startIndex + 1, valuesnumber - 1);
 
-  // Vérifier le nombre de variations dans l'intervalle choisi
-  while (endIndex - startIndex < 2) {
-    startIndex = randint(0, valuesnumber - 2);
-    endIndex = randint(startIndex + 1, valuesnumber - 1);
-  }
-
-  // Déterminer aléatoirement le type d'intervalle (ouvert/fermé)
-  const closureTypes = [
+  const closureTypes1 = [
     ClosureType.OO,
     ClosureType.OF,
     ClosureType.FO,
     ClosureType.FF,
   ];
-  const closureType = closureTypes[randint(0, closureTypes.length - 1)];
+
+  const closureTypes2 = [ClosureType.OF, ClosureType.FO, ClosureType.FF];
+
+  const closureType =
+    endIndex - startIndex === 1
+      ? closureTypes2[randint(0, closureTypes2.length - 1)]
+      : closureTypes1[randint(0, closureTypes1.length - 1)];
 
   const interval = new IntervalNode(
     xValues[startIndex].toTree(),
@@ -69,7 +71,6 @@ const getFunctionMinMaxQuestion: QuestionGenerator<Identifiers> = () => {
     closureType,
   ).toTex();
 
-  // Sélection des valeurs de f(x) dans l'intervalle en fonction du type d'intervalle
   const selectedValues = fValues.slice(startIndex, endIndex + 1);
   const filteredValues = selectedValues.filter((_, idx) => {
     if (closureType === ClosureType.OO) {
@@ -93,20 +94,36 @@ const getFunctionMinMaxQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Quel est le ${questionType} de $f$ sur $${interval}$`,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { xValues, fValues, questionType, valuesnumber },
     variationTable: { xValues: xValues, fValues: fValues },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, xValues, fValues, questionType, valuesnumber },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  while (propositions.length < n) {
-    // Générer des propositions incorrectes aléatoirement
-    const wrongAnswer = (Math.random() * 20 - 10).toFixed(2);
+  const wrongAnswer1 =
+    questionType === "maximum"
+      ? Math.max(...xValues)
+          .toTree()
+          .toTex()
+      : Math.min(...xValues)
+          .toTree()
+          .toTex();
+  tryToAddWrongProp(propositions, wrongAnswer1);
+
+  for (let i = 0; i < valuesnumber; i++) {
+    const wrongAnswer = fValues[i].toTree().toTex();
     tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, randint(-10, 10).toTree().toTex());
   }
   return shuffleProps(propositions, n);
 };
