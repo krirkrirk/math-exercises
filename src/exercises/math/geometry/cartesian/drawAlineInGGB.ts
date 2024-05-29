@@ -32,6 +32,8 @@ const getDrawAlineInGgbQuestion: QuestionGenerator<Identifiers> = () => {
       customToolBar: toolBarConstructor({
         join: true,
       }),
+      xAxisSteps: 1,
+      yAxisSteps: 1,
       coords: [-6, 6, yMin - 5, yMax + 5],
       isGridSimple: true,
     },
@@ -49,12 +51,11 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (
   if (ans.length !== 3) return false;
   if (!isGGBPoint(ans[0]) || !isGGBPoint(ans[1]) || !isGGBLine(ans[2]))
     return false;
-  const A = getPoint(ans[0], "A"); //(-1,1)
-  const B = getPoint(ans[1], "B"); //(0,3)
+  const A = getPoint(ans[0], "A");
+  const B = getPoint(ans[1], "B");
   const a =
     (B.getYnumber() - A.getYnumber()) / (B.getXnumber() - A.getXnumber());
   const b = A.getYnumber() - a * A.getXnumber();
-  console.log(a, b);
   return a === correctA && b === correctB;
 };
 
