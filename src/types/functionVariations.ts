@@ -1,6 +1,22 @@
+import { MathLatex } from "#root/math/utils/functions/mathLatex";
+
 export type FunctionVariations = {
-  start: number | "-infini" | "+infini";
+  start: MathLatex;
   startSign: "-" | "+";
-  end: number | "-infini" | "+infini";
-  variations: { changePoint: number; sign: "+" | "-" }[];
+  end: MathLatex;
+  variations: { changePoint: MathLatex; sign: "-" | "+" }[];
 };
+
+export function FunctionVariationsConstructor(
+  start: MathLatex,
+  startSign: "-" | "+",
+  end: MathLatex,
+  variations: { changePoint: MathLatex; sign: "-" | "+" }[],
+): FunctionVariations {
+  return {
+    start: start,
+    startSign,
+    end: end,
+    variations,
+  };
+}

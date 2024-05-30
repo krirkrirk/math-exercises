@@ -10,9 +10,20 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { functionVariationsConstructor } from "#root/math/utils/functions/functionVariationsConstructor";
+import {
+  MathLatex,
+  MathLatexConstructor,
+} from "#root/math/utils/functions/mathLatex";
 import { randint } from "#root/math/utils/random/randint";
-import { FunctionVariations } from "#root/types/functionVariations";
+import {
+  MinusInfinityNode,
+  PlusInfinityNode,
+} from "#root/tree/nodes/numbers/infiniteNode";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import {
+  FunctionVariations,
+  FunctionVariationsConstructor,
+} from "#root/types/functionVariations";
 import { coinFlip } from "#root/utils/coinFlip";
 
 type Identifiers = {};
@@ -21,8 +32,12 @@ const getSignVariationFunctionQuestion: QuestionGenerator<Identifiers> = () => {
   const variations = generateVariations();
 
   const k = randint(
-    typeof variations.start === "number" ? variations.start + 1 : -1000,
-    typeof variations.end === "number" ? variations.end : 1001,
+    Math.abs(variations.start.mathValue) !== Infinity
+      ? variations.start.mathValue + 1
+      : -1000,
+    Math.abs(variations.end.mathValue) !== Infinity
+      ? variations.end.mathValue
+      : 1001,
   );
 
   const correctAns = getCorrectAnswer(k, variations)
@@ -56,21 +71,36 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 
 const generateVariations = (): FunctionVariations => {
   const flip = coinFlip();
-  const start = randint(-10, 11);
-  const end = randint(21, 31);
 
-  const middle = Math.floor(end / 2);
+  const start = getStartValue();
+  const end = getEndValue();
 
-  const firstZero = randint(start + 1, middle);
-  const secondZero = randint(middle, end);
+  const middle = Math.floor(
+    Math.abs(end.mathValue) !== Infinity ? end.mathValue / 2 : 0,
+  );
 
-  const functionVariations = functionVariationsConstructor(
-    start,
+  const firstZero = randint(
+    Math.abs(start.mathValue) !== Infinity ? start.mathValue + 1 : -1000,
+    middle,
+  );
+  const secondZero = randint(
+    middle,
+    Math.abs(end.mathValue) !== Infinity ? end.mathValue : 1001,
+  );
+
+  const functionVariations = FunctionVariationsConstructor(
+    MathLatexConstructor(start.latexValue, start.mathValue),
     flip ? "+" : "-",
-    end,
+    MathLatexConstructor(end.latexValue, end.mathValue),
     [
-      { changePoint: firstZero, sign: coinFlip() ? "+" : "-" },
-      { changePoint: secondZero, sign: coinFlip() ? "+" : "-" },
+      {
+        changePoint: MathLatexConstructor(firstZero + "", firstZero),
+        sign: coinFlip() ? "+" : "-",
+      },
+      {
+        changePoint: MathLatexConstructor(secondZero + "", secondZero),
+        sign: coinFlip() ? "+" : "-",
+      },
     ],
   );
 
@@ -83,19 +113,45 @@ const getCorrectAnswer = (
 ): string => {
   if (
     [
-      functionVariations.variations[0].changePoint,
-      functionVariations.variations[1].changePoint,
+      functionVariations.variations[0].changePoint.mathValue,
+      functionVariations.variations[1].changePoint.mathValue,
     ].includes(k)
   )
     return "Nul";
-  if (k < functionVariations.variations[0].changePoint)
+  if (k < functionVariations.variations[0].changePoint.mathValue)
     return functionVariations.startSign;
   if (
-    k > functionVariations.variations[0].changePoint &&
-    k < functionVariations.variations[1].changePoint
+    k > functionVariations.variations[0].changePoint.mathValue &&
+    k < functionVariations.variations[1].changePoint.mathValue
   )
     return functionVariations.variations[0].sign;
   return functionVariations.variations[1].sign;
+};
+
+const getStartValue = (): MathLatex => {
+  const flip = coinFlip();
+  if (flip) {
+    const nb = randint(-11, 10);
+    return MathLatexConstructor(nb + "", nb);
+  } else {
+    return MathLatexConstructor(
+      MinusInfinityNode.toTex(),
+      MinusInfinityNode.value,
+    );
+  }
+};
+
+const getEndValue = (): MathLatex => {
+  const filp = coinFlip();
+  if (filp) {
+    const nb = randint(20, 31);
+    return MathLatexConstructor(nb + "", nb);
+  } else {
+    return MathLatexConstructor(
+      PlusInfinityNode.toTex(),
+      PlusInfinityNode.value,
+    );
+  }
 };
 
 export const signVariationFunction: Exercise<Identifiers> = {
