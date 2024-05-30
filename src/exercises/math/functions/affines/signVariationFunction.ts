@@ -156,7 +156,7 @@ const getEndValue = (): MathLatex => {
 export const signVariationFunction: Exercise<Identifiers> = {
   id: "signVariationFunction",
   label: "Tableau de variations",
-  levels: ["2nde"],
+  levels: ["1reSpé", "2nde"],
   isSingleStep: true,
   sections: ["Fonctions"],
   generator: (nb: number) =>
