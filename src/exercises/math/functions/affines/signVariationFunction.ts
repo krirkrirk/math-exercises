@@ -103,7 +103,6 @@ const generateVariations = (): FunctionVariations => {
       },
     ],
   );
-
   return functionVariations;
 };
 
