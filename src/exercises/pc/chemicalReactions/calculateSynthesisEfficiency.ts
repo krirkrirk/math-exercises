@@ -27,17 +27,40 @@ const getCalculateSynthesisEfficiencyQuestion: QuestionGenerator<
 
   const efficiency = round(productQuantity / maxQuantity, 2);
 
+  const instruction = `Lors d'une synthèse chimique, $${roundSignificant(
+    maxQuantity,
+    2,
+  )}\\ \\text{mol}$ de produit est attendu au maximum, et il se forme au final $${roundSignificant(
+    productQuantity,
+    2,
+  )}\\ \\text{mol}$ de produit.
+  Calculer le rendement.`;
+
+  const hint =
+    "Le rendement est calculé en utilisant la formule : $R = \\frac{n_{produit}}{n_{max}}$, où $n_{produit}$ est la quantité de produit obtenue et $n_{max}$ est la quantité maximale attendue.";
+
+  const correction = `Pour calculer le rendement :
+  \n1. La quantité maximale de produit attendue est $${roundSignificant(
+    maxQuantity,
+    2,
+  )}\\ \\text{mol}$.
+  \n2. La quantité de produit effectivement obtenue est $${roundSignificant(
+    productQuantity,
+    2,
+  )}\\ \\text{mol}$.
+  \n3. Le rendement est donné par $R = \\frac{n_{produit}}{n_{max}} = \\frac{${roundSignificant(
+    productQuantity,
+    2,
+  )}}{${roundSignificant(maxQuantity, 2)}} = ${roundSignificant(
+    efficiency,
+    2,
+  )}$.`;
+
   const question: Question<Identifiers> = {
     answer: `${roundSignificant(efficiency, 2)}`,
-    instruction: `Lors d'une synthèse chimique, $${roundSignificant(
-      maxQuantity,
-      2,
-    )}\\ \\text{mol}$ de produit est attendu au maximum, et il se forme au final $${roundSignificant(
-      productQuantity,
-      2,
-    )}\\ \\text{mol}$ de produit.
-    Calculer le rendement.
-    `,
+    instruction,
+    hint,
+    correction,
     keys: [],
     answerFormat: "tex",
     identifiers: { maxQuantity, productQuantity },
@@ -55,11 +78,11 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
   const wrongDivision = maxQuantity / productQuantity;
   const multiplied = maxQuantity * productQuantity;
-  const substracted = maxQuantity - productQuantity;
+  const subtracted = maxQuantity - productQuantity;
 
   tryToAddWrongProp(propositions, `${roundSignificant(wrongDivision, 2)}`);
   tryToAddWrongProp(propositions, `${roundSignificant(multiplied, 2)}`);
-  tryToAddWrongProp(propositions, `${roundSignificant(substracted, 2)}`);
+  tryToAddWrongProp(propositions, `${roundSignificant(subtracted, 2)}`);
 
   while (propositions.length < n) {
     tryToAddWrongProp(propositions, `${roundSignificant(randfloat(0, 5), 2)}`);
@@ -70,6 +93,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
+
 export const calculateSynthesisEfficiency: Exercise<Identifiers> = {
   id: "calculateSynthesisEfficiency",
   label: "Calculer un rendement",
