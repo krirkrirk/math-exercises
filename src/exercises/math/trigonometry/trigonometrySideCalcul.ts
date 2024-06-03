@@ -126,7 +126,8 @@ const getHint = (sides: string[], angle: string): string => {
   const opposite = sides.filter(
     (value) => value !== hypothenus && value !== adjacent[0],
   )[0];
-  return `On Rapelle que $\\sin(\\widehat{${angle}})=\\frac{${opposite}}{${sides[2]}} , \\cos(\\widehat{${angle}})=\\frac{${adjacent}}{${sides[2]}}$ et $\\tan(\\widehat{${angle}})=\\frac{${opposite}}{${adjacent}}$`;
+
+  return `Identifier le côté opposé, le côté adjacent et l'hypoténuse, puis utiliesr la bonne formule de trigonométrie.`;
 };
 
 const getCorrection = (
