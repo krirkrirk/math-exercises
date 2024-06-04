@@ -83,6 +83,16 @@ const getTrigonometrySideCalcul: QuestionGenerator<Identifiers> = () => {
       sides[randSideQuestion]
     }$ à $0,1$ cm près.`,
     answer,
+    hint: getHint(sides, angle[randAngle]),
+    correction: getCorrection(
+      sides,
+      sideLengths,
+      randSideQuestion,
+      randSide,
+      angle[randAngle],
+      angleValue[randAngle],
+      answer,
+    ),
     keys: [],
     commands: ggb.commands,
     options: ggb.getOptions(),
@@ -105,6 +115,113 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   }
 
   return shuffle(propositions);
+};
+const getHint = (sides: string[], angle: string): string => {
+  const hypothenus = sides[2];
+  const adjacent = sides.filter(
+    (value) =>
+      value !== hypothenus &&
+      [value.charAt(0), value.charAt(1)].includes(angle),
+  )[0];
+  const opposite = sides.filter(
+    (value) => value !== hypothenus && value !== adjacent[0],
+  )[0];
+
+  return `Identifier le côté opposé, le côté adjacent et l'hypoténuse, puis utiliesr la bonne formule de trigonométrie.`;
+};
+
+const getCorrection = (
+  sides: string[],
+  sideLengths: number[],
+  randSideQuestion: number,
+  randSide: number,
+  angle: string,
+  angleValue: number,
+  answer: string,
+) => {
+  const hypothenus = { name: sides[2], length: sideLengths[2] };
+  const sidesWithLentgh = sides.map((value, index) => {
+    return { name: value, length: sideLengths[index] };
+  });
+  const adjacent = sidesWithLentgh.filter(
+    (value) =>
+      value.name !== hypothenus.name &&
+      [value.name.charAt(0), value.name.charAt(1)].includes(angle),
+  )[0];
+  const opposite = sidesWithLentgh.filter(
+    (value) => value.name !== hypothenus.name && value.name !== adjacent.name,
+  )[0];
+
+  const correctEquations = getCorrectEquations(
+    { name: sides[randSideQuestion], length: sideLengths[randSideQuestion] },
+    { name: sides[randSide], length: sideLengths[randSide] },
+    hypothenus,
+    { name: angle, value: angleValue },
+    adjacent,
+    opposite,
+    answer,
+  );
+
+  return `On utilise la relation $${correctEquations[0]}$, on a donc :
+    $${correctEquations[1]} \\Leftrightarrow ${correctEquations[2]} \\Leftrightarrow ${correctEquations[3]}$ `;
+};
+
+const getCorrectEquations = (
+  randSideQuestion: { name: string; length: number },
+  randSide: { name: string; length: number },
+  hypothenus: { name: string; length: number },
+  angle: { name: string; value: number },
+  adjacent: { name: string; length: number },
+  opposite: { name: string; length: number },
+  answer: string,
+): string[] => {
+  let result;
+  switch (randSideQuestion.name) {
+    case adjacent.name:
+      result =
+        randSide.name === opposite.name
+          ? [
+              `\\tan(\\widehat{${angle.name}})=\\frac{${opposite.name}}{${adjacent.name}}`,
+              `\\tan(\\widehat{${angle.value}})=\\frac{${opposite.length}}{${adjacent.name}}`,
+              `\\frac{${opposite.length}}{\\tan(\\widehat{${angle.value}})}=${adjacent.name}`,
+            ]
+          : [
+              `\\cos(\\widehat{${angle.name}})=\\frac{${adjacent.name}}{${hypothenus.name}}`,
+              `\\cos(\\widehat{${angle.value}})=\\frac{${adjacent.name}}{${hypothenus.length}}`,
+              `\\cos(\\widehat{${angle.value}})*${hypothenus.length}=${adjacent.name}`,
+            ];
+      return result.concat(`${answer}=${adjacent.name}`);
+    case opposite.name:
+      result =
+        randSide.name === adjacent.name
+          ? [
+              `\\tan(\\widehat{${angle.name}})=\\frac{${opposite.name}}{${adjacent.name}}`,
+              `\\tan(\\widehat{${angle.value}})=\\frac{${opposite.name}}{${adjacent.length}}`,
+              `\\tan(\\widehat{${angle.value}})*${adjacent.length}=${opposite.name}`,
+            ]
+          : [
+              `\\sin(\\widehat{${angle.name}})=\\frac{${opposite.name}}{${hypothenus.name}}`,
+              `\\sin(\\widehat{${angle.value}})=\\frac{${opposite.name}}{${hypothenus.length}}`,
+              `\\sin(\\widehat{${angle.value}})*${hypothenus.length}=${opposite.name}`,
+            ];
+      return result.concat(`${answer}=${opposite.name}`);
+    case hypothenus.name:
+      result =
+        randSide.name === adjacent.name
+          ? [
+              `\\cos(\\widehat{${angle.name}})=\\frac{${adjacent.name}}{${hypothenus.name}}`,
+              `\\cos(\\widehat{${angle.value}})=\\frac{${adjacent.length}}{${hypothenus.name}}`,
+              `\\frac{${adjacent.length}}{\\cos(${angle.value})}=${hypothenus.name}`,
+            ]
+          : [
+              `\\sin(\\widehat{${angle.name}})=\\frac{${opposite.name}}{${hypothenus.name}}`,
+              `\\sin(\\widehat{${angle.value}})=\\frac{${opposite.length}}{${hypothenus.name}}`,
+              `\\frac{${opposite.length}}{\\sin(${angle.value})}=${hypothenus.name}`,
+            ];
+      return result.concat(`${answer}=${hypothenus.name}`);
+    default:
+      return [];
+  }
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
