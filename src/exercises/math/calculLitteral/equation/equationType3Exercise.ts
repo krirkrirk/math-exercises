@@ -10,18 +10,14 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { equationKeys } from "#root/exercises/utils/keys/equationKeys";
-import { Integer } from "#root/math/numbers/integer/integer";
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { Affine } from "#root/math/polynomials/affine";
-import { DiscreteSet } from "#root/math/sets/discreteSet";
-import { Interval } from "#root/math/sets/intervals/intervals";
 import { randint } from "#root/math/utils/random/randint";
 import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
-import { v4 } from "uuid";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
 /**
@@ -43,8 +39,17 @@ const getEquationType3ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const statementTree = new EqualNode(affine, new NumberNode(c));
   const answerTree = new EqualNode(new VariableNode("x"), solution.toTree());
   const answer = answerTree.toTex();
+
   const question: Question<Identifiers> = {
     instruction: `Résoudre : $${statementTree.toTex()}$`,
+    hint: "Isolez le terme $x$ dans la partie gauche de l'equation.",
+    correction: `Commencer par soustraire $${b}$ des deux côtés de l'équation pour 
+    l'éliminer du côté gauche, ensuite, diviser les deux côtés de l'équation par 
+    $${a}$ pour isoler $x$, ce qui donne : $ ${a}x = ${c}${
+      b < 0 ? "+" + Math.abs(b) : "-" + Math.abs(b)
+    } \\Leftrightarrow x=\\frac{${c}${
+      b < 0 ? "+" + Math.abs(b) : "-" + Math.abs(b)
+    }}{${a}} \\Leftrightarrow ${answer}$.`,
     startStatement: statementTree.toTex(),
     answer,
     keys: equationKeys,

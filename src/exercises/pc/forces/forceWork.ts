@@ -14,7 +14,6 @@ import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues"
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { roundSignificant } from "#root/math/utils/round";
-import { CosNode } from "#root/tree/nodes/functions/cosNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { random } from "#root/utils/random";
 
