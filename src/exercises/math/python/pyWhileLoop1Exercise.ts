@@ -158,7 +158,7 @@ const generateType17Instruction = (
 ): string => {
   const instruction = `Qu’affichera le programme suivant, si l'utilisateur entre ${a} ?
   \`\`\`
-  a=input("Entrez un entiel naturel non nul.")
+  a=input("Entrez un entier naturel non nul.")
   a=int(a)
   n=1
   while n<=a:
