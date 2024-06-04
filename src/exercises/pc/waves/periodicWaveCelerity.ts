@@ -20,14 +20,17 @@ type Identifiers = {
   T: number;
 };
 
-// v = lambda / t
+// v = lambda / T
 const getPeriodicWaveCelerityQuestion: QuestionGenerator<Identifiers> = () => {
   const varAsked = random(["v", "T", "l"]);
   let v: number;
   let T: number;
   let l: number;
   let instruction = "";
+  let hint = "";
+  let correction = "";
   let answer = "";
+
   switch (varAsked) {
     case "v":
       T = randfloat(1, 10, 1);
@@ -40,6 +43,11 @@ const getPeriodicWaveCelerityQuestion: QuestionGenerator<Identifiers> = () => {
         T,
         1,
       )}\\ \\text{s}$. Quelle est sa célérité ?`;
+      hint = "Utilisez la formule de la célérité: $v = \\frac{\\lambda}{T}$";
+      correction = `La célérité est donnée par $v = \\frac{\\lambda}{T} = \\frac{${roundSignificant(
+        l,
+        1,
+      )}}{${roundSignificant(T, 1)}} = ${roundSignificant(v, 1)}$.`;
       answer = roundSignificant(v, 1);
       break;
 
@@ -54,8 +62,14 @@ const getPeriodicWaveCelerityQuestion: QuestionGenerator<Identifiers> = () => {
         v,
         1,
       )}\\ \\text{m}\\cdot\\text{s}^{-1}$. Quelle est sa période ?`;
+      hint = "Utilisez la formule de la période: $T = \\frac{\\lambda}{v}$";
+      correction = `La période est donnée par $T = \\frac{\\lambda}{v} = \\frac{${roundSignificant(
+        l,
+        1,
+      )}}{${roundSignificant(v, 1)}} = ${roundSignificant(T, 1)}$.`;
       answer = roundSignificant(T, 1);
       break;
+
     case "l":
     default:
       v = randfloat(1, 10, 1);
@@ -68,12 +82,21 @@ const getPeriodicWaveCelerityQuestion: QuestionGenerator<Identifiers> = () => {
         v,
         1,
       )}\\ \\text{m}\\cdot\\text{s}^{-1}$. Quelle est sa longueur d'onde ?`;
-      answer = roundSignificant(T, 1);
+      hint =
+        "Utilisez la formule de la longueur d'onde: $\\lambda = v \\times T$";
+      correction = `La longueur d'onde est donnée par $\\lambda = v \\times T = ${roundSignificant(
+        v,
+        1,
+      )} \\times ${roundSignificant(T, 1)} = ${roundSignificant(l, 1)}$.`;
+      answer = roundSignificant(l, 1);
       break;
   }
+
   const question: Question<Identifiers> = {
     answer,
     instruction,
+    hint,
+    correction,
     keys: [],
     answerFormat: "tex",
     identifiers: { v, T, l },
@@ -94,6 +117,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
+
 export const periodicWaveCelerity: Exercise<Identifiers> = {
   id: "periodicWaveCelerity",
   connector: "=",
