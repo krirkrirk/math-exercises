@@ -1,3 +1,4 @@
+import { FunctionVariations } from "#root/math/polynomials/functionVariations";
 import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
 import { uuid } from "uuidv4";
@@ -55,9 +56,12 @@ export type Proposition = {
 };
 export interface Question<TIdentifiers = {}> {
   instruction: string;
+  hint?: string;
+  correction?: string;
   startStatement?: string;
   answer: string;
   answerFormat: "tex" | "raw";
+  svgSignTableAnswer?: string;
   keys?: KeyId[];
   commands?: string[];
   coords?: number[];
@@ -85,6 +89,10 @@ export type VEA<TIdentifiers> = (
   studentAnswer: string,
   args: { answer: string } & TIdentifiers,
 ) => boolean;
+export type SVGSignTableVEA<TIdentifiers> = (
+  studentAnswer: FunctionVariations,
+  args: { answer: FunctionVariations } & TIdentifiers,
+) => boolean;
 export type QuestionGenerator<TIdentifiers = {}, TOptions = {}> = (
   opts?: TOptions,
 ) => Question<TIdentifiers>;
@@ -97,11 +105,12 @@ export interface Exercise<TIdentifiers = {}> {
   connector?: "=" | "\\iff" | "\\approx";
   generator: (n: number) => Question<TIdentifiers>[];
   maxAllowedQuestions?: number;
-  answerType?: "QCM" | "free";
+  answerType?: "QCM" | "free" | "SVG";
   qcmTimer: number;
   freeTimer: number;
   getPropositions?: QCMGenerator<{ answer: string } & TIdentifiers>;
   isAnswerValid?: VEA<TIdentifiers>;
+  isSvgSignTableAnswerValid?: SVGSignTableVEA<TIdentifiers>;
   hasGeogebra?: boolean;
   subject: "Mathématiques" | "Chimie" | "Physique";
 }

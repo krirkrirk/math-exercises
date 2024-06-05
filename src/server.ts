@@ -13,27 +13,8 @@ import {
   MinusInfinityNode,
   PlusInfinityNode,
 } from "./tree/nodes/numbers/infiniteNode";
-import { Decimal } from "./math/numbers/decimals/decimal";
-import { round, roundSignificant } from "./math/utils/round";
-import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
-import { PowerNode } from "./tree/nodes/operators/powerNode";
 import { toScientific } from "./utils/numberPrototype/toScientific";
-import { Measure } from "./pc/measure/measure";
-import { atomes } from "./pc/molecularChemistry/atome";
-import { getElectronicConfigurationFromShells } from "./exercises/utils/getElectronicConfigurationFromShells";
-import { getAtoms } from "./exercises/utils/getAtoms";
-import { CosNode } from "./tree/nodes/functions/cosNode";
-import { FractionNode } from "./tree/nodes/operators/fractionNode";
-import { PiNode } from "./tree/nodes/numbers/piNode";
-import { VariableNode } from "./tree/nodes/variables/variableNode";
-import { AddNode } from "./tree/nodes/operators/addNode";
-import { SubstractNode } from "./tree/nodes/operators/substractNode";
-import { EqualNode } from "./tree/nodes/equations/equalNode";
-import { ExpNode } from "./tree/nodes/functions/expNode";
-import { DivideNode } from "./tree/nodes/operators/divideNode";
-import { variance } from "./math/utils/variance";
-import { covXYAsNode, covarianceXY } from "./math/utils/covariance";
-import { sum } from "./math/utils/sum";
+import { FunctionVariations } from "./math/polynomials/functionVariations";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
@@ -139,6 +120,30 @@ const runServer = () => {
       return;
     }
     const result = exo.isAnswerValid(ans as string, veaProps) ?? false;
+    res.json({
+      result,
+    });
+  });
+
+  app.post("/svgSignTablevea", jsonParser, (req: Request, res: Response) => {
+    const exoId = req.query.exoId;
+
+    const { ans, svgVeaProps } = req.body;
+    const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
+    const exo = allExercises[exoIndex];
+    if (!exo) {
+      res.send("Exo not found");
+      return;
+    }
+    if (!exo.isSvgSignTableAnswerValid) {
+      res.send("No SvgSignTableVEA implemented");
+      return;
+    }
+    const result =
+      exo.isSvgSignTableAnswerValid(
+        JSON.parse(ans) as FunctionVariations,
+        svgVeaProps,
+      ) ?? false;
     res.json({
       result,
     });
