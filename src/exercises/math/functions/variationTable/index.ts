@@ -1,1 +1,1 @@
-export * from "./functionMinMax";
+export * from "./trinomialVariationTable";
