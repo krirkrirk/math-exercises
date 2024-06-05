@@ -1,4 +1,4 @@
-import { FunctionVariations } from "#root/math/polynomials/functionVariations";
+import { FunctionSignVariations } from "#root/math/polynomials/functionSignVariations";
 import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
 import { uuid } from "uuidv4";
@@ -59,8 +59,8 @@ export interface Question<TIdentifiers = {}> {
   hint?: string;
   correction?: string;
   startStatement?: string;
-  answer: string;
-  answerFormat: "tex" | "raw";
+  answer?: string;
+  answerFormat?: "tex" | "raw";
   svgSignTableAnswer?: string;
   keys?: KeyId[];
   commands?: string[];
@@ -73,6 +73,10 @@ export interface Question<TIdentifiers = {}> {
     isGridSimple?: boolean;
     isAxesRatioFixed?: boolean;
     isXAxesNatural?: boolean;
+  };
+  svgSignTableOptions?: {
+    start?: string;
+    end?: string;
   };
   style?: {
     tableHasNoHeader?: boolean;
@@ -90,8 +94,8 @@ export type VEA<TIdentifiers> = (
   args: { answer: string } & TIdentifiers,
 ) => boolean;
 export type SVGSignTableVEA<TIdentifiers> = (
-  studentAnswer: FunctionVariations,
-  args: { answer: FunctionVariations } & TIdentifiers,
+  studentAnswer: FunctionSignVariations,
+  args: { svgSignTableAnswer: FunctionSignVariations } & TIdentifiers,
 ) => boolean;
 export type QuestionGenerator<TIdentifiers = {}, TOptions = {}> = (
   opts?: TOptions,

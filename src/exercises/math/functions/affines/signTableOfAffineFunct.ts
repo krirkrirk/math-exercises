@@ -11,6 +11,12 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
+import {
+  FunctionSignVariations,
+  Variation,
+  functionVariationsEquals,
+} from "#root/math/polynomials/functionSignVariations";
 import { randint } from "#root/math/utils/random/randint";
 
 type Identifiers = {};
@@ -18,37 +24,55 @@ type Identifiers = {};
 const getSignTableOfAffineFunctQuestion: QuestionGenerator<
   Identifiers
 > = () => {
+  const a = randint(-10, 11, [0]);
+  const b = a * randint(1, 5);
+  const affine = new Affine(a, b, "x");
+
+  const correctAnswer = getCorrectAnswer(affine);
   const question: Question<Identifiers> = {
-    answer: "test",
-    instruction: `${randint(1, 100)}`,
+    svgSignTableAnswer: JSON.stringify(correctAnswer),
+    svgSignTableOptions: {
+      start: "-\\infty",
+      end: "\\infty",
+    },
+    instruction: `Soit la fonction affine $f(x)=${affine.toTex()}$, Dresser le tableau de signe de cette fonction.`,
     keys: [],
-    answerFormat: "tex",
+    answerFormat: "raw",
     identifiers: {},
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
-  const propositions: Proposition[] = [];
-  addValidProp(propositions, answer);
-  while (propositions.length < n) {
-    throw Error("QCM not implemented");
-  }
-  return shuffleProps(propositions, n);
-};
-
 const isSvgSignTableAnswerValid: SVGSignTableVEA<Identifiers> = (
   ans,
-  { answer },
+  { svgSignTableAnswer },
 ) => {
-  console.log(typeof ans);
-  return false;
+  return functionVariationsEquals(ans, svgSignTableAnswer);
+};
+
+const getCorrectAnswer = (affine: Affine): FunctionSignVariations => {
+  const a = affine.a;
+  const b = affine.b;
+  const zero = -b / a;
+  const startSign = a < 0 ? "+" : "-";
+  const variations: Variation[] = [
+    {
+      changePoint: { latexValue: zero + "", mathValue: zero },
+      sign: startSign === "+" ? "-" : "+",
+    },
+  ];
+  return {
+    start: { latexValue: "-\\infty", mathValue: -Infinity },
+    startSign,
+    end: { latexValue: "\\infty", mathValue: Infinity },
+    variations,
+  };
 };
 
 export const signTableOfAffineFunct: Exercise<Identifiers> = {
   id: "signTableOfAffineFunct",
-  label: "",
+  label: "Dresser le tableau de signe d'une fonction",
   levels: [],
   isSingleStep: true,
   sections: [],
@@ -56,7 +80,6 @@ export const signTableOfAffineFunct: Exercise<Identifiers> = {
     getDistinctQuestions(getSignTableOfAffineFunctQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
-  getPropositions,
   answerType: "SVG",
   isSvgSignTableAnswerValid,
   subject: "Mathématiques",

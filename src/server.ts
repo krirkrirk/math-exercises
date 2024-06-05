@@ -14,7 +14,7 @@ import {
   PlusInfinityNode,
 } from "./tree/nodes/numbers/infiniteNode";
 import { toScientific } from "./utils/numberPrototype/toScientific";
-import { FunctionVariations } from "./math/polynomials/functionVariations";
+import { FunctionSignVariations } from "./math/polynomials/functionSignVariations";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
@@ -140,10 +140,10 @@ const runServer = () => {
       return;
     }
     const result =
-      exo.isSvgSignTableAnswerValid(
-        JSON.parse(ans) as FunctionVariations,
-        svgVeaProps,
-      ) ?? false;
+      exo.isSvgSignTableAnswerValid(JSON.parse(ans) as FunctionSignVariations, {
+        ...svgVeaProps,
+        svgSignTableAnswer: JSON.parse(svgVeaProps.svgSignTableAnswer),
+      }) ?? false;
     res.json({
       result,
     });
