@@ -144,13 +144,10 @@ test("all exos", () => {
           let before = Date.now();
           console.log("will test svgSignTableVea");
           expect(
-            exo.isSvgSignTableAnswerValid!(
-              JSON.parse(question.svgSignTableAnswer!),
-              {
-                svgSignTableAnswer: JSON.parse(question.svgSignTableAnswer!),
-                ...question.identifiers,
-              },
-            ),
+            exo.isSvgSignTableAnswerValid!(question.svgSignTableAnswer!, {
+              svgSignTableAnswer: question.svgSignTableAnswer!,
+              ...question.identifiers,
+            }),
           ).toBe(true);
           let after = Date.now();
           let time = after - before;

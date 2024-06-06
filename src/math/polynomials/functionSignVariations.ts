@@ -27,6 +27,20 @@ export function FunctionSignVariations(
   };
 }
 
+export function FunctionSignVariationsConstructor(
+  start: MathLatex,
+  startSign: "+" | "-",
+  end: MathLatex,
+  variations: Variation[],
+): FunctionSignVariations {
+  return {
+    start,
+    startSign,
+    end,
+    variations,
+  };
+}
+
 export function VariationConstructor(
   changePoint: MathLatex,
   sign: "+" | "-",
