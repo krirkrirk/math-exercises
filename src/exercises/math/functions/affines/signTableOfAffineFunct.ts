@@ -1,16 +1,11 @@
 import {
   Exercise,
-  Proposition,
-  QCMGenerator,
   Question,
   QuestionGenerator,
   SVGSignTableVEA,
-  VEA,
-  addValidProp,
-  shuffleProps,
-  tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { MathLatexConstructor } from "#root/math/MathLatex";
 import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import {
   FunctionSignVariations,
@@ -28,12 +23,14 @@ const getSignTableOfAffineFunctQuestion: QuestionGenerator<
   const b = a * randint(1, 5);
   const affine = new Affine(a, b, "x");
 
+  const start = MathLatexConstructor("-\\infty", -Infinity);
+  const end = MathLatexConstructor("\\infty", Infinity);
   const correctAnswer = getCorrectAnswer(affine);
   const question: Question<Identifiers> = {
     svgSignTableAnswer: JSON.stringify(correctAnswer),
     svgSignTableOptions: {
-      start: "-\\infty",
-      end: "\\infty",
+      start: JSON.stringify(start),
+      end: JSON.stringify(end),
     },
     instruction: `Soit la fonction affine $f(x)=${affine.toTex()}$, Dresser le tableau de signe de cette fonction.`,
     keys: [],

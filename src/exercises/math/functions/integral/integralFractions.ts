@@ -10,7 +10,6 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { Affine } from "#root/math/polynomials/affine";
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
@@ -20,7 +19,6 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
 
 type Identifiers = {
   questionType: string;

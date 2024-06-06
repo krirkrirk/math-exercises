@@ -1,3 +1,4 @@
+import { arrayEqual } from "#root/utils/arrayEqual";
 import { MathLatex } from "../MathLatex";
 import { arrayHasSameElement } from "../utils/arrayHasSameElements";
 
@@ -13,6 +14,27 @@ export type Variation = {
   sign: "+" | "-";
 };
 
+export function FunctionSignVariations(
+  start: MathLatex,
+  startSign: "+" | "-",
+  end: MathLatex,
+  variations: Variation[],
+): FunctionSignVariations {
+  return {
+    start,
+    startSign,
+    end,
+    variations,
+  };
+}
+
+export function VariationConstructor(
+  changePoint: MathLatex,
+  sign: "+" | "-",
+): Variation {
+  return { changePoint, sign };
+}
+
 export function functionVariationsEquals(
   f1: FunctionSignVariations,
   f2: FunctionSignVariations,
@@ -20,7 +42,7 @@ export function functionVariationsEquals(
   if (f1.start.latexValue !== f2.start.latexValue) return false;
   if (f1.startSign !== f2.startSign) return false;
   if (f1.end.latexValue !== f2.end.latexValue) return false;
-  return arrayHasSameElement(
+  return arrayEqual(
     f1.variations,
     f2.variations,
     (value1, value2) =>
