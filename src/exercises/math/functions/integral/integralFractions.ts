@@ -178,28 +178,36 @@ const isAnswerValid: VEA<Identifiers> = (
   const validanswer1 =
     questionType === "Trinomial"
       ? new SubstractNode(
-          new LogNode(trinomial1.calculate(upperBound).toTree()),
-          new LogNode(trinomial1.calculate(lowerBound).toTree()),
+          new LogNode(
+            Math.abs(trinomial1.calculate(upperBound)).toTree(),
+          ).simplify(),
+          new LogNode(
+            Math.abs(trinomial1.calculate(lowerBound)).toTree(),
+          ).simplify(),
         ).simplify()
       : new SubstractNode(
-          new LogNode(affine.calculate(upperBound).toTree()),
-          new LogNode(affine.calculate(lowerBound).toTree()),
+          new LogNode(
+            Math.abs(affine.calculate(upperBound)).toTree(),
+          ).simplify(),
+          new LogNode(
+            Math.abs(affine.calculate(lowerBound)).toTree(),
+          ).simplify(),
         ).simplify();
 
   const validanswer2 =
     questionType === "Trinomial"
       ? new LogNode(
           new FractionNode(
-            trinomial1.calculate(upperBound).toTree(),
-            trinomial1.calculate(lowerBound).toTree(),
+            Math.abs(trinomial1.calculate(upperBound)).toTree(),
+            Math.abs(trinomial1.calculate(lowerBound)).toTree(),
           ).simplify(),
-        ).simplify()
+        )
       : new LogNode(
           new FractionNode(
-            affine.calculate(upperBound).toTree(),
-            affine.calculate(lowerBound).toTree(),
+            Math.abs(affine.calculate(upperBound)).toTree(),
+            Math.abs(affine.calculate(lowerBound)).toTree(),
           ).simplify(),
-        ).simplify();
+        );
 
   const latexs = validanswer1
     .toAllValidTexs()
@@ -210,7 +218,7 @@ const isAnswerValid: VEA<Identifiers> = (
 
 export const integralFractions: Exercise<Identifiers> = {
   id: "integralFractions",
-  label: "Calcul d'intégrales de fonctions du tye $\\frac{u'}{u}$",
+  label: "Calcul d'intégrales de fonctions du type $\\frac{u'}{u}$",
   levels: ["TermSpé"],
   isSingleStep: true,
   sections: ["Intégration"],

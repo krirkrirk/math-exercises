@@ -1,8 +1,7 @@
 import { Node, NodeType, hasVariableNode } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
-import { AlgebraicNode } from "../algebraicNode";
+import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
-import { SimplifyOptions } from "./sinNode";
 
 export function isCosNode(a: Node): a is CosNode {
   return isFunctionNode(a) && a.id === FunctionsIds.cos;
@@ -54,12 +53,12 @@ export class CosNode implements FunctionNode {
         (val) => val.angle.evaluate({}) === moduled,
       );
       if (!trigoPoint) return new CosNode(simplifiedChild);
-      else return trigoPoint.cos;
+      else return trigoPoint.sin;
     } else {
-      // Écrire les règles algébriques spécifiques à cos ici
+      // Écrire les règles algébriques spécifiques à sin ici
       // Exemples :
-      // cos(x + 2π) -> cos(x)
-      // cos(-x) -> cos(x)
+      // sin(x + 2π) -> sin(x)
+      // sin(-x) -> -sin(x)
     }
     return new CosNode(simplifiedChild);
   }

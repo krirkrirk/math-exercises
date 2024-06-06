@@ -56,6 +56,8 @@ const getFindAtomicStructureElementQuestion: QuestionGenerator<
   const question: Question<Identifiers> = {
     answer: `${answer}`,
     instruction,
+    hint: getHint(elementToFind),
+    correction: getCorrection(elementToFind, protonsNumber, neutronsNumber),
     keys: [],
     answerFormat: "tex",
     identifiers: { atomSymbol: atom.symbole, elementToFind },
@@ -93,6 +95,23 @@ const getPropositions: QCMGenerator<Identifiers> = (
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
+
+const getHint = (elementToFind: string) => {
+  return elementToFind === "proton"
+    ? `Pour déterminer le nombre de protons d'un atome, vous pouvez utiliser l'écriture conventionnelle du noyau atomique.`
+    : `On rapelle que : Nombre de neutrons $= A - Z$.`;
+};
+
+const getCorrection = (
+  elementToFind: string,
+  protonNb: number,
+  neutronNb: number,
+) => {
+  return elementToFind === "proton"
+    ? `Le nombre de proton est égal à : $${protonNb}$`
+    : `Le nombre de neutron est égal à : $A - Z=${neutronNb}$`;
+};
+
 export const findAtomicStructureElement: Exercise<Identifiers> = {
   id: "findAtomicStructureElement",
   label: "Trouver le nombre de protons, neutrons ou électrons d'un atome",

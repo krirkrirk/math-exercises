@@ -12,10 +12,10 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Decimal } from "#root/math/numbers/decimals/decimal";
 import { randint } from "#root/math/utils/random/randint";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { Log10Node } from "#root/tree/nodes/functions/log10Node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
-import { coinFlip } from "#root/utils/coinFlip";
 import { probaFlip } from "#root/utils/probaFlip";
 
 type Identifiers = {
@@ -34,6 +34,8 @@ const getLog10PowerSimplifyingQuestion: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     answer,
     instruction: `Calculer : $${new Log10Node(nb).toTex()}$`,
+    hint: getHint(nb),
+    correction: getCorrection(tenthPower, nb),
     keys: [],
     answerFormat: "tex",
     identifiers: { tenthPower, nbTex: nb.toTex() },
@@ -54,6 +56,17 @@ const getPropositions: QCMGenerator<Identifiers> = (
   tryToAddWrongProp(propositions, tenthPower - 1 + "");
   tryToAddWrongProp(propositions, tenthPower - 2 + "");
   return shuffleProps(propositions, n);
+};
+
+const getHint = (nb: AlgebraicNode) => {
+  return `Pour calculer $log(⁡${nb.toTex()})$, il est utile de transformer le nombre $${nb.toTex()}$ en une puissance de $10$.`;
+};
+const getCorrection = (tenthPower: number, nb: AlgebraicNode) => {
+  const powerTen = new PowerNode((10).toTree(), tenthPower.toTree());
+  return `1 . Exprimez $${nb.toTex()}$ en puissance de $10$ : $${powerTen.toTex()}$ \n 
+  2 . Utilisez la propriété des logarithmes qui stipule que $log(a^{b}) = b*log(a) \\Leftrightarrow \\log(${powerTen.toTex()}) = ${tenthPower}*log(10) 
+  \\Leftrightarrow log(${nb.toTex()}) = ${tenthPower}$.
+  `;
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, tenthPower }) => {

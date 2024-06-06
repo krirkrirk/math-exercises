@@ -1,14 +1,9 @@
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
-import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { PiNode } from "#root/tree/nodes/numbers/piNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { random } from "#root/utils/random";
-import { Integer } from "../numbers/integer/integer";
-import { NumberType } from "../numbers/nombre";
-import { Rational } from "../numbers/rationals/rational";
 
 import { randint } from "../utils/random/randint";
 import { RemarkableValue, remarkableTrigoValues } from "./remarkableValues";

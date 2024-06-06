@@ -1,11 +1,7 @@
 import { Node, NodeType, hasVariableNode } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
-import { AlgebraicNode } from "../algebraicNode";
+import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
-
-export interface SimplifyOptions {
-  isDegree?: boolean;
-}
 
 export function isSinNode(a: Node): a is SinNode {
   return isFunctionNode(a) && a.id === FunctionsIds.sin;
