@@ -7,6 +7,7 @@ import { NumberNode } from "./../src/tree/nodes/numbers/numberNode";
 import { MinusInfinityNode } from "./../src/tree/nodes/numbers/infiniteNode";
 import { PlusInfinityNode } from "./../src/tree/nodes/numbers/infiniteNode";
 import { toScientific } from "../src/utils/numberPrototype/toScientific";
+import { cp } from "fs";
 
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
 const pcExercises = Object.values(PCExercises) as Exercise<any>[];
@@ -43,6 +44,8 @@ test("all exos", () => {
   let worstQCMGenerationTime: Worst = { exoId: "", time: 0 };
   const veaTimes: number[] = [];
   let worstVEATime: Worst = { exoId: "", time: 0 };
+  const svgSignTableVeaTimes: number[] = [];
+  let worstSvgSignTableVEATime: Worst = { exoId: "", time: 0 };
   const allExos = [...mathExercises, ...pcExercises];
   // const allExos = [MathExercises.inflexionPointQuadrinomials];
   allExos.forEach((exo) => {
@@ -63,28 +66,35 @@ test("all exos", () => {
           time,
         };
       }
-      if (exo.answerType !== "free") {
+      if (exo.answerType !== "free" && exo.answerType !== "SVG") {
         expect(exo.getPropositions).not.toBe(undefined);
       }
-      if (exo.answerType !== "QCM") {
+      if (exo.answerType !== "QCM" && exo.answerType !== "SVG") {
         expect(exo.isAnswerValid).not.toBe(undefined);
+      }
+      if (exo.answerType === "SVG") {
+        expect(exo.isSvgSignTableAnswerValid).not.toBe(undefined);
       }
       questions.forEach((question) => {
         expect(question.identifiers).not.toBe(undefined);
         expect(question.identifiers).not.toBe(undefined);
 
         const dotDecimalPattern = /\d+\.\d+/;
-        expect(question.answer.match(dotDecimalPattern)).toBe(null);
-        expect(question.answer.includes("[object Object]")).toBe(false);
+
+        if (question.answer) {
+          expect(question.answer.match(dotDecimalPattern)).toBe(null);
+          expect(question.answer.includes("[object Object]")).toBe(false);
+        }
+
         expect(question.instruction?.length).not.toBe(0);
         expect(question.instruction.includes("[object Object]")).toBe(false);
-        if (exo.answerType !== "QCM") {
+        if (exo.answerType !== "QCM" && exo.answerType !== "SVG") {
           expect(question.keys).not.toBe(undefined);
 
           let before = Date.now();
           console.log("will test vea");
           expect(
-            exo.isAnswerValid!(question.answer, {
+            exo.isAnswerValid!(question.answer!, {
               answer: question.answer,
               ...question.identifiers,
             }),
@@ -99,7 +109,7 @@ test("all exos", () => {
             };
           }
         }
-        if (exo.answerType !== "free") {
+        if (exo.answerType !== "free" && exo.answerType !== "SVG") {
           let before = Date.now();
           console.log("will generate props");
           const props = exo.getPropositions!(4, {
@@ -127,6 +137,31 @@ test("all exos", () => {
             });
           }
         }
+
+        if (exo.answerType === "SVG") {
+          expect(question.keys).not.toBe(undefined);
+
+          let before = Date.now();
+          console.log("will test svgSignTableVea");
+          expect(
+            exo.isSvgSignTableAnswerValid!(
+              JSON.parse(question.svgSignTableAnswer!),
+              {
+                svgSignTableAnswer: JSON.parse(question.svgSignTableAnswer!),
+                ...question.identifiers,
+              },
+            ),
+          ).toBe(true);
+          let after = Date.now();
+          let time = after - before;
+          svgSignTableVeaTimes.push(time);
+          if (worstSvgSignTableVEATime.time < time) {
+            worstSvgSignTableVEATime = {
+              exoId: exo.id,
+              time,
+            };
+          }
+        }
       });
     } catch (err) {
       console.log(exo.id, err);
@@ -137,6 +172,11 @@ test("all exos", () => {
   console.log(
     "average vea",
     veaTimes.reduce((acc, curr) => acc + curr, 0) / veaTimes.length,
+  );
+  console.log(
+    "average svgSignTableVea",
+    svgSignTableVeaTimes.reduce((acc, curr) => acc + curr, 0) /
+      svgSignTableVeaTimes.length,
   );
   console.log(
     "average qcm",
@@ -151,5 +191,6 @@ test("all exos", () => {
 
   console.log("worst qcm", worstQCMGenerationTime);
   console.log("worst vea", worstVEATime);
+  console.log("worst svgSignTableVea", worstSvgSignTableVEATime);
   console.log("worst generator", worstQuestionGenerationTime);
 });

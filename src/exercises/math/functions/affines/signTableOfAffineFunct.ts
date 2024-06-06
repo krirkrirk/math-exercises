@@ -73,9 +73,9 @@ const getCorrectAnswer = (affine: Affine): FunctionSignVariations => {
 export const signTableOfAffineFunct: Exercise<Identifiers> = {
   id: "signTableOfAffineFunct",
   label: "Dresser le tableau de signe d'une fonction",
-  levels: [],
+  levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Fonctions affines"],
   generator: (nb: number) =>
     getDistinctQuestions(getSignTableOfAffineFunctQuestion, nb),
   qcmTimer: 60,
