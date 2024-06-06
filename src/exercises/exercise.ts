@@ -1,3 +1,4 @@
+import { MathLatex } from "#root/math/mathLatex";
 import { FunctionSignVariations } from "#root/math/polynomials/functionSignVariations";
 import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
@@ -61,7 +62,7 @@ export interface Question<TIdentifiers = {}> {
   startStatement?: string;
   answer?: string;
   answerFormat?: "tex" | "raw";
-  svgSignTableAnswer?: string;
+  svgSignTableAnswer?: FunctionSignVariations;
   keys?: KeyId[];
   commands?: string[];
   coords?: number[];
@@ -75,8 +76,8 @@ export interface Question<TIdentifiers = {}> {
     isXAxesNatural?: boolean;
   };
   svgSignTableOptions?: {
-    start?: string;
-    end?: string;
+    start?: MathLatex;
+    end?: MathLatex;
   };
   style?: {
     tableHasNoHeader?: boolean;

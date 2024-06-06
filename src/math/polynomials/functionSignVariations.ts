@@ -1,6 +1,5 @@
 import { arrayEqual } from "#root/utils/arrayEqual";
-import { MathLatex } from "../MathLatex";
-import { arrayHasSameElement } from "../utils/arrayHasSameElements";
+import { MathLatex } from "../mathLatex";
 
 export type FunctionSignVariations = {
   start: MathLatex;

@@ -5,7 +5,7 @@ import {
   SVGSignTableVEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { MathLatexConstructor } from "#root/math/MathLatex";
+import { MathLatexConstructor } from "#root/math/mathLatex";
 import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import {
   FunctionSignVariations,
@@ -27,10 +27,10 @@ const getSignTableOfAffineFunctQuestion: QuestionGenerator<
   const end = MathLatexConstructor("\\infty", Infinity);
   const correctAnswer = getCorrectAnswer(affine);
   const question: Question<Identifiers> = {
-    svgSignTableAnswer: JSON.stringify(correctAnswer),
+    svgSignTableAnswer: correctAnswer,
     svgSignTableOptions: {
-      start: JSON.stringify(start),
-      end: JSON.stringify(end),
+      start,
+      end,
     },
     instruction: `Soit la fonction affine $f(x)=${affine.toTex()}$, Dresser le tableau de signe de cette fonction.`,
     keys: [],

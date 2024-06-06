@@ -140,10 +140,10 @@ const runServer = () => {
       return;
     }
     const result =
-      exo.isSvgSignTableAnswerValid(JSON.parse(ans) as FunctionSignVariations, {
-        ...svgVeaProps,
-        svgSignTableAnswer: JSON.parse(svgVeaProps.svgSignTableAnswer),
-      }) ?? false;
+      exo.isSvgSignTableAnswerValid(
+        ans as FunctionSignVariations,
+        svgVeaProps,
+      ) ?? false;
     res.json({
       result,
     });

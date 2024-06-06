@@ -5,7 +5,7 @@ import {
   SVGSignTableVEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { MathLatexConstructor } from "#root/math/MathLatex";
+import { MathLatexConstructor } from "#root/math/mathLatex";
 import {
   FunctionSignVariations,
   VariationConstructor,
@@ -24,10 +24,10 @@ const getTrinomSignTableQuestion: QuestionGenerator<Identifiers> = () => {
   const end = MathLatexConstructor("\\infty", Infinity);
 
   const question: Question<Identifiers> = {
-    svgSignTableAnswer: JSON.stringify(corretAns),
+    svgSignTableAnswer: corretAns,
     svgSignTableOptions: {
-      start: JSON.stringify(start),
-      end: JSON.stringify(end),
+      start,
+      end,
     },
     instruction: `Soit la fonction $f(x)=${trinome.toTex()}$, Dresser le tableau de signe de cette fonction.`,
     keys: [],
