@@ -83,7 +83,7 @@ export const coeffOfProportion: Exercise<Identifiers> = {
   id: "coeffOfProportion",
   label:
     "Reconnaître si 2 grandeurs sont proportionnelles à partir d'un tableau.",
-  levels: [],
+  levels: ["5ème"],
   isSingleStep: true,
   sections: ["Proportionnalité"],
   generator: (nb: number) =>
