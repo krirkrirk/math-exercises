@@ -15,7 +15,7 @@ import { coinFlip } from "#root/utils/coinFlip";
 
 type Identifiers = {};
 
-const getCoeffOfProportionQuestion: QuestionGenerator<Identifiers> = () => {
+const getIsTableProportionalQuestion: QuestionGenerator<Identifiers> = () => {
   const table = generateTable();
 
   const question: Question<Identifiers> = {
@@ -79,15 +79,15 @@ const generateYValues = (
       };
 };
 
-export const coeffOfProportion: Exercise<Identifiers> = {
-  id: "coeffOfProportion",
+export const isTableProportional: Exercise<Identifiers> = {
+  id: "isVTableProportional",
   label:
     "Reconnaître si 2 grandeurs sont proportionnelles à partir d'un tableau.",
   levels: ["5ème"],
   isSingleStep: true,
   sections: ["Proportionnalité"],
   generator: (nb: number) =>
-    getDistinctQuestions(getCoeffOfProportionQuestion, nb),
+    getDistinctQuestions(getIsTableProportionalQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
