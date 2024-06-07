@@ -5,13 +5,13 @@ import {
   SVGSignTableVEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { MathLatexConstructor } from "#root/math/mathLatex";
-import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
+import { Affine } from "#root/math/polynomials/affine";
 import {
   FunctionSignVariations,
   Variation,
   functionVariationsEquals,
 } from "#root/math/polynomials/functionSignVariations";
+import { MathLatexConstructor } from "#root/math/utils/mathLatex";
 import { randint } from "#root/math/utils/random/randint";
 
 type Identifiers = {};

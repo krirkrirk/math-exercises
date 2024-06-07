@@ -5,7 +5,6 @@ import {
   SVGSignTableVEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { MathLatexConstructor } from "#root/math/mathLatex";
 import {
   FunctionSignVariations,
   FunctionSignVariationsConstructor,
@@ -14,8 +13,8 @@ import {
   functionVariationsEquals,
 } from "#root/math/polynomials/functionSignVariations";
 import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
+import { MathLatexConstructor } from "#root/math/utils/mathLatex";
 import { randint } from "#root/math/utils/random/randint";
-import { random } from "#root/utils/random";
 
 type Identifiers = {};
 

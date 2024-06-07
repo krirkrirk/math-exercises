@@ -1,5 +1,5 @@
-import { MathLatex } from "#root/math/mathLatex";
 import { FunctionSignVariations } from "#root/math/polynomials/functionSignVariations";
+import { MathLatex } from "#root/math/utils/mathLatex";
 import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
 import { uuid } from "uuidv4";
