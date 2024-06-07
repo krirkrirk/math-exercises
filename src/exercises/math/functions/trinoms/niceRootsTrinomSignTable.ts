@@ -31,7 +31,7 @@ const getNiceRootsTrinomSignTableQuestion: QuestionGenerator<
       start,
       end,
     },
-    instruction: `Soit la fonction $f(x)=${trinome.toTex()}$, Dresser le tableau de signe de cette fonction.`,
+    instruction: `Soit la fonction $f(x)=${trinome.toTex()}$, dresser le tableau de signe de cette fonction.`,
     keys: [],
     answerFormat: "raw",
     identifiers: {},
