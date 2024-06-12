@@ -20,6 +20,7 @@ import { random } from "#root/utils/random";
 
 type Identifiers = {
   degree: number;
+  trigoFunct: string;
 };
 
 const trigo = ["sin", "tan", "cos"];
@@ -27,16 +28,16 @@ const trigo = ["sin", "tan", "cos"];
 const getCalculateCosSinAndTanQuestion: QuestionGenerator<Identifiers> = () => {
   const trigoFunct = random(trigo);
 
-  const degree = randint(1, 360);
+  const degree = randint(1, 180);
 
   const question: Question<Identifiers> = {
     answer: getCorrectAnswer(degree, trigoFunct),
-    instruction: `Calculer $${trigoFunct}(${new DegreeNode(
+    instruction: `Calculer $\\${trigoFunct}(${new DegreeNode(
       degree,
-    ).toTex()})$, arrondir le resultat au dixième.`,
+    ).toTex()})$, arrondir le résultat au dixième.`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { degree },
+    identifiers: { degree, trigoFunct },
   };
 
   return question;
@@ -80,7 +81,7 @@ const getCorrectAnswer = (degree: number, trigoFunct: string): string => {
 
 export const calculateCosSinAndTan: Exercise<Identifiers> = {
   id: "calculateCosSinAndTan",
-  label: "Calcul de tan/sin/cos avec des degrés",
+  label: "Calculer le cosinus/sinus/tangente d'un angle en degrés",
   levels: ["3ème"],
   isSingleStep: true,
   sections: ["Trigonométrie"],

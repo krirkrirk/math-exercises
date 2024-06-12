@@ -65,7 +65,10 @@ const getIntegralFractionsQuestion: QuestionGenerator<Identifiers> = () => {
       lowerBound = randint(-5, 5, [0]);
       upperBound = randint(-5, 5, [0]);
     }
-  } while (doesTrinomialVanishInInterval(trinomial, lowerBound, upperBound));
+  } while (
+    doesTrinomialVanishInInterval(trinomial, lowerBound, upperBound) ||
+    affine.calculate(lowerBound) === 0
+  );
 
   const fraction =
     questionType === "Trinomial"

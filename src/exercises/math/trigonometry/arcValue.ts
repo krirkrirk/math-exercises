@@ -58,7 +58,7 @@ const getArcValueQuestion: QuestionGenerator<Identifiers> = () => {
       ? new CosNode(new VariableNode("\\theta"))
       : new TanNode(new VariableNode("\\theta"));
 
-  const instruction = `Quelle est la valeur en degrés de l'angle $\\theta$ si $${trigNode.toTex()} = ${trigValue.frenchify()}$ ? Arrondir à l'unité.`;
+  const instruction = `Quelle est la valeur en degrés de l'angle $\\theta$ sachant que $${trigNode.toTex()} = ${trigValue.frenchify()}$ ? Arrondir à l'unité.`;
   const answer = round(angleInDegrees, 0).toTree().toTex();
 
   const question: Question<Identifiers> = {
@@ -92,7 +92,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 
 export const arcValue: Exercise<Identifiers> = {
   id: "arcValue",
-  label: "Calculer l'angle en degrés donné une valeur trigonométrique",
+  label: "Calculer un angle via son cosinus/sinus/tangente",
   levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Trigonométrie"],

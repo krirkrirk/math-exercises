@@ -60,10 +60,9 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   const capacityDecimal = new Decimal(randomCapacity);
   while (propositions.length < n) {
-    console.log("capactiy conv qcm");
     const wrongAnswer = capacityDecimal
       .multiplyByPowerOfTen(
-        randint(-3, 4, [randomUnitIndex - randomUnitInstructionIndex]),
+        randint(-4, 5, [randomUnitIndex - randomUnitInstructionIndex]),
       )
       .value.toString()
       .replace(".", ",");
