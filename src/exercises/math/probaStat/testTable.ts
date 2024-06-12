@@ -36,9 +36,12 @@ const getTestTableQuestion: QuestionGenerator<Identifiers> = () => {
 
 const isTableSVGAnswerValid: TableVEA<Identifiers> = (ans, { tableAnswer }) => {
   console.log(ans, tableAnswer);
-  return tableAnswer.every((value, line) =>
-    value.every((element, column) => ans[line][column].includes(element)),
-  );
+  for (let line = 0; line < tableAnswer.length; line++) {
+    for (let column = 0; column < tableAnswer[0].length; column++) {
+      if (tableAnswer[line][column] !== ans[line][column]) return false;
+    }
+  }
+  return true;
 };
 export const testTable: Exercise<Identifiers> = {
   id: "testTable",
