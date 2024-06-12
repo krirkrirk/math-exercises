@@ -95,7 +95,7 @@ const getCorrection = (
       return `1 . Trouver la masse de l'objet en utilisant son poids sur Terre $p_T$ et l'accélération due à la gravité terrestre $g_T$ : \n $m = \\frac{p_T}{g_T} \\Leftrightarrow m=${round(
         weight / gt.evaluate(),
         1,
-      )}$. \n \\
+      )}\\text{kg}$. \n \\
       2 . Utiliser la masse trouvée et l'accélération due à la gravité sur la Lune $g_L$ pour calculer le poids sur la Lune $p_L$ : $p_L = m \\ \\cdot g_L \\Leftrightarrow$ $p_L = ${frenchify(
         answer,
       )}$.`;
@@ -104,7 +104,7 @@ const getCorrection = (
       $m = \\frac{p_L}{g_L} \\Leftrightarrow m=${round(
         weight / gl.evaluate(),
         1,
-      )}$. \n \\
+      )}\\text{kg}$. \n \\
       2 . Utiliser la masse trouvée et l'accélération due à la gravité sur la Terre $g_T$ pour calculer le poids sur la Terre $p_T$ : 
       $p_T = m \\ \\cdot g_T \\Leftrightarrow p_T = ${frenchify(answer)}$.`;
     default:

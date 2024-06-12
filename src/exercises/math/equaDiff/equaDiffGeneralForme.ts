@@ -43,9 +43,9 @@ const getExponentialEquation: QuestionGenerator<Identifiers> = () => {
     new NumberNode(0),
   ).toTex();
   const hint =
-    "Rappelez-vous que la solution générale d'une équation différentielle de la forme $y' = ay$ est de la forme $y = Ce^{ax}$, où $C$ est une constante d'intégration.";
+    "La solution générale d'une équation différentielle de la forme $y' = ay$ est de la forme $y = Ce^{ax}$, où $C$ est une constante d'intégration.";
 
-  const correction = `La solution est $y = Ce^{ax}$, où $C$ est une constante d'intégration.
+  const correction = `La solution générale d'une équation différentielle de la forme $y' = ay$ est de la forme $y = Ce^{ax}$, où $C$ est une constante d'intégration.
   \n Donc, la solution générale de l'équation différentielle $y' = ${a}y$ est $y = Ce^{${a}x}$.`;
 
   const question: Question<Identifiers> = {
