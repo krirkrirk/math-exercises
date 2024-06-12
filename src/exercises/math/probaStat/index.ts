@@ -12,3 +12,4 @@ export * from "./probaFromTableWithContext";
 export * from "./expectedValueOfBinomialProba";
 export * from "./varianceOfBinomialProba";
 export * from "./calculateProbaOfBinomialDistribution";
+export * from "./testTable";

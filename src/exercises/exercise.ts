@@ -1,4 +1,5 @@
 import { KeyId } from "#root/types/keyIds";
+import { TableValues } from "#root/types/tableValues";
 import { shuffle } from "#root/utils/shuffle";
 import { uuid } from "uuidv4";
 
@@ -58,8 +59,9 @@ export interface Question<TIdentifiers = {}> {
   hint?: string;
   correction?: string;
   startStatement?: string;
-  answer: string;
-  answerFormat: "tex" | "raw";
+  answer?: string;
+  tableAnswer?: string[][];
+  answerFormat?: "tex" | "raw";
   keys?: KeyId[];
   commands?: string[];
   coords?: number[];
@@ -75,6 +77,7 @@ export interface Question<TIdentifiers = {}> {
   style?: {
     tableHasNoHeader?: boolean;
   };
+  tableValues?: TableValues;
   divisionFormat?: "fraction" | "obelus";
   identifiers: TIdentifiers;
 }
@@ -86,6 +89,10 @@ export type QCMGenerator<TIdentifiers> = (
 export type VEA<TIdentifiers> = (
   studentAnswer: string,
   args: { answer: string } & TIdentifiers,
+) => boolean;
+export type TableVEA<TIdentifiers> = (
+  studentAnswer: string[][],
+  args: { tableAnswer: string[][] } & TIdentifiers,
 ) => boolean;
 export type QuestionGenerator<TIdentifiers = {}, TOptions = {}> = (
   opts?: TOptions,
@@ -99,11 +106,12 @@ export interface Exercise<TIdentifiers = {}> {
   connector?: "=" | "\\iff" | "\\approx";
   generator: (n: number) => Question<TIdentifiers>[];
   maxAllowedQuestions?: number;
-  answerType?: "QCM" | "free";
+  answerType?: "QCM" | "free" | "Table";
   qcmTimer: number;
   freeTimer: number;
   getPropositions?: QCMGenerator<{ answer: string } & TIdentifiers>;
   isAnswerValid?: VEA<TIdentifiers>;
+  isTableSVGAnswerValid?: TableVEA<TIdentifiers>;
   hasGeogebra?: boolean;
   subject: "Mathématiques" | "Chimie" | "Physique";
 }
