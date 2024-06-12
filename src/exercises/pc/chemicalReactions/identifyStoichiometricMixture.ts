@@ -113,5 +113,5 @@ export const identifyStoichiometricMixture: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Chimie",
-  answerType: "QCU",
+  answerType: "QCM",
 };

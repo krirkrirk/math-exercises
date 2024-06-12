@@ -66,7 +66,7 @@ test("all exos", () => {
       if (exo.answerType !== "free") {
         expect(exo.getPropositions).not.toBe(undefined);
       }
-      if (exo.answerType !== "QCM" && exo.answerType !== "QCU") {
+      if (exo.answerType !== "QCM" && exo.answerType !== "QCM") {
         expect(exo.isAnswerValid).not.toBe(undefined);
       }
       questions.forEach((question) => {
@@ -78,7 +78,7 @@ test("all exos", () => {
         expect(question.answer.includes("[object Object]")).toBe(false);
         expect(question.instruction?.length).not.toBe(0);
         expect(question.instruction.includes("[object Object]")).toBe(false);
-        if (exo.answerType !== "QCM" && exo.answerType !== "QCU") {
+        if (exo.answerType !== "QCM" && exo.answerType !== "QCM") {
           expect(question.keys).not.toBe(undefined);
 
           let before = Date.now();

@@ -77,5 +77,5 @@ export const verifySystemSolution: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
-  answerType: "QCU",
+  answerType: "QCM",
 };

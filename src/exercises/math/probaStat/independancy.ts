@@ -85,6 +85,6 @@ export const independancy: Exercise<Identifiers> = {
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
-  answerType: "QCU",
+  answerType: "QCM",
   subject: "Mathématiques",
 };
