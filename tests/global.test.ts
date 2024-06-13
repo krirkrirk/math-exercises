@@ -43,6 +43,8 @@ test("all exos", () => {
   let worstQCMGenerationTime: Worst = { exoId: "", time: 0 };
   const veaTimes: number[] = [];
   let worstVEATime: Worst = { exoId: "", time: 0 };
+  const tableVeaTimes: number[] = [];
+  let worstTableVEATime: Worst = { exoId: "", time: 0 };
   const allExos = [...mathExercises, ...pcExercises];
   // const allExos = [MathExercises.inflexionPointQuadrinomials];
   allExos.forEach((exo) => {
@@ -63,29 +65,47 @@ test("all exos", () => {
           time,
         };
       }
-      if (exo.answerType !== "free") {
+      if (exo.answerType !== "free" && exo.answerType !== "Table") {
         expect(exo.getPropositions).not.toBe(undefined);
       }
-      if (exo.answerType !== "QCM") {
+      if (exo.answerType !== "QCM" && exo.answerType !== "Table") {
         expect(exo.isAnswerValid).not.toBe(undefined);
+      }
+      if (exo.answerType === "Table") {
+        expect(exo.isTableSVGAnswerValid).not.toBe(undefined);
       }
       questions.forEach((question) => {
         expect(question.identifiers).not.toBe(undefined);
         expect(question.identifiers).not.toBe(undefined);
 
         const dotDecimalPattern = /\d+\.\d+/;
-        expect(question.answer.match(dotDecimalPattern)).toBe(null);
-        expect(question.answer.includes("[object Object]")).toBe(false);
+        if (question.answer) {
+          expect(question.answer.match(dotDecimalPattern)).toBe(null);
+          expect(question.answer.includes("[object Object]")).toBe(false);
+        }
+        if (question.tableAnswer) {
+          expect(question.tableValues).not.toBe(undefined);
+          if (question.tableValues!.lineNames.length !== 0) {
+            expect(question.tableValues!.lineNames.length).toEqual(
+              question.tableValues!.values.length,
+            );
+          }
+          if (question.tableValues!.columnNames.length !== 0) {
+            expect(question.tableValues!.columnNames.length).toEqual(
+              question.tableValues!.values[0].length,
+            );
+          }
+        }
         expect(question.instruction?.length).not.toBe(0);
         expect(question.instruction.includes("[object Object]")).toBe(false);
-        if (exo.answerType !== "QCM") {
+        if (exo.answerType !== "QCM" && exo.answerType !== "Table") {
           expect(question.keys).not.toBe(undefined);
 
           let before = Date.now();
           console.log("will test vea");
           expect(
-            exo.isAnswerValid!(question.answer, {
-              answer: question.answer,
+            exo.isAnswerValid!(question.answer!, {
+              answer: question.answer!,
               ...question.identifiers,
             }),
           ).toBe(true);
@@ -99,11 +119,11 @@ test("all exos", () => {
             };
           }
         }
-        if (exo.answerType !== "free") {
+        if (exo.answerType !== "free" && exo.answerType !== "Table") {
           let before = Date.now();
           console.log("will generate props");
           const props = exo.getPropositions!(4, {
-            answer: question.answer,
+            answer: question.answer!,
             ...question.identifiers,
           });
           let after = Date.now();
@@ -127,6 +147,27 @@ test("all exos", () => {
             });
           }
         }
+        if (exo.answerType === "Table") {
+          expect(question.keys).not.toBe(undefined);
+
+          let before = Date.now();
+          console.log("will test tableVea");
+          expect(
+            exo.isTableSVGAnswerValid!(question.tableAnswer!, {
+              tableAnswer: question.tableAnswer!,
+              ...question.identifiers,
+            }),
+          ).toBe(true);
+          let after = Date.now();
+          let time = after - before;
+          tableVeaTimes.push(time);
+          if (worstTableVEATime.time < time) {
+            worstTableVEATime = {
+              exoId: exo.id,
+              time,
+            };
+          }
+        }
       });
     } catch (err) {
       console.log(exo.id, err);
@@ -137,6 +178,10 @@ test("all exos", () => {
   console.log(
     "average vea",
     veaTimes.reduce((acc, curr) => acc + curr, 0) / veaTimes.length,
+  );
+  console.log(
+    "average tableVea",
+    tableVeaTimes.reduce((acc, curr) => acc + curr, 0) / tableVeaTimes.length,
   );
   console.log(
     "average qcm",
@@ -151,5 +196,6 @@ test("all exos", () => {
 
   console.log("worst qcm", worstQCMGenerationTime);
   console.log("worst vea", worstVEATime);
+  console.log("worst tableVea", worstTableVEATime);
   console.log("worst generator", worstQuestionGenerationTime);
 });

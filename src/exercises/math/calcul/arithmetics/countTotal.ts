@@ -16,8 +16,8 @@ const getCountTotalQuestion: QuestionGenerator<Identifiers> = () => {
   const table = getTable(3);
 
   const question: Question<Identifiers> = {
-    tableAnswer: table.tableAnswer.values,
-    instruction: `Remplir le tableau suivant ${randint(1, 100)}.`,
+    tableAnswer: table.tableAnswer,
+    instruction: `Remplir le tableau suivant.`,
     keys: [],
     tableValues: table.tableValues,
     answerFormat: "tex",
@@ -41,23 +41,22 @@ const getTable = (nbLines: number) => {
   for (let i = 0; i < nbLines; i++) {
     allValues.push(getValues());
   }
-  allValues.forEach((column, index) => {
-    if (index === 0) values.push(column);
+  for (let i = 0; i < allValues.length; i++) {
+    if (i === 0) values.push(allValues[0]);
     else {
-      let ignoredValue = random(column);
+      let ingoredValue = random(allValues[i]);
       const resultColumn: string[] = [];
-      column.forEach((value) => {
-        if (value !== ignoredValue) resultColumn.push(value);
-        else {
+      allValues[i].forEach((value) => {
+        if (value === ingoredValue) {
           resultColumn.push("");
-          ignoredValue = "";
-        }
+          ingoredValue = "";
+        } else resultColumn.push(value);
       });
       values.push(resultColumn);
     }
-  });
+  }
   return {
-    tableAnswer: TableValuesConstructor([], [], allValues),
+    tableAnswer: allValues,
     tableValues: TableValuesConstructor([], [], values),
   };
 };
