@@ -124,6 +124,22 @@ const runServer = () => {
     });
   });
 
+  app.get("/tableExo", (req: Request, res: Response) => {
+    const exoId = req.query.exoId;
+    const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
+    const exo = allExercises[exoIndex];
+    if (!exo) res.send("Exo not found");
+    const questions = exo?.generator(10);
+    res.json({
+      exercise: exo,
+      questions,
+      nextId: allExercises[(exoIndex + 1) % allExercises.length].id,
+      prevId:
+        allExercises[(exoIndex - 1 + allExercises.length) % allExercises.length]
+          .id,
+    });
+  });
+
   app.post("/vea", jsonParser, (req: Request, res: Response) => {
     const exoId = req.query.exoId;
 

@@ -17,7 +17,7 @@ const getCountTotalQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     tableAnswer: table.tableAnswer,
-    instruction: `Remplir le tableau suivant.`,
+    instruction: `Remplir le tableau suivant ${randint(1, 100)}.`,
     keys: [],
     tableValues: table.tableValues,
     answerFormat: "tex",
@@ -42,7 +42,7 @@ const getTable = (nbLines: number) => {
     allValues.push(getValues());
   }
   for (let i = 0; i < allValues.length; i++) {
-    if (i === 0) values.push(allValues[0]);
+    if (i === 0) values.push(allValues[0].slice());
     else {
       let ingoredValue = random(allValues[i]);
       const resultColumn: string[] = [];
