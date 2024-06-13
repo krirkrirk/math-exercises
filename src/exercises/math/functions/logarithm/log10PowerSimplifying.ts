@@ -63,8 +63,8 @@ const getHint = (nb: AlgebraicNode) => {
 };
 const getCorrection = (tenthPower: number, nb: AlgebraicNode) => {
   const powerTen = new PowerNode((10).toTree(), tenthPower.toTree());
-  return `1 . Exprimez $${nb.toTex()}$ en puissance de $10$ : $${powerTen.toTex()}$ \n 
-  2 . Utilisez la propriété des logarithmes qui stipule que $log(a^{b}) = b*log(a) \\Leftrightarrow \\log(${powerTen.toTex()}) = ${tenthPower}*log(10) 
+  return `1 . Exprimer $${nb.toTex()}$ en puissance de $10$ : $${powerTen.toTex()}$ \n 
+  2 . Utiliser la propriété des logarithmes qui stipule que $log(a^{b}) = b*log(a) \\Leftrightarrow \\log(${powerTen.toTex()}) = ${tenthPower}*log(10) 
   \\Leftrightarrow log(${nb.toTex()}) = ${tenthPower}$.
   `;
 };

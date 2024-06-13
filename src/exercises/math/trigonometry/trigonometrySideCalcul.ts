@@ -127,7 +127,7 @@ const getHint = (sides: string[], angle: string): string => {
     (value) => value !== hypothenus && value !== adjacent[0],
   )[0];
 
-  return `Identifier le côté opposé, le côté adjacent et l'hypoténuse, puis utiliesr la bonne formule de trigonométrie.`;
+  return `Identifier le côté opposé, le côté adjacent et l'hypoténuse, puis utiliser la bonne formule de trigonométrie.`;
 };
 
 const getCorrection = (
