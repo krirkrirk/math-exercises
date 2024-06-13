@@ -62,7 +62,6 @@ const getTable = (nbLines: number) => {
 };
 
 const isTableSVGAnswerValid: TableVEA<Identifiers> = (ans, { tableAnswer }) => {
-  console.log(ans, tableAnswer);
   return arrayEqual(tableAnswer, ans, (el1, el2) => {
     return arrayEqual(el1, el2);
   });
