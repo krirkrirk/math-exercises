@@ -39,7 +39,7 @@ const getVolumeOfCubeQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     answer: Math.pow(cubeSide, 3) + "",
-    instruction: `Soit un cube d'arête $${cubeSide}$. Calculer son volume.`,
+    instruction: `$ABCDEFGH$ est un cube d'arête $${cubeSide}$. Calculer son volume.`,
     keys: [],
     answerFormat: "tex",
     commands: ggb.commands,
