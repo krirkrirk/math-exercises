@@ -34,9 +34,11 @@ export const getDistinctQuestions = (
         (q) =>
           q.instruction === question.instruction &&
           q.answer === question.answer &&
-          (!q.tableAnswer ||
-            arrayEqual(q.tableAnswer!, question.tableAnswer!, (arr1, arr2) =>
-              arrayEqual(arr1, arr2),
+          (!q.tableValues ||
+            arrayEqual(
+              q.tableValues.values!,
+              question.tableValues!.values!,
+              (arr1, arr2) => arrayEqual(arr1, arr2),
             )) &&
           (!q.commands || equalTab(q.commands, question.commands!)),
       )

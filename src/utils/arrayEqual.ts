@@ -1,15 +1,11 @@
 export function arrayEqual<T>(
   arr1: T[],
   arr2: T[],
-  elementEqual?: (element1: T, element2: T) => boolean,
+  elementEqual: (element1: T, element2: T) => boolean = (el1, el2) =>
+    el1 === el2,
 ): boolean {
-  if (arr1.length !== arr2.length) return false;
-  for (let i = 0; i < arr1.length; i++) {
-    if (elementEqual) {
-      if (!elementEqual(arr1[i], arr2[i])) return false;
-    } else {
-      if (arr1[i] !== arr2[i]) return false;
-    }
-  }
-  return true;
+  return (
+    arr1.length === arr2.length &&
+    arr1.every((element, index) => elementEqual(element, arr2[index]))
+  );
 }
