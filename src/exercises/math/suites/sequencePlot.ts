@@ -1,0 +1,120 @@
+import {
+  Exercise,
+  Proposition,
+  QCMGenerator,
+  Question,
+  QuestionGenerator,
+  VEA,
+  addValidProp,
+  shuffleProps,
+  tryToAddWrongProp,
+} from "#root/exercises/exercise";
+import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randfloat } from "#root/math/utils/random/randfloat";
+import { randint } from "#root/math/utils/random/randint";
+import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
+import { coinFlip } from "#root/utils/coinFlip";
+
+type Identifiers = {
+  nValue: number;
+  points: number[][];
+  isArithmetic: boolean;
+};
+
+const getSequencePlotQuestion: QuestionGenerator<Identifiers> = () => {
+  const isArithmetic = coinFlip(); // Decide between arithmetic and geometric sequence
+  const a = isArithmetic ? randfloat(0.5, 1.5, 1) : randfloat(1.1, 1.3, 1); // Slope for arithmetic, ratio for geometric
+  const b = randint(5, 10); // Base value for the points, close to zero
+
+  const nMax = 10;
+  const points: number[][] = [];
+
+  for (let n = 0; n <= nMax; n++) {
+    let u_n;
+    if (isArithmetic) {
+      // Arithmetic sequence
+      const noise = randfloat(-1, 1, 1);
+      u_n = a * n + b + noise;
+    } else {
+      // Geometric sequence
+      const noise = randfloat(-1, 1, 1);
+      u_n = b * Math.pow(a, n) + noise;
+    }
+    points.push([n, Math.round(u_n)]);
+  }
+
+  const nValue = randint(0, nMax);
+  const u_nValue = points[nValue][1];
+
+  const commands = points.map((point, index) => {
+    return `A${index}=(${point[0]},${point[1]})`;
+  });
+
+  commands.push(
+    ...points.map((_, index) => {
+      return `SetFixed(A${index},true)`;
+    }),
+  );
+
+  const ggb = new GeogebraConstructor(commands, {
+    hideAxes: false,
+    hideGrid: false,
+    isXAxesNatural: true,
+    isGridSimple: true,
+  });
+
+  const sequenceType = isArithmetic ? "arithmétique" : "géométrique";
+  const question: Question<Identifiers> = {
+    answer: u_nValue.toString(),
+    instruction: `Ci-dessous est tracé un nuage de points représentant les valeurs de la suite ${sequenceType} $(u_n)$. Quelle est la valeur de $u_{${nValue}}$ ?`,
+    commands: ggb.commands,
+    options: ggb.getOptions(),
+    coords: ggb.getAdaptedCoords({
+      xMin: 0,
+      xMax: nMax,
+      yMin: Math.min(...points.map((p) => p[1])) - 5,
+      yMax: Math.max(...points.map((p) => p[1])) + 5,
+    }),
+    keys: [],
+    answerFormat: "raw",
+    identifiers: { nValue, points, isArithmetic },
+  };
+
+  return question;
+};
+
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, nValue, points },
+) => {
+  const propositions: Proposition[] = [];
+  addValidProp(propositions, answer);
+
+  const correctValue = parseInt(answer);
+
+  while (propositions.length < n) {
+    const wrongAnswer = (correctValue + randint(-2, 2)).toString();
+    tryToAddWrongProp(propositions, wrongAnswer);
+  }
+
+  return shuffleProps(propositions, n);
+};
+
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
+  return ans === answer;
+};
+
+export const sequencePlot: Exercise<Identifiers> = {
+  id: "sequencePlot",
+  label: "Trouver la valeur d'une suite à partir d'un nuage de points",
+  levels: ["1reSpé"],
+  isSingleStep: true,
+  hasGeogebra: true,
+  sections: ["Suites"],
+  generator: (nb: number) => getDistinctQuestions(getSequencePlotQuestion, nb),
+  qcmTimer: 60,
+  freeTimer: 60,
+  getPropositions,
+  isAnswerValid,
+  subject: "Mathématiques",
+};
