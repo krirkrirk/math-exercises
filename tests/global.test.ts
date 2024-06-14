@@ -94,6 +94,12 @@ test("all exos", () => {
             expect(question.tableValues!.columnNames.length).toEqual(
               question.tableValues!.values[0].length,
             );
+            expect(
+              question.tableValues!.lineNames.every(
+                (column) =>
+                  column.length === question.tableValues!.columnNames.length,
+              ),
+            ).toEqual(true);
           }
         }
         expect(question.instruction?.length).not.toBe(0);
