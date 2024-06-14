@@ -13,3 +13,4 @@ export * from "./equalCaracteristicFromGraph";
 export * from "./vectorLinearCombination";
 export * from "./vectorNormCalculation";
 export * from "./lineFromDirectorVector";
+export * from "./drawAVectorInGGB";

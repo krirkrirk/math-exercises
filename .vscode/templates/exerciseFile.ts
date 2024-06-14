@@ -5,6 +5,7 @@ import {
   Question,
   QuestionGenerator,
   VEA,
+  GGBVEA,
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
@@ -39,6 +40,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 const isAnswerValid: VEA<Identifiers> = (ans, {answer})=>{
   throw Error("VEA not implemented")
 }
+
+const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, {ggbAnswer}) => {
+  throw Error("GGBVea not implemented")
+}
 export const {{name}}: Exercise<Identifiers> = {
   id: '{{name}}',
   connector: "",
@@ -51,5 +56,6 @@ export const {{name}}: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  isGGBAnswerValid,
   subject: "Mathématiques"
 };
