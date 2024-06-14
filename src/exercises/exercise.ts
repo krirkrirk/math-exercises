@@ -105,6 +105,7 @@ export interface Exercise<TIdentifiers = {}> {
   getPropositions?: QCMGenerator<{ answer: string } & TIdentifiers>;
   isAnswerValid?: VEA<TIdentifiers>;
   hasGeogebra?: boolean;
+  is3d?: boolean;
   subject: "Mathématiques" | "Chimie" | "Physique";
 }
 
