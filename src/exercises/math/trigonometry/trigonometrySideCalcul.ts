@@ -153,7 +153,7 @@ const getCorrection = (
   );
 
   return `On utilise la relation $${correctEquations[0]}$, on a donc :
-    $${correctEquations[1]} \\Leftrightarrow ${correctEquations[2]} \\Leftrightarrow ${correctEquations[3]}$ `;
+    $${correctEquations[1]}$, donc $${correctEquations[2]}$. Ainsi $${correctEquations[3]}$ `;
 };
 
 const getCorrectEquations = (
@@ -173,12 +173,12 @@ const getCorrectEquations = (
           ? [
               `\\tan(\\widehat{${angle.name}})=\\frac{${opposite.name}}{${adjacent.name}}`,
               `\\tan(\\widehat{${angle.value}})=\\frac{${opposite.length}}{${adjacent.name}}`,
-              `\\frac{${opposite.length}}{\\tan(\\widehat{${angle.value}})}=${adjacent.name}`,
+              `${adjacent.name}=\\frac{${opposite.length}}{\\tan(\\widehat{${angle.value}})}`,
             ]
           : [
               `\\cos(\\widehat{${angle.name}})=\\frac{${adjacent.name}}{${hypothenus.name}}`,
               `\\cos(\\widehat{${angle.value}})=\\frac{${adjacent.name}}{${hypothenus.length}}`,
-              `\\cos(\\widehat{${angle.value}})*${hypothenus.length}=${adjacent.name}`,
+              `${adjacent.name}=\\cos(\\widehat{${angle.value}})\\times${hypothenus.length}`,
             ];
       return result.concat(`${answer}=${adjacent.name}`);
     case opposite.name:
@@ -187,12 +187,12 @@ const getCorrectEquations = (
           ? [
               `\\tan(\\widehat{${angle.name}})=\\frac{${opposite.name}}{${adjacent.name}}`,
               `\\tan(\\widehat{${angle.value}})=\\frac{${opposite.name}}{${adjacent.length}}`,
-              `\\tan(\\widehat{${angle.value}})*${adjacent.length}=${opposite.name}`,
+              `${opposite.name}=\\tan(\\widehat{${angle.value}})*${adjacent.length}`,
             ]
           : [
               `\\sin(\\widehat{${angle.name}})=\\frac{${opposite.name}}{${hypothenus.name}}`,
               `\\sin(\\widehat{${angle.value}})=\\frac{${opposite.name}}{${hypothenus.length}}`,
-              `\\sin(\\widehat{${angle.value}})*${hypothenus.length}=${opposite.name}`,
+              `${opposite.name}=\\sin(\\widehat{${angle.value}})\\times${hypothenus.length}`,
             ];
       return result.concat(`${answer}=${opposite.name}`);
     case hypothenus.name:
@@ -201,14 +201,14 @@ const getCorrectEquations = (
           ? [
               `\\cos(\\widehat{${angle.name}})=\\frac{${adjacent.name}}{${hypothenus.name}}`,
               `\\cos(\\widehat{${angle.value}})=\\frac{${adjacent.length}}{${hypothenus.name}}`,
-              `\\frac{${adjacent.length}}{\\cos(${angle.value})}=${hypothenus.name}`,
+              `${hypothenus.name}=\\frac{${adjacent.length}}{\\cos(${angle.value})}`,
             ]
           : [
               `\\sin(\\widehat{${angle.name}})=\\frac{${opposite.name}}{${hypothenus.name}}`,
               `\\sin(\\widehat{${angle.value}})=\\frac{${opposite.length}}{${hypothenus.name}}`,
-              `\\frac{${opposite.length}}{\\sin(${angle.value})}=${hypothenus.name}`,
+              `${hypothenus.name}=\\frac{${opposite.length}}{\\sin(${angle.value})}`,
             ];
-      return result.concat(`${answer}=${hypothenus.name}`);
+      return result.concat(`${hypothenus.name}=${answer}`);
     default:
       return [];
   }
