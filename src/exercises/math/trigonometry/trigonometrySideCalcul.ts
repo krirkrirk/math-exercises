@@ -83,7 +83,7 @@ const getTrigonometrySideCalcul: QuestionGenerator<Identifiers> = () => {
       sides[randSideQuestion]
     }$ à $0,1$ cm près.`,
     answer,
-    hint: getHint(sides, angle[randAngle]),
+    hint: getHint(),
     correction: getCorrection(
       sides,
       sideLengths,
@@ -116,18 +116,8 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 
   return shuffle(propositions);
 };
-const getHint = (sides: string[], angle: string): string => {
-  const hypothenus = sides[2];
-  const adjacent = sides.filter(
-    (value) =>
-      value !== hypothenus &&
-      [value.charAt(0), value.charAt(1)].includes(angle),
-  )[0];
-  const opposite = sides.filter(
-    (value) => value !== hypothenus && value !== adjacent[0],
-  )[0];
-
-  return `Identifier le côté opposé, le côté adjacent et l'hypoténuse, puis utiliesr la bonne formule de trigonométrie.`;
+const getHint = (): string => {
+  return `Identifier le côté opposé, le côté adjacent et l'hypoténuse, puis utiliser la bonne formule de trigonométrie.`;
 };
 
 const getCorrection = (
