@@ -42,9 +42,9 @@ const getEquationType3ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
 
   const question: Question<Identifiers> = {
     instruction: `Résoudre : $${statementTree.toTex()}$`,
-    hint: "Isolez le terme $x$ dans la partie gauche de l'equation.",
+    hint: "Isolez le terme $x$ dans la partie gauche de l'équation.",
     correction: `Commencer par soustraire $${b}$ des deux côtés de l'équation pour 
-    l'éliminer du côté gauche, ensuite, diviser les deux côtés de l'équation par 
+    l'éliminer du côté gauche. Ensuite, diviser les deux côtés de l'équation par 
     $${a}$ pour isoler $x$, ce qui donne : \n $ ${a}x = ${c}${
       b < 0 ? "+" + Math.abs(b) : "-" + Math.abs(b)
     } \\Leftrightarrow x=\\frac{${c}${
