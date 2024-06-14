@@ -1,3 +1,4 @@
+import { arrayEqual } from "#root/utils/arrayEqual";
 import { Question } from "../exercise";
 
 export function equalTab<T>(array1: T[], array2: T[]) {
@@ -33,6 +34,10 @@ export const getDistinctQuestions = (
         (q) =>
           q.instruction === question.instruction &&
           q.answer === question.answer &&
+          (!q.tableAnswer ||
+            arrayEqual(q.tableAnswer!, question.tableAnswer!, (arr1, arr2) =>
+              arrayEqual(arr1, arr2),
+            )) &&
           (!q.commands || equalTab(q.commands, question.commands!)),
       )
     );
