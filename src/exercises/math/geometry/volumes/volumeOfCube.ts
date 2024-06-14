@@ -35,7 +35,6 @@ const getVolumeOfCubeQuestion: QuestionGenerator<Identifiers> = () => {
     hideAxes: true,
     hideGrid: true,
   });
-  PowerNode;
 
   const question: Question<Identifiers> = {
     answer: Math.pow(cubeSide, 3) + "",
@@ -87,7 +86,9 @@ export const volumeOfCube: Exercise<Identifiers> = {
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Géométrie euclidienne"],
-  generator: (nb: number) => getDistinctQuestions(getVolumeOfCubeQuestion, nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(getVolumeOfCubeQuestion, nb, 15),
+  maxAllowedQuestions: 15,
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
