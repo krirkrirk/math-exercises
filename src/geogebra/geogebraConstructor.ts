@@ -25,9 +25,9 @@ export class GeogebraConstructor {
   hideAxes: boolean;
   isGridSimple: boolean;
   isGridBold: boolean;
+  is3d: boolean;
   isAxesRatioFixed: boolean;
   isXAxesNatural: boolean;
-  is3d: boolean;
   axisLabels?: string[];
   constructor(commands: string[], options: GeogebraOptions | undefined) {
     this.commands = commands;
