@@ -8,4 +8,5 @@ export * from "./exponential";
 export * from "./logarithm";
 export * from "./parity";
 export * from "./square";
+export * from "./variationTable";
 export * from "./integral";
