@@ -67,10 +67,10 @@ const generateTable = (): string[][] => {
 
 export const fillProportionalTable: Exercise<Identifiers> = {
   id: "fillProportionalTable",
-  label: "",
-  levels: [],
+  label: "Completer un tableau de proportionalité",
+  levels: ["4ème"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Proportionnalité"],
   generator: (nb: number) =>
     getDistinctQuestions(getFillProportionalTableQuestion, nb),
   qcmTimer: 60,
