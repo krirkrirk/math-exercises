@@ -122,7 +122,7 @@ export const paritySumsAndProducts: Exercise<Identifiers> = {
     getDistinctQuestions(getParitySumsAndProductsQuestion, nb, 12),
   qcmTimer: 60,
   freeTimer: 60,
-  answerType: "QCM",
+  answerType: "QCU",
   maxAllowedQuestions: 12,
   getPropositions,
   subject: "Mathématiques",

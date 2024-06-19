@@ -24,12 +24,9 @@ type Identifiers = {
 };
 
 const getLog10PowerSimplifyingQuestion: QuestionGenerator<Identifiers> = () => {
-  const tenthPower = randint(-5, 6, [0, 1]);
-  const shouldEvaluate = probaFlip(0.7);
+  const tenthPower = randint(-6, 8, [1]);
   console.log("log10 power simp q");
-  const nb = shouldEvaluate
-    ? new Decimal(1).multiplyByPowerOfTen(tenthPower).toTree()
-    : new PowerNode(new NumberNode(10), new NumberNode(tenthPower));
+  const nb = new Decimal(1).multiplyByPowerOfTen(tenthPower).toTree();
   const answer = tenthPower + "";
   const question: Question<Identifiers> = {
     answer,
@@ -59,13 +56,12 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const getHint = (nb: AlgebraicNode) => {
-  return `Pour calculer $log(⁡${nb.toTex()})$, il est utile de transformer le nombre $${nb.toTex()}$ en une puissance de $10$.`;
+  return `Pour calculer $\\log(⁡${nb.toTex()})$, il est utile de transformer le nombre $${nb.toTex()}$ en une puissance de $10$.`;
 };
 const getCorrection = (tenthPower: number, nb: AlgebraicNode) => {
   const powerTen = new PowerNode((10).toTree(), tenthPower.toTree());
-  return `1 . Exprimez $${nb.toTex()}$ en puissance de $10$ : $${powerTen.toTex()}$ \n 
-  2 . Utilisez la propriété des logarithmes qui stipule que $log(a^{b}) = b*log(a) \\Leftrightarrow \\log(${powerTen.toTex()}) = ${tenthPower}*log(10) 
-  \\Leftrightarrow log(${nb.toTex()}) = ${tenthPower}$.
+  return `1 . On exprime $${nb.toTex()}$ en puissance de $10$ : $${nb.toTex()} = ${powerTen.toTex()}$ \n 
+  2 . On utilise la propriété $\\log(a^{b}) = b\\times \\log(a)$. On a alors $\\log(${nb.toTex()}) = \\log(${powerTen.toTex()}) = ${tenthPower}\\times \\log(10)  = ${tenthPower}$.
   `;
 };
 
@@ -80,11 +76,11 @@ export const log10PowerSimplifying: Exercise<Identifiers> = {
   isSingleStep: true,
   sections: ["Logarithme décimal", "Puissances"],
   generator: (nb: number) =>
-    getDistinctQuestions(getLog10PowerSimplifyingQuestion, nb, 15),
+    getDistinctQuestions(getLog10PowerSimplifyingQuestion, nb, 10),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  maxAllowedQuestions: 15,
+  maxAllowedQuestions: 10,
   subject: "Mathématiques",
 };

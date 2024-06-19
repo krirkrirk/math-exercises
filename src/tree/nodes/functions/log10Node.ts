@@ -33,9 +33,9 @@ export class Log10Node implements FunctionNode {
 
   toTex(): string {
     const tex = this.child.toTex();
-    if (!this.opts?.allowLnOfOne && tex === "1") {
-      return "0";
-    }
+    // if (!this.opts?.allowLnOfOne && tex === "1") {
+    //   return "0";
+    // }
     const shouldntUseBrackets = isAbsNode(this.child);
     if (shouldntUseBrackets) return `\\log${tex}`;
     else return `\\log\\left(${tex}\\right)`;

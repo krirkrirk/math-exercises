@@ -56,7 +56,7 @@ export const convexityTrinomials: Exercise<Identifiers> = {
     getDistinctQuestions(getConvexityTrinomialsQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
-  answerType: "QCM",
+  answerType: "QCU",
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",

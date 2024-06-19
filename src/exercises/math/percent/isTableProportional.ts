@@ -15,12 +15,12 @@ import { coinFlip } from "#root/utils/coinFlip";
 
 type Identifiers = {};
 
-const getCoeffOfProportionQuestion: QuestionGenerator<Identifiers> = () => {
+const getIsTableProportionalQuestion: QuestionGenerator<Identifiers> = () => {
   const table = generateTable();
 
   const question: Question<Identifiers> = {
     answer: table.coeff ? "Oui" : "Non",
-    instruction: `On considere le tableau ci-dessous, est-il proportionnel ?${table.table}`,
+    instruction: `On considère le tableau ci-dessous. Est-ce un tableau de proportionnalité ?${table.table}`,
     keys: [],
     answerFormat: "raw",
     style: { tableHasNoHeader: true },
@@ -35,7 +35,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   addValidProp(propositions, answer, "raw");
   tryToAddWrongProp(propositions, "Oui", "raw");
   tryToAddWrongProp(propositions, "Non", "raw");
-  tryToAddWrongProp(propositions, "On peut pas savoir", "raw");
+  tryToAddWrongProp(propositions, "On ne peut pas savoir", "raw");
   return shuffleProps(propositions, n);
 };
 
@@ -68,7 +68,7 @@ const generateYValues = (
   xValues: number[],
 ): { values: number[]; coeff?: number } => {
   const flip = coinFlip();
-  const coeff = randint(1, 5);
+  const coeff = randint(2, 6);
   return flip
     ? {
         values: xValues.map((value) => value * randint(2, 5)),
@@ -79,15 +79,14 @@ const generateYValues = (
       };
 };
 
-export const coeffOfProportion: Exercise<Identifiers> = {
-  id: "coeffOfProportion",
-  label:
-    "Reconnaître si 2 grandeurs sont proportionnelles à partir d'un tableau.",
-  levels: [],
+export const isTableProportional: Exercise<Identifiers> = {
+  id: "isVTableProportional",
+  label: "Reconnaître un tableau de proportionnalité",
+  levels: ["5ème"],
   isSingleStep: true,
   sections: ["Proportionnalité"],
   generator: (nb: number) =>
-    getDistinctQuestions(getCoeffOfProportionQuestion, nb),
+    getDistinctQuestions(getIsTableProportionalQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
