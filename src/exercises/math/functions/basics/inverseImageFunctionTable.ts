@@ -57,7 +57,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  console.log(ans);
   return [ans, ans.split("=")[1]].includes(answer);
 };
 
