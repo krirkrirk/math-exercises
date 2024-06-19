@@ -29,7 +29,7 @@ const getInverseImageFunctionTableQuestion: QuestionGenerator<
   const table = generateTable(polynom, xValue);
 
   const question: Question<Identifiers> = {
-    answer: `$${xValue}$`,
+    answer: `${xValue}`,
     instruction: `Soit un tableau de valeurs représentant la fonction $f$. Déterminer le ou les antécédents de $${image}$ par $f$
     ${table.table}`,
     keys: ["x", "equal"],
@@ -44,14 +44,18 @@ const getInverseImageFunctionTableQuestion: QuestionGenerator<
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer, xValues }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
+  xValues.forEach((value) => {
+    if (value !== `$${answer}$`) tryToAddWrongProp(propositions, value);
+  });
   while (propositions.length < n) {
-    let randProp = random(xValues);
-    if (randProp !== answer) tryToAddWrongProp(propositions, randProp);
+    let randProp = randint(+answer - 10, +answer + 11, [+answer]);
+    tryToAddWrongProp(propositions, randProp + "");
   }
   return shuffleProps(propositions, n);
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
+  console.log(ans, answer);
   return [answer, answer.split("=")[1]].includes(ans);
 };
 
@@ -64,7 +68,7 @@ const generateTable = (f: Polynomial, xValue: number) => {
       xValues.push(`$${xValue}$`);
     } else {
       do {
-        value = randint(-9, 10);
+        value = randint(-11, 11);
       } while (xValues.includes(value + ""));
       xValues.push(`$${value}$`);
     }
