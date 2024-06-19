@@ -16,6 +16,7 @@ import { random } from "#root/utils/random";
 
 type Identifiers = {
   xValues: string[];
+  imageValues: string[];
 };
 
 const getInverseImageFunctionTableQuestion: QuestionGenerator<
@@ -35,18 +36,19 @@ const getInverseImageFunctionTableQuestion: QuestionGenerator<
     keys: ["x", "equal"],
     answerFormat: "tex",
     style: { tableHasNoHeader: true },
-    identifiers: { xValues: table.xValues },
+    identifiers: { xValues: table.xValues, imageValues: table.imageValues },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer, xValues }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, xValues, imageValues },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  xValues.forEach((value) => {
-    if (value !== `$${answer}$`) tryToAddWrongProp(propositions, value);
-  });
+  generatePropositions(xValues, imageValues, answer);
   while (propositions.length < n) {
     let randProp = randint(+answer - 10, +answer + 11, [+answer]);
     tryToAddWrongProp(propositions, randProp + "");
@@ -55,11 +57,26 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, xValues }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  console.log(ans, answer);
   return [answer, answer.split("=")[1]].includes(ans);
 };
 
 const generateTable = (f: Polynomial, xValue: number) => {
+  const xValues: string[] = generateXValues(xValue);
+  const imageValues: string[] = xValues.map(
+    (value) => `$${f.calculate(+value.substring(1).split("$")[0])}$`,
+  );
+  return {
+    xValues,
+    imageValues,
+    table: `
+  |$x$|${xValues.reduce((prev, curr) => prev + "|" + curr)}|
+  |-|-|-|-|-|-|
+  |$f$|${imageValues.reduce((prev, curr) => prev + "|" + curr)}|
+  `,
+  };
+};
+
+const generateXValues = (xValue: number): string[] => {
   const xValues: string[] = [];
   const randQuestionValue = randint(0, 4);
   for (let i = 0; i < 5; i++) {
@@ -69,24 +86,30 @@ const generateTable = (f: Polynomial, xValue: number) => {
     } else {
       do {
         value = randint(-11, 11);
-      } while (xValues.includes(value + ""));
+      } while (xValues.includes(`$${value}$` + ""));
       xValues.push(`$${value}$`);
     }
   }
-  const imageValues: string[] = xValues.map(
-    (value) => `$${f.calculate(+value.substring(1).split("$")[0])}$`,
-  );
-  return {
-    xValues,
-    imageValues,
-    table: `
-  | | | | | |
-  |-|-|-|-|-|
-  |$x$|${xValues.reduce((prev, curr) => prev + "|" + curr)}|
-  |$f$|${imageValues.reduce((prev, curr) => prev + "|" + curr)}|
-  `,
-  };
+  xValues.sort((a, b) => {
+    return +a.substring(1).split("$")[0] - +b.substring(1).split("$")[0];
+  });
+  return xValues;
 };
+
+const generatePropositions = (
+  xValues: string[],
+  imageValues: string[],
+  answer: string,
+) => {
+  const filteredXValues = xValues.filter((value) => value !== `$${answer}$`);
+  const firstProp = random(filteredXValues);
+  const secondProp = random(
+    filteredXValues.concat(imageValues).filter((value) => value !== firstProp),
+  );
+  const thirdProp = random(imageValues.filter((value) => value !== secondProp));
+  return [firstProp, secondProp, thirdProp];
+};
+
 export const inverseImageFunctionTable: Exercise<Identifiers> = {
   id: "inverseImageFunctionTable",
   label:
