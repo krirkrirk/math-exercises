@@ -57,7 +57,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return [answer, answer.split("=")[1]].includes(ans);
+  console.log(ans);
+  return [ans, ans.split("=")[1]].includes(answer);
 };
 
 const generateTable = (f: Polynomial, xValue: number) => {
