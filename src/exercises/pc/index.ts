@@ -21,7 +21,7 @@ export * from "./mole";
 export * from "./mecanicalWaves";
 export * from "./fluids";
 export * from "./electricity";
-
+export * from "./recognizeRefractionOrReflectionAngles";
 /**exos pris des maths */
 export * from "../math/percent/findProportion";
 export * from "../math/calcul/proportionality/proportionalityTable";
