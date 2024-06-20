@@ -7,7 +7,7 @@ type GeogebraOptions = {
   isGridSimple?: boolean;
   isXAxesNatural?: boolean;
   axisLabels?: string[];
-  is3d?: boolean;
+  is3D?: boolean;
 };
 
 type GetAdaptedCoords = {
@@ -27,7 +27,7 @@ export class GeogebraConstructor {
   hideAxes: boolean;
   isGridSimple: boolean;
   isGridBold: boolean;
-  is3d: boolean;
+  is3D: boolean;
   isAxesRatioFixed: boolean;
   isXAxesNatural: boolean;
   axisLabels?: string[];
@@ -41,7 +41,7 @@ export class GeogebraConstructor {
     this.isGridSimple = options?.isGridSimple ?? false;
     this.isXAxesNatural = options?.isXAxesNatural ?? false;
     this.axisLabels = options?.axisLabels ?? undefined;
-    this.is3d = options?.is3d ?? false;
+    this.is3D = options?.is3D ?? false;
   }
 
   getAdaptedCoords({
@@ -57,7 +57,7 @@ export class GeogebraConstructor {
     const xDelta = xMax - xMin;
     const yDelta = yMax - yMin;
 
-    if (this.is3d && zMin !== undefined && zMax !== undefined) {
+    if (this.is3D && zMin !== undefined && zMax !== undefined) {
       const zDelta = zMax - zMin;
       const coords = [
         xMin === xMax ? xMin - 1 : xMin - Math.max(1, 0.2 * Math.abs(xDelta)),
@@ -103,7 +103,7 @@ export class GeogebraConstructor {
       isAxesRatioFixed: this.isAxesRatioFixed,
       isXAxesNatural: this.isXAxesNatural,
       axisLabels: this.axisLabels,
-      is3d: this.is3d,
+      is3D: this.is3D,
     };
   }
 }

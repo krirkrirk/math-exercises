@@ -57,7 +57,7 @@ const getVolumeOfPyramidWithTriangleRectBase: QuestionGenerator<
   const ggb = new GeogebraConstructor(commands, {
     hideAxes: true,
     hideGrid: true,
-    is3d: true,
+    is3D: true,
   });
 
   const maxCoord = Math.max(
@@ -199,6 +199,5 @@ export const volumeOfPyramid: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   hasGeogebra: true,
-  is3d: true,
   subject: "Mathématiques",
 };

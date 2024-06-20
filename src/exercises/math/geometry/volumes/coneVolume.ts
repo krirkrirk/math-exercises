@@ -52,7 +52,7 @@ const getConeVolumeQuestion: QuestionGenerator<Identifiers> = () => {
     isAxesRatioFixed: false,
     hideAxes: true,
     hideGrid: true,
-    is3d: true,
+    is3D: true,
   });
 
   const question: Question<Identifiers> = {

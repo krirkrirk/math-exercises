@@ -71,6 +71,7 @@ export interface Question<TIdentifiers = {}> {
     isGridSimple?: boolean;
     isAxesRatioFixed?: boolean;
     isXAxesNatural?: boolean;
+    is3D?: boolean;
   };
   style?: {
     tableHasNoHeader?: boolean;
@@ -105,7 +106,6 @@ export interface Exercise<TIdentifiers = {}> {
   getPropositions?: QCMGenerator<{ answer: string } & TIdentifiers>;
   isAnswerValid?: VEA<TIdentifiers>;
   hasGeogebra?: boolean;
-  is3d?: boolean;
   subject: "Mathématiques" | "Chimie" | "Physique";
 }
 

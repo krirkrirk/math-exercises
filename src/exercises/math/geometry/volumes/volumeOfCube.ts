@@ -31,7 +31,7 @@ const getVolumeOfCubeQuestion: QuestionGenerator<Identifiers> = () => {
     `P=Cube(A,B,C)`,
   ];
   const ggb = new GeogebraConstructor(commands, {
-    is3d: true,
+    is3D: true,
     hideAxes: true,
     hideGrid: true,
   });
@@ -94,6 +94,5 @@ export const volumeOfCube: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   hasGeogebra: true,
-  is3d: true,
   subject: "Mathématiques",
 };
