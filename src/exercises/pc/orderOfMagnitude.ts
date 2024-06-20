@@ -12,53 +12,80 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
+import { Measure } from "#root/pc/measure/measure";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 
-type Identifiers = {};
+type Identifiers = {
+  order: number;
+  multiplier: number;
+};
+const ten = new NumberNode(10);
 
 const getOrderOfMagnitudeQuestion: QuestionGenerator<Identifiers> = () => {
+  const exercise = generateExercise();
   const question: Question<Identifiers> = {
-    answer,
-    instruction: ``,
+    answer: `${exercise.answer.toTex()}m`,
+    instruction: exercise.instruction,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { order: exercise.order, multiplier: exercise.multiplier },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, order, multiplier },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  while (propositions.length < n) {
-    throw Error("QCM not implemented");
-  }
+  generatePropositions(order, multiplier).forEach((value) =>
+    tryToAddWrongProp(propositions, value),
+  );
   return shuffleProps(propositions, n);
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  throw Error("VEA not implemented");
+  return ans === answer;
+};
+
+const generatePropositions = (order: number, multiplier: number): string[] => {
+  const correctAnswer = multiplier > 5 ? order + 1 : order;
+  const first = new PowerNode(ten, (correctAnswer - 1).toTree()).toTex() + "m";
+  const second = new Measure(multiplier, correctAnswer).toTex() + "m";
+  const third = new PowerNode(ten, correctAnswer.toTree()).toTex();
+  return [first, second, third];
 };
 
 const generateExercise = () => {
-  const order = randint(-20, -11);
-  const diameter = new MultiplyNode(
-    new NumberNode(+randfloat(1, 6).toFixed(2)),
-    new PowerNode((10).toTree(), order.toTree()),
-  );
+  const order = randint(-15, -10);
+  const multiplier = +randfloat(1, 11).toFixed(1);
+  const diameter = new Measure(multiplier, order);
+  const answer =
+    multiplier > 5
+      ? new PowerNode(ten, (order + 1).toTree())
+      : new PowerNode(ten, order.toTree());
 
-  const instruction = `Supposons qu'on es un atome de diametre ${diameter},indiquer l'ordre de grandeur du diamètre de cet atome.`;
+  const instruction = `Supposons qu'on ait un atome de diamètre $${diameter.toTex()}m$. Indiquez l'ordre de grandeur du diamètre de cet atome.`;
+
+  return {
+    answer,
+    order,
+    diameter,
+    multiplier,
+    instruction,
+  };
 };
 
 export const orderOfMagnitude: Exercise<Identifiers> = {
   id: "orderOfMagnitude",
-  label: "",
-  levels: [],
+  label: "Calcul d'ordre de grandeur",
+  levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Calculs"],
   generator: (nb: number) =>
     getDistinctQuestions(getOrderOfMagnitudeQuestion, nb),
   qcmTimer: 60,
