@@ -84,12 +84,12 @@ export const orderOfMagnitude: Exercise<Identifiers> = {
   label: "Calcul d'ordre de grandeur",
   levels: ["2nde"],
   isSingleStep: true,
-  sections: ["Calculs"],
+  sections: ["Chimie organique"],
   generator: (nb: number) =>
     getDistinctQuestions(getOrderOfMagnitudeQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  subject: "Mathématiques",
+  subject: "Chimie",
 };
