@@ -25,7 +25,7 @@ const getMoleculeCountFromMolQuestion: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     answer: numberOfMolecules.toTex(),
     instruction: `Calculer le nombre de molécules dans un échantillon contenant $${quantity.frenchify()} \\ mol$ de substance.`,
-    keys: ["mol"],
+    keys: ["mol", "timesTenPower"],
     answerFormat: "tex",
     identifiers: { quantity },
   };
@@ -81,7 +81,7 @@ export const moleculeCountFromMol: Exercise<Identifiers> = {
   label: "Calculer le nombre de molécules dans un échantillon",
   levels: ["2nde"],
   isSingleStep: true,
-  sections: ["Mol"],
+  sections: ["Chimie organique"],
   generator: (nb: number) =>
     getDistinctQuestions(getMoleculeCountFromMolQuestion, nb),
   qcmTimer: 60,
