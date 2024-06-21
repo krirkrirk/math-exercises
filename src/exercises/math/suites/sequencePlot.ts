@@ -22,9 +22,9 @@ type Identifiers = {
 };
 
 const getSequencePlotQuestion: QuestionGenerator<Identifiers> = () => {
-  const isArithmetic = coinFlip(); // Decide between arithmetic and geometric sequence
-  const a = isArithmetic ? randfloat(0.5, 1.5, 1) : randfloat(1.1, 1.3, 1); // Slope for arithmetic, ratio for geometric
-  const b = randint(5, 10); // Base value for the points, close to zero
+  const isArithmetic = coinFlip();
+  const a = isArithmetic ? randfloat(0.1, 0.5, 1) : randfloat(1.01, 1.1, 2);
+  const b = randint(2, 10);
 
   const nMax = 10;
   const points: number[][] = [];
@@ -32,11 +32,9 @@ const getSequencePlotQuestion: QuestionGenerator<Identifiers> = () => {
   for (let n = 0; n <= nMax; n++) {
     let u_n;
     if (isArithmetic) {
-      // Arithmetic sequence
       const noise = randfloat(-1, 1, 1);
       u_n = a * n + b + noise;
     } else {
-      // Geometric sequence
       const noise = randfloat(-1, 1, 1);
       u_n = b * Math.pow(a, n) + noise;
     }
@@ -53,6 +51,9 @@ const getSequencePlotQuestion: QuestionGenerator<Identifiers> = () => {
   commands.push(
     ...points.map((_, index) => {
       return `SetFixed(A${index},true)`;
+    }),
+    ...points.map((_, index) => {
+      return `SetLabelMode(A${index},1)`;
     }),
   );
 
@@ -72,8 +73,8 @@ const getSequencePlotQuestion: QuestionGenerator<Identifiers> = () => {
     coords: ggb.getAdaptedCoords({
       xMin: 0,
       xMax: nMax,
-      yMin: Math.min(...points.map((p) => p[1])) - 5,
-      yMax: Math.max(...points.map((p) => p[1])) + 5,
+      yMin: Math.min(...points.map((p) => p[1])) - 2,
+      yMax: Math.max(...points.map((p) => p[1])) + 2,
     }),
     keys: [],
     answerFormat: "raw",
