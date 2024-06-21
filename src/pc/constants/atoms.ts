@@ -10,3 +10,9 @@ export const nucleonMass: PhysicalConstant = {
   // value: 1.67 * Math.pow(10, -27),
   unit: "\\text{kg}",
 };
+
+export const avogadroConstant: PhysicalConstant = {
+  value: new Measure(6.02, 23),
+  // value: 6.02 * Math.pow(10, 23),
+  unit: "\\text{mol^(-1)}",
+};

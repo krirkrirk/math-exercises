@@ -2,3 +2,4 @@
 export * from "./molarMass";
 export * from "./molFromMolarMass";
 export * from "./molFromMass";
+export * from "./moleculeCount";
