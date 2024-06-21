@@ -16,7 +16,7 @@ import { Measure } from "#root/pc/measure/measure";
 
 type Identifiers = { quantity: number };
 
-const getMoleculeCountQuestion: QuestionGenerator<Identifiers> = () => {
+const getMoleculeCountFromMolQuestion: QuestionGenerator<Identifiers> = () => {
   const quantity = randfloat(0.01, 100, 2); // Quantité de matière en moles, entre 0.01 et 10 moles
 
   const numberOfMolecules = avogadroConstant.value
@@ -76,13 +76,14 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, quantity }) => {
 
   return latexs.includes(ans);
 };
-export const moleculeCount: Exercise<Identifiers> = {
-  id: "moleculeCount",
+export const moleculeCountFromMol: Exercise<Identifiers> = {
+  id: "moleculeCountFromMol",
   label: "Calculer le nombre de molécules dans un échantillon",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Mol"],
-  generator: (nb: number) => getDistinctQuestions(getMoleculeCountQuestion, nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(getMoleculeCountFromMolQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
