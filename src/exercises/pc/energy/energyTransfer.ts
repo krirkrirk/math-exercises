@@ -50,7 +50,7 @@ const getEnergyTransferQuestion: QuestionGenerator<Identifiers> = () => {
   Calculer l'énergie transférée lors du changement d'état en $\\ kJ$`;
 
   const question: Question<Identifiers> = {
-    answer: `${energy}\\ kJ`,
+    answer: energy.toTree().toTex(),
     instruction,
     keys: ["kJ"],
     answerFormat: "tex",
@@ -69,19 +69,19 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
   while (propositions.length < n) {
     const wrongEnergy = round(energy + randfloat(-50, 50), 2);
-    tryToAddWrongProp(propositions, `${wrongEnergy}\\ kJ`);
+    tryToAddWrongProp(propositions, wrongEnergy.toTree().toTex());
   }
 
   return shuffleProps(propositions, n);
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, energy }) => {
-  const validanswer1 = `${energy}\\ kJ`;
+  const validanswer1 = `${energy}\\kJ`;
   const validanswer2 = energy.toTree().toAllValidTexs();
 
   let latexs = [];
   latexs.push(validanswer1, ...validanswer2);
-
+  console.log(latexs);
   return latexs.includes(ans);
 };
 
