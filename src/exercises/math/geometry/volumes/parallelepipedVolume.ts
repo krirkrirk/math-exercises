@@ -163,5 +163,6 @@ export const parallelepipedVolume: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  hasGeogebra: true,
   subject: "Mathématiques",
 };
