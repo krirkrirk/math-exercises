@@ -5,3 +5,4 @@ export * from "./pythagore";
 export * from "./thales";
 export * from "./vectors";
 export * from "./convexity";
+export * from "./volumes";
