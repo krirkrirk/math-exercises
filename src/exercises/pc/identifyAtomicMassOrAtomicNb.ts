@@ -11,6 +11,7 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
 import { coinFlip } from "#root/utils/coinFlip";
 import { random } from "#root/utils/random";
 import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
@@ -27,9 +28,11 @@ const getIdentifyAtomicMassOrAtomicNbQuestion: QuestionGenerator<
   const exo = generateExercise();
   const question: Question<Identifiers> = {
     answer: exo.answer,
-    instruction: `Donner ${exo.isAsking} d'un atome ${
-      requiresApostropheBefore(exo.atom.name) ? "d'" : "de "
-    }${exo.atom.name}`,
+    instruction: `À l'aide du tableau périodique simplifié, définir ${
+      exo.isAsking
+    } d'un atome ${requiresApostropheBefore(exo.atom.name) ? "d'" : "de "}${
+      exo.atom.name
+    }`,
     keys: [],
     answerFormat: "tex",
     identifiers: {
@@ -51,11 +54,15 @@ const getPropositions: QCMGenerator<Identifiers> = (
     propositions,
     +answer === atomicMass ? atomicNumber + "" : atomicMass + "",
   );
-  tryToAddWrongProp(propositions, (atomicMass + atomicNumber).toPrecision(2));
-  console.log(atomicMass + atomicNumber);
+  tryToAddWrongProp(
+    propositions,
+    round(atomicMass + atomicNumber, 2, false) + "",
+  );
   while (propositions.length < n) {
-    let random = randint(+answer - 4, +answer + 5, [+answer]);
-    tryToAddWrongProp(propositions, random.toFixed(2));
+    let random = randint(+answer - Math.min(+answer, 5) - 1, +answer + 5, [
+      +answer,
+    ]);
+    tryToAddWrongProp(propositions, round(random, 2, false) + "");
   }
   return shuffleProps(propositions, n);
 };
