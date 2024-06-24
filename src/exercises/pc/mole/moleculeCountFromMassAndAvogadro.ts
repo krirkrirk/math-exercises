@@ -37,12 +37,14 @@ const getMoleculeCountFromMassAndAvogadroQuestion: QuestionGenerator<
 
   const instruction = `Un échantillon a une masse $m = ${frenchify(
     sampleMass,
-  )}\\ g$ de ${requiresApostropheBefore(molecule.name) ? "d'" : "de"}${
+  )}\\ g$ de ${requiresApostropheBefore(molecule.name) ? "d'" : "de "}${
     molecule.name
-  }. La masse molaire ${requiresApostropheBefore(molecule.name) ? "d'" : "de"}${
-    molecule.name
-  } est de $${molarMass}\\ g/mol$.
-  Déterminer le nombre de molécules de ${molecule.name}.`;
+  }. La masse molaire ${
+    requiresApostropheBefore(molecule.name) ? "d'" : "de "
+  }${molecule.name} est de $${molarMass}\\ g/mol$.
+  Déterminer le nombre de molécules ${
+    requiresApostropheBefore(molecule.name) ? "d'" : "de "
+  }${molecule.name}.`;
 
   const question: Question<Identifiers> = {
     answer: entitiesNumber.toTex(),
