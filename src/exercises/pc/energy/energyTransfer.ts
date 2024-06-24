@@ -62,16 +62,14 @@ const getEnergyTransferQuestion: QuestionGenerator<Identifiers> = () => {
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, substance, mass, latentHeat },
+  { answer, substance, mass, latentHeat, energy },
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  const correctEnergy = parseFloat(answer);
-
   while (propositions.length < n) {
-    const wrongEnergy = round(correctEnergy + randfloat(-50, 50), 2);
-    tryToAddWrongProp(propositions, wrongEnergy.toString());
+    const wrongEnergy = round(energy + randfloat(-50, 50), 2);
+    tryToAddWrongProp(propositions, `${wrongEnergy}\\ kJ`);
   }
 
   return shuffleProps(propositions, n);
