@@ -42,9 +42,9 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
       isXAxesNatural: true,
       initialCommands: [`Text("\\tiny{[Xi]}",(29;0.2),true,true)`],
     },
-    hint: `Utilier la formule $a=c*l*ε$`,
+    hint: `Utilier la formule $a=c\\cdot l\\cdot ε$`,
     correction: `1 - Choisir deux coordonnées $x_1$ et $x_2$. \n \\
-    2 - Calculer $a_1 = x_1*l*ε$ et $a_2 = x_2*l*ε$. \n \\
+    2 - Calculer $a_1 = x_1\\cdot l \\cdotε$ et $a_2 = x_2\\cdot l \\cdotε$. \n \\
     3 - Tracer la droite qui passe par les deux points $(x_1,a_1)$ $(x_2,a_2)$.`,
     identifiers: {
       epsilon: exo.epsilon,
