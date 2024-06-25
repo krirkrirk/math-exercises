@@ -210,4 +210,5 @@ export type PCSection =
   | "Corps purs et mélanges"
   | "Fluides"
   | "Mol"
-  | "Électricité";
+  | "Électricité"
+  | "Spectrophotométrie";

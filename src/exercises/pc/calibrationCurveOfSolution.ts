@@ -85,10 +85,10 @@ const generateExercise = () => {
 
 export const calibrationCurveOfSolution: Exercise<Identifiers> = {
   id: "calibrationCurveOfSolution",
-  label: "",
-  levels: [],
+  label: "Tracer une courbe d'étalonnage",
+  levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Spectrophotométrie"],
   generator: (nb: number) =>
     getDistinctQuestions(getCalibrationCurveOfSolutionQuestion, nb),
   qcmTimer: 60,
