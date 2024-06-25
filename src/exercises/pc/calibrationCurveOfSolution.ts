@@ -42,6 +42,10 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
       isXAxesNatural: true,
       initialCommands: [`Text("\\tiny{[Xi]}",(29;0.2),true,true)`],
     },
+    hint: `Utilier la formule $a=c*l*ε$`,
+    correction: `1 - Choisir deux coordonnées $x_1$ et $x_2$. \n \\
+    2 - Calculer $a_1 = x_1*l*ε$ et $a_2 = x_2*l*ε$. \n \\
+    3 - Tracer la droite qui passe par les deux points $(x_1,a_1)$ $(x_2,a_2)$.`,
     identifiers: {
       epsilon: exo.epsilon,
       l: exo.l,
@@ -74,7 +78,7 @@ const generateExercise = () => {
   const instruction = `Dans un laboratoire, vous avez effectué l'étalonnage d'une solution ${
     requiresApostropheBefore(molecule.name) ? "d'" : "de "
   }${molecule.name}. \n 
-  Vous disposez du coefficient d'extinction molaire $(ϵ)$ de $${epsilon}$ $L/(mol·cm)$ et de la longueur de la cuve $(l)$ de $${l}$ $cm$. \n
+  Vous disposez du coefficient d'extinction molaire $ε$ de $${epsilon}$ $L/(mol·cm)$ et de la longueur de la cuve $l$ de $${l}$ $cm$. \n
   Tracer la courbe d'étalonnage de cette solution.`;
   return {
     instruction,
