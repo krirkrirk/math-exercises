@@ -60,13 +60,13 @@ const getBeerLambertRandomValueQuestion: QuestionGenerator<
             : "Absorbance"
         } : ${
           v.name === "concentration"
-            ? "C"
+            ? "$C$"
             : v.name === "molarAbsorptivity"
-            ? "ε"
+            ? "$ε$"
             : v.name === "pathLength"
             ? "$\\ell$"
-            : "A"
-        } = ${v.value} ${v.unit}`,
+            : "$A$"
+        } = $${v.value}\\ ${v.unit}$`,
     )
     .join(",\n");
 
@@ -89,7 +89,7 @@ const getBeerLambertRandomValueQuestion: QuestionGenerator<
   const hint = `Rappelez-vous la loi de Beer-Lambert : $A = ε \\cdot C \\cdot \\ell$.
   Réorganisez cette formule pour isoler la variable à trouver.`;
   const correction = `La loi de Beer-Lambert est donnée par :
-  $A = ε \\cdot C \\cdot \\ell$. En utilisant les valeurs fournies pour ε, C, et $\\ell$, vous pouvez résoudre pour la variable manquante.
+  $A = ε \\cdot \\ell \\cdot C$. En utilisant les valeurs fournies pour $ε$, $C$, et $\\ell$, vous pouvez résoudre pour la variable manquante.
   Si $A$ est l'absorbance, $ε$ est le coefficient d'absorption molaire, $C$ est la concentration et $\\ell$ est la longueur du trajet optique, alors
   ${
     targetVariable.name === "concentration"
@@ -177,7 +177,7 @@ export const BeerLambertRandomValueExercise: Exercise<Identifiers> = {
   label: "Utiliser la loi de Beer-Lambert",
   levels: ["1reSpé"],
   isSingleStep: true,
-  sections: ["Chimie des solutions"],
+  sections: ["Spectrophotométrie"],
   generator: (nb: number) =>
     getDistinctQuestions(getBeerLambertRandomValueQuestion, nb),
   qcmTimer: 60,
