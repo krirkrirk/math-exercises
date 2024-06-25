@@ -1,8 +1,16 @@
 import { Point } from "#root/math/geometry/point";
 
-export function getPointFromGGB(command: string, name: string): Point {
+export function getPointFromGGB(
+  command: string,
+  name: string,
+  isInteger: boolean = true,
+): Point {
   const splitted = command.split(";");
-  const x = +splitted[0].replace("(", "");
-  const y = +splitted[1].replace(")", "");
+  const x = isInteger
+    ? +(+splitted[0].replace("(", "")).toFixed(0)
+    : +splitted[0].replace("(", "");
+  const y = isInteger
+    ? +(+splitted[1].replace(")", "")).toFixed(0)
+    : +splitted[1].replace(")", "");
   return new Point(name, x.toTree(), y.toTree());
 }

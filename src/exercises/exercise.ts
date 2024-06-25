@@ -86,6 +86,7 @@ export interface Question<TIdentifiers = {}> {
     yAxisSteps?: number;
     enableShiftDragZoom?: boolean;
     coords?: number[];
+    initialCommands?: string[];
   };
   style?: {
     tableHasNoHeader?: boolean;
