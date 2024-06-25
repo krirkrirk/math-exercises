@@ -211,4 +211,5 @@ export type PCSection =
   | "Fluides"
   | "Mol"
   | "Électricité"
-  | "Spectrophotométrie";
+  | "Spectrophotométrie"
+  | "Quantique";
