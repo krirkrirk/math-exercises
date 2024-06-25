@@ -32,7 +32,7 @@ const getIdentifyAtomicMassOrAtomicNbQuestion: QuestionGenerator<
       exo.isAsking
     } d'un atome ${requiresApostropheBefore(exo.atom.name) ? "d'" : "de "}${
       exo.atom.name
-    }`,
+    }![](https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/periodicTable2.png)`,
     keys: [],
     answerFormat: "tex",
     identifiers: {
@@ -74,7 +74,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 const generateExercise = () => {
   const atoms = getAtoms(3);
   const atom = random(atoms);
-  const isAsking = coinFlip() ? "la masse atomique" : "le nombre atomique";
+  const isAsking = coinFlip() ? "la masse atomique" : "le numéro atomique";
   return {
     atom,
     isAsking,
@@ -88,7 +88,7 @@ const generateExercise = () => {
 };
 export const identifyAtomicMassOrAtomicNb: Exercise<Identifiers> = {
   id: "identifyAtomicMassOrAtomicNb",
-  label: "Identifier la masse atomique et le nombre atomique",
+  label: "Identifier la masse atomique et le numéro atomique",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Chimie organique"],
