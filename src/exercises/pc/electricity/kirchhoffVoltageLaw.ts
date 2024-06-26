@@ -135,8 +135,8 @@ const getAnswer = (isAsking: string, uAB: number, uDC: number, uED: number) => {
 };
 export const kirchhoffVoltageLaw: Exercise<Identifiers> = {
   id: "kirchhoffVoltageLaw",
-  label: "",
-  levels: [],
+  label: "Application de la loi de maille",
+  levels: ["2nde"],
   isSingleStep: true,
   sections: [],
   generator: (nb: number) =>
@@ -145,5 +145,5 @@ export const kirchhoffVoltageLaw: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  subject: "Mathématiques",
+  subject: "Physique",
 };
