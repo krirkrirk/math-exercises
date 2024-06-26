@@ -105,17 +105,17 @@ const getInstruction = (
 ) => {
   switch (isAsking) {
     case "UAB":
-      return `Un circuit est alimenté par une pile. \n
-      La tension UDC aux bornes de la diode est $${uDC}$ $V$. \n
-      La tension UED aux bornes du conducteur ohmique est $${uED}$ $V$. Cacluler la tension de la pile UAB.`;
+      return `Un circuit est alimenté par une pile. \n \\
+      La tension $U_{DC}$ aux bornes de la diode est $${uDC}$ $V$. \n \\
+      La tension $U_{ED}$ aux bornes du conducteur ohmique est $${uED}$ $V$. Cacluler la tension de la pile $U_{AB}$e.`;
     case "UED":
-      return `Un circuit est alimenté par une pile est $${uAB}$ $V$. \n
-      La tension UDC aux bornes de la diode est $${uDC}$ $V$. \n
-      Calculer la tension UED aux bornes du conducteur ohmique.`;
+      return `Un circuit est alimenté par une pile de $${uAB}$ $V$. \n \\
+      La tension $U_{DC}$ aux bornes de la diode est $${uDC}$ $V$. \n \\
+      Calculer la tension $U_{ED}$ aux bornes du conducteur ohmique.`;
     case "UDC":
-      return `Un circuit est alimenté par une pile est $${uAB}$ $V$. \n
-      La tension UED aux bornes du conducteur ohmique est $${uED}$ $V$. \n
-      Calculer la tension UDC aux bornes de la diode.`;
+      return `Un circuit est alimenté par une pile de $${uAB}$ $V$. \n \\
+      La tension $U_{ED}$ aux bornes du conducteur ohmique est $${uED}$ $V$. \n \\
+      Calculer la tension $U_{DC}$ aux bornes de la diode.`;
     default:
       return "";
   }
@@ -138,7 +138,7 @@ export const kirchhoffVoltageLaw: Exercise<Identifiers> = {
   label: "Application de la loi de maille",
   levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Électricité"],
   generator: (nb: number) =>
     getDistinctQuestions(getKirchhoffVoltageLawQuestion, nb),
   qcmTimer: 60,
