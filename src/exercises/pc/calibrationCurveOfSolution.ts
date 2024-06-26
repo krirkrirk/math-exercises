@@ -40,7 +40,10 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
     studentGgbOptions: {
       coords: [10, 20, -2, 20],
       isXAxesNatural: true,
-      initialCommands: [`Text("\\tiny{[Xi]}",(29;0.2),true,true)`],
+      initialCommands: [
+        `Text("\\tiny{[Xi]}",(29,4),true,true)`,
+        `Text("\\tiny{A}",(1,20),true,true)`,
+      ],
     },
     hint: `Utilier la formule $a=c\\cdot l\\cdot ε$`,
     correction: `1 - Choisir deux coordonnées $x_1$ et $x_2$. \n \\
@@ -90,7 +93,7 @@ const generateExercise = () => {
 export const calibrationCurveOfSolution: Exercise<Identifiers> = {
   id: "calibrationCurveOfSolution",
   label: "Tracer une courbe d'étalonnage",
-  levels: ["2nde"],
+  levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Spectrophotométrie"],
   generator: (nb: number) =>
