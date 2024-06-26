@@ -28,7 +28,7 @@ const getIdentifyAtomicMassOrAtomicNbQuestion: QuestionGenerator<
   const exo = generateExercise();
   const question: Question<Identifiers> = {
     answer: exo.answer,
-    instruction: `À l'aide du tableau périodique simplifié, définir ${
+    instruction: `À l'aide du tableau périodique simplifié, déterminer ${
       exo.isAsking
     } d'un atome ${requiresApostropheBefore(exo.atom.name) ? "d'" : "de "}${
       exo.atom.name
@@ -52,17 +52,25 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   tryToAddWrongProp(
     propositions,
-    +answer === atomicMass ? atomicNumber + "" : atomicMass + "",
+    +answer === atomicMass
+      ? atomicNumber.toTree().toTex()
+      : atomicMass.toTree().toTex(),
   );
   tryToAddWrongProp(
     propositions,
-    round(atomicMass + atomicNumber, 2, false) + "",
+    round(atomicMass + atomicNumber, 2, false)
+      .toTree()
+      .toTex(),
   );
   while (propositions.length < n) {
-    let random = randint(+answer - Math.min(+answer, 5) - 1, +answer + 5, [
-      +answer,
-    ]);
-    tryToAddWrongProp(propositions, round(random, 2, false) + "");
+    let random = randint(
+      +answer.replaceAll(",", ".") -
+        Math.min(+answer.replaceAll(",", "."), 5) -
+        1,
+      +answer.replaceAll(",", ".") + 5,
+      [+answer.replaceAll(",", ".")],
+    );
+    tryToAddWrongProp(propositions, round(random, 2, false).toTree().toTex());
   }
   return shuffleProps(propositions, n);
 };
@@ -80,8 +88,8 @@ const generateExercise = () => {
     isAsking,
     answer:
       isAsking == "la masse atomique"
-        ? atom.masseAtomique + ""
-        : atom.numeroAtomique + "",
+        ? atom.masseAtomique.toTree().toTex()
+        : atom.numeroAtomique.toTree().toTex(),
     atomicMasss: atom.masseAtomique,
     atomicNumber: atom.numeroAtomique,
   };
