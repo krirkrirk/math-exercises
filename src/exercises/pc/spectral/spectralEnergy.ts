@@ -18,17 +18,15 @@ import { randint } from "#root/math/utils/random/randint";
 import { lightSpeed, planckConstant } from "#root/pc/constants/quantic";
 
 type Identifiers = {
-  wavelengthBlue: Measure;
-  wavelengthGreen: Measure;
-  wavelengthRed: Measure;
+  wavelengths: Measure[];
   targetColor: "bleue" | "verte" | "rouge";
   energy: Measure;
 };
 
 const wavelengths = {
-  bleue: { min: 445, max: 455 },
-  verte: { min: 540, max: 560 },
-  rouge: { min: 640, max: 660 },
+  bleue: { min: 400, max: 455 },
+  verte: { min: 500, max: 560 },
+  rouge: { min: 610, max: 660 },
 };
 
 const h = new Measure(
@@ -39,6 +37,14 @@ const c = new Measure(
   lightSpeed.value.significantPart,
   lightSpeed.value.exponent,
 );
+
+const images = [
+  `https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/emissionSpectrum1.png`,
+  `https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/emissionSpectrum2.png`,
+  `https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/emissionSpectrum3.png`,
+  `https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/emissionSpectrum4.png`,
+  `https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/emissionSpectrum5.png`,
+];
 
 const getSpectralEnergyQuestion: QuestionGenerator<Identifiers> = () => {
   const wavelengthBlueNm = randint(
@@ -65,21 +71,29 @@ const getSpectralEnergyQuestion: QuestionGenerator<Identifiers> = () => {
   const targetColor = colors[randint(0, colors.length - 1)];
   const targetEnergy = energies[targetColor];
 
-  const instruction = `Vous avez mesuré les données suivantes pour une lumière :\n
-  - Longueur d'onde bleue : $\\lambda_{bleue} = ${wavelengthBlueNm}\\ nm$,\n
-  - Longueur d'onde verte : $\\lambda_{verte} = ${wavelengthGreenNm}\\ nm$,\n
-  - Longueur d'onde rouge : $\\lambda_{rouge} = ${wavelengthRedNm}\\ nm$.\n
-  À partir de ces données, déterminez l'énergie en joules de la lumière ${targetColor}.`;
+  const instruction = `Vous travaillez dans un laboratoire de spectroscopie et vous êtes en train de réaliser une analyse des transitions électroniques d'un échantillon. \n
+  Vous avez utilisé un spectromètre pour mesurer les longueurs d'onde des raies d'émission de la lumière émise par l'échantillon. \n
+  Les mesures que vous avez obtenues sont les suivantes :
+  - Longueur d'onde de la lumière bleue : $\\lambda_{bleue} = ${wavelengthBlueNm}\\ nm$,
+  - Longueur d'onde de la lumière verte : $\\lambda_{verte} = ${wavelengthGreenNm}\\ nm$,
+  - Longueur d'onde de la lumière rouge : $\\lambda_{rouge} = ${wavelengthRedNm}\\ nm$.
+  ![](${images[randint(0, images.length)]})
+  En utilisant ces données, calculez l'énergie de transition en joules pour la lumière ${targetColor} émise par l'échantillon.`;
 
-  const hint = `Rappelez-vous la relation entre l'énergie et la longueur d'onde : $E = \\frac{hc}{\\lambda}$.
-  Réorganisez cette formule pour isoler la variable à trouver.`;
+  const hint = `Rappelez-vous la relation entre l'énergie et la longueur d'onde : $E = \\frac{hc}{\\lambda}$.`;
   const correction = `La relation entre l'énergie et la longueur d'onde est donnée par :
   $E = \\frac{hc}{\\lambda}$. En utilisant les valeurs fournies pour $h$, $c$, et $\\lambda_{${targetColor}}$ (en mètres), vous pouvez résoudre pour l'énergie :
   $E_{${targetColor}} = \\frac{${h.toTex({ scientific: 2 })} \\times ${c.toTex({
     scientific: 2,
-  })}}{${wavelengthBlue.toTex({
-    scientific: 2,
-  })}} = ${targetEnergy.toTex()}\\ J$.`;
+  })}}{${
+    targetColor === "bleue"
+      ? wavelengthBlue.toTex({
+          scientific: 2,
+        })
+      : targetColor === "rouge"
+      ? wavelengthRed.toTex({ scientific: 2 })
+      : wavelengthGreen.toTex({ scientific: 2 })
+  }} = ${targetEnergy.toTex()}\\ J$.`;
 
   const question: Question<Identifiers> = {
     answer: targetEnergy.toTex(),
@@ -89,9 +103,7 @@ const getSpectralEnergyQuestion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: {
-      wavelengthBlue,
-      wavelengthGreen,
-      wavelengthRed,
+      wavelengths: [wavelengthBlue, wavelengthGreen, wavelengthRed],
       targetColor,
       energy: targetEnergy,
     },
@@ -105,14 +117,9 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, energy }) => {
   addValidProp(propositions, answer);
 
   const incorrectValues = [
-    new Measure(
-      randfloat(0.5 * energy.evaluate(), 0.9 * energy.evaluate()),
-      0,
-    ).toSignificant(2),
-    new Measure(
-      randfloat(1.1 * energy.evaluate(), 1.5 * energy.evaluate()),
-      0,
-    ).toSignificant(2),
+    new Measure(randfloat(0.1, 10, 2), -19).toSignificant(2),
+    energy.times(new Measure(1, -8)),
+    energy.times(new Measure(1, 34)),
   ];
 
   incorrectValues.forEach((value) => {
@@ -122,15 +129,32 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, energy }) => {
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      new Measure(randfloat(0.1, 10), 0).toSignificant(2).toTex(),
+      new Measure(randfloat(0.1, 10, 2), -19).toSignificant(2).toTex(),
     );
   }
 
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { answer, energy, wavelengths, targetColor },
+) => {
+  const energies = {
+    bleue: h.times(c).divide(wavelengths[0]),
+    verte: h.times(c).divide(wavelengths[1]),
+    rouge: h.times(c).divide(wavelengths[2]),
+  };
+
+  const targetEnergy = energies[targetColor];
+
+  const validAnswer1 = targetEnergy.toSignificant(1).toTex();
+  const validAnswer2 = targetEnergy.toSignificant(2).toTex();
+  const validAnswer3 = targetEnergy.toSignificant(3).toTex();
+
+  let latexs = [];
+  latexs.push(validAnswer1, validAnswer2, validAnswer3);
+  return latexs.includes(ans);
 };
 
 export const SpectralEnergyExercise: Exercise<Identifiers> = {
