@@ -17,18 +17,26 @@ type Identifiers = {
   l1: number;
   l2: number;
   isAsking: string;
+  circuit: string;
 };
 
 const getCalculateIntensityQuestion: QuestionGenerator<Identifiers> = () => {
   const exo = generateExercise();
+  const schemaIllu =
+    exo.circuit === "Série"
+      ? " https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/electricCircuit3.png"
+      : "https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/electricCircuit2.png";
   const question: Question<Identifiers> = {
     answer: exo.answer + "",
-    instruction:
-      exo.instruction +
-      `![](https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/electricCircuit2.png)`,
+    instruction: exo.instruction + `![](${schemaIllu})`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { l1: exo.l1, l2: exo.l2, isAsking: exo.isAsking },
+    identifiers: {
+      l1: exo.l1,
+      l2: exo.l2,
+      isAsking: exo.isAsking,
+      circuit: exo.circuit,
+    },
   };
 
   return question;
@@ -36,11 +44,11 @@ const getCalculateIntensityQuestion: QuestionGenerator<Identifiers> = () => {
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, isAsking, l1, l2 },
+  { answer, isAsking, circuit, l1, l2 },
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  generatePropositions(l1, l2, isAsking).forEach((value) =>
+  generatePropositions(l1, l2, isAsking, circuit).forEach((value) =>
     tryToAddWrongProp(propositions, value + ""),
   );
   while (propositions.length < n) {
@@ -58,12 +66,14 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 const generateExercise = () => {
   const l1 = randint(10, 60);
   const l2 = randint(10, 60);
-  const l = l1 + l2;
   const isAsking = random(["L", "L1", "L2"]);
+  const circuit = random(["Série", "Parallèle"]);
   const values = [l1 + l2, l1, l2];
   const instruction = getInstruction(isAsking, l1, l2);
   const answer =
-    values[["L", "L1", "L2"].findIndex((value) => value === isAsking)];
+    circuit === "Série"
+      ? l1
+      : values[["L", "L1", "L2"].findIndex((value) => value === isAsking)];
 
   return {
     instruction,
@@ -71,6 +81,7 @@ const generateExercise = () => {
     l1,
     l2,
     isAsking,
+    circuit,
   };
 };
 
@@ -98,7 +109,9 @@ const generatePropositions = (
   l1: number,
   l2: number,
   isAsking: string,
+  circuit: string,
 ): number[] => {
+  if (circuit === "Série") return [l1 + l2, Math.abs(l1 - l2)];
   switch (isAsking) {
     case "L":
       return [l1, l2, Math.abs(l1 - l2)];
@@ -112,8 +125,8 @@ const generatePropositions = (
 };
 export const calculateIntensity: Exercise<Identifiers> = {
   id: "calculateIntensity",
-  label: "Calcul d'intnsité dans un circuit électrique",
-  levels: ["2nde"],
+  label: "Calcul d'intnsité dans un circuit électrique en série/parallèle",
+  levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Électricité"],
   generator: (nb: number) =>
