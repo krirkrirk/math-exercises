@@ -80,7 +80,9 @@ const getSpectralEnergyQuestion: QuestionGenerator<Identifiers> = () => {
   ![](${images[randint(0, images.length)]})
   En utilisant ces données, calculez l'énergie de transition en joules pour la lumière ${targetColor} émise par l'échantillon.`;
 
-  const hint = `Rappelez-vous la relation entre l'énergie et la longueur d'onde : $E = \\frac{hc}{\\lambda}$.`;
+  const hint = `Rappelez-vous la relation entre l'énergie et la longueur d'onde : $E = \\frac{hc}{\\lambda}$. Rappel des constantes : 
+  - Constante de Planck : $h = ${h.toSignificant(2).toTex()}$
+  - Vitesse de la lumière : $c = ${c.toSignificant(2).toTex()}$`;
   const correction = `La relation entre l'énergie et la longueur d'onde est donnée par :
   $E = \\frac{hc}{\\lambda}$. En utilisant les valeurs fournies pour $h$, $c$, et $\\lambda_{${targetColor}}$ (en mètres), vous pouvez résoudre pour l'énergie :
   $E_{${targetColor}} = \\frac{${h.toTex({ scientific: 2 })} \\times ${c.toTex({
