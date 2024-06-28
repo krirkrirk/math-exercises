@@ -10,15 +10,19 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { discreteSetKeys } from "#root/exercises/utils/keys/discreteSetKeys";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
+import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { random } from "#root/utils/random";
 
 type Identifiers = {
-  distance: { value: number; unit: string };
-  time: { value: number; unit: string };
+  distance: measure;
+  time: measure;
 };
+
+type measure = { value: number; unit: string };
 
 const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
   const exo = generateExercise();
@@ -27,7 +31,8 @@ const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
     answer: exo.answer.toTex(),
     instruction: exo.instruction,
     keys: [],
-    hint: "Rappel : vitesse moyenne = $\\frac{distance}{temps}$",
+    hint: "Rappel : vitesse moyenne = $\\frac{\\text{distance}}{\\text{temps}}$ $m \\cdot s^{-1}$",
+    correction: exo.correction,
     answerFormat: "tex",
     identifiers: { distance: exo.distance, time: exo.time },
   };
@@ -52,10 +57,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const genearatePropositions = (
-  distance: { value: number; unit: string },
-  time: { value: number; unit: string },
-): string[] => {
+const genearatePropositions = (distance: measure, time: measure): string[] => {
   return [
     (getDistanceinMeter(distance) * getTimeInSeconds(time))
       .toScientific(2)
@@ -80,27 +82,23 @@ const generateExercise = () => {
 
   const answer = getCorrectAnswer(distance, time);
 
+  const correction = getCorrection(distance, time);
   return {
     instruction,
     answer,
     distance,
     time,
+    correction,
   };
 };
 
-const getCorrectAnswer = (
-  distance: { value: number; unit: string },
-  time: { value: number; unit: string },
-): AlgebraicNode => {
+const getCorrectAnswer = (distance: measure, time: measure): AlgebraicNode => {
   return (getDistanceinMeter(distance) / getTimeInSeconds(time)).toScientific(
     2,
   );
 };
 
-const getDistanceinMeter = (distance: {
-  value: number;
-  unit: string;
-}): number => {
+const getDistanceinMeter = (distance: measure): number => {
   switch (distance.unit) {
     case "m":
       return distance.value;
@@ -111,7 +109,7 @@ const getDistanceinMeter = (distance: {
   }
 };
 
-const getTimeInSeconds = (time: { value: number; unit: string }): number => {
+const getTimeInSeconds = (time: measure): number => {
   switch (time.unit) {
     case "s":
       return time.value;
@@ -123,16 +121,41 @@ const getTimeInSeconds = (time: { value: number; unit: string }): number => {
       return 0;
   }
 };
+
+const getCorrection = (distance: measure, time: measure): string => {
+  let correction = ``;
+  let step = 1;
+  const calcul = new FractionNode(
+    getDistanceinMeter(distance).toScientific(2),
+    getTimeInSeconds(time).toScientific(2),
+  );
+  const answer = (getDistanceinMeter(distance) / getTimeInSeconds(time))
+    .toScientific(2)
+    .toTex();
+  if (distance.unit === "km")
+    correction = `${step++} - Convertir les $km$ en $m$ : $1km=1000m$.`;
+  switch (time.unit) {
+    case "h":
+      correction = `${correction} \n \\
+      ${step++} - Convertir les heures en secondes : $1h = 3600s$.`;
+      break;
+    case "m":
+      correction = `${correction} \n \\
+      ${step++} - Convertir les minutes en secondes : $1m = 60s$.`;
+  }
+  return `${correction} \n \\
+  ${step} - Appliquer la règle de calcul pour la vitesse moyenne : $${calcul.toTex()} = ${answer}$ $m \\cdot s^{-1}$`;
+};
 export const averageSpeed: Exercise<Identifiers> = {
   id: "averageSpeed",
-  label: "",
-  levels: [],
+  label: "Caclul de vitesse moyenne",
+  levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Mécanique"],
   generator: (nb: number) => getDistinctQuestions(getAverageSpeedQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  subject: "Mathématiques",
+  subject: "Physique",
 };
