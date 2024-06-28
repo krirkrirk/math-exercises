@@ -68,7 +68,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 const generateExercise = () => {
   const l1 = randint(10, 60);
   const isAsking = random(["L", "L1", "L2"]);
-  const circuit = random(["Série", "Parallèle"]);
+  const circuit = random(["Série", "Parallèle", "Parallèle"]);
   const l2 = circuit === "Série" ? l1 : randint(10, 60);
   const l = circuit === "Série" ? l1 : l1 + l2;
   const values = [l, l1, l2];
@@ -98,17 +98,17 @@ const getInstruction = (
 ): string => {
   if (circuit === "Série")
     return `Pour ce circuit schématisé, l'intensité du courant qui traverse la lampe $L_1$ est de $${l1}$ $mA$, celle traversant la lampe $L_2$ est de $${l2}$ $mA$. \n \\
-  Calculer l'intensité du courant qui traverse la pile.`;
+  Calculer l'intensité du courant qui traverse la pile en $mA$.`;
   switch (isAsking) {
     case "L":
       return `Pour ce circuit schématisé, l'intensité du courant qui traverse la lampe $L_1$ est de $${l1}$ $mA$, celle traversant la lampe $L_2$ est de $${l2}$ $mA$. \n \\
-  Calculer l'intensité du courant qui traverse la pile.`;
+  Calculer l'intensité du courant qui traverse la pile en $mA$.`;
     case "L1":
       return `Pour ce circuit schématisé, l'intensité du courant qui traverse la lampe $L_2$ est de $${l2}$ $mA$, celle traversant la pile est de $${l}$ $mA$. \n \\
-  Calculer l'intensité du courant qui traverse la lampe $L_1$.`;
+  Calculer l'intensité du courant qui traverse la lampe $L_1$ en $mA$.`;
     case "L2":
       return `Pour ce circuit schématisé, l'intensité du courant qui traverse la lampe $L_1$ est de $${l1}$ $mA$, celle traversant la pile est de $${l}$ $mA$. \n \\
-    Calculer l'intensité du courant qui traverse la lampe $L_2$.`;
+    Calculer l'intensité du courant qui traverse la lampe $L_2$ en $mA$.`;
     default:
       return "";
   }
