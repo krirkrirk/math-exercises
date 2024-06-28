@@ -13,7 +13,6 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
-import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { random } from "#root/utils/random";
 
 type Identifiers = {
@@ -28,6 +27,7 @@ const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
     answer: exo.answer.toTex(),
     instruction: exo.instruction,
     keys: [],
+    hint: "Rappel : vitesse moyenne = $\\frac{distance}{temps}$",
     answerFormat: "tex",
     identifiers: { distance: exo.distance, time: exo.time },
   };
