@@ -11,7 +11,6 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
-import { random } from "#root/utils/random";
 
 type Identifiers = {
   l1: number;
