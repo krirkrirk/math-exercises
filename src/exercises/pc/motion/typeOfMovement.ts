@@ -12,7 +12,6 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { AffineConstructor } from "#root/math/polynomials/affine";
-import { PolynomialConstructor } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 import { random } from "#root/utils/random";
 
