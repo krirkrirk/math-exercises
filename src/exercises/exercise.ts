@@ -71,6 +71,7 @@ export interface Question<TIdentifiers = {}> {
     isGridSimple?: boolean;
     isAxesRatioFixed?: boolean;
     isXAxesNatural?: boolean;
+    is3D?: boolean;
   };
   style?: {
     tableHasNoHeader?: boolean;
