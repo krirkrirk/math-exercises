@@ -96,15 +96,15 @@ const getGgb = (
 };
 export const typeOfMovement: Exercise<Identifiers> = {
   id: "typeOfMovement",
-  label: "",
-  levels: [],
+  label: "Déterminer le type de mouvement",
+  levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Mécanique"],
   generator: (nb: number) =>
     getDistinctQuestions(getTypeOfMovementQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   answerType: "QCM",
-  subject: "Mathématiques",
+  subject: "Physique",
 };
