@@ -144,6 +144,27 @@ const runServer = () => {
     });
   });
 
+  app.post("/ggbvea", jsonParser, (req: Request, res: Response) => {
+    const exoId = req.query.exoId;
+
+    const { ggbAns, ggbVeaProps } = req.body;
+    const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
+    const exo = allExercises[exoIndex];
+    if (!exo) {
+      res.send("Exo not found");
+      return;
+    }
+    if (!exo.isGGBAnswerValid) {
+      res.send("No GGBVEA implemented");
+      return;
+    }
+    const result =
+      exo.isGGBAnswerValid(ggbAns as string[], ggbVeaProps) ?? false;
+    res.json({
+      result,
+    });
+  });
+
   app.listen("5000", () => {
     console.log(`[server]: Server is running at http://localhost:5000`);
   });
