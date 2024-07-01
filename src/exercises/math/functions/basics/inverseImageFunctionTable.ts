@@ -24,7 +24,7 @@ const getInverseImageFunctionTableQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const exercise = generateExercise();
-  const instruction = `Soit un tableau de valeurs représentant la fonction $f$. Déterminer ${
+  const instruction = `Ci-dessous est donné le tableau de valeurs d'une fonction $f$. Déterminer ${
     exercise.isAskingImage ? `l'image de` : `le ou les antécédents de`
   } $${exercise.questionValue}$ par $f$
     ${exercise.exoTable.table}`;
@@ -131,7 +131,7 @@ const generatePropositions = (
 export const inverseImageFunctionTable: Exercise<Identifiers> = {
   id: "inverseImageFunctionTable",
   label:
-    "Déterminer l'image ou l'antécédent d'un nombre à partir d'un tableau de valeurs d'une fonction",
+    "Déterminer une image ou un antécédent à partir d'un tableau de valeurs",
   levels: ["3ème", "2nde", "CAP", "2ndPro", "1rePro", "1reTech"],
   isSingleStep: true,
   sections: ["Fonctions"],
