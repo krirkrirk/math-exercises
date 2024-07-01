@@ -11,7 +11,7 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
-import { AffineConstructor } from "#root/math/polynomials/affine";
+import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
 import { random } from "#root/utils/random";
 
@@ -70,7 +70,14 @@ const getGgb = (
   let point2;
   switch (movementType) {
     case "Circulaire":
-      commands = [`Semicircle((2,${randint(3, 10)}),(4,${randint(3, 10)}))`];
+      const a = randint(1, 3);
+      const b = randint(4, 7);
+      commands = [
+        `Semicircle((${a},4),(${b},8))`,
+        `Point({${a},4})`,
+        `Point({${b},8})`,
+        `Point({${a},8})`,
+      ];
       coords = [-2, 10, -2, 10];
       break;
     case "Rectiligne":
@@ -80,11 +87,13 @@ const getGgb = (
       );
       point1 = `(2,${affine.calculate(2)})`;
       point2 = `(8,${affine.calculate(8)})`;
-      commands = [`Segment(${point1},${point2})`];
+      commands = [`Segment(${point1},${point2})`].concat(
+        getPoints(movementType, affine),
+      );
       coords = [-2, 10, -2, affine.calculate(8) + 5];
       break;
     case "Curviligne":
-      commands = [`Function(e^sin(x),0,10)`];
+      commands = [`Function(e^sin(x),0,10)`].concat(getPoints(movementType));
       coords = [-2, 10, -2, 10];
       break;
   }
@@ -92,6 +101,24 @@ const getGgb = (
     ggb: new GeogebraConstructor(commands, {}),
     coords,
   };
+};
+
+const getPoints = (movementType: string, affine?: Affine) => {
+  const commands: string[] = [];
+  switch (movementType) {
+    case "Rectiligne":
+      for (let x = 3; x < 8; x++) {
+        commands.push(`Point({${x},${affine!.calculate(x)}})`);
+      }
+      break;
+    case "Curviligne":
+      for (let x = 1; x < 9; x++) {
+        commands.push(`Point({${x},${Math.exp(Math.sin(x))}})`);
+      }
+      break;
+  }
+
+  return commands;
 };
 export const typeOfMovement: Exercise<Identifiers> = {
   id: "typeOfMovement",
