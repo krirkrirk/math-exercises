@@ -25,7 +25,7 @@ const getCalculateIntensityQuestion: QuestionGenerator<Identifiers> = () => {
       exo.instruction +
       `![](https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/electricCircuit2.png)`,
     keys: [],
-    correction: `1 - Calculer l'instensité au bord de la lampe à l'aide de la loi des noeuds : $L_1+L_2=L$ $\\Rightarrow$ $${exo.l1}+${exo.l2}=${exo.answer}$`,
+    correction: `1 - Calculer l'instensité au bord de la lampe à l'aide de la loi des noeuds : $L_1+L_2=L$ $\\Rightarrow$ $${exo.l1}+${exo.l2}=${exo.answer}$ $mA$`,
     answerFormat: "tex",
     identifiers: { l1: exo.l1, l2: exo.l2 },
   };
