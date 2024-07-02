@@ -22,6 +22,7 @@ export * from "./mecanicalWaves";
 export * from "./fluids";
 export * from "./electricity";
 export * from "./energy";
+export * from "./motion";
 
 /**exos pris des maths */
 export * from "../math/percent/findProportion";
