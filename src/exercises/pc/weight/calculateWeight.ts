@@ -27,6 +27,8 @@ const getCalculateWeightQuestion: QuestionGenerator<Identifiers> = () => {
     answer: exo.answer.toTex(),
     instruction: exo.instruction,
     keys: [],
+    hint: exo.hint,
+    correction: exo.correction,
     answerFormat: "tex",
     identifiers: { mass: exo.mass },
   };
@@ -65,10 +67,16 @@ const generateExercise = () => {
   const mass = randint(30, 151);
   const instruction = `Soit un objet avec une masse de $${mass}$ $kg$. Calculer le poids de cet objet.`;
   const answer = (mass * g).toScientific(2);
-
+  const hint = `Rappel : le poids $P$ se calcule en utilisant la formule $P=m \\cdot g$. \n \\
+    - m est la masse de l'objet (en kilogrammes, $kg$).\n \\
+    - g est l'accélération due à la gravité (en $m \\cdot s^${-1}$).`;
+  const correction = `Pour calculer le poids de l'objet on utilise la formule : $P=m \\cdot g$. \n \\
+  $P = ${mass.frenchify()} \\times ${g.frenchify()}$ $\\Rightarrow$ $P=${answer.toTex()}$ $N$`;
   return {
     instruction,
     answer,
+    hint,
+    correction,
     mass,
   };
 };
