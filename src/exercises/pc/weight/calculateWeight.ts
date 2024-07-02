@@ -63,7 +63,7 @@ const generatePropositions = (mass: number): string[] => {
 
 const generateExercise = () => {
   const mass = randint(30, 151);
-  const instruction = `Soit un objet avec une masse de $${mass}$ $kg$. Calculer le poid de cet objet.`;
+  const instruction = `Soit un objet avec une masse de $${mass}$ $kg$. Calculer le poids de cet objet.`;
   const answer = (mass * g).toScientific(2);
 
   return {
@@ -74,7 +74,7 @@ const generateExercise = () => {
 };
 export const calculateWeight: Exercise<Identifiers> = {
   id: "calculateWeight",
-  label: "Calculer le poid d'un objet",
+  label: "Calculer le poids d'un objet",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Forces"],
