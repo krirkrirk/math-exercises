@@ -70,7 +70,7 @@ const generateExercise = () => {
   const hint = `Rappel : le poids $P$ se calcule en utilisant la formule $P=m \\cdot g$. \n \\
     - m est la masse de l'objet (en kilogrammes, $kg$).\n \\
     - g est l'accélération due à la gravité (en $m \\cdot s^${-1}$).`;
-  const correction = `Pour calculer le poids de l'objet on utilise la formule : $P=m \\cdot g$. \n \\
+  const correction = `Pour calculer le poids de l'objet, on utilise la formule : $P=m \\cdot g$. \n \\
   $P = ${mass.frenchify()} \\times ${g.frenchify()}$ $\\Rightarrow$ $P=${answer.toTex()}$ $N$`;
   return {
     instruction,
