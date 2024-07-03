@@ -107,7 +107,8 @@ const getInstruction = (
     case "UAB":
       return `Un circuit est alimenté par une pile. \n \\
       La tension $U_{DC}$ aux bornes de la diode est $${uDC}$ $V$. \n \\
-      La tension $U_{ED}$ aux bornes du conducteur ohmique est $${uED}$ $V$. Cacluler la tension de la pile $U_{AB}$e.`;
+      La tension $U_{ED}$ aux bornes du conducteur ohmique est $${uED}$ $V$. \n \\
+      Cacluler la tension de la pile $U_{AB}$.`;
     case "UED":
       return `Un circuit est alimenté par une pile de $${uAB}$ $V$. \n \\
       La tension $U_{DC}$ aux bornes de la diode est $${uDC}$ $V$. \n \\
