@@ -23,7 +23,9 @@ type Identifiers = {
   isAsking: string;
 };
 
-const getCalculateNormalForceQuestion: QuestionGenerator<Identifiers> = () => {
+const getCalculateNormalOrFrictionForceQuestion: QuestionGenerator<
+  Identifiers
+> = () => {
   const exo = generateExercise();
   const question: Question<Identifiers> = {
     answer: exo.answer,
@@ -113,14 +115,15 @@ const getCorrection = (isAsking: string, answer: string) => {
   2 - $F = -P_{\\perp}\\ \\Rightarrow\\ F = ${answer}\\ N$`;
 };
 
-export const calculateNormalForce: Exercise<Identifiers> = {
-  id: "calculateNormalForce",
-  label: "Calcul de force exercée sur un objet statique",
+export const calculateNormalOrFrictionForce: Exercise<Identifiers> = {
+  id: "calculateNormalOrFrictionForce",
+  label:
+    "Calcul de la force normale ou de frottement exercée sur un objet en équilibre",
   levels: ["1reSpé", "TermSpé"],
   isSingleStep: true,
   sections: ["Forces"],
   generator: (nb: number) =>
-    getDistinctQuestions(getCalculateNormalForceQuestion, nb),
+    getDistinctQuestions(getCalculateNormalOrFrictionForceQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
