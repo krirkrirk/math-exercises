@@ -112,7 +112,7 @@ const getCorrection = (isAsking: string, answer: string) => {
   2 - $R = P_{\\perp}\\ \\Rightarrow\\ R = ${answer}\\ N$`
     : `1 - Calculer la composante parallèle du poids : $P_{\\parallel} = \\sin(45°) \\times m \\cdot g$
   
-  2 - $F = -P_{\\parallel}\\ \\Rightarrow\\ F = ${answer}\\ N$`;
+  2 - $f = -P_{\\parallel}\\ \\Rightarrow\\ f = ${answer}\\ N$`;
 };
 
 export const calculateNormalOrFrictionForce: Exercise<Identifiers> = {
