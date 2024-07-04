@@ -109,10 +109,10 @@ const getCorrection = (isAsking: string, answer: string) => {
   return isAsking === "réaction normale"
     ? `1 - Calculer la composante perpendicualire du poids : $P_{\\perp} = \\cos(45°) \\times m \\cdot g$
   
-  2 - $R = P_{\\parallel}\\ \\Rightarrow\\ R = ${answer}\\ N$`
+  2 - $R = P_{\\perp}\\ \\Rightarrow\\ R = ${answer}\\ N$`
     : `1 - Calculer la composante parallèle du poids : $P_{\\parallel} = \\sin(45°) \\times m \\cdot g$
   
-  2 - $F = -P_{\\perp}\\ \\Rightarrow\\ F = ${answer}\\ N$`;
+  2 - $F = -P_{\\parallel}\\ \\Rightarrow\\ F = ${answer}\\ N$`;
 };
 
 export const calculateNormalOrFrictionForce: Exercise<Identifiers> = {
