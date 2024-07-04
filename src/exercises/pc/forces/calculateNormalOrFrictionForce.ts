@@ -77,7 +77,7 @@ const generateExercise = () => {
 
 - Le poids du bloc $P$. 
 - La force de réaction normale $R$.
-- La force de frottement $F$.
+- La force de frottement $f$.
 
 Les données du problème sont les suivantes :
 
