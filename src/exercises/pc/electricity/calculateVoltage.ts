@@ -15,7 +15,7 @@ import { randint } from "#root/math/utils/random/randint";
 
 type Identifiers = {};
 
-const getCalculateResistanceQuestion: QuestionGenerator<Identifiers> = () => {
+const getCalculateVoltageQuestion: QuestionGenerator<Identifiers> = () => {
   const exo = generateExercise();
   const question: Question<Identifiers> = {
     answer: exo.answer,
@@ -61,14 +61,14 @@ const generateExercise = () => {
   };
 };
 
-export const calculateResistance: Exercise<Identifiers> = {
-  id: "calculateResistance",
+export const calculateVoltage: Exercise<Identifiers> = {
+  id: "calculateVoltage",
   label: "Calcul de résistance",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Électricité"],
   generator: (nb: number) =>
-    getDistinctQuestions(getCalculateResistanceQuestion, nb),
+    getDistinctQuestions(getCalculateVoltageQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
