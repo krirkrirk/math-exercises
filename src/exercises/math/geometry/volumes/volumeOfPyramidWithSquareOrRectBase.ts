@@ -49,7 +49,7 @@ const getVolumeOfPyramidWithSquareOrRectBaseQuestion: QuestionGenerator<
   const ggb = new GeogebraConstructor(commands, {
     hideAxes: true,
     hideGrid: true,
-    is3d: true,
+    is3D: true,
   });
   const h = exercise.h;
 
@@ -203,6 +203,5 @@ export const volumeOfPyramidWithSquareOrRectBase: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   hasGeogebra: true,
-  is3d: true,
   subject: "Mathématiques",
 };

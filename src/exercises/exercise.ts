@@ -72,6 +72,7 @@ export interface Question<TIdentifiers = {}> {
     isGridSimple?: boolean;
     isAxesRatioFixed?: boolean;
     isXAxesNatural?: boolean;
+    is3D?: boolean;
   };
   studentGgbOptions?: {
     customToolBar?: string;
@@ -125,7 +126,6 @@ export interface Exercise<TIdentifiers = {}> {
   isAnswerValid?: VEA<TIdentifiers>;
   isGGBAnswerValid?: GGBVEA<TIdentifiers>;
   hasGeogebra?: boolean;
-  is3d?: boolean;
   subject: "Mathématiques" | "Chimie" | "Physique";
 }
 

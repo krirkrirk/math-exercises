@@ -42,7 +42,7 @@ const getSphereVolumeQuestion: QuestionGenerator<Identifiers> = () => {
   const ggb = new GeogebraConstructor(commands, {
     isGridSimple: true,
     isAxesRatioFixed: false,
-    is3d: true,
+    is3D: true,
     hideAxes: true,
     hideGrid: true,
   });

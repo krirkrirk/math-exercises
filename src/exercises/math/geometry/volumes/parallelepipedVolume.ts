@@ -13,6 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { round } from "#root/math/utils/round";
+import { orange } from "#root/geogebra/colors";
 
 type Identifiers = {
   length: number;
@@ -22,54 +23,71 @@ type Identifiers = {
 };
 
 const getParallelepipedVolumeQuestion: QuestionGenerator<Identifiers> = () => {
-  const length = randint(10, 110) / 10;
-  const width = randint(10, 110) / 10;
-  const height = randint(10, 110) / 10;
-  const angle = randint(30, 150);
+  const length = randint(50, 110) / 10;
+  const width = randint(50, 110) / 10;
+  const height = randint(50, 80) / 10;
+  const angle = randint(30, 90);
 
   const angleRad = (angle * Math.PI) / 180;
-  const xOffset = height * Math.cos(angleRad);
+  const yOffset = height * Math.cos(angleRad);
   const zOffset = height * Math.sin(angleRad);
 
   const volume = round(length * width * height, 2)
     .toTree()
     .toTex();
 
-  const xMin = -length - 5;
-  const xMax = length + xOffset + 5;
-  const yMin = -(-5);
-  const yMax = width + 5;
-  const zMax = height + 5;
-  const zMin = -height - 5;
+  const xMin = -length / 2 - 5;
+  const xMax = length / 2 + 5;
+  const yMin = -width / 2 - 5;
+  const yMax = width / 2 + yOffset + 5;
+  const zMax = height + zOffset + 5;
+  const zMin = -5;
 
   const points = [`A`, `B`, `C`, `D`, `E`, `F`, `G`, `H`];
   const commands = [
-    `A = (0, 0, 0)`,
-    `B = (${length}, 0, 0)`,
-    `C = (${length + xOffset}, ${width}, ${zOffset})`,
-    `D = (${xOffset}, ${width}, ${zOffset})`,
-    `E = (0, 0, ${height})`,
-    `F = (${length}, 0, ${height})`,
-    `G = (${length + xOffset}, ${width}, ${height + zOffset})`,
-    `H = (${xOffset}, ${width}, ${height + zOffset})`,
-    // Base parallelogram
-    `Polygon(A, B, C, D)`,
-    // Top parallelogram
-    `Polygon(E, F, G, H)`,
-    // Side faces
-    `Polygon(A, B, F, E)`,
-    `Polygon(B, C, G, F)`,
-    `Polygon(C, D, H, G)`,
-    `Polygon(D, A, E, H)`,
+    `A = (${-length / 2}, ${-width / 2}, 0)`,
+    `B = (${-length / 2}, ${width / 2}, 0)`,
+    `C = (${length / 2}, ${width / 2}, 0)`,
+    `D = (${length / 2}, ${-width / 2}, 0)`,
+    `E = (${-length / 2}, ${-width / 2 + yOffset}, ${zOffset})`,
+    `F = (${-length / 2}, ${width / 2 + yOffset}, ${zOffset})`,
+    `G = (${length / 2}, ${width / 2 + yOffset}, ${zOffset})`,
+    `H = (${length / 2}, ${-width / 2 + yOffset}, ${zOffset})`,
+    `P1 = Polygon(A, B, F, E)`, // Side 1
+    `SetColor(P1, "${orange}")`, // Color for side 1
+    `P2 = Polygon(B, C, G, F)`, // Side 2
+    `SetColor(P2, "${orange}")`, // Color for side 2
+    `P3 = Polygon(C, D, H, G)`, // Side 3
+    `SetColor(P3, "${orange}")`, // Color for side 3
+    `P4 = Polygon(D, A, E, H)`, // Side 4
+    `SetColor(P4, "${orange}")`, // Color for side 4
+    `P5 = Polygon(A, B, C, D)`, // Base
+    `SetColor(P5, "${orange}")`, // Color for base
+    `P6 = Polygon(E, F, G, H)`, // Top
+    `SetColor(P6, "${orange}")`, // Color for top
+    `ShowLabel(A, true)`,
+    `ShowLabel(B, true)`,
+    `ShowLabel(C, true)`,
+    `ShowLabel(D, true)`,
+    `ShowLabel(E, true)`,
+    `ShowLabel(F, true)`,
+    `ShowLabel(G, true)`,
+    `ShowLabel(H, true)`,
+    `SetFixed(A, true)`,
+    `SetFixed(B, true)`,
+    `SetFixed(C, true)`,
+    `SetFixed(D, true)`,
+    `SetFixed(E, true)`,
+    `SetFixed(F, true)`,
+    `SetFixed(G, true)`,
+    `SetFixed(H, true)`,
+    `ZoomIn(${xMin}, ${yMin}, ${xMax}, ${yMax}, ${zMin}, ${zMax})`,
   ];
 
-  for (let point of points) {
-    commands.push(`SetFixed(${point}, true)`);
-  }
   const ggb = new GeogebraConstructor(commands, {
     isGridSimple: true,
     isAxesRatioFixed: false,
-    is3d: true,
+    is3D: true,
     hideAxes: true,
     hideGrid: true,
   });
