@@ -87,6 +87,7 @@ export interface Question<TIdentifiers = {}> {
     yAxisSteps?: number;
     enableShiftDragZoom?: boolean;
     coords?: number[];
+    initialCommands?: string[];
   };
   style?: {
     tableHasNoHeader?: boolean;
@@ -209,4 +210,6 @@ export type PCSection =
   | "Corps purs et mélanges"
   | "Fluides"
   | "Mol"
-  | "Électricité";
+  | "Électricité"
+  | "Spectrophotométrie"
+  | "Quantique";
