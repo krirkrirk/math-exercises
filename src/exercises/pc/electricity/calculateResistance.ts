@@ -13,10 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 
-type Identifiers = {
-  uED: number;
-  iEC: number;
-};
+type Identifiers = {};
 
 const getCalculateResistanceQuestion: QuestionGenerator<Identifiers> = () => {
   const exo = generateExercise();
@@ -25,26 +22,16 @@ const getCalculateResistanceQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: exo.instruction,
     keys: [],
     answerFormat: "tex",
-    identifiers: { uED: exo.uED, iEC: exo.iEC },
+    identifiers: {},
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (
-  n,
-  { answer, uED, iEC },
-) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
-  const resistance = +(uED / (iEC * Math.pow(10, -3))).toFixed(0);
   addValidProp(propositions, answer);
-  generatePropositions(uED, iEC).forEach((value) =>
-    tryToAddWrongProp(propositions, value),
-  );
-  while (propositions.length < n) {
-    let random = randint(resistance - 20, resistance + 21, [resistance]) + "";
-    tryToAddWrongProp(propositions, random);
-  }
+  while (propositions.length < n) {}
   return shuffleProps(propositions, n);
 };
 
@@ -59,27 +46,18 @@ const generatePropositions = (uED: number, iEC: number): string[] => {
 };
 
 const generateExercise = () => {
-  const uAB = randint(5, 9);
-  const uDC = randfloat(1.8, 3.3, 1);
-  const uED = +(uAB - uDC).toFixed(1);
-  const iEC = randint(10, 30);
-  const instruction = `Un circuit est alimenté par une pile de $${uAB}\\ V$. La tension $U_{DC}$ aux bornes de la $DEL$ est de $${uDC.frenchify()}\\ V$. 
+  const R = randint(1, 11);
+  const I = randint(1, 6);
+  const E = randint(R * I + 5, R * I + 29);
+  const instruction = `Dans un circuit électrique, une source de tension $E=${E}$ volts est connectée à une résistance $R=${R}\\ \\Omega$. 
   
-  L'intensité du courant qui circule de E vers C dans la branche comportant la DEL est de ${iEC} mA.
+  Un courant $I=${I}\\ A$ circule à travers la résistance. Calculez la tension U aux bornes de la résistance en $V$.`;
 
-  La tension $U_{ED}$ aux bornes du conducteur ohmique est de $${uED.frenchify()}\\ V$
-  
-  Calculer la résistance $R$ du conducteur ohmique en $\\Omega$, arrondie à l'unité.`;
-
-  const answer = +(uED / (iEC * Math.pow(10, -3))).toFixed(0);
+  const answer = (E - R * I).toFixed(0);
 
   return {
     instruction,
-    answer: answer + "",
-    uAB,
-    uDC,
-    uED,
-    iEC,
+    answer: answer,
   };
 };
 
