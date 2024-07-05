@@ -80,7 +80,7 @@ export const genericSequenceVariations: Exercise<Identifiers> = {
     getDistinctQuestions(getGenericSequenceVariationsQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
-  answerType: "QCU",
+  answerType: "QCM",
   getPropositions,
   subject: "Mathématiques",
 };

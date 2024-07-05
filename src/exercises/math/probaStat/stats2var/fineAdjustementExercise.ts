@@ -144,7 +144,7 @@ export const fineAdjustementExercise: Exercise<Identifiers> = {
   levels: ["TermSpé"],
   isSingleStep: true,
   hasGeogebra: true,
-  answerType: "QCU",
+  answerType: "QCM",
   sections: ["Statistiques"],
   generator: (nb: number) =>
     getDistinctQuestions(getFineAdjustementExerciseQuestion, nb),

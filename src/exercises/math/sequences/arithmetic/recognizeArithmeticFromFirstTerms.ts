@@ -101,6 +101,6 @@ export const recognizeArithmeticFromFirstTerms: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  answerType: "QCU",
+  answerType: "QCM",
   subject: "Mathématiques",
 };

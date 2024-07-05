@@ -98,5 +98,5 @@ export const atomicStructureOfNucleus: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Chimie",
-  answerType: "QCU",
+  answerType: "QCM",
 };

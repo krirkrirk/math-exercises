@@ -103,7 +103,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, radius }) => {
 
 export const sphereVolume: Exercise<Identifiers> = {
   id: "sphereVolume",
-  label: "Calcul du volume d'une sphère",
+  label: "Calculer le volume d'une sphère",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Géométrie euclidienne"],
@@ -112,5 +112,6 @@ export const sphereVolume: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  hasGeogebra: true,
   subject: "Mathématiques",
 };

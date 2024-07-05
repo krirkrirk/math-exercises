@@ -82,7 +82,7 @@ const generatePropositions = (cubeSide: number): string[] => {
 };
 export const volumeOfCube: Exercise<Identifiers> = {
   id: "volumeOfCube",
-  label: "Calcul du volume d'un cube",
+  label: "Calculer le volume d'un cube",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Géométrie euclidienne"],
