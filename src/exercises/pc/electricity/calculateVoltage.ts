@@ -73,11 +73,26 @@ const generatePropositions = (
   R: number,
   isAsking: string,
 ): string[] => {
-  const first =
-    isAsking === "du générateur"
-      ? (+(R * I).toFixed(0)).frenchify()
-      : (+(E - r * I).toFixed(0)).frenchify();
-  const second = E.frenchify();
+  const first = E.frenchify();
+  let second: string = (0).frenchify();
+  switch (isAsking) {
+    case "du générateur":
+      second = (+getCorrectAnswer("de la résistance", E, I, r, R).toFixed(
+        0,
+      )).frenchify();
+      break;
+    case "de la résistance":
+      second = (+getCorrectAnswer("du générateur", E, I, r, R).toFixed(
+        0,
+      )).frenchify();
+      break;
+    case "de la diode":
+      second = (+(
+        getCorrectAnswer("de la résistance", E, I, r, R) +
+        getCorrectAnswer("du générateur", E, I, r, R)
+      ).toFixed(0)).frenchify();
+      break;
+  }
   return [first, second];
 };
 
@@ -86,16 +101,17 @@ const generateExercise = () => {
   const I = randfloat(0.1, 4, 1);
   const r = randint(1, 6);
   const E = randint(21, 51);
-  const isAsking = random(["du générateur", "de la résistance"]);
+  const isAsking = random(["du générateur", "de la résistance", "de la diode"]);
   const instruction = `Dans un circuit électrique, on trouve : 
   
-  - Une source de tension $E=${E}$ volts, avec une resistance interne $r=${r}\\ \\Omega$. 
+  - Une source de tension $E=${E}$ volts, avec une résistance interne $r=${r}\\ \\Omega$. 
 
-  - Un Conducteur ohmique de resistance $R=${R}\\ \\Omega$. 
+  - Un conducteur ohmique de resistance $R=${R}\\ \\Omega$. 
   
   - Un courant $I=${I.frenchify()}\\ A$ circule à travers la résistance. 
   
-  Calculez la tension U aux bornes ${isAsking} en $V$, arrondie à l'unité`;
+  Calculez la tension U aux bornes ${isAsking} en $V$, arrondie à l'unité   
+  ![](https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/electricCircuit1.png)`;
 
   const answer = +getCorrectAnswer(isAsking, E, I, r, R).toFixed(0);
 
@@ -117,7 +133,18 @@ const getCorrectAnswer = (
   r: number,
   R: number,
 ): number => {
-  return isAsking === "du générateur" ? E - r * I : R * I;
+  switch (isAsking) {
+    case "du générateur":
+      return E - r * I;
+    case "de la résistance":
+      return R * I;
+    case "de la diode":
+      const U1 = E - r * I;
+      const U2 = R * I;
+      return U1 - U2;
+    default:
+      return 0;
+  }
 };
 
 export const calculateVoltage: Exercise<Identifiers> = {
