@@ -29,6 +29,7 @@ const getCalculateVoltageQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: exo.instruction,
     keys: [],
     correction: exo.correction,
+    hint: exo.hint,
     answerFormat: "tex",
     identifiers: {
       E: exo.E,
@@ -117,11 +118,13 @@ const generateExercise = () => {
 
   const answer = getCorrectAnswer(isAsking, E, I, r, R).toFixed(0);
   const correction = getCorrection(isAsking, answer);
+  const hint = getHint(isAsking);
 
   return {
     instruction,
     answer: answer,
     correction,
+    hint,
     isAsking,
     E,
     I,
@@ -148,6 +151,19 @@ const getCorrectAnswer = (
       return U1 - U2;
     default:
       return 0;
+  }
+};
+
+const getHint = (isAsking: string): string => {
+  switch (isAsking) {
+    case "de la diode":
+      return `Calculer d'abord la tension aux bornes du conducteur ohmique et du générateur, puis appliquer la loi des mailles.`;
+    case "du générateur":
+      return `Appliquer la formule qui met en relation la tension $U$ aux bornes du générateur, la résistance interne du générateur $r$ et l'intensité $I$.`;
+    case "de la résistance":
+      return `Appliquer la loi d'ohm.`;
+    default:
+      return "";
   }
 };
 
