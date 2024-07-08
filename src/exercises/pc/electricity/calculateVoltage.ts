@@ -46,12 +46,20 @@ const generatePropositions = (uED: number, iEC: number): string[] => {
 };
 
 const generateExercise = () => {
-  const R = randint(1, 11);
-  const I = randint(1, 6);
-  const E = randint(R * I + 5, R * I + 29);
-  const instruction = `Dans un circuit électrique, une source de tension $E=${E}$ volts est connectée à une résistance $R=${R}\\ \\Omega$. 
+  const R = randint(1, 51);
+  const I = randfloat(0.1, 4, 2);
+  const r = randint(1, 6);
+  const E = randint(21, 51);
+  const isAsking = ["du générateur", "de la résistance"];
+  const instruction = `Dans un circuit électrique, on retrouve : 
   
-  Un courant $I=${I}\\ A$ circule à travers la résistance. Calculez la tension U aux bornes de la résistance en $V$.`;
+  - Une source de tension $E=${E}$ volts, avec une resistance interne $r=${r}\\ \\Omega$. 
+
+  - Un Conducteur ohmique de resistance $R=${R}\\ \\Omega$. 
+  
+  Un courant $I=${I}\\ A$ circule à travers la résistance. 
+  
+  Calculez la tension U aux bornes ${isAsking} en $V$. arrondie au centiéme`;
 
   const answer = (E - R * I).toFixed(0);
 
@@ -63,7 +71,7 @@ const generateExercise = () => {
 
 export const calculateVoltage: Exercise<Identifiers> = {
   id: "calculateVoltage",
-  label: "Calcul de résistance",
+  label: "Calcul de tension au borne d'une résistance",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Électricité"],
