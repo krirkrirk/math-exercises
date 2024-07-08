@@ -113,7 +113,7 @@ const generateExercise = () => {
   - Un courant $I=${I.frenchify()}\\ A$ circule à travers la résistance. 
   
   Calculez la tension U aux bornes ${isAsking} en $V$, arrondie à l'unité   
-  ![](https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/electricCircuit1.png)`;
+  ![](https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/electricCircuit1NoLetters.png)`;
 
   const answer = getCorrectAnswer(isAsking, E, I, r, R).toFixed(0);
   const correction = getCorrection(isAsking, answer);
