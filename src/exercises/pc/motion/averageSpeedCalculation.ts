@@ -28,9 +28,9 @@ const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
   const deltaTime = round(distance / speed, 2); // Temps en heures
 
   const variables = [
-    { name: "vitesse moyenne", value: speed, unit: " km/h", symbol: "v" },
-    { name: "distance", value: distance, unit: " km", symbol: "d" },
-    { name: "temps", value: deltaTime, unit: " h", symbol: "t" },
+    { name: "vitesse moyenne", value: speed, unit: "\\ km/h", symbol: "v" },
+    { name: "distance", value: distance, unit: "\\ km", symbol: "d" },
+    { name: "temps", value: deltaTime, unit: "\\ h", symbol: "\\Delta t" },
   ];
 
   const randomIndex = randint(0, variables.length - 1);
@@ -43,27 +43,30 @@ const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
     knownVariables[0].name.slice(1)
   } : $${knownVariables[0].symbol} = ${round(knownVariables[0].value, 2)
     .toTree()
-    .toTex()}${knownVariables[0].unit}$
+    .toTex()} ${knownVariables[0].unit}$
   - ${
     knownVariables[1].name.charAt(0).toUpperCase() +
     knownVariables[1].name.slice(1)
   } : $${knownVariables[1].symbol} = ${round(knownVariables[1].value, 2)
     .toTree()
-    .toTex()}${knownVariables[1].unit}$. \n
+    .toTex()} ${knownVariables[1].unit}$. \n
   Utilisez ces informations pour calculer ${
-    targetVariable.name === "distance" ? "la" : "le"
-  } ${targetVariable.name}.`;
+    targetVariable.name === "distance" ||
+    targetVariable.name === "vitesse moyenne"
+      ? "la"
+      : "le"
+  } ${targetVariable.name} en $${targetVariable.unit}$.`;
 
   const hint =
     targetVariable.name === "vitesse moyenne"
-      ? `Rappelez-vous la formule de la vitesse moyenne : $v = \\frac{d}{t}$.`
+      ? `Rappelez-vous la formule de la vitesse moyenne : $v = \\frac{d}{\\Delta t}$.`
       : targetVariable.name === "distance"
-      ? `Rappelez-vous la formule de la distance : $d = v \\times t$.`
-      : `Rappelez-vous la formule du temps : $t = \\frac{d}{v}$.`;
+      ? `Rappelez-vous la formule de la distance : $d = v \\times \\Delta t$.`
+      : `Rappelez-vous la formule du temps : $\\Delta t = \\frac{d}{v}$.`;
 
   const correction =
     targetVariable.name === "vitesse moyenne"
-      ? `La vitesse moyenne est calculée en utilisant la formule $v = \\frac{d}{t}$. Donc, $v = \\frac{${round(
+      ? `La vitesse moyenne est calculée en utilisant la formule $v = \\frac{d}{\\Delta t}$. Donc, $v = \\frac{${round(
           distance,
           2,
         )
@@ -75,7 +78,7 @@ const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
           .toTree()
           .toTex()}\\ km/h$.`
       : targetVariable.name === "distance"
-      ? `La distance est calculée en utilisant la formule $d = v \\times t$. Donc, $d = ${round(
+      ? `La distance est calculée en utilisant la formule $d = v \\times \\Delta t$. Donc, $d = ${round(
           speed,
           2,
         )
@@ -86,7 +89,7 @@ const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
         )
           .toTree()
           .toTex()}\\ km$.`
-      : `Le temps est calculé en utilisant la formule $t = \\frac{d}{v}$. Donc, $t = \\frac{${round(
+      : `Le temps est calculé en utilisant la formule $\\Delta t = \\frac{d}{v}$. Donc, $t = \\frac{${round(
           distance,
           2,
         )
@@ -168,6 +171,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
         .toTex(),
       "tex",
     );
+  }
+
+  while (propositions.length < n) {
+    tryToAddWrongProp(propositions, randfloat(100, 2000, 2).toTree().toTex());
   }
 
   return shuffleProps(propositions, n);
