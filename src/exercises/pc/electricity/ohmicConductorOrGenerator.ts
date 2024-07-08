@@ -95,11 +95,12 @@ export const ohmicConductorOrGenerator: Exercise<Identifiers> = {
   isSingleStep: true,
   sections: ["Électricité"],
   generator: (nb: number) =>
-    getDistinctQuestions(getOhmicConductorOrGeneratorQuestion, nb),
+    getDistinctQuestions(getOhmicConductorOrGeneratorQuestion, nb, 10),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
   answerType: "QCM",
+  maxAllowedQuestions: 10,
   subject: "Physique",
 };
