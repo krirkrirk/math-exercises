@@ -64,25 +64,25 @@ const getGgb = (type: string) => {
   const points = [];
   for (let x = 22; x < 33; x += 2) {
     const y =
-      type === "Conducteur ohmique"
+      type === "Générateur"
         ? Math.pow(10, 15) / Math.pow(x, 10)
         : 0.00000001 * Math.pow(x, 6);
     points.push(`Point({${x},${y}})`);
   }
-  return type === "Conducteur ohmique"
+  return type === "Générateur"
     ? new GeogebraConstructor(
         [
           `Function(${Math.pow(10, 15)}/x^10,1,${randint(40, 51)})`,
-          `Text("\\tiny{T}",(39,-2),true,true)`,
-          `Text("\\tiny{R(\\Omega)}",(20,29),true,true)`,
+          `Text("\\tiny{I(A)}",(39,-2),true,true)`,
+          `Text("\\tiny{U(V)}",(20,29),true,true)`,
         ].concat(points),
         {},
       )
     : new GeogebraConstructor(
         [
           `Function(0.00000001*x^6,1,${randint(40, 51)})`,
-          `Text("\\tiny{T}",(39,-2),true,true)`,
-          `Text("\\tiny{R(\\Omega)}",(20,29),true,true)`,
+          `Text("\\tiny{I(A)}",(39,-2),true,true)`,
+          `Text("\\tiny{U(V)}",(20,29),true,true)`,
         ].concat(points),
         {},
       );
@@ -90,15 +90,16 @@ const getGgb = (type: string) => {
 
 export const ohmicConductorOrGenerator: Exercise<Identifiers> = {
   id: "ohmicConductorOrGenerator",
-  label: "",
-  levels: [],
+  label: "Comparaisons des graphiques de tension de dipôle",
+  levels: ["2nde"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Électricité"],
   generator: (nb: number) =>
     getDistinctQuestions(getOhmicConductorOrGeneratorQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  answerType: "QCM",
   subject: "Physique",
 };
