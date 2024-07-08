@@ -12,8 +12,15 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
+import { random } from "#root/utils/random";
 
-type Identifiers = {};
+type Identifiers = {
+  E: number;
+  I: number;
+  r: number;
+  R: number;
+  isAsking: string;
+};
 
 const getCalculateVoltageQuestion: QuestionGenerator<Identifiers> = () => {
   const exo = generateExercise();
@@ -22,26 +29,55 @@ const getCalculateVoltageQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: exo.instruction,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: {
+      E: exo.E,
+      I: exo.I,
+      r: exo.r,
+      R: exo.R,
+      isAsking: exo.isAsking,
+    },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, E, I, R, r, isAsking },
+) => {
   const propositions: Proposition[] = [];
+  const correctAns = +getCorrectAnswer(isAsking, E, I, r, R).toFixed(2);
   addValidProp(propositions, answer);
-  while (propositions.length < n) {}
+  generatePropositions(E, I, r, R, isAsking).forEach((value) =>
+    tryToAddWrongProp(propositions, value),
+  );
+  while (propositions.length < n) {
+    let random = randfloat(correctAns - 5, correctAns + 5, 2, [correctAns]);
+    tryToAddWrongProp(propositions, random.frenchify());
+  }
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { answer, isAsking, E, I, r, R },
+) => {
+  const scientificAns = getCorrectAnswer(isAsking, E, I, r, R).toScientific(2);
+  return [answer, scientificAns].includes(ans);
 };
 
-const generatePropositions = (uED: number, iEC: number): string[] => {
-  const first = (uED / iEC).toFixed(0);
-  const second = (uED * iEC).toFixed(0);
+const generatePropositions = (
+  E: number,
+  I: number,
+  r: number,
+  R: number,
+  isAsking: string,
+): string[] => {
+  const first =
+    isAsking === "du générateur"
+      ? (+(R * I).toFixed(2)).frenchify()
+      : (+(E - r * I).toFixed(2)).frenchify();
+  const second = E.frenchify();
   return [first, second];
 };
 
@@ -50,7 +86,7 @@ const generateExercise = () => {
   const I = randfloat(0.1, 4, 2);
   const r = randint(1, 6);
   const E = randint(21, 51);
-  const isAsking = ["du générateur", "de la résistance"];
+  const isAsking = random(["du générateur", "de la résistance"]);
   const instruction = `Dans un circuit électrique, on retrouve : 
   
   - Une source de tension $E=${E}$ volts, avec une resistance interne $r=${r}\\ \\Omega$. 
@@ -61,12 +97,27 @@ const generateExercise = () => {
   
   Calculez la tension U aux bornes ${isAsking} en $V$. arrondie au centiéme`;
 
-  const answer = (E - R * I).toFixed(0);
+  const answer = +getCorrectAnswer(isAsking, E, I, r, R).toFixed(2);
 
   return {
     instruction,
-    answer: answer,
+    answer: answer.frenchify(),
+    isAsking,
+    E,
+    I,
+    r,
+    R,
   };
+};
+
+const getCorrectAnswer = (
+  isAsking: string,
+  E: number,
+  I: number,
+  r: number,
+  R: number,
+): number => {
+  return isAsking === "du générateur" ? E - r * I : R * I;
 };
 
 export const calculateVoltage: Exercise<Identifiers> = {
