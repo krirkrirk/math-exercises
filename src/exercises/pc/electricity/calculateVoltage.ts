@@ -28,6 +28,7 @@ const getCalculateVoltageQuestion: QuestionGenerator<Identifiers> = () => {
     answer: exo.answer,
     instruction: exo.instruction,
     keys: [],
+    correction: exo.correction,
     answerFormat: "tex",
     identifiers: {
       E: exo.E,
@@ -114,11 +115,13 @@ const generateExercise = () => {
   Calculez la tension U aux bornes ${isAsking} en $V$, arrondie à l'unité   
   ![](https://heureuxhasarddocsbucket.s3.eu-west-3.amazonaws.com/xpliveV2/activities/quizzes/generator/electricCircuit1.png)`;
 
-  const answer = +getCorrectAnswer(isAsking, E, I, r, R).toFixed(0);
+  const answer = getCorrectAnswer(isAsking, E, I, r, R).toFixed(0);
+  const correction = getCorrection(isAsking, answer);
 
   return {
     instruction,
-    answer: answer.frenchify(),
+    answer: answer,
+    correction,
     isAsking,
     E,
     I,
@@ -145,6 +148,23 @@ const getCorrectAnswer = (
       return U1 - U2;
     default:
       return 0;
+  }
+};
+
+const getHint = (isAsking: string) => {
+  return `Rappel : $U=$`;
+};
+
+const getCorrection = (isAsking: string, answer: string) => {
+  switch (isAsking) {
+    case "du générateur":
+      return `Appliquer la loi générateur : $U=E-r \\cdot I\\ \\Rightarrow\\ U=${answer}\\ V$`;
+    case "de la résistance":
+      return `Appliquer la loi d'ohm : $U=R \\cdot I\\ \\Rightarrow\\ U=${answer}\\ V$`;
+    case "de la diode":
+      return `1 - Calculer la tension aux bornes du générateur $U=E-r \\cdot I$.\n
+2 - Calculer la tension aux bornes du conducteur ohmique $U_1=R \\cdot I$.\n
+3 - Appliquer la loi des mailles $U=U_1+U_2\\ \\Rightarrow\\ U_2=U-U_1\\ \\Rightarrow\\ U_2=${answer}\\ V$`;
   }
 };
 
