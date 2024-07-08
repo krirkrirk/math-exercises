@@ -46,13 +46,13 @@ const getPropositions: QCMGenerator<Identifiers> = (
   { answer, E, I, R, r, isAsking },
 ) => {
   const propositions: Proposition[] = [];
-  const correctAns = +getCorrectAnswer(isAsking, E, I, r, R).toFixed(2);
+  const correctAns = +getCorrectAnswer(isAsking, E, I, r, R).toFixed(0);
   addValidProp(propositions, answer);
   generatePropositions(E, I, r, R, isAsking).forEach((value) =>
     tryToAddWrongProp(propositions, value),
   );
   while (propositions.length < n) {
-    let random = randfloat(correctAns - 5, correctAns + 5, 2, [correctAns]);
+    let random = randint(correctAns - 10, correctAns + 11, [correctAns]);
     tryToAddWrongProp(propositions, random.frenchify());
   }
   return shuffleProps(propositions, n);
@@ -62,7 +62,7 @@ const isAnswerValid: VEA<Identifiers> = (
   ans,
   { answer, isAsking, E, I, r, R },
 ) => {
-  const scientificAns = getCorrectAnswer(isAsking, E, I, r, R).toScientific(2);
+  const scientificAns = getCorrectAnswer(isAsking, E, I, r, R).toScientific(0);
   return [answer, scientificAns].includes(ans);
 };
 
@@ -75,29 +75,29 @@ const generatePropositions = (
 ): string[] => {
   const first =
     isAsking === "du générateur"
-      ? (+(R * I).toFixed(2)).frenchify()
-      : (+(E - r * I).toFixed(2)).frenchify();
+      ? (+(R * I).toFixed(0)).frenchify()
+      : (+(E - r * I).toFixed(0)).frenchify();
   const second = E.frenchify();
   return [first, second];
 };
 
 const generateExercise = () => {
   const R = randint(1, 51);
-  const I = randfloat(0.1, 4, 2);
+  const I = randfloat(0.1, 4, 1);
   const r = randint(1, 6);
   const E = randint(21, 51);
   const isAsking = random(["du générateur", "de la résistance"]);
-  const instruction = `Dans un circuit électrique, on retrouve : 
+  const instruction = `Dans un circuit électrique, on trouve : 
   
   - Une source de tension $E=${E}$ volts, avec une resistance interne $r=${r}\\ \\Omega$. 
 
   - Un Conducteur ohmique de resistance $R=${R}\\ \\Omega$. 
   
-  Un courant $I=${I}\\ A$ circule à travers la résistance. 
+  - Un courant $I=${I}\\ A$ circule à travers la résistance. 
   
-  Calculez la tension U aux bornes ${isAsking} en $V$. arrondie au centiéme`;
+  Calculez la tension U aux bornes ${isAsking} en $V$, arrondie à l'unité`;
 
-  const answer = +getCorrectAnswer(isAsking, E, I, r, R).toFixed(2);
+  const answer = +getCorrectAnswer(isAsking, E, I, r, R).toFixed(0);
 
   return {
     instruction,
