@@ -27,6 +27,8 @@ const getOhmicConductorOrGeneratorQuestion: QuestionGenerator<
     commands: exo.ggb.commands,
     coords: [20, 40, -5, 30],
     keys: [],
+    hint: exo.hint,
+    correction: exo.correction,
     answerFormat: "raw",
     identifiers: {},
   };
@@ -53,10 +55,14 @@ const generateExercise = () => {
   const instruction = `Après avoir relevé l'intensité du courant circulant dans un dipôle pour différentes tensions entre ses bornes, Nous avons obetnu le graphique ci-dessous.
   
   La dipôle est-elle est un générateur ou un conducteur ohmique ?`;
+  const hint = getHint(type);
+  const correction = getCorrection(type);
   return {
     instruction,
     ggb,
     answer: type,
+    hint,
+    correction,
   };
 };
 
@@ -73,7 +79,7 @@ const getGgb = (type: string) => {
     ? new GeogebraConstructor(
         [
           `Function(${Math.pow(10, 15)}/x^10,1,${randint(40, 51)})`,
-          `Text("\\tiny{I(A)}",(39,-2),true,true)`,
+          `Text("\\tiny{I(A)}",(38,-2),true,true)`,
           `Text("\\tiny{U(V)}",(20,29),true,true)`,
         ].concat(points),
         {},
@@ -86,6 +92,24 @@ const getGgb = (type: string) => {
         ].concat(points),
         {},
       );
+};
+
+const getHint = (type: string) => {
+  return type === "Générateur"
+    ? `Rappel : la tension $U$ aux bornes du générateur peut être exprimée par la relation $U=E-r \\cdot I$.`
+    : `Rappel de la loi d'ohm : $U=R \\cdot I$.`;
+};
+
+const getCorrection = (type: string) => {
+  switch (type) {
+    case "Générateur":
+      return `Selon la relation qui exprime la tension $U$ aux bornes du générateur, $U = E-r \\cdot I$,\n
+on en déduit que plus l'intensité $I$ augmente, plus la tension $U$ aux bornes du générateur diminue, ce qui correspond bien au graphique montré.
+`;
+    case "Conducteur ohmique":
+      return `Selon la loi d'ohm qui exprime la tension $U$ aux bornes du conducteur ohmique, $U = R \\cdot I$,\n
+on en déduit que plus l'intensité $I$ augmente, plus la tension $U$ aux bornes du conducteur ohmique augmente, ce qui correspond bien au graphique montré.`;
+  }
 };
 
 export const ohmicConductorOrGenerator: Exercise<Identifiers> = {
