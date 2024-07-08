@@ -97,16 +97,17 @@ const generatePropositions = (
 };
 
 const generateExercise = () => {
-  const R = randint(1, 51);
+  const R = randint(1, 21);
   const I = randfloat(0.1, 4, 1);
   const r = randint(1, 6);
-  const E = randint(21, 51);
+  const EMin = Math.floor(r * I + R * I);
+  const E = randint(EMin + 5, EMin + 51);
   const isAsking = random(["du générateur", "de la résistance", "de la diode"]);
   const instruction = `Dans un circuit électrique, on trouve : 
   
   - Une source de tension $E=${E}$ volts, avec une résistance interne $r=${r}\\ \\Omega$. 
 
-  - Un conducteur ohmique de resistance $R=${R}\\ \\Omega$. 
+  - Un conducteur ohmique de résistance $R=${R}\\ \\Omega$. 
   
   - Un courant $I=${I.frenchify()}\\ A$ circule à travers la résistance. 
   
