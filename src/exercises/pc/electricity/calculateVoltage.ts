@@ -93,7 +93,7 @@ const generateExercise = () => {
 
   - Un Conducteur ohmique de resistance $R=${R}\\ \\Omega$. 
   
-  - Un courant $I=${I}\\ A$ circule à travers la résistance. 
+  - Un courant $I=${I.frenchify()}\\ A$ circule à travers la résistance. 
   
   Calculez la tension U aux bornes ${isAsking} en $V$, arrondie à l'unité`;
 
