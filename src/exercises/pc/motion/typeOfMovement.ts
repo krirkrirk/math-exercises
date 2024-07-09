@@ -70,8 +70,8 @@ const getGgb = (
   let point2;
   switch (movementType) {
     case "Circulaire":
-      const a = randint(1, 3);
-      const b = randint(4, 7);
+      const a = randint(1, 5);
+      const b = randint(6, 9);
       commands = [
         `Semicircle((${a},4),(${b},8))`,
         `Point({${a},4})`,
@@ -88,12 +88,16 @@ const getGgb = (
       point1 = `(2,${affine.calculate(2)})`;
       point2 = `(8,${affine.calculate(8)})`;
       commands = [`Segment(${point1},${point2})`].concat(
-        getPoints(movementType, affine),
+        getPoints(movementType, { affine }),
       );
       coords = [-2, 10, -2, affine.calculate(8) + 5];
       break;
     case "Curviligne":
-      commands = [`Function(e^sin(x),0,10)`].concat(getPoints(movementType));
+      const random = randint(10, 21);
+      const bRand = randint(1, 5);
+      commands = [`Function(e^sin(x)+${bRand},0,${random})`].concat(
+        getPoints(movementType, { bRand: bRand }),
+      );
       coords = [-2, 10, -2, 10];
       break;
   }
@@ -103,17 +107,22 @@ const getGgb = (
   };
 };
 
-const getPoints = (movementType: string, affine?: Affine) => {
+const getPoints = (
+  movementType: string,
+  options: { affine?: Affine; bRand?: number },
+) => {
   const commands: string[] = [];
   switch (movementType) {
     case "Rectiligne":
       for (let x = 3; x < 8; x++) {
-        commands.push(`Point({${x},${affine!.calculate(x)}})`);
+        commands.push(`Point({${x},${options.affine!.calculate(x)}})`);
       }
       break;
     case "Curviligne":
       for (let x = 1; x < 9; x++) {
-        commands.push(`Point({${x},${Math.exp(Math.sin(x))}})`);
+        commands.push(
+          `Point({${x},${Math.exp(Math.sin(x)) + options.bRand!}})`,
+        );
       }
       break;
   }
