@@ -132,6 +132,5 @@ export const coneVolume: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  is3d: true,
   subject: "Mathématiques",
 };
