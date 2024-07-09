@@ -3,6 +3,10 @@ import { ToTexOptions } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { DivideUnits } from "../divideUnits";
+import { MultiplyUnit } from "../mulitplyUnits";
+import { Unit } from "../unit";
+import { UnitConverter } from "../UnitConverter";
 
 export abstract class MeasureConstructor {
   static random() {}
@@ -10,9 +14,18 @@ export abstract class MeasureConstructor {
 export class Measure {
   exponent: number;
   significantPart: number;
+  unit?: Unit;
+  converter?: UnitConverter;
 
-  constructor(value: number, exponent: number = 0) {
+  constructor(
+    value: number,
+    exponent: number = 0,
+    unit?: Unit,
+    converter?: UnitConverter,
+  ) {
     // console.log("bf", value, exponent);
+    if (unit) this.unit = unit;
+    if (converter) this.converter = converter;
     if (value === 0) {
       this.significantPart = 0;
       this.exponent = 0;
@@ -65,17 +78,66 @@ export class Measure {
   times(n: number | Measure) {
     if (typeof n === "number")
       return new Measure(this.significantPart * n, this.exponent);
+    if (!this.unit) {
+      new Measure(
+        this.significantPart * n.significantPart,
+        this.exponent + n.exponent,
+      );
+    }
+    if (this.converter) {
+      const thisConverted = this.converter.convert(
+        this.significantPart,
+        this.exponent,
+        this.unit!,
+      )!;
+      const nConverted = this.converter.convert(
+        n.significantPart,
+        n.exponent,
+        n.unit ? n.unit : this.unit!,
+      )!;
+      return new Measure(
+        this.significantPart * n.significantPart,
+        thisConverted.exponent + nConverted.exponent,
+        thisConverted.unit,
+        this.converter,
+      );
+    }
     return new Measure(
       this.significantPart * n.significantPart,
       this.exponent + n.exponent,
+      new MultiplyUnit(this.unit!, n.unit!),
     );
   }
   divide(n: number | Measure) {
     if (typeof n === "number")
       return new Measure(this.significantPart / n, this.exponent);
+    if (!this.unit)
+      return new Measure(
+        this.significantPart / n.significantPart,
+        this.exponent - n.exponent,
+      );
+    if (this.converter) {
+      const thisConverted = this.converter?.convert(
+        this.significantPart,
+        this.exponent,
+        this.unit!,
+      )!;
+      const nConverted = this.converter?.convert(
+        n.significantPart,
+        n.exponent,
+        n.unit ? n.unit : this.unit!,
+      )!;
+      return new Measure(
+        this.significantPart / n.significantPart,
+        thisConverted.exponent - nConverted.exponent,
+        thisConverted.unit,
+        this.converter,
+      );
+    }
     return new Measure(
       this.significantPart / n.significantPart,
       this.exponent - n.exponent,
+      new DivideUnits(this.unit!, n.unit ? n.unit : this.unit!),
     );
   }
 
@@ -92,14 +154,19 @@ export class Measure {
       return nbTree.toTex();
     }
     if (this.exponent === 1) {
-      return new MultiplyNode(nbTree, (10).toTree()).toTex({
-        scientific: decimals,
-      });
+      return (
+        new MultiplyNode(nbTree, (10).toTree()).toTex({
+          scientific: decimals,
+        }) + `${this.unit ? this.unit.toTex() : ""}`
+      );
     }
-    return new MultiplyNode(
-      nbTree,
-      new PowerNode((10).toTree(), this.exponent.toTree()),
-    ).toTex({ scientific: decimals });
+    return (
+      new MultiplyNode(
+        nbTree,
+        new PowerNode((10).toTree(), this.exponent.toTree()),
+      ).toTex({ scientific: decimals }) +
+      `${this.unit ? this.unit.toTex() : ""}`
+    );
   }
 
   /**

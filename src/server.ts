@@ -34,6 +34,7 @@ import { DivideNode } from "./tree/nodes/operators/divideNode";
 import { variance } from "./math/utils/variance";
 import { covXYAsNode, covarianceXY } from "./math/utils/covariance";
 import { sum } from "./math/utils/sum";
+import { MassUnit } from "./pc/massUnits";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
