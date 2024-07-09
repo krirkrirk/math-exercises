@@ -11,7 +11,7 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randfloat } from "#root/math/utils/random/randfloat";
-import { avogadroConstant } from "#root/pc/constants/atoms";
+import { avogadroConstant } from "#root/pc/constants/molecularChemistry/atoms";
 import { Measure } from "#root/pc/measure/measure";
 
 type Identifiers = { quantity: number };

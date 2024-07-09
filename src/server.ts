@@ -19,7 +19,7 @@ import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
 import { PowerNode } from "./tree/nodes/operators/powerNode";
 import { toScientific } from "./utils/numberPrototype/toScientific";
 import { Measure } from "./pc/measure/measure";
-import { atomes } from "./pc/molecularChemistry/atome";
+import { atomes } from "./pc/constants/molecularChemistry/atome";
 import { getElectronicConfigurationFromShells } from "./exercises/utils/getElectronicConfigurationFromShells";
 import { getAtoms } from "./exercises/utils/getAtoms";
 import { CosNode } from "./tree/nodes/functions/cosNode";

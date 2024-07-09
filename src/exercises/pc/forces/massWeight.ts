@@ -91,7 +91,7 @@ export const MassWeightExercise: Exercise<Identifiers> = {
   label: "Calculer le poids ou la masse d'un système",
   levels: ["2nde"],
   isSingleStep: true,
-  sections: ["Mécanique"],
+  sections: ["Forces"],
   generator: (nb: number) => getDistinctQuestions(getMassWeightQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,

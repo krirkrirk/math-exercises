@@ -1,4 +1,4 @@
-import { Measure } from "../measure/measure";
+import { Measure } from "../../measure/measure";
 
 type PhysicalConstant = {
   value: Measure;
