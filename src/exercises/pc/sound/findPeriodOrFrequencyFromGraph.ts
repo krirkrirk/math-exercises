@@ -109,7 +109,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 };
 export const findPeriodOrFrequencyFromGraph: Exercise<Identifiers> = {
   id: "findPeriodOrFrequencyFromGraph",
-  label: "Lire la période d'un signal sonore",
+  label: "Lire la période ou la fréquence d'un signal sonore",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Son"],
