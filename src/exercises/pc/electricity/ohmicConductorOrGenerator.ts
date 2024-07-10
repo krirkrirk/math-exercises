@@ -25,7 +25,8 @@ const getOhmicConductorOrGeneratorQuestion: QuestionGenerator<
     answer: exo.answer,
     instruction: exo.instruction,
     commands: exo.ggb.commands,
-    coords: [20, 40, -5, 30],
+    coords: [8, 40, -5, 30],
+    options: exo.ggb.getOptions(),
     keys: [],
     hint: exo.hint,
     correction: exo.correction,
@@ -77,20 +78,14 @@ const getGgb = (type: string) => {
   }
   return type === "Générateur"
     ? new GeogebraConstructor(
-        [
-          `Function(${Math.pow(10, 15)}/x^10,1,${randint(40, 51)})`,
-          `Text("\\tiny{I(A)}",(38,-2),true,true)`,
-          `Text("\\tiny{U(V)}",(20,29),true,true)`,
-        ].concat(points),
-        {},
+        [`Function(${Math.pow(10, 15)}/x^10,1,${randint(40, 51)})`].concat(
+          points,
+        ),
+        { axisLabels: ["$\\tiny I(A)$", "$\\tiny U(V)$"] },
       )
     : new GeogebraConstructor(
-        [
-          `Function(0.00000001*x^6,1,${randint(40, 51)})`,
-          `Text("\\tiny{I(A)}",(39,-2),true,true)`,
-          `Text("\\tiny{U(V)}",(20,29),true,true)`,
-        ].concat(points),
-        {},
+        [`Function(0.00000001*x^6,1,${randint(40, 51)})`].concat(points),
+        { axisLabels: ["$\\tiny I(A)$", "$\\tiny U(V)$"] },
       );
 };
 
