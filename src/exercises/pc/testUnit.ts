@@ -11,23 +11,21 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
-import { MassSiUnitConverter } from "#root/pc/massSiUnitConverter";
+import { DistanceUnit } from "#root/pc/distanceUnits";
 import { MassUnit } from "#root/pc/massUnits";
 import { Measure } from "#root/pc/measure/measure";
 
 type Identifiers = {};
 
 const getTestUnitQuestion: QuestionGenerator<Identifiers> = () => {
-  const measure = new Measure(250, 0, new MassUnit("kg"));
-  const measure2 = new Measure(
-    50,
-    0,
-    new MassUnit("kg"),
-    new MassSiUnitConverter(),
-  );
+  const measure = new Measure(10, 0, new DistanceUnit("m"));
+  const measure2 = new Measure(15, 0, new MassUnit("kg"));
   const question: Question<Identifiers> = {
     answer: `${randint(1, 100)}`,
-    instruction: `$${measure2.times(measure).toTex()}$ ${randint(1, 100)}`,
+    instruction: `$${measure2.times(measure.times(measure)).toTex()}$ ${randint(
+      1,
+      100,
+    )}`,
     keys: [],
     answerFormat: "tex",
     identifiers: {},

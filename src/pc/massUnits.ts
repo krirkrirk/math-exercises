@@ -1,6 +1,6 @@
 import { Unit } from "./unit";
 
-type massUnits = "kg" | "dag" | "g" | "dc" | "cg" | "g";
+type massUnits = "kg" | "hag" | "dag" | "g" | "dc" | "cg" | "mg";
 
 export class MassUnit implements Unit {
   unit: massUnits;
@@ -12,7 +12,6 @@ export class MassUnit implements Unit {
   toTex(): string {
     return `${this.unit}`;
   }
-
   getUnit(): string {
     return this.unit;
   }

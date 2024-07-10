@@ -28,11 +28,6 @@ export class MassSiUnitConverter implements UnitConverter {
         convertedExpo = exponent - 6;
         break;
     }
-    return new Measure(
-      significantPart,
-      convertedExpo,
-      new MassUnit("kg"),
-      this,
-    );
+    return new Measure(significantPart, convertedExpo, new MassUnit("kg"));
   }
 }

@@ -15,17 +15,10 @@ export class Measure {
   exponent: number;
   significantPart: number;
   unit?: Unit;
-  converter?: UnitConverter;
 
-  constructor(
-    value: number,
-    exponent: number = 0,
-    unit?: Unit,
-    converter?: UnitConverter,
-  ) {
+  constructor(value: number, exponent: number = 0, unit?: Unit) {
     // console.log("bf", value, exponent);
     if (unit) this.unit = unit;
-    if (converter) this.converter = converter;
     if (value === 0) {
       this.significantPart = 0;
       this.exponent = 0;
@@ -75,40 +68,39 @@ export class Measure {
     // console.log("after", this.significantPart, this.exponent);
   }
 
-  times(n: number | Measure) {
+  times(n: number | Measure, converter?: UnitConverter) {
     if (typeof n === "number")
       return new Measure(this.significantPart * n, this.exponent);
     if (!this.unit) {
-      new Measure(
+      return new Measure(
         this.significantPart * n.significantPart,
         this.exponent + n.exponent,
       );
     }
-    if (this.converter) {
-      const thisConverted = this.converter.convert(
+    if (converter) {
+      const thisConverted = converter.convert(
         this.significantPart,
         this.exponent,
         this.unit!,
       )!;
-      const nConverted = this.converter.convert(
+      const nConverted = converter.convert(
         n.significantPart,
         n.exponent,
-        n.unit ? n.unit : this.unit!,
+        n.unit ?? this.unit!,
       )!;
       return new Measure(
         this.significantPart * n.significantPart,
         thisConverted.exponent + nConverted.exponent,
         thisConverted.unit,
-        this.converter,
       );
     }
     return new Measure(
       this.significantPart * n.significantPart,
       this.exponent + n.exponent,
-      new MultiplyUnit(this.unit!, n.unit!),
+      new MultiplyUnit(this.unit!, n.unit ?? this.unit!),
     );
   }
-  divide(n: number | Measure) {
+  divide(n: number | Measure, unitConverter?: UnitConverter) {
     if (typeof n === "number")
       return new Measure(this.significantPart / n, this.exponent);
     if (!this.unit)
@@ -116,28 +108,27 @@ export class Measure {
         this.significantPart / n.significantPart,
         this.exponent - n.exponent,
       );
-    if (this.converter) {
-      const thisConverted = this.converter?.convert(
+    if (unitConverter) {
+      const thisConverted = unitConverter.convert(
         this.significantPart,
         this.exponent,
         this.unit!,
       )!;
-      const nConverted = this.converter?.convert(
+      const nConverted = unitConverter.convert(
         n.significantPart,
         n.exponent,
-        n.unit ? n.unit : this.unit!,
+        n.unit ?? this.unit!,
       )!;
       return new Measure(
         this.significantPart / n.significantPart,
         thisConverted.exponent - nConverted.exponent,
         thisConverted.unit,
-        this.converter,
       );
     }
     return new Measure(
       this.significantPart / n.significantPart,
       this.exponent - n.exponent,
-      new DivideUnits(this.unit!, n.unit ? n.unit : this.unit!),
+      new DivideUnits(this.unit!, n.unit ?? this.unit!),
     );
   }
 
@@ -157,7 +148,7 @@ export class Measure {
       return (
         new MultiplyNode(nbTree, (10).toTree()).toTex({
           scientific: decimals,
-        }) + `${this.unit ? this.unit.toTex() : ""}`
+        }) + `${this.unit ? `\\ ${this.unit.toTex()}` : ""}`
       );
     }
     return (
@@ -165,7 +156,7 @@ export class Measure {
         nbTree,
         new PowerNode((10).toTree(), this.exponent.toTree()),
       ).toTex({ scientific: decimals }) +
-      `${this.unit ? this.unit.toTex() : ""}`
+      `${this.unit ? `\\ ${this.unit.toTex()}` : ""}`
     );
   }
 
@@ -193,5 +184,9 @@ export class Measure {
       significantPart: this.significantPart,
       exponent: this.exponent,
     };
+  }
+
+  hasUnit(): boolean {
+    return this.unit ? true : false;
   }
 }
