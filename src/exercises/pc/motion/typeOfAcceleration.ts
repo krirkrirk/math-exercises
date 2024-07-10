@@ -49,9 +49,15 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 };
 
 const generateExo = () => {
-  const typeOfAcceleration = random(["Accéléré", "Ralenti", "Constant"]);
+  const typeOfAcceleration = random([
+    "Mouvement accéléré",
+    "Mouvement ralenti",
+    "Mouvement constant",
+  ]);
   const ggb = generateGgb(typeOfAcceleration);
-  const instruction = `D'apres le graphique ci-dessous qui represente la position d'un objet en fonction du temps, l'objet est en mouvement accéléré, en mouvement ralenti ou en mouvement constant ?.`;
+  const instruction = `D'après le graphique ci-dessous qui représente la position d'un objet en fonction du temps, 
+  
+  déterminez si l'objet est en mouvement accéléré, en mouvement ralenti ou en mouvement constant.`;
   return {
     instruction,
     answer: typeOfAcceleration,
@@ -75,37 +81,20 @@ const getPoints = (typeOfAcceleration: string) => {
   let coords: number[] = [];
   let n = 0;
   let x = 0;
-  switch (typeOfAcceleration) {
-    case "Constant":
-      let constant = randint(3, 10);
-      while (n < 10) {
-        points.push(`Point({${x},4})`);
-        x = x + constant;
-        n++;
-      }
-      coords = [-2, 50, -2, 20];
-      break;
-    case "Accéléré":
-      let increaseStep = randint(2, 6);
-      while (n < 10) {
-        points.push(`Point({${x},4})`);
-        x = x + increaseStep;
-        increaseStep += 3;
-        n++;
-      }
-      coords = [-2, x + 5, -2, 20];
-      break;
-    case "Ralenti":
-      let decreaseStep = randint(10, 17);
-      while (n < 10) {
-        points.push(`Point({${x},4})`);
-        x = x + decreaseStep;
-        decreaseStep = decreaseStep * 0.8;
-        n++;
-      }
-      coords = [-2, x + 5, -2, 20];
-      break;
+  let step = randint(3, 14);
+  let variation = 1;
+  if (typeOfAcceleration === "Mouvement accéléré") variation = 1.3;
+  if (typeOfAcceleration === "Mouvement ralenti") {
+    step = randint(10, 21);
+    variation = 0.8;
   }
+  while (n < 10) {
+    points.push(`Point({${x},4})`);
+    x = x + step;
+    step = step * variation;
+    n++;
+  }
+  coords = [-2, x + 5, -2, 20];
   return { points, coords };
 };
 
