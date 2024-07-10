@@ -14,10 +14,13 @@ import { randomColor } from "#root/geogebra/colors";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
+import { Measure } from "#root/pc/measure/measure";
 import { coinFlip } from "#root/utils/coinFlip";
+import { isInt } from "#root/utils/isInt";
 
 type Identifiers = {
   period: number;
+  frequency: number;
   splinePoints: number[][];
 };
 
@@ -61,12 +64,19 @@ const getFindPeriodOrFrequencyFromGraphQuestion: QuestionGenerator<
     axisLabels: ["$\\tiny Temps (ms)$", "$\\tiny Tension (V)$"],
     isGridSimple: true,
   });
+
+  const isAsking = coinFlip() ? `période` : `fréquence`;
+  const frequency = (1 / period) * 1000;
+  const scientificFrequence = isInt(frequency)
+    ? (1 / (period * Math.pow(10, -3))).toScientific(0).toTex()
+    : (1 / (period * Math.pow(10, -3))).toScientific(2).toTex();
+  const answer = isAsking === "période" ? period + "" : scientificFrequence;
   const question: Question<Identifiers> = {
-    answer: period + "",
-    instruction: `L'enregistrement d'un signal sonore est donnée ci-dessous. Déterminer la période de ce signal.`,
+    answer: answer,
+    instruction: `L'enregistrement d'un signal sonore est donnée ci-dessous. Déterminer la ${isAsking} de ce signal.`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { period, splinePoints },
+    identifiers: { period, frequency, splinePoints },
     commands: ggb.commands,
     options: ggb.getOptions(),
     coords: [0, 20, -8, 8],
@@ -77,9 +87,19 @@ const getFindPeriodOrFrequencyFromGraphQuestion: QuestionGenerator<
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer, period }) => {
   const propositions: Proposition[] = [];
+  const correctFrequency = 1 / (period * Math.pow(10, -3));
   addValidProp(propositions, answer);
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, randint(-3, 6) + "");
+    let random =
+      answer === period + ""
+        ? randint(-3, 6) + ""
+        : randfloat(correctFrequency - 2, correctFrequency + 2, 2, [
+            correctFrequency,
+          ])
+            .toScientific(2)
+            .toTex();
+
+    tryToAddWrongProp(propositions, random);
   }
   return shuffleProps(propositions, n);
 };
