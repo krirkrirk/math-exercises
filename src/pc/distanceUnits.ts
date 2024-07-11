@@ -1,6 +1,6 @@
 import { Unit } from "./unit";
 
-type distanceUnits = "km" | "ham" | "dam" | "m" | "dm" | "cm" | "mm";
+type distanceUnits = "km" | "hm" | "dam" | "m" | "dm" | "cm" | "mm";
 
 export class DistanceUnit implements Unit {
   unit: distanceUnits;

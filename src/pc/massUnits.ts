@@ -1,6 +1,6 @@
 import { Unit } from "./unit";
 
-type massUnits = "kg" | "hag" | "dag" | "g" | "dc" | "cg" | "mg";
+type massUnits = "kg" | "hg" | "dag" | "g" | "dc" | "cg" | "mg";
 
 export class MassUnit implements Unit {
   unit: massUnits;
