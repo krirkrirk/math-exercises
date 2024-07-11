@@ -18,6 +18,7 @@ import { random } from "#root/utils/random";
 import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
 import { getPointFromGGB } from "../utils/geogebra/getPointFromGGB";
 import { isGGBPoint } from "../utils/geogebra/isGGBPoint";
+import { toolBarConstructor } from "../utils/geogebra/toolBarConstructor";
 
 type Identifiers = {
   epsilon: number;
@@ -45,6 +46,10 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
       isAxesRatioFixed: false,
       enableShiftDragZoom: true,
       axisLabels: ["$\\tiny{[Xi]}$", "$\\tiny{A}$"],
+      customToolBar: toolBarConstructor({
+        join: true,
+        point: true,
+      }),
     },
     hint: `Utiliser la formule $a=c\\cdot l\\cdot ε$.`,
     correction: `1 - Choisir deux coordonnées $x_1$ et $x_2$. \n \\

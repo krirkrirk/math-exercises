@@ -56,7 +56,7 @@ const getBeerLambertRandomValueQuestion: QuestionGenerator<
       (v) =>
         `${
           v.name === "concentration"
-            ? "- Concentration"
+            ? "Concentration"
             : v.name === "molarAbsorptivity"
             ? "- Coefficient d'absorption molaire"
             : v.name === "pathLength"
@@ -85,7 +85,7 @@ const getBeerLambertRandomValueQuestion: QuestionGenerator<
     targetVariable.name === "concentration"
       ? "la concentration en $\\text{mol/L}$"
       : targetVariable.name === "molarAbsorptivity"
-      ? "le coefficient d'absorption molaire en $\\text{L}/(\\text{mol}\\cdot\\text{cm})}$"
+      ? "le coefficient d'absorption molaire en $\\text{L}/(\\text{mol}\\cdot\\text{cm})$"
       : targetVariable.name === "pathLength"
       ? "la longueur du trajet optique en $\\text{cm}$"
       : "l'absorbance"
@@ -214,7 +214,7 @@ const isAnswerValid: VEA<Identifiers> = (
     {
       name: "molarAbsorptivity",
       value: molarAbsorptivity,
-      unit: "\\text{L/(mol.cm)}",
+      unit: "\\text{L}/(\\text{mol} \\cdot \\text{cm})",
     },
     { name: "pathLength", value: pathLength, unit: "\\text{cm}" },
     { name: "absorbance", value: absorbance, unit: "" },
