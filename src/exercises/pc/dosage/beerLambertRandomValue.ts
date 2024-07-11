@@ -37,13 +37,17 @@ const getBeerLambertRandomValueQuestion: QuestionGenerator<
   const absorbance = round(concentration * molarAbsorptivity * pathLength, 2); // Absorbance
 
   const variables = [
-    { name: "concentration", value: concentration, unit: "mol/L" },
-    { name: "molarAbsorptivity", value: molarAbsorptivity, unit: "L/(mol·cm)" },
-    { name: "pathLength", value: pathLength, unit: "cm" },
+    { name: "concentration", value: concentration, unit: "\\text{mol/L}" },
+    {
+      name: "molarAbsorptivity",
+      value: molarAbsorptivity,
+      unit: "\\text{L/(mol.cm)}",
+    },
+    { name: "pathLength", value: pathLength, unit: "\\text{cm}" },
     { name: "absorbance", value: absorbance, unit: "" },
   ];
 
-  const randomIndex = randint(0, variables.length - 1);
+  const randomIndex = randint(0, variables.length);
   const targetVariable = variables[randomIndex];
   const knownVariables = variables.filter((_, index) => index !== randomIndex);
 
@@ -66,7 +70,7 @@ const getBeerLambertRandomValueQuestion: QuestionGenerator<
             : v.name === "pathLength"
             ? "$\\ell$"
             : "$A$"
-        } = $${v.value}\\ ${v.unit}$`,
+        } = $${frenchify(v.value)}\\ ${v.unit}$`,
     )
     .join(",\n");
 
@@ -76,38 +80,82 @@ const getBeerLambertRandomValueQuestion: QuestionGenerator<
     molecule.name
   } en utilisant une solution étalon. Vous avez mesuré les données suivantes :\n
   - ${knownVariablesText}.\n
-  À partir de ces données, déterminez la ${
+  À partir de ces données, déterminez ${
     targetVariable.name === "concentration"
-      ? "concentration en mol/L"
+      ? "la concentration en $\\text{mol/L}$"
       : targetVariable.name === "molarAbsorptivity"
-      ? "coefficient d'absorption molaire en L/(mol·cm)"
+      ? "le coefficient d'absorption molaire en $\\text{L/(mol.cm)}$"
       : targetVariable.name === "pathLength"
-      ? "longueur du trajet optique en cm"
-      : "absorbance"
+      ? "la longueur du trajet optique en $\\text{cm}$"
+      : "l'absorbance"
   } de cette solution.`;
 
   const hint = `Rappelez-vous la loi de Beer-Lambert : $A = ε \\cdot C \\cdot \\ell$.
   Réorganisez cette formule pour isoler la variable à trouver.`;
+
   const correction = `La loi de Beer-Lambert est donnée par :
-  $A = ε \\cdot \\ell \\cdot C$. En utilisant les valeurs fournies pour $ε$, $C$, et $\\ell$, vous pouvez résoudre pour la variable manquante.
-  Si $A$ est l'absorbance, $ε$ est le coefficient d'absorption molaire, $C$ est la concentration et $\\ell$ est la longueur du trajet optique, alors
+  $$A = ε \\cdot \\ell \\cdot C$$ 
+
+  Pour résoudre le problème, nous devons réorganiser la formule pour isoler la variable inconnue. En utilisant les valeurs fournies pour $ε$, $C$, et $\\ell$, nous pouvons résoudre pour la variable manquante.
+
+  Si $A$ est l'absorbance, $ε$ est le coefficient d'absorption molaire, $C$ est la concentration et $\\ell$ est la longueur du trajet optique, alors:
+
   ${
     targetVariable.name === "concentration"
-      ? "$C = \\frac{A}{ε \\cdot \\ell}$"
+      ? "$$C = \\frac{A}{ε \\cdot \\ell}$$"
       : ""
   }
   ${
     targetVariable.name === "molarAbsorptivity"
-      ? "$ε = \\frac{A}{C \\cdot \\ell}$"
+      ? "$$ε = \\frac{A}{C \\cdot \\ell}$$"
       : ""
   }
   ${
     targetVariable.name === "pathLength"
-      ? "$\\ell = \\frac{A}{ε \\cdot C}$"
+      ? "$$\\ell = \\frac{A}{ε \\cdot C}$$"
       : ""
   }
   ${
-    targetVariable.name === "absorbance" ? "$A = ε \\cdot C \\cdot \\ell$" : ""
+    targetVariable.name === "absorbance"
+      ? "$$A = ε \\cdot C \\cdot \\ell$$"
+      : ""
+  }
+
+  En appliquant les valeurs:
+
+  ${
+    targetVariable.name === "concentration"
+      ? `$$C = \\frac{${frenchify(absorbance)}}{${frenchify(
+          molarAbsorptivity,
+        )} \\cdot ${frenchify(pathLength)}} = ${frenchify(
+          round(absorbance / (molarAbsorptivity * pathLength), 2),
+        )}\\ \\text{mol/L}$$`
+      : ""
+  }
+  ${
+    targetVariable.name === "molarAbsorptivity"
+      ? `$$ε = \\frac{${frenchify(absorbance)}}{${frenchify(
+          concentration,
+        )} \\cdot ${frenchify(pathLength)}} = ${frenchify(
+          round(absorbance / (concentration * pathLength), 1),
+        )}\\ \\text{L/(mol.cm)}$$`
+      : ""
+  }
+  ${
+    targetVariable.name === "pathLength"
+      ? `$$\\ell = \\frac{${frenchify(absorbance)}}{${frenchify(
+          molarAbsorptivity,
+        )} \\cdot ${frenchify(concentration)}} = ${frenchify(
+          round(absorbance / (molarAbsorptivity * concentration), 1),
+        )}\\ \\text{cm}$$`
+      : ""
+  }
+  ${
+    targetVariable.name === "absorbance"
+      ? `$$A = ${frenchify(molarAbsorptivity)} \\cdot ${frenchify(
+          concentration,
+        )} \\cdot ${frenchify(pathLength)} = ${frenchify(absorbance)}$$`
+      : ""
   }`;
 
   const question: Question<Identifiers> = {
@@ -161,9 +209,13 @@ const isAnswerValid: VEA<Identifiers> = (
   },
 ) => {
   const variables = [
-    { name: "concentration", value: concentration, unit: "mol/L" },
-    { name: "molarAbsorptivity", value: molarAbsorptivity, unit: "L/(mol·cm)" },
-    { name: "pathLength", value: pathLength, unit: "cm" },
+    { name: "concentration", value: concentration, unit: "\\text{mol/L}" },
+    {
+      name: "molarAbsorptivity",
+      value: molarAbsorptivity,
+      unit: "\\text{L/(mol.cm)}",
+    },
+    { name: "pathLength", value: pathLength, unit: "\\text{cm}" },
     { name: "absorbance", value: absorbance, unit: "" },
   ];
   const validAnswer = variables[randomIndex].value;
