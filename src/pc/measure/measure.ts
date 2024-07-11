@@ -68,7 +68,7 @@ export class Measure {
     // console.log("after", this.significantPart, this.exponent);
   }
 
-  times(n: number | Measure, converter?: UnitConverter) {
+  times(n: number | Measure, unitConverter?: UnitConverter) {
     if (typeof n === "number")
       return new Measure(this.significantPart * n, this.exponent);
     if (!this.unit) {
@@ -77,13 +77,13 @@ export class Measure {
         this.exponent + n.exponent,
       );
     }
-    if (converter) {
-      const thisConverted = converter.convert(
+    if (unitConverter) {
+      const thisConverted = unitConverter.convert(
         this.significantPart,
         this.exponent,
         this.unit!,
       )!;
-      const nConverted = converter.convert(
+      const nConverted = unitConverter.convert(
         n.significantPart,
         n.exponent,
         n.unit ?? this.unit!,
@@ -188,5 +188,12 @@ export class Measure {
 
   hasUnit(): boolean {
     return this.unit ? true : false;
+  }
+
+  getUnit(): string {
+    if (!this.unit) {
+      return "This measure has no unit";
+    }
+    return this.unit.getUnit();
   }
 }
