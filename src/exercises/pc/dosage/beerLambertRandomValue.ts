@@ -56,12 +56,12 @@ const getBeerLambertRandomValueQuestion: QuestionGenerator<
       (v) =>
         `${
           v.name === "concentration"
-            ? "Concentration"
+            ? "- Concentration"
             : v.name === "molarAbsorptivity"
-            ? "Coefficient d'absorption molaire"
+            ? "- Coefficient d'absorption molaire"
             : v.name === "pathLength"
-            ? "Longueur du trajet optique"
-            : "Absorbance"
+            ? "- Longueur du trajet optique"
+            : "- Absorbance"
         } : ${
           v.name === "concentration"
             ? "$C$"
@@ -79,12 +79,13 @@ const getBeerLambertRandomValueQuestion: QuestionGenerator<
   }${
     molecule.name
   } en utilisant une solution étalon. Vous avez mesuré les données suivantes :\n
-  - ${knownVariablesText}.\n
+  - ${knownVariablesText}.
+  \n
   À partir de ces données, déterminez ${
     targetVariable.name === "concentration"
       ? "la concentration en $\\text{mol/L}$"
       : targetVariable.name === "molarAbsorptivity"
-      ? "le coefficient d'absorption molaire en $\\text{L/(mol.cm)}$"
+      ? "le coefficient d'absorption molaire en $\\text{L}/(\\text{mol}\\cdot\\text{cm})}$"
       : targetVariable.name === "pathLength"
       ? "la longueur du trajet optique en $\\text{cm}$"
       : "l'absorbance"
@@ -138,7 +139,7 @@ const getBeerLambertRandomValueQuestion: QuestionGenerator<
           concentration,
         )} \\cdot ${frenchify(pathLength)}} = ${frenchify(
           round(absorbance / (concentration * pathLength), 1),
-        )}\\ \\text{L/(mol.cm)}$$`
+        )}\\ \\text{L}/(\\text{mol} \\cdot \\text{cm})$$`
       : ""
   }
   ${

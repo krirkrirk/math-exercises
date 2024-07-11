@@ -80,17 +80,21 @@ const getSpectralEnergyQuestion: QuestionGenerator<Identifiers> = () => {
   - Longueur d'onde de la lumière rouge : $\\lambda_{rouge} = ${wavelengthRedNm}\\ nm$.
 
   ![](${images[randint(0, images.length)]})
-  
+
   En utilisant ces données, calculez l'énergie de transition en joules pour la lumière ${targetColor} émise par l'échantillon.`;
 
-  const hint = `Rappelez-vous la relation entre l'énergie et la longueur d'onde : $E = \\frac{hc}{\\lambda}$. Rappel des constantes : 
+  const hint = `La relation entre l'énergie et la longueur d'onde est : $E = \\frac{hc}{\\lambda}$. \n Rappel des constantes : 
+
   - Constante de Planck : $h = ${h.toSignificant(2).toTex()}$
   - Vitesse de la lumière : $c = ${c.toSignificant(2).toTex()}$`;
+
   const correction = `La relation entre l'énergie et la longueur d'onde est donnée par :
-  $E = \\frac{hc}{\\lambda}$. En utilisant les valeurs fournies pour $h$, $c$, et $\\lambda_{${targetColor}}$ (en mètres), vous pouvez résoudre pour l'énergie :
-  $E_{${targetColor}} = \\frac{${h.toTex({ scientific: 2 })} \\times ${c.toTex({
-    scientific: 2,
-  })}}{${
+  $E = \\frac{hc}{\\lambda}$. \n En utilisant les valeurs fournies pour $h$, $c$, et $\\lambda_{${targetColor}}$ (en mètres), vous pouvez résoudre pour l'énergie :
+  $E_{${targetColor}} = \\dfrac{${h.toTex({ scientific: 2 })} \\times ${c.toTex(
+    {
+      scientific: 2,
+    },
+  )}}{${
     targetColor === "bleue"
       ? wavelengthBlue.toTex({
           scientific: 2,

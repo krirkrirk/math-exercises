@@ -46,10 +46,10 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
       enableShiftDragZoom: true,
       axisLabels: ["$\\tiny{[Xi]}$", "$\\tiny{A}$"],
     },
-    hint: `Utilier la formule $a=c\\cdot l\\cdot ε$`,
+    hint: `Utiliser la formule $a=c\\cdot l\\cdot ε$.`,
     correction: `1 - Choisir deux coordonnées $x_1$ et $x_2$. \n \\
     2 - Calculer $a_1 = x_1\\cdot l \\cdotε$ et $a_2 = x_2\\cdot l \\cdotε$. \n \\
-    3 - Tracer la droite qui passe par les deux points $(x_1,a_1)$ $(x_2,a_2)$.`,
+    3 - Tracer la droite qui passe par les deux points $(x_1,a_1)$ et $(x_2,a_2)$.`,
     identifiers: {
       epsilon: exo.epsilon,
       l: exo.l,
@@ -82,7 +82,7 @@ const generateExercise = () => {
   const instruction = `Dans un laboratoire, vous avez effectué l'étalonnage d'une solution ${
     requiresApostropheBefore(molecule.name) ? "d'" : "de "
   }${molecule.name}. \n 
-  Vous disposez du coefficient d'extinction molaire $ε$ de $${epsilon}$ $L/(mol·cm)$ et de la longueur de la cuve $l$ de $${l}$ $cm$. \n
+  Vous disposez du coefficient d'extinction molaire $ε$ de $${epsilon}$ $\\text{L}\/(\\text{mol}\\cdot \\text{cm})$ et de la longueur de la cuve $l$ de $${l}$ $\\text{cm}$. \n
   Tracer la courbe d'étalonnage de cette solution.`;
   return {
     instruction,
