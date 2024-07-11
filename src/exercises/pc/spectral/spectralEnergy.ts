@@ -74,10 +74,13 @@ const getSpectralEnergyQuestion: QuestionGenerator<Identifiers> = () => {
   const instruction = `Vous travaillez dans un laboratoire de spectroscopie et vous êtes en train de réaliser une analyse des transitions électroniques d'un échantillon. \n
   Vous avez utilisé un spectromètre pour mesurer les longueurs d'onde des raies d'émission de la lumière émise par l'échantillon. \n
   Les mesures que vous avez obtenues sont les suivantes :
+
   - Longueur d'onde de la lumière bleue : $\\lambda_{bleue} = ${wavelengthBlueNm}\\ nm$,
   - Longueur d'onde de la lumière verte : $\\lambda_{verte} = ${wavelengthGreenNm}\\ nm$,
   - Longueur d'onde de la lumière rouge : $\\lambda_{rouge} = ${wavelengthRedNm}\\ nm$.
+
   ![](${images[randint(0, images.length)]})
+  
   En utilisant ces données, calculez l'énergie de transition en joules pour la lumière ${targetColor} émise par l'échantillon.`;
 
   const hint = `Rappelez-vous la relation entre l'énergie et la longueur d'onde : $E = \\frac{hc}{\\lambda}$. Rappel des constantes : 
