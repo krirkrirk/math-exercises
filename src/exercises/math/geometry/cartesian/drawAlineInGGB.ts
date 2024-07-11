@@ -24,7 +24,7 @@ const getDrawAlineInGgbQuestion: QuestionGenerator<Identifiers> = () => {
   const yMax = Math.max(yA, yB, 0);
   const yMin = Math.min(yA, yB, 0);
   const question: Question<Identifiers> = {
-    ggbAnswer: [`(0;${yA})`, `(1;${yB})`, `Line(A, B)`],
+    ggbAnswer: [`(0,${yA})`, `(1,${yB})`, `Line(A, B)`],
     instruction: `Tracer la droite $d$ d'équation $y=${f.toTex()}$.`,
     keys: [],
     answerFormat: "tex",
@@ -60,7 +60,7 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (
 };
 
 const getPoint = (command: string, pointName: string) => {
-  const splitted = command.split(";");
+  const splitted = command.split(",");
   const x = +splitted[0].replace("(", "");
   const y = +splitted[1].replace(")", "");
   return new Point(pointName, x.toTree(), y.toTree());

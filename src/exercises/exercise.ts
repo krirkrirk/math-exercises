@@ -76,7 +76,7 @@ export interface Question<TIdentifiers = {}> {
   };
   studentGgbOptions?: {
     customToolBar?: string;
-    gridDistance?: [number, number] | false;
+    gridDistance?: [number, number];
     hideGrid?: boolean;
     hideAxes?: boolean;
     isGridBold?: boolean;

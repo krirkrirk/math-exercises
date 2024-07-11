@@ -17,7 +17,7 @@ const getDrawAVectorInGgbQuestion: QuestionGenerator<Identifiers> = () => {
   const vector = new Vector("u", x.toTree(), y.toTree());
 
   const question: Question<Identifiers> = {
-    ggbAnswer: [``, ``, `(${x};${y})`],
+    ggbAnswer: [``, ``, `(${x},${y})`],
     instruction: `Tracer le vecteur $${vector.toTex()}${vector.toInlineCoordsTex()}$`,
     keys: [],
     studentGgbOptions: {

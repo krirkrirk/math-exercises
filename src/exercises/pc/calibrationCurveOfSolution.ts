@@ -31,8 +31,8 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     ggbAnswer: [
-      `(1;${exo.epsilon * exo.l})`,
-      `(2;${2 * exo.epsilon * exo.l})`,
+      `(1,${exo.epsilon * exo.l})`,
+      `(2,${2 * exo.epsilon * exo.l})`,
       `Line(A, B)`,
     ],
     instruction: exo.instruction,

@@ -20,7 +20,7 @@ const getPlaceAPointQuestion: QuestionGenerator<Identifiers> = () => {
   const yMax = point.getYnumber() + 2;
 
   const question: Question<Identifiers> = {
-    ggbAnswer: [`(${point.getXnumber()};${point.getYnumber()})`],
+    ggbAnswer: [`(${point.getXnumber()},${point.getYnumber()})`],
     instruction: `Placer le point $A$ de coordonnées $${point.toTexWithCoords()}$.`,
     keys: [],
     studentGgbOptions: {
