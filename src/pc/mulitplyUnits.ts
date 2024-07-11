@@ -15,7 +15,7 @@ export class MultiplyUnit implements Unit {
     if (this.rightChild.getUnit() === this.leftChild.getUnit()) {
       return `${this.rightChild.toTex()}^2`;
     }
-    if (this.rightChild.className === this.leftChild.className) {
+    if (this.rightChild.className() === this.leftChild.className()) {
       throw new Error(
         `Cannot multiply ${this.leftChild.getUnit()} and ${this.rightChild.getUnit()} if a converter is not provided.`,
       );
