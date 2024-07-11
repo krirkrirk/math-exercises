@@ -28,6 +28,8 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
   Identifiers
 > = () => {
   const exo = generateExercise();
+  const minY = 5 * exo.epsilon * exo.l - 10;
+  const maxY = 10 * exo.epsilon * exo.l + 5;
 
   const question: Question<Identifiers> = {
     ggbAnswer: [
@@ -38,12 +40,11 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
     instruction: exo.instruction,
     keys: [],
     studentGgbOptions: {
-      coords: [10, 20, -2, 20],
+      coords: [-2, 20, minY, maxY],
       isXAxesNatural: true,
-      initialCommands: [
-        `Text("\\tiny{[Xi]}",(29,4),true,true)`,
-        `Text("\\tiny{A}",(1,20),true,true)`,
-      ],
+      isAxesRatioFixed: false,
+      enableShiftDragZoom: true,
+      axisLabels: ["$\\tiny{[Xi]}$", "$\\tiny{A}$"],
     },
     hint: `Utilier la formule $a=c\\cdot l\\cdot ε$`,
     correction: `1 - Choisir deux coordonnées $x_1$ et $x_2$. \n \\
