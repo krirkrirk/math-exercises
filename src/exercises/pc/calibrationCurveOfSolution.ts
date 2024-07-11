@@ -29,7 +29,7 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
 > = () => {
   const exo = generateExercise();
   const minY = 5 * exo.epsilon * exo.l - 10;
-  const maxY = 15 * exo.epsilon * exo.l + 10;
+  const maxY = 10 * exo.epsilon * exo.l + 5;
 
   const question: Question<Identifiers> = {
     ggbAnswer: [
