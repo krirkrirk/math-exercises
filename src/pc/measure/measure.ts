@@ -196,4 +196,11 @@ export class Measure {
     }
     return this.unit.getUnit();
   }
+
+  convert(unit: string): Measure {
+    if (this.unit && this.unit.convert) {
+      console.log(this.unit.convert(unit, this.exponent));
+    }
+    return new Measure(0, 0);
+  }
 }

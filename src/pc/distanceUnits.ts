@@ -1,8 +1,15 @@
 import { Unit } from "./unit";
 
-type distanceUnits = "km" | "hm" | "dam" | "m" | "dm" | "cm" | "mm";
+export type distanceUnits = "km" | "hm" | "dam" | "m" | "dm" | "cm" | "mm";
 
 export class DistanceUnit implements Unit {
+  static readonly km = new DistanceUnit("km");
+  static readonly hm = new DistanceUnit("hm");
+  static readonly dam = new DistanceUnit("dam");
+  static readonly m = new DistanceUnit("m");
+  static readonly dm = new DistanceUnit("dm");
+  static readonly cm = new DistanceUnit("cm");
+
   unit: distanceUnits;
 
   constructor(unit: distanceUnits) {
@@ -17,5 +24,8 @@ export class DistanceUnit implements Unit {
   }
   className(): string {
     return "DistanceUnit";
+  }
+  convert(unit: string, exponent: number): number {
+    return exponent;
   }
 }
