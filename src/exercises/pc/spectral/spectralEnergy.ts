@@ -89,7 +89,9 @@ Rappel des constantes :
 - Vitesse de la lumière : $c = ${c.toSignificant(2).toTex()}$`;
 
   const correction = `La relation entre l'énergie et la longueur d'onde est donnée par :
-  $E = \\frac{hc}{\\lambda}$. \n En utilisant les valeurs fournies pour $h$, $c$, et $\\lambda_{${targetColor}}$ (en mètres), vous pouvez résoudre pour l'énergie :
+  $E = \\frac{hc}{\\lambda}$. 
+  
+  \n En utilisant les valeurs fournies pour $h$, $c$, et $\\lambda_{${targetColor}}$ (en mètres), vous pouvez résoudre pour l'énergie : \n 
   $E_{${targetColor}} = \\dfrac{${h.toTex({ scientific: 2 })} \\times ${c.toTex(
     {
       scientific: 2,
