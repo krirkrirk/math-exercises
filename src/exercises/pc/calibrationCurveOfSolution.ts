@@ -34,8 +34,8 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     ggbAnswer: [
-      `(1,${exo.epsilon * exo.l})`,
-      `(2,${2 * exo.epsilon * exo.l})`,
+      `(5, ${5 * exo.epsilon * exo.l})`,
+      `(10, ${10 * exo.epsilon * exo.l})`,
       `Line(A, B)`,
     ],
     instruction: exo.instruction,
@@ -45,16 +45,13 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
       isXAxesNatural: true,
       isAxesRatioFixed: false,
       enableShiftDragZoom: true,
-      axisLabels: ["$\\tiny{[Xi]}$", "$\\tiny{A}$"],
+      axisLabels: ["$\\tiny{[Xi](C)}$", "$\\tiny{A}$"],
       customToolBar: toolBarConstructor({
         join: true,
-        point: true,
       }),
     },
-    hint: `Utiliser la formule $a=c\\cdot l\\cdot ε$.`,
-    correction: `1 - Choisir deux coordonnées $x_1$ et $x_2$. \n \\
-    2 - Calculer $a_1 = x_1\\cdot l \\cdotε$ et $a_2 = x_2\\cdot l \\cdotε$. \n \\
-    3 - Tracer la droite qui passe par les deux points $(x_1,a_1)$ et $(x_2,a_2)$.`,
+    hint: exo.hint,
+    correction: exo.correction,
     identifiers: {
       epsilon: exo.epsilon,
       l: exo.l,
@@ -69,9 +66,10 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (
   { ggbAnswer, epsilon, l },
 ) => {
   if (arrayEqual(ans, ggbAnswer)) return true;
+  console.log(ans);
   const points = ans
     .filter((command) => isGGBPoint(command))
-    .map((value) => getPointFromGGB(value, ""));
+    .map((value) => getPointFromGGB(value, "", false));
   return (
     points.length !== 0 &&
     points.every(
@@ -87,13 +85,29 @@ const generateExercise = () => {
   const instruction = `Dans un laboratoire, vous avez effectué l'étalonnage d'une solution ${
     requiresApostropheBefore(molecule.name) ? "d'" : "de "
   }${molecule.name}. \n 
-  Vous disposez du coefficient d'extinction molaire $ε$ de $${epsilon}$ $\\text{L}\/(\\text{mol}\\cdot \\text{cm})$ et de la longueur de la cuve $l$ de $${l}$ $\\text{cm}$. \n
+  Vous disposez du coefficient d'extinction molaire $ε$ de $${epsilon}$ $\\text{L}\\cdot\\text{mol}^{-1}\\cdot\\text{cm}^{-1}$ et de la longueur de la cuve $l$ de $${l}$ $\\text{cm}$. \n
   Tracer la courbe d'étalonnage de cette solution.`;
   return {
     instruction,
+    hint: getHint(),
+    correction: getCorrection(),
     epsilon,
     l,
   };
+};
+
+const getCorrection = () => {
+  return `1 - Choisir deux coordonnées $x_1$ et $x_2$. \n \\
+    2 - Calculer $A_1 = x_1\\cdot l \\cdotε$ et $A_2 = x_2\\cdot l \\cdotε$. \n \\
+    3 - Tracer la droite qui passe par les deux points $(x_1,A_1)$ et $(x_2,A_2)$.`;
+};
+
+const getHint = () => {
+  return `Utiliser la formule $A=C\\cdot \\ell\\cdot ε$, où :\n
+- $A$ est l'absorbance (une grandeur sans unité)\n
+- $ε$ est le coefficient d'extinction molaire (ou coefficient d'absorption molaire) en $\\text{L}\\cdot\\text{mol}^{-1}\\cdot\\text{cm}^{-1}$\n
+- $C$ est la concentration de la solution en $\\text{mol}\\cdot\\text{L}^{-1}$\n
+- $\\ell$ est la longueur du chemin optique en centimètres $(\\text{cm})$`;
 };
 
 export const calibrationCurveOfSolution: Exercise<Identifiers> = {
