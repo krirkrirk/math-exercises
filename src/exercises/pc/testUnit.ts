@@ -13,19 +13,17 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { DistanceUnit } from "#root/pc/distanceUnits";
 import { MassUnit } from "#root/pc/massUnits";
+import { MassUnitInstances } from "#root/pc/MassUnitsInstances";
 import { Measure } from "#root/pc/measure/measure";
 
 type Identifiers = {};
 
 const getTestUnitQuestion: QuestionGenerator<Identifiers> = () => {
-  const measure = new Measure(10, 0, new DistanceUnit("m"));
-  const measure2 = new Measure(15, 0, new MassUnit("kg"));
+  const measure1 = new Measure(10, 0, MassUnit.kg);
+  const measure2 = new Measure(15, 0, MassUnit.kg);
   const question: Question<Identifiers> = {
     answer: `${randint(1, 100)}`,
-    instruction: `$${measure2.times(measure.times(measure)).toTex()}$ ${randint(
-      1,
-      100,
-    )}`,
+    instruction: `$${measure1.times(measure2).toTex()}$ ${randint(1, 100)}`,
     keys: [],
     answerFormat: "tex",
     identifiers: {},

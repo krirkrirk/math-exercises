@@ -71,7 +71,7 @@ export class Measure {
   times(n: number | Measure, unitConverter?: UnitConverter) {
     if (typeof n === "number")
       return new Measure(this.significantPart * n, this.exponent);
-    if (!this.unit) {
+    if (!this.unit && !n.unit) {
       return new Measure(
         this.significantPart * n.significantPart,
         this.exponent + n.exponent,
