@@ -5,7 +5,7 @@ export function getPointFromGGB(
   name: string,
   isInteger: boolean = true,
 ): Point {
-  const splitted = command.split(";");
+  const splitted = command.split(",");
   const x = isInteger
     ? +(+splitted[0].replace("(", "")).toFixed(0)
     : +splitted[0].replace("(", "");

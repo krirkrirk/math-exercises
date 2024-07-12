@@ -66,7 +66,6 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (
   { ggbAnswer, epsilon, l },
 ) => {
   if (arrayEqual(ans, ggbAnswer)) return true;
-  console.log(ans);
   const points = ans
     .filter((command) => isGGBPoint(command))
     .map((value) => getPointFromGGB(value, "", false));
