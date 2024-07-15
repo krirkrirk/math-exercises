@@ -100,7 +100,7 @@ Données :
     instruction,
     hint,
     correction,
-    keys: ["N", "timesTenPower"],
+    keys: ["timesTenPower"],
     answerFormat: "tex",
     identifiers: { planet: selectedPlanet.name, mass, h },
   };
