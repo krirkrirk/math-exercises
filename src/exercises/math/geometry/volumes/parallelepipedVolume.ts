@@ -13,6 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { round } from "#root/math/utils/round";
+import { orange } from "#root/geogebra/colors";
 
 type Identifiers = {
   length: number;
@@ -52,27 +53,18 @@ const getParallelepipedVolumeQuestion: QuestionGenerator<Identifiers> = () => {
     `F = (${-length / 2}, ${width / 2 + yOffset}, ${zOffset})`,
     `G = (${length / 2}, ${width / 2 + yOffset}, ${zOffset})`,
     `H = (${length / 2}, ${-width / 2 + yOffset}, ${zOffset})`,
-    `Polygon(A, B, F, E)`, // Side 1
-    `SetColor(Polygon(A, B, F, E), "#F78D04")`, // Color for side 1
-    `Polygon(B, C, G, F)`, // Side 2
-    `SetColor(Polygon(B, C, G, F), "#F78D04")`, // Color for side 2
-    `Polygon(C, D, H, G)`, // Side 3
-    `SetColor(Polygon(C, D, H, G), "#F78D04")`, // Color for side 3
-    `Polygon(D, A, E, H)`, // Side 4
-    `SetColor(Polygon(D, A, E, H), "#F78D04")`, // Color for side 4
-    `Polygon(A, B, C, D)`, // Base
-    `SetColor(Polygon(A, B, C, D), "#F78D04")`, // Color for base
-    `Polygon(E, F, G, H)`, // Top
-    `SetColor(Polygon(E, F, G, H), "#F78D04")`, // Color for top
-    ...points.map((point) => `SetColor(${point}, "#376FDE")`), // Color for points
-    `SetColor(Text(A), "#0045AB")`, // Color for labels
-    `SetColor(Text(B), "#0045AB")`,
-    `SetColor(Text(C), "#0045AB")`,
-    `SetColor(Text(D), "#0045AB")`,
-    `SetColor(Text(E), "#0045AB")`,
-    `SetColor(Text(F), "#0045AB")`,
-    `SetColor(Text(G), "#0045AB")`,
-    `SetColor(Text(H), "#0045AB")`,
+    `P1 = Polygon(A, B, F, E)`, // Side 1
+    `SetColor(P1, "${orange}")`, // Color for side 1
+    `P2 = Polygon(B, C, G, F)`, // Side 2
+    `SetColor(P2, "${orange}")`, // Color for side 2
+    `P3 = Polygon(C, D, H, G)`, // Side 3
+    `SetColor(P3, "${orange}")`, // Color for side 3
+    `P4 = Polygon(D, A, E, H)`, // Side 4
+    `SetColor(P4, "${orange}")`, // Color for side 4
+    `P5 = Polygon(A, B, C, D)`, // Base
+    `SetColor(P5, "${orange}")`, // Color for base
+    `P6 = Polygon(E, F, G, H)`, // Top
+    `SetColor(P6, "${orange}")`, // Color for top
     `ShowLabel(A, true)`,
     `ShowLabel(B, true)`,
     `ShowLabel(C, true)`,
@@ -171,5 +163,6 @@ export const parallelepipedVolume: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  hasGeogebra: true,
   subject: "Mathématiques",
 };

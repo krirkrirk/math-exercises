@@ -83,5 +83,5 @@ export const frequencyComparison: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
-  answerType: "QCU",
+  answerType: "QCM",
 };

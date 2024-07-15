@@ -217,7 +217,7 @@ export const equalCaracteristicFromGraph: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  answerType: "QCU",
+  answerType: "QCM",
   hasGeogebra: true,
   subject: "Mathématiques",
 };

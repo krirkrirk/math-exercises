@@ -198,7 +198,7 @@ const generateTriangleWithGGBCommands = () => {
 };
 export const volumeOfPyramidWithTriangleBase: Exercise<Identifiers> = {
   id: "volumeOfPyramidWithTriangleBase",
-  label: "Calcul de volume d'une pyramide à base triangulaire",
+  label: "Calculer le volume d'une pyramide à base triangulaire",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Géométrie euclidienne"],

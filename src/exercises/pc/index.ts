@@ -23,6 +23,10 @@ export * from "./fluids";
 export * from "./electricity";
 export * from "./energy";
 export * from "./motion";
+export * from "./calibrationCurveOfSolution";
+export * from "./dosage";
+export * from "./spectral";
+
 
 /**exos pris des maths */
 export * from "../math/percent/findProportion";

@@ -58,8 +58,9 @@ export interface Question<TIdentifiers = {}> {
   hint?: string;
   correction?: string;
   startStatement?: string;
-  answer: string;
-  answerFormat: "tex" | "raw";
+  answer?: string;
+  answerFormat?: "tex" | "raw";
+  ggbAnswer?: string[];
   keys?: KeyId[];
   commands?: string[];
   coords?: number[];
@@ -72,6 +73,22 @@ export interface Question<TIdentifiers = {}> {
     isAxesRatioFixed?: boolean;
     isXAxesNatural?: boolean;
     is3D?: boolean;
+  };
+  studentGgbOptions?: {
+    customToolBar?: string;
+    gridDistance?: [number, number];
+    hideGrid?: boolean;
+    hideAxes?: boolean;
+    isGridBold?: boolean;
+    isGridSimple?: boolean;
+    isAxesRatioFixed?: boolean;
+    isXAxesNatural?: boolean;
+    xAxisSteps?: number;
+    yAxisSteps?: number;
+    enableShiftDragZoom?: boolean;
+    coords?: number[];
+    initialCommands?: string[];
+    axisLabels?: string[];
   };
   style?: {
     tableHasNoHeader?: boolean;
@@ -88,6 +105,10 @@ export type VEA<TIdentifiers> = (
   studentAnswer: string,
   args: { answer: string } & TIdentifiers,
 ) => boolean;
+export type GGBVEA<TIdentifiers> = (
+  studentAnswer: string[],
+  args: { ggbAnswer: string[] } & TIdentifiers,
+) => boolean;
 export type QuestionGenerator<TIdentifiers = {}, TOptions = {}> = (
   opts?: TOptions,
 ) => Question<TIdentifiers>;
@@ -100,11 +121,12 @@ export interface Exercise<TIdentifiers = {}> {
   connector?: "=" | "\\iff" | "\\approx";
   generator: (n: number) => Question<TIdentifiers>[];
   maxAllowedQuestions?: number;
-  answerType?: "QCM" | "free" | "QCU";
+  answerType?: "GGB" | "QCM" | "free" | "QCU";
   qcmTimer: number;
   freeTimer: number;
   getPropositions?: QCMGenerator<{ answer: string } & TIdentifiers>;
   isAnswerValid?: VEA<TIdentifiers>;
+  isGGBAnswerValid?: GGBVEA<TIdentifiers>;
   hasGeogebra?: boolean;
   subject: "Mathématiques" | "Chimie" | "Physique";
 }
@@ -191,3 +213,5 @@ export type PCSection =
   | "Mol"
   | "Électricité"
   | "Mécanique gravitationnelle";
+  | "Spectrophotométrie"
+  | "Quantique";

@@ -174,7 +174,7 @@ export const convexityQuadrinomials: Exercise<Identifiers> = {
     getDistinctQuestions(getConvexityQuadrinomialsQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
-  answerType: "QCU",
+  answerType: "QCM",
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
