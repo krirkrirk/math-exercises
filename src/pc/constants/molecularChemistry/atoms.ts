@@ -1,3 +1,4 @@
+import { MassUnit } from "#root/pc/units/massUnits";
 import { Measure } from "../../measure/measure";
 
 type PhysicalConstant = {
@@ -6,7 +7,7 @@ type PhysicalConstant = {
 };
 
 export const nucleonMass: PhysicalConstant = {
-  value: new Measure(1.67, -27),
+  value: new Measure(1.67, -27, MassUnit.kg),
   // value: 1.67 * Math.pow(10, -27),
   unit: "\\text{kg}",
 };
