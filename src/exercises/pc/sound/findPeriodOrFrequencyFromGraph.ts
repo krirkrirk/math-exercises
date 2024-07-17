@@ -14,7 +14,6 @@ import { randomColor } from "#root/geogebra/colors";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
-import { Measure } from "#root/pc/measure/measure";
 import { coinFlip } from "#root/utils/coinFlip";
 import { isInt } from "#root/utils/isInt";
 

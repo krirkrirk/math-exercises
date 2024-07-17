@@ -1,5 +1,5 @@
-import { DistanceUnit } from "#root/pc/distanceUnits";
-import { MassUnit } from "#root/pc/massUnits";
+import { DistanceUnit } from "#root/pc/units/distanceUnits";
+import { MassUnit } from "#root/pc/units/massUnits";
 
 export const getMassUnitObjet = (unit: string) => {
   switch (unit) {

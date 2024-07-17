@@ -21,7 +21,7 @@ export * from "./mole";
 export * from "./mecanicalWaves";
 export * from "./fluids";
 export * from "./electricity";
-export * from "./testUnit";
+//export * from "./testUnit";
 export * from "./motion";
 export * from "./identifyAtomicMassOrAtomicNb";
 export * from "./recognizeRefractionOrReflectionAngles";

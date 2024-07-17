@@ -18,7 +18,7 @@ export class DistanceUnit implements Unit {
   }
 
   toTex(): string {
-    return `${this.unit}`;
+    return `\\text{${this.unit}}`;
   }
   getUnit(): string {
     return this.unit;

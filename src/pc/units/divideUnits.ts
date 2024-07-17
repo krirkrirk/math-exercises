@@ -1,4 +1,4 @@
-import { Unit } from "./unit";
+import { getUnitExp, Unit } from "./unit";
 
 export class DivideUnits implements Unit {
   leftChild: Unit;
@@ -15,12 +15,10 @@ export class DivideUnits implements Unit {
     if (this.rightChild.getUnit() === this.leftChild.getUnit()) {
       return ``;
     }
-    if (this.rightChild.className === this.leftChild.className) {
-      throw new Error(
-        `Cannot divide ${this.leftChild.getUnit()} and ${this.rightChild.getUnit()} if a converter is not provided.`,
-      );
-    }
-    return `${this.leftChild.toTex()} \\cdot ${this.rightChild.toTex()}^{-1}`;
+    const rightChildExp = getUnitExp(this.rightChild);
+    return `${this.leftChild.toTex()} \\cdot ${
+      this.rightChild.toTex().split("^")[0]
+    }^{${-rightChildExp}}`;
   }
   getUnit(): string {
     return this.unit;

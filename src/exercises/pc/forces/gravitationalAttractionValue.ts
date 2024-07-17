@@ -15,6 +15,8 @@ import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { earthMass, earthRayon } from "#root/pc/constants/earth";
 import { earthG } from "#root/pc/constants/gravity";
+import { MassUnit } from "#root/pc/units/massUnits";
+import { Measure } from "#root/pc/measure/measure";
 
 type Identifiers = {
   mass: number;
@@ -27,12 +29,12 @@ const getGravitationalAttractionValueQuestion: QuestionGenerator<
   //F = G/(Rt^2) * mT * mb
   const G = earthG.measure;
   const RT = earthRayon.measure.times(1000);
-  const massKG = mass / 1000;
+  const massKG = new Measure(mass / 1000, 0, MassUnit.g);
   const massEarth = earthMass.measure;
   const answerMeasure = G.times(massKG).times(massEarth).divide(RT.times(RT));
   // const answerMeasure = G.times(massKG);
   console.log(mass, answerMeasure.significantPart, answerMeasure.exponent);
-  const answer = answerMeasure.toTex({ scientific: 2 }) + "N";
+  const answer = answerMeasure.toTex({ scientific: 2, hideUnit: true }) + "N";
   const question: Question<Identifiers> = {
     answer,
     instruction: `On lance un objet de masse $${mass}\\ \\text{g}$. Déterminer la valeur de la force d'attraction gravitationnelle exercée par la Terre sur cet objet.
@@ -40,13 +42,11 @@ const getGravitationalAttractionValueQuestion: QuestionGenerator<
 Données : 
 + Rayon de la Terre : $R_T = ${earthRayon.measure.toTex({
       scientific: 2,
-    })}\\ ${earthRayon.unit}$
+    })}$
 
-+ Masse de la Terre : $m_T = ${earthMass.measure.toTex({ scientific: 2 })}\\ ${
-      earthMass.unit
-    }$
++ Masse de la Terre : $m_T = ${earthMass.measure.toTex({ scientific: 2 })}$
 
-+ $G = ${earthG.measure.toTex({ scientific: 2 })}\\ ${earthG.unit}$`,
++ $G = ${earthG.measure.toTex({ scientific: 2 })}$`,
     keys: ["N", "timesTenPower"],
     answerFormat: "tex",
     identifiers: { mass },

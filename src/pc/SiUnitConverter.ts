@@ -1,7 +1,7 @@
-import { DistanceUnit } from "./distanceUnits";
-import { MassUnit } from "./massUnits";
+import { DistanceUnit } from "./units/distanceUnits";
+import { MassUnit } from "./units/massUnits";
 import { Measure } from "./measure/measure";
-import { Unit } from "./unit";
+import { Unit } from "./units/unit";
 import { UnitConverter } from "./UnitConverter";
 
 const mass = ["kg", "hg", "dag", "g", "dg", "cg", "mg"];

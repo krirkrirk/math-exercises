@@ -3,9 +3,9 @@ import { ToTexOptions } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
-import { DivideUnits } from "../divideUnits";
-import { MultiplyUnit } from "../mulitplyUnits";
-import { Unit } from "../unit";
+import { DivideUnits } from "../units/divideUnits";
+import { MultiplyUnit } from "../units/mulitplyUnits";
+import { Unit } from "../units/unit";
 import { UnitConverter } from "../UnitConverter";
 import { getMassUnitObjet } from "#root/exercises/utils/getUnitObjet";
 
@@ -71,12 +71,20 @@ export class Measure {
 
   times(n: number | Measure, unitConverter?: UnitConverter) {
     if (typeof n === "number")
-      return new Measure(this.significantPart * n, this.exponent);
-    if (!this.unit && !n.unit) {
-      return new Measure(
-        this.significantPart * n.significantPart,
-        this.exponent + n.exponent,
-      );
+      return this.unit
+        ? new Measure(this.significantPart * n, this.exponent, this.unit)
+        : new Measure(this.significantPart * n, this.exponent);
+    if (!this.unit) {
+      return n.unit
+        ? new Measure(
+            this.significantPart * n.significantPart,
+            this.exponent + n.exponent,
+          )
+        : new Measure(
+            this.significantPart * n.significantPart,
+            this.exponent + n.exponent,
+            n.unit,
+          );
     }
     if (unitConverter) {
       const thisConverted = unitConverter.convert(
@@ -103,7 +111,9 @@ export class Measure {
   }
   divide(n: number | Measure, unitConverter?: UnitConverter) {
     if (typeof n === "number")
-      return new Measure(this.significantPart / n, this.exponent);
+      return this.unit
+        ? new Measure(this.significantPart / n, this.exponent, this.unit)
+        : new Measure(this.significantPart / n, this.exponent);
     if (!this.unit)
       return new Measure(
         this.significantPart / n.significantPart,
@@ -143,13 +153,16 @@ export class Measure {
             roundSignificant(this.significantPart, decimals),
           );
     if (this.exponent === 0) {
-      return nbTree.toTex();
+      return (
+        nbTree.toTex() +
+        `${this.unit && !opts?.hideUnit ? `\\ ${this.unit.toTex()}` : ""}`
+      );
     }
     if (this.exponent === 1) {
       return (
         new MultiplyNode(nbTree, (10).toTree()).toTex({
           scientific: decimals,
-        }) + `${this.unit ? `\\ ${this.unit.toTex()}` : ""}`
+        }) + `${this.unit && !opts?.hideUnit ? `\\ ${this.unit.toTex()}` : ""}`
       );
     }
     return (
@@ -157,7 +170,7 @@ export class Measure {
         nbTree,
         new PowerNode((10).toTree(), this.exponent.toTree()),
       ).toTex({ scientific: decimals }) +
-      `${this.unit ? `\\ ${this.unit.toTex()}` : ""}`
+      `${this.unit && !opts?.hideUnit ? `\\ ${this.unit.toTex()}` : ""}`
     );
   }
 
@@ -165,7 +178,9 @@ export class Measure {
    * n = nb decimals
    */
   toSignificant(n: number) {
-    return new Measure(round(this.significantPart, n), this.exponent);
+    return this.unit
+      ? new Measure(round(this.significantPart, n), this.exponent, this.unit)
+      : new Measure(round(this.significantPart, n), this.exponent);
   }
 
   //gravité = 9.32423432
