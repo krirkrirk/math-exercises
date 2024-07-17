@@ -27,6 +27,8 @@ export class DistanceUnit implements Unit {
     return "DistanceUnit";
   }
   convert(unit: string): number {
+    if (!distances.includes(unit))
+      throw new Error(`${unit} is not recognized as a unit.`);
     const thisUnitIndex = distances.findIndex((value) => this.unit === value);
     const unitIndex = distances.findIndex((value) => unit === value);
     return unitIndex - thisUnitIndex;

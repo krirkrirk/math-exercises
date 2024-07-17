@@ -20,6 +20,8 @@ export class MassUnit implements Unit {
   }
 
   convert(unit: string): number {
+    if (!mass.includes(unit))
+      throw new Error(`${unit} is not recognized as a unit.`);
     const thisUnitIndex = mass.findIndex((value) => this.unit === value);
     const unitIndex = mass.findIndex((value) => unit === value);
     return unitIndex - thisUnitIndex;

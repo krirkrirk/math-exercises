@@ -3,12 +3,10 @@ import { ToTexOptions } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
-import exp from "constants";
 import { DivideUnits } from "../divideUnits";
 import { MultiplyUnit } from "../mulitplyUnits";
 import { Unit } from "../unit";
 import { UnitConverter } from "../UnitConverter";
-import { MassUnit } from "../massUnits";
 import { getMassUnitObjet } from "#root/exercises/utils/getUnitObjet";
 
 export abstract class MeasureConstructor {
