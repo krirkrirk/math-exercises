@@ -4,6 +4,9 @@ import { Measure } from "./measure/measure";
 import { Unit } from "./unit";
 import { UnitConverter } from "./UnitConverter";
 
+const mass = ["kg", "hg", "dag", "g", "dg", "cg", "mg"];
+const distances = ["km", "hm", "dam", "m", "dm", "cm", "mm"];
+
 export class SiUnitConverter implements UnitConverter {
   convert(significantPart: number, exponent: number, unit: Unit): Measure {
     switch (unit.className()) {
@@ -17,30 +20,10 @@ export class SiUnitConverter implements UnitConverter {
   }
 
   convertMass(significantPart: number, exponent: number, unit: Unit): Measure {
-    let convertedExpo = exponent;
-    switch (unit.getUnit()) {
-      case "kg":
-        break;
-      case "hg":
-        convertedExpo = exponent - 2;
-        break;
-      case "dag":
-        convertedExpo = exponent - 1;
-        break;
-      case "g":
-        convertedExpo = exponent - 3;
-        break;
-      case "dg":
-        convertedExpo = exponent - 4;
-        break;
-      case "cg":
-        convertedExpo = exponent - 5;
-        break;
-      case "mg":
-        convertedExpo = exponent - 6;
-        break;
-    }
-    return new Measure(significantPart, convertedExpo, new MassUnit("kg"));
+    const thisUnitIndex = mass.findIndex((value) => unit.getUnit() === value);
+    const SiUnitIndex = 0;
+    const convertedExpo = exponent + (SiUnitIndex - thisUnitIndex);
+    return new Measure(significantPart, convertedExpo, MassUnit.kg);
   }
 
   convertDistance(
@@ -48,26 +31,11 @@ export class SiUnitConverter implements UnitConverter {
     exponent: number,
     unit: Unit,
   ): Measure {
-    let convertedExpo = exponent;
-    switch (unit.getUnit()) {
-      case "km":
-        convertedExpo = exponent + 3;
-      case "hm":
-        convertedExpo = exponent + 2;
-        break;
-      case "dam":
-        convertedExpo = exponent + 1;
-        break;
-      case "dm":
-        convertedExpo = exponent - 1;
-        break;
-      case "cm":
-        convertedExpo = exponent - 2;
-        break;
-      case "mm":
-        convertedExpo = exponent - 3;
-        break;
-    }
-    return new Measure(significantPart, convertedExpo, new DistanceUnit("m"));
+    const thisUnitIndex = distances.findIndex(
+      (value) => unit.getUnit() === value,
+    );
+    const SiUnitIndex = 3;
+    const convertedExpo = exponent + (SiUnitIndex - thisUnitIndex);
+    return new Measure(significantPart, convertedExpo, DistanceUnit.m);
   }
 }
