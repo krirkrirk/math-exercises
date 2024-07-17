@@ -5,3 +5,4 @@ export * from "./ohmicConductorOrGenerator";
 export * from "./kirchhoffVoltageLaw";
 export * from "./calculateIntensityInSerieOrParallel";
 export * from "./calculateIntensity";
+export * from "./ohmLaw";

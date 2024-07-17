@@ -11,8 +11,8 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { frenchify } from "#root/math/utils/latex/frenchify";
 import { round } from "#root/math/utils/round";
-import { atomes } from "#root/pc/molecularChemistry/atome";
-import { molecules } from "#root/pc/molecularChemistry/molecule";
+import { atomes } from "#root/pc/constants/molecularChemistry/atome";
+import { molecules } from "#root/pc/constants/molecularChemistry/molecule";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {

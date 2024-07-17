@@ -13,7 +13,10 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { frenchify } from "#root/math/utils/latex/frenchify";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { round } from "#root/math/utils/round";
-import { earthGravity, moonGravity } from "#root/pc/constants/gravity";
+import {
+  earthGravity,
+  moonGravity,
+} from "#root/pc/constants/mechanics/gravitational";
 import { Measure } from "#root/pc/measure/measure";
 import { coinFlip } from "#root/utils/coinFlip";
 

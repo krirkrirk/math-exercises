@@ -143,6 +143,44 @@ export class Measure {
     );
   }
 
+  add(n: number | Measure) {
+    if (typeof n === "number") {
+      const commonExponent = Math.min(this.exponent, 0);
+      const scaledThis =
+        this.significantPart * Math.pow(10, this.exponent - commonExponent);
+      const scaledN = n * Math.pow(10, -commonExponent);
+      const resultSignificant = scaledThis + scaledN;
+      return new Measure(resultSignificant, commonExponent);
+    } else {
+      const commonExponent = Math.min(this.exponent, n.exponent);
+      const scaledThis =
+        this.significantPart * Math.pow(10, this.exponent - commonExponent);
+      const scaledN =
+        n.significantPart * Math.pow(10, n.exponent - commonExponent);
+      const resultSignificant = scaledThis + scaledN;
+      return new Measure(resultSignificant, commonExponent);
+    }
+  }
+
+  subtract(n: number | Measure) {
+    if (typeof n === "number") {
+      const commonExponent = Math.min(this.exponent, 0);
+      const scaledThis =
+        this.significantPart * Math.pow(10, this.exponent - commonExponent);
+      const scaledN = n * Math.pow(10, -commonExponent);
+      const resultSignificant = scaledThis - scaledN;
+      return new Measure(resultSignificant, commonExponent);
+    } else {
+      const commonExponent = Math.min(this.exponent, n.exponent);
+      const scaledThis =
+        this.significantPart * Math.pow(10, this.exponent - commonExponent);
+      const scaledN =
+        n.significantPart * Math.pow(10, n.exponent - commonExponent);
+      const resultSignificant = scaledThis - scaledN;
+      return new Measure(resultSignificant, commonExponent);
+    }
+  }
+
   toTex(opts?: ToTexOptions) {
     const decimals = opts?.scientific;
     const nbTree =
@@ -183,9 +221,6 @@ export class Measure {
       : new Measure(round(this.significantPart, n), this.exponent);
   }
 
-  //gravité = 9.32423432
-  //new Measure(9432432).toSignificant(1).times(39)
-
   evaluate() {
     return this.significantPart * Math.pow(10, this.exponent);
   }
@@ -195,6 +230,7 @@ export class Measure {
       this.exponent === m.exponent && this.significantPart === m.significantPart
     );
   }
+
   toIdentifiers() {
     return {
       significantPart: this.significantPart,

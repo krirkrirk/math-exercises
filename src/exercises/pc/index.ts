@@ -26,6 +26,8 @@ export * from "./motion";
 export * from "./identifyAtomicMassOrAtomicNb";
 export * from "./recognizeRefractionOrReflectionAngles";
 export * from "./orderOfMagnitude";
+export * from "./energy";
+export * from "./motion";
 
 /**exos pris des maths */
 export * from "../math/percent/findProportion";

@@ -1,4 +1,4 @@
-import { atomes } from "#root/pc/molecularChemistry/atome";
+import { atomes } from "#root/pc/constants/molecularChemistry/atome";
 
 const lineLastElements = ["He", "Ne", "Ar", "Kr", "Xe", "Rn", "Og"];
 
