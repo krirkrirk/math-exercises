@@ -48,7 +48,7 @@ Données :
 + Masse de la Terre : $m_T = ${selectedPlanet.mass.measure.toTex({
       scientific: 2,
     })}\\ ${selectedPlanet.mass.unit}$
-+ $G = ${G.toTex({ scientific: 2 })}\\ ${earthG.unit}$`,
++ $G = ${G.toTex({ scientific: 2 })}$`,
     keys: ["N", "timesTenPower"],
     answerFormat: "tex",
     identifiers: { planet: selectedPlanet.name, mass },
