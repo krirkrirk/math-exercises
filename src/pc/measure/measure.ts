@@ -3,10 +3,13 @@ import { ToTexOptions } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import exp from "constants";
 import { DivideUnits } from "../divideUnits";
 import { MultiplyUnit } from "../mulitplyUnits";
 import { Unit } from "../unit";
 import { UnitConverter } from "../UnitConverter";
+import { MassUnit } from "../massUnits";
+import { getMassUnitObjet } from "#root/exercises/utils/getUnitObjet";
 
 export abstract class MeasureConstructor {
   static random() {}
@@ -199,8 +202,17 @@ export class Measure {
 
   convert(unit: string): Measure {
     if (this.unit && this.unit.convert) {
-      console.log(this.unit.convert(unit, this.exponent));
+      const convertedExpo = this.unit.convert(unit);
+      return new Measure(
+        this.significantPart,
+        this.exponent + convertedExpo,
+        getMassUnitObjet(unit),
+      );
     }
-    return new Measure(0, 0);
+    throw this.unit
+      ? new Error(
+          `Conversion is not yet implemented for ${this.unit.className()}`,
+        )
+      : new Error(`Cannot convert a measure without unit.`);
   }
 }

@@ -2,6 +2,8 @@ import { Unit } from "./unit";
 
 export type massValues = "kg" | "hg" | "dag" | "g" | "dg" | "cg" | "mg";
 
+const mass = ["kg", "hg", "dag", "g", "dg", "cg", "mg"];
+
 export class MassUnit implements Unit {
   static readonly kg = new MassUnit("kg");
   static readonly hg = new MassUnit("hg");
@@ -9,6 +11,7 @@ export class MassUnit implements Unit {
   static readonly g = new MassUnit("g");
   static readonly dg = new MassUnit("dg");
   static readonly cg = new MassUnit("cg");
+  static readonly mg = new MassUnit("mg");
 
   unit: massValues;
 
@@ -16,16 +19,20 @@ export class MassUnit implements Unit {
     this.unit = unit;
   }
 
-  convert(unit: string, exponent: number): number {
-    return exponent;
+  convert(unit: string): number {
+    const thisUnitIndex = mass.findIndex((value) => this.unit === value);
+    const unitIndex = mass.findIndex((value) => unit === value);
+    return unitIndex - thisUnitIndex;
   }
 
   toTex(): string {
     return `\\text{${this.unit}}`;
   }
-  getUnit<massValues>(): massValues {
-    return this.unit as massValues;
+
+  getUnit(): string {
+    return this.unit;
   }
+
   className(): string {
     return "MassUnit";
   }

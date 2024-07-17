@@ -17,12 +17,12 @@ import { Measure } from "#root/pc/measure/measure";
 type Identifiers = {};
 
 const getTestUnitQuestion: QuestionGenerator<Identifiers> = () => {
-  const measure1 = new Measure(10, 0, MassUnit.kg);
+  const measure1 = new Measure(150, 0, MassUnit.kg);
   const measure2 = new Measure(15, 0, MassUnit.kg);
   measure1.convert("g");
   const question: Question<Identifiers> = {
     answer: `${randint(1, 100)}`,
-    instruction: `$${measure1.times(measure2).toTex()}$ ${randint(1, 100)}`,
+    instruction: `$${measure1.convert("g").toTex()}$ ${randint(1, 100)}`,
     keys: [],
     answerFormat: "tex",
     identifiers: {},
