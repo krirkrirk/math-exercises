@@ -150,15 +150,22 @@ export class Measure {
         this.significantPart * Math.pow(10, this.exponent - commonExponent);
       const scaledN = n * Math.pow(10, -commonExponent);
       const resultSignificant = scaledThis + scaledN;
-      return new Measure(resultSignificant, commonExponent);
+      return this.unit
+        ? new Measure(resultSignificant, commonExponent, this.unit)
+        : new Measure(resultSignificant, commonExponent);
     } else {
+      if (this.unit?.getUnit() !== n.getUnit())
+        throw new Error(`Cannot add ${this.getUnit()} with ${n.getUnit()}`);
       const commonExponent = Math.min(this.exponent, n.exponent);
       const scaledThis =
         this.significantPart * Math.pow(10, this.exponent - commonExponent);
       const scaledN =
         n.significantPart * Math.pow(10, n.exponent - commonExponent);
       const resultSignificant = scaledThis + scaledN;
-      return new Measure(resultSignificant, commonExponent);
+      const resultUnit = this.unit || n.unit ? this.unit ?? n.unit : undefined;
+      return resultUnit
+        ? new Measure(resultSignificant, commonExponent, resultUnit)
+        : new Measure(resultSignificant, commonExponent);
     }
   }
 
@@ -169,15 +176,22 @@ export class Measure {
         this.significantPart * Math.pow(10, this.exponent - commonExponent);
       const scaledN = n * Math.pow(10, -commonExponent);
       const resultSignificant = scaledThis - scaledN;
-      return new Measure(resultSignificant, commonExponent);
+      return this.unit
+        ? new Measure(resultSignificant, commonExponent, this.unit)
+        : new Measure(resultSignificant, commonExponent);
     } else {
+      if (this.unit?.getUnit() !== n.getUnit())
+        throw new Error(`Cannot add ${this.getUnit()} with ${n.getUnit()}`);
       const commonExponent = Math.min(this.exponent, n.exponent);
       const scaledThis =
         this.significantPart * Math.pow(10, this.exponent - commonExponent);
       const scaledN =
         n.significantPart * Math.pow(10, n.exponent - commonExponent);
       const resultSignificant = scaledThis - scaledN;
-      return new Measure(resultSignificant, commonExponent);
+      const resultUnit = this.unit || n.unit ? this.unit ?? n.unit : undefined;
+      return resultUnit
+        ? new Measure(resultSignificant, commonExponent, resultUnit)
+        : new Measure(resultSignificant, commonExponent);
     }
   }
 
@@ -263,5 +277,9 @@ export class Measure {
           `Conversion is not yet implemented for ${this.unit.className()}`,
         )
       : new Error(`Cannot convert a measure without unit.`);
+  }
+
+  setUnit(unit: Unit) {
+    this.unit = unit;
   }
 }
