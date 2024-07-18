@@ -1,5 +1,8 @@
 import { getUnitExp, Unit } from "./unit";
 import { massValues } from "./massUnits";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 export class MultiplyUnit implements Unit {
   leftChild: Unit;
@@ -11,8 +14,12 @@ export class MultiplyUnit implements Unit {
     this.rightChild = rightChild;
     this.unit = getMultipliedUnitString(this.leftChild, this.rightChild);
   }
+  convert?: ((unit: string) => number) | undefined;
 
   toTex(): string {
+    return this.toTree()
+      .simplify({ keepPowers: true })
+      .toTex({ forceDotSign: true });
     if (
       this.rightChild.className() === this.leftChild.className() &&
       this.rightChild.getUnit() !== this.leftChild.getUnit()
@@ -24,6 +31,10 @@ export class MultiplyUnit implements Unit {
     const multipliedUnits = this.unit;
 
     return multipliedUnits;
+  }
+
+  toTree(): AlgebraicNode {
+    return new MultiplyNode(this.leftChild.toTree(), this.rightChild.toTree());
   }
 
   getUnit(): string {

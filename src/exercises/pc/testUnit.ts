@@ -13,18 +13,18 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { MassUnit } from "#root/pc/units/massUnits";
 import { Measure } from "#root/pc/measure/measure";
+import { DistanceUnit } from "#root/pc/units/distanceUnits";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 
 type Identifiers = {};
 
 const getTestUnitQuestion: QuestionGenerator<Identifiers> = () => {
   const measure1 = new Measure(150, 0, MassUnit.g);
-  const measure2 = new Measure(15, 0, MassUnit.kg);
-  measure1.convert("g");
+  const measure2 = new Measure(15, 0, DistanceUnit.m);
   const question: Question<Identifiers> = {
     answer: `${randint(1, 100)}`,
-    instruction: `$${measure1.toTex()} \\Rightarrow ${measure1
-      .convert("kg")
-      .toTex()}$ ${randint(1, 100)}`,
+    instruction: `$${measure1.times(measure1).toTex()}$${randint(1, 100)}`,
     keys: [],
     answerFormat: "tex",
     identifiers: {},

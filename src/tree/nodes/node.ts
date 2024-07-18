@@ -30,6 +30,7 @@ export type NodeOptions = {
 
 export type ToTexOptions = {
   displayStyle?: boolean;
+  forceDotSign?: boolean;
   //number est le nombre de décimals significatifs
   scientific?: number;
   hideUnit?: boolean;

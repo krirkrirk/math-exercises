@@ -69,8 +69,8 @@ export class MultiplyNode implements CommutativeOperatorNode {
   }
 
   toTex(opts?: ToTexOptions): string {
-    let leftTex = this.leftChild.toTex();
-    let rightTex = this.rightChild.toTex();
+    let leftTex = this.leftChild.toTex(opts);
+    let rightTex = this.rightChild.toTex(opts);
 
     if (
       isNumberNode(this.leftChild) &&
@@ -104,15 +104,17 @@ export class MultiplyNode implements CommutativeOperatorNode {
     }
 
     let showTimesSign =
-      this.opts?.forceTimesSign ||
-      !isNaN(+rightTex[0]) ||
-      isNumberNode(this.rightChild) ||
-      (isVariableNode(this.leftChild) &&
-        isVariableNode(this.rightChild) &&
-        this.leftChild.name === this.rightChild.name);
+      !opts?.forceDotSign &&
+      (this.opts?.forceTimesSign ||
+        !isNaN(+rightTex[0]) ||
+        isNumberNode(this.rightChild) ||
+        (isVariableNode(this.leftChild) &&
+          isVariableNode(this.rightChild) &&
+          this.leftChild.name === this.rightChild.name));
     if (isOperatorNode(this.rightChild)) {
       showTimesSign ||= [OperatorIds.fraction].includes(this.rightChild.id);
     }
+    const cDotSign = opts?.forceDotSign ? ` \\cdot ` : "";
     const nextIsLetter =
       rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
     const prevIsCommand = leftTex.match(/\\[a-z]*$/);
@@ -122,7 +124,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
         : prevIsCommand && nextIsLetter
         ? " "
         : ""
-    }${rightTex}`;
+    }${cDotSign}${rightTex}`;
   }
 
   toAllTexs() {
@@ -343,6 +345,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
       }
 
     sortMultiplyNodes(externals);
+    console.log(opts);
     const simplifyExternalNodes = (a: AlgebraicNode, b: AlgebraicNode) => {
       if (isNumberNode(a) && isNumberNode(b)) {
         return new NumberNode(round(a.value * b.value, 12));
@@ -361,6 +364,23 @@ export class MultiplyNode implements CommutativeOperatorNode {
           new AddNode(b.rightChild, (1).toTree()),
         ).simplify();
       }
+
+      if (isPowerNode(a) && isPowerNode(b)) {
+        if (
+          (a.leftChild as AlgebraicNode).toTex() ===
+          (b.leftChild as AlgebraicNode).toTex()
+        )
+          return new PowerNode(
+            a,
+            new AddNode(a.rightChild, b.rightChild).simplify(),
+          ).simplify();
+      }
+
+      let powerSimplified = powerSimplify(a, b, opts);
+      if (powerSimplified) return powerSimplified;
+      powerSimplified = powerSimplify(b, a, opts);
+      if (powerSimplified) return powerSimplified;
+
       //TODo continue
       return null;
     };
@@ -401,3 +421,23 @@ export class MultiplyNode implements CommutativeOperatorNode {
     );
   }
 }
+
+const powerSimplify = (
+  a: AlgebraicNode,
+  b: AlgebraicNode,
+  opts?: SimplifyOptions,
+): AlgebraicNode | void => {
+  if (isVariableNode(a)) {
+    if (isVariableNode(b) && b.toTex() === a.toTex() && opts?.keepPowers)
+      return new PowerNode(a, new NumberNode(2)).simplify();
+    if (
+      isPowerNode(b) &&
+      (b.leftChild as AlgebraicNode).toTex() === a.toTex()
+    ) {
+      return new PowerNode(
+        a,
+        new AddNode(new NumberNode(1), b.rightChild).simplify(),
+      ).simplify();
+    }
+  }
+};

@@ -1,3 +1,5 @@
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { Unit } from "./unit";
 
 export type massValues = "kg" | "hg" | "dag" | "g" | "dg" | "cg" | "mg";
@@ -17,6 +19,10 @@ export class MassUnit implements Unit {
 
   constructor(unit: massValues) {
     this.unit = unit;
+  }
+
+  toTree(): AlgebraicNode {
+    return new VariableNode(this.unit);
   }
 
   convert(unit: string): number {

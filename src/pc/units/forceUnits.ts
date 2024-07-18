@@ -1,3 +1,5 @@
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { Unit } from "./unit";
 
 export type forceValues = "kN" | "hN" | "daN" | "N" | "dN" | "cN" | "mN";
@@ -16,6 +18,9 @@ export class ForceUnit implements Unit {
 
   constructor(unit: forceValues) {
     this.unit = unit;
+  }
+  toTree(): AlgebraicNode {
+    return new VariableNode(this.unit);
   }
 
   className(): string {

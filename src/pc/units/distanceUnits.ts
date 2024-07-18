@@ -1,3 +1,5 @@
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { Unit } from "./unit";
 
 export type distanceUnits = "km" | "hm" | "dam" | "m" | "dm" | "cm" | "mm";
@@ -15,6 +17,10 @@ export class DistanceUnit implements Unit {
 
   constructor(unit: distanceUnits) {
     this.unit = unit;
+  }
+
+  toTree(): AlgebraicNode {
+    return new VariableNode(this.unit);
   }
 
   toTex(): string {

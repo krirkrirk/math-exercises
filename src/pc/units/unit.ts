@@ -1,7 +1,11 @@
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+
 export interface Unit {
   className: () => string;
   toTex: () => string;
   getUnit: () => string;
+  toTree: () => AlgebraicNode;
   convert?: (unit: string) => number;
 }
 
