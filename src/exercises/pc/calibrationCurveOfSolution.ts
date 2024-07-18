@@ -41,11 +41,10 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
     instruction: exo.instruction,
     keys: [],
     studentGgbOptions: {
-      coords: [-2, 20, minY, maxY],
-      isXAxesNatural: true,
+      coords: [-1, 5, -1, 6],
       isAxesRatioFixed: false,
       enableShiftDragZoom: true,
-      axisLabels: ["$\\tiny{[Xi](C)}$", "$\\tiny{A}$"],
+      axisLabels: ["$\\small{C}$", "$\\small{A}$"],
       customToolBar: toolBarConstructor({
         join: true,
       }),

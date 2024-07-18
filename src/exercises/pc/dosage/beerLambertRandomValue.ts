@@ -81,9 +81,9 @@ const getBeerLambertRandomValueQuestion: QuestionGenerator<
   const instruction = `Vous êtes en train de réaliser l'étalonnage d'une solution ${
     requiresApostropheBefore(molecule.name.toLowerCase()) ? "d'" : "de "
   }${molecule.name.toLowerCase()} en utilisant une solution étalon. Vous avez mesuré les données suivantes :\n
-  - ${knownVariablesText}.
+  - ${knownVariablesText}.\n 
   
-  \n  À partir de ces données, déterminez ${
+À partir de ces données, déterminez ${
     targetVariable.name === "concentration"
       ? "la concentration en $\\text{mol} \\cdot \\text{L}^{-1}$"
       : targetVariable.name === "molarAbsorptivity"
