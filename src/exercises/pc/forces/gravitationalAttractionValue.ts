@@ -35,7 +35,7 @@ const getGravitationalAttractionValueQuestion: QuestionGenerator<
   const answerMeasure = G.times(massKG)
     .times(massEarth.measure)
     .divide(RT.measure.times(RT.measure));
-  const answer = answerMeasure.toTex({ scientific: 2 }) + "N";
+  const answer = answerMeasure.toTex({ scientific: 2, hideUnit: true }) + "N";
 
   const question: Question<Identifiers> = {
     answer,
