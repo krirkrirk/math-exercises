@@ -38,20 +38,19 @@ const getGravitationalAttractionObjectHeightQuestion: QuestionGenerator<
   const massEarth = selectedPlanet.mass;
   const force = G.times(massKG).times(massEarth.measure).divide(d.times(d));
   const answer = h.toScientific(2).toTex();
-
   const instruction = `On lance un objet de masse $${mass}\\ \\text{kg}$. \n Déterminer la hauteur de cet objet par rapport à la surface de la Terre en $\\text{km}$, à partir de la valeur de la force d'attraction gravitationnelle. (Format de la réponse : Écriture scientifique avec 2 chiffres après la virgule)
 
 Données : 
 + Force d'attraction gravitationnelle : $F = ${force
     .toSignificant(2)
-    .toTex()}\\ N$
+    .toTex({ hideUnit: true })}\\ N$
 + Rayon de la Terre : $R_T = ${selectedPlanet.radius.measure.toTex({
     scientific: 2,
   })}\\ ${selectedPlanet.radius.unit}$
 + Masse de la Terre : $m_T = ${selectedPlanet.mass.measure.toTex({
     scientific: 2,
   })}\\ ${selectedPlanet.mass.unit}$
-+ $G = ${G.toTex({ scientific: 2 })}\\ ${earthG.unit}$`;
++ $G = ${G.toTex({ scientific: 2 })}$`;
 
   const hint = `La force d'attraction gravitationnelle entre deux masses est donnée par la loi universelle de la gravitation :
   $$F = G \\cdot \\frac{m_1 \\cdot m_2}{d^2}$$
@@ -66,8 +65,8 @@ Données :
   const correction = `Pour trouver la hauteur $h$, nous réorganisons la loi de la gravitation :
   $$F = G \\cdot \\frac{m_1 \\cdot m_2}{(R_T + h)^2}$$
   où:
-  - $F = ${force.toSignificant(2).toTex()}\\ N$
-  - $G = ${G.toTex({ scientific: 2 })}\\ ${earthG.unit}$
+  - $F = ${force.toSignificant(2).toTex({ hideUnit: true })}\\ N$
+  - $G = ${G.toTex({ scientific: 2 })}$
   - $m_1 = ${mass}\\ \\text{kg}$
   - $m_2 = ${selectedPlanet.mass.measure.toTex({
     scientific: 2,
@@ -86,7 +85,9 @@ Données :
     scientific: 2,
   })} \\cdot ${mass} \\cdot ${selectedPlanet.mass.measure.toTex({
     scientific: 2,
-  })}}{${force.toSignificant(2).toTex()}}} - ${selectedPlanet.radius.measure
+  })}}{${force
+    .toSignificant(2)
+    .toTex({ hideUnit: true })}}} - ${selectedPlanet.radius.measure
     .times(1000)
     .toTex({
       scientific: 2,

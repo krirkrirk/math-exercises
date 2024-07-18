@@ -10,7 +10,6 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { discreteSetKeys } from "#root/exercises/utils/keys/discreteSetKeys";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";

@@ -18,7 +18,7 @@ export class DivideUnits implements Unit {
   convert?: ((unit: string) => number) | undefined;
 
   toTex(): string {
-    const resultTree = this.toTree().simplify();
+    const resultTree = this.toTree().simplify({ keepPowers: true });
     if (isNumberNode(resultTree) && resultTree.value === 1) {
       return "";
     }

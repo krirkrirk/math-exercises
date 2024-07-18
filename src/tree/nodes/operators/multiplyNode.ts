@@ -344,8 +344,6 @@ export class MultiplyNode implements CommutativeOperatorNode {
         return new FractionNode(numNode, denumNode).simplify(opts);
       }
 
-    sortMultiplyNodes(externals);
-    console.log(opts);
     const simplifyExternalNodes = (a: AlgebraicNode, b: AlgebraicNode) => {
       if (isNumberNode(a) && isNumberNode(b)) {
         return new NumberNode(round(a.value * b.value, 12));
@@ -363,17 +361,6 @@ export class MultiplyNode implements CommutativeOperatorNode {
           b.leftChild,
           new AddNode(b.rightChild, (1).toTree()),
         ).simplify();
-      }
-
-      if (isPowerNode(a) && isPowerNode(b)) {
-        if (
-          (a.leftChild as AlgebraicNode).toTex() ===
-          (b.leftChild as AlgebraicNode).toTex()
-        )
-          return new PowerNode(
-            a,
-            new AddNode(a.rightChild, b.rightChild).simplify(),
-          ).simplify();
       }
 
       let powerSimplified = powerSimplify(a, b, opts);
@@ -427,17 +414,27 @@ const powerSimplify = (
   b: AlgebraicNode,
   opts?: SimplifyOptions,
 ): AlgebraicNode | void => {
+  if (isPowerNode(a) && isPowerNode(b)) {
+    if (
+      (a.leftChild as AlgebraicNode).toTex() ===
+      (b.leftChild as AlgebraicNode).toTex()
+    )
+      return new PowerNode(
+        a,
+        new AddNode(a.rightChild, b.rightChild).simplify(opts),
+      ).simplify(opts);
+  }
   if (isVariableNode(a)) {
     if (isVariableNode(b) && b.toTex() === a.toTex() && opts?.keepPowers)
-      return new PowerNode(a, new NumberNode(2)).simplify();
+      return new PowerNode(a, new NumberNode(2)).simplify(opts);
     if (
       isPowerNode(b) &&
       (b.leftChild as AlgebraicNode).toTex() === a.toTex()
     ) {
       return new PowerNode(
         a,
-        new AddNode(new NumberNode(1), b.rightChild).simplify(),
-      ).simplify();
+        new AddNode(new NumberNode(1), b.rightChild).simplify(opts),
+      ).simplify(opts);
     }
   }
 };

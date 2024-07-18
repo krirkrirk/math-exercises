@@ -16,15 +16,17 @@ import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit } from "#root/pc/units/distanceUnits";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { earthG } from "#root/pc/constants/gravity";
 
 type Identifiers = {};
 
 const getTestUnitQuestion: QuestionGenerator<Identifiers> = () => {
   const measure1 = new Measure(150, 0, MassUnit.g);
-  const measure2 = new Measure(15, 0, DistanceUnit.m);
+  const measure2 = new Measure(2, 0);
+  const t = earthG.measure;
   const question: Question<Identifiers> = {
     answer: `${randint(1, 100)}`,
-    instruction: `$${measure1.times(measure1).toTex()}$${randint(1, 100)}`,
+    instruction: `$${t.times(measure2).toTex()}$${randint(1, 100)}`,
     keys: [],
     answerFormat: "tex",
     identifiers: {},

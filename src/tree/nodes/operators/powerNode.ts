@@ -190,6 +190,14 @@ export class PowerNode implements OperatorNode {
     if (isNumberNode(rightSimplified) && rightSimplified.value === 0) {
       return new NumberNode(1);
     }
+    if (isPowerNode(leftSimplified)) {
+      return new PowerNode(
+        leftSimplified.leftChild,
+        new MultiplyNode(rightSimplified, leftSimplified.rightChild).simplify(
+          opts,
+        ),
+      ).simplify(opts);
+    }
     if (
       !opts?.keepPowers &&
       isNumberNode(copy.rightChild) &&
