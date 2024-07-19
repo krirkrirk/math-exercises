@@ -112,7 +112,7 @@ export class Measure {
       const resultSignificant = scaledThis + scaledN;
       return new Measure(resultSignificant, commonExponent, this.unit);
     } else {
-      if (this.unit?.getUnit() !== n.getUnit() && this.hasUnit() && n.hasUnit())
+      if (this.hasUnit() && n.hasUnit() && this.unit?.getUnit() !== n.getUnit())
         throw new Error(`Cannot add ${this.getUnit()} with ${n.getUnit()}`);
       const commonExponent = Math.min(this.exponent, n.exponent);
       const scaledThis =
@@ -135,22 +135,23 @@ export class Measure {
         this.significantPart * Math.pow(10, this.exponent - commonExponent);
       const scaledN = n * Math.pow(10, -commonExponent);
       const resultSignificant = scaledThis - scaledN;
-      return this.unit
-        ? new Measure(resultSignificant, commonExponent, this.unit)
-        : new Measure(resultSignificant, commonExponent);
+      return new Measure(resultSignificant, commonExponent, this.unit);
     } else {
-      if (this.unit?.getUnit() !== n.getUnit() && this.hasUnit() && n.hasUnit())
-        throw new Error(`Cannot add ${this.getUnit()} with ${n.getUnit()}`);
+      if (this.hasUnit() && n.hasUnit() && this.unit?.getUnit() !== n.getUnit())
+        throw new Error(
+          `Cannot substract ${this.getUnit()} with ${n.getUnit()}`,
+        );
       const commonExponent = Math.min(this.exponent, n.exponent);
       const scaledThis =
         this.significantPart * Math.pow(10, this.exponent - commonExponent);
       const scaledN =
         n.significantPart * Math.pow(10, n.exponent - commonExponent);
       const resultSignificant = scaledThis - scaledN;
-      const resultUnit = this.unit || n.unit ? this.unit ?? n.unit : undefined;
-      return resultUnit
-        ? new Measure(resultSignificant, commonExponent, resultUnit)
-        : new Measure(resultSignificant, commonExponent);
+      return new Measure(
+        resultSignificant,
+        commonExponent,
+        this.unit ?? n.unit,
+      );
     }
   }
 

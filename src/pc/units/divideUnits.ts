@@ -1,9 +1,8 @@
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { isNumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { isPowerNode, PowerNode } from "#root/tree/nodes/operators/powerNode";
-import { getUnitExp, Unit } from "./unit";
+import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { Unit } from "./unit";
 
 export class DivideUnits implements Unit {
   leftChild: Unit;
