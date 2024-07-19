@@ -24,13 +24,11 @@ export class DivideUnits implements Unit {
   }
 
   toTree(): AlgebraicNode {
-    console.log(
-      new PowerNode(this.rightChild.toTree(), (-1).toTree()).simplify().toTex(),
-      this.leftChild.toTree().toTex(),
-    );
     return new MultiplyNode(
       this.leftChild.toTree(),
-      new PowerNode(this.rightChild.toTree(), (-1).toTree()).simplify(),
+      new PowerNode(this.rightChild.toTree(), (-1).toTree()).simplify({
+        keepPowers: true,
+      }),
     );
   }
 

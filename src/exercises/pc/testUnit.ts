@@ -28,24 +28,30 @@ const two = new NumberNode(2);
 
 const getTestUnitQuestion: QuestionGenerator<Identifiers> = () => {
   const measure1 = new Measure(
-    150,
+    1,
     0,
     new MultiplyUnit(new PowerUnit(MassUnit.g, two), TimeUnit.s),
   );
 
   const measure2 = new Measure(2, 0, new PowerUnit(MassUnit.g, two));
-  const measure3 = new Measure(
-    2,
+  const measure3 = new Measure(2, 0, new PowerUnit(DistanceUnit.m, two));
+  const measure4 = new Measure(
+    1,
     0,
-    new PowerUnit(MassUnit.kg, new NumberNode(-2)),
+    new MultiplyUnit(MassUnit.kg, MassUnit.kg),
   );
-  const measure4 = new Measure(1, 0, new PowerUnit(MassUnit.kg, two));
 
   console.log(measure4.divide(measure3).toTex());
 
   const question: Question<Identifiers> = {
     answer: `${randint(1, 100)}`,
-    instruction: `$${randint(1, 100)}$`,
+    instruction: `$${measure1
+      .divide(measure2)
+      .times(earthG.measure)
+      .times(measure4)
+      .divide(measure3)
+      .divide(measure1)
+      .toTex()}$${randint(1, 100)}$`,
     keys: [],
     answerFormat: "tex",
     identifiers: {},

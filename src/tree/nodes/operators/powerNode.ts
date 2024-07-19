@@ -9,6 +9,7 @@ import { isLogNode } from "../functions/logNode";
 import { isSqrtNode } from "../functions/sqrtNode";
 import { isFractionNode } from "./fractionNode";
 import { isDivideNode } from "./divideNode";
+import { Power } from "#root/math/numbers/integer/power";
 
 export function isPowerNode(a: Node): a is PowerNode {
   return isOperatorNode(a) && a.id === OperatorIds.power;
@@ -197,6 +198,13 @@ export class PowerNode implements OperatorNode {
           opts,
         ),
       ).simplify(opts);
+    }
+
+    if (isMultiplyNode(leftSimplified)) {
+      return new MultiplyNode(
+        new PowerNode(leftSimplified.leftChild, rightSimplified),
+        new PowerNode(leftSimplified.rightChild, rightSimplified),
+      );
     }
     if (
       !opts?.keepPowers &&
