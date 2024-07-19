@@ -16,6 +16,7 @@ import { round } from "#root/math/utils/round";
 import { planets } from "#root/pc/constants/mechanics/planets";
 import { earthG } from "#root/pc/constants/mechanics/gravitational";
 import { Measure } from "#root/pc/measure/measure";
+import { MassUnit } from "#root/pc/units/massUnits";
 
 type Identifiers = {
   planet: string;
@@ -29,25 +30,23 @@ const getGravitationalAttractionValueQuestion: QuestionGenerator<
   const selectedPlanet = planets.find((planet) => planet.name === "Terre")!; // Sélectionne la Terre
 
   const G = earthG.measure;
-  const RT = selectedPlanet.radius; // Le rayon de la Terre en mètres
-  const massKG = new Measure(mass, -3); // Convertir en kilogrammes
+  const RT = selectedPlanet.radius.convert("m"); // Le rayon de la Terre en mètres
+  const massKG = new Measure(mass, -3, MassUnit.kg); // Convertir en kilogrammes
   const massEarth = selectedPlanet.mass;
-  const answerMeasure = G.times(massKG)
-    .times(massEarth.measure)
-    .divide(RT.measure.times(RT.measure));
-  const answer = answerMeasure.toTex({ scientific: 2, hideUnit: true }) + "N";
+  const answerMeasure = G.times(massKG).times(massEarth).divide(RT.times(RT));
+  const answer = answerMeasure.toTex({ scientific: 2 });
 
   const question: Question<Identifiers> = {
     answer,
     instruction: `On lance un objet de masse $${mass}\\ \\text{g}$. Déterminer la valeur de la force d'attraction gravitationnelle exercée par la Terre sur cet objet (La hauteur $h$ de l'objet par rapport à la surface de la terre est négligeable).
 
 Données : 
-+ Rayon de la Terre : $R_T = ${selectedPlanet.radius.measure.toTex({
++ Rayon de la Terre : $R_T = ${selectedPlanet.radius.toTex({
       scientific: 2,
-    })}\\ ${selectedPlanet.radius.unit}$
-+ Masse de la Terre : $m_T = ${selectedPlanet.mass.measure.toTex({
+    })}$
++ Masse de la Terre : $m_T = ${selectedPlanet.mass.toTex({
       scientific: 2,
-    })}\\ ${selectedPlanet.mass.unit}$
+    })}$
 + $G = ${G.toTex({ scientific: 2 })}$`,
     keys: ["N", "timesTenPower"],
     answerFormat: "tex",
@@ -62,27 +61,30 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, mass }) => {
   addValidProp(propositions, answer);
   const G = earthG.measure;
   const selectedPlanet = planets.find((planet) => planet.name === "Terre")!;
-  const RT = selectedPlanet.radius.measure;
-  const massEarth = selectedPlanet.mass.measure;
+  const RT = selectedPlanet.radius;
+  const massEarth = selectedPlanet.mass;
   const massKG = new Measure(mass, -3);
   tryToAddWrongProp(
     propositions,
     G.times(massKG)
       .times(massEarth)
       .divide(RT.times(RT))
-      .toTex({ scientific: 2 }) + "N",
+      .toTex({ scientific: 2, hideUnit: true }) + "\\ \\text{N}",
   );
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      round(randfloat(1, 20), 2).toTree().toTex() + "N",
+      round(randfloat(1, 20), 2).toTree().toTex() + "\\ \\text{N}",
     );
   }
   return shuffleProps(propositions, n);
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return [answer, answer.replace("N", "")].includes(ans);
+  if (ans === answer) return true;
+  return [answer.replace("\\ N", "N"), answer.replace("\\ N", "")].includes(
+    ans,
+  );
 };
 
 export const gravitationalAttractionValue: Exercise<Identifiers> = {

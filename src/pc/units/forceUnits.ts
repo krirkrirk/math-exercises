@@ -1,5 +1,7 @@
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import exp from "constants";
+import { Measure } from "../measure/measure";
 import { Unit } from "./unit";
 
 export type forceValues = "kN" | "hN" | "daN" | "N" | "dN" | "cN" | "mN";
@@ -35,11 +37,29 @@ export class ForceUnit implements Unit {
     return this.unit;
   }
 
-  convert(unit: string): number {
-    if (!forces.includes(unit))
-      throw new Error(`${unit} is not recognized as a unit.`);
+  convert(
+    significantPart: number,
+    exponent: number,
+    convertToUnit: string,
+  ): Measure {
+    const forcesObjects = [
+      ForceUnit.kN,
+      ForceUnit.hN,
+      ForceUnit.daN,
+      ForceUnit.N,
+      ForceUnit.dN,
+      ForceUnit.cN,
+      ForceUnit.mN,
+    ];
+    if (!forces.includes(convertToUnit))
+      throw new Error(`${convertToUnit} is not recognized as a unit.`);
     const thisUnitIndex = forces.findIndex((value) => this.unit === value);
-    const unitIndex = forces.findIndex((value) => unit === value);
-    return unitIndex - thisUnitIndex;
+    const unitIndex = forces.findIndex((value) => convertToUnit === value);
+    const resultIndex = unitIndex - thisUnitIndex;
+    return new Measure(
+      significantPart,
+      exponent + resultIndex,
+      forcesObjects[resultIndex],
+    );
   }
 }

@@ -1,5 +1,6 @@
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { Measure } from "../measure/measure";
 import { Unit } from "./unit";
 
 export type massValues = "kg" | "hg" | "dag" | "g" | "dg" | "cg" | "mg";
@@ -25,12 +26,30 @@ export class MassUnit implements Unit {
     return new VariableNode(this.unit);
   }
 
-  convert(unit: string): number {
-    if (!mass.includes(unit))
-      throw new Error(`${unit} is not recognized as a unit.`);
+  convert(
+    significantPart: number,
+    exponent: number,
+    convertToUnit: string,
+  ): Measure {
+    const massObjects = [
+      MassUnit.kg,
+      MassUnit.hg,
+      MassUnit.dag,
+      MassUnit.g,
+      MassUnit.dg,
+      MassUnit.cg,
+      MassUnit.mg,
+    ];
+    if (!mass.includes(convertToUnit))
+      throw new Error(`${convertToUnit} is not recognized as a unit.`);
     const thisUnitIndex = mass.findIndex((value) => this.unit === value);
-    const unitIndex = mass.findIndex((value) => unit === value);
-    return unitIndex - thisUnitIndex;
+    const unitIndex = mass.findIndex((value) => convertToUnit === value);
+    const resultIndex = unitIndex - thisUnitIndex;
+    return new Measure(
+      significantPart,
+      exponent + resultIndex,
+      massObjects[resultIndex],
+    );
   }
 
   toTex(): string {

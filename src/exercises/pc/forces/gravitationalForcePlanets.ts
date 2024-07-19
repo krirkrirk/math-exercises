@@ -33,9 +33,9 @@ const getGravitationalForcePlanetsQuestion: QuestionGenerator<
   const massSun = sunMass.measure;
 
   // Convert distance from km to m
-  const distanceInMeters = selectedPlanet.distanceFromSun.measure.times(1000);
+  const distanceInMeters = selectedPlanet.distanceFromSun.convert("m");
 
-  const force = G.times(selectedPlanet.mass.measure)
+  const force = G.times(selectedPlanet.mass)
     .times(massSun)
     .divide(distanceInMeters.times(distanceInMeters))
     .toSignificant(2);
@@ -43,15 +43,13 @@ const getGravitationalForcePlanetsQuestion: QuestionGenerator<
   const instruction = `Considérez la planète ${selectedPlanet.name} dans le ${
     selectedPlanet.system
   }. 
-  La masse de ${
-    selectedPlanet.name
-  } est de $${selectedPlanet.mass.measure.toTex({
+  La masse de ${selectedPlanet.name} est de $${selectedPlanet.mass.toTex({
     scientific: 2,
-  })}\\ ${selectedPlanet.mass.unit}$ et la distance entre ${
+  })}$ et la distance entre ${
     selectedPlanet.name
-  } et le Soleil est de $${selectedPlanet.distanceFromSun.measure.toTex({
+  } et le Soleil est de $${selectedPlanet.distanceFromSun.toTex({
     scientific: 2,
-  })}\\ ${selectedPlanet.distanceFromSun.unit}$. 
+  })}$. 
   Calculez la force gravitationnelle exercée par le Soleil sur ${
     selectedPlanet.name
   }.
@@ -59,10 +57,10 @@ const getGravitationalForcePlanetsQuestion: QuestionGenerator<
 Données:
 - Constante de gravitation universelle: $G = ${G.toTex({
     scientific: 2,
-  })} \\ \\text{N} \\cdot \\text{m}^2 \\cdot \\text{kg}^{-2}$
+  })}$
 - Masse du Soleil: $m_{\\text{soleil}} = ${massSun.toTex({
     scientific: 2,
-  })} \\ \\text{kg}$`;
+  })}$`;
 
   const hint = `Utilisez la formule de la force gravitationnelle.`;
 
@@ -81,19 +79,19 @@ Données:
   En utilisant les valeurs fournies :
   $$F_{\\text{Soleil/${selectedPlanet.name}}} = ${G.toTex({
     scientific: 2,
-  })} \\cdot \\frac{${selectedPlanet.mass.measure.toTex({
+  })} \\cdot \\frac{${selectedPlanet.mass.toTex({
     scientific: 2,
   })} \\cdot ${massSun.toTex({
     scientific: 2,
   })}}{(${distanceInMeters.toTex({
     scientific: 2,
-  })})^2} = ${force.toTex({ scientific: 2 })} \\ \\text{N}$$. \n
+  })})^2} = ${force.toTex({ scientific: 2 })}$$. \n
   Donc, la force gravitationnelle exercée par le Soleil sur ${
     selectedPlanet.name
-  } est $${force.toTex({ scientific: 2 })}\\ N$.`;
+  } est $${force.toTex({ scientific: 2 })}$.`;
 
   const question: Question<Identifiers> = {
-    answer: force.toTex({ scientific: 2 }) + "N",
+    answer: force.toTex({ scientific: 2 }),
     instruction,
     hint,
     correction,
@@ -101,8 +99,8 @@ Données:
     answerFormat: "tex",
     identifiers: {
       planet: selectedPlanet.name,
-      mass: selectedPlanet.mass.measure,
-      distance: selectedPlanet.distanceFromSun.measure,
+      mass: selectedPlanet.mass,
+      distance: selectedPlanet.distanceFromSun,
     },
   };
 
@@ -138,21 +136,37 @@ const getPropositions: QCMGenerator<Identifiers> = (
     .divide(distanceInMeters)
     .toSignificant(2);
 
-  tryToAddWrongProp(propositions, wrongAnswer1.toTex({ scientific: 2 }) + "N");
-  tryToAddWrongProp(propositions, wrongAnswer2.toTex({ scientific: 2 }) + "N");
-  tryToAddWrongProp(propositions, wrongAnswer3.toTex({ scientific: 2 }) + "N");
+  tryToAddWrongProp(
+    propositions,
+    wrongAnswer1.toTex({ scientific: 2, hideUnit: true }),
+  ) + "\\ \\text{N}";
+  tryToAddWrongProp(
+    propositions,
+    wrongAnswer2.toTex({ scientific: 2, hideUnit: true }),
+  ) + "\\ \\text{N}";
+  tryToAddWrongProp(
+    propositions,
+    wrongAnswer3.toTex({ scientific: 2, hideUnit: true }),
+  ) + "\\ \\text{N}";
 
   while (propositions.length < n) {
     const errorFactor = new Measure(1, randint(1, 5));
     const wrongAnswer = correctAnswer.times(errorFactor);
-    tryToAddWrongProp(propositions, wrongAnswer.toTex({ scientific: 2 }) + "N");
+    tryToAddWrongProp(
+      propositions,
+      wrongAnswer.toTex({ scientific: 2 }) + "\\ \\text{N}",
+    );
   }
 
   return shuffleProps(propositions, n);
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return [answer, answer.replace("N", "")].includes(ans);
+  console.log(ans, answer);
+  if (ans === answer) return true;
+  return [answer.replace("\\ N", "N"), answer.replace("\\ N", "")].includes(
+    ans,
+  );
 };
 
 export const gravitationalForcePlanets: Exercise<Identifiers> = {

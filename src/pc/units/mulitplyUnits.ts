@@ -11,7 +11,6 @@ export class MultiplyUnit implements Unit {
     this.rightChild = rightChild;
     this.unit = rightChild.getUnit() + `\\cdot` + leftChild.getUnit();
   }
-  convert?: ((unit: string) => number) | undefined;
 
   toTex(): string {
     return this.toTree()

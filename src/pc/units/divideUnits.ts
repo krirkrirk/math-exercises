@@ -15,8 +15,6 @@ export class DivideUnits implements Unit {
     this.rightChild = rightChild;
     this.unit = leftChild.getUnit() + "/" + rightChild.getUnit();
   }
-  convert?: ((unit: string) => number) | undefined;
-
   toTex(): string {
     const resultTree = this.toTree().simplify({ keepPowers: true });
     if (isNumberNode(resultTree) && resultTree.value === 1) {
@@ -35,7 +33,7 @@ export class DivideUnits implements Unit {
   toTree(): AlgebraicNode {
     return new MultiplyNode(
       this.leftChild.toTree(),
-      new PowerNode(this.rightChild.toTree(), (-1).toTree()),
+      new PowerNode(this.rightChild.toTree(), (-1).toTree()).simplify(),
     );
   }
 

@@ -1,12 +1,17 @@
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { Measure } from "../measure/measure";
 
 export interface Unit {
   className: () => string;
   toTex: () => string;
   getUnit: () => string;
   toTree: () => AlgebraicNode;
-  convert?: (unit: string) => number;
+  convert?: (
+    significantPart: number,
+    exponent: number,
+    convertToUnit: string,
+  ) => Measure;
 }
 
 export const getUnitExp = (unit: Unit): number => {
