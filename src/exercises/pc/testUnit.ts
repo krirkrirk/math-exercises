@@ -27,12 +27,13 @@ type Identifiers = {};
 const two = new NumberNode(2);
 
 const getTestUnitQuestion: QuestionGenerator<Identifiers> = () => {
-  const measure1 = new Measure(1, 0, MassUnit.kg);
-  const measure2 = new Measure(2, 0, MassUnit.g);
+  const measure1 = new Measure(1, 0, MassUnit.g);
+  const measure2 = new Measure(2, 0, MassUnit.kg);
+  const test = measure1.convert("kg");
 
   const question: Question<Identifiers> = {
     answer: `${randint(1, 100)}`,
-    instruction: `$${measure1.times(measure2).toTex()}$${randint(1, 100)}$`,
+    instruction: `$${test.divide(measure2).toTex()}$${randint(1, 100)}$`,
     keys: [],
     answerFormat: "tex",
     identifiers: {},

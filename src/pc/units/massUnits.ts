@@ -41,14 +41,14 @@ export class MassUnit implements Unit {
       MassUnit.mg,
     ];
     if (!mass.includes(convertToUnit))
-      throw new Error(`${convertToUnit} is not recognized as a unit.`);
+      throw new Error(`cannot convert ${this.toTex()} to ${convertToUnit}.`);
     const thisUnitIndex = mass.findIndex((value) => this.unit === value);
     const unitIndex = mass.findIndex((value) => convertToUnit === value);
     const resultIndex = unitIndex - thisUnitIndex;
     return new Measure(
       significantPart,
       exponent + resultIndex,
-      massObjects[resultIndex],
+      massObjects[unitIndex],
     );
   }
 

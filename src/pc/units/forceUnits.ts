@@ -52,14 +52,14 @@ export class ForceUnit implements Unit {
       ForceUnit.mN,
     ];
     if (!forces.includes(convertToUnit))
-      throw new Error(`${convertToUnit} is not recognized as a unit.`);
+      throw new Error(`cannot convert ${this.toTex()} to ${convertToUnit}.`);
     const thisUnitIndex = forces.findIndex((value) => this.unit === value);
     const unitIndex = forces.findIndex((value) => convertToUnit === value);
     const resultIndex = unitIndex - thisUnitIndex;
     return new Measure(
       significantPart,
       exponent + resultIndex,
-      forcesObjects[resultIndex],
+      forcesObjects[unitIndex],
     );
   }
 }

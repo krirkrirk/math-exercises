@@ -30,14 +30,14 @@ export class TimeUnit implements Unit {
   ): Measure {
     const timeObjects = [TimeUnit.h, TimeUnit.mi, TimeUnit.s, TimeUnit.ms];
     if (!times.includes(convertToUnit))
-      throw new Error(`${convertToUnit} is not recognized as a unit.`);
+      throw new Error(`cannot convert ${this.toTex()} to ${convertToUnit}.`);
     const thisUnitIndex = times.findIndex((value) => this.unit === value);
     const unitIndex = times.findIndex((value) => convertToUnit === value);
     const resultIndex = unitIndex - thisUnitIndex;
     return new Measure(
       significantPart,
       exponent + resultIndex,
-      timeObjects[resultIndex],
+      timeObjects[unitIndex],
     );
   }
 
