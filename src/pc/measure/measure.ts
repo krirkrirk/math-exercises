@@ -89,9 +89,7 @@ export class Measure {
   }
   divide(n: number | Measure) {
     if (typeof n === "number")
-      return this.unit
-        ? new Measure(this.significantPart / n, this.exponent, this.unit)
-        : new Measure(this.significantPart / n, this.exponent);
+      return new Measure(this.significantPart / n, this.exponent, this.unit);
     if (this.unit && n.unit)
       return new Measure(
         this.significantPart / n.significantPart,

@@ -1,3 +1,4 @@
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { Measure } from "../measure/measure";
 import { DistanceUnit } from "../units/distanceUnits";
 import { DivideUnits } from "../units/divideUnits";
@@ -8,6 +9,8 @@ import { MultiplyUnit } from "../units/mulitplyUnits";
 type PhysicalConstant = {
   measure: Measure;
 };
+
+const two = new NumberNode(2);
 
 export const earthGravity: PhysicalConstant = {
   measure: new Measure(9.80665, 0, new DivideUnits(ForceUnit.N, MassUnit.kg)),

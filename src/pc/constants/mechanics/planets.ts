@@ -1,7 +1,11 @@
 import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit } from "#root/pc/units/distanceUnits";
+import { DivideUnits } from "#root/pc/units/divideUnits";
 import { MassUnit } from "#root/pc/units/massUnits";
 import { MultiplyUnit } from "#root/pc/units/mulitplyUnits";
+import { PowerUnit } from "#root/pc/units/powerUnits";
+import { TimeUnit } from "#root/pc/units/timeUnits";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
 export class Planet {
   name: string;
@@ -11,7 +15,7 @@ export class Planet {
   radius: Measure;
   mass: Measure;
   surfaceArea: Measure;
-  gravity: { measure: Measure; unit: string };
+  gravity: Measure;
   distanceFromSun: Measure;
 
   constructor(
@@ -22,7 +26,7 @@ export class Planet {
     radius: Measure,
     mass: Measure,
     surfaceArea: Measure,
-    gravity: { value: number; exponent: number; unit: string },
+    gravity: Measure,
     distanceFromSun: Measure,
   ) {
     this.name = name;
@@ -32,10 +36,7 @@ export class Planet {
     this.radius = radius;
     this.mass = mass;
     this.surfaceArea = surfaceArea;
-    this.gravity = {
-      measure: new Measure(gravity.value, gravity.exponent),
-      unit: gravity.unit,
-    };
+    this.gravity = gravity;
     this.distanceFromSun = distanceFromSun;
   }
 }
@@ -49,7 +50,14 @@ export const planets: Planet[] = [
     new Measure(2.4397, 3, DistanceUnit.km),
     new Measure(3.3011, 23, MassUnit.kg),
     new Measure(7.48, 7, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
-    { value: 3.7, exponent: 0, unit: "m/s²" },
+    new Measure(
+      3.7,
+      0,
+      new DivideUnits(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
     new Measure(5.79, 7, DistanceUnit.km),
   ),
   new Planet(
@@ -60,7 +68,14 @@ export const planets: Planet[] = [
     new Measure(6.0518, 3, DistanceUnit.km),
     new Measure(48.675, 23, MassUnit.kg),
     new Measure(46.0, 7, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
-    { value: 8.87, exponent: 0, unit: "m/s²" },
+    new Measure(
+      8.87,
+      0,
+      new DivideUnits(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
     new Measure(10.82, 7, DistanceUnit.km),
   ),
   new Planet(
@@ -71,7 +86,14 @@ export const planets: Planet[] = [
     new Measure(6.371, 3, DistanceUnit.km),
     new Measure(5.972, 24, MassUnit.kg),
     new Measure(51.0, 7, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
-    { value: 9.81, exponent: 0, unit: "m/s²" },
+    new Measure(
+      9.81,
+      0,
+      new DivideUnits(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
     new Measure(14.96, 7, DistanceUnit.km),
   ),
   new Planet(
@@ -82,7 +104,14 @@ export const planets: Planet[] = [
     new Measure(3.3895, 3, DistanceUnit.km),
     new Measure(0.64171, 24, MassUnit.kg),
     new Measure(14.48, 6, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
-    { value: 3.71, exponent: 0, unit: "m/s²" },
+    new Measure(
+      3.71,
+      0,
+      new DivideUnits(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
     new Measure(22.79, 7, DistanceUnit.km),
   ),
   new Planet(
@@ -93,7 +122,14 @@ export const planets: Planet[] = [
     new Measure(69.911, 3, DistanceUnit.km),
     new Measure(18986, 23, MassUnit.kg),
     new Measure(614.19, 6, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
-    { value: 24.79, exponent: 0, unit: "m/s²" },
+    new Measure(
+      24.79,
+      0,
+      new DivideUnits(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
     new Measure(77.84, 7, DistanceUnit.km),
   ),
   new Planet(
@@ -104,7 +140,14 @@ export const planets: Planet[] = [
     new Measure(58.232, 3, DistanceUnit.km),
     new Measure(5683, 23, MassUnit.kg),
     new Measure(427.0, 6, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
-    { value: 10.44, exponent: 0, unit: "m/s²" },
+    new Measure(
+      10.44,
+      0,
+      new DivideUnits(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
     new Measure(143.35, 7, DistanceUnit.km),
   ),
   new Planet(
@@ -115,7 +158,14 @@ export const planets: Planet[] = [
     new Measure(25.362, 3, DistanceUnit.km),
     new Measure(868.13, 23, MassUnit.kg),
     new Measure(808.3, 6, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
-    { value: 8.69, exponent: 0, unit: "m/s²" },
+    new Measure(
+      8.69,
+      0,
+      new DivideUnits(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
     new Measure(287.25, 7, DistanceUnit.km),
   ),
   new Planet(
@@ -126,7 +176,14 @@ export const planets: Planet[] = [
     new Measure(24.622, 3, DistanceUnit.km),
     new Measure(1024.13, 23, MassUnit.kg),
     new Measure(761.8, 6, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
-    { value: 11.15, exponent: 0, unit: "m/s²" },
+    new Measure(
+      11.15,
+      0,
+      new DivideUnits(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
     new Measure(449.51, 7, DistanceUnit.km),
   ),
 ];

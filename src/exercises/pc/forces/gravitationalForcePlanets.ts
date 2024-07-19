@@ -138,16 +138,16 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
   tryToAddWrongProp(
     propositions,
-    wrongAnswer1.toTex({ scientific: 2, hideUnit: true }),
-  ) + "\\ \\text{N}";
+    wrongAnswer1.toTex({ scientific: 2, hideUnit: true }) + "\\ \\text{N}",
+  );
   tryToAddWrongProp(
     propositions,
-    wrongAnswer2.toTex({ scientific: 2, hideUnit: true }),
-  ) + "\\ \\text{N}";
+    wrongAnswer2.toTex({ scientific: 2, hideUnit: true }) + "\\ \\text{N}",
+  );
   tryToAddWrongProp(
     propositions,
-    wrongAnswer3.toTex({ scientific: 2, hideUnit: true }),
-  ) + "\\ \\text{N}";
+    wrongAnswer3.toTex({ scientific: 2, hideUnit: true }) + "\\ \\text{N}",
+  );
 
   while (propositions.length < n) {
     const errorFactor = new Measure(1, randint(1, 5));
@@ -162,7 +162,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  console.log(ans, answer);
   if (ans === answer) return true;
   return [answer.replace("\\ N", "N"), answer.replace("\\ N", "")].includes(
     ans,

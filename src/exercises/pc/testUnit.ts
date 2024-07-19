@@ -17,16 +17,35 @@ import { DistanceUnit } from "#root/pc/units/distanceUnits";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { earthG } from "#root/pc/constants/gravity";
+import { PowerUnit } from "#root/pc/units/powerUnits";
+import { MultiplyUnit } from "#root/pc/units/mulitplyUnits";
+import { TimeUnit } from "#root/pc/units/timeUnits";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
 type Identifiers = {};
 
+const two = new NumberNode(2);
+
 const getTestUnitQuestion: QuestionGenerator<Identifiers> = () => {
-  const measure1 = new Measure(150, 0, MassUnit.g);
-  const measure2 = new Measure(2, 0);
-  const t = earthG.measure;
+  const measure1 = new Measure(
+    150,
+    0,
+    new MultiplyUnit(new PowerUnit(MassUnit.g, two), TimeUnit.s),
+  );
+
+  const measure2 = new Measure(2, 0, new PowerUnit(MassUnit.g, two));
+  const measure3 = new Measure(
+    2,
+    0,
+    new PowerUnit(MassUnit.kg, new NumberNode(-2)),
+  );
+  const measure4 = new Measure(1, 0, new PowerUnit(MassUnit.kg, two));
+
+  console.log(measure4.divide(measure3).toTex());
+
   const question: Question<Identifiers> = {
     answer: `${randint(1, 100)}`,
-    instruction: `$${t.times(measure2).toTex()}$${randint(1, 100)}`,
+    instruction: `$${randint(1, 100)}$`,
     keys: [],
     answerFormat: "tex",
     identifiers: {},

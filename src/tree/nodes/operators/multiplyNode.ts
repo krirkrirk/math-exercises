@@ -420,7 +420,7 @@ const powerSimplify = (
       (b.leftChild as AlgebraicNode).toTex()
     )
       return new PowerNode(
-        a,
+        a.leftChild,
         new AddNode(a.rightChild, b.rightChild).simplify(opts),
       ).simplify(opts);
   }

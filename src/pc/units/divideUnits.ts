@@ -20,17 +20,14 @@ export class DivideUnits implements Unit {
     if (isNumberNode(resultTree) && resultTree.value === 1) {
       return "";
     }
-    /*if (this.rightChild.getUnit() === this.leftChild.getUnit()) {
-      return ``;
-    }
-    const rightChildExp = getUnitExp(this.rightChild);
-    return `${this.leftChild.toTex()} \\cdot ${
-      this.rightChild.toTex().split("^")[0]
-    }^{${-rightChildExp}}`;*/
     return resultTree.toTex({ forceDotSign: true });
   }
 
   toTree(): AlgebraicNode {
+    console.log(
+      new PowerNode(this.rightChild.toTree(), (-1).toTree()).simplify().toTex(),
+      this.leftChild.toTree().toTex(),
+    );
     return new MultiplyNode(
       this.leftChild.toTree(),
       new PowerNode(this.rightChild.toTree(), (-1).toTree()).simplify(),
