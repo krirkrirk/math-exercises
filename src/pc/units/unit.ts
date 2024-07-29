@@ -2,22 +2,23 @@ import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { Measure } from "../measure/measure";
 
-export interface Unit {
-  className: () => string;
-  toTex: () => string;
-  getUnit: () => string;
-  toTree: () => AlgebraicNode;
-  convert?: (
+export abstract class Unit {
+  unit: string;
+
+  constructor(unit: string) {
+    this.unit = unit;
+  }
+
+  getUnit(): string {
+    return this.unit;
+  }
+
+  abstract className(): string;
+  abstract toTex(): string;
+  abstract toTree(): AlgebraicNode;
+  abstract convert?(
     significantPart: number,
     exponent: number,
     convertToUnit: string,
-  ) => Measure;
+  ): Measure;
 }
-
-export const getUnitExp = (unit: Unit): number => {
-  const splittedUnit = unit.getUnit().split("^");
-  const exp: number = unit.getUnit().includes("^")
-    ? +splittedUnit[1].replaceAll("{", "").replaceAll("}", "")
-    : 1;
-  return exp;
-};

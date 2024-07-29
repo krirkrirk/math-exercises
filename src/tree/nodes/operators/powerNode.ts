@@ -4,12 +4,6 @@ import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { MultiplyNode, isMultiplyNode } from "./multiplyNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
-import { isExpNode } from "../functions/expNode";
-import { isLogNode } from "../functions/logNode";
-import { isSqrtNode } from "../functions/sqrtNode";
-import { isFractionNode } from "./fractionNode";
-import { isDivideNode } from "./divideNode";
-import { Power } from "#root/math/numbers/integer/power";
 
 export function isPowerNode(a: Node): a is PowerNode {
   return isOperatorNode(a) && a.id === OperatorIds.power;

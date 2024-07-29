@@ -1,4 +1,4 @@
-import { getUnitExp, Unit } from "./unit";
+import { Unit } from "./unit";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 
 export class MultiplyUnit implements Unit {

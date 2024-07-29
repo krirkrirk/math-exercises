@@ -1,13 +1,11 @@
-import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
-import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { Measure } from "../measure/measure";
+import { BasicUnit } from "./basicUnit";
 import { Unit } from "./unit";
 
-export type massValues = "kg" | "hg" | "dag" | "g" | "dg" | "cg" | "mg";
+type massValues = "kg" | "hg" | "dag" | "g" | "dg" | "cg" | "mg";
 
-const mass = ["kg", "hg", "dag", "g", "dg", "cg", "mg"];
+const mass: massValues[] = ["kg", "hg", "dag", "g", "dg", "cg", "mg"];
 
-export class MassUnit implements Unit {
+export class MassUnit extends BasicUnit {
   static readonly kg = new MassUnit("kg");
   static readonly hg = new MassUnit("hg");
   static readonly dag = new MassUnit("dag");
@@ -16,22 +14,14 @@ export class MassUnit implements Unit {
   static readonly cg = new MassUnit("cg");
   static readonly mg = new MassUnit("mg");
 
-  unit: massValues;
-
-  constructor(unit: massValues) {
-    this.unit = unit;
+  className(): string {
+    return "MassUnit";
   }
-
-  toTree(): AlgebraicNode {
-    return new VariableNode(this.unit);
+  getUnitsValues(): string[] {
+    return mass;
   }
-
-  convert(
-    significantPart: number,
-    exponent: number,
-    convertToUnit: string,
-  ): Measure {
-    const massObjects = [
+  getUnitsObjects(): Unit[] {
+    return [
       MassUnit.kg,
       MassUnit.hg,
       MassUnit.dag,
@@ -40,27 +30,5 @@ export class MassUnit implements Unit {
       MassUnit.cg,
       MassUnit.mg,
     ];
-    if (!mass.includes(convertToUnit))
-      throw new Error(`cannot convert ${this.toTex()} to ${convertToUnit}.`);
-    const thisUnitIndex = mass.findIndex((value) => this.unit === value);
-    const unitIndex = mass.findIndex((value) => convertToUnit === value);
-    const resultIndex = unitIndex - thisUnitIndex;
-    return new Measure(
-      significantPart,
-      exponent + resultIndex,
-      massObjects[unitIndex],
-    );
-  }
-
-  toTex(): string {
-    return `\\text{${this.unit}}`;
-  }
-
-  getUnit(): string {
-    return this.unit;
-  }
-
-  className(): string {
-    return "MassUnit";
   }
 }

@@ -6,18 +6,13 @@ import { Unit } from "./unit";
 export type timeValues = "h" | "mi" | "s" | "ms";
 
 const times = ["h", "mi", "s", "ms"];
+const timesValue = [1 / 60, 1, 60, 60000];
 
-export class TimeUnit implements Unit {
+export class TimeUnit extends Unit {
   static readonly h = new TimeUnit("h");
   static readonly mi = new TimeUnit("mi");
   static readonly s = new TimeUnit("s");
   static readonly ms = new TimeUnit("ms");
-
-  unit: timeValues;
-
-  constructor(unit: timeValues) {
-    this.unit = unit;
-  }
 
   toTree(): AlgebraicNode {
     return new VariableNode(this.unit);
@@ -29,16 +24,15 @@ export class TimeUnit implements Unit {
     convertToUnit: string,
   ): Measure {
     const timeObjects = [TimeUnit.h, TimeUnit.mi, TimeUnit.s, TimeUnit.ms];
+    const unitIndex = times.findIndex((value) => convertToUnit === value);
     if (!times.includes(convertToUnit))
       throw new Error(`cannot convert ${this.toTex()} to ${convertToUnit}.`);
-    const thisUnitIndex = times.findIndex((value) => this.unit === value);
-    const unitIndex = times.findIndex((value) => convertToUnit === value);
-    const resultIndex = unitIndex - thisUnitIndex;
-    return new Measure(
-      significantPart,
-      exponent + resultIndex,
-      timeObjects[unitIndex],
-    );
+    let convertedSignificantPart = this.convertToMinute(significantPart);
+    if (convertToUnit !== "mi") {
+      convertedSignificantPart =
+        timesValue[unitIndex] * convertedSignificantPart;
+    }
+    return new Measure(significantPart, exponent, timeObjects[unitIndex]);
   }
 
   toTex(): string {
@@ -51,5 +45,19 @@ export class TimeUnit implements Unit {
 
   className(): string {
     return "TimeUnit";
+  }
+
+  convertToMinute(significantPart: number): number {
+    switch (this.unit) {
+      case "h":
+        return significantPart * 60;
+      case "mi":
+        return significantPart;
+      case "s:":
+        return significantPart / 60;
+      case "ms":
+        return significantPart / 60000;
+    }
+    return 0;
   }
 }

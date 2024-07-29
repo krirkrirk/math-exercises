@@ -5,6 +5,7 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { DivideUnits } from "../units/divideUnits";
 import { MultiplyUnit } from "../units/mulitplyUnits";
+import { TestUnit } from "../units/testUnit";
 import { Unit } from "../units/unit";
 
 export abstract class MeasureConstructor {

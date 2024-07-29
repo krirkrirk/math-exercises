@@ -3,11 +3,12 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import exp from "constants";
 import { Measure } from "../measure/measure";
 import { Unit } from "./unit";
+import { BasicUnit } from "./basicUnit";
 
 export type forceValues = "kN" | "hN" | "daN" | "N" | "dN" | "cN" | "mN";
 const forces = ["kN", "hN", "daN", "N", "dN", "cN", "mN"];
 
-export class ForceUnit implements Unit {
+export class ForceUnit extends BasicUnit {
   static readonly kN = new ForceUnit("kN");
   static readonly hN = new ForceUnit("hN");
   static readonly daN = new ForceUnit("daN");
@@ -16,33 +17,15 @@ export class ForceUnit implements Unit {
   static readonly cN = new ForceUnit("cN");
   static readonly mN = new ForceUnit("mN");
 
-  unit: forceValues;
-
-  constructor(unit: forceValues) {
-    this.unit = unit;
-  }
-  toTree(): AlgebraicNode {
-    return new VariableNode(this.unit);
-  }
-
   className(): string {
     return "ForceUnit";
   }
 
-  toTex(): string {
-    return `\\text{${this.unit}}`;
+  getUnitsValues(): string[] {
+    return forces;
   }
-
-  getUnit(): string {
-    return this.unit;
-  }
-
-  convert(
-    significantPart: number,
-    exponent: number,
-    convertToUnit: string,
-  ): Measure {
-    const forcesObjects = [
+  getUnitsObjects(): Unit[] {
+    return [
       ForceUnit.kN,
       ForceUnit.hN,
       ForceUnit.daN,
@@ -51,15 +34,5 @@ export class ForceUnit implements Unit {
       ForceUnit.cN,
       ForceUnit.mN,
     ];
-    if (!forces.includes(convertToUnit))
-      throw new Error(`cannot convert ${this.toTex()} to ${convertToUnit}.`);
-    const thisUnitIndex = forces.findIndex((value) => this.unit === value);
-    const unitIndex = forces.findIndex((value) => convertToUnit === value);
-    const resultIndex = unitIndex - thisUnitIndex;
-    return new Measure(
-      significantPart,
-      exponent + resultIndex,
-      forcesObjects[unitIndex],
-    );
   }
 }
