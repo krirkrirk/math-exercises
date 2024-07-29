@@ -3,9 +3,15 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { Measure } from "../measure/measure";
 import { Unit } from "./unit";
 
-export abstract class BasicUnit extends Unit {
+export abstract class BasicUnit implements Unit {
+  unit: string;
+
   constructor(unit: string) {
-    super(unit);
+    this.unit = unit;
+  }
+
+  getUnit(): string {
+    return this.unit;
   }
 
   toTex(): string {

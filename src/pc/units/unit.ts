@@ -1,22 +1,13 @@
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
-import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { Measure } from "../measure/measure";
 
-export abstract class Unit {
-  unit: string;
+export interface Unit {
+  getUnit(): string;
 
-  constructor(unit: string) {
-    this.unit = unit;
-  }
-
-  getUnit(): string {
-    return this.unit;
-  }
-
-  abstract className(): string;
-  abstract toTex(): string;
-  abstract toTree(): AlgebraicNode;
-  abstract convert?(
+  className(): string;
+  toTex(): string;
+  toTree(): AlgebraicNode;
+  convert?(
     significantPart: number,
     exponent: number,
     convertToUnit: string,

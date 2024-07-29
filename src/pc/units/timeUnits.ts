@@ -8,11 +8,17 @@ export type timeValues = "h" | "mi" | "s" | "ms";
 const times = ["h", "mi", "s", "ms"];
 const timesValue = [1 / 60, 1, 60, 60000];
 
-export class TimeUnit extends Unit {
+export class TimeUnit implements Unit {
   static readonly h = new TimeUnit("h");
   static readonly mi = new TimeUnit("mi");
   static readonly s = new TimeUnit("s");
   static readonly ms = new TimeUnit("ms");
+
+  unit: string;
+
+  constructor(unit: string) {
+    this.unit = unit;
+  }
 
   toTree(): AlgebraicNode {
     return new VariableNode(this.unit);
