@@ -137,8 +137,29 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { answer, variable, concentration, quantity, volume },
+) => {
+  let validanswer;
+  switch (variable) {
+    case "C":
+      validanswer = round(quantity / volume, 2);
+      break;
+    case "n":
+      validanswer = round(concentration * volume, 2);
+      break;
+    case "V":
+      validanswer = round(quantity / concentration, 2);
+      break;
+  }
+
+  const latexs = [
+    ...validanswer.toTree().toAllValidTexs(),
+    validanswer.toScientific(2).toTex(),
+  ];
+
+  return latexs.includes(ans);
 };
 
 export const concentrationCalculation: Exercise<Identifiers> = {

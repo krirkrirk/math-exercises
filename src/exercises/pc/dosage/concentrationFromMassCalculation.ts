@@ -134,8 +134,29 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { answer, variable, mass, molarMass, concentration },
+) => {
+  let validanswer;
+  switch (variable) {
+    case "C":
+      validanswer = round(mass / molarMass, 2);
+      break;
+    case "t":
+      validanswer = round(concentration * molarMass, 2);
+      break;
+    case "M":
+      validanswer = round(mass / concentration, 2);
+      break;
+  }
+
+  const latexs = [
+    ...validanswer.toTree().toAllValidTexs(),
+    validanswer.toScientific(2).toTex(),
+  ];
+
+  return latexs.includes(ans);
 };
 
 export const concentrationFromMassCalculation: Exercise<Identifiers> = {
