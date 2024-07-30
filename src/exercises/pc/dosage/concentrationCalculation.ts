@@ -30,7 +30,7 @@ const getConcentrationCalculationQuestion: QuestionGenerator<
   const quantity = round(randfloat(0.1, 5), 2); // Quantité de matière en mol
   const volume = round(randfloat(0.1, 2), 2); // Volume en L
 
-  const variableIndex = randint(0, 2);
+  const variableIndex = randint(0, 3);
   const variables = ["C", "n", "V"] as const;
   const variable = variables[variableIndex];
 
