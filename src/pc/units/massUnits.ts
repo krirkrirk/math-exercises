@@ -5,7 +5,7 @@ type massValues = "kg" | "hg" | "dag" | "g" | "dg" | "cg" | "mg";
 
 const mass: massValues[] = ["kg", "hg", "dag", "g", "dg", "cg", "mg"];
 
-export class MassUnit extends BaseTenUnit {
+export class MassUnit extends BaseTenUnit<massValues> {
   static readonly kg = new MassUnit("kg");
   static readonly hg = new MassUnit("hg");
   static readonly dag = new MassUnit("dag");
@@ -20,7 +20,7 @@ export class MassUnit extends BaseTenUnit {
   getUnitsValues(): string[] {
     return mass;
   }
-  getUnitsObjects(): Unit[] {
+  getUnitsObjects(): Unit<massValues>[] {
     return [
       MassUnit.kg,
       MassUnit.hg,

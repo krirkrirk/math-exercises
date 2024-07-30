@@ -3,12 +3,12 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { Unit } from "./unit";
 
-export class PowerUnit implements Unit {
-  leftChild: Unit;
+export class PowerUnit implements Unit<any> {
+  leftChild: Unit<any>;
   rightChild: NumberNode;
   unit: string;
 
-  constructor(leftChild: Unit, rightChild: NumberNode) {
+  constructor(leftChild: Unit<any>, rightChild: NumberNode) {
     this.leftChild = leftChild;
     this.rightChild = rightChild;
     this.unit = leftChild.getUnit() + `^${rightChild}`;

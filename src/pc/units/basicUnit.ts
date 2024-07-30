@@ -3,7 +3,7 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { Measure } from "../measure/measure";
 import { Unit } from "./unit";
 
-export abstract class BasicUnit implements Unit {
+export abstract class BasicUnit<T> implements Unit<T> {
   unit: string;
 
   constructor(unit: string) {
@@ -23,7 +23,7 @@ export abstract class BasicUnit implements Unit {
   abstract convert?(
     significantPart: number,
     exponent: number,
-    convertToUnit: string,
-  ): Measure;
+    convertToUnit: T,
+  ): Measure<T>;
   abstract className(): string;
 }

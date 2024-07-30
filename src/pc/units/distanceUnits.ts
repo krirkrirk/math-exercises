@@ -3,11 +3,11 @@ import { Unit } from "./unit";
 
 export type distanceUnits = "km" | "hm" | "dam" | "m" | "dm" | "cm" | "mm";
 const distances = ["km", "hm", "dam", "m", "dm", "cm", "mm"];
-export class DistanceUnit extends BaseTenUnit {
+export class DistanceUnit extends BaseTenUnit<distanceUnits> {
   getUnitsValues(): string[] {
     return distances;
   }
-  getUnitsObjects(): Unit[] {
+  getUnitsObjects(): Unit<distanceUnits>[] {
     return [
       DistanceUnit.km,
       DistanceUnit.hm,

@@ -2,12 +2,12 @@ import { Unit } from "./unit";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { Measure } from "../measure/measure";
 
-export class MultiplyUnit implements Unit {
-  leftChild: Unit;
-  rightChild: Unit;
+export class MultiplyUnit implements Unit<any> {
+  leftChild: Unit<any>;
+  rightChild: Unit<any>;
   unit: string;
 
-  constructor(leftChild: Unit, rightChild: Unit) {
+  constructor(leftChild: Unit<any>, rightChild: Unit<any>) {
     this.leftChild = leftChild;
     this.rightChild = rightChild;
     this.unit = rightChild.getUnit() + `\\cdot` + leftChild.getUnit();

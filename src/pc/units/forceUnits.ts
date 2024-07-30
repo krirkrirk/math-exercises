@@ -4,7 +4,7 @@ import { BaseTenUnit } from "./baseTenUnit";
 export type forceValues = "kN" | "hN" | "daN" | "N" | "dN" | "cN" | "mN";
 const forces = ["kN", "hN", "daN", "N", "dN", "cN", "mN"];
 
-export class ForceUnit extends BaseTenUnit {
+export class ForceUnit extends BaseTenUnit<forceValues> {
   static readonly kN = new ForceUnit("kN");
   static readonly hN = new ForceUnit("hN");
   static readonly daN = new ForceUnit("daN");
@@ -20,7 +20,7 @@ export class ForceUnit extends BaseTenUnit {
   getUnitsValues(): string[] {
     return forces;
   }
-  getUnitsObjects(): Unit[] {
+  getUnitsObjects(): Unit<forceValues>[] {
     return [
       ForceUnit.kN,
       ForceUnit.hN,

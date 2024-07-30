@@ -4,12 +4,12 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { Unit } from "./unit";
 
-export class DivideUnits implements Unit {
-  leftChild: Unit;
-  rightChild: Unit;
+export class DivideUnits implements Unit<any> {
+  leftChild: Unit<any>;
+  rightChild: Unit<any>;
   unit: string;
 
-  constructor(leftChild: Unit, rightChild: Unit) {
+  constructor(leftChild: Unit<any>, rightChild: Unit<any>) {
     this.leftChild = leftChild;
     this.rightChild = rightChild;
     this.unit = leftChild.getUnit() + "/" + rightChild.getUnit();

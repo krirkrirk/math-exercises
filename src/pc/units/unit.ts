@@ -1,7 +1,7 @@
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { Measure } from "../measure/measure";
 
-export interface Unit {
+export interface Unit<T> {
   getUnit(): string;
   className(): string;
   toTex(): string;
@@ -9,6 +9,6 @@ export interface Unit {
   convert?(
     significantPart: number,
     exponent: number,
-    convertToUnit: string,
-  ): Measure;
+    convertToUnit: T,
+  ): Measure<T>;
 }
