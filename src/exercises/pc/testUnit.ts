@@ -7,19 +7,11 @@ import {
   VEA,
   addValidProp,
   shuffleProps,
-  tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { MassUnit } from "#root/pc/units/massUnits";
 import { Measure } from "#root/pc/measure/measure";
-import { DistanceUnit } from "#root/pc/units/distanceUnits";
-import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { earthG } from "#root/pc/constants/gravity";
-import { PowerUnit } from "#root/pc/units/powerUnits";
-import { MultiplyUnit } from "#root/pc/units/mulitplyUnits";
-import { TimeUnit } from "#root/pc/units/timeUnits";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
 type Identifiers = {};
@@ -28,15 +20,14 @@ const two = new NumberNode(2);
 
 const getTestUnitQuestion: QuestionGenerator<Identifiers> = () => {
   const measure1 = new Measure(200, 0, MassUnit.kg);
-  const measure2 = new Measure(200, 0, DistanceUnit.km);
+  const measure2 = new Measure(200, 0, MassUnit.kg);
 
   const question: Question<Identifiers> = {
     answer: `${randint(1, 100)}`,
-    instruction: `$${measure1
-      .times(measure2)
-      .divide(measure1)
-      .times(measure2)
-      .toTex()}          $${randint(1, 100)}$`,
+    instruction: `$${measure1.convert("g").times(measure1).toTex()} $${randint(
+      1,
+      100,
+    )}$`,
     keys: [],
     answerFormat: "tex",
     identifiers: {},

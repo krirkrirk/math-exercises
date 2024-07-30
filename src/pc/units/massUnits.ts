@@ -1,11 +1,11 @@
-import { BasicUnit } from "./basicUnit";
+import { BaseTenUnit } from "./baseTenUnit";
 import { Unit } from "./unit";
 
 type massValues = "kg" | "hg" | "dag" | "g" | "dg" | "cg" | "mg";
 
 const mass: massValues[] = ["kg", "hg", "dag", "g", "dg", "cg", "mg"];
 
-export class MassUnit extends BasicUnit {
+export class MassUnit extends BaseTenUnit {
   static readonly kg = new MassUnit("kg");
   static readonly hg = new MassUnit("hg");
   static readonly dag = new MassUnit("dag");

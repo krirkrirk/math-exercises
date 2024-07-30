@@ -3,7 +3,6 @@ import { Measure } from "../measure/measure";
 
 export interface Unit {
   getUnit(): string;
-
   className(): string;
   toTex(): string;
   toTree(): AlgebraicNode;

@@ -1,27 +1,19 @@
-import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
-import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { Measure } from "../measure/measure";
-import { Unit } from "./unit";
+import { BasicUnit } from "./basicUnit";
 
 export type timeValues = "h" | "mi" | "s" | "ms";
 
 const times = ["h", "mi", "s", "ms"];
 const timesValue = [1 / 60, 1, 60, 60000];
 
-export class TimeUnit implements Unit {
+export class TimeUnit extends BasicUnit {
   static readonly h = new TimeUnit("h");
   static readonly mi = new TimeUnit("mi");
   static readonly s = new TimeUnit("s");
   static readonly ms = new TimeUnit("ms");
 
-  unit: string;
-
-  constructor(unit: string) {
-    this.unit = unit;
-  }
-
-  toTree(): AlgebraicNode {
-    return new VariableNode(this.unit);
+  className(): string {
+    return "TimeUnit";
   }
 
   convert(
@@ -39,18 +31,6 @@ export class TimeUnit implements Unit {
         timesValue[unitIndex] * convertedSignificantPart;
     }
     return new Measure(significantPart, exponent, timeObjects[unitIndex]);
-  }
-
-  toTex(): string {
-    return `\\text{${this.unit}}`;
-  }
-
-  getUnit(): string {
-    return this.unit;
-  }
-
-  className(): string {
-    return "TimeUnit";
   }
 
   convertToMinute(significantPart: number): number {

@@ -1,12 +1,9 @@
-import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
-import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { Measure } from "../measure/measure";
-import { BasicUnit } from "./basicUnit";
+import { BaseTenUnit } from "./baseTenUnit";
 import { Unit } from "./unit";
 
 export type distanceUnits = "km" | "hm" | "dam" | "m" | "dm" | "cm" | "mm";
 const distances = ["km", "hm", "dam", "m", "dm", "cm", "mm"];
-export class DistanceUnit extends BasicUnit {
+export class DistanceUnit extends BaseTenUnit {
   getUnitsValues(): string[] {
     return distances;
   }
