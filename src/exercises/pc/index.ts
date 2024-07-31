@@ -21,13 +21,13 @@ export * from "./mole";
 export * from "./mecanicalWaves";
 export * from "./fluids";
 export * from "./electricity";
-export * from "./testUnit";
 export * from "./motion";
 export * from "./identifyAtomicMassOrAtomicNb";
 export * from "./recognizeRefractionOrReflectionAngles";
 export * from "./orderOfMagnitude";
 export * from "./energy";
 export * from "./motion";
+export * from "./power";
 
 /**exos pris des maths */
 export * from "../math/percent/findProportion";
