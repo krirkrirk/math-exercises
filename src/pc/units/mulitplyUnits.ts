@@ -1,6 +1,5 @@
 import { Unit } from "./unit";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { Measure } from "../measure/measure";
 
 export class MultiplyUnit implements Unit<any> {
   leftChild: Unit<any>;

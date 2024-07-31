@@ -38,7 +38,7 @@ const getGravitationalAttractionValueQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer,
-    instruction: `On lance un objet de masse $${mass} $${MassUnit.g.toTex()}$$. Déterminer la valeur de la force d'attraction gravitationnelle exercée par la Terre sur cet objet (La hauteur $h$ de l'objet par rapport à la surface de la terre est négligeable).
+    instruction: `On lance un objet de masse $${mass}\\ ${MassUnit.g.toTex()}$. Déterminer la valeur de la force d'attraction gravitationnelle exercée par la Terre sur cet objet (La hauteur $h$ de l'objet par rapport à la surface de la terre est négligeable).
 
 Données : 
 + Rayon de la Terre : $R_T = ${selectedPlanet.radius.toTex({
