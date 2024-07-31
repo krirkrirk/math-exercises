@@ -2,7 +2,7 @@ import { Measure } from "../measure/measure";
 import { BasicUnit } from "./basicUnit";
 import { Unit } from "./unit";
 
-export abstract class BaseTenUnit<T> extends BasicUnit<T> {
+export abstract class BaseTenUnit<T extends string> extends BasicUnit<T> {
   convert(
     significantPart: number,
     exponent: number,

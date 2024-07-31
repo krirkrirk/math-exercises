@@ -3,7 +3,7 @@ import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { Measure } from "../measure/measure";
 import { Unit } from "./unit";
 
-export abstract class BasicUnit<T> implements Unit<T> {
+export abstract class BasicUnit<T extends string> implements Unit<T> {
   unit: string;
 
   constructor(unit: string) {

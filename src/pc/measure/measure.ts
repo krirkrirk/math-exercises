@@ -10,7 +10,7 @@ import { Unit } from "../units/unit";
 export abstract class MeasureConstructor {
   static random() {}
 }
-export class Measure<T = any> {
+export class Measure<T extends string = any> {
   exponent: number;
   significantPart: number;
   unit?: Unit<T>;
