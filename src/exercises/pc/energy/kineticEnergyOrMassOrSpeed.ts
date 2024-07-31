@@ -13,6 +13,7 @@ import { frenchify } from "#root/math/utils/latex/frenchify";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
+import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit } from "#root/pc/units/distanceUnits";
 import { DivideUnits } from "#root/pc/units/divideUnits";
 import { MassUnit } from "#root/pc/units/massUnits";
@@ -66,19 +67,27 @@ const getPropositions: QCMGenerator<Identifiers> = (
   }
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, mass }) => {
+  console.log(new Measure(mass, 0, MassUnit.kg).toTex({ notScientific: true }));
   return ans === answer;
 };
 
 const getExericse = () => {
   const mass = randint(900, 1501);
+  const massMeasure = new Measure(mass, 0, MassUnit.kg);
   const velocity = Math.floor(Math.random() * 20 + 10);
+  const velocityMeasure = new Measure(velocity, 0, speedUnit);
 
   const kineticEnergy = round((0.5 * mass * velocity ** 2) / 1000, 2);
 
   const isAsking = random(["la masse", "l'énergie cinétique", "la vitesse"]);
 
-  const instruction = getInstruction(isAsking, mass, velocity, kineticEnergy);
+  const instruction = getInstruction(
+    isAsking,
+    massMeasure,
+    velocityMeasure,
+    kineticEnergy,
+  );
 
   const answer = frenchify(
     round(getAnswer(isAsking, mass, velocity, kineticEnergy), 2),
@@ -113,19 +122,21 @@ const getAnswer = (
 
 const getInstruction = (
   isAsking: string,
-  mass: number,
-  velocity: number,
+  massMeasure: Measure,
+  velocityMeasure: Measure,
   kineticEnergy: number,
 ) => {
   switch (isAsking) {
     case "l'énergie cinétique":
-      return `Une voiture ayant une masse de $${mass}\\ ${MassUnit.kg.toTex()}$ qui se déplace le long d'une route. La voiture accélère et atteint une vitesse de $${velocity}\\ ${speedUnit.toTex()}$.
+      return `Une voiture ayant une masse de $${massMeasure.toTex(
+        {},
+      )}$ qui se déplace le long d'une route. La voiture accélère et atteint une vitesse de $${velocityMeasure.toTex()}$.
    $\\\\$ Calculer l'énergie cinétique (en $\\text{kJ}$) de la voiture lorsqu'elle atteint cette vitesse.`;
     case "la masse":
-      return `Une voiture ayant une énergie cinétique de $${kineticEnergy}\\ \\text{kJ}$ qui se déplace le long d'une route. La voiture accélère et atteint une vitesse de $${velocity}\\ ${speedUnit.toTex()}$.
+      return `Une voiture ayant une énergie cinétique de $${kineticEnergy}\\ \\text{kJ}$ qui se déplace le long d'une route. La voiture accélère et atteint une vitesse de $${velocityMeasure.toTex()}$.
    $\\\\$ Calculer la masse (en $${MassUnit.kg.toTex()}$) de la voiture lorsqu'elle atteint cette vitesse, arrondie au centiéme.`;
     case "la vitesse":
-      return `Une voiture ayant une masse de $${mass}\\ ${MassUnit.kg.toTex()}$ qui se déplace le long d'une route. L'énergie cinétique de la voiture est de $${kineticEnergy}\\ \\text{kJ}$.
+      return `Une voiture ayant une masse de $${massMeasure.toTex()}$ qui se déplace le long d'une route. L'énergie cinétique de la voiture est de $${kineticEnergy}\\ \\text{kJ}$.
    $\\\\$ Calculer la vitesse (en $${speedUnit.toTex()}$) de la voiture, arrondie au centiéme.`;
   }
   return "";

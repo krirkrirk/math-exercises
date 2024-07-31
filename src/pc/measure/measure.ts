@@ -3,6 +3,7 @@ import { ToTexOptions } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { toScientific } from "#root/utils/numberPrototype/toScientific";
 import { DivideUnits } from "../units/divideUnits";
 import { MultiplyUnit } from "../units/mulitplyUnits";
 import { Unit } from "../units/unit";
@@ -148,6 +149,7 @@ export class Measure<T extends string = any> {
   }
 
   toTex(opts?: ToTexOptions) {
+    let tex = "";
     const decimals = opts?.scientific;
     const nbTree =
       decimals === undefined
@@ -156,28 +158,39 @@ export class Measure<T extends string = any> {
             this.significantPart,
             roundSignificant(this.significantPart, decimals),
           );
-    if (this.exponent === 0) {
-      return (
-        nbTree.toTex() +
-        `${this.unit && !opts?.hideUnit ? `\\ ${this.unit.toTex()}` : ""}`
-      );
-    }
-    if (this.exponent === 1) {
-      return (
-        new MultiplyNode(nbTree, (10).toTree()).toTex({
-          scientific: decimals,
-        }) + `${this.unit && !opts?.hideUnit ? `\\ ${this.unit.toTex()}` : ""}`
-      );
-    }
-    return (
-      new MultiplyNode(
+    if (opts?.notScientific) {
+      tex = this.toScientificTex();
+    } else if (this.exponent === 0) {
+      tex = nbTree.toTex();
+    } else if (this.exponent === 1) {
+      tex = new MultiplyNode(nbTree, (10).toTree()).toTex({
+        scientific: decimals,
+      });
+    } else {
+      tex = new MultiplyNode(
         nbTree,
         new PowerNode((10).toTree(), this.exponent.toTree()),
-      ).toTex({ scientific: decimals }) +
-      `${this.unit && !opts?.hideUnit ? `\\ ${this.unit.toTex()}` : ""}`
+      ).toTex({ scientific: decimals });
+    }
+    return (
+      tex + `${this.unit && !opts?.hideUnit ? `\\ ${this.unit.toTex()}` : ""}`
     );
   }
-
+  private toScientificTex() {
+    let result = (this.significantPart + "").replace(".", "");
+    if (this.exponent >= 0) {
+      for (let n = result.length; n <= this.exponent; n++) {
+        result += 0;
+      }
+    }
+    if (this.exponent < 0) {
+      for (let n = 0; n < Math.abs(this.exponent); n++) {
+        result = 0 + result;
+      }
+      result = `${result[0]},${result.slice(1)}`;
+    }
+    return result;
+  }
   /**
    * n = nb decimals
    */

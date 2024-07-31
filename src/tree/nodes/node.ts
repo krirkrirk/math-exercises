@@ -34,6 +34,7 @@ export type ToTexOptions = {
   //number est le nombre de décimals significatifs
   scientific?: number;
   hideUnit?: boolean;
+  notScientific?: boolean;
 };
 export interface Node {
   type: NodeType;
