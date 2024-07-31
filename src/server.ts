@@ -66,16 +66,10 @@ const runServer = () => {
   app.use(cors());
   console.log("math exos", mathExercises.length);
   console.log("pc exos", pcExercises.length);
-  // const node = new MultiplyNode(
-  //   (4).toTree(),
-  //   new CosNode(
-  //     new MultiplyNode(
-  //       new FractionNode(new MultiplyNode((2).toTree(), PiNode), (3).toTree()),
-  //       new VariableNode("x"),
-  //     ),
-  //   ),
-  // ).simplify();
-  // console.log(node);
+  const node = new MultiplyNode(new VariableNode("x"), new VariableNode("x"))
+    .simplify()
+    .toTex();
+  console.log(node);
 
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
