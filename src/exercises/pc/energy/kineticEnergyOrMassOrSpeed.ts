@@ -159,7 +159,7 @@ const getInstruction = (
       )}$ qui se déplace le long d'une route. La voiture accélère et atteint une vitesse de $${velocityMeasure.toTex(
         { notScientific: true },
       )}$.
-      $\\\\$Calculer la masse (en $${MassUnit.kg.toTex()}$) de la voiture lorsqu'elle atteint cette vitesse, arrondie au centiéme.`;
+      $\\\\$Calculer la masse (en $${MassUnit.kg.toTex()}$) de la voiture lorsqu'elle atteint cette vitesse.`;
 
     case "la vitesse":
       return `Une voiture ayant une masse de $${massMeasure.toTex({
@@ -167,7 +167,7 @@ const getInstruction = (
       })}$ qui se déplace le long d'une route. L'énergie cinétique de la voiture est de $${kineticEnergyMeasure.toTex(
         { notScientific: true },
       )}$.
-      $\\\\$Calculer la vitesse (en $${speedUnit.toTex()}$) de la voiture, arrondie au centiéme.`;
+      $\\\\$Calculer la vitesse (en $${speedUnit.toTex()}$) de la voiture.`;
   }
 
   return "";
@@ -207,10 +207,10 @@ const getCorrection = (
           notScientific: true,
         },
       )}\\Rightarrow ${kineticEnergyJ.toTex({ notScientific: true })}$ 
-2. $m=\\frac{${kineticEnergyJ.toTex({
+2. $m=\\frac{2E_c}{v^2} \\Rightarrow m=\\frac{2 \\times ${kineticEnergyJ.toTex({
         hideUnit: true,
         notScientific: true,
-      })} \\times 2}{${velocityMeasure.toTex({
+      })}}{${velocityMeasure.toTex({
         notScientific: true,
         hideUnit: true,
       })}^2}\\ \\Rightarrow m=${massMeasure.toTex({
@@ -224,10 +224,12 @@ const getCorrection = (
           notScientific: true,
         },
       )}\\Rightarrow ${kineticEnergyJ.toTex({ notScientific: true })}$ 
-2. $v=\\sqrt{\\frac{${kineticEnergyJ.toTex({
-        hideUnit: true,
-        notScientific: true,
-      })}\\times2}{${massMeasure.toTex({
+2. $v=\\sqrt{\\frac{2E_c}{m}} \\Rightarrow v=\\sqrt{\\frac{2 \\times ${kineticEnergyJ.toTex(
+        {
+          hideUnit: true,
+          notScientific: true,
+        },
+      )}}{${massMeasure.toTex({
         hideUnit: true,
         notScientific: true,
       })}}}\\ \\Rightarrow v=${velocityMeasure.toTex({
