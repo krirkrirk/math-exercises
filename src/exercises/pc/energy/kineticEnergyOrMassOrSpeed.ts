@@ -16,7 +16,7 @@ import { round } from "#root/math/utils/round";
 import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit } from "#root/pc/units/distanceUnits";
 import { DivideUnit } from "#root/pc/units/divideUnit";
-import { EnergyUnit } from "#root/pc/units/energyUnit";
+import { EnergyUnit, energyValues } from "#root/pc/units/energyUnit";
 import { MassUnit } from "#root/pc/units/massUnits";
 import { TimeUnit } from "#root/pc/units/timeUnits";
 import { random } from "#root/utils/random";
@@ -70,12 +70,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   }
   return shuffle(propositions);
 };
-const isAnswerValid: VEA<Identifiers> = (
-  ans,
-  { answer, mass, kineticEnergy },
-) => {
-  const t = new Measure(kineticEnergy, 0, EnergyUnit.J);
-  console.log(kineticEnergy, t.toTex(), t.toTex({ notScientific: true }));
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
@@ -86,7 +81,7 @@ const getExericse = () => {
   const velocityMeasure = new Measure(velocity, 0, speedUnit);
 
   const kineticEnergy = round((0.5 * mass * velocity ** 2) / 1000, 2);
-  const kineticEnergyMeasure = new Measure(kineticEnergy, 0, EnergyUnit.J);
+  const kineticEnergyMeasure = new Measure(kineticEnergy, 0, EnergyUnit.kJ);
   const isAsking = random(["la masse", "l'énergie cinétique", "la vitesse"]);
 
   const hint = `L'énergie cinétique $(E_c)$ d'un objet en mouvement est donnée par la formule, $E_c=\\frac{1}{2}m \\times v^2$ :
@@ -95,12 +90,14 @@ const getExericse = () => {
     DistanceUnit.m,
     TimeUnit.s,
   ).toTex()})$
-- $E_c$ est l'énergie cinétique de l'objet en $(${EnergyUnit.J.toTex()})$`;
+- $E_c$ est l'énergie cinétique de l'objet en $(${EnergyUnit.kJ.toTex()})$`;
 
-  const correction = `Appliquer la formule de l'énergie cinétique, $E_c=\\frac{1}{2}m \\times v^2$:
-- $E_c=\\frac{1}{2} ${mass} \\times ${velocity}^2\\ \\Rightarrow E_c=${kineticEnergyMeasure.toTex(
-    { notScientific: true },
-  )}$`;
+  const correction = getCorrection(
+    isAsking,
+    kineticEnergyMeasure,
+    massMeasure,
+    velocityMeasure,
+  );
 
   const instruction = getInstruction(
     isAsking,
@@ -155,7 +152,7 @@ const getInstruction = (
       })}$ qui se déplace le long d'une route. La voiture accélère et atteint une vitesse de $${velocityMeasure.toTex(
         { notScientific: true },
       )}$.
-      $\\\\$Calculer l'énergie cinétique (en $${EnergyUnit.J.toTex()}$) de la voiture lorsqu'elle atteint cette vitesse.`;
+      $\\\\$Calculer l'énergie cinétique (en $${EnergyUnit.kJ.toTex()}$) de la voiture lorsqu'elle atteint cette vitesse.`;
 
     case "la masse":
       return `Une voiture ayant une énergie cinétique de $${kineticEnergyMeasure.toTex(
@@ -176,6 +173,70 @@ const getInstruction = (
 
   return "";
 };
+
+const getCorrection = (
+  isAsking: string,
+  kineticEnergyMeasure: Measure<energyValues>,
+  massMeasure: Measure,
+  velocityMeasure: Measure,
+) => {
+  const kineticEnergyJ = kineticEnergyMeasure.convert("J");
+  switch (isAsking) {
+    case "l'énergie cinétique":
+      return `Utiliser la formule de l'énergie cinétique, $E_c=\\frac{1}{2}m \\times v^2$:
+1. $E_c=\\frac{1}{2} ${massMeasure.toTex({
+        notScientific: true,
+        hideUnit: true,
+      })} \\times ${velocityMeasure.toTex({
+        hideUnit: true,
+        notScientific: true,
+      })}^2\\ \\Rightarrow E_c=${kineticEnergyJ.toTex({
+        notScientific: true,
+      })}$
+2. Convertir les $${EnergyUnit.J.toTex()}$ en $${EnergyUnit.kJ.toTex()}$, $E_c=\\frac{${kineticEnergyJ.toTex(
+        {
+          notScientific: true,
+        },
+      )}}{1000} \\Rightarrow E_c=${kineticEnergyMeasure.toTex({
+        notScientific: true,
+      })}$`;
+
+    case "la masse":
+      return `Utiliser la formule de l'énergie cinétique, $E_c=\\frac{1}{2}m \\times v^2$:
+1. Convertir les $${EnergyUnit.kJ.toTex()}$ en $${EnergyUnit.J.toTex()}$, $${kineticEnergyMeasure.toTex(
+        {
+          notScientific: true,
+        },
+      )}\\Rightarrow ${kineticEnergyJ.toTex({ notScientific: true })}$ 
+2. $m=\\frac{${kineticEnergyJ.toTex({
+        hideUnit: true,
+        notScientific: true,
+      })} \\times 2}{${velocityMeasure.toTex({
+        notScientific: true,
+        hideUnit: true,
+      })}^2}\\ \\Rightarrow m=${massMeasure.toTex({
+        notScientific: true,
+      })}$`;
+
+    case "la vitesse":
+      return `Utiliser la formule de l'énergie cinétique, $E_c=\\frac{1}{2}m \\times v^2$:
+1. Convertir les $${EnergyUnit.kJ.toTex()}$ en $${EnergyUnit.J.toTex()}$, $${kineticEnergyMeasure.toTex(
+        {
+          notScientific: true,
+        },
+      )}\\Rightarrow ${kineticEnergyJ.toTex({ notScientific: true })}$ 
+2. $v=\\sqrt{\\frac{${kineticEnergyJ.toTex({
+        hideUnit: true,
+        notScientific: true,
+      })}\\times2}{${massMeasure.toTex({
+        hideUnit: true,
+        notScientific: true,
+      })}}}\\ \\Rightarrow v=${velocityMeasure.toTex({
+        notScientific: true,
+      })}$`;
+  }
+};
+
 export const kineticEnergyOrMassOrSpeed: Exercise<Identifiers> = {
   id: "kineticEnergyOrMassOrSpeed",
   connector: "=",
