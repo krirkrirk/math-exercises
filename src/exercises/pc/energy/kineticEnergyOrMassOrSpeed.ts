@@ -90,7 +90,7 @@ const getExericse = () => {
     DistanceUnit.m,
     TimeUnit.s,
   ).toTex()})$
-- $E_c$ est l'énergie cinétique de l'objet en $(${EnergyUnit.kJ.toTex()})$`;
+- $E_c$ est l'énergie cinétique de l'objet en $(${EnergyUnit.J.toTex()})$`;
 
   const correction = getCorrection(
     isAsking,
