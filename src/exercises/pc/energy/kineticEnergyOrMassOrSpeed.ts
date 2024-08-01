@@ -38,7 +38,6 @@ const getKineticEnergyOrMassOrSpeedQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     instruction: exercise.instruction,
-    startStatement: "Ec",
     answer: exercise.answer,
     hint: exercise.hint,
     correction: exercise.correction,
@@ -239,7 +238,6 @@ const getCorrection = (
 
 export const kineticEnergyOrMassOrSpeed: Exercise<Identifiers> = {
   id: "kineticEnergyOrMassOrSpeed",
-  connector: "=",
   label: "Calculer l'énergie cinétique",
   levels: ["4ème", "3ème", "2nde", "1reSpé"],
   sections: ["Mécanique"],
