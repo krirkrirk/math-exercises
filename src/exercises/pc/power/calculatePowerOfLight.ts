@@ -14,7 +14,6 @@ import { randint } from "#root/math/utils/random/randint";
 import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit } from "#root/pc/units/distanceUnits";
 import { DivideUnits } from "#root/pc/units/divideUnits";
-import { MultiplyUnit } from "#root/pc/units/mulitplyUnits";
 import { PowerUnit } from "#root/pc/units/powerUnits";
 import { WattUnit } from "#root/pc/units/wattUnit";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -50,7 +49,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, E, S }) => {
   );
   let random;
   while (propositions.length < n) {
-    random = randint(E * S - 5, E * S + 5, [E]);
+    random = randint(E * S - 10, E * S + 10, [E]);
     tryToAddWrongProp(
       propositions,
       new Measure(random, 0, WattUnit.W).toTex({ notScientific: true }),
@@ -74,7 +73,7 @@ const getExercise = () => {
     0,
     new DivideUnits(WattUnit.W, new PowerUnit(DistanceUnit.m, two)),
   );
-  const S = new Measure(randint(2, 9), 0, new PowerUnit(DistanceUnit.m, two));
+  const S = new Measure(randint(3, 11), 0, new PowerUnit(DistanceUnit.m, two));
   const lightPower = E.times(S).toSignificant(2);
 
   const instruction = `Une cellule photovoltaïque est exposée à une lumière dont l'éclairement $E$ est de $${E.toTex(
@@ -97,7 +96,7 @@ const getExercise = () => {
 export const calculatePowerOfLight: Exercise<Identifiers> = {
   id: "calculatePowerOfLight",
   label: "Calcul de puissance lumineuse.",
-  levels: [],
+  levels: ["1reSpé"],
   isSingleStep: true,
   sections: [],
   generator: (nb: number) =>
