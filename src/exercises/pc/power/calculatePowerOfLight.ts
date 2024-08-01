@@ -31,6 +31,8 @@ const getCalculatePowerOfLightQuestion: QuestionGenerator<Identifiers> = () => {
     answer: exo.answer,
     instruction: exo.instruction,
     keys: [],
+    hint: exo.hint,
+    correction: exo.correction,
     answerFormat: "tex",
     identifiers: {
       E: exo.E.significantPart * Math.pow(10, exo.E.exponent),
@@ -85,9 +87,20 @@ const getExercise = () => {
     { notScientific: true },
   )}$`;
 
+  const hint = `Rappel : La puissance lumineuse reçue $P$, exprimée en $${WattUnit.W.toTex()}$, est donnée par la formule :
+- $P=E \\cdot S$
+`;
+
+  const correction = `En appliquant la formule $P=E \\cdot S$ on obtient : 
+- $P=${E.toTex({ notScientific: true })} \\times ${S.toTex({
+    notScientific: true,
+  })}\\ \\Rightarrow  P=${lightPower.toTex({ notScientific: true })}$`;
+
   return {
     instruction,
     answer: lightPower.toTex({ hideUnit: true, notScientific: true }),
+    hint,
+    correction,
     E,
     S,
     lightPower,
@@ -98,12 +111,12 @@ export const calculatePowerOfLight: Exercise<Identifiers> = {
   label: "Calcul de puissance lumineuse.",
   levels: ["1reSpé"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Lumière"],
   generator: (nb: number) =>
     getDistinctQuestions(getCalculatePowerOfLightQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  subject: "Mathématiques",
+  subject: "Physique",
 };
