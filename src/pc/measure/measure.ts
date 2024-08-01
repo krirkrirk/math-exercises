@@ -3,8 +3,7 @@ import { ToTexOptions } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
-import { toScientific } from "#root/utils/numberPrototype/toScientific";
-import { DivideUnits } from "../units/divideUnits";
+import { DivideUnit } from "../units/divideUnit";
 import { MultiplyUnit } from "../units/mulitplyUnits";
 import { Unit } from "../units/unit";
 
@@ -93,7 +92,7 @@ export class Measure<T extends string = any> {
       return new Measure(
         this.significantPart / n.significantPart,
         this.exponent - n.exponent,
-        new DivideUnits(this.unit, n.unit),
+        new DivideUnit(this.unit, n.unit),
       );
     return new Measure(
       this.significantPart / n.significantPart,
@@ -159,7 +158,7 @@ export class Measure<T extends string = any> {
             roundSignificant(this.significantPart, decimals),
           );
     if (opts?.notScientific) {
-      tex = this.toScientificTex();
+      tex = this.toNotScientificTex();
     } else if (this.exponent === 0) {
       tex = nbTree.toTex();
     } else if (this.exponent === 1) {
@@ -176,11 +175,16 @@ export class Measure<T extends string = any> {
       tex + `${this.unit && !opts?.hideUnit ? `\\ ${this.unit.toTex()}` : ""}`
     );
   }
-  private toScientificTex() {
+  private toNotScientificTex() {
     let result = (this.significantPart + "").replace(".", "");
     if (this.exponent >= 0) {
       for (let n = result.length; n <= this.exponent; n++) {
         result += 0;
+      }
+      if (this.exponent < result.length - 1 && this.exponent !== 0) {
+        result = `${result.substring(0, this.exponent + 1)},${result.slice(
+          this.exponent + 1,
+        )}`;
       }
     }
     if (this.exponent < 0) {

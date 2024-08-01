@@ -1,6 +1,6 @@
 import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit } from "#root/pc/units/distanceUnits";
-import { DivideUnits } from "#root/pc/units/divideUnits";
+import { DivideUnit } from "#root/pc/units/divideUnit";
 import { MassUnit } from "#root/pc/units/massUnits";
 import { MultiplyUnit } from "#root/pc/units/mulitplyUnits";
 import { PowerUnit } from "#root/pc/units/powerUnits";
@@ -53,7 +53,7 @@ export const planets: Planet[] = [
     new Measure(
       3.7,
       0,
-      new DivideUnits(
+      new DivideUnit(
         DistanceUnit.m,
         new PowerUnit(TimeUnit.s, new NumberNode(2)),
       ),
@@ -71,7 +71,7 @@ export const planets: Planet[] = [
     new Measure(
       8.87,
       0,
-      new DivideUnits(
+      new DivideUnit(
         DistanceUnit.m,
         new PowerUnit(TimeUnit.s, new NumberNode(2)),
       ),
@@ -89,7 +89,7 @@ export const planets: Planet[] = [
     new Measure(
       9.81,
       0,
-      new DivideUnits(
+      new DivideUnit(
         DistanceUnit.m,
         new PowerUnit(TimeUnit.s, new NumberNode(2)),
       ),
@@ -107,7 +107,7 @@ export const planets: Planet[] = [
     new Measure(
       3.71,
       0,
-      new DivideUnits(
+      new DivideUnit(
         DistanceUnit.m,
         new PowerUnit(TimeUnit.s, new NumberNode(2)),
       ),
@@ -125,7 +125,7 @@ export const planets: Planet[] = [
     new Measure(
       24.79,
       0,
-      new DivideUnits(
+      new DivideUnit(
         DistanceUnit.m,
         new PowerUnit(TimeUnit.s, new NumberNode(2)),
       ),
@@ -143,7 +143,7 @@ export const planets: Planet[] = [
     new Measure(
       10.44,
       0,
-      new DivideUnits(
+      new DivideUnit(
         DistanceUnit.m,
         new PowerUnit(TimeUnit.s, new NumberNode(2)),
       ),
@@ -161,7 +161,7 @@ export const planets: Planet[] = [
     new Measure(
       8.69,
       0,
-      new DivideUnits(
+      new DivideUnit(
         DistanceUnit.m,
         new PowerUnit(TimeUnit.s, new NumberNode(2)),
       ),
@@ -179,7 +179,7 @@ export const planets: Planet[] = [
     new Measure(
       11.15,
       0,
-      new DivideUnits(
+      new DivideUnit(
         DistanceUnit.m,
         new PowerUnit(TimeUnit.s, new NumberNode(2)),
       ),

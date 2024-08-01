@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit } from "#root/pc/units/distanceUnits";
-import { DivideUnits } from "#root/pc/units/divideUnits";
+import { DivideUnit } from "#root/pc/units/divideUnit";
 import { PowerUnit } from "#root/pc/units/powerUnits";
 import { WattUnit } from "#root/pc/units/wattUnit";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -73,7 +73,7 @@ const getExercise = () => {
   const E = new Measure(
     randint(10, 30),
     0,
-    new DivideUnits(WattUnit.W, new PowerUnit(DistanceUnit.m, two)),
+    new DivideUnit(WattUnit.W, new PowerUnit(DistanceUnit.m, two)),
   );
   const S = new Measure(randint(3, 11), 0, new PowerUnit(DistanceUnit.m, two));
   const lightPower = E.times(S).toSignificant(2);

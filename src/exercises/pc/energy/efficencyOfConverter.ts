@@ -10,7 +10,6 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { frenchify } from "#root/math/utils/latex/frenchify";
 import { randint } from "#root/math/utils/random/randint";
 import { Measure } from "#root/pc/measure/measure";
 import { WattUnit } from "#root/pc/units/wattUnit";
@@ -88,7 +87,8 @@ const getExercise = () => {
     notScientific: true,
   })}}{${entryMeasure.toTex({
     notScientific: true,
-  })}} \\times 100 \\Rightarrow \\eta=${answer}\\%$`;
+  })}} \\times 100 \\Rightarrow \\eta=${answer}\\%$  `;
+
   return {
     instruction,
     answer,

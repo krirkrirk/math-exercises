@@ -4,7 +4,7 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { Unit } from "./unit";
 
-export class DivideUnits implements Unit<any> {
+export class DivideUnit implements Unit<any> {
   leftChild: Unit<any>;
   rightChild: Unit<any>;
   unit: string;

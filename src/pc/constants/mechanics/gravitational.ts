@@ -1,5 +1,5 @@
 import { DistanceUnit } from "#root/pc/units/distanceUnits";
-import { DivideUnits } from "#root/pc/units/divideUnits";
+import { DivideUnit } from "#root/pc/units/divideUnit";
 import { ForceUnit } from "#root/pc/units/forceUnits";
 import { MassUnit } from "#root/pc/units/massUnits";
 import { MultiplyUnit } from "#root/pc/units/mulitplyUnits";
@@ -11,12 +11,12 @@ type PhysicalConstant = {
 };
 
 export const earthGravity: PhysicalConstant = {
-  measure: new Measure(9.80665, 0, new DivideUnits(ForceUnit.N, MassUnit.kg)),
+  measure: new Measure(9.80665, 0, new DivideUnit(ForceUnit.N, MassUnit.kg)),
   unit: "\\text{N}\\cdot\\text{kg}^{-1}",
 };
 
 export const moonGravity: PhysicalConstant = {
-  measure: new Measure(1.622, 0, new DivideUnits(ForceUnit.N, MassUnit.kg)),
+  measure: new Measure(1.622, 0, new DivideUnit(ForceUnit.N, MassUnit.kg)),
   unit: "\\text{N}\\cdot\\text{kg}^{-1}",
 };
 
@@ -24,7 +24,7 @@ export const earthG: PhysicalConstant = {
   measure: new Measure(
     6.67,
     -11,
-    new DivideUnits(
+    new DivideUnit(
       new MultiplyUnit(
         ForceUnit.N,
         new MultiplyUnit(DistanceUnit.m, DistanceUnit.m),
