@@ -185,6 +185,9 @@ export class PowerNode implements OperatorNode {
     if (isNumberNode(rightSimplified) && rightSimplified.value === 0) {
       return new NumberNode(1);
     }
+    if (isNumberNode(rightSimplified) && rightSimplified.value === 1) {
+      return leftSimplified;
+    }
     if (isPowerNode(leftSimplified)) {
       return new PowerNode(
         leftSimplified.leftChild,
