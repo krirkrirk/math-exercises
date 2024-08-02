@@ -17,6 +17,7 @@ import { coulombConstant } from "#root/pc/constants/coulomb";
 import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit } from "#root/pc/units/distanceUnits";
 import { ElectricChargeUnit } from "#root/pc/units/electricChargeUnit";
+import { ForceUnit } from "#root/pc/units/forceUnits";
 
 type simplifiedMeasure = { significant: number; exponent: number };
 
@@ -48,23 +49,28 @@ const getPropositions: QCMGenerator<Identifiers> = (
   { answer, qA, qB, distance },
 ) => {
   const propositions: Proposition[] = [];
-  const correctAns = +getCorrectAns(
-    new Measure(qA.significant, qA.exponent, ElectricChargeUnit.C),
-    new Measure(qB.significant, qB.exponent, ElectricChargeUnit.C),
-    new Measure(distance, 0),
-  )
-    .toTex({ notScientific: true, hideUnit: true })
-    .replaceAll(",", ".");
+  addValidProp(propositions, answer);
   generatePropositions(qA, qB, distance).forEach((value) =>
     tryToAddWrongProp(propositions, value.toTex()),
   );
+  const correctAns = getCorrectAns(
+    new Measure(qA.significant, qA.exponent, ElectricChargeUnit.C),
+    new Measure(qB.significant, qB.exponent, ElectricChargeUnit.C),
+    new Measure(distance, 0),
+  );
   let random;
   while (propositions.length < n) {
-    random = randfloat(correctAns - 1, correctAns + 2, 2, [correctAns]);
-    tryToAddWrongProp(
-      propositions,
-      frenchify(random) + "\\ " + ElectricChargeUnit.C.toTex(),
+    random = new Measure(
+      randfloat(
+        correctAns.significantPart - 1,
+        correctAns.significantPart + 2,
+        2,
+        [correctAns.significantPart],
+      ),
+      correctAns.exponent,
+      ForceUnit.N,
     );
+    tryToAddWrongProp(propositions, random.toTex());
   }
   return shuffleProps(propositions, n);
 };
