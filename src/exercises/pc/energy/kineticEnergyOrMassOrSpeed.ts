@@ -64,7 +64,11 @@ const getPropositions: QCMGenerator<Identifiers> = (
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      frenchify(randfloat(nbAnswer - 10, nbAnswer + 11, 2, [nbAnswer])) + "",
+      frenchify(
+        Number.isInteger(nbAnswer)
+          ? randint(nbAnswer - 10, nbAnswer + 11, [nbAnswer])
+          : randfloat(nbAnswer - 10, nbAnswer + 11, 2, [nbAnswer]),
+      ) + "",
     );
   }
   return shuffle(propositions);
