@@ -114,10 +114,10 @@ const generatePropositions = (
 };
 
 const getExercise = () => {
-  const qA = { significant: randint(2, 7), exponent: randint(-9, -4) };
+  const qA = { significant: randint(2, 7), exponent: randint(-7, -3) };
   const qB = {
     significant: randint(2, 7, [qA.significant]),
-    exponent: randint(-9, -4),
+    exponent: randint(-7, -3),
   };
   const qAMeasure = new Measure(
     qA.significant,
