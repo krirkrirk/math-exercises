@@ -29,11 +29,11 @@ export class Measure<T extends string = any> {
         stringValue[0] + "." + stringValue.replace(".", "").slice(1),
       );
     } else if (value <= -10) {
-      const stringValue = value.toString();
-      const length = stringValue.split(".")[0].length - 2;
+      const stringValue = value.toString().substring(1);
+      const length = stringValue.split(".")[0].length - 1;
       this.exponent = exponent + length;
       this.significantPart = Number(
-        "-" + stringValue[1] + "." + stringValue.replace(".", "").slice(1),
+        "-" + stringValue[0] + "." + stringValue.replace(".", "").slice(1),
       );
     } else if (value > 0 && value < 1) {
       const stringValue = value.toString();
@@ -176,7 +176,7 @@ export class Measure<T extends string = any> {
     );
   }
   private toNotScientificTex() {
-    let result = (this.significantPart + "").replace(".", "");
+    let result = (this.significantPart + "").replace(".", "").replace("-", "");
     if (this.exponent >= 0) {
       for (let n = result.length; n <= this.exponent; n++) {
         result += 0;
@@ -193,7 +193,7 @@ export class Measure<T extends string = any> {
       }
       result = `${result[0]},${result.slice(1)}`;
     }
-    return result;
+    return this.significantPart < 0 ? "-" + result : result;
   }
   /**
    * n = nb decimals

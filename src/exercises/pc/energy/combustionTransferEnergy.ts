@@ -82,7 +82,7 @@ const generatePropositions = (eComb: number, quantity: number): Measure[] => {
 };
 
 const generateExercise = () => {
-  const eComb = randint(600, 901);
+  const eComb = randint(60, 91) * -1;
   const quantity = randint(2, 9);
   const quantityMeasure = new Measure(quantity, 0, AmountOfSubstance.mol);
   const eCombMeasure = new Measure(
@@ -103,7 +103,7 @@ const generateExercise = () => {
   
   Calculez l'énergie totale $(Q)$ libérée lors de la combustion de cet échantillon en joules $(J)$.`;
 
-  const answer = quantityMeasure.times(eCombMeasureJ);
+  const answer = quantityMeasure.times(eCombMeasureJ).toSignificant(6);
 
   const hint = `Rappel de la formule pour calculer l'énergie totale $(Q)$ libérée lors de la combustion :
   - $Q = n \\times E_{comb}$`;
