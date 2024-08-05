@@ -140,7 +140,7 @@ const getExercise = () => {
     notScientific: true,
   })}$
   
-  Cacluler la force électrostatique $\\overrightarrow{F}_{A/B}$.`;
+  Cacluler la force électrostatique $\\overrightarrow{F}_{A/B}$, arrondie au centième`;
 
   const answer = getCorrectAns(qAMeasure, qBMeasure, dMeasure);
 
