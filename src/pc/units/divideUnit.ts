@@ -2,7 +2,7 @@ import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { isNumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
-import { Unit } from "./unit";
+import { Unit } from "./interfaces/unit";
 
 export class DivideUnit implements Unit<any> {
   leftChild: Unit<any>;

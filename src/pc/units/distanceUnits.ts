@@ -1,5 +1,5 @@
-import { BaseTenUnit } from "./baseTenUnit";
-import { Unit } from "./unit";
+import { BaseTenUnit } from "./interfaces/baseTenUnit";
+import { Unit } from "./interfaces/unit";
 
 export type distanceUnits = "km" | "hm" | "dam" | "m" | "dm" | "cm" | "mm";
 const distances = ["km", "hm", "dam", "m", "dm", "cm", "mm"];

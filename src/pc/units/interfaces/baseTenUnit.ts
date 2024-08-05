@@ -1,4 +1,4 @@
-import { Measure } from "../measure/measure";
+import { Measure } from "#root/pc/measure/measure";
 import { BasicUnit } from "./basicUnit";
 import { Unit } from "./unit";
 

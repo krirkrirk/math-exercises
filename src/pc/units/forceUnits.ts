@@ -1,5 +1,5 @@
-import { Unit } from "./unit";
-import { BaseTenUnit } from "./baseTenUnit";
+import { Unit } from "./interfaces/unit";
+import { BaseTenUnit } from "./interfaces/baseTenUnit";
 
 export type forceValues = "kN" | "hN" | "daN" | "N" | "dN" | "cN" | "mN";
 const forces = ["kN", "hN", "daN", "N", "dN", "cN", "mN"];

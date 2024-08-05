@@ -1,5 +1,5 @@
-import { Unit } from "./unit";
-import { BaseTenUnit } from "./baseTenUnit";
+import { Unit } from "./interfaces/unit";
+import { BaseTenUnit } from "./interfaces/baseTenUnit";
 
 export type energyValues = "kJ" | "hJ" | "daJ" | "J" | "dJ" | "cJ" | "mJ";
 const energys = ["kJ", "hJ", "daJ", "J", "dJ", "cJ", "mJ"];

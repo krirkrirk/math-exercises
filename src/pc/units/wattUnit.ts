@@ -1,5 +1,5 @@
-import { BaseTenUnit } from "./baseTenUnit";
-import { Unit } from "./unit";
+import { BaseTenUnit } from "./interfaces/baseTenUnit";
+import { Unit } from "./interfaces/unit";
 
 type wattValues = "kW" | "hW" | "daW" | "W" | "dW" | "cW" | "mW";
 

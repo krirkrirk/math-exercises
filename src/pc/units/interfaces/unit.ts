@@ -1,5 +1,5 @@
+import { Measure } from "#root/pc/measure/measure";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
-import { Measure } from "../measure/measure";
 
 export interface Unit<T extends string> {
   getUnit(): string;

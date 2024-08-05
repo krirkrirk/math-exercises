@@ -1,5 +1,5 @@
 import { Measure } from "../measure/measure";
-import { BasicUnit } from "./basicUnit";
+import { BasicUnit } from "./interfaces/basicUnit";
 
 export type timeValues = "h" | "mi" | "s" | "ms";
 
