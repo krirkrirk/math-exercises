@@ -12,8 +12,8 @@ import {
 import { getAtoms } from "#root/exercises/utils/getAtoms";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { getElectronicConfigurationFromShells } from "#root/exercises/utils/getElectronicConfigurationFromShells";
-import { AtomSymbols } from "#root/pc/molecularChemistry/atomSymbols";
-import { atomes } from "#root/pc/molecularChemistry/atome";
+import { AtomSymbols } from "#root/pc/constants/molecularChemistry/atomSymbols";
+import { atomes } from "#root/pc/constants/molecularChemistry/atome";
 import { random } from "#root/utils/random";
 import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
 

@@ -14,7 +14,7 @@ import {
   ReactionConstructor,
   ReactionSpecies,
   molecules,
-} from "#root/pc/molecularChemistry/reaction";
+} from "#root/pc/constants/molecularChemistry/reaction";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {

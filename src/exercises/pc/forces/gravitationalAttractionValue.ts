@@ -13,43 +13,45 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
-import { earthMass, earthRayon } from "#root/pc/constants/earth";
-import { earthG } from "#root/pc/constants/gravity";
+import { planets } from "#root/pc/constants/mechanics/planets";
+import { earthG } from "#root/pc/constants/mechanics/gravitational";
+import { Measure } from "#root/pc/measure/measure";
 
 type Identifiers = {
+  planet: string;
   mass: number;
 };
 
 const getGravitationalAttractionValueQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const mass = randint(20, 900);
-  //F = G/(Rt^2) * mT * mb
+  const mass = randint(20, 900); // Masse de l'objet en grammes
+  const selectedPlanet = planets.find((planet) => planet.name === "Terre")!; // Sélectionne la Terre
+
   const G = earthG.measure;
-  const RT = earthRayon.measure.times(1000);
-  const massKG = mass / 1000;
-  const massEarth = earthMass.measure;
-  const answerMeasure = G.times(massKG).times(massEarth).divide(RT.times(RT));
-  // const answerMeasure = G.times(massKG);
-  console.log(mass, answerMeasure.significantPart, answerMeasure.exponent);
+  const RT = selectedPlanet.radius; // Le rayon de la Terre en mètres
+  const massKG = new Measure(mass, -3); // Convertir en kilogrammes
+  const massEarth = selectedPlanet.mass;
+  const answerMeasure = G.times(massKG)
+    .times(massEarth.measure)
+    .divide(RT.measure.times(RT.measure));
   const answer = answerMeasure.toTex({ scientific: 2 }) + "N";
+
   const question: Question<Identifiers> = {
     answer,
-    instruction: `On lance un objet de masse $${mass}\\ \\text{g}$. Déterminer la valeur de la force d'attraction gravitationnelle exercée par la Terre sur cet objet.
+    instruction: `On lance un objet de masse $${mass}\\ \\text{g}$. Déterminer la valeur de la force d'attraction gravitationnelle exercée par la Terre sur cet objet (La hauteur $h$ de l'objet par rapport à la surface de la terre est négligeable).
 
 Données : 
-+ Rayon de la Terre : $R_T = ${earthRayon.measure.toTex({
++ Rayon de la Terre : $R_T = ${selectedPlanet.radius.measure.toTex({
       scientific: 2,
-    })}\\ ${earthRayon.unit}$
-
-+ Masse de la Terre : $m_T = ${earthMass.measure.toTex({ scientific: 2 })}\\ ${
-      earthMass.unit
-    }$
-
-+ $G = ${earthG.measure.toTex({ scientific: 2 })}\\ ${earthG.unit}$`,
+    })}\\ ${selectedPlanet.radius.unit}$
++ Masse de la Terre : $m_T = ${selectedPlanet.mass.measure.toTex({
+      scientific: 2,
+    })}\\ ${selectedPlanet.mass.unit}$
++ $G = ${G.toTex({ scientific: 2 })}\\ ${earthG.unit}$`,
     keys: ["N", "timesTenPower"],
     answerFormat: "tex",
-    identifiers: { mass },
+    identifiers: { planet: selectedPlanet.name, mass },
   };
 
   return question;
@@ -59,11 +61,13 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, mass }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const G = earthG.measure;
-  const RT = earthRayon.measure;
-  const massEarth = earthMass.measure;
+  const selectedPlanet = planets.find((planet) => planet.name === "Terre")!;
+  const RT = selectedPlanet.radius.measure;
+  const massEarth = selectedPlanet.mass.measure;
+  const massKG = new Measure(mass, -3);
   tryToAddWrongProp(
     propositions,
-    G.times(mass)
+    G.times(massKG)
       .times(massEarth)
       .divide(RT.times(RT))
       .toTex({ scientific: 2 }) + "N",
@@ -71,7 +75,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, mass }) => {
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      round(randfloat(1, 20), 2).frenchify() + "N",
+      round(randfloat(1, 20), 2).toTree().toTex() + "N",
     );
   }
   return shuffleProps(propositions, n);
@@ -80,13 +84,14 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, mass }) => {
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return [answer, answer.replace("N", "")].includes(ans);
 };
+
 export const gravitationalAttractionValue: Exercise<Identifiers> = {
   id: "gravitationalAttractionValue",
   connector: "=",
   label: "Calculer la force d'attraction gravitationnelle",
   levels: ["2nde"],
   isSingleStep: true,
-  sections: ["Forces"],
+  sections: ["Mécanique gravitationnelle"],
   generator: (nb: number) =>
     getDistinctQuestions(getGravitationalAttractionValueQuestion, nb),
   qcmTimer: 60,
