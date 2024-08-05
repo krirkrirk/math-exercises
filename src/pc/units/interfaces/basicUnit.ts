@@ -1,7 +1,7 @@
+import { Measure } from "#root/pc/measure/measure";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { Measure } from "../measure/measure";
-import { Unit } from "./interfaces/unit";
+import { Unit } from "./unit";
 
 export abstract class BasicUnit<T extends string> implements Unit<T> {
   unit: string;

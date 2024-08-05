@@ -106,9 +106,10 @@ export const efficencyOfConverter: Exercise<Identifiers> = {
   isSingleStep: true,
   sections: ["Électricité"],
   generator: (nb: number) =>
-    getDistinctQuestions(getEfficencyOfConverterQuestion, nb),
+    getDistinctQuestions(getEfficencyOfConverterQuestion, nb, 10),
   qcmTimer: 60,
   freeTimer: 60,
+  maxAllowedQuestions: 10,
   getPropositions,
   isAnswerValid,
   subject: "Physique",

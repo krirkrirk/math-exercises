@@ -62,12 +62,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   let random;
   while (propositions.length < n) {
     random = new Measure(
-      randfloat(
-        correctAns.significantPart - 1,
-        correctAns.significantPart + 2,
-        2,
-        [correctAns.significantPart],
-      ),
+      randfloat(1, 5, 1, [correctAns.significantPart]),
       correctAns.exponent,
       ForceUnit.N,
     );
@@ -85,6 +80,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, qA, qB, distance }) => {
   return [
     correctAns.toTex({ hideUnit: true }),
     correctAns.toTex({ hideUnit: true }) + "N",
+    answer,
   ].includes(ans);
 };
 
@@ -179,9 +175,9 @@ const getCorrectAns = (
 export const electroStaticForce: Exercise<Identifiers> = {
   id: "electroStaticForce",
   label: "Application de la loi de Coulomb",
-  levels: [],
+  levels: ["1reSpé"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Forces"],
   generator: (nb: number) =>
     getDistinctQuestions(getElectroStaticForceQuestion, nb),
   qcmTimer: 60,

@@ -4,8 +4,8 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { DivideUnit } from "../units/divideUnit";
+import { Unit } from "../units/interfaces/unit";
 import { MultiplyUnit } from "../units/mulitplyUnits";
-import { Unit } from "../units/unit";
 
 export abstract class MeasureConstructor {
   static random() {}
