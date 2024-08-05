@@ -44,13 +44,13 @@ const getPropositions: QCMGenerator<Identifiers> = (
   { answer, eComb, quantity },
 ) => {
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer + EnergyUnit.J.toTex());
+  addValidProp(propositions, answer);
   generatePropositions(eComb, quantity).forEach((value) =>
     tryToAddWrongProp(propositions, value.toTex()),
   );
   while (propositions.length < n) {
     let random = new Measure(
-      randint(600, 901) * randint(2, 9, [quantity]) * 1000,
+      -randint(60, 91) * randint(2, 9, [quantity]) * 1000,
       0,
       EnergyUnit.J,
     );
@@ -74,7 +74,7 @@ const generatePropositions = (eComb: number, quantity: number): Measure[] => {
   const quantityMeasure = new Measure(quantity, 0, AmountOfSubstance.mol);
   const first = eCombMeasure.times(quantityMeasure);
   const second = new Measure(
-    randint(600, 901) * randint(2, 9, [quantity]) * 1000,
+    -randint(60, 91) * randint(2, 9, [quantity]) * 1000,
     0,
     EnergyUnit.kJ,
   );
@@ -82,7 +82,7 @@ const generatePropositions = (eComb: number, quantity: number): Measure[] => {
 };
 
 const generateExercise = () => {
-  const eComb = randint(60, 91) * -1;
+  const eComb = -randint(60, 91);
   const quantity = randint(2, 9);
   const quantityMeasure = new Measure(quantity, 0, AmountOfSubstance.mol);
   const eCombMeasure = new Measure(

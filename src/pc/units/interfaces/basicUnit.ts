@@ -18,7 +18,7 @@ export abstract class BasicUnit<T extends string> implements Unit<T> {
     return `\\text{${this.unit}}`;
   }
   toTree(): AlgebraicNode {
-    return new VariableNode(this.unit);
+    return new VariableNode(`\\text{${this.unit}}`);
   }
   abstract convert?(
     significantPart: number,
