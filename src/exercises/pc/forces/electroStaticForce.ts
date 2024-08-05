@@ -10,7 +10,6 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { frenchify } from "#root/math/utils/latex/frenchify";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { coulombConstant } from "#root/pc/constants/coulomb";
@@ -32,7 +31,9 @@ const getElectroStaticForceQuestion: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     answer: exo.answer.toTex(),
     instruction: exo.instruction,
-    keys: [],
+    hint: exo.hint,
+    correction: exo.correction,
+    keys: ["N"],
     answerFormat: "tex",
     identifiers: {
       qA: exo.qA,
@@ -75,8 +76,16 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, qA, qB, distance }) => {
+  const correctAns = getCorrectAns(
+    new Measure(qA.significant, qA.exponent, ElectricChargeUnit.C),
+    new Measure(qB.significant, qB.exponent, ElectricChargeUnit.C),
+    new Measure(distance, 0, DistanceUnit.m),
+  );
+  return [
+    correctAns.toTex({ hideUnit: true }),
+    correctAns.toTex({ hideUnit: true }) + "N",
+  ].includes(ans);
 };
 
 const generatePropositions = (
@@ -135,9 +144,20 @@ const getExercise = () => {
 
   const answer = getCorrectAns(qAMeasure, qBMeasure, dMeasure);
 
+  const hint = `Rappel de la loi de Coulomb :
+  - $F = k_e \\frac{|q_1 \\cdot q_2|}{r^2}$ `;
+
+  const correction = `Appliquer la loi de Coulomb :
+1. $F = k_e \\frac{|${qAMeasure.toTex()} \\times ${qBMeasure.toTex()}|}{${dMeasure.toTex(
+    { notScientific: true },
+  )}^2}$
+2. $F = ${answer.toTex()}$`;
+
   return {
     instruction,
     answer,
+    hint,
+    correction,
     qA,
     qB,
     distance,
@@ -158,7 +178,7 @@ const getCorrectAns = (
 
 export const electroStaticForce: Exercise<Identifiers> = {
   id: "electroStaticForce",
-  label: "",
+  label: "Application de la loi de Coulomb",
   levels: [],
   isSingleStep: true,
   sections: [],
