@@ -108,7 +108,7 @@ export const recognizeArithmeticFromGraph: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  answerType: "QCU",
+  answerType: "QCM",
   hasGeogebra: true,
   subject: "Mathématiques",
 };

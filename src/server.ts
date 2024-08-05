@@ -67,16 +67,10 @@ const runServer = () => {
   app.use(cors());
   console.log("math exos", mathExercises.length);
   console.log("pc exos", pcExercises.length);
-  // const node = new MultiplyNode(
-  //   (4).toTree(),
-  //   new CosNode(
-  //     new MultiplyNode(
-  //       new FractionNode(new MultiplyNode((2).toTree(), PiNode), (3).toTree()),
-  //       new VariableNode("x"),
-  //     ),
-  //   ),
-  // ).simplify();
-  // console.log(node);
+  const node = new MultiplyNode(new VariableNode("x"), new VariableNode("x"))
+    .simplify()
+    .toTex();
+  console.log(node);
 
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
@@ -140,6 +134,27 @@ const runServer = () => {
       return;
     }
     const result = exo.isAnswerValid(ans as string, veaProps) ?? false;
+    res.json({
+      result,
+    });
+  });
+
+  app.post("/ggbvea", jsonParser, (req: Request, res: Response) => {
+    const exoId = req.query.exoId;
+
+    const { ggbAns, ggbVeaProps } = req.body;
+    const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
+    const exo = allExercises[exoIndex];
+    if (!exo) {
+      res.send("Exo not found");
+      return;
+    }
+    if (!exo.isGGBAnswerValid) {
+      res.send("No GGBVEA implemented");
+      return;
+    }
+    const result =
+      exo.isGGBAnswerValid(ggbAns as string[], ggbVeaProps) ?? false;
     res.json({
       result,
     });

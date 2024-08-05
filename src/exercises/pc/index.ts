@@ -28,6 +28,9 @@ export * from "./orderOfMagnitude";
 export * from "./energy";
 export * from "./motion";
 export * from "./power";
+export * from "./calibrationCurveOfSolution";
+export * from "./dosage";
+export * from "./spectral";
 
 /**exos pris des maths */
 export * from "../math/percent/findProportion";

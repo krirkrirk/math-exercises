@@ -188,7 +188,7 @@ const generatePolygonWithGgbCmnds = (): {
 export const volumeOfPyramid: Exercise<Identifiers> = {
   id: "volumeOfPyramidWithTriangleRectBase",
   label:
-    "Calcul du volume d'une pyramide dont la base est un triangle rectangle",
+    "Calculer le volume d'une pyramide dont la base est un triangle rectangle",
   levels: ["2nde"],
   isSingleStep: true,
   sections: ["Géométrie euclidienne"],
