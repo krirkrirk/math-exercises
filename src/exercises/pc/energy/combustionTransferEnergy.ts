@@ -61,7 +61,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, eComb, quantity }) => {
   const q = eComb * quantity * 1000;
-  console.log(q, ans);
   const qMeasure = new Measure(q, 0);
   return [answer, q + "", qMeasure.toTex()].includes(ans);
 };
