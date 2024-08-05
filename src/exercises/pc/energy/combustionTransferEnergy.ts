@@ -15,7 +15,6 @@ import { Measure } from "#root/pc/measure/measure";
 import { AmountOfSubstance } from "#root/pc/units/AmountOfSubstance";
 import { DivideUnit } from "#root/pc/units/divideUnit";
 import { EnergyUnit } from "#root/pc/units/energyUnit";
-import { countReset } from "console";
 
 type Identifiers = {
   eComb: number;
@@ -28,8 +27,10 @@ const getCombustionTransferEnergyQuestion: QuestionGenerator<
   const exo = generateExercise();
 
   const question: Question<Identifiers> = {
-    answer: exo.answer.toTex({ hideUnit: true }),
+    answer: exo.answer.toTex(),
     instruction: exo.instruction,
+    hint: exo.hint,
+    correction: exo.correction,
     keys: [],
     answerFormat: "tex",
     identifiers: { eComb: exo.eComb, quantity: exo.quantity },
@@ -43,14 +44,13 @@ const getPropositions: QCMGenerator<Identifiers> = (
   { answer, eComb, quantity },
 ) => {
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer);
+  addValidProp(propositions, answer + EnergyUnit.J.toTex());
   generatePropositions(eComb, quantity).forEach((value) =>
     tryToAddWrongProp(propositions, value.toTex()),
   );
-  const coorectAns = eComb * quantity * 1000;
   while (propositions.length < n) {
     let random = new Measure(
-      randint(coorectAns - 50, coorectAns + 50, [coorectAns]),
+      randint(600, 901) * randint(2, 9, [quantity]) * 1000,
       0,
       EnergyUnit.J,
     );
@@ -59,8 +59,11 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, eComb, quantity }) => {
+  const q = eComb * quantity * 1000;
+  console.log(q, ans);
+  const qMeasure = new Measure(q, 0);
+  return [answer, q + "", qMeasure.toTex()].includes(ans);
 };
 
 const generatePropositions = (eComb: number, quantity: number): Measure[] => {
@@ -71,32 +74,51 @@ const generatePropositions = (eComb: number, quantity: number): Measure[] => {
   );
   const quantityMeasure = new Measure(quantity, 0, AmountOfSubstance.mol);
   const first = eCombMeasure.times(quantityMeasure);
-  return [first];
+  const second = new Measure(
+    randint(600, 901) * randint(2, 9, [quantity]) * 1000,
+    0,
+    EnergyUnit.kJ,
+  );
+  return [first, second];
 };
 
 const generateExercise = () => {
   const eComb = randint(600, 901);
   const quantity = randint(2, 9);
   const quantityMeasure = new Measure(quantity, 0, AmountOfSubstance.mol);
-  const EcombMeasure = new Measure(
+  const eCombMeasure = new Measure(
     eComb,
     0,
     new DivideUnit(EnergyUnit.kJ, AmountOfSubstance.mol),
   );
 
-  const EcombMeasureJ = new Measure(
+  const eCombMeasureJ = new Measure(
     eComb * 1000,
     0,
     new DivideUnit(EnergyUnit.J, AmountOfSubstance.mol),
   );
 
-  const instruction = `Un échantillon d'un combustible $X$ de $${quantity}$ moles est brûlé complètement. L'énergie molaire de combustion du méthane est $E_{comb} = ${EcombMeasure.toTex(
+  const instruction = `Un échantillon d'un combustible $X$ de $${quantity}$ moles est brûlé complètement. L'énergie molaire de combustion du méthane est $E_{comb} = ${eCombMeasure.toTex(
     { notScientific: true },
-  )}$`;
+  )}$.
+  
+  Calculez l'énergie totale $(Q)$ libérée lors de la combustion de cet échantillon en joules $(J)$.`;
 
-  const answer = quantityMeasure.times(EcombMeasureJ);
+  const answer = quantityMeasure.times(eCombMeasureJ);
 
-  return { instruction, answer, eComb, quantity };
+  const hint = `Rappel de la formule pour calculer l'énergie totale $(Q)$ libérée lors de la combustion :
+  - $Q = n \\times E_{comb}$`;
+
+  const correction = `Appliquer la formule $Q = n \\times E_{comb}$ :
+  1. Convertir les $${EnergyUnit.kJ.toTex()}$ en $${EnergyUnit.J.toTex()}$, $${eCombMeasure.toTex(
+    { notScientific: true },
+  )} \\Rightarrow ${eCombMeasureJ.toTex({ notScientific: true })}$
+  2. $Q = ${quantityMeasure.toTex({
+    notScientific: true,
+  })} \\times ${eCombMeasure.toTex({ notScientific: true })}$
+  3. $Q=${answer.toTex()}$`;
+
+  return { instruction, answer, hint, correction, eComb, quantity };
 };
 
 export const combustionTransferEnergy: Exercise<Identifiers> = {
