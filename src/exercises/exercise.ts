@@ -213,4 +213,5 @@ export type PCSection =
   | "Mol"
   | "Électricité"
   | "Spectrophotométrie"
-  | "Quantique";
+  | "Quantique"
+  | "Thermodynamique";

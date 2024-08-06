@@ -24,6 +24,7 @@ export * from "./electricity";
 export * from "./calibrationCurveOfSolution";
 export * from "./dosage";
 export * from "./spectral";
+export * from "./energy";
 
 /**exos pris des maths */
 export * from "../math/percent/findProportion";
