@@ -51,7 +51,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   while (propositions.length < n) {
     let random = new Measure(
       -randint(60, 91) * randint(2, 9, [quantity]) * 1000,
-      0,
+      randint(-2, 3),
       EnergyUnit.J,
     );
     tryToAddWrongProp(propositions, random.toTex());
@@ -69,16 +69,11 @@ const generatePropositions = (eComb: number, quantity: number): Measure[] => {
   const eCombMeasure = new Measure(
     eComb,
     0,
-    new DivideUnit(EnergyUnit.kJ, AmountOfSubstance.mol),
+    new DivideUnit(EnergyUnit.J, AmountOfSubstance.mol),
   );
   const quantityMeasure = new Measure(quantity, 0, AmountOfSubstance.mol);
-  const first = eCombMeasure.times(quantityMeasure);
-  const second = new Measure(
-    -randint(60, 91) * randint(2, 9, [quantity]) * 1000,
-    0,
-    EnergyUnit.kJ,
-  );
-  return [first, second];
+  const first = eCombMeasure.times(quantityMeasure).toSignificant(6);
+  return [first];
 };
 
 const generateExercise = () => {
@@ -97,7 +92,7 @@ const generateExercise = () => {
     new DivideUnit(EnergyUnit.J, AmountOfSubstance.mol),
   );
 
-  const instruction = `Un échantillon d'un combustible $X$ de $${quantity}$ moles est brûlé complètement. L'énergie molaire de combustion du méthane est $E_{comb} = ${eCombMeasure.toTex(
+  const instruction = `Un échantillon d'un combustible $X$ de $${quantity}$ moles est brûlé complètement. L'énergie molaire de combustion de ce combustible est $E_{comb} = ${eCombMeasure.toTex(
     { notScientific: true },
   )}$.
   
