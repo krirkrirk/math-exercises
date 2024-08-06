@@ -246,7 +246,7 @@ const getExoType2 = (): ExoType2 => {
 export const combustionTransferEnergy2: Exercise<Identifiers> = {
   id: "combustionTransferEnergy2",
   label:
-    "Caclul de l'énergie de transfert combustion à l'aide du pouvoir calorifique ou de l'énergie de combustion. ",
+    "Caclul de l'énergie de transfert de combustion à l'aide du pouvoir calorifique ou de l'énergie de combustion. ",
   levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Réaction chimique"],

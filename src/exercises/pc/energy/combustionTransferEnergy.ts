@@ -117,7 +117,7 @@ const generateExercise = () => {
 
 export const combustionTransferEnergy: Exercise<Identifiers> = {
   id: "combustionTransferEnergy",
-  label: "Calcul de l'énergie de combustion",
+  label: "Calcul de l'énergie de transfert de combustion",
   levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Réaction chimique"],

@@ -118,7 +118,8 @@ const generateExercise = () => {
 
 export const calorificValue: Exercise<Identifiers> = {
   id: "calorificValue",
-  label: "Calcul de l'énergie de combustion à l'aide du pouvoir calorifique",
+  label:
+    "Calcul de l'énergie de transfert de combustion à l'aide du pouvoir calorifique",
   levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Réaction chimique"],
