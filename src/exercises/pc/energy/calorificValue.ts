@@ -128,5 +128,5 @@ export const calorificValue: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  subject: "Mathématiques",
+  subject: "Physique",
 };
