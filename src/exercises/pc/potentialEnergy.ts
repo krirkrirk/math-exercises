@@ -11,6 +11,8 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { frenchify } from "#root/math/utils/latex/frenchify";
 import { round } from "#root/math/utils/round";
+import { earthG, earthGravityAcceleration } from "#root/pc/constants/gravity";
+import { earthGravity } from "#root/pc/constants/mechanics/gravitational";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
@@ -26,7 +28,9 @@ const getPotentialEnergy: QuestionGenerator<Identifiers> = () => {
   const potentialEnergy = mass * 9.81 * height;
 
   const instruction = `Un objet de masse $${mass} \\ \\text{kg}$ est suspendu à une hauteur de $${height}\\ \\text{m}$. Il est ensuite relâché et tombe librement.
-  $\\\\$ Calculer l'énergie potentielle de l'objet. (Supposons que l'accélération due à la gravité est de $9,81 \\ \\text{m}\\cdot \\text{s}^{-2}$)`;
+  $\\\\$ Calculer l'énergie potentielle de l'objet. (Supposons que l'accélération due à la gravité est de $${earthGravityAcceleration.measure
+    .toSignificant(2)
+    .toTex()}$)`;
 
   const answer = `${frenchify(round(potentialEnergy, 2))}J`;
   const question: Question<Identifiers> = {
