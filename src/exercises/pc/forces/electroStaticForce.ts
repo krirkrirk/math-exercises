@@ -184,5 +184,5 @@ export const electroStaticForce: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  subject: "Mathématiques",
+  subject: "Physique",
 };
