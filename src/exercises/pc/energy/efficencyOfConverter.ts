@@ -62,7 +62,7 @@ const generatePropositions = (entry: number, out: number): number[] => {
 };
 
 const getExercise = () => {
-  const entry = randint(3, 8);
+  const entry = randint(2, 11);
   const entryMeasure = new Measure(entry * 100, 0, WattUnit.W);
   const out = randint(1, entry) * 100;
   const outMeasure = new Measure(out, 0, WattUnit.W);
@@ -106,10 +106,9 @@ export const efficencyOfConverter: Exercise<Identifiers> = {
   isSingleStep: true,
   sections: ["Électricité"],
   generator: (nb: number) =>
-    getDistinctQuestions(getEfficencyOfConverterQuestion, nb, 10),
+    getDistinctQuestions(getEfficencyOfConverterQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
-  maxAllowedQuestions: 10,
   getPropositions,
   isAnswerValid,
   subject: "Physique",
