@@ -133,7 +133,7 @@ ${
     instruction: questionText,
     hint,
     correction,
-    keys: [],
+    keys: ["timesTenPower"],
     answerFormat: "tex",
     identifiers: {
       mass,
