@@ -204,8 +204,41 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { answer, mass, specificHeat, initialTemp, finalTemp, variable },
+) => {
+  let validanswer;
+  const deltaT = finalTemp - initialTemp;
+  switch (variable) {
+    case "E_th":
+      validanswer = round(mass * specificHeat * deltaT, 2);
+      break;
+    case "m":
+      validanswer = round(
+        (mass * specificHeat * deltaT) / (specificHeat * deltaT),
+        2,
+      );
+      break;
+    case "c":
+      validanswer = round((mass * specificHeat * deltaT) / (mass * deltaT), 2);
+      break;
+    case "deltaT":
+      validanswer = round(
+        (mass * specificHeat * deltaT) / (mass * specificHeat),
+        2,
+      );
+      break;
+  }
+
+  const latexs = [
+    ...validanswer.toTree().toAllValidTexs(),
+    validanswer.toScientific(2).toTex(),
+    validanswer.toScientific(1).toTex(),
+    validanswer.toScientific(3).toTex(),
+  ];
+
+  return latexs.includes(ans);
 };
 
 export const thermalEnergyTransferCalculation: Exercise<Identifiers> = {
