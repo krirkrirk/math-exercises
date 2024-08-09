@@ -9,7 +9,7 @@ import {
   VEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { molecules } from "#root/pc/molecularChemistry/molecule";
+import { molecules } from "#root/pc/constants/molecularChemistry/molecule";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {

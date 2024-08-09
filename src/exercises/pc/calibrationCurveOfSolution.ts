@@ -12,7 +12,7 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
-import { molecules } from "#root/pc/molecularChemistry/molecule";
+import { molecules } from "#root/pc/constants/molecularChemistry/molecule";
 import { arrayEqual } from "#root/utils/arrayEqual";
 import { random } from "#root/utils/random";
 import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";

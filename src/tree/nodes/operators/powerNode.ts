@@ -4,11 +4,6 @@ import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { MultiplyNode, isMultiplyNode } from "./multiplyNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
-import { isExpNode } from "../functions/expNode";
-import { isLogNode } from "../functions/logNode";
-import { isSqrtNode } from "../functions/sqrtNode";
-import { isFractionNode } from "./fractionNode";
-import { isDivideNode } from "./divideNode";
 
 export function isPowerNode(a: Node): a is PowerNode {
   return isOperatorNode(a) && a.id === OperatorIds.power;
@@ -187,6 +182,27 @@ export class PowerNode implements OperatorNode {
     const copy = new PowerNode(leftSimplified, rightSimplified, this.opts);
 
     //! temporaire
+    if (isNumberNode(rightSimplified) && rightSimplified.value === 0) {
+      return new NumberNode(1);
+    }
+    if (isNumberNode(rightSimplified) && rightSimplified.value === 1) {
+      return leftSimplified;
+    }
+    if (isPowerNode(leftSimplified)) {
+      return new PowerNode(
+        leftSimplified.leftChild,
+        new MultiplyNode(rightSimplified, leftSimplified.rightChild).simplify(
+          opts,
+        ),
+      ).simplify(opts);
+    }
+
+    if (isMultiplyNode(leftSimplified)) {
+      return new MultiplyNode(
+        new PowerNode(leftSimplified.leftChild, rightSimplified),
+        new PowerNode(leftSimplified.rightChild, rightSimplified),
+      );
+    }
     if (
       !opts?.keepPowers &&
       isNumberNode(copy.rightChild) &&

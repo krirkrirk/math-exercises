@@ -19,7 +19,7 @@ import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
 import { PowerNode } from "./tree/nodes/operators/powerNode";
 import { toScientific } from "./utils/numberPrototype/toScientific";
 import { Measure } from "./pc/measure/measure";
-import { atomes } from "./pc/molecularChemistry/atome";
+import { atomes } from "./pc/constants/molecularChemistry/atome";
 import { getElectronicConfigurationFromShells } from "./exercises/utils/getElectronicConfigurationFromShells";
 import { getAtoms } from "./exercises/utils/getAtoms";
 import { CosNode } from "./tree/nodes/functions/cosNode";
@@ -34,6 +34,7 @@ import { DivideNode } from "./tree/nodes/operators/divideNode";
 import { variance } from "./math/utils/variance";
 import { covXYAsNode, covarianceXY } from "./math/utils/covariance";
 import { sum } from "./math/utils/sum";
+import { MassUnit } from "./pc/units/massUnits";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];

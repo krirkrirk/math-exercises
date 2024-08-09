@@ -12,11 +12,11 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { round } from "#root/math/utils/round";
-import { molecules } from "#root/pc/molecularChemistry/molecule";
 import { random } from "#root/utils/random";
 import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
+import { molecules } from "#root/pc/constants/molecularChemistry/molecule";
 
 type Identifiers = {
   moleculeName: string;
