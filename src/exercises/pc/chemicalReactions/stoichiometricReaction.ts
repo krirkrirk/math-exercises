@@ -11,8 +11,12 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randint } from "#root/math/utils/random/randint";
+import { Measure } from "#root/pc/measure/measure";
+import { AmountOfSubstance } from "#root/pc/units/AmountOfSubstance";
 import { coinFlip } from "#root/utils/coinFlip";
 import { random } from "#root/utils/random";
+import { molarQuantity } from "../molarQuantity";
 
 type Identifiers = {};
 
@@ -73,14 +77,27 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 
 const genearteExercise = () => {
   const answer = coinFlip() ? "Oui." : "Non.";
-  const chemicalReaction =
-    answer === "Oui." ? random(reactions) : random(nonStoichiometricReactions);
-  const instruction = `Soit la réaction chimique, $${chemicalReaction.leftSide} \\Rightarrow ${chemicalReaction.rightSide}$. Déterminer si elle est stochiométrique.`;
+  const a = randint(2, 9);
+  const b = randint(2, 9);
+  const c = randint(2, 9);
+  const d = randint(2, 9);
+  const nA = answer === "Oui." ? a * randint(2, 5) : a * randint(2, 6);
+  const nB = answer === "Oui." ? b * (nA / a) : b * randint(6, 11);
+  const nAMeasure = new Measure(nA, 0, AmountOfSubstance.mol);
+  const nBMeasure = new Measure(nB, 0, AmountOfSubstance.mol);
+  const nCMeasure = new Measure(randint(2, 20), 0, AmountOfSubstance.mol);
+  const nDMeasure = new Measure(randint(2, 20), 0, AmountOfSubstance.mol);
+  const instruction = `Soit la réaction chimique, $${a}A + ${b}B \\rightarrow ${c}C + ${d}D$. Déterminer si elle est stochiométrique, en sachant :
+  - $n(A) = ${nAMeasure.toTex({ notScientific: true })}$
+  - $n(B) = ${nBMeasure.toTex({ notScientific: true })}$
+  - $n(C) = ${nCMeasure.toTex({ notScientific: true })}$
+  - $n(D) = ${nDMeasure.toTex({ notScientific: true })}$`;
 
   return {
     instruction,
     answer,
-    chemicalReaction,
+    nA,
+    nB,
   };
 };
 
@@ -91,12 +108,11 @@ export const stoichiometricReaction: Exercise<Identifiers> = {
   isSingleStep: true,
   sections: ["Réaction chimique"],
   generator: (nb: number) =>
-    getDistinctQuestions(getStoichiometricReactionQuestion, nb, 10),
+    getDistinctQuestions(getStoichiometricReactionQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
   answerType: "QCM",
-  maxAllowedQuestions: 10,
   subject: "Physique",
 };
