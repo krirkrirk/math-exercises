@@ -86,10 +86,10 @@ const genearteExercise = () => {
 
 export const stoichiometricReaction: Exercise<Identifiers> = {
   id: "stoichiometricReaction",
-  label: "Déterminer si une réaction est stochiométrie",
-  levels: [],
+  label: "Déterminer si une réaction est stochiométrique",
+  levels: ["1reSpé"],
   isSingleStep: true,
-  sections: [],
+  sections: ["Réaction chimique"],
   generator: (nb: number) =>
     getDistinctQuestions(getStoichiometricReactionQuestion, nb, 10),
   qcmTimer: 60,
