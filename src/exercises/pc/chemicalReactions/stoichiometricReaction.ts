@@ -5,7 +5,6 @@ import {
   Question,
   QuestionGenerator,
   VEA,
-  GGBVEA,
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
@@ -15,36 +14,8 @@ import { randint } from "#root/math/utils/random/randint";
 import { Measure } from "#root/pc/measure/measure";
 import { AmountOfSubstance } from "#root/pc/units/AmountOfSubstance";
 import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
-import { molarQuantity } from "../molarQuantity";
 
 type Identifiers = {};
-
-const reactions = [
-  { leftSide: "HCl + NaOH", rightSide: "NaCl + H2O" },
-  { leftSide: "CH4 + 2O2", rightSide: "CO2 + 2H2O" },
-  { leftSide: "Fe + S", rightSide: "FeS" },
-  { leftSide: "Zn + 2HCl", rightSide: "ZnCl2 + H2" },
-  { leftSide: "2Na + Cl2", rightSide: "2NaCl" },
-  { leftSide: "CaO + H2O", rightSide: "Ca(OH)2" },
-  { leftSide: "2H2 + O2", rightSide: "2H2O" },
-  { leftSide: "3H2 + N2", rightSide: "2NH3" },
-  { leftSide: "C + O2", rightSide: "CO2" },
-  { leftSide: "CaCO3 + 2HCl", rightSide: "CaCl2 + H2O + CO2" },
-];
-
-const nonStoichiometricReactions = [
-  { leftSide: "HCl + 2NaOH", rightSide: "NaCl + NaOH + H2O" },
-  { leftSide: "2CH4 + 3O2", rightSide: "CO2 + 2CO + 4H2O" },
-  { leftSide: "2Fe + 3S", rightSide: "FeS + FeS2" },
-  { leftSide: "Zn + HCl", rightSide: "ZnCl2 + H2" },
-  { leftSide: "4Na + Cl2", rightSide: "2NaCl + 2Na" },
-  { leftSide: "CaO + 2H2O", rightSide: "Ca(OH)2 + H2O" },
-  { leftSide: "H2 + O2", rightSide: "H2O2" },
-  { leftSide: "6H2 + N2", rightSide: "2NH3 + 2H2" },
-  { leftSide: "2C + O2", rightSide: "2CO" },
-  { leftSide: "CaCO3 + HCl", rightSide: "CaCl2 + H2O + CO2 + HCl" },
-];
 
 const getStoichiometricReactionQuestion: QuestionGenerator<
   Identifiers
