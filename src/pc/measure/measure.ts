@@ -1,3 +1,4 @@
+import { frenchify } from "#root/math/utils/latex/frenchify";
 import { round, roundSignificant } from "#root/math/utils/round";
 import { ToTexOptions } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -176,8 +177,9 @@ export class Measure<T extends string = string> {
     );
   }
   private toNotScientificTex() {
+    if (this.exponent === 0) return frenchify(this.significantPart);
     let result = (this.significantPart + "").replace(".", "").replace("-", "");
-    if (this.exponent >= 0) {
+    if (this.exponent > 0) {
       for (let n = result.length; n <= this.exponent; n++) {
         result += 0;
       }

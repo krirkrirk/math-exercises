@@ -35,6 +35,7 @@ import { variance } from "./math/utils/variance";
 import { covXYAsNode, covarianceXY } from "./math/utils/covariance";
 import { sum } from "./math/utils/sum";
 import { MassUnit } from "./pc/units/massUnits";
+import { DistanceUnit } from "./pc/units/distanceUnits";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
@@ -71,6 +72,12 @@ const runServer = () => {
     .simplify()
     .toTex();
   console.log(node);
+
+  const m = new Measure(61, 0, DistanceUnit.hm);
+  console.log(
+    m.convert("km").toTex(),
+    m.convert("km").toTex({ notScientific: true }),
+  );
 
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);

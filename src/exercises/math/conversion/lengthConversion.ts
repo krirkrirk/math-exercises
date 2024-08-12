@@ -3,6 +3,8 @@ import {
   DecimalConstructor,
 } from "#root/math/numbers/decimals/decimal";
 import { randint } from "#root/math/utils/random/randint";
+import { Measure } from "#root/pc/measure/measure";
+import { DistanceUnit, distanceUnits } from "#root/pc/units/distanceUnits";
 import { shuffle } from "#root/utils/shuffle";
 import {
   Exercise,
@@ -23,23 +25,29 @@ type Identifiers = {
   randomLength: number;
 };
 const units = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
+const unitsObj = [
+  DistanceUnit.mm,
+  DistanceUnit.cm,
+  DistanceUnit.dm,
+  DistanceUnit.m,
+  DistanceUnit.dam,
+  DistanceUnit.hm,
+  DistanceUnit.km,
+];
 
 const getLengthConversion: QuestionGenerator<Identifiers> = () => {
   const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(0, 7, [randomUnitIndex]);
   const randomLength = DecimalConstructor.random(0, 1000, randint(0, 4));
+  const measure = new Measure(randomLength.value, 0, unitsObj[randomUnitIndex]);
   console.log("length conv q");
-  const answer = (
-    randomLength.multiplyByPowerOfTen(
-      randomUnitIndex - randomUnitInstructionIndex,
-    ).value + ""
-  ).replace(".", ",");
+  const answer = measure
+    .convert(units[randomUnitInstructionIndex] as distanceUnits)
+    .toTex({ notScientific: true });
   const question: Question<Identifiers> = {
-    instruction: `Compléter : $${randomLength.value
-      .toString()
-      .replace(".", ",")} \\textrm{${
-      units[randomUnitIndex]
-    }} = \\ldots  \\textrm{${units[randomUnitInstructionIndex]}}$`,
+    instruction: `Compléter : $${measure.toTex({
+      notScientific: true,
+    })} = \\ldots  ${unitsObj[randomUnitInstructionIndex].toTex()}$`,
     answer,
     keys: [],
     answerFormat: "tex",
