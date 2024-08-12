@@ -12,16 +12,24 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
-import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
+import { Measure } from "#root/pc/measure/measure";
+import { DistanceUnit, distanceUnits } from "#root/pc/units/distanceUnits";
+import { DivideUnit } from "#root/pc/units/divideUnit";
+import { TimeUnit, timeValues } from "#root/pc/units/timeUnits";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { random } from "#root/utils/random";
+import { time } from "console";
 
 type Identifiers = {
   distance: measure;
   time: measure;
 };
 
-type measure = { value: number; unit: string };
+type measure = { value: number; unitIndex: number };
+
+const timeUnits = [TimeUnit.h, TimeUnit.mi];
+const distanceUnitValues = [DistanceUnit.km, DistanceUnit.m];
 
 const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
   const exo = generateExercise();
@@ -45,41 +53,84 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  genearatePropositions(distance, time).forEach((value) =>
+
+  const distanceMeasure = new Measure(
+    distance.value,
+    0,
+    distanceUnitValues[distance.unitIndex],
+  );
+  const timeMeasure = new Measure(time.value, 0, timeUnits[time.unitIndex]);
+
+  genearatePropositions(distanceMeasure, timeMeasure).forEach((value) =>
     tryToAddWrongProp(propositions, value),
   );
-  const division = +(getDistanceinMeter(distance) / getTimeInSeconds(time));
+  const division = distanceMeasure
+    .convert("m")
+    .divide(timeMeasure.convert("s"));
+  const divisionValue = division.significantPart * division.exponent;
   while (propositions.length < n) {
-    let random = randfloat(division - 10, division + 11);
-    tryToAddWrongProp(propositions, random.toScientific(2).toTex());
+    let random = randfloat(divisionValue - 10, divisionValue + 11);
+    tryToAddWrongProp(
+      propositions,
+      new Measure(random, 0, division.getUnit()).toSignificant(2).toTex(),
+    );
   }
   return shuffleProps(propositions, n);
 };
 
-const genearatePropositions = (distance: measure, time: measure): string[] => {
+const genearatePropositions = (
+  distance: Measure<distanceUnits>,
+  time: Measure<timeValues>,
+): string[] => {
+  const distanceInMeter = distance.convert("m");
+  const timeInSeconds = time.convert("s");
   return [
-    (getDistanceinMeter(distance) * getTimeInSeconds(time))
-      .toScientific(2)
-      .toTex(),
-    (getDistanceinMeter(distance) / time.value).toScientific(2).toTex(),
-    (distance.value / getTimeInSeconds(time)).toScientific(2).toTex(),
-    (distance.value / time.value).toScientific(2).toTex(),
+    distanceInMeter.times(timeInSeconds).toSignificant(2).toTex(),
+    distanceInMeter.divide(time).toSignificant(2).toTex(),
+    distance.divide(timeInSeconds).toSignificant(2).toTex(),
+    distance.divide(time).toSignificant(2).toTex(),
   ];
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, distance, time }) => {
+  const distanceMeasure = new Measure(
+    distance.value,
+    0,
+    distanceUnitValues[distance.unitIndex],
+  ).convert("m");
+  const timeMeasure = new Measure(
+    time.value,
+    0,
+    timeUnits[time.unitIndex],
+  ).convert("s");
+  return [
+    answer,
+    distanceMeasure
+      .divide(timeMeasure)
+      .toSignificant(2)
+      .toTex({ hideUnit: true }),
+  ].includes(ans);
 };
 
 const generateExercise = () => {
-  const distance = { value: randint(70, 151), unit: random(["km", "m"]) };
-  const time = { value: randint(10, 61), unit: random(["h", "s"]) };
-
-  const instruction = `Soit un objet parcourant $${distance.value}$ $${distance.unit}$ en $${time.value}$ $${time.unit}$. \n \\
-  Caculer la vitesse moyenne de cet objet en $m \\cdot s^{-1}$.
+  const distance = { value: randint(70, 151), unitIndex: randint(0, 2) };
+  const time = { value: randint(10, 61), unitIndex: randint(0, 2) };
+  const distanceMeasure = new Measure(
+    distance.value,
+    0,
+    distanceUnitValues[distance.unitIndex],
+  );
+  const timeMeasure = new Measure(time.value, 0, timeUnits[time.unitIndex]);
+  const instruction = `Soit un objet parcourant $${distanceMeasure.toTex({
+    notScientific: true,
+  })}$ en $${timeMeasure.toTex({ notScientific: true })}$. \n \\
+  Caculer la vitesse moyenne de cet objet en $${DistanceUnit.m.toTex()} \\cdot ${TimeUnit.s.toTex()}^{-1}$.
   `;
 
-  const answer = getCorrectAnswer(distance, time);
+  const answer = distanceMeasure
+    .convert("m")
+    .divide(timeMeasure.convert("s"))
+    .toSignificant(2);
 
   const correction = getCorrection(distance, time);
   return {
@@ -91,59 +142,37 @@ const generateExercise = () => {
   };
 };
 
-const getCorrectAnswer = (distance: measure, time: measure): AlgebraicNode => {
-  return (getDistanceinMeter(distance) / getTimeInSeconds(time)).toScientific(
-    2,
-  );
-};
-
-const getDistanceinMeter = (distance: measure): number => {
-  switch (distance.unit) {
-    case "m":
-      return distance.value;
-    case "km":
-      return distance.value * 1000;
-    default:
-      return 0;
-  }
-};
-
-const getTimeInSeconds = (time: measure): number => {
-  switch (time.unit) {
-    case "s":
-      return time.value;
-    case "m":
-      return time.value * 60;
-    case "h":
-      return time.value * 3600;
-    default:
-      return 0;
-  }
-};
-
 const getCorrection = (distance: measure, time: measure): string => {
   let correction = ``;
   let step = 1;
+  const distanceMeasure = new Measure(
+    distance.value,
+    0,
+    distanceUnitValues[distance.unitIndex],
+  ).convert("m");
+  const timeMeasure = new Measure(
+    time.value,
+    0,
+    timeUnits[time.unitIndex],
+  ).convert("s");
   const calcul = new FractionNode(
-    getDistanceinMeter(distance).toScientific(2),
-    getTimeInSeconds(time).toScientific(2),
+    new VariableNode(distanceMeasure.toSignificant(2).toTex()),
+    new VariableNode(timeMeasure.toSignificant(2).toTex()),
   );
-  const answer = (getDistanceinMeter(distance) / getTimeInSeconds(time))
-    .toScientific(2)
-    .toTex();
-  if (distance.unit === "km")
-    correction = `${step++} - Convertir les $km$ en $m$ : $1km=1000m$.`;
-  switch (time.unit) {
-    case "h":
-      correction = `${correction} \n \\
-      ${step++} - Convertir les heures en secondes : $1h = 3600s$.`;
+  const answer = distanceMeasure.divide(timeMeasure).toSignificant(2).toTex();
+  if (distance.unitIndex === 0)
+    correction = `${step++}. Convertir les $km$ en $m$ : $1km=1000m$.`;
+  switch (time.unitIndex) {
+    case 0:
+      correction = `${correction}
+${step++}. Convertir les heures en secondes : $1h = 3600s$.`;
       break;
-    case "m":
-      correction = `${correction} \n \\
-      ${step++} - Convertir les minutes en secondes : $1m = 60s$.`;
+    case 1:
+      correction = `${correction}
+${step++}. Convertir les minutes en secondes : $1m = 60s$.`;
   }
-  return `${correction} \n \\
-  ${step} - Appliquer la règle de calcul pour la vitesse moyenne : $${calcul.toTex()} = ${answer}$ $m \\cdot s^{-1}$`;
+  return `${correction}
+${step}. Appliquer la règle de calcul pour la vitesse moyenne : $${calcul.toTex()} = ${answer}$`;
 };
 export const averageSpeed: Exercise<Identifiers> = {
   id: "averageSpeed",

@@ -19,7 +19,7 @@ export class TimeUnit extends BasicUnit<timeValues> {
   convert(
     significantPart: number,
     exponent: number,
-    convertToUnit: string,
+    convertToUnit: timeValues,
   ): Measure<timeValues> {
     const timeObjects = [TimeUnit.h, TimeUnit.mi, TimeUnit.s, TimeUnit.ms];
     const unitIndex = times.findIndex((value) => convertToUnit === value);

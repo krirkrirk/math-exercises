@@ -15,7 +15,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { coulombConstant } from "#root/pc/constants/coulomb";
 import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit } from "#root/pc/units/distanceUnits";
-import { ElectricChargeUnit } from "#root/pc/units/electricChargeUnit";
+import { ElectricalChargeUnit } from "#root/pc/units/electricalChargeUnit";
 import { ForceUnit } from "#root/pc/units/forceUnits";
 
 type simplifiedMeasure = { significant: number; exponent: number };
@@ -55,8 +55,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
     tryToAddWrongProp(propositions, value.toTex()),
   );
   const correctAns = getCorrectAns(
-    new Measure(qA.significant, qA.exponent, ElectricChargeUnit.C),
-    new Measure(qB.significant, qB.exponent, ElectricChargeUnit.C),
+    new Measure(qA.significant, qA.exponent, ElectricalChargeUnit.C),
+    new Measure(qB.significant, qB.exponent, ElectricalChargeUnit.C),
     new Measure(distance, 0),
   );
   let random;
@@ -73,8 +73,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, qA, qB, distance }) => {
   const correctAns = getCorrectAns(
-    new Measure(qA.significant, qA.exponent, ElectricChargeUnit.C),
-    new Measure(qB.significant, qB.exponent, ElectricChargeUnit.C),
+    new Measure(qA.significant, qA.exponent, ElectricalChargeUnit.C),
+    new Measure(qB.significant, qB.exponent, ElectricalChargeUnit.C),
     new Measure(distance, 0, DistanceUnit.m),
   );
   return [
@@ -92,12 +92,12 @@ const generatePropositions = (
   const qAMeasure = new Measure(
     qA.significant,
     qA.exponent,
-    ElectricChargeUnit.C,
+    ElectricalChargeUnit.C,
   );
   const qBMeasure = new Measure(
     qB.significant,
     qB.exponent,
-    ElectricChargeUnit.C,
+    ElectricalChargeUnit.C,
   );
   const dMeasure = new Measure(distance, 0, DistanceUnit.m);
   const first = qAMeasure.times(qBMeasure).divide(dMeasure.times(dMeasure));
@@ -118,12 +118,12 @@ const getExercise = () => {
   const qAMeasure = new Measure(
     qA.significant,
     qA.exponent,
-    ElectricChargeUnit.C,
+    ElectricalChargeUnit.C,
   );
   const qBMeasure = new Measure(
     qB.significant,
     qB.exponent,
-    ElectricChargeUnit.C,
+    ElectricalChargeUnit.C,
   );
   const distance = randfloat(0, 1, 1);
   const dMeasure = new Measure(distance, 0, DistanceUnit.m);

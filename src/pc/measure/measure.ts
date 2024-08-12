@@ -225,11 +225,11 @@ export class Measure<T extends string = string> {
     return this.unit ? true : false;
   }
 
-  getUnit(): string {
+  getUnit(): Unit<T> {
     if (!this.unit) {
-      return "This measure has no unit";
+      throw new Error("This measure has no unit");
     }
-    return this.unit.getUnit();
+    return this.unit;
   }
 
   convert(unit: T): Measure<T> {
