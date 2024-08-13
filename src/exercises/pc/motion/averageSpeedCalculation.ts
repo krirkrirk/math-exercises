@@ -14,6 +14,10 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { round } from "#root/math/utils/round";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
+import { DivideUnit } from "#root/pc/units/divideUnit";
+import { TimeUnit } from "#root/pc/units/timeUnits";
+import { DistanceUnit } from "#root/pc/units/distanceUnits";
+import { Measure } from "#root/pc/measure/measure";
 
 type Identifiers = {
   speed: number;
@@ -28,9 +32,21 @@ const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
   const deltaTime = round(distance / speed, 2); // Temps en heures
 
   const variables = [
-    { name: "vitesse moyenne", value: speed, unit: "\\ km/h", symbol: "v" },
-    { name: "distance", value: distance, unit: "\\ km", symbol: "d" },
-    { name: "temps", value: deltaTime, unit: "\\ h", symbol: "\\Delta t" },
+    {
+      name: "vitesse moyenne",
+      value: new Measure(speed, 0, new DivideUnit(DistanceUnit.km, TimeUnit.h)),
+      symbol: "v",
+    },
+    {
+      name: "distance",
+      value: new Measure(distance, 0, DistanceUnit.km),
+      symbol: "d",
+    },
+    {
+      name: "temps",
+      value: new Measure(deltaTime, 0, TimeUnit.h),
+      symbol: "\\Delta t",
+    },
   ];
 
   const randomIndex = randint(0, variables.length - 1);
@@ -41,21 +57,23 @@ const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
   - ${
     knownVariables[0].name.charAt(0).toUpperCase() +
     knownVariables[0].name.slice(1)
-  } : $${knownVariables[0].symbol} = ${round(knownVariables[0].value, 2)
-    .toTree()
-    .toTex()} ${knownVariables[0].unit}$
+  } : $${knownVariables[0].symbol} = ${knownVariables[0].value
+    .toSignificant(5)
+    .toTex({
+      notScientific: true,
+    })}$
   - ${
     knownVariables[1].name.charAt(0).toUpperCase() +
     knownVariables[1].name.slice(1)
-  } : $${knownVariables[1].symbol} = ${round(knownVariables[1].value, 2)
-    .toTree()
-    .toTex()} ${knownVariables[1].unit}$. \n
+  } : $${knownVariables[1].symbol} = ${knownVariables[1].value
+    .toSignificant(2)
+    .toTex({ notScientific: true })}$. \n
   Utilisez ces informations pour calculer ${
     targetVariable.name === "distance" ||
     targetVariable.name === "vitesse moyenne"
       ? "la"
       : "le"
-  } ${targetVariable.name} en $${targetVariable.unit}$.`;
+  } ${targetVariable.name} en $${targetVariable.value.getUnit().toTex()}$.`;
 
   const hint =
     targetVariable.name === "vitesse moyenne"
@@ -102,7 +120,9 @@ const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
           .toTex()}\\ h$.`;
 
   const question: Question<Identifiers> = {
-    answer: round(targetVariable.value, 2).toTree().toTex(),
+    answer: targetVariable.value
+      .toSignificant(5)
+      .toTex({ notScientific: true }),
     instruction,
     hint,
     correction,
