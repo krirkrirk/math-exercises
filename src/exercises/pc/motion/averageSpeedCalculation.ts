@@ -49,7 +49,7 @@ const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
     },
   ];
 
-  const randomIndex = randint(0, variables.length - 1);
+  const randomIndex = randint(0, variables.length);
   const targetVariable = variables[randomIndex];
   const knownVariables = variables.filter((_, index) => index !== randomIndex);
 
@@ -57,17 +57,15 @@ const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
   - ${
     knownVariables[0].name.charAt(0).toUpperCase() +
     knownVariables[0].name.slice(1)
-  } : $${knownVariables[0].symbol} = ${knownVariables[0].value
-    .toSignificant(5)
-    .toTex({
-      notScientific: true,
-    })}$
+  } : $${knownVariables[0].symbol} = ${knownVariables[0].value.toTex({
+    notScientific: true,
+  })}$
   - ${
     knownVariables[1].name.charAt(0).toUpperCase() +
     knownVariables[1].name.slice(1)
-  } : $${knownVariables[1].symbol} = ${knownVariables[1].value
-    .toSignificant(2)
-    .toTex({ notScientific: true })}$. \n
+  } : $${knownVariables[1].symbol} = ${knownVariables[1].value.toTex({
+    notScientific: true,
+  })}$. \n
   Utilisez ces informations pour calculer ${
     targetVariable.name === "distance" ||
     targetVariable.name === "vitesse moyenne"
@@ -89,40 +87,45 @@ const getAverageSpeedQuestion: QuestionGenerator<Identifiers> = () => {
           2,
         )
           .toTree()
-          .toTex()}}{${round(deltaTime, 2).toTree().toTex()}} = ${round(
-          speed,
-          2,
-        )
-          .toTree()
-          .toTex()}\\ km/h$.`
+          .toTex()}}{${round(deltaTime, 2).toTree().toTex()}} = ${new Measure(
+          round(distance / deltaTime, 2),
+          0,
+          targetVariable.value.getUnit(),
+        ).toTex({ notScientific: true })}$.`
       : targetVariable.name === "distance"
       ? `La distance est calculée en utilisant la formule $d = v \\times \\Delta t$. Donc, $d = ${round(
           speed,
           2,
         )
           .toTree()
-          .toTex()} \\times ${round(deltaTime, 2).toTree().toTex()} = ${round(
-          distance,
-          2,
-        )
+          .toTex()} \\times ${round(deltaTime, 2)
           .toTree()
-          .toTex()}\\ km$.`
+          .toTex()} = ${new Measure(
+          round(speed * deltaTime, 2),
+          0,
+          DistanceUnit.km,
+        ).toTex({ notScientific: true })}$.`
       : `Le temps est calculé en utilisant la formule $\\Delta t = \\frac{d}{v}$. Donc, $t = \\frac{${round(
           distance,
           2,
         )
           .toTree()
-          .toTex()}}{${round(speed, 2).toTree().toTex()}} = ${round(
-          deltaTime,
-          2,
-        )
-          .toTree()
-          .toTex()}\\ h$.`;
+          .toTex()}}{${round(speed, 2).toTree().toTex()}} = ${new Measure(
+          round(distance / speed, 2),
+          0,
+          TimeUnit.h,
+        ).toTex({ notScientific: true })}$.`;
 
   const question: Question<Identifiers> = {
-    answer: targetVariable.value
-      .toSignificant(5)
-      .toTex({ notScientific: true }),
+    answer: getCorrectAns(
+      targetVariable.name,
+      speed,
+      distance,
+      deltaTime,
+    ).toTex({
+      notScientific: true,
+      hideUnit: true,
+    }),
     instruction,
     hint,
     correction,
@@ -202,6 +205,27 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
+};
+
+const getCorrectAns = (
+  targetVariable: string,
+  speed: number,
+  distance: number,
+  deltaTime: number,
+): Measure => {
+  switch (targetVariable) {
+    case "distance":
+      return new Measure(round(speed * deltaTime, 2), 0, DistanceUnit.km);
+    case "vitesse moyenne":
+      return new Measure(
+        round(distance / deltaTime, 2),
+        0,
+        new DivideUnit(DistanceUnit.km, TimeUnit.h),
+      );
+    case "temps":
+      return new Measure(round(distance / speed, 2), 0, TimeUnit.h);
+  }
+  return new Measure(0);
 };
 
 export const AverageSpeedCalculationExercise: Exercise<Identifiers> = {
