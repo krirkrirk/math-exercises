@@ -41,12 +41,29 @@ const getDrawAVectorInGgbQuestion: QuestionGenerator<Identifiers> = () => {
 const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer, x, y }) => {
   const vector = ans.find((s) => !!s.match(/[a-z]=/)?.length);
   if (!vector) return false;
-  const coords = vector
-    .substring(vector.indexOf("=") + 1)
+  const points = vector
+    .substring(vector.indexOf("["))
+    .replaceAll("[", "")
+    .replaceAll("]", "")
+    .replaceAll(" ", "")
+    .split(",");
+  const origin = ans.find((s) => s[0] === points[0]);
+  const end = ans.find((s) => s[0] === points[1]);
+  if (!origin || !end) return false;
+  const originCoords = origin
+    .split("=")[1]
     .replaceAll("(", "")
     .replaceAll(")", "")
     .split(",");
-  console.log(coords);
+  const endCoords = end
+    .split("=")[1]
+    .replaceAll("(", "")
+    .replaceAll(")", "")
+    .split(",");
+  const coords = [
+    Number(endCoords[0]) - Number(originCoords[0]),
+    Number(endCoords[1]) - Number(originCoords[1]),
+  ];
   return Number(coords[0]) === x && Number(coords[1]) === y;
 };
 
