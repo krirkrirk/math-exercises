@@ -40,7 +40,7 @@ const getMoleculeNomenclature: QuestionGenerator<Identifiers> = () => {
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer);
+  addValidProp(propositions, answer, "raw");
   const organicMolecule = molecules.filter(
     (molecule) => molecule.isOrganic && molecule.type,
   );

@@ -80,7 +80,7 @@ export const convexityTrinomialsGeo: Exercise<Identifiers> = {
     getDistinctQuestions(getConvexityTrinomialsGeoQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
-  answerType: "QCM",
+  answerType: "QCU",
   getPropositions,
   isAnswerValid,
   hasGeogebra: true,

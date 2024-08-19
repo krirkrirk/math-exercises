@@ -156,6 +156,6 @@ export const equaDiffCheckSolutionFirstOrder: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  answerType: "QCM",
+  answerType: "QCU",
   subject: "Mathématiques",
 };

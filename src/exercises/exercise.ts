@@ -124,6 +124,7 @@ export interface Exercise<TIdentifiers = {}> {
   answerType?: "GGB" | "QCM" | "free" | "QCU";
   qcmTimer: number;
   freeTimer: number;
+  ggbTimer?: number;
   getPropositions?: QCMGenerator<{ answer: string } & TIdentifiers>;
   isAnswerValid?: VEA<TIdentifiers>;
   isGGBAnswerValid?: GGBVEA<TIdentifiers>;

@@ -102,5 +102,5 @@ export const identifyLimitingReagent: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Chimie",
-  answerType: "QCM",
+  answerType: "QCU",
 };

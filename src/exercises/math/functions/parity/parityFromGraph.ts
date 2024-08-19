@@ -145,7 +145,7 @@ export const parityFromGraph: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  answerType: "QCM",
+  answerType: "QCU",
   hasGeogebra: true,
   subject: "Mathématiques",
 };

@@ -9,7 +9,10 @@ import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstr
 import { Vector } from "#root/math/geometry/vector";
 import { randint } from "#root/math/utils/random/randint";
 
-type Identifiers = {};
+type Identifiers = {
+  x: number;
+  y: number;
+};
 
 const getDrawAVectorInGgbQuestion: QuestionGenerator<Identifiers> = () => {
   const x = randint(-3, 3);
@@ -17,7 +20,7 @@ const getDrawAVectorInGgbQuestion: QuestionGenerator<Identifiers> = () => {
   const vector = new Vector("u", x.toTree(), y.toTree());
 
   const question: Question<Identifiers> = {
-    ggbAnswer: [``, ``, `(${x},${y})`],
+    ggbAnswer: [`Vector((-2, -2), (${-2 + x}, ${-2 + y}))`],
     instruction: `Tracer le vecteur $${vector.toTex()}${vector.toInlineCoordsTex()}$`,
     keys: [],
     studentGgbOptions: {
@@ -29,14 +32,21 @@ const getDrawAVectorInGgbQuestion: QuestionGenerator<Identifiers> = () => {
       enableShiftDragZoom: true,
     },
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { x, y },
   };
 
   return question;
 };
 
-const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
-  return ans.length === 3 && ans.includes(ggbAnswer[2]);
+const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer, x, y }) => {
+  const vector = ans.find((s) => s.startsWith("Vector"));
+  if (!vector) return false;
+  const coords = vector
+    .replaceAll("Vector(", "")
+    .replaceAll(")", "")
+    .split(",");
+  console.log(coords);
+  return Number(coords[0]) === x && Number(coords[1]) === y;
 };
 
 export const drawAVectorInGGB: Exercise<Identifiers> = {

@@ -102,7 +102,7 @@ export const binomialsTrinomialsProposedSolutions: Exercise<Identifiers> = {
   sections: ["Équations"],
   generator: (nb: number) =>
     getDistinctQuestions(getBinomialsTrinomialsProposedSolutionsQuestion, nb),
-  answerType: "QCM",
+  answerType: "QCU",
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,

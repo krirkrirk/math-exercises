@@ -219,7 +219,7 @@ export const affineAdjustmentCompleteExercise: Exercise<Identifiers> = {
   sections: ["Statistiques"],
   generator: (nb: number) =>
     getDistinctQuestions(getAffineAdjustmentCompleteQuestion, nb),
-  answerType: "QCM",
+  answerType: "QCU",
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
