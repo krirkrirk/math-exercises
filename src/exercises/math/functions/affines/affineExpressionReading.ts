@@ -50,7 +50,7 @@ const getAffineExpressionReadingQuestion: QuestionGenerator<
   let yMax = Math.max(b, secondPoint[1]);
 
   const commands = [
-    `l = Line((0, ${b}), (${secondPoint[0]}, ${secondPoint[1]}))`,
+    `l = Line[(0, ${b}), (${secondPoint[0]}, ${secondPoint[1]})]`,
     `SetColor(l, "${randomColor()}")`,
     "SetFixed(l, true)",
   ];

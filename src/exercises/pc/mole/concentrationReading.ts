@@ -21,7 +21,7 @@ const getConcentrationReadingQuestion: QuestionGenerator<Identifiers> = () => {
   const absorbtion = randfloat(0.5, 5);
   const concentration = randfloat(0.1, 2);
   const commands = [
-    `L = Line((0,0), (${concentration}, ${absorbtion}))`,
+    `L = Line[(0,0), (${concentration}, ${absorbtion})]`,
     `SetFixed(L, true)`,
     `SetColor(L, "${randomColor()}")`,
   ];

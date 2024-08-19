@@ -24,7 +24,7 @@ const getDrawAlineInGgbQuestion: QuestionGenerator<Identifiers> = () => {
   const yMax = Math.max(yA, yB, 0);
   const yMin = Math.min(yA, yB, 0);
   const question: Question<Identifiers> = {
-    ggbAnswer: [`(0,${yA})`, `(1,${yB})`, `Line(A, B)`],
+    ggbAnswer: [`(0,${yA})`, `(1,${yB})`, `Line[A, B]`],
     instruction: `Tracer la droite $d$ d'équation $y=${f.toTex()}$.`,
     keys: [],
     answerFormat: "tex",
@@ -47,12 +47,18 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (
   ans,
   { ggbAnswer, correctA, correctB },
 ) => {
-  if (arrayEqual(ans, ggbAnswer)) return true;
-  if (ans.length !== 3) return false;
-  if (!isGGBPoint(ans[0]) || !isGGBPoint(ans[1]) || !isGGBLine(ans[2]))
+  const studentAnswer = ans.map((s) => s.split("=")[1]);
+  console.log(studentAnswer);
+  if (arrayEqual(studentAnswer, ggbAnswer)) return true;
+  if (studentAnswer.length !== 3) return false;
+  if (
+    !isGGBPoint(studentAnswer[0]) ||
+    !isGGBPoint(studentAnswer[1]) ||
+    !isGGBLine(studentAnswer[2])
+  )
     return false;
-  const A = getPoint(ans[0], "A");
-  const B = getPoint(ans[1], "B");
+  const A = getPoint(studentAnswer[0], "A");
+  const B = getPoint(studentAnswer[1], "B");
   const a =
     (B.getYnumber() - A.getYnumber()) / (B.getXnumber() - A.getXnumber());
   const b = A.getYnumber() - a * A.getXnumber();

@@ -64,8 +64,10 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (
   ans,
   { ggbAnswer, epsilon, l },
 ) => {
-  if (arrayEqual(ans, ggbAnswer)) return true;
-  const points = ans
+  const studentAnswer = ans.map((s) => s.split("=")[1]);
+
+  if (arrayEqual(studentAnswer, ggbAnswer)) return true;
+  const points = studentAnswer
     .filter((command) => isGGBPoint(command))
     .map((value) => getPointFromGGB(value, "", false));
   return (

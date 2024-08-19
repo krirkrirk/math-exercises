@@ -39,10 +39,11 @@ const getDrawAVectorInGgbQuestion: QuestionGenerator<Identifiers> = () => {
 };
 
 const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer, x, y }) => {
-  const vector = ans.find((s) => s.startsWith("Vector"));
+  const vector = ans.find((s) => !!s.match(/[a-z]=/)?.length);
   if (!vector) return false;
   const coords = vector
-    .replaceAll("Vector(", "")
+    .substring(vector.indexOf("=") + 1)
+    .replaceAll("(", "")
     .replaceAll(")", "")
     .split(",");
   console.log(coords);

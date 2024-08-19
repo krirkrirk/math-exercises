@@ -38,7 +38,10 @@ const getPlaceAPointQuestion: QuestionGenerator<Identifiers> = () => {
 };
 
 const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
-  return arrayHasSameElements(ans, ggbAnswer);
+  return arrayHasSameElements(
+    ans.map((s) => s.split("=")[1]),
+    ggbAnswer,
+  );
 };
 
 export const testGGBAnswer: Exercise<Identifiers> = {
