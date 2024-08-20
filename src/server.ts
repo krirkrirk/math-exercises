@@ -68,16 +68,6 @@ const runServer = () => {
   app.use(cors());
   console.log("math exos", mathExercises.length);
   console.log("pc exos", pcExercises.length);
-  const node = new MultiplyNode(new VariableNode("x"), new VariableNode("x"))
-    .simplify()
-    .toTex();
-  console.log(node);
-
-  const m = new Measure(61, 0, DistanceUnit.hm);
-  console.log(
-    m.convert("km").toTex(),
-    m.convert("km").toTex({ notScientific: true }),
-  );
 
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
