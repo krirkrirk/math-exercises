@@ -248,4 +248,12 @@ export class Measure<T extends string = string> {
   setUnit(unit: Unit<any>) {
     this.unit = unit;
   }
+
+  getValueAsNumber(): number {
+    if (Math.abs(this.exponent) > 14)
+      throw new Error(
+        `Cannot represent ${this.toTex({ hideUnit: true })} as a number.`,
+      );
+    return Math.pow(10, this.exponent) * this.significantPart;
+  }
 }

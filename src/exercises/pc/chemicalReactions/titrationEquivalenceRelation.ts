@@ -18,7 +18,13 @@ import { DivideUnit } from "#root/pc/units/divideUnit";
 import { VolumeUnit } from "#root/pc/units/volumeUnit";
 import { random } from "#root/utils/random";
 
-type Identifiers = {};
+type Identifiers = {
+  a: number;
+  b: number;
+  vA: number;
+  vB: number;
+  cB: number;
+};
 
 const titrationReactions = [
   {
@@ -93,7 +99,13 @@ const getTitrationEquivalenceRelationQuestion: QuestionGenerator<
     keys: [],
     hint: exo.hint,
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: {
+      a: exo.a,
+      b: exo.b,
+      vA: exo.vA.getValueAsNumber(),
+      vB: exo.vB.getValueAsNumber(),
+      cB: exo.cB.getValueAsNumber(),
+    },
   };
 
   return question;
@@ -108,6 +120,22 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
+};
+
+const generatePropositions = (
+  a: number,
+  b: number,
+  vA: number,
+  vB: number,
+  cB: number,
+) => {
+  const vAMeasure = new Measure(vA, 0, VolumeUnit.mL);
+  const vBMeasure = new Measure(vB, 0, VolumeUnit.mL);
+  const cBMeasure = new Measure(
+    cB,
+    0,
+    new DivideUnit(AmountOfSubstance.mol, VolumeUnit.L),
+  );
 };
 
 const generateExo = () => {
@@ -177,7 +205,17 @@ Au point d'équivalence, les quantités de matière ${reaction.titré.name}  et 
     notScientific: true,
   })}} \\Rightarrow C_A = ${answer.toTex({ notScientific: true })}$`;
 
-  return { instruction, answer, hint, correction, vA, vB, cB };
+  return {
+    instruction,
+    answer,
+    hint,
+    correction,
+    vA,
+    vB,
+    cB,
+    a: reaction.coeff[0],
+    b: reaction.coeff[1],
+  };
 };
 
 export const titrationEquivalenceRelation: Exercise<Identifiers> = {
