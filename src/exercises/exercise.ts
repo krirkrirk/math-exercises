@@ -122,6 +122,7 @@ export interface Exercise<TIdentifiers = {}> {
   generator: (n: number) => Question<TIdentifiers>[];
   maxAllowedQuestions?: number;
   answerType?: "GGB" | "QCM" | "free" | "QCU";
+  isQCM?: boolean;
   qcmTimer: number;
   freeTimer: number;
   ggbTimer?: number;
