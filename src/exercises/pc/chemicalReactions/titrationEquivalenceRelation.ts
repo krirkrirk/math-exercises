@@ -11,7 +11,10 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { frenchify } from "#root/math/utils/latex/frenchify";
+import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
 import { Measure } from "#root/pc/measure/measure";
 import { AmountOfSubstance } from "#root/pc/units/AmountOfSubstance";
 import { DivideUnit } from "#root/pc/units/divideUnit";
@@ -94,10 +97,11 @@ const getTitrationEquivalenceRelationQuestion: QuestionGenerator<
   const exo = generateExo();
 
   const question: Question<Identifiers> = {
-    answer: exo.answer.toTex({ notScientific: true }),
+    answer: exo.answer.toTex(),
     instruction: exo.instruction,
     keys: [],
     hint: exo.hint,
+    correction: exo.correction,
     answerFormat: "tex",
     identifiers: {
       a: exo.a,
@@ -111,31 +115,33 @@ const getTitrationEquivalenceRelationQuestion: QuestionGenerator<
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, a, b, vA, vB, cB },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  while (propositions.length < n) {}
+  const correctAns = round((b * vB * cB) / (a * vA), 2);
+  const unit = new DivideUnit(AmountOfSubstance.mol, VolumeUnit.mL);
+  let random;
+  while (propositions.length < n) {
+    random = randfloat(correctAns - 1, correctAns + 2, 2, [correctAns]);
+    tryToAddWrongProp(
+      propositions,
+      new Measure(Math.abs(random), 0, unit).toTex(),
+    );
+  }
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
-};
-
-const generatePropositions = (
-  a: number,
-  b: number,
-  vA: number,
-  vB: number,
-  cB: number,
-) => {
-  const vAMeasure = new Measure(vA, 0, VolumeUnit.mL);
-  const vBMeasure = new Measure(vB, 0, VolumeUnit.mL);
-  const cBMeasure = new Measure(
-    cB,
-    0,
-    new DivideUnit(AmountOfSubstance.mol, VolumeUnit.L),
-  );
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, a, b, vA, vB, cB }) => {
+  const correctAns = round((b * vB * cB) / (a * vA), 2);
+  const unit = new DivideUnit(AmountOfSubstance.mol, VolumeUnit.mL);
+  return [
+    answer,
+    frenchify(correctAns),
+    answer.replace(`\\ ${unit.toTex()}`, ""),
+  ].includes(ans);
 };
 
 const generateExo = () => {
@@ -146,7 +152,7 @@ const generateExo = () => {
   const cB = new Measure(
     random([0.05, 0.1, 0.2, 0.25, 0.5, 0.75, 1.0]),
     0,
-    new DivideUnit(AmountOfSubstance.mol, VolumeUnit.L),
+    new DivideUnit(AmountOfSubstance.mol, VolumeUnit.mL),
   );
 
   const vB = new Measure(5 * randint(1, 11), 0, VolumeUnit.mL);
@@ -157,7 +163,9 @@ const generateExo = () => {
     reaction.titrant.symbol
   } \\Rightarrow ${reaction.produit}`;
 
-  const correction = `d`;
+  const hint = `Rappel : Au point d'équivalence, les quantités de matière ${reaction.titré.name} et ${reaction.titrant.name} sont égales , c'est-à-dire :
+
+- $${reaction.coeff[0]} \\times n(${reaction.titré.symbol}) = ${reaction.coeff[1]} \\times n(${reaction.titrant.symbol})$`;
 
   const instruction = `On réalise un titrage entre une solution ${
     reaction.titré.name
@@ -178,16 +186,17 @@ const generateExo = () => {
   })}$
 - Réaction : $${reactionString}$
 
-Calculer la concentration $C_A$ de (${reaction.titré.name}).
+Calculer la concentration $C_A$ de (${
+    reaction.titré.name
+  }), arrondie au centiéme.
 `;
-
   const answer = cB
     .times(vB)
     .times(reaction.coeff[1])
     .divide(vA.times(reaction.coeff[0]))
-    .toSignificant(1);
+    .toSignificant(2);
 
-  const hint = `Utiliser la relation d'équivalence du titrage : 
+  const correction = `Utiliser la relation d'équivalence du titrage : 
   
 Au point d'équivalence, les quantités de matière ${reaction.titré.name}  et ${
     reaction.titrant.name
