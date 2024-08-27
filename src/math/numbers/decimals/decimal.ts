@@ -8,6 +8,7 @@ import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { Nombre, NumberType } from "../nombre";
 import { Rational } from "../rationals/rational";
 
+export const decimalDigitRanks = ["dixièmes", "centièmes", "millièmes"];
 export abstract class DecimalConstructor {
   static randomFracPart(precision: number, leadingZeros: number = 0): string {
     let decimals = "";

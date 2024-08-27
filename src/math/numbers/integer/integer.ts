@@ -6,6 +6,12 @@ import { Nombre, NumberType } from "../nombre";
 import { Rational } from "../rationals/rational";
 import { primes } from "./primes";
 
+export const integerDigitRanks = [
+  "unités",
+  "dizaines",
+  "centaines",
+  "milliers",
+];
 export abstract class IntegerConstructor {
   static random(nbOfDigits: number, excludes?: number[]) {
     return randint(10 ** (nbOfDigits - 1), 10 ** nbOfDigits, excludes);

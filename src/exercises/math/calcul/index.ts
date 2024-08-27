@@ -6,3 +6,5 @@ export * from "./mentalCaluls";
 export * from "./operations";
 export * from "./proportionality";
 export * from "./rounding";
+export * from "./digitRank";
+export * from "./digitDecimalRank";
