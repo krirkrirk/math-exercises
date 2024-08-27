@@ -11,6 +11,7 @@ import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstr
 import { Point } from "#root/math/geometry/point";
 import { AffineConstructor } from "#root/math/polynomials/affine";
 import { arrayEqual } from "#root/utils/arrayEqual";
+import { deleteObjectNamesFromAnswer } from "#root/geogebra/deleteObjectNamesFromAnswer";
 
 type Identifiers = {
   correctA: number;
@@ -47,8 +48,7 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (
   ans,
   { ggbAnswer, correctA, correctB },
 ) => {
-  const studentAnswer = ans.map((s) => s.split("=")[1]);
-  console.log(studentAnswer);
+  const studentAnswer = deleteObjectNamesFromAnswer(ans);
   if (arrayEqual(studentAnswer, ggbAnswer)) return true;
   if (studentAnswer.length !== 3) return false;
   if (

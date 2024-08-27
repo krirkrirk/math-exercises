@@ -20,7 +20,7 @@ const getDrawAVectorInGgbQuestion: QuestionGenerator<Identifiers> = () => {
   const vector = new Vector("u", x.toTree(), y.toTree());
 
   const question: Question<Identifiers> = {
-    ggbAnswer: [`Vector((-2, -2), (${-2 + x}, ${-2 + y}))`],
+    ggbAnswer: [`Vector[(-2, -2), (${-2 + x}, ${-2 + y})]`],
     instruction: `Tracer le vecteur $${vector.toTex()}${vector.toInlineCoordsTex()}$`,
     keys: [],
     studentGgbOptions: {

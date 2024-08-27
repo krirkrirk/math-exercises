@@ -8,6 +8,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstructor";
 import { PointConstructor } from "#root/math/geometry/point";
 import { arrayHasSameElements } from "#root/utils/arrayHasSameElement";
+import { deleteObjectNamesFromAnswer } from "#root/geogebra/deleteObjectNamesFromAnswer";
 
 type Identifiers = {};
 
@@ -37,10 +38,7 @@ const getPlaceAPointQuestion: QuestionGenerator<Identifiers> = () => {
 };
 
 const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
-  return arrayHasSameElements(
-    ans.map((s) => s.split("=")[1]),
-    ggbAnswer,
-  );
+  return arrayHasSameElements(deleteObjectNamesFromAnswer(ans), ggbAnswer);
 };
 
 export const testGGBAnswer: Exercise<Identifiers> = {

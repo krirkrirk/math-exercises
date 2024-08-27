@@ -66,7 +66,7 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
 export const digitDecimalRank: Exercise<Identifiers> = {
   id: "digitDecimalRank",
   connector: "=",
-  label: "",
+  label: "Déterminer le rang d'un chiffre dans une partie décimale",
   levels: [],
   isSingleStep: true,
   sections: [],
