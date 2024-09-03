@@ -173,4 +173,5 @@ export const concentrationFromMassCalculation: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Chimie",
+  hasHintAndCorrection: true,
 };

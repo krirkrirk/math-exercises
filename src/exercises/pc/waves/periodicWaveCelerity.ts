@@ -132,4 +132,5 @@ export const periodicWaveCelerity: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

@@ -255,4 +255,5 @@ export const kineticEnergyOrMassOrSpeed: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  hasHintAndCorrection: true,
 };

@@ -83,4 +83,5 @@ export const log10PowerSimplifying: Exercise<Identifiers> = {
   isAnswerValid,
   maxAllowedQuestions: 10,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

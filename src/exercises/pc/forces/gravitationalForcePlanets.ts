@@ -183,4 +183,5 @@ export const gravitationalForcePlanets: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Physique",
   maxAllowedQuestions: 8,
+  hasHintAndCorrection: true,
 };

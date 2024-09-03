@@ -241,4 +241,5 @@ export const AverageSpeedCalculationExercise: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

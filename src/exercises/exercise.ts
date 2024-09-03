@@ -131,6 +131,7 @@ export interface Exercise<TIdentifiers = {}> {
   isGGBAnswerValid?: GGBVEA<TIdentifiers>;
   hasGeogebra?: boolean;
   subject: "Mathématiques" | "Chimie" | "Physique";
+  hasHintAndCorrection?: boolean;
 }
 
 export type MathLevel =

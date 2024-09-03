@@ -112,4 +112,5 @@ export const efficencyOfConverter: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

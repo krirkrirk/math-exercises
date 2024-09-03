@@ -175,4 +175,5 @@ export const concentrationCalculation: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Chimie",
+  hasHintAndCorrection: true,
 };
