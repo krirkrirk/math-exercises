@@ -14,10 +14,10 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Decimal } from "#root/math/numbers/decimals/decimal";
 import { coprimesOf } from "#root/math/utils/arithmetic/coprimesOf";
 import { round } from "#root/math/utils/round";
-import { nucleonMass } from "#root/pc/constants/atoms";
+import { nucleonMass } from "#root/pc/constants/molecularChemistry/atoms";
 import { Measure } from "#root/pc/measure/measure";
-import { AtomSymbols } from "#root/pc/molecularChemistry/atomSymbols";
-import { atomes } from "#root/pc/molecularChemistry/atome";
+import { AtomSymbols } from "#root/pc/constants/molecularChemistry/atomSymbols";
+import { atomes } from "#root/pc/constants/molecularChemistry/atome";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { random } from "#root/utils/random";
 import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
