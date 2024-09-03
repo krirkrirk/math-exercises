@@ -72,6 +72,12 @@ const runServer = () => {
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });
+  app.get("/mathlive", (req: Request, res: Response) => {
+    res.json(mathExercises);
+  });
+  app.get("/xplive", (req: Request, res: Response) => {
+    res.json(pcExercises);
+  });
 
   app.get("/exo", (req: Request, res: Response) => {
     const exoId = req.query.exoId;
