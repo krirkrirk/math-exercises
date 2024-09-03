@@ -13,6 +13,10 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
+import { Measure } from "#root/pc/measure/measure";
+import { DivideUnit } from "#root/pc/units/divideUnit";
+import { MassUnit } from "#root/pc/units/massUnits";
+import { VolumeUnit } from "#root/pc/units/volumeUnit";
 
 type Identifiers = {};
 
@@ -24,30 +28,52 @@ const getCalculateVolumetricMassQuestion: QuestionGenerator<
   let m = 0;
   let t = 0;
   let v = 0;
+  let mMeasure;
+  let tMeasure;
+  let vMeasure;
   let instruction = "";
   let answer = "";
+
+  const tUnit = new DivideUnit(MassUnit.g, VolumeUnit.mL);
   switch (type) {
     case 1:
       //find t
       m = randfloat(50, 400, 1);
       v = randfloat(50, 400, 1);
+      mMeasure = new Measure(m, 0, MassUnit.g);
+      vMeasure = new Measure(v, 0, VolumeUnit.mL);
       answer = round(m / v, 1).frenchify();
-      instruction = `Un liquide de volume $${v.frenchify()}\\ \\text{mL}$ a une masse de $${m.frenchify()}\\ \\text{g}$. Quel est la masse volumique de ce liquide, en $\\text{g}\\cdot\\text{mL}^{-1}$ ?`;
+      instruction = `Un liquide de volume $${vMeasure.toTex({
+        notScientific: true,
+      })}$ a une masse de $${mMeasure.toTex({
+        notScientific: true,
+      })}$. Quel est la masse volumique de ce liquide, en $${tUnit.toTex()}$ ?`;
       break;
     case 2:
       //find m
       t = randfloat(1, 20, 1);
       v = randfloat(50, 400, 1);
+      tMeasure = new Measure(t, 0, tUnit);
+      vMeasure = new Measure(v, 0, VolumeUnit.mL);
       answer = round(t * v, 1).frenchify();
-      instruction = `Un liquide de volume $${v.frenchify()}\\ \\text{mL}$ a une masse volumique de $${t.frenchify()}\\ \\text{g}\\cdot\\text{mL}^{-1}$. Quel est la masse de ce liquide, en $\\text{g}$ ?`;
+      instruction = `Un liquide de volume $${vMeasure.toTex({
+        notScientific: true,
+      })}$ a une masse volumique de $${tMeasure.toTex({
+        notScientific: true,
+      })}$. Quel est la masse de ce liquide, en $${MassUnit.g.toTex()}$ ?`;
       break;
     case 3:
       //find v
       t = randfloat(1, 20, 1);
       m = randfloat(50, 400, 1);
+      tMeasure = new Measure(t, 0, tUnit);
+      mMeasure = new Measure(m, 0, MassUnit.g);
       answer = round(m / t, 1).frenchify();
-      instruction = `Un liquide de masse $${m.frenchify()}\\ \\text{g}$ a une masse volumique de $${t.frenchify()}\\ \\text{g}\\cdot\\text{mL}^{-1}$. Quel est le volume de ce liquide, en $\\text{mL}$ ?`;
-      break;
+      instruction = `Un liquide de masse $${mMeasure.toTex({
+        notScientific: true,
+      })}$ a une masse volumique de $${tMeasure.toTex({
+        notScientific: true,
+      })}$. Quel est le volume de ce liquide, en $${VolumeUnit.mL.toTex()}$ ?`;
       break;
   }
 

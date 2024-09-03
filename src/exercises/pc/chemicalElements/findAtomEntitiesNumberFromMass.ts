@@ -20,6 +20,7 @@ import { AtomSymbols } from "#root/pc/constants/molecularChemistry/atomSymbols";
 import { atomes } from "#root/pc/constants/molecularChemistry/atome";
 import { random } from "#root/utils/random";
 import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
+import { MassUnit } from "#root/pc/units/massUnits";
 
 type Identifiers = {
   atomSymbol: AtomSymbols;
@@ -31,18 +32,16 @@ const getFindAtomEntitiesNumberFromMassQuestion: QuestionGenerator<
 > = () => {
   const atom = random(atomes.slice(5, 30));
   const sampleMass = round(randfloat(0.1, 2), 2);
-  const sampleMassMeasure = new Measure(sampleMass, 0);
+  const sampleMassMeasure = new Measure(sampleMass, 0, MassUnit.kg);
   const atomMass = nucleonMass.value.times(atom.masseAtomique).toSignificant(2);
   const entitiesNumber = sampleMassMeasure.divide(atomMass).toSignificant(2);
   console.log("entitiesNumber", entitiesNumber);
 
-  const instruction = `Un échantillon a une masse $m = ${frenchify(
-    sampleMass,
-  )}\\ kg$ ${requiresApostropheBefore(atom.name) ? "d'" : "de "}${
-    atom.name
-  }. La masse d'un atome ${requiresApostropheBefore(atom.name) ? "d'" : "de "}${
-    atom.name
-  } est de $${atomMass.toTex({ scientific: 2 })}\\ kg$.
+  const instruction = `Un échantillon a une masse $m = ${sampleMassMeasure.toTex()}$ ${
+    requiresApostropheBefore(atom.name) ? "d'" : "de "
+  }${atom.name}. La masse d'un atome ${
+    requiresApostropheBefore(atom.name) ? "d'" : "de "
+  }${atom.name} est de $${atomMass.toTex({ scientific: 2 })}$.
   Déterminer le nombre d'atomes ${
     requiresApostropheBefore(atom.name) ? "d'" : "de "
   }${atom.name} composant l'échantillon.`;
@@ -82,7 +81,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   while (propositions.length < n) {
     const wrongPower = entitiesNumber
       .times(new Measure(1, randint(-2, 2, [0])))
-      .toTex({ scientific: 0 });
+      .toTex({ scientific: 0, hideUnit: true });
     tryToAddWrongProp(propositions, `${wrongPower}`);
   }
   return shuffleProps(propositions, n);

@@ -1,51 +1,43 @@
 import { Measure } from "#root/pc/measure/measure";
+import { DistanceUnit } from "#root/pc/units/distanceUnits";
+import { DivideUnit } from "#root/pc/units/divideUnit";
+import { MassUnit } from "#root/pc/units/massUnits";
+import { MultiplyUnit } from "#root/pc/units/mulitplyUnits";
+import { PowerUnit } from "#root/pc/units/powerUnits";
+import { TimeUnit } from "#root/pc/units/timeUnits";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
 export class Planet {
   name: string;
   scientificName: string;
   galaxy: string;
   system: string;
-  radius: { measure: Measure; unit: string };
-  mass: { measure: Measure; unit: string };
-  surfaceArea: { measure: Measure; unit: string };
-  gravity: { measure: Measure; unit: string };
-  distanceFromSun: { measure: Measure; unit: string };
+  radius: Measure;
+  mass: Measure;
+  surfaceArea: Measure;
+  gravity: Measure;
+  distanceFromSun: Measure;
 
   constructor(
     name: string,
     scientificName: string,
     galaxy: string,
     system: string,
-    radius: { value: number; exponent: number; unit: string },
-    mass: { value: number; exponent: number; unit: string },
-    surfaceArea: { value: number; exponent: number; unit: string },
-    gravity: { value: number; exponent: number; unit: string },
-    distanceFromSun: { value: number; exponent: number; unit: string },
+    radius: Measure,
+    mass: Measure,
+    surfaceArea: Measure,
+    gravity: Measure,
+    distanceFromSun: Measure,
   ) {
     this.name = name;
     this.scientificName = scientificName;
     this.galaxy = galaxy;
     this.system = system;
-    this.radius = {
-      measure: new Measure(radius.value, radius.exponent),
-      unit: radius.unit,
-    };
-    this.mass = {
-      measure: new Measure(mass.value, mass.exponent),
-      unit: mass.unit,
-    };
-    this.surfaceArea = {
-      measure: new Measure(surfaceArea.value, surfaceArea.exponent),
-      unit: surfaceArea.unit,
-    };
-    this.gravity = {
-      measure: new Measure(gravity.value, gravity.exponent),
-      unit: gravity.unit,
-    };
-    this.distanceFromSun = {
-      measure: new Measure(distanceFromSun.value, distanceFromSun.exponent),
-      unit: distanceFromSun.unit,
-    };
+    this.radius = radius;
+    this.mass = mass;
+    this.surfaceArea = surfaceArea;
+    this.gravity = gravity;
+    this.distanceFromSun = distanceFromSun;
   }
 }
 
@@ -55,87 +47,143 @@ export const planets: Planet[] = [
     "Mercury",
     "Voie Lactée",
     "Système Solaire",
-    { value: 2.4397, exponent: 3, unit: "km" },
-    { value: 3.3011, exponent: 23, unit: "kg" },
-    { value: 7.48, exponent: 7, unit: "km²" },
-    { value: 3.7, exponent: 0, unit: "m/s²" },
-    { value: 5.79, exponent: 7, unit: "km" },
+    new Measure(2.4397, 3, DistanceUnit.km),
+    new Measure(3.3011, 23, MassUnit.kg),
+    new Measure(7.48, 7, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
+    new Measure(
+      3.7,
+      0,
+      new DivideUnit(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
+    new Measure(5.79, 7, DistanceUnit.km),
   ),
   new Planet(
     "Vénus",
     "Venus",
     "Voie Lactée",
     "Système Solaire",
-    { value: 6.0518, exponent: 3, unit: "km" },
-    { value: 48.675, exponent: 23, unit: "kg" },
-    { value: 46.0, exponent: 7, unit: "km²" },
-    { value: 8.87, exponent: 0, unit: "m/s²" },
-    { value: 10.82, exponent: 7, unit: "km" },
+    new Measure(6.0518, 3, DistanceUnit.km),
+    new Measure(48.675, 23, MassUnit.kg),
+    new Measure(46.0, 7, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
+    new Measure(
+      8.87,
+      0,
+      new DivideUnit(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
+    new Measure(10.82, 7, DistanceUnit.km),
   ),
   new Planet(
     "Terre",
     "Earth",
     "Voie Lactée",
     "Système Solaire",
-    { value: 6.371, exponent: 3, unit: "km" },
-    { value: 5.972, exponent: 24, unit: "kg" },
-    { value: 51.0, exponent: 7, unit: "km²" },
-    { value: 9.81, exponent: 0, unit: "m/s²" },
-    { value: 14.96, exponent: 7, unit: "km" },
+    new Measure(6.371, 3, DistanceUnit.km),
+    new Measure(5.972, 24, MassUnit.kg),
+    new Measure(51.0, 7, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
+    new Measure(
+      9.81,
+      0,
+      new DivideUnit(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
+    new Measure(14.96, 7, DistanceUnit.km),
   ),
   new Planet(
     "Mars",
     "Mars",
     "Voie Lactée",
     "Système Solaire",
-    { value: 3.3895, exponent: 3, unit: "km" },
-    { value: 0.64171, exponent: 24, unit: "kg" },
-    { value: 14.48, exponent: 6, unit: "km²" },
-    { value: 3.71, exponent: 0, unit: "m/s²" },
-    { value: 22.79, exponent: 7, unit: "km" },
+    new Measure(3.3895, 3, DistanceUnit.km),
+    new Measure(0.64171, 24, MassUnit.kg),
+    new Measure(14.48, 6, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
+    new Measure(
+      3.71,
+      0,
+      new DivideUnit(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
+    new Measure(22.79, 7, DistanceUnit.km),
   ),
   new Planet(
     "Jupiter",
     "Jupiter",
     "Voie Lactée",
     "Système Solaire",
-    { value: 69.911, exponent: 3, unit: "km" },
-    { value: 18986, exponent: 23, unit: "kg" },
-    { value: 614.19, exponent: 6, unit: "km²" },
-    { value: 24.79, exponent: 0, unit: "m/s²" },
-    { value: 77.84, exponent: 7, unit: "km" },
+    new Measure(69.911, 3, DistanceUnit.km),
+    new Measure(18986, 23, MassUnit.kg),
+    new Measure(614.19, 6, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
+    new Measure(
+      24.79,
+      0,
+      new DivideUnit(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
+    new Measure(77.84, 7, DistanceUnit.km),
   ),
   new Planet(
     "Saturne",
     "Saturn",
     "Voie Lactée",
     "Système Solaire",
-    { value: 58.232, exponent: 3, unit: "km" },
-    { value: 5683, exponent: 23, unit: "kg" },
-    { value: 427.0, exponent: 6, unit: "km²" },
-    { value: 10.44, exponent: 0, unit: "m/s²" },
-    { value: 143.35, exponent: 7, unit: "km" },
+    new Measure(58.232, 3, DistanceUnit.km),
+    new Measure(5683, 23, MassUnit.kg),
+    new Measure(427.0, 6, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
+    new Measure(
+      10.44,
+      0,
+      new DivideUnit(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
+    new Measure(143.35, 7, DistanceUnit.km),
   ),
   new Planet(
     "Uranus",
     "Uranus",
     "Voie Lactée",
     "Système Solaire",
-    { value: 25.362, exponent: 3, unit: "km" },
-    { value: 868.13, exponent: 23, unit: "kg" },
-    { value: 808.3, exponent: 6, unit: "km²" },
-    { value: 8.69, exponent: 0, unit: "m/s²" },
-    { value: 287.25, exponent: 7, unit: "km" },
+    new Measure(25.362, 3, DistanceUnit.km),
+    new Measure(868.13, 23, MassUnit.kg),
+    new Measure(808.3, 6, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
+    new Measure(
+      8.69,
+      0,
+      new DivideUnit(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
+    new Measure(287.25, 7, DistanceUnit.km),
   ),
   new Planet(
     "Neptune",
     "Neptune",
     "Voie Lactée",
     "Système Solaire",
-    { value: 24.622, exponent: 3, unit: "km" },
-    { value: 1024.13, exponent: 23, unit: "kg" },
-    { value: 761.8, exponent: 6, unit: "km²" },
-    { value: 11.15, exponent: 0, unit: "m/s²" },
-    { value: 449.51, exponent: 7, unit: "km" },
+    new Measure(24.622, 3, DistanceUnit.km),
+    new Measure(1024.13, 23, MassUnit.kg),
+    new Measure(761.8, 6, new MultiplyUnit(MassUnit.kg, MassUnit.kg)),
+    new Measure(
+      11.15,
+      0,
+      new DivideUnit(
+        DistanceUnit.m,
+        new PowerUnit(TimeUnit.s, new NumberNode(2)),
+      ),
+    ),
+    new Measure(449.51, 7, DistanceUnit.km),
   ),
 ];

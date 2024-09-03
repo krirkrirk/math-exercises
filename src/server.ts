@@ -34,6 +34,8 @@ import { DivideNode } from "./tree/nodes/operators/divideNode";
 import { variance } from "./math/utils/variance";
 import { covXYAsNode, covarianceXY } from "./math/utils/covariance";
 import { sum } from "./math/utils/sum";
+import { MassUnit } from "./pc/units/massUnits";
+import { DistanceUnit } from "./pc/units/distanceUnits";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
@@ -66,10 +68,6 @@ const runServer = () => {
   app.use(cors());
   console.log("math exos", mathExercises.length);
   console.log("pc exos", pcExercises.length);
-  const node = new MultiplyNode(new VariableNode("x"), new VariableNode("x"))
-    .simplify()
-    .toTex();
-  console.log(node);
 
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);

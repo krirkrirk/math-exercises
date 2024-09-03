@@ -214,6 +214,7 @@ export type PCSection =
   | "Fluides"
   | "Mol"
   | "Électricité"
-  | "Mécanique gravitationnelle";
+  | "Mécanique gravitationnelle"
   | "Spectrophotométrie"
-  | "Quantique";
+  | "Quantique"
+  | "Thermodynamique";

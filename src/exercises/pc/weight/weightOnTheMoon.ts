@@ -45,9 +45,7 @@ const getWeightOnTheMoonQuestion: QuestionGenerator<Identifiers> = () => {
     answer: frenchify(answer),
     instruction: `Un objet a un poids de $${weight.frenchify()}\\ \\text{N}$ sur la ${origin}. Quel est son poids sur la ${destination} ?
     
-Données : $g_T = ${gt.toTex()}\\ ${
-      earthGravity.unit
-    }$ , $g_L = ${gl.toTex()}\\ ${moonGravity.unit}$
+Données : $g_T = ${gt.toTex()}$, $g_L = ${gl.toTex()}$
     `,
     //hint: ` Pour calculer la masse de l'objet sur Terre, utiliser la formule : $m=\\frac{p_T}{g_T}$`,
     hint: "On rappelle que : $m=\\frac{p_T}{g_T}$ et  $m=\\frac{p_L}{g_L}$",

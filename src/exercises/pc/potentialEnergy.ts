@@ -11,6 +11,13 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { frenchify } from "#root/math/utils/latex/frenchify";
 import { round } from "#root/math/utils/round";
+import { earthG, earthGravityAcceleration } from "#root/pc/constants/gravity";
+import { earthGravity } from "#root/pc/constants/mechanics/gravitational";
+import { Measure } from "#root/pc/measure/measure";
+import { DistanceUnit } from "#root/pc/units/distanceUnits";
+import { EnergyUnit } from "#root/pc/units/energyUnit";
+import { MassUnit } from "#root/pc/units/massUnits";
+import { PowerUnit } from "#root/pc/units/powerUnits";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
@@ -20,15 +27,24 @@ type Identifiers = {
 
 const getPotentialEnergy: QuestionGenerator<Identifiers> = () => {
   const mass = Math.floor(Math.random() * 10 + 1); // Masse de l'objet entre 1 et 11 kg
+  const massMeasure = new Measure(mass, 0, MassUnit.kg);
   const height = Math.floor(Math.random() * 50 + 1); // Hauteur par rapport à la référence entre 1 et 51 m
-  const gravitationalAcceleration = 9.81; // Accélération due à la gravité en m/s²
+  const heightMeasure = new Measure(height, 0, DistanceUnit.m);
 
   const potentialEnergy = mass * 9.81 * height;
 
-  const instruction = `Un objet de masse $${mass} \\ \\text{kg}$ est suspendu à une hauteur de $${height}\\ \\text{m}$. Il est ensuite relâché et tombe librement.
-  $\\\\$ Calculer l'énergie potentielle de l'objet. (Supposons que l'accélération due à la gravité est de $9,81 \\ \\text{m}\\cdot \\text{s}^{-2}$)`;
+  const instruction = `Un objet de masse $${massMeasure.toTex({
+    notScientific: true,
+  })}$ est suspendu à une hauteur de $${heightMeasure.toTex({
+    notScientific: true,
+  })}$. Il est ensuite relâché et tombe librement.
+  $\\\\$ Calculer l'énergie potentielle de l'objet. (Supposons que l'accélération due à la gravité est de $${earthGravityAcceleration.measure
+    .toSignificant(2)
+    .toTex()}$)`;
 
-  const answer = `${frenchify(round(potentialEnergy, 2))}J`;
+  const answer = `${frenchify(
+    round(potentialEnergy, 2),
+  )}${EnergyUnit.J.toTex()}`;
   const question: Question<Identifiers> = {
     instruction,
     startStatement: "Ep",
@@ -59,7 +75,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffle(propositions);
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+  return [ans, ans.replace("J", EnergyUnit.J.toTex())].includes(answer);
 };
 
 export const potentialEnergy: Exercise<Identifiers> = {

@@ -26,7 +26,10 @@ export * from "./motion";
 export * from "./calibrationCurveOfSolution";
 export * from "./dosage";
 export * from "./spectral";
-
+export * from "./identifyAtomicMassOrAtomicNb";
+export * from "./recognizeRefractionOrReflectionAngles";
+export * from "./orderOfMagnitude";
+export * from "./power";
 
 /**exos pris des maths */
 export * from "../math/percent/findProportion";

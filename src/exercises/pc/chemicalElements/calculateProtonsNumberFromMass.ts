@@ -22,6 +22,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { random } from "#root/utils/random";
 import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
 import { randint } from "#root/math/utils/random/randint";
+import { MassUnit } from "#root/pc/units/massUnits";
 
 type Identifiers = {
   atomSymbol: AtomSymbols;
@@ -36,7 +37,7 @@ const getCalculateProtonsNumberFromMassQuestion: QuestionGenerator<
     requiresApostropheBefore(atom.name) ? "d'" : "de "
   }${atom.name} a pour masse $m = ${atomNucleusMass.toTex({
     scientific: 2,
-  })} kg$ et possède $${
+  })}$ et possède $${
     round(atom.masseAtomique, 0) - atom.numeroAtomique
   }$ neutrons. Déterminer le nombre de protons de cet atome.`;
 
