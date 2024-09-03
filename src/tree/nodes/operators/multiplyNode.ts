@@ -73,6 +73,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
     let rightTex = this.rightChild.toTex(opts);
 
     if (
+      !opts?.forceNoSimplification &&
       isNumberNode(this.leftChild) &&
       this.leftChild.value === 1 &&
       opts?.scientific === undefined
@@ -97,7 +98,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
       );
     }
     if (needBrackets) rightTex = `\\left(${rightTex}\\right)`;
-    if (leftTex === "-1") {
+    if (leftTex === "-1" && !opts?.forceNoSimplification) {
       // if (!isNumberNode(this.rightChild)) {
       return "-" + rightTex;
       // }

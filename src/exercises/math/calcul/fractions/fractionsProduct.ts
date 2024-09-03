@@ -28,6 +28,10 @@ const getFractionsProduct: QuestionGenerator<Identifiers> = () => {
   const statementTree = new MultiplyNode(rational.toTree(), rational2.toTree());
   const answerTree = rational.multiply(rational2).toTree();
   const answer = answerTree.toTex();
+  const beforeSimplification = new Rational(
+    rational.num * rational2.num,
+    rational.denum * rational2.denum,
+  );
   const question: Question<Identifiers> = {
     instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
@@ -38,6 +42,23 @@ const getFractionsProduct: QuestionGenerator<Identifiers> = () => {
       rationalNum: [rational.num, rational.denum],
       rationalDenum: [rational2.num, rational2.denum],
     },
+    hint: "Pour multiplier deux fractions, on multiplie les numérateurs entre eux et les dénominateurs entre eux, puis on simplifie la fraction obtenue si nécessaire.",
+    correction: `On multiplie les numérateurs entre eux et les dénominateurs entre eux :  
+
+$$\\frac{${rational.num}\\times${rational2.num}}{${rational.denum}\\times${
+      rational2.denum
+    }} = ${beforeSimplification.toTree().toTex()}$$
+
+${
+  !beforeSimplification.isIrreductible()
+    ? `On peut alors simplifier cette fraction : 
+    
+$${beforeSimplification.toTree().toTex()} = ${answer}$`
+    : "Cette fraction est déjà sous forme irréductible."
+}
+
+Ainsi, le résultat attendu est $${answer}$.
+    `,
   };
   return question;
 };
@@ -86,4 +107,5 @@ export const fractionsProduct: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };
