@@ -217,4 +217,5 @@ export type PCSection =
   | "Mécanique gravitationnelle"
   | "Spectrophotométrie"
   | "Quantique"
-  | "Thermodynamique";
+  | "Thermodynamique"
+  | "Énergie";

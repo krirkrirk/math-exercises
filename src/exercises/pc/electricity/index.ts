@@ -6,3 +6,4 @@ export * from "./kirchhoffVoltageLaw";
 export * from "./calculateIntensityInSerieOrParallel";
 export * from "./calculateIntensity";
 export * from "./ohmLaw";
+export * from "./electricPowerOrEnergyCalculation";
