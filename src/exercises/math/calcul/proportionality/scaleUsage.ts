@@ -16,6 +16,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit } from "#root/pc/units/distanceUnits";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { coinFlip } from "#root/utils/coinFlip";
 
 type Identifiers = {
@@ -24,8 +25,9 @@ type Identifiers = {
 
   fakeDistance: number;
 };
-const getScaleCalculationQuestion: QuestionGenerator<Identifiers> = () => {
+const getScaleUsageQuestion: QuestionGenerator<Identifiers> = () => {
   const isSmallScale = coinFlip();
+  const isFakeAsked = coinFlip();
   const scale = isSmallScale ? randint(1, 5) * 10 : randint(5, 100) * 1000;
   const realUnit = isSmallScale ? DistanceUnit.m : DistanceUnit.km;
   const cm = DistanceUnit.cm;
@@ -36,43 +38,56 @@ const getScaleCalculationQuestion: QuestionGenerator<Identifiers> = () => {
     (scale * fakeDistance.evaluate()) / (isSmallScale ? 100 : 100000);
 
   const realDistance = new Measure(realDistanceNb, 0, realUnit);
+  const scaleFrac = new Rational(1, scale).toTex();
 
-  const instruction = isSmallScale
-    ? `Un bateau de $${realDistance.toTex({
-        notScientific: true,
-      })}$ est représenté par un modèle réduit de $${fakeDistance.toTex({
-        notScientific: true,
-      })}$. Quelle est l'échelle du modèle réduit ?`
-    : `La distance entre deux villes est de $${realDistance.toTex({
-        notScientific: true,
-      })}$. Sur une carte, cette distance mesure $${fakeDistance.toTex({
-        notScientific: true,
-      })}$. Quelle est l'échelle de la carte ?`;
-  const answer = new Rational(1, scale).toTex();
+  const answer = (isFakeAsked ? fakeDistanceNb : realDistanceNb).frenchify();
+  const instruction = `Une carte est à l'échelle $${scaleFrac}$. ${
+    !isFakeAsked
+      ? `Quelle est la distance réelle représentée par $${fakeDistance.toTex({
+          notScientific: true,
+        })}$ sur cette carte ? Donner la réponse en $${realUnit.toTex()}$.`
+      : `Quelle est la distance représentée sur la carte pour une distance réelle de $${realDistance.toTex(
+          { notScientific: true },
+        )}$ ? Donner la distance en $${cm.toTex()}$.`
+  }`;
+
   const question: Question<Identifiers> = {
     answer,
     instruction,
     keys: [],
     answerFormat: "tex",
-    hint: `Convertis les longueurs en $${cm.toTex()}$, puis fais un calcul de propotionnalité.`,
-    correction: `On convertit d'abord les longueurs en cm : 
+    hint: `La carte est à l'échelle $${scaleFrac}$ : cela signifie que $1${cm.toTex()}$ sur cette carte représente $${scale}${cm.toTex()}$ dans la réalité. Il faut donc faire un calcul de proportionnalité.`,
+    correction: `La carte est à l'échelle $${scaleFrac}$ : cela signifie que $1${cm.toTex()}$ sur cette carte représente $${scale}${cm.toTex()}$ dans la réalité.
+
+    ${
+      isFakeAsked
+        ? `
+On convertit d'abord la distance réelle en $${cm.toTex()}$ : 
+
     
 $${realDistance.toTex({ notScientific: true })} = ${realDistance
-      .convert("cm")
-      .toTex({ notScientific: true })}$
+            .convert("cm")
+            .toTex({ notScientific: true })}$
 
-Puis, on fait un calcul de proportionnalité : puisque $${fakeDistance.toTex({
-      notScientific: true,
-    })}$ représentent $${realDistance.convert("cm").toTex({
-      notScientific: true,
-    })}$ réels, alors $1${cm.toTex()}$ représente $\\frac{${realDistance
-      .convert("cm")
-      .toTex({ notScientific: true, hideUnit: true })}}{${fakeDistance.toTex({
-      notScientific: true,
-      hideUnit: true,
-    })}}=${scale}${cm.toTex()}$ réels.
-
-L'échelle est donc de $${answer}$.
+Ainsi, $${realDistance.toTex({
+            notScientific: true,
+          })}$ dans la réalité représentent $\\frac{
+            ${realDistance.convert("cm").toTex({
+              notScientific: true,
+            })}}{${scale}} = ${fakeDistance.toTex({
+            notScientific: true,
+          })}$ sur la carte.`
+        : `
+Donc, $${fakeDistance.toTex({
+            notScientific: true,
+          })}$ sur la carte représentent $${new MultiplyNode(
+            fakeDistanceNb.toTree(),
+            scale.toTree(),
+          ).toTex()} = ${realDistance.convert("cm").toTex({
+            notScientific: true,
+          })}$ dans la réalité. On convertit alors en $${realUnit.toTex()}$ : la distance réelle est donc $${answer}${realUnit.toTex()}$.`
+    }
+    
     `,
     identifiers: {
       scale,
@@ -106,15 +121,14 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const scaleCalculation: Exercise<Identifiers> = {
-  id: "scaleCalculation",
+export const scaleUsage: Exercise<Identifiers> = {
+  id: "scaleUsage",
   connector: "=",
   label: "Calculer une échelle",
   levels: [],
   isSingleStep: true,
   sections: [],
-  generator: (nb: number) =>
-    getDistinctQuestions(getScaleCalculationQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getScaleUsageQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,

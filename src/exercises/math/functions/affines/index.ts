@@ -10,3 +10,4 @@ export * from "./affineAdjustment";
 export * from "./affineAdjustmentRsquared";
 export * from "./affineAdjustmentComplete";
 export * from "./affineMeanValue";
+export * from "./affineExpressionFromTwoImages";
