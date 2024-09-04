@@ -59,9 +59,10 @@ const getFindPeriodOrFrequencyFromGraphQuestion: QuestionGenerator<
       `SetColor(S_{${i}}, "${color}")`,
     );
   }
-  const ggb = new GeogebraConstructor(commands, {
-    axisLabels: ["$\\tiny Temps (ms)$", "$\\tiny Tension (V)$"],
-    isGridSimple: true,
+  const ggb = new GeogebraConstructor({
+    commands,
+    xAxis: { label: "$\\tiny Temps (ms)$" },
+    yAxis: { label: "$\\tiny Tension (V)$" },
   });
 
   const isAsking = coinFlip() ? `période` : `fréquence`;
@@ -76,9 +77,9 @@ const getFindPeriodOrFrequencyFromGraphQuestion: QuestionGenerator<
     keys: [],
     answerFormat: "tex",
     identifiers: { period, frequency, splinePoints },
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: [0, 20, -8, 8],
+    ggbOptions: ggb.getOptions({
+      coords: [0, 20, -8, 8],
+    }),
   };
 
   return question;

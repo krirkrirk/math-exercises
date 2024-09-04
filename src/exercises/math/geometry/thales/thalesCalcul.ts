@@ -143,7 +143,8 @@ const getThales: QuestionGenerator<Identifiers> = () => {
     `ShowLabel(${vertices[3]}, true)`,
     `ShowLabel(${vertices[4]}, true)`,
   ];
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     hideAxes: true,
     hideGrid: true,
   });
@@ -153,9 +154,9 @@ const getThales: QuestionGenerator<Identifiers> = () => {
     startStatement,
     answer,
     keys: [],
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
+    ggbOptions: ggb.getOptions({
+      coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
+    }),
     answerFormat: "tex",
     identifiers: { isAskingC, rand, rand2, sideLengths },
   };

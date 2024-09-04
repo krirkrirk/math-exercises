@@ -54,30 +54,30 @@ export type Proposition = {
   format: "tex" | "raw";
 };
 
-type GeogebraAxisOptions = {
+export type GeogebraAxisOptions = {
   steps?: number;
   hiddden?: boolean;
   showNumbers?: boolean;
   label?: string;
+  natural?: boolean;
 };
 
 export type GeogebraOptions = {
   customToolBar?: string;
-  enableShiftDragZoom?: boolean;
+  forbidShiftDragZoom?: boolean;
   commands?: string[];
-  coords?: number[];
+  coords: number[];
   is3D?: boolean;
   gridDistance?: [number, number] | false;
   hideGrid?: boolean;
   hideAxes?: boolean;
   isGridBold?: boolean;
   isGridSimple?: boolean;
-  isAxesRatioFixed?: boolean;
-  isXAxesNatural?: boolean;
+  lockedAxesRatio?: number | false;
   xAxis?: GeogebraAxisOptions;
   yAxis?: GeogebraAxisOptions;
-  axisLabels?: string[];
 };
+
 export interface Question<TIdentifiers = {}> {
   instruction: string;
   hint?: string;
@@ -87,7 +87,6 @@ export interface Question<TIdentifiers = {}> {
   answerFormat?: "tex" | "raw";
   ggbAnswer?: string[];
   keys?: KeyId[];
-
   ggbOptions?: GeogebraOptions;
   studentGgbOptions?: GeogebraOptions;
   style?: {

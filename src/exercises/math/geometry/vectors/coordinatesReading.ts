@@ -44,9 +44,8 @@ const getCoordinatesReadingQuestion: QuestionGenerator<Identifiers> = () => {
   const xMax = Math.max(xA, xB);
   const yMax = Math.max(yA, yB);
 
-  const ggb = new GeogebraConstructor(commands, {
-    gridDistance: [1, 1],
-    isGridSimple: true,
+  const ggb = new GeogebraConstructor({
+    commands,
     isGridBold: true,
   });
   const question: Question<Identifiers> = {
@@ -54,9 +53,9 @@ const getCoordinatesReadingQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Lire les coordonnées du vecteur $\\overrightarrow u$ représenté ci-dessous :`,
     keys: ["semicolon", "vectorU"],
     answerFormat: "tex",
-    commands: ggb.commands,
-    coords: ggb.getAdaptedCoords({ xMax, xMin, yMax, yMin }),
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: ggb.getAdaptedCoords({ xMax, xMin, yMax, yMin }),
+    }),
     identifiers: { xA, xB, yA, yB },
   };
 

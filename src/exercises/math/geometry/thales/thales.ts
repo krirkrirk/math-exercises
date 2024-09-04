@@ -82,7 +82,8 @@ const getThales: QuestionGenerator<Identifiers> = () => {
 
   const answer = `\\frac{${vertices[0]}${vertices[3]}}{${vertices[0]}${vertices[1]}}=\\frac{${vertices[0]}${vertices[4]}}{${vertices[0]}${vertices[2]}}=\\frac{${vertices[3]}${vertices[4]}}{${vertices[1]}${vertices[2]}}`;
 
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     hideAxes: true,
     hideGrid: true,
   });
@@ -91,9 +92,9 @@ const getThales: QuestionGenerator<Identifiers> = () => {
     instruction: `En utilisant le théoreme de Thalès, écrire l'égalité des quotients sachant que  $(${vertices[3]}${vertices[4]})//(${vertices[1]}${vertices[2]})$.`,
     answer,
     keys: [...(vertices as KeyId[]), "equal"],
-    commands: ggb.commands,
-    coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
+    }),
     answerFormat: "tex",
     identifiers: { vertices },
   };

@@ -24,9 +24,10 @@ const getOhmicConductorOrGeneratorQuestion: QuestionGenerator<
   const question: Question<Identifiers> = {
     answer: exo.answer,
     instruction: exo.instruction,
-    commands: exo.ggb.commands,
-    coords: [8, 40, -5, 30],
-    options: exo.ggb.getOptions(),
+
+    ggbOptions: exo.ggb.getOptions({
+      coords: [8, 40, -5, 30],
+    }),
     keys: [],
     hint: exo.hint,
     correction: exo.correction,
@@ -77,16 +78,20 @@ const getGgb = (type: string) => {
     points.push(`Point({${x},${y}})`);
   }
   return type === "Générateur"
-    ? new GeogebraConstructor(
-        [`Function(${Math.pow(10, 15)}/x^10,1,${randint(40, 51)})`].concat(
+    ? new GeogebraConstructor({
+        commands: [
+          `Function(${Math.pow(10, 15)}/x^10,1,${randint(40, 51)})`,
+        ].concat(points),
+        xAxis: { label: "$\\tiny I(A)$" },
+        yAxis: { label: "$\\tiny U(V)$" },
+      })
+    : new GeogebraConstructor({
+        commands: [`Function(0.00000001*x^6,1,${randint(40, 51)})`].concat(
           points,
         ),
-        { axisLabels: ["$\\tiny I(A)$", "$\\tiny U(V)$"] },
-      )
-    : new GeogebraConstructor(
-        [`Function(0.00000001*x^6,1,${randint(40, 51)})`].concat(points),
-        { axisLabels: ["$\\tiny I(A)$", "$\\tiny U(V)$"] },
-      );
+        xAxis: { label: "$\\tiny I(A)$" },
+        yAxis: { label: "$\\tiny U(V)$" },
+      });
 };
 
 const getHint = (type: string) => {

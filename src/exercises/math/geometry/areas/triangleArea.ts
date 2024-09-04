@@ -71,7 +71,8 @@ const getTriangleArea: QuestionGenerator<Identifiers> = () => {
     },poi))`,
     `ShowLabel(alpha, false)`,
   ];
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     hideAxes: true,
     hideGrid: true,
   });
@@ -88,9 +89,9 @@ const getTriangleArea: QuestionGenerator<Identifiers> = () => {
     }${interceptName} = ${height}$ cm.`,
     answer: answerTex,
     keys: ["cm", "cm2"],
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: triangle.generateCoords(),
+    ggbOptions: ggb.getOptions({
+      coords: triangle.generateCoords(),
+    }),
     answerFormat: "tex",
     identifiers: { sidesLengths },
   };

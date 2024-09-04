@@ -75,18 +75,17 @@ const getDerivativeNumberReading: QuestionGenerator<Identifiers> = () => {
   const yMin = Math.min(yA, yB);
   const xMax = Math.max(xA, xB);
   const yMax = Math.max(yA, yB);
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
+  const ggb = new GeogebraConstructor({
+    commands,
   });
   const answer = penteTree.toTex();
   const question: Question<Identifiers> = {
     instruction,
     startStatement: "a",
     answer,
-    commands: ggb.commands,
-    // coords: ggb.getAdaptedCoords({ xMax, xMin, yMax, yMin }),
-    coords: [xMin - 5, xMax + 5, yMin - 5, yMax + 5],
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: [xMin - 5, xMax + 5, yMin - 5, yMax + 5],
+    }),
     answerFormat: "tex",
     keys: [],
     identifiers: { A: [xA, yA], B: [xB, yB] },

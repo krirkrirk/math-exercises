@@ -39,7 +39,8 @@ const getPythagore: QuestionGenerator<Identifiers> = () => {
   const sideA = triangle.getSideAName();
   const sideB = triangle.getSideBName();
   const sideC = triangle.getSideCName();
-  const ggb = new GeogebraConstructor(triangle.generateCommands({}), {
+  const ggb = new GeogebraConstructor({
+    commands: triangle.generateCommands({}),
     hideAxes: true,
     hideGrid: true,
   });
@@ -50,9 +51,9 @@ const getPythagore: QuestionGenerator<Identifiers> = () => {
 
     answer,
     keys: [...vertices, "equal"],
-    commands: ggb.commands,
-    coords: triangle.generateCoords(),
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: triangle.generateCoords(),
+    }),
     answerFormat: "tex",
     identifiers: { sideA, sideB, sideC },
   };

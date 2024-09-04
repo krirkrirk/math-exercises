@@ -28,9 +28,9 @@ const getRootsReadingQuestion: QuestionGenerator<Identifiers> = () => {
     `f(x) = ${trinom.toString()}`,
     `SetColor(f, "${randomColor()}")`,
   ];
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-    isAxesRatioFixed: false,
+  const ggb = new GeogebraConstructor({
+    commands,
+    lockedAxesRatio: false,
     gridDistance: false,
   });
   const answer =
@@ -41,9 +41,8 @@ const getRootsReadingQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Déterminer graphiquement le ou les racine(s) du polynôme du second degré représenté ci-dessous : `,
     keys: ["et", "aucun"],
     answerFormat: "tex",
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: trinom.getCoords(),
+    ggbOptions: ggb.getOptions({ coords: trinom.getCoords() }),
+
     identifiers: { a: trinom.a, b: trinom.b, c: trinom.c },
   };
 

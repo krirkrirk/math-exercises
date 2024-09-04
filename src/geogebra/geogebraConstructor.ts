@@ -1,4 +1,5 @@
-import { GeogebraOptions } from "#root/exercises/exercise";
+import { GeogebraAxisOptions, GeogebraOptions } from "#root/exercises/exercise";
+import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstructor";
 
 type GetAdaptedCoords = {
   xMin: number;
@@ -9,29 +10,36 @@ type GetAdaptedCoords = {
   zMax?: number;
   forceShowAxes?: boolean;
 };
-
+type GetOptionsProps = {
+  coords: number[];
+};
 export class GeogebraConstructor {
-  commands: string[];
-  gridDistance: [number, number] | false;
-  hideGrid: boolean;
-  hideAxes: boolean;
-  isGridSimple: boolean;
-  isGridBold: boolean;
-  is3D: boolean;
-  isAxesRatioFixed: boolean;
-  isXAxesNatural: boolean;
-  axisLabels?: string[];
-  constructor(commands: string[], options: GeogebraOptions | undefined) {
-    this.commands = commands;
-    this.isAxesRatioFixed = options?.isAxesRatioFixed ?? true;
+  customToolBar?: string;
+  forbidShiftDragZoom?: boolean;
+  commands?: string[];
+  is3D?: boolean;
+  gridDistance?: [number, number] | false;
+  hideGrid?: boolean;
+  hideAxes?: boolean;
+  isGridSimple?: boolean;
+  isGridBold?: boolean;
+  lockedAxesRatio?: number | false;
+  xAxis?: GeogebraAxisOptions;
+  yAxis?: GeogebraAxisOptions;
+
+  constructor(options: Omit<GeogebraOptions, "coords">) {
+    this.customToolBar = options?.customToolBar ?? toolBarConstructor({});
+    this.forbidShiftDragZoom = options?.forbidShiftDragZoom;
+    this.commands = options.commands;
+    this.is3D = options?.is3D;
     this.gridDistance = options?.gridDistance ?? [1, 1];
-    this.hideGrid = options?.hideGrid ?? false;
-    this.hideAxes = options?.hideAxes ?? false;
-    this.isGridBold = options?.isGridBold ?? false;
-    this.isGridSimple = options?.isGridSimple ?? false;
-    this.isXAxesNatural = options?.isXAxesNatural ?? false;
-    this.axisLabels = options?.axisLabels ?? undefined;
-    this.is3D = options?.is3D ?? false;
+    this.hideGrid = options?.hideGrid;
+    this.hideAxes = options?.hideAxes;
+    this.isGridBold = options?.isGridBold;
+    this.isGridSimple = options?.isGridSimple ?? true;
+    this.lockedAxesRatio = options?.lockedAxesRatio ?? 1;
+    this.xAxis = options?.xAxis;
+    this.yAxis = options?.yAxis;
   }
 
   getAdaptedCoords({
@@ -83,17 +91,21 @@ export class GeogebraConstructor {
     }
   }
 
-  getOptions(): GeogebraOptions {
+  getOptions({ coords }: GetOptionsProps): GeogebraOptions {
     return {
+      customToolBar: this.customToolBar,
+      forbidShiftDragZoom: this.forbidShiftDragZoom,
+      commands: this.commands,
+      coords: coords,
+      is3D: this.is3D,
+      gridDistance: this.gridDistance,
       hideAxes: this.hideAxes,
       hideGrid: this.hideGrid,
       isGridBold: this.isGridBold,
       isGridSimple: this.isGridSimple,
-      gridDistance: this.gridDistance,
-      isAxesRatioFixed: this.isAxesRatioFixed,
-      isXAxesNatural: this.isXAxesNatural,
-      axisLabels: this.axisLabels,
-      is3D: this.is3D,
+      lockedAxesRatio: this.lockedAxesRatio,
+      xAxis: this.xAxis,
+      yAxis: this.yAxis,
     };
   }
 }

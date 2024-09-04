@@ -78,17 +78,17 @@ const getGraphicEquationQuestion: QuestionGenerator<Identifiers> = () => {
     "SetFixed(S, true)",
     `SetColor(S, "${randomColor()}")`,
   ];
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
+  const ggb = new GeogebraConstructor({
+    commands,
   });
   const question: Question<Identifiers> = {
     answer,
     instruction: `Déterminer graphiquement les solutions de l'équation $f(x) = ${yValue}$ où $f$ est la fonction représentée ci-dessous.`,
     keys: discreteSetKeys,
     answerFormat: "tex",
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
+    ggbOptions: ggb.getOptions({
+      coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
+    }),
     identifiers: { yValue, splinePoints },
   };
 

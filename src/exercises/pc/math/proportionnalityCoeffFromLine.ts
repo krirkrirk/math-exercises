@@ -48,9 +48,10 @@ const getProportionnalityCoeffFromLineQuestion: QuestionGenerator<
     `f(x) = (${aString}) * x + (${bString})`,
     `SetColor(f, "${randomColor()}")`,
   ];
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-    axisLabels: ["$x$", "$y$"],
+  const ggb = new GeogebraConstructor({
+    xAxis: { label: "$x$" },
+    yAxis: { label: "$y$" },
+    commands,
   });
   const answer = aTree.toTex();
   const question: Question<Identifiers> = {
@@ -58,9 +59,9 @@ const getProportionnalityCoeffFromLineQuestion: QuestionGenerator<
       "Déterminer le coefficient de proportionnalité entre $y$ et $x$ : ",
     answer,
     keys: [],
-    commands: ggb.commands,
-    coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
+    }),
     answerFormat: "tex",
     identifiers: { xA, xB, yA, yB },
   };

@@ -54,17 +54,16 @@ const getAffineExpressionReadingQuestion: QuestionGenerator<
     `SetColor(l, "${randomColor()}")`,
     "SetFixed(l, true)",
   ];
-  const ggb = new GeogebraConstructor(commands, {
-    gridDistance: [1, 1],
-    isGridSimple: true,
+  const ggb = new GeogebraConstructor({
+    commands,
   });
   const question: Question<Identifiers> = {
     answer,
     instruction: `Ci-dessous est tracée la courbe représentative d'une fonction affine $f$. Déterminer graphiquement l'expression algébrique de $f(x)$.`,
     keys: ["fx", "equal", "x"],
-    commands: ggb.commands,
-    coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
+    }),
     answerFormat: "tex",
     identifiers: { b, secondPoint },
   };

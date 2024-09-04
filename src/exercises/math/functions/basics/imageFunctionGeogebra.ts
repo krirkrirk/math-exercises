@@ -61,16 +61,14 @@ const getImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
     `f(x) = ${rand ? polynome1.toString() : polynome2.toString()}`,
     `SetColor(f, "${randomColor()}")`,
   ];
-  const ggb = new GeogebraConstructor(commands, { isGridSimple: true });
+  const ggb = new GeogebraConstructor({ commands });
   const answerTex = answer + "";
   const question: Question<Identifiers> = {
     instruction: statement,
     startStatement: `f(${xValue})`,
     answer: answerTex,
     keys: [],
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: [-10, 10, -10, 10],
+    ggbOptions: ggb.getOptions({ coords: [-10, 10, -10, 10] }),
     answerFormat: "tex",
     identifiers: {
       poly1: polynome1.coefficients,

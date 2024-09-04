@@ -12,6 +12,7 @@ import { Point } from "#root/math/geometry/point";
 import { AffineConstructor } from "#root/math/polynomials/affine";
 import { arrayEqual } from "#root/utils/arrayEqual";
 import { deleteObjectNamesFromAnswer } from "#root/geogebra/deleteObjectNamesFromAnswer";
+import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 
 type Identifiers = {
   correctA: number;
@@ -24,20 +25,21 @@ const getDrawAlineInGgbQuestion: QuestionGenerator<Identifiers> = () => {
   const yB = f.a + f.b;
   const yMax = Math.max(yA, yB, 0);
   const yMin = Math.min(yA, yB, 0);
+  const studentGGB = new GeogebraConstructor({
+    isGridSimple: true,
+    customToolBar: toolBarConstructor({
+      join: true,
+    }),
+  });
   const question: Question<Identifiers> = {
     ggbAnswer: [`(0,${yA})`, `(1,${yB})`, `Line[A, B]`],
     instruction: `Tracer la droite $d$ d'équation $y=${f.toTex()}$.`,
     keys: [],
     answerFormat: "tex",
-    studentGgbOptions: {
-      customToolBar: toolBarConstructor({
-        join: true,
-      }),
-      xAxisSteps: 1,
-      yAxisSteps: 1,
+    studentGgbOptions: studentGGB.getOptions({
       coords: [-6, 6, yMin - 5, yMax + 5],
-      isGridSimple: true,
-    },
+    }),
+
     identifiers: { correctA: f.a, correctB: f.b },
   };
 

@@ -11,6 +11,7 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { randint } from "#root/math/utils/random/randint";
 import { molecules } from "#root/pc/constants/molecularChemistry/molecule";
 import { arrayEqual } from "#root/utils/arrayEqual";
@@ -31,7 +32,14 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
   const exo = generateExercise();
   const minY = 5 * exo.epsilon * exo.l - 10;
   const maxY = 10 * exo.epsilon * exo.l + 5;
-
+  const studentGGB = new GeogebraConstructor({
+    customToolBar: toolBarConstructor({
+      join: true,
+    }),
+    xAxis: { label: "$\\small{C}$" },
+    yAxis: { label: "$\\small{A}$" },
+    lockedAxesRatio: false,
+  });
   const question: Question<Identifiers> = {
     ggbAnswer: [
       `(5,${5 * exo.epsilon * exo.l})`,
@@ -40,15 +48,9 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
     ],
     instruction: exo.instruction,
     keys: [],
-    studentGgbOptions: {
+    studentGgbOptions: studentGGB.getOptions({
       coords: [-1, 5, -1, 6],
-      isAxesRatioFixed: false,
-      enableShiftDragZoom: true,
-      axisLabels: ["$\\small{C}$", "$\\small{A}$"],
-      customToolBar: toolBarConstructor({
-        join: true,
-      }),
-    },
+    }),
     hint: exo.hint,
     correction: exo.correction,
     identifiers: {

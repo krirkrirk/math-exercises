@@ -174,8 +174,8 @@ const getEqualCaracteristicFromGraphQuestion: QuestionGenerator<
     "ShowLabel(u, true)",
     "ShowLabel(v,true)",
   ];
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
+  const ggb = new GeogebraConstructor({
+    commands,
     hideAxes: true,
   });
 
@@ -184,9 +184,9 @@ const getEqualCaracteristicFromGraphQuestion: QuestionGenerator<
     answer,
     instruction: `Les vecteurs $\\overrightarrow{u}$ et $\\overrightarrow{v}$ suivants semblent-ils ${instruction} ?`,
     keys: [],
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: [-8, 8, -4, 4],
+    ggbOptions: ggb.getOptions({
+      coords: [-8, 8, -4, 4],
+    }),
     answerFormat: "tex",
     identifiers: { caracAsked, uPoints, vPoints },
   };

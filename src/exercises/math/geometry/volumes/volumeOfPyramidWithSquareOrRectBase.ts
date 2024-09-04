@@ -46,7 +46,8 @@ const getVolumeOfPyramidWithSquareOrRectBaseQuestion: QuestionGenerator<
   const exercise = generateExercise();
   const baseOfPyramid = exercise.baseOfPyramid;
   const commands = exercise.ggbCommands;
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     hideAxes: true,
     hideGrid: true,
     is3D: true,
@@ -72,9 +73,9 @@ const getVolumeOfPyramidWithSquareOrRectBaseQuestion: QuestionGenerator<
     instruction: instruction,
     keys: [],
     answerFormat: "tex",
-    commands: ggb.commands,
-    coords: [-2, maxCoord + 1, -2, maxCoord + 1, -2, exercise.h + 1],
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: [-2, maxCoord + 1, -2, maxCoord + 1, -2, exercise.h + 1],
+    }),
     identifiers: { h, baseOfPyramid },
   };
 

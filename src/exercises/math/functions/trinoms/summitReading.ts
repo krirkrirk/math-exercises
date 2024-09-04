@@ -28,7 +28,8 @@ const getSummitReadingQuestion: QuestionGenerator<Identifiers> = () => {
     `f(x) = ${trinom.toString()}`,
     `SetColor(f, "${randomColor()}")`,
   ];
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     isGridSimple: true,
   });
 
@@ -37,9 +38,9 @@ const getSummitReadingQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     instruction: `Déterminer les coordonnées du sommet de la parabole représentée ci-dessous :`,
     keys: ["leftParenthesis", "semicolon", "rightParenthesis"],
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: trinom.getCoords(),
+    ggbOptions: ggb.getOptions({
+      coords: trinom.getCoords(),
+    }),
     answerFormat: "tex",
     identifiers: { a: trinom.a, b: trinom.b, c: trinom.c },
   };

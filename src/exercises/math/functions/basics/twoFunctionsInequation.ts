@@ -149,9 +149,7 @@ const getTwoFunctionsInequationQuestion: QuestionGenerator<
     `SetCaption(T, "$g$")`,
     `ShowLabel(T, true)`,
   ];
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-  });
+  const ggb = new GeogebraConstructor({ commands });
   const intervalsNodes = intervals.map(
     (i) =>
       new IntervalNode(new NumberNode(i.a), new NumberNode(i.b), i.closure),
@@ -182,9 +180,9 @@ const getTwoFunctionsInequationQuestion: QuestionGenerator<
       ineqSymbol: ineq.symbol,
       intervals,
     },
-    commands: ggb.commands,
-    coords: ggb.getAdaptedCoords({ xMax, xMin, yMax, yMin }),
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: ggb.getAdaptedCoords({ xMax, xMin, yMax, yMin }),
+    }),
   };
 
   return question;

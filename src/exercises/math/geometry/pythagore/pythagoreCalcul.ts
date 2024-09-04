@@ -71,7 +71,8 @@ const getPythagoreCalcul: QuestionGenerator<Identifiers> = () => {
       highlightedSide: sides[randoms[2]],
     }),
   ];
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     hideAxes: true,
     hideGrid: true,
   });
@@ -84,9 +85,9 @@ const getPythagoreCalcul: QuestionGenerator<Identifiers> = () => {
     }$. Calculer la longueur exacte $${sides[randoms[2]]}$.`,
     answer,
     keys: [...(vertices as KeyId[]), "equal"],
-    commands: ggb.commands,
-    coords: triangle.generateCoords(),
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: triangle.generateCoords(),
+    }),
     answerFormat: "tex",
     identifiers: { square, sideLengths },
   };

@@ -122,7 +122,8 @@ const getProbabilityTree: QuestionGenerator<Identifiers> = () => {
     'Text("D", (5.5 , -3.1))',
   ];
 
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     hideAxes: true,
     hideGrid: true,
   });
@@ -131,9 +132,9 @@ const getProbabilityTree: QuestionGenerator<Identifiers> = () => {
     startStatement,
     answer: answerTex,
     keys: [],
-    commands,
-    options: ggb.getOptions(),
-    coords: [-2, 8, -5, 5],
+    ggbOptions: ggb.getOptions({
+      coords: [-2, 8, -5, 5],
+    }),
     answerFormat: "tex",
     identifiers: { A, AC, AD, B, BC, BD, type },
   };

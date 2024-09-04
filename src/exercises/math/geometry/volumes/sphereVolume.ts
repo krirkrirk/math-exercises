@@ -39,9 +39,9 @@ const getSphereVolumeQuestion: QuestionGenerator<Identifiers> = () => {
     `SetVisibleInView(A, -1, false)`,
   ];
 
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-    isAxesRatioFixed: false,
+  const ggb = new GeogebraConstructor({
+    commands,
+    lockedAxesRatio: false,
     is3D: true,
     hideAxes: true,
     hideGrid: true,
@@ -50,9 +50,9 @@ const getSphereVolumeQuestion: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     answer: volume,
     instruction: `La sphère ci-dessous a un rayon de $${radius.frenchify()}$. Calculer son volume (arrondir au centième).`,
-    commands: ggb.commands,
-    coords: [xMin, xMax, yMin, yMax, zMin, zMax],
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: [xMin, xMax, yMin, yMax, zMin, zMax],
+    }),
     keys: [],
     answerFormat: "tex",
     identifiers: { radius },

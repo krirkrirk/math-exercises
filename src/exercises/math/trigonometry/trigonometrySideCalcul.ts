@@ -66,7 +66,8 @@ const getTrigonometrySideCalcul: QuestionGenerator<Identifiers> = () => {
       highlightedSide: sides[randSideQuestion],
     }),
   ];
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     hideAxes: true,
     hideGrid: true,
   });
@@ -94,9 +95,9 @@ const getTrigonometrySideCalcul: QuestionGenerator<Identifiers> = () => {
       answer,
     ),
     keys: [],
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: triangle.generateCoords(),
+    ggbOptions: ggb.getOptions({
+      coords: triangle.generateCoords(),
+    }),
     answerFormat: "tex",
     identifiers: { randAngle, randSide, randSideQuestion, sideLengths },
   };

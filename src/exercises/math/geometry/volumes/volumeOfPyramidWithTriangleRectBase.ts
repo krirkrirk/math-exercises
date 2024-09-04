@@ -54,7 +54,8 @@ const getVolumeOfPyramidWithTriangleRectBase: QuestionGenerator<
   const baseOfPyramidSides = exercise.baseOfPyramidSides;
   const volume = calculateVolume(baseOfPyramidSides, exercise.h);
 
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     hideAxes: true,
     hideGrid: true,
     is3D: true,
@@ -71,9 +72,9 @@ const getVolumeOfPyramidWithTriangleRectBase: QuestionGenerator<
     Calculer le volume de la pyramide en sachant que : $AB=${baseOfPyramidSides.ABSide}$, $AC=${baseOfPyramidSides.ACSide}$, $BC=${baseOfPyramidSides.BCSide}$ et $(AC)\\perp(AB)$.`,
     keys: [],
     answerFormat: "tex",
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: [-2, maxCoord + 1, -2, maxCoord + 1, -2, exercise.h + 1],
+    ggbOptions: ggb.getOptions({
+      coords: [-2, maxCoord + 1, -2, maxCoord + 1, -2, exercise.h + 1],
+    }),
     identifiers: { h: exercise.h, baseOfPyramidSides },
   };
 

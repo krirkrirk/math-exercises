@@ -50,7 +50,8 @@ const getFineAdjustementExerciseQuestion: QuestionGenerator<
     }),
   );
 
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     hideAxes: true,
     hideGrid: true,
   });
@@ -63,9 +64,9 @@ const getFineAdjustementExerciseQuestion: QuestionGenerator<
   const question: Question<Identifiers> = {
     answer: exercise.correctAnswer,
     instruction: `On considère le nuage de points ci-dessous. Un ajustement affine semble-t-il justifié ? Quelle peut être la valeur du coefficient de détermination ?`,
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
+    ggbOptions: ggb.getOptions({
+      coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
+    }),
     keys: [],
     answerFormat: "raw",
     identifiers: { isJustified: exercise.isJustified },

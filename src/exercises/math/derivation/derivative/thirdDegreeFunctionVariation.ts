@@ -72,9 +72,9 @@ const getThirdDegreeFunctionVariation: QuestionGenerator<Identifiers> = () => {
   const yMin = Math.min(y1, y2);
   const xMax = Math.max(racine1, racine2);
   const xMin = Math.min(racine1, racine2);
-  const ggb = new GeogebraConstructor(commands, {
-    isAxesRatioFixed: false,
-    isGridSimple: true,
+  const ggb = new GeogebraConstructor({
+    commands,
+    lockedAxesRatio: false,
     gridDistance: false,
   });
   const question: Question<Identifiers> = {
@@ -83,10 +83,9 @@ const getThirdDegreeFunctionVariation: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["lbracket", "rbracket", "semicolon", "infty", "cup"],
     answerFormat: "tex",
-
-    coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
-    commands: ggb.commands,
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
+    }),
     identifiers: { racine1, racine2, coin, a },
   };
   return question;

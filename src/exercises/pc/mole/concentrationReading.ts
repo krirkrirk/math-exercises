@@ -26,10 +26,12 @@ const getConcentrationReadingQuestion: QuestionGenerator<Identifiers> = () => {
     `SetColor(L, "${randomColor()}")`,
   ];
 
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     isGridSimple: false,
-    isAxesRatioFixed: false,
-    axisLabels: ["$\\tiny C (\\text{mol}\\cdot \\text{L}^{-1})$", "$\\tiny A$"],
+    lockedAxesRatio: false,
+    xAxis: { label: "$\\tiny C (\\text{mol}\\cdot \\text{L}^{-1})$" },
+    yAxis: { label: "$\\tiny A$" },
   });
   const question: Question<Identifiers> = {
     answer: concentration + "",
@@ -37,9 +39,9 @@ const getConcentrationReadingQuestion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: {},
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: [-1, concentration + 2, -1, absorbtion + 2],
+    ggbOptions: ggb.getOptions({
+      coords: [-1, concentration + 2, -1, absorbtion + 2],
+    }),
   };
 
   return question;

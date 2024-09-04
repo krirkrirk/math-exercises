@@ -57,25 +57,24 @@ const getSequencePlotQuestion: QuestionGenerator<Identifiers> = () => {
     }),
   );
 
-  const ggb = new GeogebraConstructor(commands, {
-    hideAxes: false,
-    hideGrid: false,
-    isXAxesNatural: true,
-    isGridSimple: true,
+  const ggb = new GeogebraConstructor({
+    commands,
+    xAxis: { natural: true },
   });
 
   const sequenceType = isArithmetic ? "arithmétique" : "géométrique";
   const question: Question<Identifiers> = {
     answer: u_nValue.toString(),
     instruction: `Ci-dessous est tracé un nuage de points représentant les valeurs d'une suite ${sequenceType} $(u_n)$. Quelle est la valeur de $u_{${nValue}}$ ?`,
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: ggb.getAdaptedCoords({
-      xMin: 0,
-      xMax: nMax,
-      yMin: Math.min(...points.map((p) => p[1])) - 2,
-      yMax: Math.max(...points.map((p) => p[1])) + 2,
+    ggbOptions: ggb.getOptions({
+      coords: ggb.getAdaptedCoords({
+        xMin: 0,
+        xMax: nMax,
+        yMin: Math.min(...points.map((p) => p[1])) - 2,
+        yMax: Math.max(...points.map((p) => p[1])) + 2,
+      }),
     }),
+
     keys: [],
     answerFormat: "raw",
     identifiers: { nValue, points, isArithmetic },

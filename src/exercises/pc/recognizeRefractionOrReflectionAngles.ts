@@ -36,9 +36,9 @@ const getRecognizeRefractionOrReflectionAnglesQuestion: QuestionGenerator<
     answer: exo.isAsking,
     instruction: `Un rayon arrive sur la surface de séparation entre deux milieux. Comment appelle-t-on l'angle représenté ci-dessous ?`,
     keys: [],
-    commands: exo.ggb.commands,
-    coords: exo.coords,
-    options: exo.ggb.getOptions(),
+    ggbOptions: exo.ggb.getOptions({
+      coords: exo.coords,
+    }),
     answerFormat: "raw",
     identifiers: {},
   };
@@ -97,7 +97,8 @@ const generateExercise = () => {
     `SetColor(Second,"#0a6a01")`,
     `SetColor(Ang,"#6a0101")`,
   ];
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     hideGrid: true,
     hideAxes: true,
   });

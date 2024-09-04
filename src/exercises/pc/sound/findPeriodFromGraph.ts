@@ -55,8 +55,10 @@ const getFindPeriodFromGraphQuestion: QuestionGenerator<Identifiers> = () => {
       `SetColor(S_{${i}}, "${color}")`,
     );
   }
-  const ggb = new GeogebraConstructor(commands, {
-    axisLabels: ["$\\tiny Temps (ms)$", "$\\tiny Tension (V)$"],
+  const ggb = new GeogebraConstructor({
+    commands,
+    xAxis: { label: "$\\tiny Temps (ms)$" },
+    yAxis: { label: "$\\tiny Tension (V)$" },
     isGridSimple: true,
   });
   const question: Question<Identifiers> = {
@@ -65,9 +67,9 @@ const getFindPeriodFromGraphQuestion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: { period, splinePoints },
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: [0, 20, -8, 8],
+    ggbOptions: ggb.getOptions({
+      coords: [0, 20, -8, 8],
+    }),
   };
 
   return question;

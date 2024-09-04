@@ -101,17 +101,17 @@ const getParityFromGraphQuestion: QuestionGenerator<Identifiers> = () => {
       break;
   }
   const commands = [`f(x) = ${fct}`, `SetColor(f, "${randomColor()}")`];
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-    isAxesRatioFixed: false,
+  const ggb = new GeogebraConstructor({
+    commands,
+    lockedAxesRatio: false,
   });
   const question: Question<Identifiers> = {
     answer,
     instruction: `La fonction $f$ représentée ci-dessous est-elle paire, impaire, ou ni paire ni impaire ?`,
     keys: [],
-    options: ggb.getOptions(),
-    commands: ggb.commands,
-    coords: [-10, 10, -10, 10],
+    ggbOptions: ggb.getOptions({
+      coords: [-10, 10, -10, 10],
+    }),
     answerFormat: "tex",
     identifiers: { type, fctCmd: fct },
   };

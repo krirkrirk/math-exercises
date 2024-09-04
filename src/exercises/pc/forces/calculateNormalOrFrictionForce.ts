@@ -32,7 +32,6 @@ const getCalculateNormalOrFrictionForceQuestion: QuestionGenerator<
     instruction: exo.instruction,
     hint: exo.hint,
     correction: exo.correction,
-    coords: [-2, 10, -2, 10],
     keys: [],
     answerFormat: "tex",
     identifiers: { mass: exo.mass, isAsking: exo.isAsking },

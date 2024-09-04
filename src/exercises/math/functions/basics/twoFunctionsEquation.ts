@@ -115,18 +115,16 @@ const getTwoFunctionsEquationQuestion: QuestionGenerator<Identifiers> = () => {
     `SetCaption(T, "$g$")`,
     `ShowLabel(T, true)`,
   ];
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-  });
+  const ggb = new GeogebraConstructor({ commands });
   const question: Question<Identifiers> = {
     answer,
     instruction: `Déterminer graphiquement les solutions de l'équation $f(x) = g(x)$ où $f$ et $g$ sont les fonctions représentées ci-dessous.`,
     keys: discreteSetKeys,
     answerFormat: "tex",
     identifiers: { yValue, fSplinePoints, gSplinePoints },
-    commands: ggb.commands,
-    coords: ggb.getAdaptedCoords({ xMax, xMin, yMax, yMin }),
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: ggb.getAdaptedCoords({ xMax, xMin, yMax, yMin }),
+    }),
   };
 
   return question;

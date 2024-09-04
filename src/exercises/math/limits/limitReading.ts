@@ -102,9 +102,9 @@ const getLimitReadingQuestion: QuestionGenerator<Identifiers> = () => {
       break;
   }
   const commands = [`f(x) = ${fct}`, `SetColor(f, "${randomColor()}")`];
-  const ggb = new GeogebraConstructor(commands, {
-    isAxesRatioFixed: false,
-    isGridSimple: true,
+  const ggb = new GeogebraConstructor({
+    commands,
+    lockedAxesRatio: false,
   });
   const question: Question<Identifiers> = {
     answer,
@@ -114,9 +114,9 @@ const getLimitReadingQuestion: QuestionGenerator<Identifiers> = () => {
       from,
     ).toTex()}$`,
     keys: ["infty"],
-    commands: ggb.commands,
-    coords: [-10, 10, -10, 10],
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: [-10, 10, -10, 10],
+    }),
     answerFormat: "tex",
     identifiers: { type, to: to.toTex(), from, a },
   };

@@ -8,6 +8,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstructor";
 import { Vector } from "#root/math/geometry/vector";
 import { randint } from "#root/math/utils/random/randint";
+import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 
 type Identifiers = {
   x: number;
@@ -18,19 +19,19 @@ const getDrawAVectorInGgbQuestion: QuestionGenerator<Identifiers> = () => {
   const x = randint(-3, 3);
   const y = x === 0 ? randint(-3, 3, [0]) : randint(-3, 3);
   const vector = new Vector("u", x.toTree(), y.toTree());
-
+  const studentGGB = new GeogebraConstructor({
+    isGridSimple: true,
+    customToolBar: toolBarConstructor({
+      vector: true,
+    }),
+  });
   const question: Question<Identifiers> = {
     ggbAnswer: [`Vector[(-2, -2), (${-2 + x}, ${-2 + y})]`],
     instruction: `Tracer le vecteur $${vector.toTex()}${vector.toInlineCoordsTex()}$`,
     keys: [],
-    studentGgbOptions: {
-      customToolBar: toolBarConstructor({
-        vector: true,
-      }),
-      isGridSimple: true,
+    studentGgbOptions: studentGGB.getOptions({
       coords: [-5, 5, -6, 6],
-      enableShiftDragZoom: true,
-    },
+    }),
     answerFormat: "tex",
     identifiers: { x, y },
   };

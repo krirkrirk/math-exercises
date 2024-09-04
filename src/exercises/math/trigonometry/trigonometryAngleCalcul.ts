@@ -58,13 +58,11 @@ const getTrigonometryAngleCalcul: QuestionGenerator<Identifiers> = () => {
           (Math.acos(sideLengths[1] / sideLengths[2]) * 180) / Math.PI,
         );
   const answerTex = answer + "^{\\circ}";
-  const ggb = new GeogebraConstructor(
-    triangle.generateCommands({ highlightedAngle: angle[randAngle] }),
-    {
-      hideAxes: true,
-      hideGrid: true,
-    },
-  );
+  const ggb = new GeogebraConstructor({
+    commands: triangle.generateCommands({ highlightedAngle: angle[randAngle] }),
+    hideAxes: true,
+    hideGrid: true,
+  });
   const question: Question<Identifiers> = {
     instruction: `Le triangle $${triangle.getTriangleName()}$ rectangle en $${triangle.getRightAngle()}$ est tel que $${
       sides[randSides[0]]
@@ -76,9 +74,9 @@ const getTrigonometryAngleCalcul: QuestionGenerator<Identifiers> = () => {
     )}$ cm. Calculer $\\widehat{${angle[randAngle]}}$ à $1^\\circ$ près.`,
     answer: answerTex,
     keys: ["degree"],
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: triangle.generateCoords(),
+    ggbOptions: ggb.getOptions({
+      coords: triangle.generateCoords(),
+    }),
     answerFormat: "tex",
     identifiers: { randAngle, sideLengths, randSides },
   };

@@ -48,7 +48,8 @@ const getRightTriangleArea: QuestionGenerator<Identifiers> = () => {
     ",",
   );
   const answerTex = answer + "\\text{cm}^2";
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     hideAxes: true,
     hideGrid: true,
   });
@@ -58,9 +59,9 @@ const getRightTriangleArea: QuestionGenerator<Identifiers> = () => {
     }$ cm et $${triangle.getSideCName()} = ${sidesLengths[1]}$ cm.`,
     answer: answerTex,
     keys: ["cm", "cm2"],
-    commands: ggb.commands,
-    coords: triangle.generateCoords(),
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: triangle.generateCoords(),
+    }),
     answerFormat: "tex",
     identifiers: { sidesLengths },
   };

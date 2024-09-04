@@ -124,17 +124,17 @@ const getConvexityQuadrinomialsGeoQuestion: QuestionGenerator<
     `ShowLabel(f, true)`,
   ];
 
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-    isAxesRatioFixed: false,
+  const ggb = new GeogebraConstructor({
+    commands,
+    lockedAxesRatio: false,
   });
 
   const question: Question<Identifiers> = {
     answer: interval,
     instruction,
-    commands: ggb.commands,
-    coords: [xMin, xMax, yMin, yMax],
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: [xMin, xMax, yMin, yMax],
+    }),
     keys: ["rbracket", "lbracket", "semicolon", "infty", "reals"],
     answerFormat: "tex",
     identifiers: { askConvex, quadcoeffs, inflexionPoint: inflexionPointX },

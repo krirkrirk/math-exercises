@@ -84,9 +84,9 @@ const getParallelepipedVolumeQuestion: QuestionGenerator<Identifiers> = () => {
     `ZoomIn(${xMin}, ${yMin}, ${xMax}, ${yMax}, ${zMin}, ${zMax})`,
   ];
 
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-    isAxesRatioFixed: false,
+  const ggb = new GeogebraConstructor({
+    commands,
+    lockedAxesRatio: false,
     is3D: true,
     hideAxes: true,
     hideGrid: true,
@@ -95,9 +95,9 @@ const getParallelepipedVolumeQuestion: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     answer: volume,
     instruction: `Le parallélépipède $ABCDEFGH$ ci-dessous a une longueur de $${length.frenchify()}$, une largeur de $${width.frenchify()}$, et une hauteur de $${height.frenchify()}$. Calculer son volume (arrondir au centième).`,
-    commands: ggb.commands,
-    coords: [xMin, xMax, yMin, yMax, zMin, zMax],
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: [xMin, xMax, yMin, yMax, zMin, zMax],
+    }),
     keys: [],
     answerFormat: "tex",
     identifiers: { length, width, height, angle },

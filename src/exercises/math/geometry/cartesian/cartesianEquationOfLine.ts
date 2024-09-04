@@ -53,7 +53,7 @@ const getCartesianEquationOfLineQuestion: QuestionGenerator<
     `SetFixed(d,true)`,
   ];
 
-  const ggb = new GeogebraConstructor(commands, { isGridSimple: true });
+  const ggb = new GeogebraConstructor({ commands });
   const correctAnswer = line.getCartesianEquation();
 
   const instruction = `Déterminer une équation cartesienne de la droite $d$ représentée ci-dessous :`;
@@ -64,14 +64,15 @@ const getCartesianEquationOfLineQuestion: QuestionGenerator<
   const bY = b.getYnumber();
   const question: Question<Identifiers> = {
     answer: correctAnswer.toTex(),
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: ggb.getAdaptedCoords({
-      xMin: Math.min(aX, bX) - 5,
-      xMax: Math.max(bX, aX) + 5,
-      yMin: Math.min(aY, bY) - 5,
-      yMax: Math.max(bY, aY) + 5,
+    ggbOptions: ggb.getOptions({
+      coords: ggb.getAdaptedCoords({
+        xMin: Math.min(aX, bX) - 5,
+        xMax: Math.max(bX, aX) + 5,
+        yMin: Math.min(aY, bY) - 5,
+        yMax: Math.max(bY, aY) + 5,
+      }),
     }),
+
     instruction: instruction,
     keys: ["x", "y", "equal"],
     answerFormat: "tex",

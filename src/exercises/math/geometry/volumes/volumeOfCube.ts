@@ -30,7 +30,8 @@ const getVolumeOfCubeQuestion: QuestionGenerator<Identifiers> = () => {
     `ShowLabel(C,true)`,
     `P=Cube(A,B,C)`,
   ];
-  const ggb = new GeogebraConstructor(commands, {
+  const ggb = new GeogebraConstructor({
+    commands,
     is3D: true,
     hideAxes: true,
     hideGrid: true,
@@ -41,9 +42,9 @@ const getVolumeOfCubeQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `$ABCDEFGH$ est un cube d'arête $${cubeSide}$. Calculer son volume.`,
     keys: [],
     answerFormat: "tex",
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: [0, cubeSide + 1, 0, cubeSide + 1, 0, cubeSide + 1],
+    ggbOptions: ggb.getOptions({
+      coords: [0, cubeSide + 1, 0, cubeSide + 1, 0, cubeSide + 1],
+    }),
     identifiers: { cubeSide },
   };
 

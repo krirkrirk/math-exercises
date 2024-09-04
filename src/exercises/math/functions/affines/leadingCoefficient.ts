@@ -46,8 +46,8 @@ const getLeadingCoefficientQuestion: QuestionGenerator<Identifiers> = () => {
     `f(x) = (${aString}) * x + (${bString})`,
     `SetColor(f, "${randomColor()}")`,
   ];
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
+  const ggb = new GeogebraConstructor({
+    commands,
   });
   const answer = aTree.toTex();
   const question: Question<Identifiers> = {
@@ -55,9 +55,9 @@ const getLeadingCoefficientQuestion: QuestionGenerator<Identifiers> = () => {
       "Déterminer le coefficient directeur de la droite représentée ci-dessous : ",
     answer,
     keys: [],
-    commands: ggb.commands,
-    coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
+    }),
     answerFormat: "tex",
     identifiers: { xA, xB, yA, yB },
   };

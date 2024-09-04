@@ -66,21 +66,19 @@ const getTrigonometry: QuestionGenerator<Identifiers> = () => {
     default:
       quotient = [""];
   }
-  const ggb = new GeogebraConstructor(
-    triangle.generateCommands({ highlightedAngle: angle[randAngle] }),
-    {
-      hideAxes: true,
-      hideGrid: true,
-    },
-  );
+  const ggb = new GeogebraConstructor({
+    commands: triangle.generateCommands({ highlightedAngle: angle[randAngle] }),
+    hideAxes: true,
+    hideGrid: true,
+  });
   const answer = quotient[randTrigo];
   const question: Question<Identifiers> = {
     instruction: `À quel quotient est égal ${trigo[randTrigo]} de l'angle $\\widehat{${angle[randAngle]}}$?`,
     answer,
     keys: [...(vertices as KeyId[]), "equal"],
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: triangle.generateCoords(),
+    ggbOptions: ggb.getOptions({
+      coords: triangle.generateCoords(),
+    }),
     answerFormat: "tex",
     identifiers: { sideA, sideB, sideC, randAngle, randTrigo },
   };

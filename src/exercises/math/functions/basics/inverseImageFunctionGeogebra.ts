@@ -87,16 +87,14 @@ const getInverseImageFunctionGeogebra: QuestionGenerator<Identifiers> = () => {
   }
 
   const statement = `Lire graphiquement le ou les antécédents de $${yValue}$ par la fonction $f$ représentée ci dessous.`;
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-  });
+  const ggb = new GeogebraConstructor({ commands });
   const question: Question<Identifiers> = {
     instruction: statement,
     answer,
     keys: ["et", "aucun"],
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
+    ggbOptions: ggb.getOptions({
+      coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
+    }),
     answerFormat: "tex",
     identifiers: {
       xValue,

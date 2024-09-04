@@ -23,9 +23,9 @@ const getTypeOfAccelerationQuestion: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     answer: exo.answer,
     instruction: exo.instruction,
-    commands: exo.ggb.object.commands,
-    options: exo.ggb.object.getOptions(),
-    coords: exo.ggb.coords,
+    ggbOptions: exo.ggb.object.getOptions({
+      coords: exo.ggb.coords,
+    }),
     keys: [],
     answerFormat: "raw",
     identifiers: {},
@@ -68,7 +68,8 @@ const generateExo = () => {
 const generateGgb = (typeOfAcceleration: string) => {
   const points = getPoints(typeOfAcceleration);
   return {
-    object: new GeogebraConstructor(points.points, {
+    object: new GeogebraConstructor({
+      commands: points.points,
       hideAxes: true,
       hideGrid: true,
     }),

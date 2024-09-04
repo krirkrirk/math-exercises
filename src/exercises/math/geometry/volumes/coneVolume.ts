@@ -47,9 +47,9 @@ const getConeVolumeQuestion: QuestionGenerator<Identifiers> = () => {
     `Cone(A, B, ${radius})`,
   ];
 
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-    isAxesRatioFixed: false,
+  const ggb = new GeogebraConstructor({
+    commands,
+    lockedAxesRatio: false,
     hideAxes: true,
     hideGrid: true,
     is3D: true,
@@ -58,9 +58,9 @@ const getConeVolumeQuestion: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     answer: volume,
     instruction: `Le cône ci-dessous a une base de rayon $${radius}$ et une hauteur de $${height}$. Calculer son volume (arrondir au centième).`,
-    commands: ggb.commands,
-    coords: [xMin, xMax, yMin, yMax, 0, zMax],
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: [xMin, xMax, yMin, yMax, 0, zMax],
+    }),
     keys: [],
     answerFormat: "tex",
     identifiers: { radius, height },

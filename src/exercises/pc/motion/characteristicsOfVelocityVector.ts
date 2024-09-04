@@ -27,8 +27,7 @@ const getCharacteristicsOfVelocityVectorQuestion: QuestionGenerator<
     answer: exo.answer.frenchify(),
     instruction: exo.instruction,
     keys: [],
-    commands: exo.ggb.commands,
-    coords: exo.ggbCoords,
+    ggbOptions: exo.ggb.getOptions({ coords: exo.ggbCoords }),
     answerFormat: "tex",
     identifiers: { norm: exo.answer },
   };
@@ -64,7 +63,7 @@ const generateExercise = () => {
 
   return {
     instruction,
-    ggb: new GeogebraConstructor(ggb.commands, { isAxesRatioFixed: true }),
+    ggb: new GeogebraConstructor({ commands: ggb.commands }),
     ggbCoords: ggb.coords,
     answer,
   };

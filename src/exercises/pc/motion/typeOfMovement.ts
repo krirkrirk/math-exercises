@@ -23,9 +23,9 @@ const getTypeOfMovementQuestion: QuestionGenerator<Identifiers> = () => {
   const question: Question<Identifiers> = {
     answer: exo.answer,
     instruction: exo.instruction,
-    commands: ggb.commands,
-    coords: exo.coords,
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: exo.coords,
+    }),
     keys: [],
     answerFormat: "raw",
     identifiers: {},
@@ -102,7 +102,7 @@ const getGgb = (
       break;
   }
   return {
-    ggb: new GeogebraConstructor(commands, {}),
+    ggb: new GeogebraConstructor({ commands }),
     coords,
   };
 };

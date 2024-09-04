@@ -77,16 +77,16 @@ const getDirectionVectorQuestion: QuestionGenerator<Identifiers> = () => {
   const xMax = Math.max(x1, x2);
   const yMax = Math.max(y1, y2);
 
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
+  const ggb = new GeogebraConstructor({
+    commands,
   });
 
   const question: Question<Identifiers> = {
     answer: vector.toInlineCoordsTex(),
     instruction,
-    commands: ggb.commands,
-    coords: [xMin - 10, xMax + 10, yMin - 10, yMax + 10],
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: [xMin - 10, xMax + 10, yMin - 10, yMax + 10],
+    }),
     keys: ["semicolon", "x", "y"],
     answerFormat: "tex",
     identifiers: { xValue, yValue },

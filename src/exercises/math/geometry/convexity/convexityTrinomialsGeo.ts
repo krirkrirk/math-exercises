@@ -35,18 +35,18 @@ const getConvexityTrinomialsGeoQuestion: QuestionGenerator<
     `ShowLabel(f, true)`,
   ];
 
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-    isAxesRatioFixed: false,
+  const ggb = new GeogebraConstructor({
+    commands,
+    lockedAxesRatio: false,
   });
   const isConvex = trinom.a > 0 ? "Convexe" : "Concave";
 
   const question: Question<Identifiers> = {
     answer: isConvex,
     instruction,
-    commands: ggb.commands,
-    coords: trinom.getCoords(),
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: trinom.getCoords(),
+    }),
     keys: [],
     answerFormat: "raw",
     identifiers: { trinom: [trinom.a, trinom.b, trinom.c] },

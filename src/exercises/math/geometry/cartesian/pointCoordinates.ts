@@ -42,19 +42,18 @@ const getPointCoordinatesQuestion: QuestionGenerator<Identifiers> = () => {
     `ZoomIn(${xMin}, ${yMin}, ${xMax}, ${yMax})`,
   ];
 
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-    isAxesRatioFixed: true,
+  const ggb = new GeogebraConstructor({
+    commands,
   });
 
   const A = new Point("A", x.toTree(), y.toTree());
 
   const question: Question<Identifiers> = {
     answer: A.toCoords(),
-    commands: ggb.commands,
     instruction,
-    options: ggb.getOptions(),
-    coords: [xMin, xMax, yMin, yMax],
+    ggbOptions: ggb.getOptions({
+      coords: [xMin, xMax, yMin, yMax],
+    }),
     keys: ["x", "y", "semicolon"],
     answerFormat: "tex",
     identifiers: { x, y },

@@ -110,9 +110,7 @@ const getGraphicInequationQuestion: QuestionGenerator<Identifiers> = () => {
     "SetFixed(S, true)",
     `SetColor(S, "${randomColor()}")`,
   ];
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-  });
+  const ggb = new GeogebraConstructor({ commands });
   const question: Question<Identifiers> = {
     answer,
     instruction: `Déterminer graphiquement les solutions de l'inéquation $f(x)${
@@ -130,10 +128,10 @@ const getGraphicInequationQuestion: QuestionGenerator<Identifiers> = () => {
       "varnothing",
     ],
     answerFormat: "tex",
-    commands: ggb.commands,
-    options: ggb.getOptions(),
+    ggbOptions: ggb.getOptions({
+      coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
+    }),
 
-    coords: ggb.getAdaptedCoords({ xMin, xMax, yMin, yMax }),
     identifiers: {
       yValue,
       splinePoints,

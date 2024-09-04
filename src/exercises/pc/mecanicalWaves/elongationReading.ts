@@ -32,9 +32,10 @@ const getElongationReadingQuestion: QuestionGenerator<Identifiers> = () => {
     `f(x) = If(x>=0, ${amplitude}*cos(x* (2*PI)/${period}))`,
     `SetColor(f, "${randomColor()}")`,
   ];
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-    axisLabels: ["$\\tiny \\text{Temps (s)}$", "$\\tiny \\text{y (cm)}$"],
+  const ggb = new GeogebraConstructor({
+    commands,
+    xAxis: { label: "$\\tiny \\text{Temps (s)}$" },
+    yAxis: { label: "$\\tiny \\text{y (cm)}$" },
   });
 
   const frac = new FractionNode(
@@ -53,9 +54,9 @@ const getElongationReadingQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["y", "t", "pi", "cos", "equal"],
     answerFormat: "tex",
     identifiers: { amplitude, period },
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: [-1, 20, -10, 10],
+    ggbOptions: ggb.getOptions({
+      coords: [-1, 20, -10, 10],
+    }),
   };
 
   return question;

@@ -34,19 +34,19 @@ const getRecognizeReasonFromGraphQuestion: QuestionGenerator<
     new Point(`A_${index}`, index.toTree(), nb.toTree()).toGGBCommand(),
     `SetFixed(A_${index}, true)`,
   ]);
-  const ggb = new GeogebraConstructor(commands, {
-    isGridSimple: true,
-    isXAxesNatural: true,
-    isAxesRatioFixed: false,
+  const ggb = new GeogebraConstructor({
+    commands,
+    xAxis: { natural: true },
+    lockedAxesRatio: false,
   });
   const answer = reason + "";
   const question: Question<Identifiers> = {
     answer,
     instruction: `Déterminer la raison de la suite arithmétique $u$ représentée ci-dessous :`,
     keys: [],
-    commands: ggb.commands,
-    options: ggb.getOptions(),
-    coords: [-1, 7, Math.min(-1, yMin - 2), Math.max(1, yMax + 2)],
+    ggbOptions: ggb.getOptions({
+      coords: [-1, 7, Math.min(-1, yMin - 2), Math.max(1, yMax + 2)],
+    }),
     answerFormat: "tex",
     identifiers: { reason, sequence },
   };

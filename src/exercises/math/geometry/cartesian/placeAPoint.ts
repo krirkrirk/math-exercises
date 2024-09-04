@@ -9,6 +9,7 @@ import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstr
 import { PointConstructor } from "#root/math/geometry/point";
 import { arrayHasSameElements } from "#root/utils/arrayHasSameElement";
 import { deleteObjectNamesFromAnswer } from "#root/geogebra/deleteObjectNamesFromAnswer";
+import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 
 type Identifiers = {};
 
@@ -19,19 +20,19 @@ const getPlaceAPointQuestion: QuestionGenerator<Identifiers> = () => {
   const xMin = point.getXnumber() - 2;
   const yMin = point.getYnumber() - 2;
   const yMax = point.getYnumber() + 2;
-
+  const studentGGB = new GeogebraConstructor({
+    isGridSimple: true,
+    customToolBar: toolBarConstructor({
+      point: true,
+    }),
+  });
   const question: Question<Identifiers> = {
     ggbAnswer: [`(${point.getXnumber()},${point.getYnumber()})`],
     instruction: `Placer le point $A$ de coordonnées $${point.toTexWithCoords()}$.`,
     keys: [],
-    studentGgbOptions: {
-      customToolBar: toolBarConstructor({
-        point: true,
-      }),
+    studentGgbOptions: studentGGB.getOptions({
       coords: [-11, 11, -11, 11],
-      isGridSimple: true,
-      enableShiftDragZoom: true,
-    },
+    }),
     identifiers: {},
   };
   return question;
