@@ -130,6 +130,7 @@ export interface Exercise<TIdentifiers = {}> {
   isAnswerValid?: VEA<TIdentifiers>;
   isGGBAnswerValid?: GGBVEA<TIdentifiers>;
   hasGeogebra?: boolean;
+  hasHintAndCorrection?: boolean;
   subject: "Mathématiques" | "Chimie" | "Physique";
 }
 

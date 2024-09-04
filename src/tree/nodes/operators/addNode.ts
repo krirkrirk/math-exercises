@@ -156,8 +156,8 @@ export class AddNode implements CommutativeOperatorNode {
           d,
         ).simplify(opts);
       }
-      if (isFractionNode(b)) {
-        //c/d + a
+      if (isFractionNode(b) && !opts?.forceDistributeFractions) {
+        //a+c/d
         const c = b.leftChild;
         const d = b.rightChild;
         return new FractionNode(

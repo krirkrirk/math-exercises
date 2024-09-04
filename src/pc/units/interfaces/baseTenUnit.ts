@@ -1,12 +1,13 @@
 import { Measure } from "#root/pc/measure/measure";
 import { BasicUnit } from "./basicUnit";
-import { Unit } from "./unit";
+import { ConvertOptions, Unit } from "./unit";
 
 export abstract class BaseTenUnit<T extends string> extends BasicUnit<T> {
   convert(
     significantPart: number,
     exponent: number,
     convertToUnit: T,
+    convertOptions?: ConvertOptions,
   ): Measure<T> {
     const units = this.getUnitsValues();
     const unitsObject: Unit<T>[] = this.getUnitsObjects();

@@ -1,7 +1,7 @@
 import { Measure } from "#root/pc/measure/measure";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { Unit } from "./unit";
+import { ConvertOptions, Unit } from "./unit";
 
 export abstract class BasicUnit<T extends string> implements Unit<T> {
   unit: string;
@@ -24,6 +24,7 @@ export abstract class BasicUnit<T extends string> implements Unit<T> {
     significantPart: number,
     exponent: number,
     convertToUnit: T,
+    convertOptions?: ConvertOptions,
   ): Measure<T>;
   abstract className(): string;
 }
