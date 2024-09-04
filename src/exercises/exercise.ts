@@ -1,3 +1,4 @@
+import { FunctionVariations } from "#root/types/functionVariations";
 import { KeyId } from "#root/types/keyIds";
 import { shuffle } from "#root/utils/shuffle";
 import { uuid } from "uuidv4";
@@ -94,6 +95,7 @@ export interface Question<TIdentifiers = {}> {
     tableHasNoHeader?: boolean;
   };
   divisionFormat?: "fraction" | "obelus";
+  signTable?: FunctionVariations;
   identifiers: TIdentifiers;
 }
 
