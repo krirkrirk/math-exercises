@@ -52,7 +52,9 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (
 ) => {
   const studentAnswer = deleteObjectNamesFromAnswer(ans);
   if (arrayEqual(studentAnswer, ggbAnswer)) return true;
+
   if (studentAnswer.length !== 3) return false;
+
   if (
     !isGGBPoint(studentAnswer[0]) ||
     !isGGBPoint(studentAnswer[1]) ||
