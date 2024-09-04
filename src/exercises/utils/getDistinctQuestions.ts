@@ -33,7 +33,8 @@ export const getDistinctQuestions = (
         (q) =>
           q.instruction === question.instruction &&
           q.answer === question.answer &&
-          (!q.commands || equalTab(q.commands, question.commands!)),
+          (!q.ggbOptions?.commands ||
+            equalTab(q.ggbOptions?.commands, question.ggbOptions?.commands!)),
       )
     );
     res.push(question);

@@ -53,6 +53,31 @@ export type Proposition = {
   isRightAnswer: boolean;
   format: "tex" | "raw";
 };
+
+type GeogebraAxisOptions = {
+  steps?: number;
+  hiddden?: boolean;
+  showNumbers?: boolean;
+  label?: string;
+};
+
+export type GeogebraOptions = {
+  customToolBar?: string;
+  enableShiftDragZoom?: boolean;
+  commands?: string[];
+  coords?: number[];
+  is3D?: boolean;
+  gridDistance?: [number, number] | false;
+  hideGrid?: boolean;
+  hideAxes?: boolean;
+  isGridBold?: boolean;
+  isGridSimple?: boolean;
+  isAxesRatioFixed?: boolean;
+  isXAxesNatural?: boolean;
+  xAxis?: GeogebraAxisOptions;
+  yAxis?: GeogebraAxisOptions;
+  axisLabels?: string[];
+};
 export interface Question<TIdentifiers = {}> {
   instruction: string;
   hint?: string;
@@ -62,34 +87,9 @@ export interface Question<TIdentifiers = {}> {
   answerFormat?: "tex" | "raw";
   ggbAnswer?: string[];
   keys?: KeyId[];
-  commands?: string[];
-  coords?: number[];
-  options?: {
-    gridDistance?: [number, number] | false;
-    hideGrid?: boolean;
-    hideAxes?: boolean;
-    isGridBold?: boolean;
-    isGridSimple?: boolean;
-    isAxesRatioFixed?: boolean;
-    isXAxesNatural?: boolean;
-    is3D?: boolean;
-  };
-  studentGgbOptions?: {
-    customToolBar?: string;
-    gridDistance?: [number, number];
-    hideGrid?: boolean;
-    hideAxes?: boolean;
-    isGridBold?: boolean;
-    isGridSimple?: boolean;
-    isAxesRatioFixed?: boolean;
-    isXAxesNatural?: boolean;
-    xAxisSteps?: number;
-    yAxisSteps?: number;
-    enableShiftDragZoom?: boolean;
-    coords?: number[];
-    initialCommands?: string[];
-    axisLabels?: string[];
-  };
+
+  ggbOptions?: GeogebraOptions;
+  studentGgbOptions?: GeogebraOptions;
   style?: {
     tableHasNoHeader?: boolean;
   };

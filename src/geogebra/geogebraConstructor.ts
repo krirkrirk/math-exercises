@@ -1,14 +1,4 @@
-type GeogebraOptions = {
-  isAxesRatioFixed?: boolean;
-  gridDistance?: [number, number] | false;
-  hideAxes?: boolean;
-  hideGrid?: boolean;
-  isGridBold?: boolean;
-  isGridSimple?: boolean;
-  isXAxesNatural?: boolean;
-  axisLabels?: string[];
-  is3D?: boolean;
-};
+import { GeogebraOptions } from "#root/exercises/exercise";
 
 type GetAdaptedCoords = {
   xMin: number;
