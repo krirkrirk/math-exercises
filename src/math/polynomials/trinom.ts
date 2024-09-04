@@ -114,6 +114,9 @@ export abstract class TrinomConstructor {
       return new Trinom(a, -a * (x1 + x2), a * x1 * x2);
     }
   }
+  static fromCoeffs(coeffs: number[]) {
+    return new Trinom(coeffs[2], coeffs[1], coeffs[0]);
+  }
 }
 
 export class Trinom extends Polynomial {
