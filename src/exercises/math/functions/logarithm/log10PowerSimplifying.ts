@@ -16,6 +16,7 @@ import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { Log10Node } from "#root/tree/nodes/functions/log10Node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { alignTex } from "#root/utils/alignTex";
 import { probaFlip } from "#root/utils/probaFlip";
 
 type Identifiers = {
@@ -60,8 +61,16 @@ const getHint = (nb: AlgebraicNode) => {
 };
 const getCorrection = (tenthPower: number, nb: AlgebraicNode) => {
   const powerTen = new PowerNode((10).toTree(), tenthPower.toTree());
-  return `1 . On exprime $${nb.toTex()}$ en puissance de $10$ : $${nb.toTex()} = ${powerTen.toTex()}$ \n 
-  2 . On utilise la propriété $\\log(a^{b}) = b\\times \\log(a)$. On a alors $\\log(${nb.toTex()}) = \\log(${powerTen.toTex()}) = ${tenthPower}\\times \\log(10)  = ${tenthPower}$.
+  return `On exprime $${nb.toTex()}$ en puissance de $10$ :
+  ${alignTex(`${nb.toTex()} = ${powerTen.toTex()}`)}
+  On utilise la propriété $\\log(a^{b}) = b\\times \\log(a)$.
+
+  On a alors
+  ${alignTex([
+    [`\\log(${nb.toTex()})`, `= \\log(${powerTen.toTex()})`],
+    ["", `= ${tenthPower}\\times \\log(10)`],
+    ["", `= ${tenthPower}`],
+  ])}
   `;
 };
 
