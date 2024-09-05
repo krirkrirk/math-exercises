@@ -132,7 +132,6 @@ export interface Exercise<TIdentifiers = {}> {
   hasGeogebra?: boolean;
   hasHintAndCorrection?: boolean;
   subject: "Mathématiques" | "Chimie" | "Physique";
-  hasHintAndCorrection?: boolean;
 }
 
 export type MathLevel =
