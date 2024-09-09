@@ -124,7 +124,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 export const scaleUsage: Exercise<Identifiers> = {
   id: "scaleUsage",
   connector: "=",
-  label: "Calculer une échelle",
+  label: "Utiliser une échelle",
   levels: [],
   isSingleStep: true,
   sections: [],

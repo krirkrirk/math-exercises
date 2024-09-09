@@ -36,6 +36,10 @@ import { covXYAsNode, covarianceXY } from "./math/utils/covariance";
 import { sum } from "./math/utils/sum";
 import { MassUnit } from "./pc/units/massUnits";
 import { DistanceUnit } from "./pc/units/distanceUnits";
+import { SqrtNode } from "./tree/nodes/functions/sqrtNode";
+import { Affine } from "./math/polynomials/affine";
+import { SquareRootConstructor } from "./math/numbers/reals/real";
+import { OppositeNode } from "./tree/nodes/functions/oppositeNode";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
@@ -69,6 +73,24 @@ const runServer = () => {
   console.log("math exos", mathExercises.length);
   console.log("pc exos", pcExercises.length);
 
+  const affine = new Affine(1, -1);
+  const b = SquareRootConstructor.randomIrreductible(10);
+  const frac = new FractionNode(
+    new AddNode((5).toTree(), new SqrtNode((3).toTree())),
+    (6).toTree(),
+  );
+  console.log(frac.simplify({ forceDistributeFractions: true }).toTex());
+  // console.log(
+  //   new MultiplyNode(
+  //     new SubstractNode(
+  //       new VariableNode("x"),
+  //       new SubstractNode((1).toTree(), new SqrtNode((3).toTree())),
+  //     ),
+  //     new VariableNode("x"),
+  //   )
+  //     .simplify()
+  //     .toTex(),
+  // );
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

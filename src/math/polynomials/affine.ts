@@ -2,8 +2,12 @@ import { Nombre } from "../numbers/nombre";
 import { Rational } from "../numbers/rationals/rational";
 import { randint } from "../utils/random/randint";
 import { Polynomial } from "./polynomial";
+import { Trinom } from "./trinom";
 
 export abstract class AffineConstructor {
+  static fromCoeffs(coeffs: number[]): Affine {
+    return new Affine(coeffs[1], coeffs[0]);
+  }
   static random(
     aOpts?: { min?: number; max?: number; excludes?: number[] },
     bOpts?: { min?: number; max?: number; excludes?: number[] },
@@ -52,6 +56,19 @@ export class Affine extends Polynomial {
 
   getRoot(): Nombre {
     return new Rational(-this.b, this.a).simplify();
+  }
+
+  square(): Trinom {
+    return new Trinom(
+      this.a ** 2,
+      2 * this.a * this.b,
+      this.b ** 2,
+      this.variable,
+    );
+  }
+
+  times(n: number) {
+    return new Affine(this.a * n, this.b * n);
   }
 
   toString(): string {
