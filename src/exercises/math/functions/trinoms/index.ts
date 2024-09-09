@@ -15,3 +15,5 @@ export * from "./summitReading";
 export * from "./summitAbscissFromRoots";
 export * from "./summitAbscissFromDevForm";
 export * from "./trinomialMeanValue";
+export * from "./solveSecondDegreeEquationByFactorisation";
+export * from "./solveSecondDegreeEquationFromCano";
