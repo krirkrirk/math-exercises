@@ -16,6 +16,7 @@ import { TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   coeff: number;
@@ -55,17 +56,20 @@ const getDoubleDistributivityWithCoeffQuestion: QuestionGenerator<
     hint: `Choisis deux facteurs de ce produit et multiplie les entre eux. Puis, multiplier le résultat obtenu par le troisième terme.`,
     correction: `On commence par multiplier les deux premiers termes entre eux : 
     
-$${statement} = ${new MultiplyNode(
-      affine1.times(coeff).toTree(),
-      affine2.toTree(),
-    ).toTex()}$
+${alignTex(
+  `${statement} = ${new MultiplyNode(
+    affine1.times(coeff).toTree(),
+    affine2.toTree(),
+  ).toTex()}`,
+)}
 
 Puis, on utilise la double distributivité : 
 
-$${new MultiplyNode(
-      affine3.toTree(),
-      affine2.toTree(),
-    ).toTex()} = ${new AddNode(
+${alignTex([
+  [
+    new MultiplyNode(affine3.toTree(), affine2.toTree()).toTex(),
+    "=",
+    new AddNode(
       new MultiplyNode(
         new Affine(affine3.a, 0).toTree(),
         new Affine(affine2.a, 0).toTree(),
@@ -80,7 +84,10 @@ $${new MultiplyNode(
           new MultiplyNode(affine3.b.toTree(), affine2.b.toTree()),
         ),
       ),
-    ).toTex()} = ${answer}$.
+    ).toTex(),
+  ],
+  ["", "=", answer],
+])}
     `,
   };
 
@@ -133,4 +140,5 @@ export const doubleDistributivityWithCoeff: Exercise<Identifiers> = {
   isAnswerValid,
   isGGBAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

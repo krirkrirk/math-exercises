@@ -17,15 +17,19 @@ import {
 } from "#root/math/numbers/reals/real";
 import { Affine } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
+import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   a: number;
   bOperand: number;
 };
+
+//(x-a)^2-b^2 avec b irrational
 
 const getFactorizeCanonicalFormWithSqrtQuestion: QuestionGenerator<
   Identifiers
@@ -43,12 +47,35 @@ const getFactorizeCanonicalFormWithSqrtQuestion: QuestionGenerator<
   )
     .simplify({ forbidFactorize: true })
     .toTex();
+
+  const statementTex = statement.toTex();
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Factoriser : $${statement.toTex()}$`,
+    instruction: `Factoriser : $${statementTex}$`,
     keys: ["x"],
     answerFormat: "tex",
     identifiers: { a: affine.b, bOperand: b.operand },
+    hint: `Utilise l'identité remarquable $a^2 - b^2 = (a-b)(a+b)$`,
+    correction: `
+On utilise l'identité remarquable $ a^2 - b^2=(a-b)(a+b)$ en prenant $a=${affine.toTex()}$ et $b=${b
+      .toTree()
+      .toTex()}$ : 
+
+
+${alignTex([
+  [
+    statementTex,
+    "=",
+    new SubstractNode(
+      new SquareNode(affine.toTree()),
+      new SquareNode(b.toTree()),
+    ).toTex(),
+  ],
+
+  ["", "=", answer],
+])}
+
+`,
   };
   return question;
 };
@@ -92,9 +119,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, a, bOperand }) => {
   return answerTree.toAllValidTexs().includes(ans);
 };
 
-const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
-  throw Error("GGBVea not implemented");
-};
 export const factorizeCanonicalFormWithSqrt: Exercise<Identifiers> = {
   id: "factorizeCanonicalFormWithSqrt",
   connector: "=",
@@ -108,6 +132,6 @@ export const factorizeCanonicalFormWithSqrt: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  isGGBAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

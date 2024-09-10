@@ -52,8 +52,14 @@ declare global {
     frenchify: () => string;
     toScientific: (decimals?: number) => AlgebraicNode;
   }
+  interface String {
+    toTree: () => AlgebraicNode;
+  }
 }
 
+String.prototype.toTree = function (): AlgebraicNode {
+  return new VariableNode(this.valueOf());
+};
 Number.prototype.toTree = function (): AlgebraicNode {
   const value = this.valueOf();
   if (value === Infinity) return PlusInfinityNode;
@@ -71,6 +77,10 @@ const runServer = () => {
   const app: Express = express();
   app.use(cors());
   console.log("math exos", mathExercises.length);
+  console.log(
+    "math hints",
+    mathExercises.filter((exo) => exo.hasHintAndCorrection).length,
+  );
   console.log("pc exos", pcExercises.length);
 
   const affine = new Affine(1, -1);

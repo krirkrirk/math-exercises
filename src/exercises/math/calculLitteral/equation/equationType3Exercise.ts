@@ -19,6 +19,9 @@ import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { alignTex } from "#root/utils/alignTex";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 
 /**
  *  type ax+b=c
@@ -39,17 +42,25 @@ const getEquationType3ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const statementTree = new EqualNode(affine, new NumberNode(c));
   const answerTree = new EqualNode(new VariableNode("x"), solution.toTree());
   const answer = answerTree.toTex();
-
+  const statementTex = statementTree.toTex();
   const question: Question<Identifiers> = {
-    instruction: `Résoudre : $${statementTree.toTex()}$`,
+    instruction: `Résoudre : $${statementTex}$`,
     hint: "Isolez le terme $x$ dans la partie gauche de l'équation.",
     correction: `Commencer par soustraire $${b}$ des deux côtés de l'équation pour 
     l'éliminer du côté gauche. Ensuite, diviser les deux côtés de l'équation par 
-    $${a}$ pour isoler $x$, ce qui donne : \n $ ${a}x = ${c}${
-      b < 0 ? "+" + Math.abs(b) : "-" + Math.abs(b)
-    } \\Leftrightarrow x=\\frac{${c}${
-      b < 0 ? "+" + Math.abs(b) : "-" + Math.abs(b)
-    }}{${a}} \\Leftrightarrow ${answer}$.`,
+    $${a}$ pour isoler $x$, ce qui donne : 
+    
+${alignTex([
+  [
+    statementTex,
+    "\\iff",
+    new EqualNode(
+      new MultiplyNode(a.toTree(), new VariableNode("x")),
+      (c - b).toTree(),
+    ).toTex(),
+  ],
+  ["", "\\iff", answer],
+])}`,
     startStatement: statementTree.toTex(),
     answer,
     keys: equationKeys,

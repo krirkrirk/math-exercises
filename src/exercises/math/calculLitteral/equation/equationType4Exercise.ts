@@ -21,6 +21,7 @@ import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
+import { alignTex } from "#root/utils/alignTex";
 
 /**
  *  type ax+b=cx+d
@@ -34,10 +35,10 @@ type Identifiers = {
 };
 
 const getEquationType4ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
-  const a = randint(-10, 11, [0]);
-  const b = randint(-10, 11);
+  const a = randint(-10, 11, [0, 1]);
+  const b = randint(-10, 11, [0]);
   const c = randint(-10, 11, [0, a]);
-  const d = randint(-10, 11);
+  const d = randint(-10, 11, [0]);
 
   const affines = [new Affine(a, b), new Affine(c, d)];
   const solution = new Rational(d - b, a - c).simplify();
@@ -45,9 +46,10 @@ const getEquationType4ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const statementTree = new EqualNode(affines[0].toTree(), affines[1].toTree());
   const answerTree = new EqualNode(new VariableNode("x"), solution.toTree());
   const answer = answerTree.toTex();
+  const statementTex = statementTree.toTex();
   const question: Question<Identifiers> = {
-    instruction: `Résoudre : $${statementTree.toTex()}$`,
-    startStatement: statementTree.toTex(),
+    instruction: `Résoudre : $${statementTex}$`,
+    startStatement: statementTex,
     answer,
     keys: equationKeys,
     answerFormat: "tex",
@@ -57,6 +59,22 @@ const getEquationType4ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
       c: c,
       d: d,
     },
+    hint: `Commence par regrouper les termes en $x$ d'un même côté de l'équation. Puis, isole $x$ en effectuant les bonnes opérations.`,
+    correction: `On isole $x$ à gauche en soustrayant par $${b}$ puis en divisant par $${a}$ : 
+    
+${alignTex([
+  [
+    statementTex,
+    "\\iff",
+    new EqualNode(
+      new Affine(a, 0).toTree(),
+      affines[1].add(-b).toTree(),
+    ).toTex(),
+  ],
+  ["", "\\iff", answer],
+])}
+
+    `,
   };
   return question;
 };
@@ -92,7 +110,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d }) => {
 
 export const equationType4Exercise: Exercise<Identifiers> = {
   id: "equa4",
-
   connector: "\\iff",
   label: "Équations $ax+b=cx+d$",
   levels: ["4ème", "3ème", "2nde", "CAP", "2ndPro", "1rePro", "1reTech"],

@@ -12,7 +12,7 @@ import {
   getFlatCartesianProducts,
 } from "#root/utils/cartesianProducts";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
-import { PowerNode, isPowerNode } from "./powerNode";
+import { PowerNode, SquareNode, isPowerNode } from "./powerNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { isInt } from "#root/utils/isInt";
 import { isVariableNode } from "../variables/variableNode";
@@ -346,6 +346,11 @@ export class MultiplyNode implements CommutativeOperatorNode {
       }
 
     const simplifyExternalNodes = (a: AlgebraicNode, b: AlgebraicNode) => {
+      if (isVariableNode(a) && isVariableNode(b)) {
+        if (a.name === b.name) {
+          return new SquareNode(a);
+        }
+      }
       if (isNumberNode(a) && isNumberNode(b)) {
         return new NumberNode(round(a.value * b.value, 12));
       }

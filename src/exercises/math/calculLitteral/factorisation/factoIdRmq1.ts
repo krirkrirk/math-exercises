@@ -16,7 +16,9 @@ import { Interval } from "#root/math/sets/intervals/intervals";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode, SquareNode } from "#root/tree/nodes/operators/powerNode";
+import { alignTex } from "#root/utils/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
@@ -25,19 +27,49 @@ type Identifiers = {
 };
 
 const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
-  const affine = AffineConstructor.random(undefined, {
-    excludes: [0],
-  });
+  const affine = AffineConstructor.random(
+    { min: 1, max: 10 },
+    {
+      min: 1,
+      max: 10,
+    },
+  );
   const statementTree = affine.multiply(affine).toTree();
+  const aMonom = new Affine(affine.a, 0).toTree();
   const answerTree = new PowerNode(affine.toTree(), new NumberNode(2));
   const answer = answerTree.toTex();
+  const statementTex = statementTree.toTex();
   const question: Question<Identifiers> = {
-    instruction: `Factoriser : $${statementTree.toTex()}$`,
-    startStatement: statementTree.toTex(),
+    instruction: `Factoriser : $${statementTex}$`,
+    startStatement: statementTex,
     answer,
     keys: ["x"],
     answerFormat: "tex",
     identifiers: { a: affine.a, b: affine.b },
+    hint: `Essaie de réécrire cette expression sous la forme $a^2 + 2ab+b^2$`,
+    correction: `
+On utilise l'identité remarquable $ a^2 + 2ab+b^2 = (a+b)^2$ en prenant $a=${aMonom.toTex()}$ et $b=${
+      affine.b
+    }$ : 
+
+${alignTex([
+  [
+    statementTex,
+    "=",
+    new AddNode(
+      new AddNode(
+        new SquareNode(aMonom),
+        new MultiplyNode(
+          (2).toTree(),
+          new MultiplyNode(aMonom, affine.b.toTree()),
+        ),
+      ),
+      new SquareNode(affine.b.toTree()),
+    ).toTex(),
+  ],
+  ["", "=", answer],
+])}
+`,
   };
   return question;
 };
@@ -83,4 +115,5 @@ export const factoIdRmq1: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

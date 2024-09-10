@@ -12,9 +12,13 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { equationKeys } from "#root/exercises/utils/keys/equationKeys";
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
+import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
+import { alignTex } from "#root/utils/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
@@ -26,13 +30,37 @@ const getFirstDegreeEquation: QuestionGenerator<Identifiers> = () => {
   const a = randint(-30, 30, [0]);
   const b = randint(-30, 30, [0]);
   const answer = `x=${new Rational(a, b).simplify().toTree().toTex()}`;
+  const frac = new FractionNode(a.toTree(), "x".toTree());
+  const statement = new EqualNode(frac, b.toTree()).toTex();
   const question: Question<Identifiers> = {
-    instruction: `Résoudre l'équation suivante : $\\frac{${a}}{x} = ${b}$`,
+    instruction: `Résoudre l'équation suivante : $${statement}$`,
     startStatement: `x`,
     answer,
     keys: equationKeys,
     answerFormat: "tex",
     identifiers: { a, b },
+    hint: `Multiplie les deux côtés de l'équation par $x$, puis isole $x$ dans la partie droite de l'équation.`,
+    correction: `On multiplie les deux côtés de l'équation par $x$, puis on divise par $b$ : 
+    
+${alignTex([
+  ["", `${statement}`],
+  [
+    "\\iff",
+    new EqualNode(
+      new MultiplyNode("x".toTree(), frac),
+      new MultiplyNode("x".toTree(), b.toTree()),
+    ).toTex(),
+  ],
+  [
+    "\\iff",
+    new EqualNode(
+      a.toTree(),
+      new MultiplyNode(b.toTree(), "x".toTree()),
+    ).toTex(),
+  ],
+  ["\\iff", answer],
+])}
+    `,
   };
 
   return question;
@@ -78,4 +106,5 @@ export const firstDegreeEquation: Exercise<Identifiers> = {
   freeTimer: 60,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

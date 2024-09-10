@@ -13,6 +13,9 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { SquareNode } from "#root/tree/nodes/operators/powerNode";
+import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   affine1Coeffs: number[];
@@ -29,6 +32,9 @@ const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
   const affine2 = new Affine(affine.a, -affine.b);
 
   const statementTree = affine.multiply(affine2).toTree();
+  const statementTex = statementTree.toTex();
+  const bPositive = Math.abs(affine.b);
+  const aMonom = new MultiplyNode(affine.a.toTree(), "x".toTree());
   const answerTree = new MultiplyNode(affine.toTree(), affine2.toTree());
   const answer = answerTree.toTex();
   const question: Question<Identifiers> = {
@@ -42,6 +48,22 @@ const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
       affine1Coeffs: affine.coefficients,
       affine2Coeffs: affine2.coefficients,
     },
+    hint: `Utilise l'identité remarquable $a^2 - b^2 = (a-b)(a+b)$`,
+    correction: `
+On utilise l'identité remarquable $ a^2 - b^2=(a-b)(a+b)$ en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$ : 
+
+${alignTex([
+  [
+    statementTex,
+    "=",
+
+    new SubstractNode(
+      new SquareNode(aMonom),
+      new SquareNode(bPositive.toTree()),
+    ).toTex(),
+  ],
+  ["", "=", answer],
+])}`,
   };
   return question;
 };
@@ -110,4 +132,5 @@ export const factoIdRmq3: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };
