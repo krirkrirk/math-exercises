@@ -27,13 +27,16 @@ const getApplyPercentQuestion: QuestionGenerator<Identifiers> = () => {
   let instruction = "";
   let ans = "";
   let ansNb = 0;
+  let cm = 0;
   const isUp = coinFlip();
   if (isUp) {
-    ansNb = round(randNbr * (1 + randPercent / 100), 2);
+    cm = 1 + randPercent / 100;
+    ansNb = round(randNbr * cm, 2);
     ans = (ansNb + "").replace(".", ",");
     instruction = `Appliquer une hausse de $${randPercent}\\%$ à $${randNbr}$.`;
   } else {
-    ansNb = round(randNbr * (1 - randPercent / 100), 2);
+    cm = 1 - randPercent / 100;
+    ansNb = round(randNbr * cm, 2);
     ans = (ansNb + "").replace(".", ",");
     instruction = `Appliquer une baisse de $${randPercent}\\%$ à $${randNbr}$.`;
   }
@@ -44,6 +47,26 @@ const getApplyPercentQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     keys: ["percent"],
     answerFormat: "tex",
+    hint: isUp
+      ? `Augmenter un nombre de $x\\%$ revient à le multiplier par $1 + \\frac{x}{100}$.`
+      : `Baisser un nombre de $x\\%$ revient à le multiplier par $1 - \\frac{x}{100}$.`,
+    correction: isUp
+      ? `Augmenter un nombre de $${randPercent}\\%$ revient à le multiplier par $1 + \\frac{${randPercent}}{100}$, c'est à dire par $${round(
+          cm,
+          2,
+        ).frenchify()}$.
+    
+On a donc $${randNbr}\\times ${round(cm, 2).frenchify()} = ${answer}$.
+
+    `
+      : `Baisser un nombre de $${randPercent}\\%$ revient à le multiplier par $1 - \\frac{${randPercent}}{100}$, c'est à dire par $${round(
+          cm,
+          2,
+        ).frenchify()}$.
+    
+On a donc $${randNbr}\\times ${round(cm, 2).frenchify()} = ${answer}$.
+
+    `,
     identifiers: { isUp, randNbr, randPercent },
   };
 
@@ -96,4 +119,5 @@ export const applyPercent: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };
