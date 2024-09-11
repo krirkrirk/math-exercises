@@ -17,6 +17,7 @@ import {
 } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { DivideNode } from "#root/tree/nodes/operators/divideNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { coinFlip } from "#root/utils/coinFlip";
 
 const getFractionAndIntegerDivision: QuestionGenerator<Identifiers> = () => {
@@ -33,11 +34,60 @@ const getFractionAndIntegerDivision: QuestionGenerator<Identifiers> = () => {
     ? integer.divide(rational).toTree()
     : rational.divide(integer).toTree();
   const answerTex = answerTree.toTex();
+  const beforeSimplification = integerFirst
+    ? new Rational(integer.value * rational.denum, rational.num)
+    : new Rational(rational.num, rational.denum * integer.value);
   const question: Question<Identifiers> = {
     instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer: answerTex,
     keys: [],
+    hint: "Pour diviser une fraction par un nombre entier, on peut écrire le nombre entier sous forme de fraction. Puis, on multiplie la première fraction par l'inverse de la seconde. Enfin, on simplife la fraction obtenue si possible.",
+    correction: `
+On écrit $${integer.value}$ sous forme de fraction : 
+
+$${integer.value} = \\frac{${integer.value}}{1}$
+
+On multiplie la première fraction par l'inverse de la seconde :
+
+${
+  integerFirst
+    ? `$\\frac{${integer.value}}{1}\\div ${rational
+        .toTree()
+        .toTex()} = \\frac{${integer.value}}{1} \\times ${rational
+        .reverse(false)
+        .toTree()
+        .toTex()} = \\frac{${new MultiplyNode(
+        integer.toTree(),
+        rational.denum.toTree(),
+      ).toTex({ forceNoSimplification: true })}}{${new MultiplyNode(
+        (1).toTree(),
+        rational.num.toTree(),
+      ).toTex({ forceNoSimplification: true })}}
+    = ${beforeSimplification.toTree().toTex()}$`
+    : `$${rational.toTree().toTex()}\\div \\frac{${
+        integer.value
+      }}{1} = ${rational.toTree().toTex()}\\times \\frac{1}{${
+        integer.value
+      }} = \\frac{${rational.num}\\times 1}{${new MultiplyNode(
+        rational.denum.toTree(),
+        integer.toTree(),
+      ).toTex({ forceNoSimplification: true })}} = ${beforeSimplification
+        .toTree()
+        .toTex()}$`
+}
+
+${
+  !beforeSimplification.isIrreductible()
+    ? `On peut alors simplifier cette fraction : 
+  
+$${beforeSimplification.toTree().toTex()} = ${answerTex}$
+  `
+    : "Cette fraction est déjà irréductible."
+}
+
+Ainsi, le résultat attendu est $${answerTex}$.
+    `,
     answerFormat: "tex",
     identifiers: {
       integerFirst,
@@ -107,4 +157,5 @@ export const fractionAndIntegerDivision: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

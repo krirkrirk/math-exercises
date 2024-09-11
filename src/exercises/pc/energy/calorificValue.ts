@@ -130,4 +130,5 @@ export const calorificValue: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

@@ -17,6 +17,8 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { shuffle } from "#root/utils/shuffle";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
+import { alignTex } from "#root/utils/alignTex";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
 
 /**
  *  type x+a=b
@@ -33,13 +35,33 @@ const getEquationType1ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
   const affine = new Affine(1, a).toTree();
   const tree = new EqualNode(affine, new NumberNode(b));
   const answer = `x=${solution}`;
+  const statementTree = tree.toTex();
   const question: Question<Identifiers> = {
-    instruction: `Résoudre : $${tree.toTex()}$`,
-    startStatement: tree.toTex(),
+    instruction: `Résoudre : $${statementTree}$`,
+    startStatement: statementTree,
     answer,
     keys: equationKeys,
     answerFormat: "tex",
     identifiers: { a, b },
+    hint: `Il faut isoler $x$ à gauche. Pour cela, effectue l'opération des deux côtés de l'équation qui permet de supprimer le terme $${
+      a < 0 ? "" : "+"
+    }${a}$.`,
+    correction: `Pour isoler $x$ à gauche, on effectue l'opération $${
+      a > 0 ? `$-${a}$` : `+${Math.abs(a)}`
+    }$ des deux côtés de l'équation : 
+    
+${alignTex([
+  [
+    `${statementTree}`,
+    "\\iff",
+    new EqualNode(
+      new AddNode(affine, new NumberNode(-a)),
+      new AddNode(b.toTree(), new NumberNode(-a)),
+    ).toTex(),
+  ],
+  ["", "\\iff", answer],
+])}
+    `,
   };
   return question;
 };
@@ -82,4 +104,5 @@ export const equationType1Exercise: Exercise<Identifiers> = {
   freeTimer: 60,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

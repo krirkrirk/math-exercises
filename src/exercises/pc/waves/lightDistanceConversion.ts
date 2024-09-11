@@ -200,4 +200,5 @@ export const lightDistanceConversion: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

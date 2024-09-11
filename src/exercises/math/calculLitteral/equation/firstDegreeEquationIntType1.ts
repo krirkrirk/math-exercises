@@ -10,9 +10,14 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { Affine } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   a: number;
@@ -27,12 +32,29 @@ const getFirstDegreeEquationIntQuestion: QuestionGenerator<
   const x = randint(-15, 15, [0]);
   const b = a * x;
   const answer = new EqualNode(new VariableNode("x"), x.toTree()).toTex();
+  const aMonom = new Affine(a, 0).toTree();
+  const statementTex = new EqualNode(aMonom, new NumberNode(b)).toTex();
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Résoudre l'équation suivante : $${a}x = ${b}$`,
+    instruction: `Résoudre l'équation suivante : $${statementTex}$`,
     keys: ["x", "equal"],
     answerFormat: "tex",
     identifiers: { a: a, x: x, b: b },
+    hint: `Il faut isoler $x$ à gauche. Pour cela, effectue l'opération des deux côtés de l'équation qui permet de supprimer la multiplication par $${a}$.`,
+    correction: `Pour isoler $x$ à gauche, on divise les deux côtés de l'équation par $${a}$: 
+    
+${alignTex([
+  [
+    `${statementTex}`,
+    "\\iff",
+    new EqualNode(
+      new FractionNode(aMonom, new NumberNode(a)),
+      new FractionNode(b.toTree(), new NumberNode(a)),
+    ).toTex(),
+  ],
+  ["", "\\iff", answer],
+])}
+    `,
   };
 
   return question;
@@ -99,4 +121,5 @@ export const firstDegreeEquationIntType1: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

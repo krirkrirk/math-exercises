@@ -110,4 +110,5 @@ export const exponentialDifferentialEquation: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

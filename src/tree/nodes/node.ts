@@ -35,6 +35,7 @@ export type ToTexOptions = {
   scientific?: number;
   hideUnit?: boolean;
   notScientific?: boolean;
+  forceNoSimplification?: boolean;
 };
 export interface Node {
   type: NodeType;

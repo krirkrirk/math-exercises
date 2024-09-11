@@ -22,6 +22,8 @@ import { v4 } from "uuid";
  * arrondi à l'unité
  */
 
+const ranks = ["unité", "dixième", "centième", "millième", "dix millième"];
+const ranksWithAu = ["à l'unité", "au dixième", "au centième", "au millième"];
 const instructions = [
   "Arrondir à l'unité :",
   "Arrondir au dixième :",
@@ -38,6 +40,7 @@ const getRoundQuestions: QuestionGenerator<
   const dec = DecimalConstructor.random(0, 1000, precision);
   const decTex = dec.toTree().toTex();
   const answer = dec.round(precisionAsked).toTree().toTex();
+  const figureToLookAt = dec.getDigitAtRank(-(precisionAsked + 1));
   const question: Question<Identifiers> = {
     instruction: `${instructions[precisionAsked]} $${decTex}$`,
     startStatement: decTex,
@@ -49,6 +52,28 @@ const getRoundQuestions: QuestionGenerator<
       decimal: dec.value,
       precision,
     },
+    hint: `Pour arrondir ${
+      ranksWithAu[precisionAsked]
+    }, on regarde le chiffre des ${
+      ranks[precisionAsked + 1]
+    }s. S'il est inférieur à $5$, on arrondit ${
+      ranksWithAu[precisionAsked]
+    } inférieur. S'il est supérieur à $5$, on arrondit ${
+      ranksWithAu[precisionAsked]
+    } supérieur.`,
+    correction: `Le chiffre des ${
+      ranks[precisionAsked + 1]
+    }s est $${figureToLookAt}$. 
+    
+${
+  figureToLookAt < 5
+    ? `Puisque ${figureToLookAt} est inférieur à 5, on arrondit ${ranksWithAu[precisionAsked]} inférieur. 
+     
+Ainsi, en arrondissant ${ranksWithAu[precisionAsked]}, on a $${decTex} \\approx ${answer}$`
+    : `Puisque ${figureToLookAt} est supérieur à 5, on arrondit ${ranksWithAu[precisionAsked]} supérieur. 
+     
+Ainsi, en arrondissant ${ranksWithAu[precisionAsked]}, on a $${decTex} \\approx ${answer}$`
+}`,
   };
   return question;
 };
@@ -119,6 +144,7 @@ export const roundToUnit: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };
 /**
  * arrondi à l'unité
@@ -137,6 +163,7 @@ export const roundToDixieme: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };
 /**
  * arrondi à l'unité
@@ -155,6 +182,7 @@ export const roundToCentieme: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };
 /**
  * arrondi à l'unité
@@ -173,6 +201,7 @@ export const roundToMillieme: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };
 
 export const allRoundings: Exercise<Identifiers> = {
@@ -192,4 +221,5 @@ export const allRoundings: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

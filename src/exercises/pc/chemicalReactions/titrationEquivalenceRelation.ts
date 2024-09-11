@@ -242,4 +242,5 @@ export const titrationEquivalenceRelation: Exercise<Identifiers> = {
   isAnswerValid,
   maxAllowedQuestions: 10,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

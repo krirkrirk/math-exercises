@@ -173,4 +173,5 @@ export const MassOrVolumeProportionExercise: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Chimie",
+  hasHintAndCorrection: true,
 };

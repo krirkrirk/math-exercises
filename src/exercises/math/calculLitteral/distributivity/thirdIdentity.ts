@@ -15,6 +15,9 @@ import { Polynomial } from "#root/math/polynomials/polynomial";
 import { DiscreteSet } from "#root/math/sets/discreteSet";
 import { Interval } from "#root/math/sets/intervals/intervals";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { SquareNode } from "#root/tree/nodes/operators/powerNode";
+import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { alignTex } from "#root/utils/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 type Identifiers = {
@@ -28,9 +31,12 @@ export const getThirdIdentityQuestion: QuestionGenerator<Identifiers> = () => {
   const statementTree = new MultiplyNode(affine.toTree(), affine2.toTree());
   const answer = affine.multiply(affine2).toTree().toTex();
 
+  const aMonom = new MultiplyNode(affine.a.toTree(), "x".toTree());
+  const bPositive = Math.abs(affine.b);
+  const statementTex = statementTree.toTex();
   const question: Question<Identifiers> = {
-    instruction: `Développer et réduire : $${statementTree.toTex()}$`,
-    startStatement: statementTree.toTex(),
+    instruction: `Développer et réduire : $${statementTex}$`,
+    startStatement: statementTex,
     answer,
     keys: ["x"],
     answerFormat: "tex",
@@ -38,6 +44,22 @@ export const getThirdIdentityQuestion: QuestionGenerator<Identifiers> = () => {
       affine1Coeffs: affine.coefficients,
       affine2Coeffs: affine2.coefficients,
     },
+    hint: `Utilise l'identité remarquable $(a-b)(a+b) = a^2 - b^2$ en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$`,
+    correction: `
+On utilise l'identité remarquable $(a-b)(a+b) = a^2 - b^2$ en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$ : 
+
+${alignTex([
+  [
+    statementTex,
+    "=",
+
+    new SubstractNode(
+      new SquareNode(aMonom),
+      new SquareNode(bPositive.toTree()),
+    ).toTex(),
+  ],
+  ["", "=", answer],
+])}`,
   };
   return question;
 };
@@ -96,4 +118,5 @@ export const thirdIdentity: Exercise<Identifiers> = {
   qcmTimer: 60,
   freeTimer: 60,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

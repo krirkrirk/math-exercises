@@ -16,6 +16,7 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   a: number;
@@ -27,9 +28,9 @@ type Identifiers = {
 const getFirstDegreeEquationIntQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const a = randint(-15, 15, [0]);
+  const a = randint(-15, 15, [0, 1]);
   const x = randint(-15, 15, [0]);
-  const c = randint(-15, 15, [0]);
+  const c = randint(-15, 15, [0, a * x]);
   const b = c - a * x;
   const answer = new EqualNode(new VariableNode("x"), x.toTree()).toTex();
   const equation = new EqualNode(
@@ -39,12 +40,29 @@ const getFirstDegreeEquationIntQuestion: QuestionGenerator<
     ).simplify({ forbidFactorize: true }),
     c.toTree(),
   );
+  const statementTex = equation.toTex();
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Résoudre l'équation suivante : $${equation.toTex()}$`,
+    instruction: `Résoudre l'équation suivante : $${statementTex}$`,
     keys: ["x", "equal"],
     answerFormat: "tex",
     identifiers: { a: a, x: x, c: c, b: b },
+    hint: "Isolez le terme $x$ dans la partie gauche de l'équation.",
+    correction: `Commencer par soustraire $${b}$ des deux côtés de l'équation pour 
+    l'éliminer du côté gauche. Ensuite, diviser les deux côtés de l'équation par 
+    $${a}$ pour isoler $x$, ce qui donne : 
+    
+${alignTex([
+  [
+    statementTex,
+    "\\iff",
+    new EqualNode(
+      new MultiplyNode(a.toTree(), new VariableNode("x")),
+      (c - b).toTree(),
+    ).toTex(),
+  ],
+  ["", "\\iff", answer],
+])}`,
   };
 
   return question;

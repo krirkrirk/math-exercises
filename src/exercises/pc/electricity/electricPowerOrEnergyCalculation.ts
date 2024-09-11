@@ -121,4 +121,5 @@ export const electricPowerOrEnergyCalculation: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

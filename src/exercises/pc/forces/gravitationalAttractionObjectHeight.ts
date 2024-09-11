@@ -165,4 +165,5 @@ export const gravitationalAttractionObjectHeight: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

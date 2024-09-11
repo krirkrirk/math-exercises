@@ -107,4 +107,5 @@ export const calculateSynthesisEfficiency: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Chimie",
+  hasHintAndCorrection: true,
 };

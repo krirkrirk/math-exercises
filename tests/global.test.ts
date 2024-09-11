@@ -7,6 +7,7 @@ import { NumberNode } from "./../src/tree/nodes/numbers/numberNode";
 import { MinusInfinityNode } from "./../src/tree/nodes/numbers/infiniteNode";
 import { PlusInfinityNode } from "./../src/tree/nodes/numbers/infiniteNode";
 import { toScientific } from "../src/utils/numberPrototype/toScientific";
+import { VariableNode } from "../src/tree/nodes/variables/variableNode";
 
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
 const pcExercises = Object.values(PCExercises) as Exercise<any>[];
@@ -21,8 +22,14 @@ declare global {
     frenchify: () => string;
     toScientific: (decimals?: number) => AlgebraicNode;
   }
+  interface String {
+    toTree: () => AlgebraicNode;
+  }
 }
 
+String.prototype.toTree = function (): AlgebraicNode {
+  return new VariableNode(this.valueOf());
+};
 Number.prototype.toTree = function (): AlgebraicNode {
   const value = this.valueOf();
   if (value === Infinity) return PlusInfinityNode;
@@ -77,9 +84,15 @@ test("all exos", () => {
         expect(exo.isGGBAnswerValid).not.toBe(undefined);
       }
       questions.forEach((question) => {
+        if (exo.hasHintAndCorrection) {
+          expect(question.hint).not.toBe(undefined);
+          expect(question.hint).not.toBe("");
+          expect(question.correction).not.toBe(undefined);
+          expect(question.correction).not.toBe("");
+        }
+        if (question.hint || question.correction)
+          expect(exo.hasHintAndCorrection).toBe(true);
         expect(question.identifiers).not.toBe(undefined);
-        expect(question.identifiers).not.toBe(undefined);
-
         const dotDecimalPattern = /\d+\.\d+/;
         if (exo.answerType === "GGB") {
           expect(question.ggbAnswer).not.toBe(undefined);

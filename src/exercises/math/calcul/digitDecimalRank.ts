@@ -22,6 +22,7 @@ type Identifiers = {
   nb: string;
   rankAsked: number;
 };
+const ordinals = ["premier", "deuxième", "troisième", "quatrième"];
 
 const getDigitDecimalRankQuestion: QuestionGenerator<Identifiers> = () => {
   const decimalPartSize = randint(2, 5);
@@ -38,6 +39,8 @@ const getDigitDecimalRankQuestion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: { nb: nb.tex, rankAsked },
+    hint: `Le chiffre des ${rankAskedLabel} est le ${ordinals[rankAsked]} chiffre après la virgule.`,
+    correction: `Le chiffre des ${rankAskedLabel} est le ${ordinals[rankAsked]} chiffre après la virgule. Donc le chiffre des ${rankAskedLabel} est $${answer}$.`,
   };
 
   return question;
@@ -60,9 +63,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
-  throw Error("GGBVea not implemented");
-};
 export const digitDecimalRank: Exercise<Identifiers> = {
   id: "digitDecimalRank",
   connector: "=",
@@ -76,6 +76,6 @@ export const digitDecimalRank: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  isGGBAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

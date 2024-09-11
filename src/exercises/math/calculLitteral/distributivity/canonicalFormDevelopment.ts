@@ -89,4 +89,5 @@ export const canonicalFormDevelopment: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

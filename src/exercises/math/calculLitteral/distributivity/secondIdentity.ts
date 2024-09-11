@@ -15,7 +15,11 @@ import { Polynomial } from "#root/math/polynomials/polynomial";
 import { DiscreteSet } from "#root/math/sets/discreteSet";
 import { Interval } from "#root/math/sets/intervals/intervals";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { PowerNode, SquareNode } from "#root/tree/nodes/operators/powerNode";
+import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { alignTex } from "#root/utils/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
@@ -38,14 +42,39 @@ export const getSecondIdentityQuestion: QuestionGenerator<Identifiers> = () => {
 
   const statementTree = new PowerNode(affine.toTree(), new NumberNode(2));
   const answer = affine.multiply(affine).toTree().toTex();
+  const aMonom = new MultiplyNode(affine.a.toTree(), "x".toTree());
 
+  const bPositive = -affine.b;
+  const statementTex = statementTree.toTex();
   const question: Question<Identifiers> = {
-    instruction: `Développer et réduire : $${statementTree.toTex()}$`,
-    startStatement: statementTree.toTex(),
+    instruction: `Développer et réduire : $${statementTex}$`,
+    startStatement: statementTex,
     answer,
     keys: ["x"],
     answerFormat: "tex",
     identifiers: { a: affine.a, b: affine.b },
+    hint: `Utilise l'identité remarquable $(a-b)^2 = a^2 - 2ab+b^2$ en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$`,
+    correction: `
+On utilise l'identité remarquable $(a-b)^2 = a^2 - 2ab+b^2$ en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$ : 
+
+${alignTex([
+  [
+    statementTex,
+    "=",
+    new AddNode(
+      new SubstractNode(
+        new SquareNode(aMonom),
+        new MultiplyNode(
+          (2).toTree(),
+          new MultiplyNode(aMonom, bPositive.toTree()),
+        ),
+      ),
+      new SquareNode(bPositive.toTree()),
+    ).toTex(),
+  ],
+  ["", "=", answer],
+])}
+`,
   };
   return question;
 };
@@ -113,4 +142,5 @@ export const secondIdentity: Exercise<Identifiers> = {
   qcmTimer: 60,
   freeTimer: 60,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

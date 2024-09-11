@@ -13,9 +13,11 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Affine } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   a: number;
@@ -31,18 +33,44 @@ const getFactorizeCanonicalFormQuestion: QuestionGenerator<
 
   const statement = new SubstractNode(
     new SquareNode(affine.toTree()),
-    new SquareNode((b ** 2).toTree()),
+    (b ** 2).toTree(),
   );
+  const bPositive = Math.abs(b);
+
   const answer = new MultiplyNode(
-    affine.add(-b).toTree(),
-    affine.add(b).toTree(),
+    affine.add(-bPositive).toTree(),
+    affine.add(bPositive).toTree(),
   ).toTex();
+  const statementTex = statement.toTex();
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Factoriser : $${statement.toTex()}$`,
+    instruction: `Factoriser : $${statementTex}$`,
     keys: ["x"],
     answerFormat: "tex",
     identifiers: { a: affine.a, b },
+    hint: `Utilise l'identité remarquable $a^2 - b^2 = (a-b)(a+b)$`,
+    correction: `
+On utilise l'identité remarquable $ a^2 - b^2=(a-b)(a+b)$ en prenant $a=${affine.toTex()}$ et $b=${bPositive}$ : 
+
+${alignTex([
+  [
+    statementTex,
+    "=",
+    new SubstractNode(
+      new SquareNode(affine.toTree()),
+      new SquareNode(bPositive.toTree()),
+    ).toTex(),
+  ],
+  [
+    "",
+    "=",
+    new MultiplyNode(
+      new AddNode(affine.toTree(), (-bPositive).toTree()),
+      new AddNode(affine.toTree(), bPositive.toTree()),
+    ).toTex(),
+  ],
+  ["", "=", answer],
+])}`,
   };
 
   return question;
@@ -95,4 +123,5 @@ export const factorizeCanonicalForm: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

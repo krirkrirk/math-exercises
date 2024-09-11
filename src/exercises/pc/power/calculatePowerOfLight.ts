@@ -119,4 +119,5 @@ export const calculatePowerOfLight: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

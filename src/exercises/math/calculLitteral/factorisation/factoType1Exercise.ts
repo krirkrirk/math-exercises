@@ -25,6 +25,7 @@ type Identifiers = {
   operation: string;
 };
 
+//TODO fix { "affinesCoeffs": [ [ -2, 8 ], [ -5, 4 ], [ 0, -8 ] ], "operation": "substract" } donne trop de moins
 const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
   const affines = AffineConstructor.differentRandoms(3);
 

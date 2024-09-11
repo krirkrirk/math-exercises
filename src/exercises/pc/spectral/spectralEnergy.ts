@@ -186,4 +186,5 @@ export const SpectralEnergyExercise: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };
