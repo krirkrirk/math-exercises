@@ -64,10 +64,9 @@ const getSequencePlotQuestion: QuestionGenerator<Identifiers> = () => {
     isGridSimple: true,
   });
 
-  const sequenceType = isArithmetic ? "arithmétique" : "géométrique";
   const question: Question<Identifiers> = {
     answer: u_nValue.toString(),
-    instruction: `Ci-dessous est tracé un nuage de points représentant les valeurs d'une suite ${sequenceType} $(u_n)$. Quelle est la valeur de $u_{${nValue}}$ ?`,
+    instruction: `Ci-dessous est tracé un nuage de points représentant les valeurs d'une suite $(u_n)$. Quelle est la valeur de $u_{${nValue}}$ ?`,
     commands: ggb.commands,
     options: ggb.getOptions(),
     coords: ggb.getAdaptedCoords({
