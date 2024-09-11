@@ -84,7 +84,7 @@ const runServer = () => {
   );
   console.log("pc exos", pcExercises.length);
 
-  playground();
+  // playground();
 
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
