@@ -1,4 +1,5 @@
 import { Affine, AffineConstructor } from "./math/polynomials/affine";
+import { distinctRandTupleInt } from "./math/utils/random/randTupleInt";
 import { AddNode } from "./tree/nodes/operators/addNode";
 import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
 import { random } from "./utils/random";
@@ -19,5 +20,5 @@ export const playground = () => {
     new MultiplyNode(permut[1][0].toTree(), permut[1][1].toTree()),
   );
 
-  console.log(statementTree.simplify().toTex());
+  console.log(distinctRandTupleInt(3, 2, { from: 1, to: 10 }));
 };

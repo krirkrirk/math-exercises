@@ -9,3 +9,4 @@ export * from "./rounding";
 export * from "./digitRank";
 export * from "./digitDecimalRank";
 export * from "./digitRankNumber";
+export * from "./digitDecimalRankNumber";

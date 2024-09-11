@@ -12,6 +12,10 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import {
+  DecimalConstructor,
+  decimalDigitRanks,
+} from "#root/math/numbers/decimals/decimal";
+import {
   IntegerConstructor,
   integerDigitRanks,
 } from "#root/math/numbers/integer/integer";
@@ -24,22 +28,24 @@ type Identifiers = {
 
 const ordinals = ["premier", "deuxième", "troisième", "quatrième"];
 const getDigitRankNumberQuestion: QuestionGenerator<Identifiers> = () => {
-  const size = randint(3, 6);
-  const nb = IntegerConstructor.random(size);
-  const rankAsked = randint(0, Math.min(size, 4));
-  const rankAskedLabel = integerDigitRanks[rankAsked];
-  const nbString = nb.toString();
-  const answer = nbString.substring(0, nbString.length - rankAsked);
+  const decimalPartSize = randint(2, 5);
+  const nb = DecimalConstructor.random(0, 1000, decimalPartSize);
+  const rankAsked = randint(0, Math.min(decimalPartSize, 3));
+  const rankAskedLabel = decimalDigitRanks[rankAsked];
+  const str = nb.tex;
+  const answer =
+    str.split(".")[0] + str.split(".")[1].substring(0, rankAsked + 1);
+
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Quel est le nombre ${
-      rankAsked === 0 ? "d'" : "de "
-    }${rankAskedLabel} dans le nombre $${nb.toTree().toTex()}$ ?`,
+    instruction: `Quel est le nombre de ${rankAskedLabel} dans le nombre $${nb
+      .toTree()
+      .toTex()}$ ?`,
     keys: [],
-    // hint: `Attention ! On demande le 'nombre' et non pas le 'chiffre' !`,
-    // correction: `Le chiffre des ${rankAskedLabel} est le ${ordinals[rankAsked]} chiffre en partant de la droite. Donc le chiffre des ${rankAskedLabel} est $${answer}$.`,
+    //   hint: `Attention ! On demande le 'nombre' et non pas le 'chiffre' !`,
+    //   correction: `Le chiffre des ${rankAskedLabel} est le ${ordinals[rankAsked]} chiffre en partant de la droite. Donc le chiffre des ${rankAskedLabel} est $${answer}$.`,
     answerFormat: "tex",
-    identifiers: { nb, rankAsked },
+    identifiers: { nb: nb.value, rankAsked },
   };
 
   return question;
@@ -51,10 +57,12 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const nbString = nb.toString();
-  tryToAddWrongProp(propositions, nbString[nbString.length - rankAsked - 1]);
-  for (let i = 0; i < nbString.length; i++) {
-    tryToAddWrongProp(propositions, nbString.substring(0, nbString.length - i));
+  const str = nb.toString();
+  const [intPart, fracPart] = str.split(".");
+  tryToAddWrongProp(propositions, fracPart[rankAsked]);
+
+  for (let i = 0; i < str.length; i++) {
+    tryToAddWrongProp(propositions, intPart + fracPart.substring(0, i + 1));
   }
   while (propositions.length < n) {
     tryToAddWrongProp(propositions, randint(0, 100) + "");
@@ -66,10 +74,10 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-export const digitRankNumber: Exercise<Identifiers> = {
-  id: "digitRankNumber",
+export const digitDecimalRankNumber: Exercise<Identifiers> = {
+  id: "digitDecimalRankNumber",
   connector: "=",
-  label: "Déterminer le nombre d'unités/de dizaines/de centièmes...",
+  label: "Déterminer le nombre de dixièmes, de centièmes...",
   levels: [],
   isSingleStep: true,
   sections: [],
@@ -80,4 +88,5 @@ export const digitRankNumber: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  // hasHintAndCorrection: true,
 };

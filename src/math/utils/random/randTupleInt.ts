@@ -1,10 +1,11 @@
-import { arrayEqual } from '#root/utils/arrayEqual';
-import { randint } from './randint';
+import { arrayEqual } from "#root/utils/arrayEqual";
+import { randint } from "./randint";
 
 interface randTupleIntOptions {
   from: number;
   to?: number;
   excludes?: number[];
+  allDifferent?: boolean;
 }
 
 /**
@@ -12,15 +13,26 @@ interface randTupleIntOptions {
  * @param options
  * @returns array of size "size" with elements = randint(from, to, exxcludes)
  */
-export const randTupleInt = (size: number, options: randTupleIntOptions): number[] => {
-  const res = [];
+export const randTupleInt = (
+  size: number,
+  options: randTupleIntOptions,
+): number[] => {
+  const res: number[] = [];
   for (let i = 0; i < size; i++) {
-    res.push(randint(options.from, options.to, options.excludes));
+    let x: number;
+    do {
+      x = randint(options.from, options.to, options.excludes);
+    } while (options.allDifferent && res.includes(x));
+    res.push(x);
   }
   return res;
 };
 
-export const distinctRandTupleInt = (nb: number, size: number, options: randTupleIntOptions): number[][] => {
+export const distinctRandTupleInt = (
+  nb: number,
+  size: number,
+  options: randTupleIntOptions,
+): number[][] => {
   const res: number[][] = [];
   for (let i = 0; i < nb; i++) {
     let newTuple: number[];

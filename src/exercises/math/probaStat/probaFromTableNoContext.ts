@@ -84,10 +84,11 @@ const getProbaFromTableNoContextQuestion: QuestionGenerator<
     answer,
     instruction: `On considère deux événements $A$ et $B$. Le tableau suivant donne le nombre d'issues pour chacun des événements $A\\cap B$, $\\overline A\\cap B$, $A\\cap \\overline B$ et $\\overline A \\cap \\overline B$. Calculer la probabilité $${event}$.
     
-| | $B$ | $\\overline{B}$|
-|-|-|-|
-|$A$|${aCapB}|${aCapBBarre}|
-|$\\overline{A}$|${aBarreCapB}|${aBarreCapBBarre}|
+| | $B$ | $\\overline{B}$| Total
+|-|-|-|-|
+|$A$|${aCapB}|${aCapBBarre}|${aTotal}|
+|$\\overline{A}$|${aBarreCapB}|${aBarreCapBBarre}|${aBarreTotal}|
+|Total|${bTotal}|${bBarreTotal}|${total}|
     
     `,
     keys: [],
