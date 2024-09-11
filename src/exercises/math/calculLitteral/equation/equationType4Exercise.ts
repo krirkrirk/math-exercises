@@ -59,22 +59,22 @@ const getEquationType4ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
       c: c,
       d: d,
     },
-    hint: `Commence par regrouper les termes en $x$ d'un même côté de l'équation. Puis, isole $x$ en effectuant les bonnes opérations.`,
-    correction: `On isole $x$ à gauche en soustrayant par $${b}$ puis en divisant par $${a}$ : 
-    
-${alignTex([
-  [
-    statementTex,
-    "\\iff",
-    new EqualNode(
-      new Affine(a, 0).toTree(),
-      affines[1].add(-b).toTree(),
-    ).toTex(),
-  ],
-  ["", "\\iff", answer],
-])}
+    //     hint: `Commence par regrouper les termes en $x$ d'un même côté de l'équation. Puis, isole $x$ en effectuant les bonnes opérations.`,
+    //     correction: `On isole $x$ à gauche en soustrayant par $${b}$ puis en divisant par $${a}$ :
 
-    `,
+    // ${alignTex([
+    //   [
+    //     statementTex,
+    //     "\\iff",
+    //     new EqualNode(
+    //       new Affine(a, 0).toTree(),
+    //       affines[1].add(-b).toTree(),
+    //     ).toTex(),
+    //   ],
+    //   ["", "\\iff", answer],
+    // ])}
+
+    //     `,
   };
   return question;
 };

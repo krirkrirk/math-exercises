@@ -231,5 +231,4 @@ export const convexityQuadrinomialsGeo: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
-  hasHintAndCorrection: true,
 };

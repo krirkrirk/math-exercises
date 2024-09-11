@@ -47,7 +47,7 @@ const getFactorizeCanonicalFormQuestion: QuestionGenerator<
     instruction: `Factoriser : $${statementTex}$`,
     keys: ["x"],
     answerFormat: "tex",
-    identifiers: { a: affine.a, b },
+    identifiers: { a: affine.b, b },
     hint: `Utilise l'identité remarquable $a^2 - b^2 = (a-b)(a+b)$`,
     correction: `
 On utilise l'identité remarquable $ a^2 - b^2=(a-b)(a+b)$ en prenant $a=${affine.toTex()}$ et $b=${bPositive}$ : 
@@ -101,10 +101,10 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, a, b }) => {
   const affine = new Affine(1, a);
-
+  const bPositive = Math.abs(b);
   const answerTree = new MultiplyNode(
-    affine.add(-b).toTree(),
-    affine.add(b).toTree(),
+    affine.add(-bPositive).toTree(),
+    affine.add(bPositive).toTree(),
   );
   return answerTree.toAllValidTexs().includes(ans);
 };

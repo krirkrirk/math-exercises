@@ -130,4 +130,5 @@ export const firstDegreeEquationIntType2: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

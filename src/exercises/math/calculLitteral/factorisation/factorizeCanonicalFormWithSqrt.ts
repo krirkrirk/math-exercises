@@ -34,7 +34,7 @@ type Identifiers = {
 const getFactorizeCanonicalFormWithSqrtQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const affine = new Affine(1, randint(-2, 3, [0]));
+  const affine = new Affine(1, randint(-10, 10, [0]));
   const b = SquareRootConstructor.randomIrreductible(10);
 
   const statement = new SubstractNode(
@@ -86,7 +86,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   const affine = new Affine(1, a);
-
   addValidProp(propositions, answer);
   tryToAddWrongProp(
     propositions,
