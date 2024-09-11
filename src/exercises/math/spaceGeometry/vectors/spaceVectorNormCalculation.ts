@@ -10,6 +10,7 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { SpaceVectorConstructor } from "#root/math/geometry/spaceVector";
 import { VectorConstructor } from "#root/math/geometry/vector";
 import { SquareRootConstructor } from "#root/math/numbers/reals/real";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
@@ -21,14 +22,13 @@ import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 type Identifiers = {
   x: number;
   y: number;
+  z: number;
 };
 
 const getSpaceVectorNormCalculationQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const u = VectorConstructor.random("u", false);
-  const x = (u.x.simplify() as NumberNode).value;
-  const y = (u.y.simplify() as NumberNode).value;
+  const u = SpaceVectorConstructor.random("u", false);
   const correctAnswer = u.getNorm();
 
   const question: Question<Identifiers> = {
@@ -36,36 +36,32 @@ const getSpaceVectorNormCalculationQuestion: QuestionGenerator<
     instruction: `Cacluler la norme du vecteur $${u.toTexWithCoords()}$`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { x, y },
+    identifiers: {
+      x: u.x.evaluate({}),
+      y: u.y.evaluate({}),
+      z: u.z.evaluate({}),
+    },
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer, x, y }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, x, y, z }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  generateProposition(x, y).forEach((value) => {
-    tryToAddWrongProp(propositions, value.simplify().toTex());
-  });
+
+  tryToAddWrongProp(propositions, (x + y + z).toTree().toTex());
+
   let sqrtRand;
   while (propositions.length < n) {
     sqrtRand = SquareRootConstructor.randomSimplifiable({});
-    tryToAddWrongProp(propositions, sqrtRand.simplify().tex);
+    tryToAddWrongProp(propositions, sqrtRand.simplify().toTree().toTex());
   }
   return shuffleProps(propositions, n);
 };
 
-const generateProposition = (x: number, y: number): AlgebraicNode[] => {
-  let xNode = new NumberNode(x);
-  let yNode = new NumberNode(y);
-
-  const firstProposition = new AddNode(xNode, yNode);
-  return [firstProposition];
-};
-
-const isAnswerValid: VEA<Identifiers> = (ans, { x, y }) => {
-  const correctAnswer = new SqrtNode((x ** 2 + y ** 2).toTree());
+const isAnswerValid: VEA<Identifiers> = (ans, { x, y, z }) => {
+  const correctAnswer = new SqrtNode((x ** 2 + y ** 2 + z ** 2).toTree());
   return correctAnswer
     .toAllValidTexs({ allowSimplifySqrt: true })
     .includes(ans);

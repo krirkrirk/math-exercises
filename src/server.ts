@@ -16,7 +16,7 @@ import {
 import { Decimal } from "./math/numbers/decimals/decimal";
 import { round, roundSignificant } from "./math/utils/round";
 import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
-import { PowerNode } from "./tree/nodes/operators/powerNode";
+import { PowerNode, SquareNode } from "./tree/nodes/operators/powerNode";
 import { toScientific } from "./utils/numberPrototype/toScientific";
 import { Measure } from "./pc/measure/measure";
 import { atomes } from "./pc/constants/molecularChemistry/atome";
@@ -40,6 +40,7 @@ import { SqrtNode } from "./tree/nodes/functions/sqrtNode";
 import { Affine } from "./math/polynomials/affine";
 import { SquareRootConstructor } from "./math/numbers/reals/real";
 import { OppositeNode } from "./tree/nodes/functions/oppositeNode";
+import { playground } from "./playground";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
@@ -83,24 +84,8 @@ const runServer = () => {
   );
   console.log("pc exos", pcExercises.length);
 
-  const affine = new Affine(1, -1);
-  const b = SquareRootConstructor.randomIrreductible(10);
-  const frac = new FractionNode(
-    new AddNode((5).toTree(), new SqrtNode((3).toTree())),
-    (6).toTree(),
-  );
-  console.log(frac.simplify({ forceDistributeFractions: true }).toTex());
-  // console.log(
-  //   new MultiplyNode(
-  //     new SubstractNode(
-  //       new VariableNode("x"),
-  //       new SubstractNode((1).toTree(), new SqrtNode((3).toTree())),
-  //     ),
-  //     new VariableNode("x"),
-  //   )
-  //     .simplify()
-  //     .toTex(),
-  // );
+  playground();
+
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);
   });

@@ -15,6 +15,7 @@ export * from "./primitive";
 export * from "./probaStat";
 export * from "./sequences";
 export * from "./sets";
+export * from "./spaceGeometry";
 export * from "./squareRoots";
 export * from "./trigonometry";
 export * from "./python";

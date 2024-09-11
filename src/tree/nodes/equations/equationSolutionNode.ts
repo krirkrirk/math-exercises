@@ -33,6 +33,13 @@ export class EquationSolutionNode implements Node {
       const solTex = this.solutionsSet.elements[0].toTex();
       res.push(`${this.variable}=${solTex}`);
       if (this.opts?.allowRawRightChildAsSolution) res.push(solTex);
+    } else {
+      const solTex = this.solutionsSet.elements.map((e) => e.toTex());
+      res.push(solTex.map((e) => `${this.variable}=${e}`).join("\\text{ ou }"));
+      if (this.opts?.allowRawRightChildAsSolution) {
+        res.push(solTex.join(";"));
+        res.push(solTex.join("\\text{ ou }"));
+      }
     }
     return res;
   }
