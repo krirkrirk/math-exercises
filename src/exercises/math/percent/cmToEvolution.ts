@@ -18,17 +18,15 @@ type Identifiers = {
   evolution: number;
 };
 
-const getEvolutionToCmQuestion: QuestionGenerator<Identifiers> = () => {
+const getCmToEvolutionQuestion: QuestionGenerator<Identifiers> = () => {
   const evolution = randint(-99, 101, [0]);
   const isHausse = evolution > 0;
   const CM = (round(1 + evolution / 100, 2) + "").replaceAll(".", ",");
-  const answer = CM;
+  const answer = (isHausse ? "+" : "") + evolution + "\\%";
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Quel est le coefficient multiplicateur associé à une ${
-      isHausse ? "hausse" : "baisse"
-    } de $${isHausse ? evolution : evolution.toString().slice(1)}\\%$ ?`,
+    instruction: `Quelle est l'évolution en pourcentage associée à un coefficient multiplicateur de $${CM}$ ?`,
     keys: ["percent"],
     answerFormat: "tex",
     identifiers: { evolution },
@@ -46,15 +44,11 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
   tryToAddWrongProp(
     propositions,
-    (round(evolution / 100, 2) + "").replaceAll(".", ","),
+    "+" + (round(1 + evolution / 100, 2) * 100 + "\\%").replaceAll(".", ","),
   );
-  tryToAddWrongProp(propositions, evolution + "");
 
   while (propositions.length < n) {
-    const wrongAnswer = (round(randint(1, 200) / 100, 2) + "").replaceAll(
-      ".",
-      ",",
-    );
+    const wrongAnswer = (coinFlip() ? "+" : "-") + randint(1, 100) + "\\%";
     tryToAddWrongProp(propositions, wrongAnswer);
   }
 
@@ -62,17 +56,22 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+  const allowedTex = [answer, answer.replace("\\%", "")];
+  if (answer[0] === "+") {
+    allowedTex.push(answer.slice(1));
+    allowedTex.push(answer.slice(1).replace("\\%", ""));
+  }
+  return allowedTex.includes(ans);
 };
 
-export const evolutionToCM: Exercise<Identifiers> = {
-  id: "evolutionToCM",
+export const cmToEvolution: Exercise<Identifiers> = {
+  id: "cmToEvolution",
   connector: "=",
-  label: "Passer d'évolution en pourcentage au coefficient multiplicateur",
+  label: "Passer de coefficient multiplicateur à évolution en pourcentage",
   levels: ["2ndPro", "2nde", "1rePro", "1reTech", "1reESM"],
   isSingleStep: true,
   sections: ["Pourcentages"],
-  generator: (nb: number) => getDistinctQuestions(getEvolutionToCmQuestion, nb),
+  generator: (nb: number) => getDistinctQuestions(getCmToEvolutionQuestion, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
