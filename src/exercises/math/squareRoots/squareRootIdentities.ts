@@ -51,7 +51,7 @@ const getAnswer = (
             new MultiplyNode(firstTerm, secondTerm),
           ),
         ),
-      ).simplify();
+      ).simplify({ keepPowers: false });
     case 2:
       return new AddNode(
         new SquareNode(firstTerm),
@@ -62,13 +62,13 @@ const getAnswer = (
             new MultiplyNode(firstTerm, secondTerm),
           ),
         ),
-      ).simplify();
+      ).simplify({ keepPowers: false });
     case 3:
     default:
       return new SubstractNode(
         new SquareNode(firstTerm),
         new SquareNode(secondTerm),
-      ).simplify();
+      ).simplify({ keepPowers: false });
   }
 };
 //(x sqrt(a) +- [y || y*sqrt(b)])^2

@@ -16,7 +16,7 @@ import {
 import { Decimal } from "./math/numbers/decimals/decimal";
 import { round, roundSignificant } from "./math/utils/round";
 import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
-import { PowerNode } from "./tree/nodes/operators/powerNode";
+import { PowerNode, SquareNode } from "./tree/nodes/operators/powerNode";
 import { toScientific } from "./utils/numberPrototype/toScientific";
 import { Measure } from "./pc/measure/measure";
 import { atomes } from "./pc/constants/molecularChemistry/atome";
@@ -36,6 +36,11 @@ import { covXYAsNode, covarianceXY } from "./math/utils/covariance";
 import { sum } from "./math/utils/sum";
 import { MassUnit } from "./pc/units/massUnits";
 import { DistanceUnit } from "./pc/units/distanceUnits";
+import { SqrtNode } from "./tree/nodes/functions/sqrtNode";
+import { Affine } from "./math/polynomials/affine";
+import { SquareRootConstructor } from "./math/numbers/reals/real";
+import { OppositeNode } from "./tree/nodes/functions/oppositeNode";
+import { playground } from "./playground";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
@@ -48,8 +53,14 @@ declare global {
     frenchify: () => string;
     toScientific: (decimals?: number) => AlgebraicNode;
   }
+  interface String {
+    toTree: () => AlgebraicNode;
+  }
 }
 
+String.prototype.toTree = function (): AlgebraicNode {
+  return new VariableNode(this.valueOf());
+};
 Number.prototype.toTree = function (): AlgebraicNode {
   const value = this.valueOf();
   if (value === Infinity) return PlusInfinityNode;
@@ -67,7 +78,13 @@ const runServer = () => {
   const app: Express = express();
   app.use(cors());
   console.log("math exos", mathExercises.length);
+  console.log(
+    "math hints",
+    mathExercises.filter((exo) => exo.hasHintAndCorrection).length,
+  );
   console.log("pc exos", pcExercises.length);
+
+  playground();
 
   app.get("/", (req: Request, res: Response) => {
     res.json(allExercises);

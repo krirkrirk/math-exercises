@@ -129,4 +129,5 @@ export const calculateNormalOrFrictionForce: Exercise<Identifiers> = {
   isAnswerValid,
   hasGeogebra: true,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

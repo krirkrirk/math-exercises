@@ -14,7 +14,10 @@ import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { DiscreteSet } from "#root/math/sets/discreteSet";
 import { Interval } from "#root/math/sets/intervals/intervals";
 import { randint } from "#root/math/utils/random/randint";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { operatorComposition } from "#root/tree/utilities/operatorComposition";
+import { alignTex } from "#root/utils/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {
   affine1Coeffs: number[];
@@ -32,8 +35,21 @@ const getDoubleDistributivityQuestion: QuestionGenerator<Identifiers> = () => {
   );
   const answer = affines[0].multiply(affines[1]).toTree().toTex();
 
+  const subTerms = [
+    new MultiplyNode(affines[0].a.toTree(), "x".toTree()),
+    affines[0].b.toTree(),
+    new MultiplyNode(affines[1].a.toTree(), "x".toTree()),
+    affines[1].b.toTree(),
+  ];
+  const subMultiplications = [
+    new MultiplyNode(subTerms[0], subTerms[2], { forceTimesSign: true }),
+    new MultiplyNode(subTerms[0], subTerms[3], { forceTimesSign: true }),
+    new MultiplyNode(subTerms[1], subTerms[2], { forceTimesSign: true }),
+    new MultiplyNode(subTerms[1], subTerms[3], { forceTimesSign: true }),
+  ];
+  const statementTex = statementTree.toTex();
   const question: Question<Identifiers> = {
-    instruction: `Développer et réduire : $${statementTree.toTex()}$`,
+    instruction: `Développer et réduire : $${statementTex}$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: ["x"],
@@ -42,6 +58,22 @@ const getDoubleDistributivityQuestion: QuestionGenerator<Identifiers> = () => {
       affine1Coeffs: affines[0].coefficients,
       affine2Coeffs: affines[1].coefficients,
     },
+    hint: "Multiplie chaque terme du premier facteur par chaque terme du second facteur, puis regroupe les termes similaires.",
+    correction: `
+${alignTex([
+  [statementTex, "=", operatorComposition(AddNode, subMultiplications).toTex()],
+  [
+    "",
+    "=",
+    operatorComposition(
+      AddNode,
+      subMultiplications.map((e) => e.simplify()),
+    ).toTex(),
+  ],
+  ["", "=", answer],
+])}
+
+    `,
   };
   return question;
 };
@@ -110,4 +142,5 @@ export const doubleDistributivity: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

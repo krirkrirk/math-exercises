@@ -22,6 +22,7 @@ type Identifiers = {
   rankAsked: number;
 };
 
+const ordinals = ["premier", "deuxième", "troisième", "quatrième"];
 const getDigitRankQuestion: QuestionGenerator<Identifiers> = () => {
   const size = randint(3, 6);
   const nb = IntegerConstructor.random(size);
@@ -35,6 +36,8 @@ const getDigitRankQuestion: QuestionGenerator<Identifiers> = () => {
       .toTree()
       .toTex()}$ ?`,
     keys: [],
+    hint: `Le chiffre des ${rankAskedLabel} est le ${ordinals[rankAsked]} chiffre en partant de la droite.`,
+    correction: `Le chiffre des ${rankAskedLabel} est le ${ordinals[rankAsked]} chiffre en partant de la droite. Donc le chiffre des ${rankAskedLabel} est $${answer}$.`,
     answerFormat: "tex",
     identifiers: { nb, rankAsked },
   };
@@ -59,9 +62,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
-  throw Error("GGBVea not implemented");
-};
 export const digitRank: Exercise<Identifiers> = {
   id: "digitRank",
   connector: "=",
@@ -74,6 +74,6 @@ export const digitRank: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  isGGBAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

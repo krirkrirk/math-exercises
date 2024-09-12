@@ -201,7 +201,7 @@ export class PowerNode implements OperatorNode {
       return new MultiplyNode(
         new PowerNode(leftSimplified.leftChild, rightSimplified),
         new PowerNode(leftSimplified.rightChild, rightSimplified),
-      );
+      ).simplify(opts);
     }
     if (
       !opts?.keepPowers &&

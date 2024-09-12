@@ -98,4 +98,5 @@ export const MassWeightExercise: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

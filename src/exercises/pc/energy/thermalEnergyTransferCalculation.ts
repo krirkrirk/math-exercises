@@ -254,4 +254,5 @@ export const thermalEnergyTransferCalculation: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

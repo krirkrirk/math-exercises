@@ -173,6 +173,15 @@ export class Decimal implements Nombre {
     );
   }
 
+  getDigitAtRank(rank: number) {
+    if (rank >= 0) {
+      return Number(
+        this.intPart.toString()[this.intPart.toString().length - 1 - rank],
+      );
+    } else {
+      return Number(this.decimalPart[-rank - 1]);
+    }
+  }
   toRational() {
     return new Rational(
       this.multiplyByPowerOfTen(this.precision).value,

@@ -236,4 +236,5 @@ export const trigonometrySideCalcul: Exercise<Identifiers> = {
   isAnswerValid,
   hasGeogebra: true,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

@@ -22,6 +22,9 @@ import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
+import { alignTex } from "#root/utils/alignTex";
+import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
 /**
  *  type ax=b
@@ -41,14 +44,30 @@ const getEquationType2ExerciseQuestion: QuestionGenerator<Identifiers> = () => {
     new VariableNode("x"),
     solution.toTree(),
   ).toTex();
+  const statementTex = tree.toTex();
 
   const question: Question<Identifiers> = {
-    instruction: `Résoudre : $${tree.toTex()}$`,
-    startStatement: tree.toTex(),
+    instruction: `Résoudre : $${statementTex}$`,
+    startStatement: statementTex,
     answer,
     keys: equationKeys,
     answerFormat: "tex",
     identifiers: { a, b: b },
+    hint: `Il faut isoler $x$ à gauche. Pour cela, effectue l'opération des deux côtés de l'équation qui permet de supprimer la multiplication par $${a}$.`,
+    correction: `Pour isoler $x$ à gauche, on divise les deux côtés de l'équation par $${a}$: 
+    
+${alignTex([
+  [
+    `${statementTex}`,
+    "\\iff",
+    new EqualNode(
+      new FractionNode(affine, new NumberNode(a)),
+      new FractionNode(b.toTree(), new NumberNode(a)),
+    ).toTex(),
+  ],
+  ["", "\\iff", answer],
+])}
+    `,
   };
   return question;
 };
@@ -96,4 +115,5 @@ export const equationType2Exercise: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

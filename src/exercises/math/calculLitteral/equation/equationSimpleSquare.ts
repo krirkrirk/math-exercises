@@ -39,7 +39,7 @@ type Identifiers = {
 };
 
 const getEquationSimpleSquare: QuestionGenerator<Identifiers> = () => {
-  let randNbr = randint(-20, 101);
+  let randNbr = randint(-10, 101);
 
   const rand = diceFlip(3);
   if (rand === 0) randNbr = randint(-20, 0);
@@ -49,6 +49,7 @@ const getEquationSimpleSquare: QuestionGenerator<Identifiers> = () => {
   const instruction = `Résoudre l'équation : $x^2 = ${randNbr}$`;
   const sqrt = Math.sqrt(randNbr);
   let solutionsSet: DiscreteSetNode;
+  let simplifiedRoot;
   if (randNbr < 0) {
     solutionsSet = new DiscreteSetNode([]);
   } else if (sqrt === Math.floor(sqrt)) {
@@ -70,6 +71,33 @@ const getEquationSimpleSquare: QuestionGenerator<Identifiers> = () => {
     keys: equationKeys,
     answerFormat: "tex",
     identifiers: { randNbr },
+    hint: `L'équation $x^2 = k$ : 
+    
+- n'admet pas de solution si $k<0$, 
+- admet une solution si $k=0$, qui est $0$
+- admet deux solutions si $k>0$ : $-\\sqrt{k}$ et $\\sqrt{k}$
+    `,
+    correction: `
+${
+  randNbr < 0
+    ? `L'équation $x^2 = ${randNbr}$ n'admet pas de solution, car $${randNbr}$ est négatif. Ainsi, $${answer}$.`
+    : randNbr === 0
+    ? `L'équation $x^2 = 0$ admet une unique solution : $0$. En effet, $0$ est le seul nombre qui au carré est égal à $0$. Ainsi, $${answer}$.`
+    : `Puisque $${randNbr}>0$, l'équation $x^2 = ${randNbr}$ admet deux solutions : $-\\sqrt{${randNbr}}$ et $\\sqrt{${randNbr}}$. 
+    
+${
+  new SquareRoot(randNbr).isSimplifiable()
+    ? `Or, $\\sqrt{${randNbr}}=${new SquareRoot(randNbr)
+        .simplify()
+        .toTree()
+        .toTex()}$.`
+    : ""
+}
+
+Ainsi, $${answer}$.
+`
+}
+    `,
   };
 
   return question;
@@ -189,4 +217,5 @@ export const equationSimpleSquare: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

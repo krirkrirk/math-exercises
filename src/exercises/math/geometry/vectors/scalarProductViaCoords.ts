@@ -80,4 +80,5 @@ export const scalarProductViaCoords: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

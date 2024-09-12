@@ -26,12 +26,38 @@ const getFractionAndIntegerProduct: QuestionGenerator<Identifiers> = () => {
 
   const answerTree = rational.multiply(integer).toTree();
   const answer = answerTree.toTex();
+  const beforeSimplification = new Rational(
+    rational.num * integer.value,
+    rational.denum,
+  );
   const question: Question<Identifiers> = {
     instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: [],
     answerFormat: "tex",
+    hint: "Pour multiplier une fraction par un nombre entier, on multiplie le numérateur de la fraction par le nombre entier, sans toucher au dénominateur. On simplifie ensuite la fraction obtenue si possible.",
+    correction: `
+On multiplie le numérateur de la fraction par le nombre entier : 
+
+$${statementTree.toTex()} = \\frac{${new MultiplyNode(
+      rational.num.toTree(),
+      integer.toTree(),
+    ).toTex({ forceNoSimplification: true })}}{${
+      rational.denum
+    }} = ${beforeSimplification.toTree().toTex()}$
+
+${
+  !beforeSimplification.isIrreductible()
+    ? `On peut alors simplifier cette fraction : 
+  
+$${beforeSimplification.toTree().toTex()} = ${answer}$
+  `
+    : "Cette fraction est déjà irréductible."
+}
+
+Ainsi, le résultat attendu est $${answer}$.
+    `,
     identifiers: {
       integer: integer.value,
       rational: [rational.num, rational.denum],
@@ -94,5 +120,6 @@ export const fractionAndIntegerProduct: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  hasHintAndCorrection: true,
   subject: "Mathématiques",
 };

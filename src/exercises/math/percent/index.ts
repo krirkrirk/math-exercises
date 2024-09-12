@@ -7,3 +7,4 @@ export * from "./percentToDecimal";
 export * from "./valuePercent";
 export * from "./findProportion";
 export * from "./isTableProportional";
+export * from "./cmToEvolution";

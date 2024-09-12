@@ -220,4 +220,5 @@ export const MotionReferenceExercise: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Physique",
   maxAllowedQuestions: 10,
+  hasHintAndCorrection: true,
 };

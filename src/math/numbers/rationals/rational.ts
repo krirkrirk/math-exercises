@@ -108,6 +108,10 @@ export class Rational implements Nombre {
     }
     throw Error("not implemented yet");
   }
+  reverse(shouldSimplify: boolean): Nombre {
+    const frac = new Rational(this.denum, this.num);
+    return shouldSimplify ? frac.simplify() : frac;
+  }
   divide(nb: Nombre): Nombre {
     switch (nb.type) {
       case NumberType.Integer: {

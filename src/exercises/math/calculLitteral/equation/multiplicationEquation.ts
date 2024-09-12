@@ -15,7 +15,9 @@ import { randint } from "#root/math/utils/random/randint";
 import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
+import { alignTex } from "#root/utils/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
@@ -43,14 +45,33 @@ const getMultiplicationEquation: QuestionGenerator<Identifiers> = () => {
   const answer = new EquationSolutionNode(
     new DiscreteSetNode(sortedSols),
   ).toTex();
+  const statementTex = new MultiplyNode(
+    polynome1.toTree(),
+    polynome2.toTree(),
+  ).toTex();
 
   const question: Question<Identifiers> = {
-    instruction: `Résoudre : $(${polynome1.toTex()})(${polynome2.toTex()}) = 0$`,
-    startStatement: `(${polynome1.toTex()})(${polynome2.toTex()}) = 0`,
+    instruction: `Résoudre : $${statementTex} = 0$`,
+    startStatement: `${statementTex} = 0`,
     answer,
     keys: ["x", "S", "equal", "lbrace", "rbrace", "semicolon", "ou"],
     answerFormat: "tex",
     identifiers: { a, b, c, d },
+    hint: "Un produit est nul si et seulement si un des deux facteurs est nul. Donc, il faut trouver les valeurs de $x$ qui rendent un des deux facteurs nuls.",
+    correction: `Un produit est nul si et seulement si un des deux facteurs est nul. On résout donc deux équations : 
+    
+  ${alignTex([
+    ["", `${statementTex} = 0`],
+    [
+      "\\iff",
+      `${polynome1.toTree().toTex()} = 0 \\text{ ou } ${polynome2
+        .toTree()
+        .toTex()} = 0`,
+    ],
+    ["\\iff", `x=${sol1.toTex()} \\text{ ou } x=${sol2.toTex()}`],
+  ])}
+  
+  Ainsi, $${answer}$`,
   };
 
   return question;
@@ -108,4 +129,5 @@ export const multiplicationEquation: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

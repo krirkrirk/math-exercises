@@ -125,4 +125,5 @@ export const calibrationCurveOfSolution: Exercise<Identifiers> = {
   isGGBAnswerValid,
   answerType: "GGB",
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

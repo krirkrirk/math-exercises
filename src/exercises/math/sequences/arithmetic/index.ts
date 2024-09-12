@@ -12,3 +12,4 @@ export * from "./recognizeArithmeticFromGraph";
 export * from "./arithmeticFirstTermsSum";
 export * from "./arithmeticFindExplictFormulaFirstTermRandom";
 export * from "./arithmeticFindReasonRandomRange";
+export * from "./arithmeticFindRandomTermFromTwoTerms";

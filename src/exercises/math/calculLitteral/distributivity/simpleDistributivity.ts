@@ -15,7 +15,9 @@ import { DiscreteSet } from "#root/math/sets/discreteSet";
 import { Interval } from "#root/math/sets/intervals/intervals";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { alignTex } from "#root/utils/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
@@ -35,14 +37,31 @@ const getSimpleDistributivityQuestion: QuestionGenerator<Identifiers> = () => {
     affine.toTree(),
   );
   const answer = affine.times(coeff).toTree().toTex();
-
+  const statementTex = statementTree.toTex();
   const question: Question<Identifiers> = {
-    instruction: `Développer et réduire : $${statementTree.toTex()}$`,
-    startStatement: statementTree.toTex(),
+    instruction: `Développer et réduire : $${statementTex}$`,
+    startStatement: statementTex,
     answer,
     keys: ["x"],
     answerFormat: "tex",
     identifiers: { a: affine.a, b: affine.b, coeff: coeff },
+    hint: `Multiplie chaque terme dans la parenthèse par $${coeff}$.`,
+    correction: `
+${alignTex([
+  [
+    statementTex,
+    "=",
+    new AddNode(
+      new MultiplyNode(
+        new NumberNode(coeff),
+        new MultiplyNode(new NumberNode(affine.a), "x".toTree()),
+      ),
+      new MultiplyNode(new NumberNode(coeff), new NumberNode(affine.b)),
+    ).toTex(),
+  ],
+  ["", "=", answer],
+])}
+    `,
   };
   return question;
 };
@@ -87,4 +106,5 @@ export const simpleDistributivity: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

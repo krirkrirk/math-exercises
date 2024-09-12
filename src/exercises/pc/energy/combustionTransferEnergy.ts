@@ -128,4 +128,5 @@ export const combustionTransferEnergy: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };

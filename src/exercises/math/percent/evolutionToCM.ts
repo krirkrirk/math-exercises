@@ -15,29 +15,23 @@ import { round } from "#root/math/utils/round";
 import { coinFlip } from "#root/utils/coinFlip";
 
 type Identifiers = {
-  isFromEvolutionToCM: boolean;
   evolution: number;
 };
 
 const getEvolutionToCmQuestion: QuestionGenerator<Identifiers> = () => {
-  const isFromEvolutionToCM = coinFlip();
   const evolution = randint(-99, 101, [0]);
   const isHausse = evolution > 0;
   const CM = (round(1 + evolution / 100, 2) + "").replaceAll(".", ",");
-  const answer = isFromEvolutionToCM
-    ? CM
-    : (isHausse ? "+" : "") + evolution + "\\%";
+  const answer = CM;
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: isFromEvolutionToCM
-      ? `Quel est le coefficient multiplicateur associé à une ${
-          isHausse ? "hausse" : "baisse"
-        } de $${isHausse ? evolution : evolution.toString().slice(1)}\\%$ ?`
-      : `Quelle est l'évolution en pourcentage associée à un coefficient multiplicateur de $${CM}$ ?`,
+    instruction: `Quel est le coefficient multiplicateur associé à une ${
+      isHausse ? "hausse" : "baisse"
+    } de $${isHausse ? evolution : evolution.toString().slice(1)}\\%$ ?`,
     keys: ["percent"],
     answerFormat: "tex",
-    identifiers: { isFromEvolutionToCM, evolution },
+    identifiers: { evolution },
   };
 
   return question;
@@ -45,27 +39,22 @@ const getEvolutionToCmQuestion: QuestionGenerator<Identifiers> = () => {
 
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
-  { answer, isFromEvolutionToCM, evolution },
+  { answer, evolution },
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
 
-  if (isFromEvolutionToCM) {
-    tryToAddWrongProp(
-      propositions,
-      (round(evolution / 100, 2) + "").replaceAll(".", ","),
-    );
-    tryToAddWrongProp(propositions, evolution + "");
-  } else {
-    tryToAddWrongProp(
-      propositions,
-      "+" + (round(1 + evolution / 100, 2) * 100 + "\\%").replaceAll(".", ","),
-    );
-  }
+  tryToAddWrongProp(
+    propositions,
+    (round(evolution / 100, 2) + "").replaceAll(".", ","),
+  );
+  tryToAddWrongProp(propositions, evolution + "");
+
   while (propositions.length < n) {
-    const wrongAnswer = isFromEvolutionToCM
-      ? (round(randint(1, 200) / 100, 2) + "").replaceAll(".", ",")
-      : (coinFlip() ? "+" : "-") + randint(1, 100) + "\\%";
+    const wrongAnswer = (round(randint(1, 200) / 100, 2) + "").replaceAll(
+      ".",
+      ",",
+    );
     tryToAddWrongProp(propositions, wrongAnswer);
   }
 
@@ -73,9 +62,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  const allowedTex = [answer];
-  if (answer[0] === "+") allowedTex.push(answer.slice(1));
-  return allowedTex.includes(ans);
+  return ans === answer;
 };
 
 export const evolutionToCM: Exercise<Identifiers> = {

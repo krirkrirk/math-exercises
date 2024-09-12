@@ -127,4 +127,5 @@ export const ohmicConductorOrGenerator: Exercise<Identifiers> = {
   answerType: "QCM",
   maxAllowedQuestions: 10,
   subject: "Physique",
+  hasHintAndCorrection: true,
 };
