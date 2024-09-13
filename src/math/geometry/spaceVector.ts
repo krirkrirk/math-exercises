@@ -67,6 +67,9 @@ export class SpaceVector {
     return `\\overrightarrow{${this.name}}`;
   }
 
+  toCoordsTex(): string {
+    return `\\begin{pmatrix}${this.x.toTex()} \\\\ ${this.y.toTex()} \\\\ ${this.z.toTex()} \\end{pmatrix}`;
+  }
   toInlineCoordsTex(): string {
     return `\\left(${this.x.simplify().toTex()};${this.y
       .simplify()

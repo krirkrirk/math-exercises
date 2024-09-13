@@ -20,8 +20,12 @@ declare global {
   }
   interface String {
     toTree: () => AlgebraicNode;
+    unfrenchify: () => number;
   }
 }
+String.prototype.unfrenchify = function (): number {
+  return Number(this.valueOf().replace(",", "."));
+};
 String.prototype.toTree = function (): AlgebraicNode {
   return new VariableNode(this.valueOf());
 };

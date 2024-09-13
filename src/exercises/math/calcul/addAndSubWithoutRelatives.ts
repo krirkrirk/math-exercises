@@ -80,7 +80,7 @@ const isAnswerValid: VEA<Identifiers> = (studentAns, { answer }) => {
 export const addAndSubWithoutRelatives: Exercise<Identifiers> = {
   id: "addAndSubWithoutRelatives",
   connector: "=",
-  label: "Additions et soustractions sans les nombres relatifs",
+  label: "Additions et soustractions de nombres entiers (sans relatifs)",
   levels: ["6ème", "5ème"],
   sections: ["Calculs"],
   isSingleStep: true,

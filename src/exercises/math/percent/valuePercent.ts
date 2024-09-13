@@ -29,6 +29,12 @@ const getValuePercentQuestion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: { percent, nb },
+    hint: `Pour calculer $x\\%$ d'un nombre, on le multiplie par $\\frac{x}{100}$.`,
+    correction: `Pour calculer $${percent}\\%$ de $${nb}$, on multiplie $${nb}$ par $\\frac{${percent}}{100}$ : 
+    
+$
+${nb}\\times \\frac{${percent}}{100} = ${ans}
+$`,
   };
 
   return question;
@@ -65,4 +71,5 @@ export const valuePercent: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

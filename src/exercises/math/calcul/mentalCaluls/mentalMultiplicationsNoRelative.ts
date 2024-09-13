@@ -19,7 +19,9 @@ type Identifiers = {
   numbers: number[];
 };
 
-const getMentalMultiplications: QuestionGenerator<Identifiers> = () => {
+const getMentalMultiplicationsNoRelative: QuestionGenerator<
+  Identifiers
+> = () => {
   const numbers: number[] = [];
   const nbOfOperations = randint(2, 4);
 
@@ -27,9 +29,9 @@ const getMentalMultiplications: QuestionGenerator<Identifiers> = () => {
   let answer: number;
 
   if (nbOfOperations === 2) {
-    const a = randint(-9, 10, [-1, 0, 1]);
+    const a = randint(2, 10);
     const b = coinFlip()
-      ? randint(-99, 100, [-10, 0, 10]) / 10
+      ? randint(1, 100, [10]) / 10
       : coinFlip()
       ? randint(2, 10) * 10 + randint(-1, 2, [0]) / 10
       : randint(2, 10) + randint(-1, 2, [0]) / 10;
@@ -76,10 +78,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   addValidProp(propositions, answer);
   const result = answer.unfrenchify();
   while (propositions.length < n) {
-    let incorrectAnswer = round(
-      result + (coinFlip() ? 1 : -1) * Math.random() * 10,
-      2,
-    );
+    let incorrectAnswer = round(result + Math.random() * 10, 2);
     tryToAddWrongProp(
       propositions,
       incorrectAnswer.toString().replace(".", ","),
@@ -89,15 +88,15 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (studentAns, { answer }) => {
-  const answerTree = new NumberNode(Number(answer.replace(",", ".")));
+  const answerTree = answer.unfrenchify().toTree();
   const texs = answerTree.toAllValidTexs();
   return texs.includes(studentAns);
 };
 
-export const mentalMultiplications: Exercise<Identifiers> = {
-  id: "mentalMultiplications",
+export const mentalMultiplicationsNoRelative: Exercise<Identifiers> = {
+  id: "mentalMultiplicationsNoRelative",
   connector: "=",
-  label: "Multiplications avec des décimaux",
+  label: "Multiplications avec des décimaux (sans relatifs)",
   levels: [
     "6ème",
     "5ème",
@@ -111,7 +110,8 @@ export const mentalMultiplications: Exercise<Identifiers> = {
   ],
   sections: ["Calculs"],
   isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getMentalMultiplications, nb),
+  generator: (nb: number) =>
+    getDistinctQuestions(getMentalMultiplicationsNoRelative, nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,

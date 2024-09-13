@@ -18,6 +18,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   nX: number;
@@ -33,16 +34,25 @@ const getExpectedValueOfBinomialProbaQuestion: QuestionGenerator<
   const a = randint(1, b);
   const p = new Rational(a, b);
   const node = getCorrectAnswer(nX, p);
-
+  const answer = node.toTex();
   const question: Question<Identifiers> = {
-    answer: node.toTex(),
-    instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètre $n=${nX}$ et $p=${p
+    answer,
+    instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètres $n=${nX}$ et $p=${p
       .toTree()
       .simplify()
       .toTex()}$. Calculez l'espérance de $X$.`,
     keys: [],
     answerFormat: "tex",
     identifiers: { nX, a, b },
+    hint: `L'espérance d'une variable aléatoire $X$ qui suit une loi binomiale de paramètres $n$ et $p$ est donnée par $E(X) = np$.`,
+    correction: `L'espérance d'une variable aléatoire $X$ qui suit une loi binomiale de paramètres $n$ et $p$ est donnée par $E(X) = np$.
+    
+Ici, on a donc :
+
+${alignTex([
+  ["E(X)", "=", new MultiplyNode(nX.toTree(), p.toTree()).toTex()],
+  ["", "=", answer],
+])}`,
   };
 
   return question;
@@ -108,4 +118,5 @@ export const expectedValueOfBinomialProba: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

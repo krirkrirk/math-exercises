@@ -18,6 +18,7 @@ import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   x: number;
@@ -30,9 +31,9 @@ const getSpaceVectorNormCalculationQuestion: QuestionGenerator<
 > = () => {
   const u = SpaceVectorConstructor.random("u", false);
   const correctAnswer = u.getNorm();
-
+  const answer = correctAnswer.simplify().toTex();
   const question: Question<Identifiers> = {
-    answer: correctAnswer.simplify().toTex(),
+    answer,
     instruction: `Cacluler la norme du vecteur $${u.toTexWithCoords()}$`,
     keys: [],
     answerFormat: "tex",
@@ -41,6 +42,35 @@ const getSpaceVectorNormCalculationQuestion: QuestionGenerator<
       y: u.y.evaluate({}),
       z: u.z.evaluate({}),
     },
+    hint: "La norme d'un vecteur de l'espace est la racine carrée de la somme des carrés de ses coordonnées.",
+    correction: `La norme d'un vecteur de l'espace est la racine carrée de la somme des carrés de ses coordonnées. Ici, on a donc : 
+ 
+${alignTex([
+  [
+    "\\lVert \\overrightarrow u \\rVert",
+    "=",
+    new SqrtNode(
+      new AddNode(
+        new SquareNode(u.x),
+        new AddNode(new SquareNode(u.y), new SquareNode(u.z)),
+      ),
+    ).toTex(),
+  ],
+  [
+    "",
+    "=",
+    new SqrtNode(
+      (
+        u.x.evaluate({}) ** 2 +
+        u.y.evaluate({}) ** 2 +
+        u.z.evaluate({}) ** 2
+      ).toTree(),
+    ).toTex(),
+  ],
+])}
+
+Donc $\\lVert \\overrightarrow u \\rVert = ${answer}$.
+`,
   };
 
   return question;
@@ -79,4 +109,5 @@ export const spaceVectorNormCalculation: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

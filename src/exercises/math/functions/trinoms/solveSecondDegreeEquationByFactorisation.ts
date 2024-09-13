@@ -89,7 +89,7 @@ const getSolveSecondDegreeEquationByFactorisationQuestion: QuestionGenerator<
       }
       break;
   }
-  const instruction = `Soit $f(x) = ${statement}$. Résoudre l'équation $f(x) = 0$.`;
+  const instruction = `Soit $f(x) = ${statement}$. Factoriser $f(x)$ puis résoudre l'équation $f(x) = 0$.`;
   answer = new EquationSolutionNode(new DiscreteSetNode(roots)).toTex();
   const question: Question<Identifiers> = {
     answer,

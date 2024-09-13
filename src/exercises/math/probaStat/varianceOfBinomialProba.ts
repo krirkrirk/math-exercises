@@ -19,6 +19,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   nX: number;
@@ -37,9 +38,9 @@ const getVarianceOfBinomialProbaQuestion: QuestionGenerator<
   const p = new Rational(a, b);
 
   const correctAns = getCorrectAnswer(nX, p);
-
+  const answer = correctAns.toTex();
   const question: Question<Identifiers> = {
-    answer: correctAns.toTex(),
+    answer,
     instruction: `Soit $X$ une variable aléatoire qui suit une loi binomiale de paramètres $n=${nX}$ et $p=${p
       .toTree()
       .simplify()
@@ -47,6 +48,27 @@ const getVarianceOfBinomialProbaQuestion: QuestionGenerator<
     keys: [],
     answerFormat: "tex",
     identifiers: { nX, a, b },
+    hint: `L'espérance d'une variable aléatoire $X$ qui suit une loi binomiale de paramètres $n$ et $p$ est donnée par :
+    
+$V(X) = np(1-p)$.`,
+    correction: `L'espérance d'une variable aléatoire $X$ qui suit une loi binomiale de paramètres $n$ et $p$ est donnée par :
+    
+$V(X) = np(1-p)$.
+    
+Ici, on a donc :
+
+${alignTex([
+  [
+    "V(X)",
+    "=",
+    new MultiplyNode(
+      nX.toTree(),
+      new MultiplyNode(p.toTree(), new SubstractNode((1).toTree(), p.toTree())),
+      { forceTimesSign: true },
+    ).toTex(),
+  ],
+  ["", "=", answer],
+])}`,
   };
 
   return question;
@@ -111,4 +133,5 @@ export const varianceOfBinomialProba: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

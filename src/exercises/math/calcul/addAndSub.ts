@@ -64,7 +64,7 @@ const isAnswerValid: VEA<Identifiers> = (studentAns, { answer }) => {
 export const addAndSubExercise: Exercise<Identifiers> = {
   id: "addAndSub",
   connector: "=",
-  label: "Additions et soustractions",
+  label: "Additions et soustractions de nombres entiers",
   levels: ["6ème", "5ème"],
   sections: ["Calculs"],
   isSingleStep: true,

@@ -11,7 +11,7 @@ import { arrayHasSameElements } from "#root/utils/arrayHasSameElement";
 import { deleteObjectNamesFromAnswer } from "#root/geogebra/deleteObjectNamesFromAnswer";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 
-type Identifiers = {};
+type Identifiers = { x: number; y: number };
 
 const getPlaceAPointQuestion: QuestionGenerator<Identifiers> = () => {
   const point = PointConstructor.random("A");
@@ -33,7 +33,7 @@ const getPlaceAPointQuestion: QuestionGenerator<Identifiers> = () => {
     studentGgbOptions: studentGGB.getOptions({
       coords: [-11, 11, -11, 11],
     }),
-    identifiers: {},
+    identifiers: { x: point.x.evaluate({}), y: point.y.evaluate({}) },
   };
   return question;
 };

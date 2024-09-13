@@ -87,7 +87,7 @@ const isAnswerValid: VEA<Identifiers> = (studentAns, { numbers }) => {
 export const mentalAddAndSub: Exercise<Identifiers> = {
   id: "mentalAddAndSub",
   connector: "=",
-  label: "Effectuer mentalement des additions et des soustractions simples",
+  label: "Additions et soustractions avec des décimaux",
   levels: [
     "6ème",
     "5ème",

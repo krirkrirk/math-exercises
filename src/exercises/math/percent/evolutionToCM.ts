@@ -12,6 +12,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { coinFlip } from "#root/utils/coinFlip";
 
 type Identifiers = {
@@ -32,6 +33,27 @@ const getEvolutionToCmQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["percent"],
     answerFormat: "tex",
     identifiers: { evolution },
+    hint: `Le coefficient multiplicateur associé à une ${
+      isHausse ? "hausse" : "baisse"
+    }  de $t\\%$ est donné par $${
+      isHausse ? "1+\\frac{t}{100}" : "1-\\frac{t}{100}"
+    }$.
+    `,
+    correction: `Le coefficient multiplicateur associé à une ${
+      isHausse ? "hausse" : "baisse"
+    }  de $t\\%$ est donné par $${
+      isHausse ? "1+\\frac{t}{100}" : "1-\\frac{t}{100}"
+    }$.
+
+Ici, on a $t = ${Math.abs(
+      evolution,
+    )}$\\%, donc le coefficient multiplicateur vaut : 
+
+$$
+1${isHausse ? "+" : "-"}\\frac{${Math.abs(evolution)}}{100} = ${CM}
+$$
+
+    `,
   };
 
   return question;
@@ -78,4 +100,5 @@ export const evolutionToCM: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

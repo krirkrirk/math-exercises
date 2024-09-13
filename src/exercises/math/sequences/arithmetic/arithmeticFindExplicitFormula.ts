@@ -34,6 +34,22 @@ const getArithmeticFindExplicitFormula: QuestionGenerator<Identifiers> = () => {
     keys: ["un", "equal", "n"],
     answerFormat: "tex",
     identifiers: { firstValue, reason },
+    hint: `Utilise la formule générale d'une suite arithmétique : 
+    
+$u_n = u_0 + n \\times r $,
+
+où $u_0$ est le premier terme et $r$ la raison.`,
+    correction: `La formule générale d'une suite arithmétique est :
+    
+$u_n = u_0 + n \\times r $, 
+
+où $u_0$ est le premier terme et $r$ la raison.
+    
+Ici, puisque $u_0 = ${firstValue}$ et $r = ${reason}$, on a : 
+
+$${answer}$
+
+`,
   };
 
   return question;
@@ -87,4 +103,5 @@ export const arithmeticFindExplicitFormula: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

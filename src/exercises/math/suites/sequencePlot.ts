@@ -32,10 +32,10 @@ const getSequencePlotQuestion: QuestionGenerator<Identifiers> = () => {
   for (let n = 0; n <= nMax; n++) {
     let u_n;
     if (isArithmetic) {
-      const noise = randfloat(-1, 1, 1);
+      const noise = randfloat(-2, 2, 1);
       u_n = a * n + b + noise;
     } else {
-      const noise = randfloat(-1, 1, 1);
+      const noise = randfloat(-2, 2, 1);
       u_n = b * Math.pow(a, n) + noise;
     }
     points.push([n, Math.round(u_n)]);
@@ -61,9 +61,10 @@ const getSequencePlotQuestion: QuestionGenerator<Identifiers> = () => {
     commands,
     xAxis: { natural: true },
   });
+  const answer = u_nValue.toString();
 
   const question: Question<Identifiers> = {
-    answer: u_nValue.toString(),
+    answer,
     instruction: `Ci-dessous est tracé un nuage de points représentant les valeurs d'une suite $(u_n)$. Quelle est la valeur de $u_{${nValue}}$ ?`,
     ggbOptions: ggb.getOptions({
       coords: ggb.getAdaptedCoords({
@@ -77,6 +78,11 @@ const getSequencePlotQuestion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "raw",
     identifiers: { nValue, points, isArithmetic },
+    hint: `$u_{${nValue}}$ est l'ordonnée du point d'absicsse $${nValue}$ dans le nuage de points.`,
+    correction: `$u_{${nValue}}$ est l'ordonnée du point d'absicsse $${nValue}$ dans le nuage de points.
+
+On lit donc : $u_{${nValue}}=${answer}$.
+    `,
   };
 
   return question;
@@ -117,4 +123,5 @@ export const sequencePlot: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };
