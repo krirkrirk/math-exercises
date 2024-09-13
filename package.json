@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "nodemon",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
-    "test": "jest",
+    "test": "npx jest global.test.ts",
+    "testml": "npx jest ml.test.ts",
     "prepublishOnly": "npm run build",
     "build": "tsc && tsc-alias"
   },
