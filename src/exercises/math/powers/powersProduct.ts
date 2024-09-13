@@ -5,8 +5,10 @@
 import { Power } from "#root/math/numbers/integer/power";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { alignTex } from "#root/utils/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 import {
   Exercise,
@@ -49,6 +51,28 @@ const getPowersProductQuestion: QuestionGenerator<
     keys: [],
     answerFormat: "tex",
     identifiers: { a, b, c },
+    hint: `Utilise la propriété : ${
+      opts?.useOnlyPowersOfTen
+        ? `$10^n \\times 10^m = 10^{n+m}$`
+        : `$a^n \\times a^m = a^{n+m}$`
+    }`,
+    correction: `On sait que ${
+      opts?.useOnlyPowersOfTen
+        ? `$10^n \\times 10^m = 10^{n+m}$`
+        : `$a^n \\times a^m = a^{n+m}$`
+    }.
+    
+On a donc : 
+
+${alignTex([
+  [
+    statmentTex,
+    "=",
+    new PowerNode(a.toTree(), new AddNode(b.toTree(), c.toTree())).toTex(),
+  ],
+  ["", "=", answer],
+])}
+    `,
   };
   return question;
 };
@@ -109,6 +133,7 @@ export const powersOfTenProduct: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };
 
 export const powersProduct: Exercise<Identifiers> = {
@@ -128,4 +153,5 @@ export const powersProduct: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

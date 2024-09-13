@@ -55,11 +55,15 @@ declare global {
   }
   interface String {
     toTree: () => AlgebraicNode;
+    unfrenchify: () => number;
   }
 }
 
 String.prototype.toTree = function (): AlgebraicNode {
   return new VariableNode(this.valueOf());
+};
+String.prototype.unfrenchify = function (): number {
+  return Number(this.valueOf().replace(",", "."));
 };
 Number.prototype.toTree = function (): AlgebraicNode {
   const value = this.valueOf();

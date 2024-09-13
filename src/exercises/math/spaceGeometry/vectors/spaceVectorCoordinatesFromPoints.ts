@@ -16,6 +16,8 @@ import {
   SpaceVector,
   SpaceVectorConstructor,
 } from "#root/math/geometry/spaceVector";
+import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {};
 
@@ -39,6 +41,28 @@ const getSpaceVectorCoordinatesFromPointsQuestion: QuestionGenerator<
       by: points[1].y.evaluate({}),
       bz: points[1].z.evaluate({}),
     },
+    hint: `Soient deux points $M(x_M;y_M;z_M)$ et $N(x_N;y_N;z_N)$, alors le vecteur $\\overrightarrow{MN}$ a pour coordonnées :
+    
+$\\overrightarrow{MN} \\begin{pmatrix} x_N - x_M \\\\ y_N - y_M \\\\ z_N - z_M \\end{pmatrix}$`,
+    correction: `Les coordonnées du vecteur $\\overrightarrow{AB}$ sont : 
+
+${alignTex([
+  [
+    `\\begin{pmatrix} ${new SubstractNode(
+      points[1].x,
+      points[0].x,
+    ).toTex()} \\\\ ${new SubstractNode(
+      points[1].y,
+      points[0].y,
+    ).toTex()} \\\\ ${new SubstractNode(
+      points[1].z,
+      points[0].z,
+    ).toTex()} \\end{pmatrix}`,
+
+    "=",
+    vector.toCoordsTex(),
+  ],
+])}`,
   };
 
   return question;
@@ -77,4 +101,5 @@ export const spaceVectorCoordinatesFromPoints: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

@@ -10,21 +10,54 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { randTupleInt } from "#root/math/utils/random/randTupleInt";
 import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 
 type Identifiers = {};
 
 const getIsTableProportionalQuestion: QuestionGenerator<Identifiers> = () => {
-  const table = generateTable();
+  const xValues: number[] = randTupleInt(3, {
+    from: 1,
+    to: 15,
+    allDifferent: true,
+  }).sort((a, b) => a - b);
+
+  const isProportionnal = coinFlip();
+  const coeff = randint(2, 6);
+  const yValues = isProportionnal
+    ? xValues.map((value) => value * coeff)
+    : xValues.map((value) => value * randint(2, 5));
 
   const question: Question<Identifiers> = {
-    answer: table.coeff ? "Oui" : "Non",
-    instruction: `On considère le tableau ci-dessous. Est-ce un tableau de proportionnalité ?${table.table}`,
+    answer: isProportionnal ? "Oui" : "Non",
+    instruction: `On considère le tableau ci-dessous. Est-ce un tableau de proportionnalité
+ |${xValues.map((value) => `$${value}$`).join("|")}|
+  |-|-|-|
+  |${yValues.map((value) => `$${value}$`).join("|")}|
+  `,
     keys: [],
     answerFormat: "raw",
     style: { tableHasNoHeader: true },
-    identifiers: {},
+    identifiers: {
+      xValues,
+      yValues,
+    },
+    hint: "Pour passer de la ligne du haut à la ligne du bas, multiplie-t-on toujours par le même nombre ? Si oui, alors c'est un tableau de proportionnalité.",
+    correction: `On divise les nombres de la deuxième ligne par les nombres de la première ligne. Si on obtient toujours le même résultat, alors c'est un tableau de proportionnalité. 
+
+- $${yValues[0]}\\div ${xValues[0]} = ${yValues[0] / xValues[0]}$
+
+- $${yValues[1]}\\div ${xValues[1]} = ${yValues[1] / xValues[1]}$
+
+- $${yValues[2]}\\div ${xValues[2]} = ${yValues[2] / xValues[2]}$
+
+${
+  isProportionnal
+    ? "Puisque tous les résultats sont égaux, c'est bien un tableau de proportionnalité."
+    : "Puisque les résultats ne sont pas tous égaux, ce n'est pas un tableau de proportionnalité."
+}
+    `,
   };
 
   return question;
@@ -43,42 +76,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return ans === answer;
 };
 
-const generateTable = (): { table: string; coeff?: number } => {
-  const xValues: number[] = [randint(1, 11)];
-
-  while (xValues.length < 3) {
-    let lastNb = xValues[xValues.length - 1];
-    let random = randint(lastNb, lastNb + 11, [...xValues]);
-    xValues.push(random);
-  }
-
-  const yValues = generateYValues(xValues);
-
-  return {
-    table: ` 
-  |${xValues.map((value) => `$${value}$`).join("|")}|
-  |-|-|-|
-  |${yValues.values.map((value) => `$${value}$`).join("|")}|
-    `,
-    coeff: yValues.coeff,
-  };
-};
-
-const generateYValues = (
-  xValues: number[],
-): { values: number[]; coeff?: number } => {
-  const flip = coinFlip();
-  const coeff = randint(2, 6);
-  return flip
-    ? {
-        values: xValues.map((value) => value * randint(2, 5)),
-      }
-    : {
-        values: xValues.map((value) => value * coeff),
-        coeff,
-      };
-};
-
 export const isTableProportional: Exercise<Identifiers> = {
   id: "isVTableProportional",
   label: "Reconnaître un tableau de proportionnalité",
@@ -93,4 +90,5 @@ export const isTableProportional: Exercise<Identifiers> = {
   isAnswerValid,
   answerType: "QCU",
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

@@ -207,7 +207,7 @@ const isAnswerValid: VEA<Identifiers> = (
 
 export const sequenceEvaluation: Exercise<Identifiers> = {
   id: "sequenceEvaluation",
-  label: "Évaluer un terme d'une suite",
+  label: "Exprimer $u_{f(n)}$ en connaissant $u_n$",
   levels: ["1reSpé"],
   isSingleStep: true,
   sections: ["Suites"],

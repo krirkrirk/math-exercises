@@ -33,12 +33,34 @@ const getReciprocalPercentageQuestion: QuestionGenerator<Identifiers> = () => {
     ? "+" + round(ans, 2)
     : "" + round(ans, 2)
   ).replace(".", ",")}\\%`;
+
+  const cm = round(1 + (isUp ? randPercent / 100 : -randPercent / 100), 4);
+  const recipCm = round(1 / cm, 4);
   const question: Question<Identifiers> = {
     instruction,
     answer,
     keys: ["percent"],
     answerFormat: "tex",
     identifiers: { isUp, randPercent },
+    hint: `Calcule le coefficient multiplicateur associé à une ${
+      isUp ? "hausse" : "baisse"
+    } de $${randPercent}\\%$. Puis, calcule le coefficient multiplicateur réciproque : c'est l'inverse du coefficient multiplicateur. Il ne reste alors plus qu'à transformer le coefficient multiplicateur réciproque en taux d'évolution.`,
+    correction: `Le coefficient multiplicateur correspondant à une ${
+      isUp ? "hausse" : "baisse"
+    } de $${randPercent}\\%$ est :
+    
+$1${isUp ? "+" : "-"}\\frac{${randPercent}}{100} = ${cm.frenchify()}$
+
+Le coefficient multiplicateur réciproque est l'inverse du coefficient multiplicateur : 
+
+$\\frac{1}{${cm.frenchify()}} = ${recipCm.frenchify()}$
+
+On transforme ce coefficient multiplicateur en taux d'évolution : 
+
+$(${recipCm.frenchify()}-1)\\times 100 = ${round(ans, 2).frenchify()}$.
+
+Ainsi, le taux d'évolution permettant de revenir au prix initial est de $${answer}$.
+    `,
   };
 
   return question;
@@ -89,4 +111,5 @@ export const reciprocalPercentage: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

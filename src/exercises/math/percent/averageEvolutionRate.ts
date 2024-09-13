@@ -31,6 +31,29 @@ const getAverageEvolutionRate: QuestionGenerator<Identifiers> = () => {
     keys: ["percent"],
     answerFormat: "tex",
     identifiers: { nbMois, rate },
+    hint: `Commence par déterminer le coefficient multiplicateur assoicié à une hausse de $${rate}\\%$. Puis, élève ce coefficient à la puissance $\\frac{1}{${nbMois}}$. Enfin, transforme le coefficient multiplicateur obtenu en taux d'évolution.`,
+    correction: `Le coefficient multiplicateur associé à une hausse de $${rate}\\%$ est : 
+
+$1+\\frac{${rate}}{100} = ${(1 + rate / 100).frenchify()}$
+
+Le coefficient multiplicateur moyen pour chaque mois sur une période de $${nbMois}$ mois est donc de : 
+
+$\\left(${(
+      1 +
+      rate / 100
+    ).frenchify()}\\right)^{\\frac{1}{${nbMois}}} = ${round(
+      Math.pow(1 + rate / 100, 1 / nbMois),
+      4,
+    ).frenchify()}$
+
+On transforme alors ce coefficient multiplicateur en taux d'évolution :
+
+$t = (${round(
+      Math.pow(1 + rate / 100, 1 / nbMois),
+      4,
+    ).frenchify()}-1)\\times 100 = ${answer.frenchify()}$
+
+Le taux d'évoution mensuel moyen est donc de $${answerTex}$.`,
   };
 
   return question;
@@ -75,4 +98,5 @@ export const averageEvolutionRate: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

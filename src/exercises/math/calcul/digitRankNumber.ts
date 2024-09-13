@@ -36,8 +36,7 @@ const getDigitRankNumberQuestion: QuestionGenerator<Identifiers> = () => {
       rankAsked === 0 ? "d'" : "de "
     }${rankAskedLabel} dans le nombre $${nb.toTree().toTex()}$ ?`,
     keys: [],
-    // hint: `Attention ! On demande le 'nombre' et non pas le 'chiffre' !`,
-    // correction: `Le chiffre des ${rankAskedLabel} est le ${ordinals[rankAsked]} chiffre en partant de la droite. Donc le chiffre des ${rankAskedLabel} est $${answer}$.`,
+
     answerFormat: "tex",
     identifiers: { nb, rankAsked },
   };

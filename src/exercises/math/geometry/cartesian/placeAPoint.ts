@@ -10,7 +10,7 @@ import { PointConstructor } from "#root/math/geometry/point";
 import { arrayHasSameElements } from "#root/utils/arrayHasSameElement";
 import { deleteObjectNamesFromAnswer } from "#root/geogebra/deleteObjectNamesFromAnswer";
 
-type Identifiers = {};
+type Identifiers = { x: number; y: number };
 
 const getPlaceAPointQuestion: QuestionGenerator<Identifiers> = () => {
   const point = PointConstructor.random("A");
@@ -32,7 +32,7 @@ const getPlaceAPointQuestion: QuestionGenerator<Identifiers> = () => {
       isGridSimple: true,
       enableShiftDragZoom: true,
     },
-    identifiers: {},
+    identifiers: { x: point.x.evaluate({}), y: point.y.evaluate({}) },
   };
   return question;
 };

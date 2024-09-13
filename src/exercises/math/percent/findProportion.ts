@@ -14,6 +14,7 @@ import { frenchify } from "#root/math/utils/latex/frenchify";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   total: number;
@@ -30,6 +31,20 @@ const getFindProportionQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["percent"],
     answerFormat: "tex",
     identifiers: { total, lefties },
+    hint: `La proportion de gauchers s'obtient par la formule  :
+    
+$$
+\\frac{\\text{nombre de gauchers}}{\\text{nombre d'élèves}}\\times 100
+$$
+
+  `,
+    correction: `Le pourcentage de gauchers dans ce lycée est de : 
+
+$$
+\\frac{${lefties}}{${total}}\\times 100 = ${answer}
+$$
+
+    `,
   };
 
   return question;
@@ -72,4 +87,5 @@ export const findProportion: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

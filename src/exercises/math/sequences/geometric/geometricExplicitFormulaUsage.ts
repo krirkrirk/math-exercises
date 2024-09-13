@@ -14,6 +14,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { alignTex } from "#root/utils/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
@@ -39,6 +40,20 @@ const getGeometricExplicitFormulaUsage: QuestionGenerator<Identifiers> = () => {
     keys: ["u", "underscore", "equal"],
     answerFormat: "tex",
     identifiers: { firstValue, reason, askedRank },
+    hint: `Il suffit de remplacer $n$ par $${askedRank}$ dans la formule donnée.`,
+    correction: `On remplace $n$ par $${askedRank}$ dans la formule donnée : 
+    
+${alignTex([
+  [
+    `u_{${askedRank}}`,
+    "=",
+    new MultiplyNode(
+      new NumberNode(firstValue),
+      new PowerNode(new NumberNode(reason), askedRank.toTree()),
+    ).toTex(),
+  ],
+  ["", "=", answer],
+])}`,
   };
   return question;
 };
@@ -82,4 +97,5 @@ export const geometricExplicitFormulaUsage: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

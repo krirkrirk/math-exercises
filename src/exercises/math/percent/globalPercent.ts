@@ -47,6 +47,31 @@ const getGlobalPercentQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["percent"],
     answerFormat: "tex",
     identifiers: { evolutions },
+    hint: "Transforme chaque taux d'évolution en coefficient multiplicateur, puis multiplie ces coefficients multiplicateurs entre eux pour obtenir le coefficient multiplicateur global. Transforme alors ce CM global en taux d'évolution.",
+    correction: `On transforme les taux d'évolution en coefficients multiplicateurs puis on les multiplie entre eux : 
+
+$${evolutions
+      .map((e) => round(1 + Number(e) / 100, 2).frenchify())
+      .join(" \\times ")} = ${round(
+      evolutions.reduce(
+        (acc, curr) => acc * round(1 + Number(curr) / 100, 2),
+        1,
+      ),
+      4,
+    ).frenchify()}$
+    
+Enfin, on transforme ce CM global en taux d'évolution : 
+
+$(${round(
+      evolutions.reduce(
+        (acc, curr) => acc * round(1 + Number(curr) / 100, 2),
+        1,
+      ),
+      4,
+    ).frenchify()} - 1)\\times 100 = ${answer.replace("\\%", "")}$
+
+Le taux d'évolution global est donc de $${answer}$.
+    `,
   };
 
   return question;
@@ -92,4 +117,5 @@ export const globalPercent: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

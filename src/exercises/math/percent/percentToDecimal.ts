@@ -39,6 +39,28 @@ const getPercentToDecimalQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["percent"],
     answerFormat: "tex",
     identifiers: { isPercentToDecimal, nb: nb.value },
+    hint: `${
+      isPercentToDecimal
+        ? `Pour écrire $x\\%$ en décimal, rappelle toi que $x\\% = \\frac{x}{100}$.`
+        : `Pour écrire un nombre $x$ en pourcentage, on multiplie $x$ par $100$.`
+    }`,
+    correction: `${
+      isPercentToDecimal
+        ? `Le symbole $\\%$ signifie simplement "divisé par $100$". 
+
+On a donc $${(nb.value * 100).frenchify()}\\% = \\frac{${(
+            nb.value * 100
+          ).frenchify()}}{100} = ${answer}$
+      `
+        : `Pour écrire un nombre sous la forme d'un pourcentage, il suffit de le multiplier par $100$. 
+      
+On a donc $${nb.value.frenchify()} = ${answer}$.
+
+En effet, on a bien $${answer} = \\frac{${answer.replace(
+            "\\%",
+            "",
+          )}}{100} = ${nb.value.frenchify()}$.`
+    }`,
   };
 
   return question;
@@ -100,4 +122,5 @@ export const percentToDecimal: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

@@ -11,6 +11,9 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { alignTex } from "#root/utils/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
@@ -38,6 +41,20 @@ const getArithmeticExplicitFormulaUsage: QuestionGenerator<
     keys: ["u", "underscore", "equal"],
     answerFormat: "tex",
     identifiers: { firstValue, askedRank, reason },
+    hint: `Il suffit de remplacer $n$ par $${askedRank}$ dans la formule donnée.`,
+    correction: `On remplace $n$ par $${askedRank}$ dans la formule donnée : 
+    
+${alignTex([
+  [
+    `u_{${askedRank}}`,
+    "=",
+    new AddNode(
+      new MultiplyNode(reason.toTree(), askedRank.toTree()),
+      firstValue.toTree(),
+    ).toTex(),
+  ],
+  ["", "=", answer],
+])}`,
   };
 
   return question;
@@ -80,4 +97,5 @@ export const arithmeticExplicitFormulaUsage: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

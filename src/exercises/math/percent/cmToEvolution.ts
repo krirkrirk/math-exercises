@@ -12,6 +12,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
+import { alignTex } from "#root/utils/alignTex";
 import { coinFlip } from "#root/utils/coinFlip";
 
 type Identifiers = {
@@ -30,6 +31,20 @@ const getCmToEvolutionQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["percent"],
     answerFormat: "tex",
     identifiers: { evolution },
+    hint: "Pour trouver le taux d'évolution $t$ à partir du coefficient multiplicateur (CM) utilise la formule $t = \\left(\\text{CM}-1\\right)\\times 100$.",
+    correction: `Le taux d'évolution $t$ s'obtient par la formule 
+    
+$$t = \\left(\\text{CM}-1\\right)\\times 100$$
+
+Ici, on a donc : 
+
+${alignTex([
+  ["t", "=", `\\left(${CM}-1\\right)\\times 100`],
+  ["", "=", evolution + ""],
+])}
+    
+Le taux d'évolution est donc de $${answer}$.
+    `,
   };
 
   return question;
@@ -77,4 +92,5 @@ export const cmToEvolution: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };
