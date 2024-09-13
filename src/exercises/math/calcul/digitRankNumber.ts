@@ -16,6 +16,7 @@ import {
   integerDigitRanks,
 } from "#root/math/numbers/integer/integer";
 import { randint } from "#root/math/utils/random/randint";
+import { toSeperatedThousands } from "#root/utils/numberPrototype/toSeparatedThousands";
 
 type Identifiers = {
   nb: number;
@@ -34,7 +35,9 @@ const getDigitRankNumberQuestion: QuestionGenerator<Identifiers> = () => {
     answer,
     instruction: `Quel est le nombre ${
       rankAsked === 0 ? "d'" : "de "
-    }${rankAskedLabel} dans le nombre $${nb.toTree().toTex()}$ ?`,
+    }${rankAskedLabel} dans le nombre $${toSeperatedThousands(
+      nb.toTree().toTex(),
+    )}$ ?`,
     keys: [],
 
     answerFormat: "tex",

@@ -65,6 +65,7 @@ String.prototype.toTree = function (): AlgebraicNode {
 String.prototype.unfrenchify = function (): number {
   return Number(this.valueOf().replace(",", "."));
 };
+
 Number.prototype.toTree = function (): AlgebraicNode {
   const value = this.valueOf();
   if (value === Infinity) return PlusInfinityNode;
@@ -86,7 +87,7 @@ const runServer = () => {
     "math hints",
     mathExercises.filter((exo) => exo.hasHintAndCorrection).length,
   );
-  console.log("pc exos", pcExercises.length);
+  console.log("pc exos", `${pcExercises.length}`);
 
   playground();
 

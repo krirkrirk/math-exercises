@@ -24,7 +24,7 @@ type Identifiers = {
 const getSolveSecondDegreeEquationFromCanoQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const trinom = TrinomConstructor.randomCanonical();
+  const trinom = TrinomConstructor.randomNiceRoots();
   const statement = trinom.getCanonicalForm().toTex();
   const roots = trinom.getRootsNode();
   const answer = new EquationSolutionNode(new DiscreteSetNode(roots)).toTex();
