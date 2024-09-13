@@ -17,6 +17,7 @@ export const questionTest = (exo: Exercise, question: Question) => {
   const dotDecimalPattern = /\d+\.\d+/;
   if (exo.answerType === "GGB") {
     expect(question.ggbAnswer).not.toBe(undefined);
+    expect(question.studentGgbOptions?.coords?.length).toBeGreaterThan(0);
   } else expect(question.answer).not.toBe(undefined);
   if (question.answer) {
     expect(question.answer.match(dotDecimalPattern)).toBe(null);
@@ -25,6 +26,13 @@ export const questionTest = (exo: Exercise, question: Question) => {
 
   expect(question.instruction?.length).not.toBe(0);
   expect(question.instruction.includes("[object Object]")).toBe(false);
+
+  if (exo.hasGeogebra) {
+    expect(question.ggbOptions?.coords?.length).toBeGreaterThan(0);
+  }
+  if (question.ggbOptions) {
+    expect(exo.hasGeogebra).toBe(true);
+  }
   //! probélamtique car la réponse crée par nous n'est pas toujours au même format que celle fourni par l'élève
   //! voir par ex drawAvector
   // if (exo.answerType === "GGB") {

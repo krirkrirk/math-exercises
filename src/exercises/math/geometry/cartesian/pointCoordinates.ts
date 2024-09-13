@@ -105,4 +105,5 @@ export const pointCoordinates: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasGeogebra: true,
 };

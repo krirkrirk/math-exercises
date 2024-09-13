@@ -6,5 +6,10 @@ import "../src/prototypesEnhancement";
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
 
 test("ml", () => {
-  exosTest(mathExercises);
+  try {
+    exosTest(mathExercises);
+  } catch (err) {
+    // throw err;
+    throw Error("ERRROR");
+  }
 });

@@ -170,4 +170,5 @@ export const directionVector: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasGeogebra: true,
 };
