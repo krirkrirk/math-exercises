@@ -155,7 +155,7 @@ const isAnswerValid: VEA<Identifiers> = (
   return texs.includes(ans);
 };
 
-export const inequalityToInterval: Exercise<Identifiers> = {
+export const intervalToInequality: Exercise<Identifiers> = {
   id: "intervalToInequality",
   connector: "=",
   label: "Traduire un intervalle en inégalité",
