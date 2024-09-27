@@ -40,7 +40,6 @@ const getLengthConversion: QuestionGenerator<Identifiers> = () => {
   const randomUnitInstructionIndex = randint(0, 7, [randomUnitIndex]);
   const randomLength = DecimalConstructor.random(0, 1000, randint(0, 4));
   const measure = new Measure(randomLength.value, 0, unitsObj[randomUnitIndex]);
-  console.log("length conv q");
   const answer = measure
     .convert(units[randomUnitInstructionIndex] as distanceUnits)
     .toTex({ notScientific: true });
@@ -69,7 +68,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   const lengthDecimal = new Decimal(randomLength);
   while (propositions.length < n) {
-    console.log("length conv qcm");
     const wrongAnswer = lengthDecimal
       .multiplyByPowerOfTen(
         randint(-3, 4, [randomUnitIndex - randomUnitInstructionIndex]),

@@ -59,7 +59,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { z1, z2 }) => {
   const complex2 = new Complex(z2[0], z2[1]);
   const answer = complex1.multiply(complex2).toTree();
   const texs = answer.toAllValidTexs();
-  console.log(ans, texs);
   return texs.includes(ans);
 };
 

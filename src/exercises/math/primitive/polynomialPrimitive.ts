@@ -67,7 +67,7 @@ export const isPolynomialPrimitiveAnswerValid: VEA<Identifiers> = (
   const polynomial = new Polynomial(coeffs);
   const integralPolynomial = polynomial.integrateToNode(opts);
   const texs = integralPolynomial.toAllValidTexs(opts);
-  console.log(texs);
+
   return texs.includes(ans);
 };
 

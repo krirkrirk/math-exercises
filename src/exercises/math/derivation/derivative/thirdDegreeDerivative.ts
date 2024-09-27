@@ -87,7 +87,6 @@ export const isThirdDegreeDerivativeAnswerValid: VEA<Identifiers> = (
   const polynomial = new Polynomial(coefficients);
   const derivative = polynomial.derivate().toTree();
   const texs = derivative.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 export const thirdDegreeDerivative: Exercise<Identifiers> = {

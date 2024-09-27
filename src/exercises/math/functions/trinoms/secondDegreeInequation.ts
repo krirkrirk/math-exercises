@@ -122,7 +122,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const roots = new Trinom(a, b, c).getRootsNode();
-  console.log("prop", roots.length);
 
   const ineq = new InequationSymbol(ineqType);
   tryToAddWrongProp(

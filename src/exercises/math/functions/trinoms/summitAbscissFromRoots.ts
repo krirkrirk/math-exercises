@@ -25,7 +25,6 @@ const getSummitAbscissFromRootsQuestion: QuestionGenerator<
 > = () => {
   const trinom = TrinomConstructor.randomNiceRoots(2);
   const roots = trinom.getRoots();
-  console.log("roots", roots);
   const answer = new Rational(roots[0] + roots[1], 2)
     .simplify()
     .toTree()
@@ -59,7 +58,6 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, a, b, c }) => {
   const trinom = new Trinom(a, b, c);
-  console.log(ans, answer);
   const node = trinom.getAlphaNode();
   const texs = node.toAllValidTexs({
     allowFractionToDecimal: true,

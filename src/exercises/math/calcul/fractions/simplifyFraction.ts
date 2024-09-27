@@ -57,7 +57,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { num, denum }) => {
     .toTree({ allowFractionToDecimal: true });
 
   const texs = answerTree.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 

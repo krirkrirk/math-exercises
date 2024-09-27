@@ -34,6 +34,30 @@ export abstract class Closure {
         return ClosureType.FO;
     }
   }
+  static leftReverse(closure: ClosureType) {
+    switch (closure) {
+      case ClosureType.FF:
+        return ClosureType.OF;
+      case ClosureType.OO:
+        return ClosureType.FO;
+      case ClosureType.FO:
+        return ClosureType.OO;
+      case ClosureType.OF:
+        return ClosureType.FF;
+    }
+  }
+  static rightReverse(closure: ClosureType) {
+    switch (closure) {
+      case ClosureType.OF:
+        return ClosureType.OO;
+      case ClosureType.OO:
+        return ClosureType.OF;
+      case ClosureType.FO:
+        return ClosureType.FF;
+      case ClosureType.FF:
+        return ClosureType.FO;
+    }
+  }
   static switch(closure: ClosureType) {
     switch (closure) {
       case ClosureType.FF:

@@ -113,7 +113,6 @@ const isAnswerValid: VEA<Identifiers> = (
   );
   const equal = new EqualNode(new VariableNode("y\\left(t\\right)"), node);
   const texs = equal.toAllValidTexs({ allowRawRightChildAsSolution: true });
-  console.log(texs);
   return texs.includes(ans);
 };
 export const elongationReading: Exercise<Identifiers> = {

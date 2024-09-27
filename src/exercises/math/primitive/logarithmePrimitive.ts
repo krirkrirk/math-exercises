@@ -94,7 +94,7 @@ const isLogarithmePrimitiveAnswerValid: VEA<Identifiers> = (
   const integratedFuction = new LogNode(new AbsNode(uTree));
   const answer = new AddNode(integratedFuction, new VariableNode("C"));
   const texs = answer.toAllValidTexs();
-  console.log(texs);
+
   return texs.includes(ans);
 };
 

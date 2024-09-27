@@ -189,7 +189,6 @@ const isAnswerValid: VEA<Identifiers> = (
       throw Error("wrong type in fractiontopercenttodecimal");
   }
   const texs = answer.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 

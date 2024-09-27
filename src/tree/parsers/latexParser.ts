@@ -98,7 +98,7 @@ const buildTree = (tokens: string[]) => {
     if (currentDepth > maxDepth) maxDepth = currentDepth;
     if (token === ")" || token === "}") currentDepth--;
   }
-  console.log("depthed: ", depthedTokens);
+  // console.log("depthed: ", depthedTokens);
   while (true) {
     if (maxDepth === 0) {
       const tree = buildTreeForSameDepthTokens(
@@ -121,14 +121,14 @@ const buildTree = (tokens: string[]) => {
         token: tree,
         depth: token.depth - 1,
       });
-      console.log(`depthed after iter ${i}`, depthedTokens);
+      // console.log(`depthed after iter ${i}`, depthedTokens);
     }
     maxDepth--;
   }
 };
 
 const buildTreeForSameDepthTokens = (tokens: (string | AlgebraicNode)[]) => {
-  console.log("start: ", tokens);
+  // console.log("start: ", tokens);
   let tempTokens: (string | AlgebraicNode)[] = [];
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
@@ -149,7 +149,7 @@ const buildTreeForSameDepthTokens = (tokens: (string | AlgebraicNode)[]) => {
     else throw Error(`token not implemented: ${token}`);
   }
 
-  console.log("after parses : ", tempTokens);
+  // console.log("after parses : ", tempTokens);
   //1 build les fct
   for (let i = 0; i < tempTokens.length; i++) {
     if (typeof tempTokens[i] !== "string") continue;
@@ -222,7 +222,7 @@ const buildTreeForSameDepthTokens = (tokens: (string | AlgebraicNode)[]) => {
     }
   }
 
-  console.log("after fcts: ", tempTokens);
+  // console.log("after fcts: ", tempTokens);
   //3 build les *
   let currentProduct: AlgebraicNode | undefined;
   let currentProductStartIndex: number | undefined;
@@ -274,7 +274,7 @@ const buildTreeForSameDepthTokens = (tokens: (string | AlgebraicNode)[]) => {
 
   //4 build les +
   let currentAdd: AlgebraicNode | undefined;
-  console.log("beforeAdd", tempTokens);
+  // console.log("beforeAdd", tempTokens);
   for (let i = 0; i < tempTokens.length; i++) {
     const token = tempTokens[i];
     if (!currentAdd) {

@@ -55,7 +55,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { im, re }) => {
   const complex = new Complex(re, im);
   const answer = complex.conjugate().toTree();
   const texs = answer.toAllValidTexs();
-  console.log(ans, texs);
   return texs.includes(ans);
 };
 

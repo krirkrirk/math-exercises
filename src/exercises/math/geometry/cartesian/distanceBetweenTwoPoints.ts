@@ -132,7 +132,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { coords1, coords2 }) => {
     allowSimplifySqrt: true,
   });
   const texs = answer.toAllValidTexs();
-  console.log(ans, texs);
   return texs.includes(ans);
 };
 

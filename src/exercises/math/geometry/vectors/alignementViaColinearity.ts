@@ -36,13 +36,9 @@ const getAlignementViaColinearityQuestion: QuestionGenerator<
   const isAligned = coinFlip();
   const coeff = new NumberNode(randint(-4, 4, [0, 1]));
   if (isAligned) {
-    console.log("1");
-
     C = AB.times(coeff).getEndPoint(points[0], "C");
   } else {
     do {
-      console.log(`2 : ${AB.x.toTex()} et ${AB.y.toTex()}`);
-
       C = PointConstructor.random("C");
     } while (AB.isColinear(VectorConstructor.fromPoints(points[0], C)));
   }

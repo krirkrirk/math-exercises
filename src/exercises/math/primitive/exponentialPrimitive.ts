@@ -89,7 +89,7 @@ export const isExponentialPrimitiveAnswerValid: VEA<Identifiers> = (
   );
   const answer = new AddNode(integratedFuction, new VariableNode("C"));
   const texs = answer.toAllValidTexs();
-  console.log(texs);
+
   return texs.includes(ans);
 };
 

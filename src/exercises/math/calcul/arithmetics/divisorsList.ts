@@ -22,11 +22,11 @@ type Identifiers = {
 const getDivisorsListQuestion: QuestionGenerator<Identifiers> = () => {
   const a = randint(30, 90);
   const divisors = dividersOf(a);
-  const answer = divisors.join(",");
+  const answer = divisors.join(";");
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Donner la liste des diviseurs de $${a}$ (séparer les valeurs par des virgules).`,
-    keys: [],
+    instruction: `Donner la liste des diviseurs de $${a}$ (séparer les valeurs par des point-virgules).`,
+    keys: ["semicolon"],
     answerFormat: "tex",
     identifiers: { a },
   };
@@ -37,7 +37,7 @@ const getDivisorsListQuestion: QuestionGenerator<Identifiers> = () => {
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const values = answer.split(",").map((v) => Number(v));
+  const values = answer.split(";").map((v) => Number(v));
   while (propositions.length < n) {
     const newValue = doWhile(
       () => randint(2, values[values.length - 1]),
@@ -50,17 +50,20 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
       : copy.splice(0, 0, newValue);
     tryToAddWrongProp(
       propositions,
-      willRemove ? copy.join(",") : copy.sort((a, b) => a - b).join(","),
+      willRemove ? copy.join(";") : copy.sort((a, b) => a - b).join(";"),
     );
   }
   return shuffleProps(propositions, n);
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  let values = ans.split(",").map((v) => Number(v));
+  let values = ans
+    .replaceAll(",", ";")
+    .split(";")
+    .map((v) => Number(v));
   if (values.some((v) => isNaN(v))) return false;
   values.sort((a, b) => a - b);
-  return values.join(",") === answer;
+  return values.join(";") === answer;
 };
 export const divisorsList: Exercise<Identifiers> = {
   id: "divisorsList",

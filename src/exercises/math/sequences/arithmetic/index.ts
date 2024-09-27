@@ -13,3 +13,4 @@ export * from "./arithmeticFirstTermsSum";
 export * from "./arithmeticFindExplictFormulaFirstTermRandom";
 export * from "./arithmeticFindReasonRandomRange";
 export * from "./arithmeticFindRandomTermFromTwoTerms";
+export * from "./arithmeticFindTerm";

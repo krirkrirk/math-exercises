@@ -83,7 +83,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { int, power }) => {
     new Power(int, -power).simplify(),
   );
   const texs = [...answerTree.toAllValidTexs(), ...secondTree.toAllValidTexs()];
-  console.log(texs);
+
   return texs.includes(ans);
 };
 

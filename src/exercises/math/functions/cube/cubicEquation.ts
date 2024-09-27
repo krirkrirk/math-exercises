@@ -55,7 +55,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { k }) => {
     new DiscreteSetNode([new NumberNode(sol)]),
   );
   const texs = answerTree.toAllValidTexs();
-  console.log(texs);
+
   return texs.includes(ans);
 };
 

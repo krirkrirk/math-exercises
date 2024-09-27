@@ -96,7 +96,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
   const roots = trinom.getRootsNode();
   const answer = new EquationSolutionNode(new DiscreteSetNode(roots));
   const texs = answer.toAllValidTexs();
-  console.log(texs);
+
   return texs.includes(ans);
 };
 

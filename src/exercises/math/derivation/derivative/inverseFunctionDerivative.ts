@@ -58,7 +58,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a }) => {
     new SquareNode(new VariableNode("x")),
   );
   const texs = answerTree.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 

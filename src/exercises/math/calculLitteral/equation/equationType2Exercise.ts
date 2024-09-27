@@ -97,7 +97,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   });
 
   const validLatexs = answerTree.toAllValidTexs();
-  console.log(validLatexs);
   return validLatexs.includes(ans);
 };
 

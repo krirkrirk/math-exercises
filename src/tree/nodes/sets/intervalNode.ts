@@ -97,7 +97,23 @@ export class IntervalNode implements SetNode {
   toReversedClosure() {
     return new IntervalNode(this.a, this.b, Closure.reverse(this.closure));
   }
-
+  toLeftReversedClosure() {
+    return new IntervalNode(this.a, this.b, Closure.leftReverse(this.closure));
+  }
+  toRightReversedClosure() {
+    return new IntervalNode(this.a, this.b, Closure.rightReverse(this.closure));
+  }
+  toRandomDifferentClosure() {
+    return new IntervalNode(
+      this.a,
+      this.b,
+      Math.random() < 0.3
+        ? Closure.leftReverse(this.closure)
+        : Math.random() < 0.3
+        ? Closure.reverse(this.closure)
+        : Closure.rightReverse(this.closure),
+    );
+  }
   toComplement() {
     if (isInfiniteNode(this.a) && isInfiniteNode(this.b)) return this;
     if (isInfiniteNode(this.a)) {

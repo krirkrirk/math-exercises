@@ -103,7 +103,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { integer, rational }) => {
     .multiply(integerObj)
     .toTree({ allowFractionToDecimal: true });
   const texs = answerTree.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 

@@ -25,7 +25,7 @@ type Identifiers = {
 
 const getGeometricExplicitFormulaUsage: QuestionGenerator<Identifiers> = () => {
   const askedRank = randint(0, 10);
-  const firstValue = randint(1, 10);
+  const firstValue = randint(-5, 10, [0]);
   const reason = randint(2, 10);
   const formula = new MultiplyNode(
     new NumberNode(firstValue),

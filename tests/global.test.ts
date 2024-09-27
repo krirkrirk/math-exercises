@@ -23,12 +23,16 @@ declare global {
     toScientific: (decimals?: number) => AlgebraicNode;
   }
   interface String {
+    unfrenchify: () => number;
     toTree: () => AlgebraicNode;
   }
 }
 
 String.prototype.toTree = function (): AlgebraicNode {
   return new VariableNode(this.valueOf());
+};
+String.prototype.unfrenchify = function (): number {
+  return Number(this.valueOf().replace(",", "."));
 };
 Number.prototype.toTree = function (): AlgebraicNode {
   const value = this.valueOf();
@@ -167,10 +171,18 @@ test("all exos", () => {
             };
           }
           expect(props.length).toBeLessThan(5);
+
           expect(props.filter((prop) => prop.isRightAnswer).length).toBe(1);
+
           props.forEach((prop) => {
             expect(prop.statement.match(dotDecimalPattern)).toBe(null);
             expect(prop.statement.includes("[object Object]")).toBe(false);
+            expect(
+              props.every(
+                (prop2) =>
+                  prop2.id === prop.id || prop2.statement !== prop.statement,
+              ),
+            );
           });
           if (question.coords) {
             question.coords.forEach((element) => {

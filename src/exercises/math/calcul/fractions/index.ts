@@ -7,3 +7,6 @@ export * from "./fractionsProduct";
 export * from "./fractionsSum";
 export * from "./simplifyFraction";
 export * from "./periodicWritingToFraction";
+export * from "./fractionsSumsSameDenominators";
+export * from "./fractionsSumsMultiplesDenominators";
+export * from "./fractionsSumsPrimeDenominators";

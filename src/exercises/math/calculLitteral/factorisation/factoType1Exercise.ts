@@ -141,7 +141,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { affinesCoeffs, operation }) => {
       : new MultiplyNode(affine1.toTree(), affine2.toTree());
   const answer = answerTree.toTex();
   const validLatexs = answerTree.toAllValidTexs();
-  console.log(ans, validLatexs);
   return validLatexs.includes(ans);
 };
 

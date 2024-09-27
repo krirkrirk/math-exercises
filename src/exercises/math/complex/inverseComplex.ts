@@ -53,7 +53,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { re, im }) => {
   const z = new Complex(re, im);
   const inv = z.inverseNode();
   const texs = inv.toAllValidTexs({ allowFractionToDecimal: true });
-  console.log(texs);
   return texs.includes(ans);
 };
 

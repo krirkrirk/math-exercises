@@ -32,7 +32,6 @@ type Identifiers = {
 const getScientificToDecimalQuestion: QuestionGenerator<Identifiers> = () => {
   const decScientific = DecimalConstructor.randomScientific(randint(1, 4));
   const tenPower = randint(-5, 6, [0, 1]);
-  console.log("scien to dec q");
   const answer = decScientific.multiplyByPowerOfTen(tenPower).toTree().toTex();
 
   const statement = new MultiplyNode(
@@ -64,7 +63,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
     decScientific.multiplyByPowerOfTen(-tenPower).toTree().toTex(),
   );
   while (propositions.length < n) {
-    console.log("scien to dec qcm");
     const wrongAnswerTree = decScientific
       .multiplyByPowerOfTen(randint(-6, 6, [tenPower]))
       .toTree();

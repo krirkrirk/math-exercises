@@ -13,6 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { equationKeys } from "#root/exercises/utils/keys/equationKeys";
 import { randomColor } from "#root/geogebra/colors";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
+import { Interval } from "#root/math/sets/intervals/intervals";
 import { randint } from "#root/math/utils/random/randint";
 import { InequationSolutionNode } from "#root/tree/nodes/inequations/inequationSolutionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -153,17 +154,36 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   tryToAddWrongProp(propositions, `S=\\varnothing`);
-  tryToAddWrongProp(
-    propositions,
-    `S=\\ ${new IntervalNode(
-      new NumberNode(splinePoints[0][0]),
-      new NumberNode(yValue),
-      ClosureType.FF,
-    ).toTex()}`,
-  );
+  if (intervals.length === 1) {
+    const interval = new IntervalNode(
+      intervals[0].a.toTree(),
+      intervals[0].b.toTree(),
+      intervals[0].closure,
+    );
+    tryToAddWrongProp(
+      propositions,
+      `S=\\ ${interval.toRandomDifferentClosure().toTex()}`,
+    );
+  } else if (intervals.length === 2) {
+    const rightIntervals = intervals.map(
+      (i) => new IntervalNode(i.a.toTree(), i.b.toTree(), i.closure),
+    );
+    tryToAddWrongProp(
+      propositions,
+      `S=\\ ${rightIntervals[coinFlip() ? 0 : 1].toTex()}`,
+    );
+  }
   while (propositions.length < n) {
-    const a = randint(-9, 3);
-    const b = randint(3, 10, [a]);
+    let a = randint(
+      splinePoints[0][0],
+      splinePoints[splinePoints.length - 1][0] + 1,
+    );
+    let b = randint(
+      splinePoints[0][0],
+      splinePoints[splinePoints.length - 1][0] + 1,
+      [a],
+    );
+    if (a > b) [a, b] = [b, a];
     tryToAddWrongProp(
       propositions,
       `S=\\ ${new IntervalNode(

@@ -14,7 +14,6 @@ import { frenchify } from "#root/math/utils/latex/frenchify";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
-import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   total: number;
@@ -22,7 +21,7 @@ type Identifiers = {
 };
 
 const getFindProportionQuestion: QuestionGenerator<Identifiers> = () => {
-  const total = randint(100, 200);
+  const total = randint(120, 200);
   const lefties = randint(30, 120);
   const answer = round((lefties / total) * 100, 2).frenchify() + "\\%";
   const question: Question<Identifiers> = {

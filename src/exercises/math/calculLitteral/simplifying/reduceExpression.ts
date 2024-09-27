@@ -129,7 +129,6 @@ const isAnswerValid: VEA<Identifiers> = (
     .add(polynome2)
     .toTree({ forbidPowerToProduct: true });
   const texs = answer.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 

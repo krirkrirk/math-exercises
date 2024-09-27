@@ -117,7 +117,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { chosenNumbers }) => {
   const answer =
     nodes.length === 1 ? nodes[0] : operatorComposition(MultiplyNode, nodes);
   const texs = answer.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 
