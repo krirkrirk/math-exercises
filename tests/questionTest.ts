@@ -82,11 +82,16 @@ export const questionTest = (exo: Exercise, question: Question) => {
     });
     let after = Date.now();
     qcmTime = after - before;
-    expect(props.length).toBeLessThan(5);
+    expect(props.length).toBe(4);
     expect(props.filter((prop) => prop.isRightAnswer).length).toBe(1);
     props.forEach((prop) => {
       expect(prop.statement.match(dotDecimalPattern)).toBe(null);
       expect(prop.statement.includes("[object Object]")).toBe(false);
+      expect(
+        props.every(
+          (prop2) => prop2.id === prop.id || prop.statement !== prop2.statement,
+        ),
+      ).toBe(true);
     });
     if (question.ggbOptions?.coords) {
       question.ggbOptions?.coords.forEach((element) => {
