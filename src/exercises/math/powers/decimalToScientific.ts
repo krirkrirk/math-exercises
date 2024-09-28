@@ -75,7 +75,6 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, decimal }) => {
 const isAnswerValid: VEA<Identifiers> = (ans, { decimal }) => {
   const answerTree = new Decimal(decimal).toScientificNotation();
   const texs = answerTree.toAllValidTexs({ forbidPowerToProduct: true });
-  console.log(ans, texs);
   return texs.includes(ans);
 };
 

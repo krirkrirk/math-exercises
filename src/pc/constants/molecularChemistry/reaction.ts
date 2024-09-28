@@ -332,9 +332,9 @@ export abstract class ReactionConstructor {
         );
 
         if (!foundMolecule) {
-          console.log(
-            `La species '${reactionSpecies.species}' n'a pas été trouvée dans molecules.`,
-          );
+          // console.log(
+          //   `La species '${reactionSpecies.species}' n'a pas été trouvée dans molecules.`,
+          // );
         }
       }
     }

@@ -118,7 +118,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { square }) => {
     ? new NumberNode(sqrt)
     : new SqrtNode(new NumberNode(square), { allowSimplifySqrt: true });
   const texs = answer.toAllValidTexs();
-  console.log(texs);
+
   return texs.includes(ans);
 };
 

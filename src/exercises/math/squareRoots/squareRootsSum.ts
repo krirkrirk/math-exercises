@@ -101,7 +101,6 @@ const isAnswerValid: VEA<Identifiers> = (
     new SqrtNode(new NumberNode(b)),
   ).simplify();
   const texs = tree.toAllValidTexs();
-  console.log("vea SumSQRT answer: ", answer, "texs : ", texs);
   return texs.includes(ans);
 };
 

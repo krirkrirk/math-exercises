@@ -81,7 +81,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, energy }) => {
 
   let latexs = [];
   latexs.push(validanswer1, ...validanswer2);
-  console.log(latexs);
   return latexs.includes(ans);
 };
 

@@ -40,7 +40,6 @@ const getAffineExpressionFromTwoImagesQuestion: QuestionGenerator<
   const answer = new AddNode(new MultiplyNode(a, new VariableNode("x")), b)
     .simplify({ forceDistributeFractions: true })
     .toTex();
-  console.log(a.toTex(), b.toTex());
 
   const question: Question<Identifiers> = {
     instruction: `Soit $f$ une fonction affine telle que $f(${xA}) = ${yA}$ et $f(${xB}) = ${yB}$.

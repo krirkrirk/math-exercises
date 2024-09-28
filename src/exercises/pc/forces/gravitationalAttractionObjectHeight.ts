@@ -147,7 +147,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, h }) => {
     validanswer2.toSignificant(2).toTex({ hideUnit: true }),
     validanswer3.toSignificant(2).toTex({ hideUnit: true }),
   ];
-  console.log(latexs);
   return latexs.includes(ans);
 };
 

@@ -23,7 +23,6 @@ type Identifiers = {
 const units = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
 
 const getVolumeConversion: QuestionGenerator<Identifiers> = () => {
-  console.log("volume conv q");
   const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(
     // cette manip a pour but d'éviter des conversion de type km³ --> cm³ ou le contraire (chiffre trop grand/petit)
@@ -64,7 +63,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   const volumeDecimal = new Decimal(randomVolume);
   while (propositions.length < n) {
-    console.log("volume conv qcm");
     const wrongAnswer = volumeDecimal
       .multiplyByPowerOfTen(
         randint(-3, 4, [randomUnitIndex - randomUnitInstructionIndex]),

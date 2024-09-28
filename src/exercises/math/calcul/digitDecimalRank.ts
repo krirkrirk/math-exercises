@@ -17,6 +17,7 @@ import {
   decimalDigitRanks,
 } from "#root/math/numbers/decimals/decimal";
 import { randint } from "#root/math/utils/random/randint";
+import { toSeperatedThousands } from "#root/utils/numberPrototype/toSeparatedThousands";
 
 type Identifiers = {
   nb: string;
@@ -33,9 +34,9 @@ const getDigitDecimalRankQuestion: QuestionGenerator<Identifiers> = () => {
   const answer = decimalPartString[rankAsked];
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Quel est le chiffre des ${rankAskedLabel} dans le nombre $${nb
-      .toTree()
-      .toTex()}$ ?`,
+    instruction: `Quel est le chiffre des ${rankAskedLabel} dans le nombre $${toSeperatedThousands(
+      nb.toTree().toTex(),
+    )}$ ?`,
     keys: [],
     answerFormat: "tex",
     identifiers: { nb: nb.tex, rankAsked },

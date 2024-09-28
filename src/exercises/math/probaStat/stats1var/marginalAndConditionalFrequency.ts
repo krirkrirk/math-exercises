@@ -30,6 +30,15 @@ const getAnswer = (
   x4: number,
 ) => {
   const x = x1 + x2 + x3 + x4;
+  const total = x1 + x2 + x3 + x4;
+  const totalA = x1 + x3;
+  const totalB = x2 + x4;
+  const totalC = x1 + x2;
+  const totalD = x3 + x4;
+  const A_C = x1;
+  const A_D = x3;
+  const B_C = x2;
+  const B_D = x4;
   let freqString: string;
   let frequence: string;
   let answer: Node;
@@ -65,8 +74,8 @@ const getAnswer = (
       answer = new Rational(x3, x3 + x4).simplify().toTree();
       break;
     case 6:
-      freqString = "conditionnelle de B parmi D";
-      frequence = "f_D(B)";
+      freqString = "conditionnelle de B parmi C";
+      frequence = "f_C(B)";
       answer = new Rational(x2, x1 + x2).simplify().toTree();
       break;
     case 7:
@@ -82,12 +91,12 @@ const getAnswer = (
     case 9:
       freqString = "conditionnelle de C parmi B";
       frequence = "f_B(C)";
-      answer = new Rational(x3, x1 + x3).simplify().toTree();
+      answer = new Rational(x2, x2 + x4).simplify().toTree();
       break;
     case 10:
       freqString = "conditionnelle de D parmi A";
       frequence = "f_A(D)";
-      answer = new Rational(x2, x2 + x4).simplify().toTree();
+      answer = new Rational(x3, x1 + x3).simplify().toTree();
       break;
     case 11:
       freqString = "conditionnelle de D parmi B";

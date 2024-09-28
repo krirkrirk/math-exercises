@@ -24,8 +24,6 @@ type Identifiers = {
 const units = ["mg", "cg", "dg", "g", "dag", "hg", "kg"];
 
 const getMassConversion: QuestionGenerator<Identifiers> = () => {
-  console.log("mass conv gen");
-
   const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(0, 7, [randomUnitIndex]);
   const randomMass = DecimalConstructor.random(0, 1000, randint(0, 4));
@@ -61,7 +59,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   const massDecimal = new Decimal(randomMass);
   while (propositions.length < n) {
-    console.log("mass conv prop");
     const wrongAnswer = massDecimal
       .multiplyByPowerOfTen(
         randint(-3, 4, [randomUnitIndex - randomUnitInstructionIndex]),

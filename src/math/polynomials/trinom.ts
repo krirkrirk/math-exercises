@@ -274,7 +274,7 @@ export class Trinom extends Polynomial {
       square = new SquareNode(
         new AddNode(
           new VariableNode(this.variable),
-          new OppositeNode(this.getAlphaNode()),
+          new OppositeNode(this.getAlphaNode()).simplify(),
         ),
       );
     } else {
@@ -284,7 +284,7 @@ export class Trinom extends Polynomial {
     return beta !== 0
       ? new AddNode(
           new MultiplyNode(new NumberNode(this.a), square),
-          new NumberNode(this.getBeta()),
+          this.getBetaNode(),
         )
       : new MultiplyNode(new NumberNode(this.a), square);
   }

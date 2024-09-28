@@ -113,7 +113,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d, ineqType }) => {
     opts: { allowFractionToDecimal: true },
   });
   const texs = answer.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 

@@ -37,11 +37,6 @@ const getParallelogramViaEqualVectorsQuestion: QuestionGenerator<
   const AB = VectorConstructor.fromPoints(points[0], points[1]);
   let D: Point;
   do {
-    console.log(
-      `1 : points: ${points.map((p) =>
-        p.toCoords(),
-      )}, vec : ${AB.x.toTex()} et ${AB.y.toTex()}`,
-    );
     D = PointConstructor.random("D");
   } while (AB.isColinear(VectorConstructor.fromPoints(D, points[0])));
   let C: Point;
@@ -50,8 +45,6 @@ const getParallelogramViaEqualVectorsQuestion: QuestionGenerator<
     C = AB.getEndPoint(D, "C");
   } else {
     do {
-      console.log("2");
-
       C = PointConstructor.random("C");
     } while (AB.equals(VectorConstructor.fromPoints(D, C)));
   }

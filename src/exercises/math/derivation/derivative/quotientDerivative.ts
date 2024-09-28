@@ -101,7 +101,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { poly1Coeffs, poly2Coeffs }) => {
   const answerDenum = new PowerNode(poly2.toTree(), new NumberNode(2));
   const answer = new FractionNode(answerNum, answerDenum);
   const texs = answer.toAllValidTexs();
-  console.log(ans, texs);
   return texs.includes(ans);
 };
 

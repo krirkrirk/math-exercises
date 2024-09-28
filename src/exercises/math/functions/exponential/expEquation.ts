@@ -94,7 +94,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, k }) => {
     ),
   );
   const texs = answer.toAllValidTexs();
-  console.log(texs);
+
   return texs.includes(ans);
 };
 

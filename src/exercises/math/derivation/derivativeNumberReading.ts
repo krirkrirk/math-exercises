@@ -116,7 +116,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { A, B }) => {
     .simplify()
     .toTree({ allowFractionToDecimal: true });
   const texs = answer.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 

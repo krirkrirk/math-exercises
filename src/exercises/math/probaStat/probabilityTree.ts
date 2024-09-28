@@ -163,7 +163,7 @@ const isAnswerValid: VEA<Identifiers> = (
 ) => {
   const answer = getAnswerNode({ type, A, AC, AD, B, BC, BD });
   const texs = answer.toTree({ allowFractionToDecimal: true }).toAllValidTexs();
-  console.log(texs);
+
   return texs.includes(ans);
 };
 

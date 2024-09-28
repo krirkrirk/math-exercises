@@ -70,7 +70,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
     ...simplified.toAllValidTexs(),
     ...nonSimplified.toAllValidTexs(),
   ];
-  console.log(texs);
   return texs.includes(ans);
 };
 

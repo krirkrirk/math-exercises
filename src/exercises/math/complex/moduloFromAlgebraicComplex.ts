@@ -59,7 +59,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { re, im }) => {
     allowSimplifySqrt: true,
   });
   const texs = answer.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 

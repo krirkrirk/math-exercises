@@ -139,7 +139,6 @@ const isAnswerValid: VEA<Identifiers> = (
     ? integerObj.divide(rationalObj).toTree({ allowFractionToDecimal: true })
     : rationalObj.divide(integerObj).toTree({ allowFractionToDecimal: true });
   const texs = answerTree.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 

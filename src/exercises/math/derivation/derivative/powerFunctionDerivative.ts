@@ -128,7 +128,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, power }) => {
           opts,
         );
   const texs = answerTree.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 

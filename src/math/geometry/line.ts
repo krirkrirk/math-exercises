@@ -36,7 +36,6 @@ export class Line {
   }
   getParallele(point: Point) {
     if (this.isVertical) {
-      console.log(this.pointA.toTexWithCoords(), this.pointB.toTexWithCoords());
       throw Error("Parallel vertical lines not implemented");
     }
     const x = new AddNode(point.x, new NumberNode(1)).simplify();
@@ -67,7 +66,6 @@ export class Line {
     }
     const x = new NumberNode(randint(-10, 10));
     const y = new AddNode(new MultiplyNode(this.a!, x), this.b!).simplify();
-    console.log(y.toTex(), this.a!.toTex(), x.toTex(), this.b?.toTex());
     return new Point(name ?? "A", x, y);
   }
 

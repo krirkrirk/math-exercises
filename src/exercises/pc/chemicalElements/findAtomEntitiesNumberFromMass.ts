@@ -35,7 +35,6 @@ const getFindAtomEntitiesNumberFromMassQuestion: QuestionGenerator<
   const sampleMassMeasure = new Measure(sampleMass, 0, MassUnit.kg);
   const atomMass = nucleonMass.value.times(atom.masseAtomique).toSignificant(2);
   const entitiesNumber = sampleMassMeasure.divide(atomMass).toSignificant(2);
-  console.log("entitiesNumber", entitiesNumber);
 
   const instruction = `Un échantillon a une masse $m = ${sampleMassMeasure.toTex()}$ ${
     requiresApostropheBefore(atom.name) ? "d'" : "de "

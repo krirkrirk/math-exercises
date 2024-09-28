@@ -200,7 +200,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { randNbr }) => {
     }
   }
   const texs = answerTrees.flatMap((tree) => tree.toAllValidTexs());
-  console.log(ans, texs);
   return texs.includes(ans);
 };
 

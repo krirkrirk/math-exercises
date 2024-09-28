@@ -96,7 +96,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { reason, firstValue }) => {
     allowRawRightChildAsSolution: true,
   });
   const texs = equal.toAllValidTexs();
-  console.log(ans, texs);
   return texs.includes(ans);
 };
 

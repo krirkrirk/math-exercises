@@ -154,7 +154,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { vertices }) => {
     new MultiEqualNode(fractions.map((frac) => frac.toInversed())),
   ];
   const texs = [...answers[0].toAllValidTexs(), ...answers[1].toAllValidTexs()];
-  console.log(texs);
+
   return texs.includes(ans);
 };
 

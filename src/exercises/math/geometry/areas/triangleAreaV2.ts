@@ -55,7 +55,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, randomSide },
 ) => {
-  console.log("props", answer, randomSide);
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const area = Number(answer.split("\\text")[0]);

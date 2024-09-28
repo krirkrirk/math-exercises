@@ -50,7 +50,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, affineA, affineB, power },
 ) => {
-  console.log("qcm");
   const propositions: Proposition[] = [];
   const affineTree = new Affine(affineA, affineB).toTree();
 
@@ -78,7 +77,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
       propositions,
       new MultiplyNode(randint(-10, 10).toTree(), powerN).toTex(),
     );
-    console.log("prop");
   }
   return shuffleProps(propositions, n);
 };

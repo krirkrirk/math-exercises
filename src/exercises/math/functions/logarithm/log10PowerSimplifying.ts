@@ -26,7 +26,6 @@ type Identifiers = {
 
 const getLog10PowerSimplifyingQuestion: QuestionGenerator<Identifiers> = () => {
   const tenthPower = randint(-6, 8, [1]);
-  console.log("log10 power simp q");
   const nb = new Decimal(1).multiplyByPowerOfTen(tenthPower).toTree();
   const answer = tenthPower + "";
   const question: Question<Identifiers> = {
@@ -67,9 +66,9 @@ const getCorrection = (tenthPower: number, nb: AlgebraicNode) => {
 
   On a alors
   ${alignTex([
-    [`\\log(${nb.toTex()})`, `= \\log(${powerTen.toTex()})`],
-    ["", `= ${tenthPower}\\times \\log(10)`],
-    ["", `= ${tenthPower}`],
+    [`\\log(${nb.toTex()})`, `=`, `\\log(${powerTen.toTex()})`],
+    ["", "=", `${tenthPower}\\times \\log(10)`],
+    ["", "=", `${tenthPower}`],
   ])}
   `;
 };

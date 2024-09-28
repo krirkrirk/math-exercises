@@ -94,7 +94,7 @@ const isAnswerValid: VEA<Identifiers> = (
       : new Rational(Math.ceil(nbFaces / 2), nbFaces).simplify().toTree(opts)
     : new FractionNode(new NumberNode(1), new NumberNode(nbFaces), opts);
   const texs = answer.toAllValidTexs();
-  console.log(texs);
+
   return texs.includes(ans);
 };
 

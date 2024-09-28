@@ -86,7 +86,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { coordsA, coordsB }) => {
     allowFractionToDecimal: true,
   });
   const texs = answer.toAllValidTexs();
-  console.log(texs);
+
   return texs.includes(ans);
 };
 export const midpoint: Exercise<Identifiers> = {

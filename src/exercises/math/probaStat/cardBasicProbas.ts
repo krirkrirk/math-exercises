@@ -108,7 +108,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { questionType }) => {
     allowFractionToDecimal: true,
   });
   const texs = answer.toAllValidTexs();
-  console.log(texs);
+
   return texs.includes(ans);
 };
 

@@ -68,7 +68,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { z1, z2 }) => {
   const complex2 = new Complex(z2[0], z2[1]).conjugate();
   const divide = complex1.divideNode(complex2);
   const texs = divide.toAllValidTexs({ allowFractionToDecimal: true });
-  console.log(texs);
   return texs.includes(ans);
 };
 

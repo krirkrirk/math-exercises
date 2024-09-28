@@ -63,7 +63,6 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   }
 
   while (propositions.length < n) {
-    console.log("heeeeeer", a, b, c);
     const wrongExponent = b * c + randint(-11, 11, [0]);
     const wrongAnswerTree = new Power(a, wrongExponent).simplify();
     const wrongAnswer = wrongAnswerTree.toTex();

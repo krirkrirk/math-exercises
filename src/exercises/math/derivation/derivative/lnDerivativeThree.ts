@@ -115,7 +115,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
     ...developped.toAllValidTexs(),
     ...simplified.toAllValidTexs(),
   ];
-  console.log(ans, texs);
   return texs.includes(ans);
 };
 

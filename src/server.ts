@@ -57,8 +57,8 @@ const runServer = () => {
     "math hints",
     mathExercises.filter((exo) => exo.hasHintAndCorrection).length,
   );
-  console.log("pc exos", pcExercises.length);
-  console.log((1.2).frenchify());
+  console.log("pc exos", `${pcExercises.length}`);
+
   playground();
 
   app.get("/", (req: Request, res: Response) => {

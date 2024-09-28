@@ -85,7 +85,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a }) => {
       new MultiplyNode(new NumberNode(2), new SqrtNode(new VariableNode("x"))),
     );
   const texs = answer.toAllValidTexs();
-  console.log(texs);
   return texs.includes(ans);
 };
 export const rootFunctionDerivative: Exercise<Identifiers> = {
