@@ -12,6 +12,11 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { alignTex } from "#root/utils/alignTex";
 import { random } from "#root/utils/random";
 
 type Identifiers = {
@@ -33,6 +38,58 @@ const getArithmeticFindTermQuestion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: { firstRank, askedRank, firstTerm, reason },
+    hint: `Le terme général d'une suite arithmétique est : 
+    
+${
+  !firstRank
+    ? `$u_n = u_0 + r\\times n$, où $u_0$`
+    : `$u_n = u_1 + r \\times (n-1)$, où $u_1$`
+} est le premier terme et $r$ la raison.`,
+    correction: `Le terme général de la suite $u$ est : 
+
+${
+  !firstRank
+    ? alignTex([
+        [`u_n`, "=", `u_0 + r\\times n`],
+        [
+          "",
+          "=",
+          new AddNode(
+            firstTerm.toTree(),
+            new MultiplyNode(reason.toTree(), new VariableNode("n")),
+          ).toTex(),
+        ],
+      ])
+    : alignTex([
+        [`u_n`, "=", `u_1 + r \\times (n-1)`],
+        [
+          "",
+          "=",
+          new AddNode(
+            firstTerm.toTree(),
+            new MultiplyNode(
+              reason.toTree(),
+              new SubstractNode(new VariableNode("n"), (1).toTree()),
+            ),
+          ).toTex(),
+        ],
+      ])
+}    
+
+Il suffit alors de remplacer $n$ par $${askedRank}$ dans la formule : 
+
+${alignTex([
+  [
+    `u_{${askedRank}}`,
+    "=",
+    `${new AddNode(
+      firstTerm.toTree(),
+      new MultiplyNode(reason.toTree(), (askedRank - firstRank).toTree()),
+    ).toTex()}`,
+  ],
+  ["", "=", `${answer}`],
+])}
+    `,
   };
 
   return question;
@@ -71,4 +128,5 @@ export const arithmeticFindTerm: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

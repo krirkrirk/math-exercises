@@ -12,6 +12,11 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { alignTex } from "#root/utils/alignTex";
 import { random } from "#root/utils/random";
 
 type Identifiers = {
@@ -32,6 +37,58 @@ const getGeometricFindTermQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `Soit $u$ la suite géométrique de premier terme $u_${firstRank} = ${firstTerm}$ et de raison $q = ${reason}$. Calculer $u_{${askedRank}}$.`,
     keys: [],
     answerFormat: "tex",
+    hint: `Le terme général d'une suite geométrique est : 
+    
+${
+  !firstRank
+    ? `$u_n = u_0 \\times q^n$, où $u_0$`
+    : `$u_n = u_1 \\times q^{n-1}$, où $u_1$`
+} est le premier terme et $q$ la raison.`,
+    correction: `Le terme général de la suite $u$ est : 
+
+${
+  !firstRank
+    ? alignTex([
+        [`u_n`, "=", `u_0 \\times q^n`],
+        [
+          "",
+          "=",
+          new MultiplyNode(
+            firstTerm.toTree(),
+            new PowerNode(reason.toTree(), new VariableNode("n")),
+          ).toTex(),
+        ],
+      ])
+    : alignTex([
+        [`u_n`, "=", `u_1 \\times q^{n-1}`],
+        [
+          "",
+          "=",
+          new MultiplyNode(
+            firstTerm.toTree(),
+            new PowerNode(
+              reason.toTree(),
+              new SubstractNode(new VariableNode("n"), (1).toTree()),
+            ),
+          ).toTex(),
+        ],
+      ])
+}    
+
+Il suffit alors de remplacer $n$ par $${askedRank}$ dans la formule : 
+
+${alignTex([
+  [
+    `u_{${askedRank}}`,
+    "=",
+    `${new MultiplyNode(
+      firstTerm.toTree(),
+      new PowerNode(reason.toTree(), (askedRank - firstRank).toTree()),
+    ).toTex()}`,
+  ],
+  ["", "=", `${answer}`],
+])}
+    `,
     identifiers: { firstRank, askedRank, firstTerm, reason },
   };
 
@@ -71,4 +128,5 @@ export const geometricFindTerm: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

@@ -19,4 +19,3 @@ export * from "./spaceGeometry";
 export * from "./squareRoots";
 export * from "./trigonometry";
 export * from "./python";
-export * from "./suites";

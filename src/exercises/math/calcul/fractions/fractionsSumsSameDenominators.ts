@@ -15,8 +15,13 @@ import {
   Rational,
   RationalConstructor,
 } from "#root/math/numbers/rationals/rational";
+import { primeFactors } from "#root/math/utils/arithmetic/primeFactors";
 import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { operatorComposition } from "#root/tree/utilities/operatorComposition";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   denom: number;
@@ -33,11 +38,51 @@ const getFractionsSumsSameDenominatorsQuestion: QuestionGenerator<
   const ratio1 = new Rational(num1, denom).toTree();
   const ratio2 = new Rational(num2, denom).toTree();
   const statement = new AddNode(ratio1, ratio2).toTex();
-  const answer = new Rational(num1 + num2, denom).simplify().toTree().toTex();
+  const answerRatio = new Rational(num1 + num2, denom);
+  const answer = answerRatio.simplify().toTree().toTex();
   const question: Question<Identifiers> = {
     answer,
     instruction: `Calculer et donner le résultat sous forme d'une fraction irréductible : $${statement}$`,
     keys: [],
+    hint: `Pour additionner deux fractions qui ont le même dénominateur, on peut additionner leurs numerateurs.`,
+    correction: `Les deux fractions ont bien le même dénominateur donc on additionne leurs numérateurs : 
+    
+${alignTex([
+  [
+    statement,
+    "=",
+    new FractionNode(
+      new AddNode(num1.toTree(), num2.toTree()),
+      denom.toTree(),
+    ).toTex(),
+  ],
+  ["", "=", answerRatio.toTree().toTex()],
+])}
+
+${
+  answerRatio.isSimplified && answerRatio.denum !== 1
+    ? "Cette fraction est bien irréductible."
+    : `Puis on simplifie la fraction : 
+    
+${alignTex([
+  [
+    answerRatio.toTree().toTex(),
+    "=",
+    new FractionNode(
+      operatorComposition(
+        MultiplyNode,
+        primeFactors(num1 + num2).map((e) => e.toTree()),
+      ),
+      operatorComposition(
+        MultiplyNode,
+        primeFactors(denom).map((e) => e.toTree()),
+      ),
+    ).toTex(),
+  ],
+  ["", "=", answer],
+])}`
+}
+    `,
     answerFormat: "tex",
     identifiers: { denom, num1, num2 },
   };
@@ -93,4 +138,5 @@ export const fractionsSumsSameDenominators: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

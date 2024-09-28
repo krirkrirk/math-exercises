@@ -36,8 +36,7 @@ const getEqualCaracteristicFromGraphQuestion: QuestionGenerator<
   let instruction = "";
   const caracAsked = random<
     "sens" | "norme" | "direction" | "egaux" | "opposes"
-  >(["opposes"]);
-  // ["sens", "norme", "direction", "egaux", "opposes"]
+  >(["sens", "norme", "direction", "egaux", "opposes"]);
   const isTrue = coinFlip();
   let uPoints: number[][] = [];
   let vPoints: number[][] = [];
@@ -187,7 +186,7 @@ const getEqualCaracteristicFromGraphQuestion: QuestionGenerator<
     commands: ggb.commands,
     options: ggb.getOptions(),
     coords: [-8, 8, -4, 4],
-    answerFormat: "tex",
+    answerFormat: "raw",
     identifiers: { caracAsked, uPoints, vPoints },
   };
 
