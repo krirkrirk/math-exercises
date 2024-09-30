@@ -11,7 +11,6 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Integer } from "#root/math/numbers/integer/integer";
 import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
-import { DiscreteSet } from "#root/math/sets/discreteSet";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {

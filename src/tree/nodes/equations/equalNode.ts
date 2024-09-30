@@ -1,6 +1,6 @@
 // import { equal } from "mathjs";
 import { AlgebraicNode } from "../algebraicNode";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 
 export class EqualNode implements Node {
   leftChild: Node;
@@ -14,6 +14,13 @@ export class EqualNode implements Node {
     this.opts = opts;
   }
 
+  toIdentifiers() {
+    return {
+      id: NodeIds.equal,
+      leftChild: this.leftChild.toIdentifiers(),
+      rightChild: this.rightChild.toIdentifiers(),
+    };
+  }
   toEquivalentNodes(opts?: NodeOptions) {
     const options = opts ?? this.opts;
 

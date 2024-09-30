@@ -7,6 +7,8 @@ import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { alignTex } from "#root/utils/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 import {
   Exercise,
@@ -39,11 +41,47 @@ const getPowersDivisionQuestion: QuestionGenerator<
   );
   const answerTree = new Power(a, b - c).simplify();
   const answer = answerTree.toTex();
+  const statementTex = statement.toTex();
   const question: Question<Identifiers> = {
-    instruction: `Simplifier : $${statement.toTex()}$`,
-    startStatement: statement.toTex(),
+    instruction: `Simplifier : $${statementTex}$`,
+    startStatement: statementTex,
     answer,
     keys: [],
+    hint: `${
+      opts?.useOnlyPowersOfTen
+        ? `Pour diviser deux puissances de $10$, on utilise la propriété : 
+
+$\\frac{10^a}{10^b} = 10^{a-b}$`
+        : `Pour diviser deux puissances d'un même nombre $x$, on utilise la propriété : 
+
+$\\frac{x^a}{x^b} = x^{a-b}$`
+    }`,
+    correction: `${
+      opts?.useOnlyPowersOfTen
+        ? `On utilise la propriété : $\\frac{10^a}{10^b} = 10^{a-b}$. On a alors : 
+        
+${alignTex([
+  [
+    statementTex,
+    "=",
+    `10^{${new SubstractNode(b.toTree(), c.toTree()).toTex()}}`,
+  ],
+  ["", "=", answer],
+])}`
+        : `On utilise la propriété : $\\frac{x^a}{x^b} = x^{a-b}$. On a alors : 
+
+${alignTex([
+  [
+    statementTex,
+    "=",
+    `${a.toTree().toTex()}^{${new SubstractNode(
+      b.toTree(),
+      c.toTree(),
+    ).toTex()}}`,
+  ],
+  ["", "=", answer],
+])}`
+    } `,
     answerFormat: "tex",
     identifiers: { a, b, c },
   };
@@ -103,6 +141,7 @@ export const powersDivision: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };
 export const powersOfTenDivision: Exercise<Identifiers> = {
   id: "powersOfTenDivision",
@@ -121,4 +160,5 @@ export const powersOfTenDivision: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

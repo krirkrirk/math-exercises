@@ -1,5 +1,5 @@
 // import { add } from "mathjs";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import {
   CommutativeOperatorNode,
   OperatorIds,
@@ -278,7 +278,13 @@ export class AddNode implements CommutativeOperatorNode {
     if (externals.length === 1) return externals[0];
     return operatorComposition(AddNode, externals);
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.add,
+      leftChild: this.leftChild.toIdentifiers(),
+      rightChild: this.rightChild.toIdentifiers(),
+    };
+  }
   equals(node: AlgebraicNode): boolean {
     //!incorrect, il faut plutot vérifier qu'ils ont les meme externals
     return (

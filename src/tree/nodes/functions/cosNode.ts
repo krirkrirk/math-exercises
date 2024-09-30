@@ -1,7 +1,8 @@
-import { Node, NodeType, hasVariableNode } from "../node";
+import { Node, NodeIds, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
+import { hasVariableNode } from "../hasVariableNode";
 
 export function isCosNode(a: Node): a is CosNode {
   return isFunctionNode(a) && a.id === FunctionsIds.cos;
@@ -19,7 +20,12 @@ export class CosNode implements FunctionNode {
     this.type = NodeType.function;
     this.isNumeric = child.isNumeric;
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.cos,
+      child: this.child.toIdentifiers(),
+    };
+  }
   toMathString(): string {
     return `cos(${this.child.toMathString()})`;
   }

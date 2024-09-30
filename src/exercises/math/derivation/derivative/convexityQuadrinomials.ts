@@ -14,10 +14,7 @@ import {
   Polynomial,
   PolynomialConstructor,
 } from "#root/math/polynomials/polynomial";
-import { TrinomConstructor } from "#root/math/polynomials/trinom";
-import { Interval } from "#root/math/sets/intervals/intervals";
 import { randint } from "#root/math/utils/random/randint";
-import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import {
   MinusInfinityNode,
   PlusInfinityNode,

@@ -1,8 +1,8 @@
 import { getCartesiansProducts } from "#root/utils/cartesianProducts";
 import { permute } from "#root/utils/permutations";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { SetIds, SetNode, isSetNode } from "./setNode";
-export function isUnionIntervalNode(a: Node): a is DiscreteSetNode {
+export function isDiscreteSetNode(a: Node): a is DiscreteSetNode {
   return isSetNode(a) && a.id === SetIds.discrete;
 }
 export class DiscreteSetNode implements SetNode {
@@ -10,14 +10,25 @@ export class DiscreteSetNode implements SetNode {
   id: SetIds;
   opts?: NodeOptions | undefined;
   elements: Node[];
+  isEmpty: boolean;
   constructor(elements: Node[], opts?: NodeOptions) {
     this.type = NodeType.set;
     this.id = SetIds.discrete;
     this.elements = elements;
     this.opts = opts;
+    this.isEmpty = !elements.length;
+  }
+  isEmptySet() {
+    return !this.elements.length;
   }
   toAllValidTexs() {
     return this.toEquivalentNodes(this.opts).map((node) => node.toTex());
+  }
+  toIdentifiers() {
+    return {
+      id: NodeIds.discreteSet,
+      children: this.elements.map((e) => e.toIdentifiers()),
+    };
   }
   toEquivalentNodes(opts?: NodeOptions) {
     if (this.elements.length === 0) return [this];

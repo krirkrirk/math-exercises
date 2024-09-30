@@ -15,8 +15,6 @@ import { Rational } from "#root/math/numbers/rationals/rational";
 import { Affine } from "#root/math/polynomials/affine";
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { TrinomConstructor } from "#root/math/polynomials/trinom";
-import { DiscreteSet } from "#root/math/sets/discreteSet";
-import { Interval } from "#root/math/sets/intervals/intervals";
 import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
 

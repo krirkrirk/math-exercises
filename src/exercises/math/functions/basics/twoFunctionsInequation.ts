@@ -196,7 +196,36 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  tryToAddWrongProp(propositions, `S=\\varnothing`);
+  if (coinFlip()) tryToAddWrongProp(propositions, `S=\\varnothing`);
+  if (intervals.length === 1) {
+    const interval = new IntervalNode(
+      intervals[0].a.toTree(),
+      intervals[0].b.toTree(),
+      intervals[0].closure,
+    );
+    tryToAddWrongProp(
+      propositions,
+      `S=\\ ${interval.toRandomDifferentClosure().toTex()}`,
+    );
+  } else {
+    const rightIntervals = intervals.map(
+      (i) => new IntervalNode(i.a.toTree(), i.b.toTree(), i.closure),
+    );
+    const fakeIntervals = intervals.map(
+      (i) => new IntervalNode(i.a.toTree(), i.b.toTree(), i.closure),
+    );
+
+    tryToAddWrongProp(
+      propositions,
+      `S=\\ ${rightIntervals[coinFlip() ? 0 : 1].toTex()}`,
+    );
+    tryToAddWrongProp(
+      propositions,
+      `S=\\ ${new UnionIntervalNode(
+        fakeIntervals.map((i) => i.toRandomDifferentClosure()),
+      ).toTex()}`,
+    );
+  }
   while (propositions.length < n) {
     const isStrict = ineqSymbol === "<" || ineqSymbol === ">";
     const x1 = randint(-10, -5);

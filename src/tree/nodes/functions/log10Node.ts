@@ -1,5 +1,5 @@
 // import { log } from "mathjs";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { isAbsNode } from "./absNode";
 import { AlgebraicNode } from "../algebraicNode";
@@ -26,7 +26,12 @@ export class Log10Node implements FunctionNode {
     this.opts = opts;
     this.isNumeric = child.isNumeric;
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.log10,
+      child: this.child.toIdentifiers(),
+    };
+  }
   toMathString(): string {
     return `log_{10}(${this.child.toMathString()})`;
   }

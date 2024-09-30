@@ -1,4 +1,4 @@
-import { Node, NodeType } from "../node";
+import { Node, NodeIds, NodeType } from "../node";
 import { AlgebraicNode } from "../algebraicNode";
 
 export function isDegreeNode(a: Node): a is DegreeNode {
@@ -18,7 +18,12 @@ export class DegreeNode implements AlgebraicNode {
     this.mathString = mathString || this.value + "^\\circ";
     this.isNumeric = true;
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.degree,
+      value: this.value,
+    };
+  }
   toMathString(): string {
     return `${this.mathString}`;
   }

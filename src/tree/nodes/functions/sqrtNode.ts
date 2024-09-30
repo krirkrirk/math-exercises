@@ -1,5 +1,5 @@
 // import { sqrt } from "mathjs";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { SquareRoot } from "#root/math/numbers/reals/real";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
@@ -22,6 +22,12 @@ export class SqrtNode implements FunctionNode {
     this.type = NodeType.function;
     this.opts = opts;
     this.isNumeric = child.isNumeric;
+  }
+  toIdentifiers() {
+    return {
+      id: NodeIds.sqrt,
+      child: this.child.toIdentifiers(),
+    };
   }
   toMathString(): string {
     return `sqr(${this.child.toMathString()})`;

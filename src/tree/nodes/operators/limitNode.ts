@@ -1,5 +1,5 @@
 // import { pow } from "mathjs";
-import { Node, NodeOptions, NodeType, ToTexOptions } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType, ToTexOptions } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { MultiplyNode, isMultiplyNode } from "./multiplyNode";
@@ -47,7 +47,14 @@ export class LimitNode implements OperatorNode {
   toEquivalentNodes(opts?: NodeOptions | undefined) {
     return [this];
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.limit,
+      leftChild: this.leftChild.toIdentifiers(),
+      rightChild: this.rightChild.toIdentifiers(),
+      from: this.from,
+    };
+  }
   toAllValidTexs(): string[] {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }

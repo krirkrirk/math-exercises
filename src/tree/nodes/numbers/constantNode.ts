@@ -1,5 +1,5 @@
 // import { parse } from "mathjs";
-import { Node, NodeType } from "../node";
+import { Node, NodeIds, NodeType } from "../node";
 import { AlgebraicNode } from "../algebraicNode";
 export function isConstantNode(a: Node): a is ConstantNode {
   return a.type === NodeType.constant;
@@ -8,13 +8,14 @@ export class ConstantNode implements AlgebraicNode {
   tex: string;
   mathString: string;
   value: number;
-  type: NodeType = NodeType.constant;
+  type: NodeType;
   isNumeric: boolean;
   constructor(tex: string, mathString: string, value: number) {
     this.tex = tex;
     this.mathString = mathString;
     this.value = value;
     this.isNumeric = true;
+    this.type = NodeType.constant;
   }
 
   toMathString(): string {
@@ -28,6 +29,14 @@ export class ConstantNode implements AlgebraicNode {
   // }
   toAllValidTexs() {
     return this.toEquivalentNodes().map((node) => node.toTex());
+  }
+  toIdentifiers() {
+    return {
+      id: NodeIds.constant,
+      mathString: this.mathString,
+      tex: this.tex,
+      value: this.value,
+    };
   }
   toEquivalentNodes() {
     return [this];

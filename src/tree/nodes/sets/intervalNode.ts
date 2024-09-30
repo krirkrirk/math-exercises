@@ -1,7 +1,7 @@
 import { getCartesiansProducts } from "#root/utils/cartesianProducts";
 import { permute } from "#root/utils/permutations";
 import { InequationNode } from "../inequations/inequationNode";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { isConstantNode } from "../numbers/constantNode";
 import {
   MinusInfinityNode,
@@ -23,12 +23,14 @@ export class IntervalNode implements SetNode {
   closure: ClosureType;
   a: Node;
   b: Node;
+  isEmpty: boolean;
   constructor(a: Node, b: Node, closure: ClosureType, opts?: NodeOptions) {
     this.type = NodeType.set;
     this.id = SetIds.interval;
     this.closure = closure;
     this.a = a;
     this.b = b;
+    this.isEmpty = false;
     this.opts = opts;
   }
 
@@ -158,5 +160,30 @@ export class IntervalNode implements SetNode {
         ? "]"
         : "[";
     return `${left}\\ ${this.a.toTex()};${this.b.toTex()}\\ ${right}\\ `;
+  }
+  toIdentifiers() {
+    return {
+      id: NodeIds.interval,
+      leftChild: this.a.toIdentifiers(),
+      rightChild: this.b.toIdentifiers(),
+      closure: this.closure,
+    };
+  }
+
+  toText(isPlural: boolean, isFeminine: boolean) {
+    const conjugaison = isFeminine ? "e" : "" + isPlural ? "s" : "";
+    return isInfiniteNode(this.a)
+      ? Closure.isRightOpen(this.closure)
+        ? `strictement inférieur${conjugaison} à $${this.b.toTex()}$`
+        : `inférieur${conjugaison} à $${this.b.toTex()}$`
+      : isInfiniteNode(this.b)
+      ? Closure.isLeftOpen(this.closure)
+        ? `strictement supérieur${conjugaison} à $${this.a.toTex()}$`
+        : `supérieur${conjugaison} à $${this.a.toTex()}$`
+      : `compris entre $${this.a.toTex()}$ ${
+          Closure.isLeftOpen(this.closure) ? "exclu" : "inclus"
+        } et $${this.b.toTex()}$ ${
+          Closure.isRightOpen(this.closure) ? "exclu" : "inclus"
+        }`;
   }
 }

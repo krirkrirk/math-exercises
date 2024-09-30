@@ -1,4 +1,4 @@
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { OperatorIds, OperatorNode } from "../operators/operatorNode";
 import { SetNode } from "./setNode";
 
@@ -38,5 +38,12 @@ export class BelongsNode implements Node {
   }
   toTex() {
     return `${this.leftChild.toTex()}\\in${this.rightChild.toTex()}`;
+  }
+  toIdentifiers() {
+    return {
+      id: NodeIds.belongs,
+      leftChild: this.leftChild.toIdentifiers(),
+      rightChild: this.rightChild.toIdentifiers(),
+    };
   }
 }

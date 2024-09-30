@@ -1,4 +1,4 @@
-import { Node, NodeType } from "../node";
+import { Node, NodeIds, NodeType } from "../node";
 
 export class PercentNode implements Node {
   value: number;
@@ -20,6 +20,12 @@ export class PercentNode implements Node {
   }
   toAllValidTexs() {
     return [this.toTex()];
+  }
+  toIdentifiers() {
+    return {
+      id: NodeIds.percent,
+      value: this.value,
+    };
   }
   toEquivalentNodes() {
     return [this];

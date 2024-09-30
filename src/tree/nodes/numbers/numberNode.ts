@@ -1,4 +1,4 @@
-import { Node, NodeType } from "../node";
+import { Node, NodeIds, NodeType } from "../node";
 import { AlgebraicNode } from "../algebraicNode";
 import { randint } from "#root/math/utils/random/randint";
 export function isNumberNode(a: Node): a is NumberNode {
@@ -31,6 +31,12 @@ export class NumberNode implements AlgebraicNode {
   }
   toMathjs() {
     return this.toMathString();
+  }
+  toIdentifiers() {
+    return {
+      id: NodeIds.number,
+      value: this.value,
+    };
   }
   toAllValidTexs() {
     const res: string[] = [];

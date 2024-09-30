@@ -1,6 +1,6 @@
 import { Point } from "#root/math/geometry/point";
 import { getCartesiansProducts } from "#root/utils/cartesianProducts";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 
 export class PointNode implements Node {
   opts?: NodeOptions | undefined;
@@ -12,7 +12,12 @@ export class PointNode implements Node {
     this.opts = opts;
     this.point = point;
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.point,
+      point: this.point.toIdentifiers(),
+    };
+  }
   toAllTexs() {
     return [this.point.toTexWithCoords(), this.point.toCoords()];
   }

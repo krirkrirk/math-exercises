@@ -1,6 +1,5 @@
-import { Nombre } from '../numbers/nombre';
-import { DiscreteSet } from './discreteSet';
-import { MathSetInterface } from './mathSetInterface';
+import { Nombre } from "../numbers/nombre";
+import { MathSetInterface } from "./mathSetInterface";
 
 export class MathSet implements MathSetInterface {
   tex: string;

@@ -1,16 +1,16 @@
 export function alignTex(arr: string[][] | string) {
-  //! le "&" avant les join sert à aligner à gauche
-  //! mais ca crée un manque d'espace moche
-  //! je pense qu'il faut changer d'environnement (align)
-  //! utiliser un autre genre array ou equation je sais pas
+  let alignements = "r";
+  if (typeof arr !== "string") {
+    for (let i = 0; i < arr.length - 2; i++) {
+      alignements += "c";
+    }
+  }
+  alignements += "l";
   const aligned = `$$
-\\begin{align*}
-${
-  typeof arr === "string"
-    ? arr
-    : arr.map((el) => "&" + el.join("&")).join(` \\\\`)
-}
-\\end{align*}
+\\def\\arraystretch{1.8}
+\\begin{array}{${alignements}}
+${typeof arr === "string" ? arr : arr.map((el) => el.join("&")).join(` \\\\`)}
+\\end{array}
 $$`;
   return aligned;
 }

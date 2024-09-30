@@ -1,9 +1,10 @@
 // import { subtract } from "mathjs";
-import { Node, NodeType } from "../node";
+import { Node, NodeIds, NodeType } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { OppositeNode } from "../functions/oppositeNode";
 import { AddNode } from "./addNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
+import { coinFlip } from "#root/utils/coinFlip";
 export function isSubstractNode(a: Node): a is SubstractNode {
   return isOperatorNode(a) && a.id === OperatorIds.substract;
 }
@@ -24,7 +25,13 @@ export class SubstractNode implements OperatorNode {
   toMathString(): string {
     return `${this.leftChild.toMathString()}-(${this.rightChild.toMathString()})`;
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.substract,
+      left: this.leftChild.toIdentifiers(),
+      right: this.rightChild.toIdentifiers(),
+    };
+  }
   toEquivalentNodes(): AlgebraicNode[] {
     const res: AlgebraicNode[] = [];
     const rightNodes = this.rightChild.toEquivalentNodes();
@@ -40,6 +47,10 @@ export class SubstractNode implements OperatorNode {
 
   toAllValidTexs(): string[] {
     return this.toEquivalentNodes().map((node) => node.toTex());
+  }
+  dangerouslyShuffle() {
+    if (coinFlip())
+      [this.leftChild, this.rightChild] = [this.rightChild, this.leftChild];
   }
   toTex(): string {
     let rightTex = this.rightChild.toTex();

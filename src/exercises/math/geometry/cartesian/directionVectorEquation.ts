@@ -14,7 +14,6 @@ import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { Vector } from "#root/math/geometry/vector";
 import { randint } from "#root/math/utils/random/randint";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
-import { VectorNode } from "#root/tree/nodes/geometry/vectorNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";

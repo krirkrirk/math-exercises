@@ -41,6 +41,7 @@ import { Affine } from "./math/polynomials/affine";
 import { SquareRootConstructor } from "./math/numbers/reals/real";
 import { OppositeNode } from "./tree/nodes/functions/oppositeNode";
 import { playground } from "./playground";
+import { NodeType } from "./tree/nodes/node";
 
 const jsonParser = bodyParser.json();
 const mathExercises = Object.values(MathExercises) as Exercise<any>[];
@@ -59,14 +60,14 @@ declare global {
   }
 }
 
-String.prototype.toTree = function (): AlgebraicNode {
+String.prototype.toTree = function () {
   return new VariableNode(this.valueOf());
 };
 String.prototype.unfrenchify = function (): number {
   return Number(this.valueOf().replace(",", "."));
 };
 
-Number.prototype.toTree = function (): AlgebraicNode {
+Number.prototype.toTree = function () {
   const value = this.valueOf();
   if (value === Infinity) return PlusInfinityNode;
   if (value === -Infinity) return MinusInfinityNode;
@@ -88,7 +89,6 @@ const runServer = () => {
     mathExercises.filter((exo) => exo.hasHintAndCorrection).length,
   );
   console.log("pc exos", `${pcExercises.length}`);
-
   playground();
 
   app.get("/", (req: Request, res: Response) => {

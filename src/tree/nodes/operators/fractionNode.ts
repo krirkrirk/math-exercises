@@ -1,5 +1,5 @@
 // import { fraction } from "mathjs";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { FunctionNode, FunctionsIds } from "../functions/functionNode";
@@ -39,6 +39,14 @@ export class FractionNode implements OperatorNode {
 
   toMathString(): string {
     return `(${this.leftChild.toMathString()}) / (${this.rightChild.toMathString()})`;
+  }
+
+  toIdentifiers() {
+    return {
+      id: NodeIds.fraction,
+      leftChild: this.leftChild.toIdentifiers(),
+      rightChild: this.rightChild.toIdentifiers(),
+    };
   }
 
   toInversed() {

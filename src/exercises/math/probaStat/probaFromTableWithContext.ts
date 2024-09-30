@@ -87,7 +87,7 @@ const getProbaFromTableWithContextQuestion: QuestionGenerator<
     answer,
     instruction: `Le tableau suivant donne le nombre de filles et de garçons portant des lunettes dans un lycée : 
 
-|       | Porte des lunettes     | Ne porte pas de lunettes   |
+|       | Porte des lunettes     | Ne porte pas de lunettes   |
 |-------|:----------------------:|----------------------------|
 |Filles   |${aCapB}   |${aCapBBarre}|
 |Garçons   |${aBarreCapB}   |${aBarreCapBBarre}   |

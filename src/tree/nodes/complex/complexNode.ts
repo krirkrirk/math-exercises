@@ -1,5 +1,5 @@
 // import { complex, evaluate } from "mathjs";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { VariableNode } from "../variables/variableNode";
 import { MultiplyNode } from "../operators/multiplyNode";
 import { AddNode } from "../operators/addNode";
@@ -15,6 +15,13 @@ export class ComplexNode implements Node {
     this.re = re;
     this.im = im;
     this.opts = opts;
+  }
+  toIdentifiers() {
+    return {
+      id: NodeIds.complex,
+      re: this.re.toIdentifiers(),
+      im: this.im.toIdentifiers(),
+    };
   }
   toEquivalentNodes(opts?: NodeOptions): AlgebraicNode[] {
     const options = opts ?? this.opts;

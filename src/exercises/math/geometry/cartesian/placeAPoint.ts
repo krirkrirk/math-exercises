@@ -15,11 +15,6 @@ type Identifiers = { x: number; y: number };
 const getPlaceAPointQuestion: QuestionGenerator<Identifiers> = () => {
   const point = PointConstructor.random("A");
 
-  const xMax = point.getXnumber() + 2;
-  const xMin = point.getXnumber() - 2;
-  const yMin = point.getYnumber() - 2;
-  const yMax = point.getYnumber() + 2;
-
   const question: Question<Identifiers> = {
     ggbAnswer: [`(${point.getXnumber()},${point.getYnumber()})`],
     instruction: `Placer le point $A$ de coordonnées $${point.toTexWithCoords()}$.`,

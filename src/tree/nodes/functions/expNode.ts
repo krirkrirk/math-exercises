@@ -1,5 +1,5 @@
 // import { exp } from "mathjs";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
 import { isNumberNode } from "../numbers/numberNode";
@@ -20,7 +20,12 @@ export class ExpNode implements FunctionNode {
     this.opts = opts;
     this.isNumeric = child.isNumeric;
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.exp,
+      child: this.child.toIdentifiers(),
+    };
+  }
   toMathString(): string {
     return `e^(${this.child.toMathString()})`;
   }
@@ -68,7 +73,7 @@ export class ExpNode implements FunctionNode {
   evaluate(vars: Record<string, number>) {
     return Math.exp(this.child.evaluate(vars));
   }
-  equals(node: AlgebraicNode) {
+  equals(node: AlgebraicNode): boolean {
     return isExpNode(node) && node.child.equals(this.child);
   }
 }

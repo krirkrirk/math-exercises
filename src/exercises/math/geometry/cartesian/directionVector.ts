@@ -14,8 +14,6 @@ import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { Vector } from "#root/math/geometry/vector";
 import { gcd } from "#root/math/utils/arithmetic/gcd";
 import { randint } from "#root/math/utils/random/randint";
-import { EqualNode } from "#root/tree/nodes/equations/equalNode";
-import { VectorNode } from "#root/tree/nodes/geometry/vectorNode";
 
 type Identifiers = {
   xValue: number;

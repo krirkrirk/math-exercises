@@ -63,7 +63,7 @@ test("all exos", () => {
     try {
       expect(exo.label.length).toBeGreaterThan(0);
       let before = Date.now();
-      console.log("generate questions");
+      console.log("generate questions : ", exo.id);
       const questions = exo.generator(30);
       let after = Date.now();
       let time = after - before;
@@ -137,7 +137,7 @@ test("all exos", () => {
           expect(question.keys).not.toBe(undefined);
 
           let before = Date.now();
-          console.log("will test vea");
+          console.log("will test vea : ", exo.id);
           expect(
             exo.isAnswerValid!(question.answer!, {
               answer: question.answer,
@@ -156,7 +156,7 @@ test("all exos", () => {
         }
         if (exo.answerType !== "free" && exo.answerType !== "GGB") {
           let before = Date.now();
-          console.log("will generate props");
+          console.log("will generate props : ", exo.id);
           const props = exo.getPropositions!(4, {
             answer: question.answer,
             ...question.identifiers,

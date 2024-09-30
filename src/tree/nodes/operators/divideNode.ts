@@ -1,7 +1,8 @@
 // import { divide } from "mathjs";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { AlgebraicNode } from "../algebraicNode";
+import { coinFlip } from "#root/utils/coinFlip";
 export function isDivideNode(a: Node): a is DivideNode {
   return isOperatorNode(a) && a.id === OperatorIds.divide;
 }
@@ -51,6 +52,17 @@ export class DivideNode implements OperatorNode {
 
   toMathString(): string {
     return `(${this.leftChild.toMathString()}) / (${this.rightChild.toMathString()})`;
+  }
+  dangerouslyShuffle() {
+    if (coinFlip())
+      [this.leftChild, this.rightChild] = [this.rightChild, this.leftChild];
+  }
+  toIdentifiers() {
+    return {
+      id: NodeIds.divide,
+      leftChild: this.leftChild.toIdentifiers(),
+      rightChild: this.rightChild.toIdentifiers(),
+    };
   }
 
   toEquivalentNodes(opts?: NodeOptions) {

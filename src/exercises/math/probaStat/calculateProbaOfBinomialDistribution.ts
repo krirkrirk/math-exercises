@@ -15,6 +15,9 @@ import { combinations } from "#root/math/utils/combinatorics/combination";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
+import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   exerciseVars: ExerciseVars;
@@ -48,6 +51,29 @@ const getCalculateProbaOfBinomialDistributionQuestion: QuestionGenerator<
     }).$`,
     keys: [],
     answerFormat: "tex",
+    hint: `Si $X$ est une variable aléatoire qui suit une loi binomiale de paramètres $n$ et $p$, alors on a : 
+    
+$P(X=k) = \\binom{n}{k} p^k (1-p)^{n-k}$`,
+    correction: `Si $X$ est une variable aléatoire qui suit une loi binomiale de paramètres $n$ et $p$, alors on a : 
+    
+$P(X=k) = \\binom{n}{k} p^k (1-p)^{n-k}$
+
+Ici, on a donc : 
+
+${alignTex([
+  [
+    `P(X=${exercise.k})`,
+    "=",
+    `\\binom{${exercise.n}}{${exercise.k}} ${new MultiplyNode(
+      new PowerNode(p.toTree(), exercise.k.toTree()),
+      new PowerNode(
+        new Rational(exercise.b - exercise.a, exercise.b).toTree(),
+        (exercise.n - exercise.k).toTree(),
+      ),
+    ).toTex()}`,
+  ],
+  ["", "\\approx", correctAns.toTex()],
+])}`,
     identifiers: { exerciseVars: exercise },
   };
 
@@ -132,4 +158,5 @@ export const calculateProbaOfBinomialDistribution: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };
