@@ -36,15 +36,19 @@ const getVolumeOfCubeQuestion: QuestionGenerator<Identifiers> = () => {
     hideAxes: true,
     hideGrid: true,
   });
-
+  const answer = Math.pow(cubeSide, 3) + "";
   const question: Question<Identifiers> = {
-    answer: Math.pow(cubeSide, 3) + "",
+    answer,
     instruction: `$ABCDEFGH$ est un cube d'arête $${cubeSide}$. Calculer son volume.`,
     keys: [],
     answerFormat: "tex",
     ggbOptions: ggb.getOptions({
       coords: [0, cubeSide + 1, 0, cubeSide + 1, 0, cubeSide + 1],
     }),
+    hint: "Le volume d'un cube est donné par $V = a^3$, où $a$ est l'arête du cube.",
+    correction: `Le volume d'un cube est donné par $V = a^3$, où $a$ est l'arête du cube. Ici, le volume de $ABCDEFGH$ est donc :
+    
+$V = ${cubeSide}^3 = ${answer}.$`,
     identifiers: { cubeSide },
   };
 
@@ -96,4 +100,5 @@ export const volumeOfCube: Exercise<Identifiers> = {
   isAnswerValid,
   hasGeogebra: true,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

@@ -1,5 +1,5 @@
 // import { abs } from "mathjs";
-import { Node, NodeType } from "../node";
+import { Node, NodeIds, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
 export function isAbsNode(a: Node): a is AbsNode {
@@ -16,7 +16,12 @@ export class AbsNode implements FunctionNode {
     this.type = NodeType.function;
     this.isNumeric = child.isNumeric;
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.abs,
+      child: this.child.toIdentifiers(),
+    };
+  }
   toMathString(): string {
     return `abs(${this.child.toMathString()})`;
   }

@@ -13,8 +13,6 @@ import { equationKeys } from "#root/exercises/utils/keys/equationKeys";
 import { Integer } from "#root/math/numbers/integer/integer";
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { Affine } from "#root/math/polynomials/affine";
-import { DiscreteSet } from "#root/math/sets/discreteSet";
-import { Interval } from "#root/math/sets/intervals/intervals";
 import { randint } from "#root/math/utils/random/randint";
 import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";

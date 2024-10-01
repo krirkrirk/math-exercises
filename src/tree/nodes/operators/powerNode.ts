@@ -1,5 +1,5 @@
 // import { pow } from "mathjs";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { MultiplyNode, isMultiplyNode } from "./multiplyNode";
@@ -32,7 +32,13 @@ export class PowerNode implements OperatorNode {
   toMathString(): string {
     return `(${this.leftChild.toMathString()})^(${this.rightChild.toMathString()})`;
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.power,
+      left: this.leftChild.toIdentifiers(),
+      right: this.rightChild.toIdentifiers(),
+    };
+  }
   toEquivalentNodes() {
     const res: AlgebraicNode[] = [];
     const rightNodes = this.rightChild.toEquivalentNodes();

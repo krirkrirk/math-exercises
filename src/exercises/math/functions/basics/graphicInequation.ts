@@ -13,7 +13,6 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { equationKeys } from "#root/exercises/utils/keys/equationKeys";
 import { randomColor } from "#root/geogebra/colors";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
-import { Interval } from "#root/math/sets/intervals/intervals";
 import { randint } from "#root/math/utils/random/randint";
 import { InequationSolutionNode } from "#root/tree/nodes/inequations/inequationSolutionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -101,8 +100,8 @@ const getGraphicInequationQuestion: QuestionGenerator<Identifiers> = () => {
   );
   const answer =
     intervalsNodes.length === 1
-      ? `S=\\ ${intervalsNodes[0].toTex()}`
-      : `S=\\ ${new UnionIntervalNode(intervalsNodes).toTex()}`;
+      ? `S=${intervalsNodes[0].toTex()}`
+      : `S=${new UnionIntervalNode(intervalsNodes).toTex()}`;
 
   const commands = [
     `S =Spline(${splinePoints
@@ -151,7 +150,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  tryToAddWrongProp(propositions, `S=\\varnothing`);
+  if (coinFlip()) tryToAddWrongProp(propositions, `S=\\varnothing`);
   if (intervals.length === 1) {
     const interval = new IntervalNode(
       intervals[0].a.toTree(),
@@ -160,15 +159,25 @@ const getPropositions: QCMGenerator<Identifiers> = (
     );
     tryToAddWrongProp(
       propositions,
-      `S=\\ ${interval.toRandomDifferentClosure().toTex()}`,
+      `S=${interval.toRandomDifferentClosure().toTex()}`,
     );
   } else if (intervals.length === 2) {
     const rightIntervals = intervals.map(
       (i) => new IntervalNode(i.a.toTree(), i.b.toTree(), i.closure),
     );
+    const fakeIntervals = intervals.map(
+      (i) => new IntervalNode(i.a.toTree(), i.b.toTree(), i.closure),
+    );
+
     tryToAddWrongProp(
       propositions,
-      `S=\\ ${rightIntervals[coinFlip() ? 0 : 1].toTex()}`,
+      `S=${rightIntervals[coinFlip() ? 0 : 1].toTex()}`,
+    );
+    tryToAddWrongProp(
+      propositions,
+      `S=${new UnionIntervalNode(
+        fakeIntervals.map((i) => i.toRandomDifferentClosure()),
+      ).toTex()}`,
     );
   }
   while (propositions.length < n) {
@@ -184,7 +193,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
     if (a > b) [a, b] = [b, a];
     tryToAddWrongProp(
       propositions,
-      `S=\\ ${new IntervalNode(
+      `S=${new IntervalNode(
         new NumberNode(a),
         new NumberNode(b),
         ClosureType.FF,

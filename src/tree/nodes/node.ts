@@ -1,20 +1,16 @@
-import { isFunctionNode } from "./functions/functionNode";
-import { isOperatorNode } from "./operators/operatorNode";
-import { isVariableNode } from "./variables/variableNode";
-
 export enum NodeType {
   number,
   constant,
   variable,
   operator,
   function,
-  set,
   inequation,
   point,
   mesure,
   equality,
   belongs,
   vector,
+  set,
 }
 export type NodeOptions = {
   forceTimesSign?: boolean;
@@ -26,6 +22,7 @@ export type NodeOptions = {
   allowLnOfOne?: boolean;
   allowPowerOne?: boolean;
   allowSimplifySqrt?: boolean;
+  forceParenthesis?: boolean;
 };
 
 export type ToTexOptions = {
@@ -36,7 +33,50 @@ export type ToTexOptions = {
   hideUnit?: boolean;
   notScientific?: boolean;
   forceNoSimplification?: boolean;
+  forceParenthesis?: boolean;
 };
+
+export enum NodeIds {
+  add,
+  substract,
+  multiply,
+  fraction,
+  divide,
+  power,
+  limit,
+  number,
+  percent,
+  constant,
+  variable,
+  belongs,
+  discreteSet,
+  interval,
+  union,
+  complex,
+  equal,
+  multiEqual,
+  equationSolution,
+  abs,
+  arccos,
+  arcsin,
+  arctan,
+  cos,
+  sin,
+  tan,
+  log,
+  log10,
+  exp,
+  sqrt,
+  integral,
+  opposite,
+  degree,
+  length,
+  point,
+  vector,
+  inequation,
+  inequationSolution,
+}
+
 export interface Node {
   type: NodeType;
   opts?: NodeOptions;
@@ -46,12 +86,5 @@ export interface Node {
   toTex: (opts?: ToTexOptions) => string;
   // toMathjs: () => any;
   // simplify: () => Node;
+  toIdentifiers: () => { id: NodeIds } & Record<string, any>;
 }
-
-export const hasVariableNode = (n: Node): boolean => {
-  if (isVariableNode(n)) return true;
-  if (isOperatorNode(n))
-    return hasVariableNode(n.leftChild) || hasVariableNode(n.rightChild);
-  if (isFunctionNode(n)) return hasVariableNode(n.child);
-  return false;
-};

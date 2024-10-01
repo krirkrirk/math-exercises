@@ -11,8 +11,6 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Integer } from "#root/math/numbers/integer/integer";
 import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
-import { DiscreteSet } from "#root/math/sets/discreteSet";
-import { Interval } from "#root/math/sets/intervals/intervals";
 import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";

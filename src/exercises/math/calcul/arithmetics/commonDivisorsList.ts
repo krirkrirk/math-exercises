@@ -38,12 +38,25 @@ const getCommonDivisorsListQuestion: QuestionGenerator<Identifiers> = () => {
   divisorsA.forEach((n) => divisorsB.includes(n) && res.push(n));
 
   res.sort((a, b) => a - b);
-  const answer = res.join(",");
+  const answer = res.join(";");
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Donner la liste des diviseurs communs à $${a}$ et $${b}$ (séparer les valeurs par des virgules).`,
-    keys: [],
+    instruction: `Donner la liste des diviseurs communs à $${a}$ et $${b}$ (séparer les valeurs par des point-virgules).`,
+    keys: ["semicolon"],
     answerFormat: "tex",
+    hint: `Détermine la liste des diviseurs de chaque nombre, puis identifie ceux qu'ils ont en commun.`,
+    correction: `Les diviseurs de $${a}$ sont : 
+
+$${divisorsA.join(";")}$
+
+Les diviseurs de $${b}$ sont : 
+
+$${divisorsB.join(";")}$
+
+Les diviseurs communs à $${a}$ et $${b}$ sont donc : 
+
+$${answer}$
+`,
     identifiers: { a, b },
   };
 
@@ -53,7 +66,7 @@ const getCommonDivisorsListQuestion: QuestionGenerator<Identifiers> = () => {
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const values = answer.split(",").map((v) => Number(v));
+  const values = answer.split(";").map((v) => Number(v));
   const max = Math.max(a, b);
   while (propositions.length < n) {
     const newValue = doWhile(
@@ -67,17 +80,20 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
       : copy.splice(0, 0, newValue);
     tryToAddWrongProp(
       propositions,
-      willRemove ? copy.join(",") : copy.sort((a, b) => a - b).join(","),
+      willRemove ? copy.join(";") : copy.sort((a, b) => a - b).join(";"),
     );
   }
   return shuffleProps(propositions, n);
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  let values = ans.split(",").map((v) => Number(v));
+  let values = ans
+    .replaceAll(",", ";")
+    .split(";")
+    .map((v) => Number(v));
   if (values.some((v) => isNaN(v))) return false;
   values.sort((a, b) => a - b);
-  return values.join(",") === answer;
+  return values.join(";") === answer;
 };
 export const commonDivisorsList: Exercise<Identifiers> = {
   id: "commonDivisorsList",
@@ -92,4 +108,5 @@ export const commonDivisorsList: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

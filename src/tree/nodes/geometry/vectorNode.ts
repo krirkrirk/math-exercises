@@ -1,5 +1,5 @@
 import { AlgebraicNode } from "../algebraicNode";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 
 export class VectorNode implements Node {
   opts?: NodeOptions | undefined;
@@ -18,7 +18,12 @@ export class VectorNode implements Node {
   toAllValidTexs() {
     return this.toEquivalentNodes(this.opts).flatMap((node) => node.toTex());
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.vector,
+      name: this.name,
+    };
+  }
   toEquivalentNodes(opts?: NodeOptions) {
     return [this];
   }

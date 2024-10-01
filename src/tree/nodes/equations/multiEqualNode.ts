@@ -1,4 +1,4 @@
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { permute } from "#root/utils/permutations";
 import { getCartesiansProducts } from "#root/utils/cartesianProducts";
 
@@ -22,6 +22,12 @@ export class MultiEqualNode implements Node {
     return res;
   }
 
+  toIdentifiers() {
+    return {
+      id: NodeIds.multiEqual,
+      children: this.children.map((e) => e.toIdentifiers()),
+    };
+  }
   toAllTexs() {
     const permutations = permute(this.children);
     return permutations.flatMap(

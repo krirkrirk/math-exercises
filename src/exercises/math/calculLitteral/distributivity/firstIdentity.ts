@@ -12,16 +12,12 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Integer } from "#root/math/numbers/integer/integer";
 import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { Polynomial } from "#root/math/polynomials/polynomial";
-import { DiscreteSet } from "#root/math/sets/discreteSet";
-import { Interval } from "#root/math/sets/intervals/intervals";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode, SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { alignTex } from "#root/utils/alignTex";
 import { shuffle } from "#root/utils/shuffle";
-import { statement } from "@babel/template";
-import { v4 } from "uuid";
 
 type Identifiers = {
   a: number;

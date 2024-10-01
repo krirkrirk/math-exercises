@@ -77,4 +77,25 @@ export abstract class Closure {
     else if (right === "[") return ClosureType.OO;
     else return ClosureType.OF;
   }
+
+  static isLeftOpen(closure: ClosureType) {
+    switch (closure) {
+      case ClosureType.FF:
+      case ClosureType.FO:
+        return false;
+      case ClosureType.OF:
+      case ClosureType.OO:
+        return true;
+    }
+  }
+  static isRightOpen(closure: ClosureType) {
+    switch (closure) {
+      case ClosureType.FF:
+      case ClosureType.OF:
+        return false;
+      case ClosureType.OO:
+      case ClosureType.FO:
+        return true;
+    }
+  }
 }

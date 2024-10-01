@@ -11,6 +11,8 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
+import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { alignTex } from "#root/utils/alignTex";
 import { randomLetter } from "#root/utils/randomLetter";
 
 type Identifiers = {
@@ -36,6 +38,23 @@ const getVectorCoordinatesFromTwoPointsQuestion: QuestionGenerator<
     instruction: `Soit $${startLetter}\\left(${A[0]};${A[1]}\\right)$ et $${endLetter}\\left(${B[0]};${B[1]}\\right)$. Quelles sont les coordonnées du vecteur $\\overrightarrow{${startLetter}${endLetter}}$ ?`,
     keys: ["semicolon"],
     answerFormat: "tex",
+    hint: `Si $A(x_A;y_A)$ et $B(x_B;y_B)$ sont deux points, alors le vecteur $\\overrightarrow{AB}$ a pour coordonnées : 
+    
+$\\overrightarrow{AB} \\begin{pmatrix} x_B - x_A \\\\ y_B - y_A \\end{pmatrix}$`,
+    correction: `On a : 
+    
+$${alignTex([
+      [
+        `\\overrightarrow{${startLetter}${endLetter}}  \\begin{pmatrix}
+          ${new SubstractNode(B[0].toTree(), A[0].toTree()).toTex()}
+        \\\\ ${new SubstractNode(
+          B[1].toTree(),
+          A[1].toTree(),
+        ).toTex()}\\end{pmatrix} `,
+        "=",
+        `\\begin{pmatrix}${B[0] - A[0]} \\\\ ${B[1] - A[1]}\\end{pmatrix}`,
+      ],
+    ])}$`,
     identifiers: { A, B },
   };
 
@@ -87,4 +106,5 @@ export const vectorCoordinatesFromTwoPoints: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

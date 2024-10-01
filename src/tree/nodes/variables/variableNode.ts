@@ -1,5 +1,5 @@
 import { AlgebraicNode } from "../algebraicNode";
-import { Node, NodeType } from "../node";
+import { Node, NodeIds, NodeType } from "../node";
 
 export function isVariableNode(a: Node): a is VariableNode {
   return a.type === NodeType.variable;
@@ -12,7 +12,12 @@ export class VariableNode implements AlgebraicNode {
     this.name = name;
     this.isNumeric = false;
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.variable,
+      name: this.name,
+    };
+  }
   toTex(): string {
     return `${this.name}`;
   }

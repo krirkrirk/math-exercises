@@ -1,7 +1,8 @@
-import { Node, NodeType, hasVariableNode } from "../node";
+import { Node, NodeIds, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
+import { hasVariableNode } from "../hasVariableNode";
 
 export function isArctanNode(a: Node): a is ArctanNode {
   return isFunctionNode(a) && a.id === FunctionsIds.arctan;
@@ -19,7 +20,12 @@ export class ArctanNode implements FunctionNode {
     this.type = NodeType.function;
     this.isNumeric = child.isNumeric;
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.arctan,
+      child: this.child.toIdentifiers(),
+    };
+  }
   toMathString(): string {
     return `arctan(${this.child.toMathString()})`;
   }

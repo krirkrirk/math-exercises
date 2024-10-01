@@ -11,10 +11,13 @@ import {
 } from "#root/tree/nodes/numbers/infiniteNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { Closure, ClosureType } from "#root/tree/nodes/sets/closure";
+import {
+  DiscreteSetNode,
+  EmptySet,
+} from "#root/tree/nodes/sets/discreteSetNode";
 import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { coinFlip } from "#root/utils/coinFlip";
 import { diceFlip } from "#root/utils/diceFlip";
-import { DiscreteSet } from "../discreteSet";
 import { MathSet } from "../mathSet";
 import { MathSetInterface } from "../mathSetInterface";
 
@@ -88,6 +91,7 @@ export class Interval implements MathSetInterface {
   leftInequalitySymbol: "\\le" | "<";
   rightInequalitySymbol: "\\le" | "<";
   tex: string;
+  isEmpty: boolean;
   constructor(min: AlgebraicNode, max: AlgebraicNode, closure: ClosureType) {
     this.closure = closure;
     this.minNode = min;
@@ -103,6 +107,7 @@ export class Interval implements MathSetInterface {
     this.leftInequalitySymbol = this.leftBracket === "[" ? "\\le" : "<";
     this.rightInequalitySymbol = this.rightBracket === "]" ? "\\le" : "<";
     this.tex = this.toTex();
+    this.isEmpty = false;
   }
 
   equals(interval: Interval) {
@@ -145,7 +150,7 @@ export class Interval implements MathSetInterface {
       const firstInterval = this.min < interval.min ? this : interval;
       const secondInterval = this.min < interval.min ? interval : this;
       return new MathSet(
-        `${unionLeftBracket}\\ ${firstInterval.minTex};${firstInterval.maxTex}\\ ${firstInterval.rightBracket}\\ \\cup\\ ${secondInterval.leftBracket}\\ ${secondInterval.minTex};${secondInterval.maxTex}\\ ${unionRightBracket}\\ `,
+        `${unionLeftBracket}${firstInterval.minTex};${firstInterval.maxTex}${firstInterval.rightBracket}\\cup${secondInterval.leftBracket}${secondInterval.minTex};${secondInterval.maxTex}${unionRightBracket}`,
         () =>
           coinFlip()
             ? firstInterval.getRandomElement()
@@ -157,7 +162,7 @@ export class Interval implements MathSetInterface {
     }
   }
 
-  intersection(interval: Interval): MathSet {
+  intersection(interval: Interval) {
     const a = this.min;
     const b = this.max;
     const c = interval.min;
@@ -171,21 +176,22 @@ export class Interval implements MathSetInterface {
         (this.rightBracket === "[" || interval.leftBracket === "]")) ||
       (a === d && (interval.rightBracket === "[" || this.leftBracket === "]"));
     if (isDisjoint) {
-      return new MathSet("\\varnothing", () => null);
+      return EmptySet;
     }
     const winningLeftBracket = (brack1: "]" | "[", brack2: "]" | "[") =>
       brack1 === "]" || brack2 === "]" ? "]" : "[";
     const winningRightBracket = (brack1: "]" | "[", brack2: "]" | "[") =>
       brack1 === "[" || brack2 === "[" ? "[" : "]";
     let min = a >= c ? this.minNode : interval.minNode;
+    const max = b <= d ? this.maxNode : interval.maxNode;
+
+    if (min === max) return new DiscreteSetNode([min]);
     let leftBracket =
       a === c
         ? winningLeftBracket(this.leftBracket, interval.leftBracket)
         : a > c
         ? this.leftBracket
         : interval.leftBracket;
-
-    const max = b <= d ? this.maxNode : interval.maxNode;
 
     let rightBracket =
       b === d
@@ -195,16 +201,14 @@ export class Interval implements MathSetInterface {
         : interval.rightBracket;
 
     const closure = Closure.fromBrackets(leftBracket, rightBracket);
-    return new Interval(min, max, closure);
+    return new Interval(min, max, closure).toTree();
   }
 
   insideToTex(): string {
     return `${this.minTex};${this.maxTex}`;
   }
   toTex(): string {
-    return `${this.leftBracket}\\ ${this.insideToTex()}\\ ${
-      this.rightBracket
-    }\\ `;
+    return `${this.leftBracket}${this.insideToTex()}${this.rightBracket}`;
   }
 
   toInequality(): string {

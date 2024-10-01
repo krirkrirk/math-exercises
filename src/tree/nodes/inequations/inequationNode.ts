@@ -5,7 +5,8 @@ import {
 import { getCartesiansProducts } from "#root/utils/cartesianProducts";
 import { isLetter } from "#root/utils/isLetter";
 import { random } from "#root/utils/random";
-import { Node, NodeOptions, NodeType } from "../node";
+import e from "express";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { MinusInfinityNode, PlusInfinityNode } from "../numbers/infiniteNode";
 import { ClosureType } from "../sets/closure";
 import { IntervalNode } from "../sets/intervalNode";
@@ -41,7 +42,13 @@ export class InequationNode implements Node {
     }
     this.type = NodeType.inequation;
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.inequation,
+      children: this.children.map((e) => e.toIdentifiers()),
+      symbols: this.symbols,
+    };
+  }
   toInterval() {
     if (this.children.length > 3)
       throw Error("can't build interval with this inequality");

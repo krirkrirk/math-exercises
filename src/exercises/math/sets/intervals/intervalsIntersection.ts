@@ -13,7 +13,13 @@ import {
   Interval,
   IntervalConstructor,
 } from "#root/math/sets/intervals/intervals";
-import { ClosureType } from "#root/tree/nodes/sets/closure";
+import { MathSet } from "#root/math/sets/mathSet";
+import { Closure, ClosureType } from "#root/tree/nodes/sets/closure";
+import {
+  DiscreteSetNode,
+  isDiscreteSetNode,
+} from "#root/tree/nodes/sets/discreteSetNode";
+import { isIntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
@@ -29,7 +35,8 @@ const getIntervalsIntersectionQuestion: QuestionGenerator<Identifiers> = () => {
   const [int1, int2] = IntervalConstructor.differentRandoms(2);
   const inter = int1.intersection(int2);
 
-  const answer = inter.tex;
+  const answer = inter.toTex();
+
   const question: Question<Identifiers> = {
     answer,
     instruction: `Soit $I = ${int1.toTex()}$ et $J = ${int2.toTex()}$. Déterminer $I\\cap J$.`,
@@ -41,6 +48,8 @@ const getIntervalsIntersectionQuestion: QuestionGenerator<Identifiers> = () => {
       "semicolon",
       "cup",
       "cap",
+      "lbrace",
+      "rbrace",
     ],
     answerFormat: "tex",
     identifiers: {
@@ -51,6 +60,24 @@ const getIntervalsIntersectionQuestion: QuestionGenerator<Identifiers> = () => {
       int2Max: int2.max,
       int2Min: int2.min,
     },
+    hint: `Détermine l'ensemble des nombres qui appartiennent à la fois à $I$ et à $J$.`,
+    correction: `$I$ contient les nombres ${int1.toTree().toText(true, false)}. 
+    
+$J$ contient les nombres ${int2.toTree().toText(false, false)}.
+    
+${
+  isDiscreteSetNode(inter) && inter.elements.length === 0
+    ? `Il n'y a donc aucun nombre commun aux intervalles $I$ et $J$.`
+    : isDiscreteSetNode(inter) && inter.elements.length === 1
+    ? `Il n'y a donc qu'un nombre commun aux intervalles $I$ et $J$ : $${inter.elements[0].toTex()}$.`
+    : isIntervalNode(inter) &&
+      `Les nombres communs à $I$ et $J$ sont donc les nombres ${inter.toText(
+        true,
+        false,
+      )}.`
+}
+    
+Ainsi, $I\\cap J = ${answer}$`,
   };
 
   return question;
@@ -93,4 +120,5 @@ export const intervalsIntersection: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

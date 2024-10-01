@@ -11,8 +11,8 @@ export const operatorComposition = <T extends Class<CommutativeOperatorNode>>(
 ) => {
   let res: InstanceType<T>;
 
-  if (arr.length < 2)
-    throw Error(`received ${arr.length} nodes for operator composition`);
+  if (!arr.length) throw Error(`received no nodes for operator composition`);
+  if (arr.length == 1) return arr[0] as unknown as InstanceType<T>;
   res = new Compositor(arr[0], arr[1]) as unknown as InstanceType<T>;
   for (let i = 2; i < arr.length; i++) {
     res = new Compositor(res, arr[i]) as unknown as InstanceType<T>;

@@ -1,4 +1,4 @@
-import { NodeType } from "#root/tree/nodes/node";
+import { NodeIds, NodeType } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 
 import { Rational } from "../numbers/rationals/rational";
@@ -43,7 +43,14 @@ export class Point {
   toTex(): string {
     return `${this.name}`;
   }
-
+  toIdentifiers() {
+    return {
+      id: "point",
+      name: this.name,
+      x: this.x.toIdentifiers(),
+      y: this.y.toIdentifiers(),
+    };
+  }
   toTexWithCoords(): string {
     return `${this.name}\\left(${this.x.toTex()};${this.y.toTex()}\\right)`;
   }

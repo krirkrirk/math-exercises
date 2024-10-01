@@ -1,5 +1,5 @@
 import { AlgebraicNode } from "../algebraicNode";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 export function isLengthNode(a: Node): a is LengthNode {
   return a.type === NodeType.mesure;
 }
@@ -21,7 +21,12 @@ export class LengthNode implements AlgebraicNode {
   toAllValidTexs() {
     return this.toEquivalentNodes(this.opts).flatMap((node) => node.toTex());
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.length,
+      name: this.segmentName,
+    };
+  }
   toEquivalentNodes(opts?: NodeOptions) {
     return [
       this,

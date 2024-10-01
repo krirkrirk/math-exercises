@@ -7,6 +7,7 @@ export enum SetIds {
 }
 export interface SetNode extends Node {
   id: SetIds;
+  isEmpty: boolean;
   toEquivalentNodes: (opts?: NodeOptions) => SetNode[];
 }
 

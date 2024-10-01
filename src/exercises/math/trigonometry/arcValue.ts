@@ -17,6 +17,10 @@ import { SinNode } from "#root/tree/nodes/functions/sinNode";
 import { CosNode } from "#root/tree/nodes/functions/cosNode";
 import { TanNode } from "#root/tree/nodes/functions/tanNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { ArcsinNode } from "#root/tree/nodes/functions/arcSinNode";
+import { ArccosNode } from "#root/tree/nodes/functions/arccosNode";
+import { alignTex } from "#root/utils/alignTex";
+import { ArctanNode } from "#root/tree/nodes/functions/arctanNode";
 
 type Identifiers = {
   trigFunction: string;
@@ -58,6 +62,12 @@ const getArcValueQuestion: QuestionGenerator<Identifiers> = () => {
       ? new CosNode(new VariableNode("\\theta"))
       : new TanNode(new VariableNode("\\theta"));
 
+  const reciprocalFunction =
+    selectedFunction === "sin"
+      ? { name: "arcsin", otherName: "\\sin^{-1}", node: ArcsinNode }
+      : selectedFunction === "cos"
+      ? { name: "arccos", otherName: "\\cos^{-1}", node: ArccosNode }
+      : { name: "arctan", otherName: "\\tan^{-1}", node: ArctanNode };
   const instruction = `Quelle est la valeur en degrés de l'angle $\\theta$ sachant que $${trigNode.toTex()} = ${trigValue.frenchify()}$ ? Arrondir à l'unité.`;
   const answer = round(angleInDegrees, 0).toTree().toTex();
 
@@ -66,6 +76,25 @@ const getArcValueQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: instruction,
     keys: [],
     answerFormat: "tex",
+    hint: `La valeur de $\\theta$ s'obtient en calculant l'${
+      reciprocalFunction.name
+    } (ou $${
+      reciprocalFunction.otherName
+    }$) de la valeur $${trigValue.frenchify()}$, avec la calculatrice.`,
+    correction: `On calcule l'${reciprocalFunction.name} (ou $${
+      reciprocalFunction.otherName
+    }$) de  $${trigValue.frenchify()}$ avec la calculatrice : 
+    
+${alignTex([
+  [
+    `${new reciprocalFunction.node(new NumberNode(trigValue)).toTex()}`,
+    "\\approx",
+    round(angleInDegrees, 3).toTree().toTex(),
+  ],
+])}
+
+En arrondissant à l'unité, on a donc $\\theta \\approx ${answer}°$.`,
+
     identifiers: { trigFunction: selectedFunction, trigValue, angleInDegrees },
   };
 
@@ -102,4 +131,5 @@ export const arcValue: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

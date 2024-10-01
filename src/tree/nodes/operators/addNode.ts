@@ -1,5 +1,5 @@
 // import { add } from "mathjs";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType, ToTexOptions } from "../node";
 import {
   CommutativeOperatorNode,
   OperatorIds,
@@ -21,10 +21,6 @@ export function isAddNode(a: Node): a is AddNode {
   return isOperatorNode(a) && a.id === OperatorIds.add;
 }
 
-const addNodeToTex = (leftTex: string, rightTex: string) => {
-  if (rightTex === "0") return leftTex;
-  return `${leftTex}${rightTex[0] === "-" ? "" : "+"}${rightTex}`;
-};
 export class AddNode implements CommutativeOperatorNode {
   id: OperatorIds;
   leftChild: AlgebraicNode;
@@ -100,7 +96,13 @@ export class AddNode implements CommutativeOperatorNode {
 
   toTex(): string {
     const rightTex = this.rightChild.toTex();
-    return addNodeToTex(this.leftChild.toTex(), rightTex);
+
+    const leftTex = this.leftChild.toTex();
+    if (rightTex === "0") return leftTex;
+    const tex = `${leftTex}${rightTex[0] === "-" ? "" : "+"}${rightTex}`;
+    if (this.opts?.forceParenthesis) {
+      return `\\left(${tex}\\right)`;
+    } else return tex;
   }
   evaluate(vars: Record<string, number>) {
     return this.leftChild.evaluate(vars) + this.rightChild.evaluate(vars);
@@ -278,7 +280,13 @@ export class AddNode implements CommutativeOperatorNode {
     if (externals.length === 1) return externals[0];
     return operatorComposition(AddNode, externals);
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.add,
+      leftChild: this.leftChild.toIdentifiers(),
+      rightChild: this.rightChild.toIdentifiers(),
+    };
+  }
   equals(node: AlgebraicNode): boolean {
     //!incorrect, il faut plutot vérifier qu'ils ont les meme externals
     return (

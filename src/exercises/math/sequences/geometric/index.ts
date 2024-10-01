@@ -7,3 +7,4 @@ export * from "./geometricRecurrenceFormulaUsage";
 export * from "./geometricFindExplicitFormulaFirstTermRandom";
 export * from "./geometricFindTerm";
 export * from "./geometricRecognizeReasonFromFirstTerms";
+export * from "./geometricFirstTermsGeneralSum";

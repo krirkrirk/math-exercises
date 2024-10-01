@@ -1,5 +1,5 @@
 // import { unaryMinus } from "mathjs";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import {
   OperatorIds,
   OperatorNode,
@@ -30,6 +30,12 @@ export class OppositeNode implements FunctionNode {
     this.type = NodeType.function;
     this.opts = opts;
     this.isNumeric = child.isNumeric;
+  }
+  toIdentifiers() {
+    return {
+      id: NodeIds.opposite,
+      child: this.child.toIdentifiers(),
+    };
   }
   toMathString(): string {
     return `-(${this.child.toMathString()})`;
@@ -101,7 +107,7 @@ export class OppositeNode implements FunctionNode {
     if (isNumberNode(this.child)) return new NumberNode(-this.child.value);
     return new MultiplyNode(new NumberNode(-1), this.child).simplify(opts);
   }
-  equals(node: AlgebraicNode) {
+  equals(node: AlgebraicNode): boolean {
     return isOppositeNode(node) && node.child.equals(this.child);
   }
 }

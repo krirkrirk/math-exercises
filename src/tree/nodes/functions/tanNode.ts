@@ -1,7 +1,8 @@
-import { Node, NodeType, hasVariableNode } from "../node";
+import { Node, NodeIds, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
+import { hasVariableNode } from "../hasVariableNode";
 
 export function isTanNode(a: Node): a is TanNode {
   return isFunctionNode(a) && a.id === FunctionsIds.tan;
@@ -19,7 +20,12 @@ export class TanNode implements FunctionNode {
     this.type = NodeType.function;
     this.isNumeric = child.isNumeric;
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.tan,
+      child: this.child.toIdentifiers(),
+    };
+  }
   toMathString(): string {
     return `tan(${this.child.toMathString()})`;
   }

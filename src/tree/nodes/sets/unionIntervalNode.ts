@@ -2,7 +2,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { getCartesiansProducts } from "#root/utils/cartesianProducts";
 import { permute } from "#root/utils/permutations";
 import { AlgebraicNode } from "../algebraicNode";
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { MinusInfinityNode } from "../numbers/infiniteNode";
 import { ClosureType } from "./closure";
 import { IntervalNode } from "./intervalNode";
@@ -58,6 +58,12 @@ export class UnionIntervalNode implements Node {
   }
 
   toTex() {
-    return this.sets.map((set) => set.toTex()).join("\\cup\\ ");
+    return this.sets.map((set) => set.toTex()).join("\\cup");
+  }
+  toIdentifiers() {
+    return {
+      id: NodeIds.union,
+      children: this.sets.map((set) => set.toIdentifiers()),
+    };
   }
 }

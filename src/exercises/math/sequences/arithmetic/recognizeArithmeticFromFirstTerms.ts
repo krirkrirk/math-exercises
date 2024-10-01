@@ -55,15 +55,17 @@ const getRecognizeArithmeticFromFirstTermsQuestion: QuestionGenerator<
 
   const answerIndex = randint(0, 4);
   sequences.splice(answerIndex, 0, rightSequence);
-  const answer = `\\text{Suite ${answerIndex + 1} : }${rightSequence.join(
-    "\\ ; \\ ",
-  )}`;
+  const names = ["u", "v", "w", "z"];
+  const answer = `\\text{Suite } ${
+    names[answerIndex]
+  } : \\quad ${rightSequence.join("\\ ; \\ ")}`;
   const question: Question<Identifiers> = {
     answer,
     instruction: `Parmi les suites suivantes, laquelle semble être arithmétique ?`,
     keys: [],
     answerFormat: "tex",
-
+    hint: `Une suite est arithmétique lorsque, pour passer d'un terme au suivant, on additionne ou on soustrait toujours par le même nombre.`,
+    correction: `La suite $${names[answerIndex]}$ semble bien être arithmétique, puisque pour passer d'un terme au suivant, on additionne par $${reason}$.`,
     identifiers: { sequences, answerIndex },
   };
 
@@ -76,11 +78,13 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
+  const names = ["u", "v", "w", "z"];
+
   sequences.forEach((sequence, index) => {
     if (index === answerIndex) return;
     addWrongProp(
       propositions,
-      `\\text{Suite ${index + 1} : }${sequence.join("\\ ; \\ ")}`,
+      `\\text{Suite } ${names[index]} : \\quad ${sequence.join("\\ ; \\ ")}`,
     );
   });
   return shuffle(propositions);
@@ -103,4 +107,5 @@ export const recognizeArithmeticFromFirstTerms: Exercise<Identifiers> = {
   isAnswerValid,
   answerType: "QCU",
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

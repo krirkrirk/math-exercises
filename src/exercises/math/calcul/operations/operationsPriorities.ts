@@ -30,14 +30,14 @@ type Identifiers = {
   a: number;
   b: number;
   c: number;
-  d: number;
+  d: number | undefined;
 };
 
 const getPriorityQuestions: QuestionGenerator<Identifiers> = () => {
-  const type = randint(1, 6);
+  const type = randint(1, 9);
   let startStatement = "";
   let answer: string = "";
-  let a: number, b: number, c: number, d: number;
+  let a: number, b: number, c: number, d: number | undefined;
   let statement: AddNode;
   switch (type) {
     case 1: // a*b ±c±d
@@ -114,10 +114,8 @@ const getPriorityQuestions: QuestionGenerator<Identifiers> = () => {
       startStatement = statement.toTex();
       answer = (a / b + c / d).toString();
       break;
-    case 5: // a*b*c ± d
-      [b, d] = [1, 2].map((el) => randint(-10, 11, [0]));
-      a = b * randint(0, 11);
-      c = d * randint(0, 11);
+    case 6: // a*b*c ± d
+      [a, b, c, d] = [1, 2, 3, 4].map((el) => randint(-10, 11, [0]));
       statement = new AddNode(
         new MultiplyNode(
           new MultiplyNode(new NumberNode(a), new NumberNode(b)),
@@ -128,6 +126,27 @@ const getPriorityQuestions: QuestionGenerator<Identifiers> = () => {
       statement.shuffle();
       startStatement = statement.toTex();
       answer = (a * b * c + d).toString();
+      break;
+    case 7: //a/b*c et c*a/b
+      b = randint(2, 10);
+      a = b * randint(2, 10);
+      c = randint(2, 10);
+      statement = new MultiplyNode(
+        new DivideNode(a.toTree(), b.toTree()),
+        c.toTree(),
+      );
+      (statement as MultiplyNode).shuffle();
+      answer = ((a / b) * c).frenchify();
+      startStatement = statement.toTex();
+
+      break;
+    case 8: //a+-b+-c
+      a = randint(-15, 15);
+      b = randint(-10, 10);
+      c = b > 0 ? randint(-10, 0) : randint(-10, 10);
+      statement = new AddNode(new AddNode(a.toTree(), b.toTree()), c.toTree());
+      answer = (a + b + c).frenchify();
+      startStatement = statement.toTex();
       break;
     default:
       throw Error("impossible");

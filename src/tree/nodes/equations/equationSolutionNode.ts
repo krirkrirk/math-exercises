@@ -1,4 +1,4 @@
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { DiscreteSetNode } from "../sets/discreteSetNode";
 
 type EquationSolutionNodeOptions = { variable?: string; opts?: NodeOptions };
@@ -23,6 +23,12 @@ export class EquationSolutionNode implements Node {
       : { allowRawRightChildAsSolution: true };
   }
 
+  toIdentifiers() {
+    return {
+      id: NodeIds.equationSolution,
+      solutionsSet: this.solutionsSet.toIdentifiers(),
+    };
+  }
   toAllValidTexs() {
     return this.toEquivalentNodes(this.opts).flatMap((el) => el.toAllTexs());
   }

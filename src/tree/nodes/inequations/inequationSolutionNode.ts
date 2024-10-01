@@ -1,4 +1,4 @@
-import { Node, NodeOptions, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { IntervalNode, isIntervalNode } from "../sets/intervalNode";
 import { UnionIntervalNode } from "../sets/unionIntervalNode";
 
@@ -23,7 +23,12 @@ export class InequationSolutionNode implements Node {
         }
       : { allowRawRightChildAsSolution: true };
   }
-
+  toIdentifiers() {
+    return {
+      id: NodeIds.inequationSolution,
+      intervalSolution: this.intervalSolution.toIdentifiers(),
+    };
+  }
   toAllTexs() {
     const intervalTex = this.intervalSolution.toTex();
     const res = [
@@ -60,6 +65,6 @@ export class InequationSolutionNode implements Node {
     return `S={${this.intervalSolution.toMathjs()}}`;
   }
   toTex() {
-    return `S=\\ ${this.intervalSolution.toTex()}`;
+    return `S=${this.intervalSolution.toTex()}`;
   }
 }

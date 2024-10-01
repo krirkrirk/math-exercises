@@ -54,7 +54,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   const int1 = new Interval(int1Min.toTree(), int1Max.toTree(), int1Closure);
   const int2 = new Interval(int2Min.toTree(), int2Max.toTree(), int2Closure);
-  tryToAddWrongProp(propositions, int1.intersection(int2).tex);
+  tryToAddWrongProp(propositions, int1.intersection(int2).toTex());
 
   while (propositions.length < n) {
     const wrongAnswer = IntervalConstructor.random().tex;
