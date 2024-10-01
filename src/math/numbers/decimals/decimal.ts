@@ -195,4 +195,23 @@ export class Decimal implements Nombre {
   toPercentNode() {
     return new PercentNode(this.multiplyByPowerOfTen(2).value);
   }
+
+  toLowerBound(tenthPower: number) {
+    if (tenthPower > 0) throw Error("not implemented : lower bound positive");
+    const rounded = round(this.value, -tenthPower);
+    if (rounded > this.value)
+      return new Decimal(
+        round(rounded - Math.pow(10, tenthPower), -tenthPower),
+      );
+    else return new Decimal(rounded);
+  }
+  toUpperBound(tenthPower: number) {
+    if (tenthPower > 0) throw Error("not implemented : lower bound positive");
+    const rounded = round(this.value, -tenthPower);
+    if (rounded < this.value)
+      return new Decimal(
+        round(rounded + Math.pow(10, tenthPower), -tenthPower),
+      );
+    else return new Decimal(rounded);
+  }
 }

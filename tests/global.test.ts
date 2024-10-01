@@ -171,8 +171,14 @@ test("all exos", () => {
             };
           }
           expect(props.length).toBeLessThan(5);
-
-          expect(props.filter((prop) => prop.isRightAnswer).length).toBe(1);
+          const rightAnswerCount = props.filter(
+            (prop) => prop.isRightAnswer,
+          ).length;
+          if (exo.isQCM) {
+            expect(rightAnswerCount).toBeGreaterThan(1);
+          } else {
+            expect(rightAnswerCount).toBe(1);
+          }
 
           props.forEach((prop) => {
             expect(prop.statement.match(dotDecimalPattern)).toBe(null);

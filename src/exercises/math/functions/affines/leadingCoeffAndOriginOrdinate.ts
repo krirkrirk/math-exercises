@@ -69,7 +69,7 @@ const generateExercise = (): ExerciseType => {
   const f = AffineConstructor.random();
   const instruction = `Soit la fonction affine $f(x)=${f.toTex()}$. ${
     flip
-      ? `Déterminer la valeur du coefficient directeur`
+      ? `Déterminer la valeur du coefficient directeur.`
       : `Déterminer la valeur de l'ordonnée à l'origine.`
   }`;
   return {

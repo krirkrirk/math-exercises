@@ -23,7 +23,7 @@ type Identifiers = {
 const getIntegerOrderingQuestion: QuestionGenerator<Identifiers> = () => {
   let a: number;
   let b: number;
-  if (coinFlip()) {
+  if (probaFlip(0.66)) {
     a = randint(-20, 0);
     b = randint(-20, 0, [a]);
   } else {
@@ -38,7 +38,7 @@ const getIntegerOrderingQuestion: QuestionGenerator<Identifiers> = () => {
   const answer = a < b ? "<" : ">";
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Compléter par le bon symbole : $${a}\\ \\ldots \\ldots \\ ${b}$`,
+    instruction: `Compléter par le bon symbole : $${a}\\ ...... \\ ${b}$`,
     keys: [],
     answerFormat: "tex",
     identifiers: { a, b },
@@ -73,6 +73,6 @@ export const integerOrdering: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  answerType: "QCM",
+  answerType: "QCU",
   subject: "Mathématiques",
 };

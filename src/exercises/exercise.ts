@@ -1,4 +1,5 @@
 import { KeyId } from "#root/types/keyIds";
+import { KeyProps } from "#root/types/keyProps";
 import { shuffle } from "#root/utils/shuffle";
 import { uuid } from "uuidv4";
 
@@ -61,7 +62,7 @@ export interface Question<TIdentifiers = {}> {
   answer?: string;
   answerFormat?: "tex" | "raw";
   ggbAnswer?: string[];
-  keys?: KeyId[];
+  keys?: (KeyId | KeyProps)[];
   commands?: string[];
   coords?: number[];
   options?: {
