@@ -158,8 +158,8 @@ const getTwoFunctionsInequationQuestion: QuestionGenerator<
   );
   const answer =
     intervalsNodes.length === 1
-      ? `S=\\ ${intervalsNodes[0].toTex()}`
-      : `S=\\ ${new UnionIntervalNode(intervalsNodes).toTex()}`;
+      ? `S=${intervalsNodes[0].toTex()}`
+      : `S=${new UnionIntervalNode(intervalsNodes).toTex()}`;
   const question: Question<Identifiers> = {
     answer,
     instruction: `Déterminer graphiquement les solutions de l'inéquation $f(x) ${ineq.symbol} g(x)$ où $f$ et $g$ sont les fonctions représentées ci-dessous.`,
@@ -205,7 +205,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
     );
     tryToAddWrongProp(
       propositions,
-      `S=\\ ${interval.toRandomDifferentClosure().toTex()}`,
+      `S=${interval.toRandomDifferentClosure().toTex()}`,
     );
   } else {
     const rightIntervals = intervals.map(
@@ -217,11 +217,11 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
     tryToAddWrongProp(
       propositions,
-      `S=\\ ${rightIntervals[coinFlip() ? 0 : 1].toTex()}`,
+      `S=${rightIntervals[coinFlip() ? 0 : 1].toTex()}`,
     );
     tryToAddWrongProp(
       propositions,
-      `S=\\ ${new UnionIntervalNode(
+      `S=${new UnionIntervalNode(
         fakeIntervals.map((i) => i.toRandomDifferentClosure()),
       ).toTex()}`,
     );
@@ -234,7 +234,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
     const x4 = randint(x3 + 1, x3 + 3);
     tryToAddWrongProp(
       propositions,
-      `S=\\ ${new UnionIntervalNode([
+      `S=${new UnionIntervalNode([
         new IntervalNode(
           x1.toTree(),
           x2.toTree(),

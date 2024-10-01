@@ -150,7 +150,7 @@ export class Interval implements MathSetInterface {
       const firstInterval = this.min < interval.min ? this : interval;
       const secondInterval = this.min < interval.min ? interval : this;
       return new MathSet(
-        `${unionLeftBracket}\\ ${firstInterval.minTex};${firstInterval.maxTex}\\ ${firstInterval.rightBracket}\\ \\cup\\ ${secondInterval.leftBracket}\\ ${secondInterval.minTex};${secondInterval.maxTex}\\ ${unionRightBracket}\\ `,
+        `${unionLeftBracket}${firstInterval.minTex};${firstInterval.maxTex}${firstInterval.rightBracket}\\cup${secondInterval.leftBracket}${secondInterval.minTex};${secondInterval.maxTex}${unionRightBracket}`,
         () =>
           coinFlip()
             ? firstInterval.getRandomElement()
@@ -208,9 +208,7 @@ export class Interval implements MathSetInterface {
     return `${this.minTex};${this.maxTex}`;
   }
   toTex(): string {
-    return `${this.leftBracket}\\ ${this.insideToTex()}\\ ${
-      this.rightBracket
-    }\\ `;
+    return `${this.leftBracket}${this.insideToTex()}${this.rightBracket}`;
   }
 
   toInequality(): string {

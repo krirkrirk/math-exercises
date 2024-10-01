@@ -18,6 +18,7 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { DivideNode } from "#root/tree/nodes/operators/divideNode";
@@ -37,7 +38,7 @@ type Identifiers = {
 const getOperationsPrioritiesWithoutRelative: QuestionGenerator<
   Identifiers
 > = () => {
-  const type = randint(1, 7);
+  const type = randint(1, 9);
   const flip = randint(1, 4);
   let startStatement = "";
   let answer: string = "";
@@ -45,7 +46,7 @@ const getOperationsPrioritiesWithoutRelative: QuestionGenerator<
     b = 1,
     c = 1,
     d = 1;
-  let statement: AddNode;
+  let statement: AlgebraicNode;
   switch (type) {
     case 1: // a*b ± c±d
       switch (flip) {
@@ -267,6 +268,27 @@ const getOperationsPrioritiesWithoutRelative: QuestionGenerator<
         startStatement = statement.toTex();
         answer = (a * b * c + d).toString();
       }
+      break;
+    case 7: //a/b*c et c*a/b
+      b = randint(2, 10);
+      a = b * randint(2, 10);
+      c = randint(2, 10);
+      statement = new MultiplyNode(
+        new DivideNode(a.toTree(), b.toTree()),
+        c.toTree(),
+      );
+      (statement as MultiplyNode).shuffle();
+      answer = ((a / b) * c).frenchify();
+      startStatement = statement.toTex();
+
+      break;
+    case 8: //a+-b+-c
+      a = randint(5, 15);
+      b = randint(-a, 10);
+      c = b > 0 ? randint(-(a + b), 0) : randint(-(a + b), 10);
+      statement = new AddNode(new AddNode(a.toTree(), b.toTree()), c.toTree());
+      answer = (a + b + c).frenchify();
+      startStatement = statement.toTex();
       break;
     default:
       throw Error("impossible");

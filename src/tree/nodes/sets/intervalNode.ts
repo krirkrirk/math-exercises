@@ -159,7 +159,7 @@ export class IntervalNode implements SetNode {
       this.closure === ClosureType.FF || this.closure === ClosureType.OF
         ? "]"
         : "[";
-    return `${left}\\ ${this.a.toTex()};${this.b.toTex()}\\ ${right}\\ `;
+    return `${left}${this.a.toTex()};${this.b.toTex()}${right}`;
   }
   toIdentifiers() {
     return {

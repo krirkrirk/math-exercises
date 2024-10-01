@@ -100,8 +100,8 @@ const getGraphicInequationQuestion: QuestionGenerator<Identifiers> = () => {
   );
   const answer =
     intervalsNodes.length === 1
-      ? `S=\\ ${intervalsNodes[0].toTex()}`
-      : `S=\\ ${new UnionIntervalNode(intervalsNodes).toTex()}`;
+      ? `S=${intervalsNodes[0].toTex()}`
+      : `S=${new UnionIntervalNode(intervalsNodes).toTex()}`;
 
   const commands = [
     `S =Spline(${splinePoints
@@ -161,7 +161,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
     );
     tryToAddWrongProp(
       propositions,
-      `S=\\ ${interval.toRandomDifferentClosure().toTex()}`,
+      `S=${interval.toRandomDifferentClosure().toTex()}`,
     );
   } else if (intervals.length === 2) {
     const rightIntervals = intervals.map(
@@ -173,11 +173,11 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
     tryToAddWrongProp(
       propositions,
-      `S=\\ ${rightIntervals[coinFlip() ? 0 : 1].toTex()}`,
+      `S=${rightIntervals[coinFlip() ? 0 : 1].toTex()}`,
     );
     tryToAddWrongProp(
       propositions,
-      `S=\\ ${new UnionIntervalNode(
+      `S=${new UnionIntervalNode(
         fakeIntervals.map((i) => i.toRandomDifferentClosure()),
       ).toTex()}`,
     );
@@ -195,7 +195,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
     if (a > b) [a, b] = [b, a];
     tryToAddWrongProp(
       propositions,
-      `S=\\ ${new IntervalNode(
+      `S=${new IntervalNode(
         new NumberNode(a),
         new NumberNode(b),
         ClosureType.FF,

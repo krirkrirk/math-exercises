@@ -22,6 +22,7 @@ export type NodeOptions = {
   allowLnOfOne?: boolean;
   allowPowerOne?: boolean;
   allowSimplifySqrt?: boolean;
+  forceParenthesis?: boolean;
 };
 
 export type ToTexOptions = {
@@ -32,6 +33,7 @@ export type ToTexOptions = {
   hideUnit?: boolean;
   notScientific?: boolean;
   forceNoSimplification?: boolean;
+  forceParenthesis?: boolean;
 };
 
 export enum NodeIds {
