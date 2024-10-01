@@ -26,7 +26,7 @@ type Identifiers = {
 const getMultiplyDecimalByNegativeTensQuestion: QuestionGenerator<
   Identifiers
 > = () => {
-  const dec = DecimalConstructor.random(-200, 200, randint(1, 5));
+  const dec = DecimalConstructor.random(1, 200, randint(1, 5));
   const pow = -randint(1, 4);
   const factor = Math.pow(10, pow);
   const answer = dec.multiplyByPowerOfTen(pow).toTree().toTex();
