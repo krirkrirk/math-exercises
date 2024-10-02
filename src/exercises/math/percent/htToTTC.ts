@@ -28,7 +28,7 @@ const getHtToTtcQuestion: QuestionGenerator<Identifiers> = () => {
   const answer = round(ht * (1 + TVA / 100), 2).frenchify();
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Un object coûte $${ht.frenchify()}€$ en HT. Quel est son prix TTC, sachant que la TVA est de $${TVA.frenchify()}\\%$ ? (arrondir au centième)`,
+    instruction: `Un objet coûte $${ht.frenchify()}€$ en HT. Quel est son prix TTC, sachant que la TVA est de $${TVA.frenchify()}\\%$ ? (arrondir au centième)`,
     keys: [],
     answerFormat: "tex",
     identifiers: { TVA, ht },
