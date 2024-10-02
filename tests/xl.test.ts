@@ -4,6 +4,11 @@ import * as PCExercises from "./../src/exercises/pc";
 import "../src/prototypesEnhancement";
 const pcExercises = Object.values(PCExercises) as Exercise<any>[];
 
-test("ml", () => {
-  exosTest(pcExercises);
+test("xl", () => {
+  try {
+    exosTest(pcExercises);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 });

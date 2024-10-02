@@ -143,4 +143,5 @@ export const recognizeRefractionOrReflectionAngles: Exercise<Identifiers> = {
   getPropositions,
   answerType: "QCU",
   subject: "Physique",
+  hasGeogebra: true,
 };

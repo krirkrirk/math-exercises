@@ -9,7 +9,7 @@ test("ml", () => {
   try {
     exosTest(mathExercises);
   } catch (err) {
-    // throw err;
-    throw Error("ERRROR");
+    console.log(err);
+    throw err;
   }
 });

@@ -142,4 +142,5 @@ export const typeOfMovement: Exercise<Identifiers> = {
   getPropositions,
   answerType: "QCU",
   subject: "Physique",
+  hasGeogebra: true,
 };

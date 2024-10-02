@@ -127,7 +127,6 @@ export const calculateNormalOrFrictionForce: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  hasGeogebra: true,
   subject: "Physique",
   hasHintAndCorrection: true,
 };

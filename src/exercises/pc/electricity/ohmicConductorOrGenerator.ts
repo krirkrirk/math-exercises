@@ -128,4 +128,5 @@ export const ohmicConductorOrGenerator: Exercise<Identifiers> = {
   maxAllowedQuestions: 10,
   subject: "Physique",
   hasHintAndCorrection: true,
+  hasGeogebra: true,
 };

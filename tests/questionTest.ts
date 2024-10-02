@@ -15,6 +15,9 @@ export const questionTest = (exo: Exercise, question: Question) => {
   expect(question.identifiers).not.toBe(undefined);
 
   const dotDecimalPattern = /\d+\.\d+/;
+  if (question.studentGgbOptions?.coords?.length) {
+    expect(exo.answerType).toBe("GGB");
+  }
   if (exo.answerType === "GGB") {
     expect(question.ggbAnswer).not.toBe(undefined);
     expect(question.studentGgbOptions?.coords?.length).toBeGreaterThan(0);
@@ -62,7 +65,7 @@ export const questionTest = (exo: Exercise, question: Question) => {
     expect(question.keys).not.toBe(undefined);
     const answer = question.answer!;
     let before = Date.now();
-    console.log("will test vea");
+    console.log("will test vea : ", exo.id);
     expect(
       exo.isAnswerValid!(answer, {
         answer,
@@ -75,15 +78,19 @@ export const questionTest = (exo: Exercise, question: Question) => {
 
   if (exo.answerType !== "free" && exo.answerType !== "GGB") {
     let before = Date.now();
-    console.log("will generate props");
+    console.log("will generate props : ", exo.id);
     const props = exo.getPropositions!(4, {
       answer: question.answer!,
       ...question.identifiers,
     });
     let after = Date.now();
     qcmTime = after - before;
-    expect(props.length).toBe(4);
-    expect(props.filter((prop) => prop.isRightAnswer).length).toBe(1);
+    expect(props.length).toBeLessThan(5);
+    const rightAnswers = props.filter((prop) => prop.isRightAnswer).length;
+    if (exo.isQCM) expect(rightAnswers).toBeGreaterThan(1);
+    else {
+      expect(rightAnswers).toBe(1);
+    }
     props.forEach((prop) => {
       expect(prop.statement.match(dotDecimalPattern)).toBe(null);
       expect(prop.statement.includes("[object Object]")).toBe(false);

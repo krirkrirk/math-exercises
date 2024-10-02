@@ -114,4 +114,5 @@ export const characteristicsOfVelocityVector: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasGeogebra: true,
 };

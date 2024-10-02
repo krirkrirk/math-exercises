@@ -129,4 +129,5 @@ export const elongationReading: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Physique",
+  hasGeogebra: true,
 };

@@ -61,11 +61,11 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   const u = new Affine(aU, bU, "x");
+  addValidProp(propositions, answer);
 
   generatePropositions(a, b, u).forEach((value) =>
     tryToAddWrongProp(propositions, value),
   );
-  addValidProp(propositions, answer);
 
   let primitiveA;
   let primitiveB;
