@@ -31,9 +31,12 @@ const getImageFunction: QuestionGenerator<Identifiers> = () => {
   ]);
   const xValue = randint(-9, 10);
 
-  const statement = rand
-    ? `Soit $f(x) = ${polynome1.toTree().toTex()}$. Calculer $f(${xValue})$.`
-    : `Soit $f(x) = ${polynome2.toTree().toTex()}$. Calculer $f(${xValue})$.`;
+  const flip = coinFlip();
+  const statement = `Soit $f(x) = ${(rand ? polynome1 : polynome2)
+    .toTree()
+    .toTex()}. Calculer ${
+    flip ? `l'image de $${xValue}$ par $f$.` : `$f(${xValue})$.`
+  }`;
 
   const answer = rand
     ? polynome1.calculate(xValue) + ""

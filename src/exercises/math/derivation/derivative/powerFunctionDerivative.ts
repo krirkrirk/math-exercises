@@ -135,7 +135,7 @@ export const powerFunctionDerivative: Exercise<Identifiers> = {
   id: "powerFunctionDerivative",
   connector: "=",
 
-  label: "Dérivée d'une fonction puissance",
+  label: "Dérivée d'une fonction monôme",
   levels: ["1reESM", "1reSpé", "1reTech", "MathComp"],
   sections: ["Dérivation"],
   isSingleStep: false,

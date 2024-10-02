@@ -10,3 +10,5 @@ export * from "./digitRank";
 export * from "./digitDecimalRank";
 export * from "./digitRankNumber";
 export * from "./digitDecimalRankNumber";
+export * from "./ordering";
+export * from "./decimals";

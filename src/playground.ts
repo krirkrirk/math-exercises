@@ -32,6 +32,4 @@ export const playground = () => {
   // const parsed = NodeConstructor.fromIdentifiers(ids);
   // console.log(node);
   // console.log(parsed);
-  console.log(new Interval((3).toTree(), (5).toTree(), ClosureType.FF));
-  console.log(new DiscreteSetNode([(2).toTree()]));
 };

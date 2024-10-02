@@ -112,6 +112,6 @@ export const typeOfAcceleration: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   hasGeogebra: true,
-  answerType: "QCM",
+  answerType: "QCU",
   subject: "Physique",
 };

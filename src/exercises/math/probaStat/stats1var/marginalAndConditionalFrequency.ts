@@ -30,15 +30,6 @@ const getAnswer = (
   x4: number,
 ) => {
   const x = x1 + x2 + x3 + x4;
-  const total = x1 + x2 + x3 + x4;
-  const totalA = x1 + x3;
-  const totalB = x2 + x4;
-  const totalC = x1 + x2;
-  const totalD = x3 + x4;
-  const A_C = x1;
-  const A_D = x3;
-  const B_C = x2;
-  const B_D = x4;
   let freqString: string;
   let frequence: string;
   let answer: Node;
@@ -145,8 +136,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
-    const rand = randint(0, 12);
-    const { answer: answerTree } = getAnswer(rand, x1, x2, x3, x4);
+    const fakeRand = randint(0, 12);
+    const { answer: answerTree } = getAnswer(fakeRand, x1, x2, x3, x4);
 
     tryToAddWrongProp(propositions, answerTree.toTex());
   }
