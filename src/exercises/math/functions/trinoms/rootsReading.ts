@@ -31,7 +31,6 @@ const getRootsReadingQuestion: QuestionGenerator<Identifiers> = () => {
   const ggb = new GeogebraConstructor({
     commands,
     lockedAxesRatio: false,
-    gridDistance: false,
   });
   const answer =
     roots.length === 1 ? roots[0].toString() : roots.join("\\text{ et }");

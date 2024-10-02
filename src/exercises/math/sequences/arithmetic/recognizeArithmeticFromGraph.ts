@@ -27,13 +27,13 @@ const getRandomFirstNonAriTerms = () => {
     case 0:
       const firstGeoTerm = randint(1, 4);
       const geoReason = random([2, 3]);
-      return new Array(5)
+      return new Array(10)
         .fill(0)
         .map((el, index) => firstGeoTerm * geoReason ** index);
     case 1:
       const firstBernoulliTerm = randint(1, 10);
       const secondBernoulliTerm = randint(1, 10, [firstBernoulliTerm]);
-      return new Array(5)
+      return new Array(10)
         .fill(0)
         .map((el, index) =>
           index % 2 ? firstBernoulliTerm : secondBernoulliTerm,
@@ -41,7 +41,7 @@ const getRandomFirstNonAriTerms = () => {
     case 2:
     default:
       const firstFakeAriTerm = randint(1, 20);
-      const res = new Array(5)
+      const res = new Array(10)
         .fill(0)
         .map((el, index) => firstFakeAriTerm + randint(1, 4));
       const disruptionIndex = randint(0, 5);
@@ -56,7 +56,7 @@ const getRecognizeArithmeticFromGraphQuestion: QuestionGenerator<
   const firstAriTerm = randint(-5, 10);
   const reason = randint(-4, 6, [0]);
   const sequence = isAri
-    ? new Array(5).fill(0).map((el, index) => firstAriTerm + reason * index)
+    ? new Array(10).fill(0).map((el, index) => firstAriTerm + reason * index)
     : getRandomFirstNonAriTerms();
   const answer = isAri ? "Oui" : "Non";
   const commands = sequence.flatMap((nb, index) => [
@@ -68,8 +68,8 @@ const getRecognizeArithmeticFromGraphQuestion: QuestionGenerator<
     lockedAxesRatio: false,
     xAxis: { natural: true },
   });
-  const yMin = Math.min(...sequence);
-  const yMax = Math.max(...sequence);
+  const yMin = Math.min(...sequence.slice(0, 5));
+  const yMax = Math.max(...sequence.slice(0, 5));
   const question: Question<Identifiers> = {
     answer,
     instruction: `La suite $u$ représentée ci-dessous semble-t-elle arithmétique ?`,

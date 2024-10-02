@@ -24,12 +24,12 @@ const getRecognizeReasonFromGraphQuestion: QuestionGenerator<
 > = () => {
   const firstTerm = randint(1, 20);
   const reason = randint(-5, 6, [0]);
-  const sequence = new Array(5)
+  const sequence = new Array(10)
     .fill(0)
     .map((el, index) => firstTerm + index * reason);
 
-  const yMin = Math.min(...sequence);
-  const yMax = Math.max(...sequence);
+  const yMin = Math.min(...sequence.slice(0, 5));
+  const yMax = Math.max(...sequence.slice(0, 5));
   const commands = sequence.flatMap((nb, index) => [
     new Point(`A_${index}`, index.toTree(), nb.toTree()).toGGBCommand(),
     `SetFixed(A_${index}, true)`,

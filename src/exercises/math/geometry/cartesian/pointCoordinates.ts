@@ -52,7 +52,13 @@ const getPointCoordinatesQuestion: QuestionGenerator<Identifiers> = () => {
     answer: A.toCoords(),
     instruction,
     ggbOptions: ggb.getOptions({
-      coords: [xMin, xMax, yMin, yMax],
+      coords: ggb.getAdaptedCoords({
+        xMin,
+        xMax,
+        yMin,
+        yMax,
+        forceShowAxes: true,
+      }),
     }),
     keys: ["x", "y", "semicolon"],
     answerFormat: "tex",
