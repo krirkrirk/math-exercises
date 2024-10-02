@@ -87,8 +87,8 @@ export interface Question<TIdentifiers = {}> {
   answer?: string;
   answerFormat?: "tex" | "raw";
   ggbAnswer?: string[];
-  // keys?: (KeyId | KeyProps)[];
-  keys?: KeyId[];
+  keys?: (KeyId | KeyProps)[];
+  // keys?: KeyId[];
   ggbOptions?: GeogebraOptions;
   studentGgbOptions?: GeogebraOptions;
   style?: {
