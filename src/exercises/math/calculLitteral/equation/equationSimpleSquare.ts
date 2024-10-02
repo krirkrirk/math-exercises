@@ -75,7 +75,7 @@ const getEquationSimpleSquare: QuestionGenerator<Identifiers> = () => {
     
 - n'admet pas de solution si $k<0$, 
 - admet une solution si $k=0$, qui est $0$
-- admet deux solutions si $k>0$ : $-\\sqrt{k}$ et $\\sqrt{k}$
+- admet deux solutions si $k>0$, qui sont $-\\sqrt{k}$ et $\\sqrt{k}$
     `,
     correction: `
 ${

@@ -36,22 +36,28 @@ const getFractionsDivision: QuestionGenerator<Identifiers> = () => {
     hint: "Pour diviser par une fraction, il faut multiplier la première fraction par l'inverse de la deuxième. Simplifie ensuite la fraction obtenue si nécessaire.",
     correction: `On multiplie la première fraction par l'inverse de la deuxième : 
 
-$$${statementTree.toTex()} = ${rational.toTree().toTex()}\\times ${rational2
+$$
+${statementTree.toTex()} = ${rational.toTree().toTex()}\\times ${rational2
       .reverse(false)
       .toTree()
-      .toTex()}$$
+      .toTex()}
+$$
 
 Multiplions les fractions : 
 
-$$\\frac{${rational.num}\\times${rational2.denum}}{${rational.denum}\\times${
+$$
+\\frac{${rational.num}\\times${rational2.denum}}{${rational.denum}\\times${
       rational2.num
-    }} = ${beforeSimplification.toTree().toTex()}$$
+    }} = ${beforeSimplification.toTree().toTex()}
+$$
 
 ${
   isSimplifiable
     ? `On peut alors simplifier cette fraction : 
     
-$${beforeSimplification.toTree().toTex()} = ${answer}$`
+$$
+${beforeSimplification.toTree().toTex()} = ${answer}
+$$`
     : "Cette fraction est déjà sous forme irréductible."
 }
 

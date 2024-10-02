@@ -44,11 +44,19 @@ const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
     keys: ["x"],
     answerFormat: "tex",
     identifiers: { a: affine.a, b: affine.b },
-    hint: `Essaie de réécrire cette expression sous la forme $a^2 + 2ab+b^2$`,
+    hint: `Essaie de réécrire cette expression sous la forme 
+
+$$
+a^2 + 2ab+b^2
+$$`,
     correction: `
-On utilise l'identité remarquable $ a^2 + 2ab+b^2 = (a+b)^2$ en prenant $a=${aMonom.toTex()}$ et $b=${
-      affine.b
-    }$ : 
+On utilise l'identité remarquable 
+
+$$
+a^2 + 2ab+b^2 = (a+b)^2
+$$
+
+en prenant $a=${aMonom.toTex()}$ et $b=${affine.b}$ : 
 
 ${alignTex([
   [

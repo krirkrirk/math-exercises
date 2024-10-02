@@ -50,7 +50,7 @@ const getGlobalPercentQuestion: QuestionGenerator<Identifiers> = () => {
     hint: "Transforme chaque taux d'évolution en coefficient multiplicateur, puis multiplie ces coefficients multiplicateurs entre eux pour obtenir le coefficient multiplicateur global. Transforme alors ce CM global en taux d'évolution.",
     correction: `On transforme les taux d'évolution en coefficients multiplicateurs puis on les multiplie entre eux : 
 
-$${evolutions
+$$${evolutions
       .map((e) => round(1 + Number(e) / 100, 2).frenchify())
       .join(" \\times ")} = ${round(
       evolutions.reduce(
@@ -58,17 +58,19 @@ $${evolutions
         1,
       ),
       4,
-    ).frenchify()}$
+    ).frenchify()}
+$$
     
 Enfin, on transforme ce CM global en taux d'évolution : 
 
-$(${round(
+$$(${round(
       evolutions.reduce(
         (acc, curr) => acc * round(1 + Number(curr) / 100, 2),
         1,
       ),
       4,
-    ).frenchify()} - 1)\\times 100 = ${answer.replace("\\%", "")}$
+    ).frenchify()} - 1)\\times 100 = ${answer.replace("\\%", "")}
+$$
 
 Le taux d'évolution global est donc de $${answer}$.
     `,

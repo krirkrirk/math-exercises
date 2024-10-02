@@ -47,7 +47,11 @@ const getScalarProductViaCoordsQuestion: QuestionGenerator<
       vCoords: [v.x.toTex(), v.y.toTex()],
     },
     hint: "Le produit scalaire de deux vecteurs se calcule en multipliant les coordonnées correspondantes et en additionnant les résultats.",
-    correction: `Le produit scalaire de $${u.toTex()}$ et $${v.toTex()}$ est calculé comme suit : $(${u.x.toTex()} \\times ${v.x.toTex()}) + (${u.y.toTex()} \\times ${v.y.toTex()}) = ${answer}$.`,
+    correction: `Le produit scalaire de $${u.toTex()}$ et $${v.toTex()}$ est calculé comme suit : 
+    
+$$
+(${u.x.toTex()} \\times ${v.x.toTex()}) + (${u.y.toTex()} \\times ${v.y.toTex()}) = ${answer}
+$$`,
   };
   return question;
 };

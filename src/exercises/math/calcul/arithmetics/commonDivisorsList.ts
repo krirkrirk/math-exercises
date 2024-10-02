@@ -47,15 +47,21 @@ const getCommonDivisorsListQuestion: QuestionGenerator<Identifiers> = () => {
     hint: `Détermine la liste des diviseurs de chaque nombre, puis identifie ceux qu'ils ont en commun.`,
     correction: `Les diviseurs de $${a}$ sont : 
 
-$${divisorsA.join(";")}$
+$$
+${divisorsA.join(";")}
+$$
 
 Les diviseurs de $${b}$ sont : 
 
-$${divisorsB.join(";")}$
+$$
+${divisorsB.join(";")}
+$$
 
 Les diviseurs communs à $${a}$ et $${b}$ sont donc : 
 
-$${answer}$
+$$
+${answer}
+$$
 `,
     identifiers: { a, b },
   };

@@ -50,17 +50,26 @@ Quelle est l'expression algébrique de $f$ ?`,
     hint: "Calcule d'abord le taux d'accroissement de $f$ en utilisant la formule $a = \\frac{y_2-y_1}{x_2-x_1}$. Ensuite, utilise les coordonnées d'un des deux points pour déterminer l'ordonnée à l'origine.",
     correction: `On calcule d'abord le taux d'accroissement $a$ : 
     
-$a = \\frac{y_2-y_1}{x_2-x_1} = \\frac{${yB}-${yA}}{${xB}-${xA}} = ${a.toTex()}$
+$$
+a = \\frac{y_2-y_1}{x_2-x_1} = \\frac{${yB}-${yA}}{${xB}-${xA}} = ${a.toTex()}
+$$
 
 Il faut ensuite trouver l'ordonnée à l'origine $b$. On sait que $f(${xA}) = ${yA}$. Or pour tout $x$ réel, on a $f(x) = ax+b$. 
 
-Donc $${yA} = ${new MultiplyNode(
-      a,
-      xA.toTree(),
-    ).toTex()}+b$. On a donc $b = ${new SubstractNode(
+Donc 
+
+$$
+${yA} = ${new MultiplyNode(a, xA.toTree()).toTex()}+b
+$$ 
+    
+    On a donc 
+
+$$
+b = ${new SubstractNode(
       yA.toTree(),
       new MultiplyNode(a, xA.toTree()),
-    ).toTex()} = ${b.toTex()}$.
+    ).toTex()} = ${b.toTex()}
+$$
 
 Ainsi, $f(x) = ${answer}$.
     `,

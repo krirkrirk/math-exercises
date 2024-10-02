@@ -49,9 +49,21 @@ export const getSecondIdentityQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["x"],
     answerFormat: "tex",
     identifiers: { a: affine.a, b: affine.b },
-    hint: `Utilise l'identité remarquable $(a-b)^2 = a^2 - 2ab+b^2$ en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$`,
+    hint: `Utilise l'identité remarquable 
+
+$$
+(a-b)^2 = a^2 - 2ab+b^2
+$$ 
+
+en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$`,
     correction: `
-On utilise l'identité remarquable $(a-b)^2 = a^2 - 2ab+b^2$ en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$ : 
+On utilise l'identité remarquable 
+
+$$
+(a-b)^2 = a^2 - 2ab+b^2
+$$
+
+en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$ : 
 
 ${alignTex([
   [

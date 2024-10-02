@@ -56,7 +56,11 @@ const getApplyPercentQuestion: QuestionGenerator<Identifiers> = () => {
           2,
         ).frenchify()}$.
     
-On a donc $${randNbr}\\times ${round(cm, 2).frenchify()} = ${answer}$.
+On a donc 
+
+$$
+${randNbr}\\times ${round(cm, 2).frenchify()} = ${answer}
+$$
 
     `
       : `Baisser un nombre de $${randPercent}\\%$ revient à le multiplier par $1 - \\frac{${randPercent}}{100}$, c'est à dire par $${round(
@@ -64,7 +68,11 @@ On a donc $${randNbr}\\times ${round(cm, 2).frenchify()} = ${answer}$.
           2,
         ).frenchify()}$.
     
-On a donc $${randNbr}\\times ${round(cm, 2).frenchify()} = ${answer}$.
+On a donc 
+
+$$
+${randNbr}\\times ${round(cm, 2).frenchify()} = ${answer}
+$$
 
     `,
     identifiers: { isUp, randNbr, randPercent },

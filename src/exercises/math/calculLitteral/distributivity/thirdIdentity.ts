@@ -42,9 +42,21 @@ export const getThirdIdentityQuestion: QuestionGenerator<Identifiers> = () => {
       affine1Coeffs: affine.coefficients,
       affine2Coeffs: affine2.coefficients,
     },
-    hint: `Utilise l'identité remarquable $(a-b)(a+b) = a^2 - b^2$ en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$`,
+    hint: `Utilise l'identité remarquable 
+    
+$$
+(a-b)(a+b) = a^2 - b^2
+$$ 
+
+en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$`,
     correction: `
-On utilise l'identité remarquable $(a-b)(a+b) = a^2 - b^2$ en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$ : 
+On utilise l'identité remarquable 
+
+$$
+(a-b)(a+b) = a^2 - b^2
+$$ 
+
+en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$.
 
 ${alignTex([
   [

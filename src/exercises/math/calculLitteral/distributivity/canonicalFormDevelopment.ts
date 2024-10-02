@@ -18,6 +18,7 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { alignTex } from "#root/utils/alignTex";
 
 type Identifiers = {
   coeffs: number[];
@@ -39,15 +40,20 @@ const getCanonicalFormDevelopmentQuestion: QuestionGenerator<
     answerFormat: "tex",
     identifiers: { coeffs: trinom.coefficients },
     hint: "Développe d'abord le terme qui est au carré en te servant d'une identité remarquable.",
-    correction: `
-$${cano.toTex()}$
+    correction: `On a :
 
-$= ${new AddNode(
+${alignTex([
+  [
+    cano.toTex(),
+    "=",
+    new AddNode(
       new MultiplyNode(a.toTree(), new Affine(1, -alpha).square().toTree()),
       beta.toTree(),
-    ).toTex()}$
-    
-$= ${answer}$
+    ).toTex(),
+  ],
+  ["", "=", answer],
+])}
+
     `,
   };
 

@@ -45,15 +45,19 @@ const getFractionsProduct: QuestionGenerator<Identifiers> = () => {
     hint: "Pour multiplier deux fractions, on multiplie les numérateurs entre eux et les dénominateurs entre eux, puis on simplifie la fraction obtenue si nécessaire.",
     correction: `On multiplie les numérateurs entre eux et les dénominateurs entre eux :  
 
-$$\\frac{${rational.num}\\times${rational2.num}}{${rational.denum}\\times${
+$$
+\\frac{${rational.num}\\times${rational2.num}}{${rational.denum}\\times${
       rational2.denum
-    }} = ${beforeSimplification.toTree().toTex()}$$
+    }} = ${beforeSimplification.toTree().toTex()}
+$$
 
 ${
   !beforeSimplification.isIrreductible()
     ? `On peut alors simplifier cette fraction : 
     
-$${beforeSimplification.toTree().toTex()} = ${answer}$`
+$$
+${beforeSimplification.toTree().toTex()} = ${answer}
+$$`
     : "Cette fraction est déjà sous forme irréductible."
 }
 

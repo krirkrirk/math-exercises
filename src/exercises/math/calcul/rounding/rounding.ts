@@ -67,12 +67,16 @@ const getRoundQuestions: QuestionGenerator<
     
 ${
   figureToLookAt < 5
-    ? `Puisque ${figureToLookAt} est inférieur à 5, on arrondit ${ranksWithAu[precisionAsked]} inférieur. 
+    ? `Puisque ${figureToLookAt} est inférieur à $5, on arrondit ${ranksWithAu[precisionAsked]} inférieur. 
      
 Ainsi, en arrondissant ${ranksWithAu[precisionAsked]}, on a $${decTex} \\approx ${answer}$`
-    : `Puisque ${figureToLookAt} est supérieur à 5, on arrondit ${ranksWithAu[precisionAsked]} supérieur. 
+    : `Puisque ${figureToLookAt} est supérieur à $5$, on arrondit ${ranksWithAu[precisionAsked]} supérieur. 
      
-Ainsi, en arrondissant ${ranksWithAu[precisionAsked]}, on a $${decTex} \\approx ${answer}$`
+Ainsi, en arrondissant ${ranksWithAu[precisionAsked]}, on a 
+
+$$
+${decTex} \\approx ${answer}
+$$`
 }`,
   };
   return question;

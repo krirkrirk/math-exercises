@@ -57,9 +57,11 @@ const getScaleCalculationQuestion: QuestionGenerator<Identifiers> = () => {
     hint: `Convertis les longueurs en $${cm.toTex()}$, puis fais un calcul de propotionnalité.`,
     correction: `On convertit d'abord les longueurs en cm : 
     
-$${realDistance.toTex({ notScientific: true })} = ${realDistance
+$$
+${realDistance.toTex({ notScientific: true })} = ${realDistance
       .convert("cm")
-      .toTex({ notScientific: true })}$
+      .toTex({ notScientific: true })}
+$$
 
 Puis, on fait un calcul de proportionnalité : puisque $${fakeDistance.toTex({
       notScientific: true,
