@@ -40,18 +40,22 @@ const getFractionAndIntegerProduct: QuestionGenerator<Identifiers> = () => {
     correction: `
 On multiplie le numérateur de la fraction par le nombre entier : 
 
-$${statementTree.toTex()} = \\frac{${new MultiplyNode(
+$$
+${statementTree.toTex()} = \\frac{${new MultiplyNode(
       rational.num.toTree(),
       integer.toTree(),
     ).toTex({ forceNoSimplification: true })}}{${
       rational.denum
-    }} = ${beforeSimplification.toTree().toTex()}$
+    }} = ${beforeSimplification.toTree().toTex()}
+$$
 
 ${
   !beforeSimplification.isIrreductible()
     ? `On peut alors simplifier cette fraction : 
   
-$${beforeSimplification.toTree().toTex()} = ${answer}$
+$$
+${beforeSimplification.toTree().toTex()} = ${answer}
+$$
   `
     : "Cette fraction est déjà irréductible."
 }

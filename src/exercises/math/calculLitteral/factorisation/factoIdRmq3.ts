@@ -48,9 +48,19 @@ const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
       affine1Coeffs: affine.coefficients,
       affine2Coeffs: affine2.coefficients,
     },
-    hint: `Utilise l'identité remarquable $a^2 - b^2 = (a-b)(a+b)$`,
+    hint: `Utilise l'identité remarquable 
+    
+$$
+a^2 - b^2 = (a-b)(a+b)
+$$`,
     correction: `
-On utilise l'identité remarquable $ a^2 - b^2=(a-b)(a+b)$ en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$ : 
+On utilise l'identité remarquable 
+
+$$
+a^2 - b^2=(a-b)(a+b)
+$$ 
+
+en prenant $a=${aMonom.toTex()}$ et $b=${bPositive}$ : 
 
 ${alignTex([
   [

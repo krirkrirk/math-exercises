@@ -156,7 +156,6 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   const dec = new Decimal(nbValue);
   const node = NodeConstructor.fromIdentifiers(nbIds);
-  console.log(nbValue, pow);
   while (propositions.length < n) {
     const fakePower = -randint(1, 4, [pow]);
     const fakeDec = new Decimal(dec.value * randint(-3, 3, [0, 1]));

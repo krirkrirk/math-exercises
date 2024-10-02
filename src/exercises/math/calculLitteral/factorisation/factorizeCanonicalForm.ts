@@ -48,9 +48,19 @@ const getFactorizeCanonicalFormQuestion: QuestionGenerator<
     keys: ["x"],
     answerFormat: "tex",
     identifiers: { a: affine.b, b },
-    hint: `Utilise l'identité remarquable $a^2 - b^2 = (a-b)(a+b)$`,
+    hint: `Utilise l'identité remarquable 
+    
+$$
+a^2 - b^2 = (a-b)(a+b)
+$$`,
     correction: `
-On utilise l'identité remarquable $ a^2 - b^2=(a-b)(a+b)$ en prenant $a=${affine.toTex()}$ et $b=${bPositive}$ : 
+On utilise l'identité remarquable 
+
+$$
+a^2 - b^2=(a-b)(a+b)
+$$ 
+
+en prenant $a=${affine.toTex()}$ et $b=${bPositive}$ : 
 
 ${alignTex([
   [

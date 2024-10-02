@@ -46,15 +46,18 @@ const getFractionAndIntegerDivision: QuestionGenerator<Identifiers> = () => {
     correction: `
 On écrit $${integer.value}$ sous forme de fraction : 
 
-$${integer.value} = \\frac{${integer.value}}{1}$
+$$
+${integer.value} = \\frac{${integer.value}}{1}
+$$
 
 On multiplie la première fraction par l'inverse de la seconde :
 
+$$
 ${
   integerFirst
-    ? `$\\frac{${integer.value}}{1}\\div ${rational
-        .toTree()
-        .toTex()} = \\frac{${integer.value}}{1} \\times ${rational
+    ? `\\frac{${integer.value}}{1}\\div ${rational.toTree().toTex()} = \\frac{${
+        integer.value
+      }}{1} \\times ${rational
         .reverse(false)
         .toTree()
         .toTex()} = \\frac{${new MultiplyNode(
@@ -64,8 +67,8 @@ ${
         (1).toTree(),
         rational.num.toTree(),
       ).toTex({ forceNoSimplification: true })}}
-    = ${beforeSimplification.toTree().toTex()}$`
-    : `$${rational.toTree().toTex()}\\div \\frac{${
+    = ${beforeSimplification.toTree().toTex()}`
+    : `${rational.toTree().toTex()}\\div \\frac{${
         integer.value
       }}{1} = ${rational.toTree().toTex()}\\times \\frac{1}{${
         integer.value
@@ -74,14 +77,17 @@ ${
         integer.toTree(),
       ).toTex({ forceNoSimplification: true })}} = ${beforeSimplification
         .toTree()
-        .toTex()}$`
+        .toTex()}`
 }
+$$
 
 ${
   !beforeSimplification.isIrreductible()
     ? `On peut alors simplifier cette fraction : 
   
-$${beforeSimplification.toTree().toTex()} = ${answerTex}$
+$$
+${beforeSimplification.toTree().toTex()} = ${answerTex}
+$$
   `
     : "Cette fraction est déjà irréductible."
 }

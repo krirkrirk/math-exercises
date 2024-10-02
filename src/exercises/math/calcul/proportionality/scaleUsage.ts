@@ -65,9 +65,11 @@ const getScaleUsageQuestion: QuestionGenerator<Identifiers> = () => {
 On convertit d'abord la distance réelle en $${cm.toTex()}$ : 
 
     
-$${realDistance.toTex({ notScientific: true })} = ${realDistance
+$$
+${realDistance.toTex({ notScientific: true })} = ${realDistance
             .convert("cm")
-            .toTex({ notScientific: true })}$
+            .toTex({ notScientific: true })}
+$$
 
 Ainsi, $${realDistance.toTex({
             notScientific: true,

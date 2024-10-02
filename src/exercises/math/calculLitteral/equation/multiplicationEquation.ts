@@ -60,16 +60,16 @@ const getMultiplicationEquation: QuestionGenerator<Identifiers> = () => {
     hint: "Un produit est nul si et seulement si un des deux facteurs est nul. Donc, il faut trouver les valeurs de $x$ qui rendent un des deux facteurs nuls.",
     correction: `Un produit est nul si et seulement si un des deux facteurs est nul. On résout donc deux équations : 
     
-  ${alignTex([
-    ["", `${statementTex} = 0`],
-    [
-      "\\iff",
-      `${polynome1.toTree().toTex()} = 0 \\text{ ou } ${polynome2
-        .toTree()
-        .toTex()} = 0`,
-    ],
-    ["\\iff", `x=${sol1.toTex()} \\text{ ou } x=${sol2.toTex()}`],
-  ])}
+${alignTex([
+  ["", `${statementTex} = 0`],
+  [
+    "\\iff",
+    `${polynome1.toTree().toTex()} = 0 \\text{ ou } ${polynome2
+      .toTree()
+      .toTex()} = 0`,
+  ],
+  ["\\iff", `x=${sol1.toTex()} \\text{ ou } x=${sol2.toTex()}`],
+])}
   
   Ainsi, $${answer}$`,
   };

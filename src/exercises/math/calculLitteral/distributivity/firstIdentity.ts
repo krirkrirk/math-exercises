@@ -49,13 +49,21 @@ export const getFirstIdentityQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["x"],
     answerFormat: "tex",
     identifiers: { a: affine.a, b: affine.b },
-    hint: `Utilise l'identité remarquable $(a+b)^2 = a^2 + 2ab+b^2$ en prenant $a=${aMonom.toTex()}$ et $b=${
-      affine.b
-    }$`,
+    hint: `Utilise l'identité remarquable 
+    
+$$
+(a+b)^2 = a^2 + 2ab+b^2
+$$ 
+
+en prenant $a=${aMonom.toTex()}$ et $b=${affine.b}$`,
     correction: `
-On utilise l'identité remarquable $(a+b)^2 = a^2 + 2ab+b^2$ en prenant $a=${aMonom.toTex()}$ et $b=${
-      affine.b
-    }$ : 
+On utilise l'identité remarquable :
+
+$$
+(a+b)^2 = a^2 + 2ab+b^2
+$$ 
+
+en prenant $a=${aMonom.toTex()}$ et $b=${affine.b}$.
 
 ${alignTex([
   [

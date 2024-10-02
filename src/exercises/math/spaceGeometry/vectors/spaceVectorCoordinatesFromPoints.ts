@@ -43,7 +43,9 @@ const getSpaceVectorCoordinatesFromPointsQuestion: QuestionGenerator<
     },
     hint: `Soient deux points $M(x_M;y_M;z_M)$ et $N(x_N;y_N;z_N)$, alors le vecteur $\\overrightarrow{MN}$ a pour coordonnées :
     
-$\\overrightarrow{MN} \\begin{pmatrix} x_N - x_M \\\\ y_N - y_M \\\\ z_N - z_M \\end{pmatrix}$`,
+$$
+\\overrightarrow{MN} \\begin{pmatrix} x_N - x_M \\\\ y_N - y_M \\\\ z_N - z_M \\end{pmatrix}
+$$`,
     correction: `Les coordonnées du vecteur $\\overrightarrow{AB}$ sont : 
 
 ${alignTex([

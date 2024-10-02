@@ -34,7 +34,9 @@ const getCmToEvolutionQuestion: QuestionGenerator<Identifiers> = () => {
     hint: "Pour trouver le taux d'évolution $t$ à partir du coefficient multiplicateur (CM) utilise la formule $t = \\left(\\text{CM}-1\\right)\\times 100$.",
     correction: `Le taux d'évolution $t$ s'obtient par la formule 
     
-$$t = \\left(\\text{CM}-1\\right)\\times 100$$
+$$
+t = \\left(\\text{CM}-1\\right)\\times 100
+$$
 
 Ici, on a donc : 
 

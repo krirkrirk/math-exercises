@@ -1,7 +1,7 @@
 export function alignTex(arr: string[][] | string) {
   let alignements = "r";
-  if (typeof arr !== "string") {
-    for (let i = 0; i < arr.length - 2; i++) {
+  if (typeof arr !== "string" && arr[0].length > 2) {
+    for (let i = 0; i < arr[0].length - 2; i++) {
       alignements += "c";
     }
   }
