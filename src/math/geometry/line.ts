@@ -43,16 +43,19 @@ export class Line {
     const secondPoint = new Point("D", x, y);
     return new Line(point, secondPoint);
   }
-  includes(point: Point) {
+  includes(point: Point, allowApprox: boolean = false) {
     if (this.isVertical) {
-      return point.x.equals(this.pointA.x);
+      if (allowApprox) {
+      } else return point.x.equals(this.pointA.x);
     }
-    return (
-      new SubstractNode(
-        point.y,
-        new AddNode(new MultiplyNode(this.a!, point.x), this.b!),
-      ).evaluate({}) === 0
-    );
+    const evaluation = new SubstractNode(
+      point.y,
+      new AddNode(new MultiplyNode(this.a!, point.x), this.b!),
+    ).evaluate({});
+    console.log("eval", evaluation);
+    if (allowApprox) {
+      return Math.abs(evaluation) < 0.0000001;
+    } else return evaluation === 0;
   }
 
   //! caution: simplify ne gère pas bien ici

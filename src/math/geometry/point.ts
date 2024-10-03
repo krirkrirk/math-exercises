@@ -28,6 +28,20 @@ export abstract class PointConstructor {
     }
     return res;
   }
+  static fromGGBCommand(str: string) {
+    const formatted = str.replace(" ", "");
+    const name = formatted.split("=")[0];
+    const [x, y] = formatted
+      .split("=")[1]
+      .replace("(", "")
+      .replace(")", "")
+      .split(",");
+    return new Point(
+      name,
+      new NumberNode(Number(x)),
+      new NumberNode(Number(y)),
+    );
+  }
 }
 
 export class Point {
