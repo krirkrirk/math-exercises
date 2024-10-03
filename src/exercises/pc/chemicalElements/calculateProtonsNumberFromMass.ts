@@ -20,7 +20,7 @@ import { AtomSymbols } from "#root/pc/constants/molecularChemistry/atomSymbols";
 import { atomes } from "#root/pc/constants/molecularChemistry/atome";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { random } from "#root/utils/random";
-import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
+import { requiresApostropheBefore } from "#root/utils/strings/requiresApostropheBefore";
 import { randint } from "#root/math/utils/random/randint";
 import { MassUnit } from "#root/pc/units/massUnits";
 

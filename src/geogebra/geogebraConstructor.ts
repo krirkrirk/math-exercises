@@ -51,7 +51,7 @@ export class GeogebraConstructor {
     zMax,
     forceShowAxes,
   }: GetAdaptedCoords) {
-    const showAxes = forceShowAxes ?? this.hideAxes ? false : true;
+    const showAxes = forceShowAxes ?? (this.hideAxes ? false : true);
     const xDelta = xMax - xMin;
     const yDelta = yMax - yMin;
 

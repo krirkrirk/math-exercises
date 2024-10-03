@@ -36,6 +36,14 @@ const getEtendueListQuestion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: { sortedValues },
+    hint: "L'étendue d'une liste de valeurs est la différence entre la valeur maximale et la valeur minimale.",
+    correction: `
+On calcule la différence entre la valeur maximale et la valeur minimale : 
+
+$$
+${sortedValues[sortedValues.length - 1]} - ${sortedValues[0]} = ${answer}
+$$
+    `,
   };
 
   return question;
@@ -71,4 +79,5 @@ export const etendueList: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

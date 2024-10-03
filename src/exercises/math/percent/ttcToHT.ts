@@ -14,6 +14,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
+import { numberParser } from "#root/tree/parsers/numberParser";
 import { coinFlip } from "#root/utils/coinFlip";
 import { random } from "#root/utils/random";
 
@@ -32,6 +33,22 @@ const getTtcToHtQuestion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: { TTC, TVA },
+    hint: `Pour retrouver le prix HT d'un objet après une hausse de $t\\%$, on divise le prix TTC par $1 + \\frac{t}{100}$.`,
+    correction: `Pour retrouver le prix HT après une hausse de  $${TVA.frenchify()}\\%$, on divise le prix TTC par :
+    
+$$
+1 + \\frac{${TVA.frenchify()}}{100} = ${round(1 + TVA / 100, 3).frenchify()}
+$$ 
+
+Le prix HT est donc : 
+
+$$
+${TTC.frenchify()} \\div ${round(
+      1 + TVA / 100,
+      3,
+    ).frenchify()} \\approx ${answer}
+$$
+`,
   };
 
   return question;
@@ -56,7 +73,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+  return numberParser(ans) === answer;
 };
 
 export const ttcToHT: Exercise<Identifiers> = {
@@ -72,4 +89,5 @@ export const ttcToHT: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

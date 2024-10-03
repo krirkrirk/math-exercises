@@ -16,7 +16,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { AtomSymbols } from "#root/pc/constants/molecularChemistry/atomSymbols";
 import { atomes } from "#root/pc/constants/molecularChemistry/atome";
 import { random } from "#root/utils/random";
-import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
+import { requiresApostropheBefore } from "#root/utils/strings/requiresApostropheBefore";
 
 type Identifiers = {
   atomSymbol: AtomSymbols;

@@ -17,6 +17,7 @@ import {
 } from "#root/math/numbers/decimals/decimal";
 import { randint } from "#root/math/utils/random/randint";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { pluralize } from "#root/utils/strings/pluralize";
 
 type Identifiers = {
   dec: number;
@@ -37,6 +38,19 @@ const getMultiplyDecimalByNegativeTensQuestion: QuestionGenerator<
     keys: [],
     answerFormat: "tex",
     identifiers: { dec: dec.value, pow },
+    hint: `Multiplier par $${factor.frenchify()}$ revient à déplacer la virgule de $${-pow}$ ${pluralize(
+      "position",
+      -pow,
+    )} vers la gauche.`,
+    correction: `On déplace la virgule de $${-pow}$ ${pluralize(
+      "position",
+      -pow,
+    )} vers la gauche : 
+    
+$$
+${statement.toTex()} = ${answer}
+$$
+    `,
   };
 
   return question;
@@ -83,4 +97,5 @@ export const multiplyDecimalByNegativeTens: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

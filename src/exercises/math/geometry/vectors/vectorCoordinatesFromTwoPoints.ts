@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { alignTex } from "#root/utils/alignTex";
-import { randomLetter } from "#root/utils/randomLetter";
+import { randomLetter } from "#root/utils/strings/randomLetter";
 
 type Identifiers = {
   A: number[];

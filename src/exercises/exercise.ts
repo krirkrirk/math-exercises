@@ -58,7 +58,7 @@ export type Proposition = {
 export type GeogebraAxisOptions = {
   steps?: number;
   hiddden?: boolean;
-  showNumbers?: boolean;
+  hideNumbers?: boolean;
   label?: string;
   natural?: boolean;
 };

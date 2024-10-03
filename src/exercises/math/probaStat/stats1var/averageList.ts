@@ -14,6 +14,8 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
+import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { operatorComposition } from "#root/tree/utilities/operatorComposition";
 import { average } from "#root/utils/average";
 
 type Identifiers = {
@@ -27,7 +29,9 @@ const getAverageListQuestion: QuestionGenerator<Identifiers> = () => {
   for (let i = 0; i < length; i++) randomValues.push(randint(1, 20));
 
   const sortedValues = randomValues.sort((a, b) => a - b);
+  const avg = average(sortedValues);
   const answer = round(average(sortedValues), 2).frenchify();
+  const hasRounded = avg.frenchify() !== answer;
   const question: Question<Identifiers> = {
     answer,
     instruction: `On considère la liste suivante : $${randomValues.join(
@@ -37,6 +41,27 @@ const getAverageListQuestion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: { sortedValues },
+    hint: "La moyenne d'une liste de valeurs est la somme de ses valeurs divisé par le nombre de valeurs.",
+    correction: `
+On additionne toutes les valeurs :
+
+$$
+${operatorComposition(
+  AddNode,
+  sortedValues.map((e) => e.toTree()),
+).toTex()} = ${sortedValues.reduce((acc, curr) => acc + curr)}
+$$
+
+puis on divise par le nombre de valeurs : 
+
+$$
+${sortedValues.reduce((acc, curr) => acc + curr)}\\div ${sortedValues.length} ${
+      hasRounded ? "\\approx" : "="
+    } ${answer}
+$$
+
+La moyenne ${hasRounded ? "arrondie au centième" : ""} est donc $${answer}$.
+    `,
   };
 
   return question;
@@ -75,4 +100,5 @@ export const averageList: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

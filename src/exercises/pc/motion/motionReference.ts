@@ -13,7 +13,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/coinFlip";
-import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
+import { requiresApostropheBefore } from "#root/utils/strings/requiresApostropheBefore";
 
 type Identifiers = {
   object1: string;

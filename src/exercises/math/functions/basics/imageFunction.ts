@@ -34,7 +34,7 @@ const getImageFunction: QuestionGenerator<Identifiers> = () => {
   const flip = coinFlip();
   const statement = `Soit $f(x) = ${(rand ? polynome1 : polynome2)
     .toTree()
-    .toTex()}. Calculer ${
+    .toTex()}$. Calculer ${
     flip ? `l'image de $${xValue}$ par $f$.` : `$f(${xValue})$.`
   }`;
 

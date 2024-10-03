@@ -3,7 +3,7 @@ import {
   InequationSymbol,
 } from "#root/math/inequations/inequation";
 import { getCartesiansProducts } from "#root/utils/cartesianProducts";
-import { isLetter } from "#root/utils/isLetter";
+import { isLetter } from "#root/utils/strings/isLetter";
 import { random } from "#root/utils/random";
 import e from "express";
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";

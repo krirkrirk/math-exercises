@@ -6,3 +6,5 @@ export * from "./directionVector";
 export * from "./directionVectorEquation";
 export * from "./drawAlineInGGB";
 export * from "./placeAPoint";
+export * from "./pointCoordinatesNoAxisNumbers";
+// export * from "./pointCoordinatesNoOrthonorm";

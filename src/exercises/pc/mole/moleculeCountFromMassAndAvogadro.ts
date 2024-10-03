@@ -18,7 +18,7 @@ import { molecules } from "#root/pc/constants/molecularChemistry/molecule";
 import { random } from "#root/utils/random";
 import { randint } from "#root/math/utils/random/randint";
 import { avogadroConstant } from "#root/pc/constants/molecularChemistry/atoms";
-import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
+import { requiresApostropheBefore } from "#root/utils/strings/requiresApostropheBefore";
 
 type Identifiers = {
   moleculeName: string;

@@ -16,7 +16,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { molecules } from "#root/pc/constants/molecularChemistry/molecule";
 import { arrayEqual } from "#root/utils/arrayEqual";
 import { random } from "#root/utils/random";
-import { requiresApostropheBefore } from "#root/utils/requiresApostropheBefore";
+import { requiresApostropheBefore } from "#root/utils/strings/requiresApostropheBefore";
 import { getPointFromGGB } from "../utils/geogebra/getPointFromGGB";
 import { isGGBPoint } from "../utils/geogebra/isGGBPoint";
 import { toolBarConstructor } from "../utils/geogebra/toolBarConstructor";

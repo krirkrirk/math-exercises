@@ -217,4 +217,5 @@ export const expressionNature: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  answerType: "QCU",
 };

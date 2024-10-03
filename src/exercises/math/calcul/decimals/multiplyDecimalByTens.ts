@@ -20,6 +20,7 @@ import { DivideNode } from "#root/tree/nodes/operators/divideNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { coinFlip } from "#root/utils/coinFlip";
+import { pluralize } from "#root/utils/strings/pluralize";
 
 type Identifiers = {
   dec: number;
@@ -46,6 +47,21 @@ const getMultiplyDecimalByTensQuestion: QuestionGenerator<Identifiers> = () => {
     keys: [],
     answerFormat: "tex",
     identifiers: { dec: dec.value, pow, isDivide },
+    hint: `${
+      isDivide ? "Diviser" : "Multiplier"
+    } par $${factor.frenchify()}$ revient à déplacer la virgule de $${pow}$ ${pluralize(
+      "position",
+      pow,
+    )} vers la ${isDivide ? "gauche" : "droite"}.`,
+    correction: `On déplace la virgule de $${pow}$ ${pluralize(
+      "position",
+      pow,
+    )} vers la ${isDivide ? "gauche" : "droite"} : 
+    
+$$
+${statement.toTex()} = ${answer}
+$$
+    `,
   };
 
   return question;
@@ -93,4 +109,5 @@ export const multiplyDecimalByTens: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
 };

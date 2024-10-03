@@ -14,7 +14,7 @@ import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues"
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { randomLetter } from "#root/utils/randomLetter";
+import { randomLetter } from "#root/utils/strings/randomLetter";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {
