@@ -101,4 +101,5 @@ export const basicShapesRecognition: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Mathématiques",
   answerType: "QCU",
+  hasGeogebra: true,
 };
