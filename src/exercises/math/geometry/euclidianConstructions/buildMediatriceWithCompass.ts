@@ -47,12 +47,8 @@ const getBuildMediatriceWithCompassQuestion: QuestionGenerator<
   const yMax = Math.max(ya, yb) + length;
 
   const ggbAnswer = [
-    `${pointA.toGGBCommand()}`,
-    `${pointB.toGGBCommand()}`,
-    `SetFixed(${A}, true)`,
-    `SetFixed(${B}, true)`,
-    `ShowLabel(${A}, true)`,
-    `ShowLabel(${B}, true)`,
+    ...pointA.toGGBCommand(),
+    ...pointB.toGGBCommand(),
     `Seg = Segment(${A},${B})`,
     `C_1 = Circle(${A},${B})`,
     `C_2 = Circle(${B},${A})`,
@@ -63,12 +59,8 @@ const getBuildMediatriceWithCompassQuestion: QuestionGenerator<
   ];
   const studentGGB = new GeogebraConstructor({
     commands: [
-      `${pointA.toGGBCommand()}`,
-      `${pointB.toGGBCommand()}`,
-      `SetFixed(${A}, true)`,
-      `SetFixed(${B}, true)`,
-      `ShowLabel(${A}, true)`,
-      `ShowLabel(${B}, true)`,
+      ...pointA.toGGBCommand(),
+      ...pointB.toGGBCommand(),
       `Seg = Segment(${A},${B})`,
     ],
     hideGrid: true,

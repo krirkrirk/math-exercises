@@ -5,6 +5,7 @@ import { Rational } from "../numbers/rationals/rational";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { Vector, VectorConstructor } from "./vector";
 import { randint } from "../utils/random/randint";
+import { ToGGBCommandsProps } from "#root/exercises/utils/geogebra/toGGBCommandsProps";
 
 export abstract class PointConstructor {
   static random(name: string): Point {
@@ -116,9 +117,11 @@ export class Point {
     return AB.isColinear(AC);
   }
 
-  toGGBCommand() {
-    return `${
-      this.name
-    } = (${this.x.toMathString()}, ${this.y.toMathString()})`;
+  toGGBCommand({ isFixed = true, showLabel = true }: ToGGBCommandsProps = {}) {
+    return [
+      `${this.name} = (${this.x.toMathString()}, ${this.y.toMathString()})`,
+      `SetFixed(${this.name},${isFixed ? "true" : "false"})`,
+      `ShowLabel(${this.name},${showLabel ? "true" : "false"})`,
+    ];
   }
 }

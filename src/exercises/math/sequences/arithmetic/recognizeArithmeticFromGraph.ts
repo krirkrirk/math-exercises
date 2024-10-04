@@ -59,10 +59,11 @@ const getRecognizeArithmeticFromGraphQuestion: QuestionGenerator<
     ? new Array(10).fill(0).map((el, index) => firstAriTerm + reason * index)
     : getRandomFirstNonAriTerms();
   const answer = isAri ? "Oui" : "Non";
-  const commands = sequence.flatMap((nb, index) => [
-    new Point(`A_${index}`, index.toTree(), nb.toTree()).toGGBCommand(),
-    `SetFixed(A_${index}, true)`,
-  ]);
+  const commands = sequence.flatMap((nb, index) =>
+    new Point(`A_${index}`, index.toTree(), nb.toTree()).toGGBCommand({
+      showLabel: false,
+    }),
+  );
   const ggb = new GeogebraConstructor({
     commands,
     lockedAxesRatio: false,
