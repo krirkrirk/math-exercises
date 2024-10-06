@@ -16,6 +16,7 @@ import { gcd } from "../utils/arithmetic/gcd";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { randint } from "../utils/random/randint";
 import { random } from "#root/utils/random";
+import { blueMain } from "#root/geogebra/colors";
 
 export abstract class TrinomConstructor {
   static random(
@@ -338,5 +339,18 @@ export class Trinom extends Polynomial {
         : ` - ${Math.abs(this.c)}`;
 
     return `${aString}${bString}${cString}`;
+  }
+  toGGBCommands(
+    { name, color, label } = { name: "f", color: blueMain, label: "" },
+  ) {
+    const cmds = [`${name} = ${this.toString()}`];
+    if (color) {
+      cmds.push(`SetColor(${name}, "${color}")`);
+    }
+    if (label) {
+      cmds.push(`SetCaption(${name}, "${label}")`);
+      cmds.push(`ShowLabel(${name}, true)`);
+    }
+    return cmds;
   }
 }

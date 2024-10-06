@@ -1,9 +1,7 @@
 export * from "./chasles";
 export * from "./coordinatesReading";
 export * from "./determinant";
-export * from "./scalarProductViaCoords";
 export * from "./vectorCoordinatesFromTwoPoints";
-export * from "./scalarProductViaCos";
 export * from "./colinearity";
 export * from "./alignementViaColinearity";
 export * from "./paralellismViaColinearity";
@@ -14,3 +12,4 @@ export * from "./vectorLinearCombination";
 export * from "./vectorNormCalculation";
 export * from "./lineFromDirectorVector";
 export * from "./drawAVectorInGGB";
+export * from "./scalarProduct";

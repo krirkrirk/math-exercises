@@ -41,7 +41,8 @@ const getPointCoordinatesNoAxisNumbersQuestion: QuestionGenerator<
   const commands = [
     `A = (${x}, ${y})`,
     `ShowLabel(A, true)`,
-    // `SetPointStyle(A, 0)`,
+    "SetPointStyle(A, 1)",
+
     `SetPointSize(A, 4)`,
     `SetFixed(A, true)`,
     "O = (0,0)",

@@ -12,7 +12,7 @@ import {
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 import { round } from "#root/math/utils/round";
 import { shuffle } from "#root/utils/shuffle";
-import { alignTex } from "#root/utils/alignTex";
+import { alignTex } from "#root/utils/latex/alignTex";
 type Identifiers = {
   flip: number;
   pA?: number;

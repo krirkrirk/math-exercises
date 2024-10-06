@@ -418,7 +418,7 @@ export class Polynomial {
         }
       }
       if (nextCoeff) {
-        return new AddNode(res, recursive(cursor - 1));
+        return new AddNode(res, recursive(cursor - 1), opts);
       } else {
         return res;
       }

@@ -16,6 +16,7 @@ import { OppositeNode, isOppositeNode } from "../functions/oppositeNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { MultiplyNode, isMultiplyNode } from "./multiplyNode";
 import { FractionNode, isFractionNode } from "./fractionNode";
+import { colorize } from "#root/utils/latex/colorize";
 
 export function isAddNode(a: Node): a is AddNode {
   return isOperatorNode(a) && a.id === OperatorIds.add;
@@ -94,15 +95,20 @@ export class AddNode implements CommutativeOperatorNode {
     return this.toEquivalentNodes(options).map((node) => node.toTex());
   }
 
-  toTex(): string {
-    const rightTex = this.rightChild.toTex();
+  toTex(options?: ToTexOptions): string {
+    const opts = this.opts?.toTexOptions ?? options;
+    const color = opts?.color;
+    const childOpts = { ...opts };
+    if (color) childOpts.color = undefined;
 
-    const leftTex = this.leftChild.toTex();
-    if (rightTex === "0") return leftTex;
+    const rightTex = this.rightChild.toTex(childOpts);
+    const leftTex = this.leftChild.toTex(childOpts);
+
+    if (rightTex === "0") return colorize(leftTex, color);
     const tex = `${leftTex}${rightTex[0] === "-" ? "" : "+"}${rightTex}`;
     if (this.opts?.forceParenthesis) {
-      return `\\left(${tex}\\right)`;
-    } else return tex;
+      return colorize(`\\left(${tex}\\right)`, color);
+    } else return colorize(tex, color);
   }
   evaluate(vars: Record<string, number>) {
     return this.leftChild.evaluate(vars) + this.rightChild.evaluate(vars);

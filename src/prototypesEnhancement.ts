@@ -1,4 +1,5 @@
 import { AlgebraicNode } from "./tree/nodes/algebraicNode";
+import { Node, NodeOptions } from "./tree/nodes/node";
 import {
   MinusInfinityNode,
   PlusInfinityNode,
@@ -9,7 +10,7 @@ import { toScientific } from "./utils/numberPrototype/toScientific";
 
 declare global {
   interface Number {
-    toTree: () => AlgebraicNode;
+    toTree: (opts?: NodeOptions) => AlgebraicNode;
     frenchify: () => string;
     toScientific: (decimals?: number) => AlgebraicNode;
   }
@@ -25,11 +26,11 @@ String.prototype.toTree = function (): AlgebraicNode {
 String.prototype.unfrenchify = function (): number {
   return Number(this.valueOf().replace(",", "."));
 };
-Number.prototype.toTree = function (): AlgebraicNode {
+Number.prototype.toTree = function (opts?: NodeOptions): AlgebraicNode {
   const value = this.valueOf();
   if (value === Infinity) return PlusInfinityNode;
   if (value === -Infinity) return MinusInfinityNode;
-  return new NumberNode(value);
+  return new NumberNode(value, "", "", opts);
 };
 Number.prototype.frenchify = function (): string {
   return (this.valueOf() + "").replace(".", ",");

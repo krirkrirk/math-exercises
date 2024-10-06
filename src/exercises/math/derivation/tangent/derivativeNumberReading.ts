@@ -68,7 +68,8 @@ const getDerivativeNumberReading: QuestionGenerator<Identifiers> = () => {
     `g(x) = (${penteString}) * x + (${originString})`,
     `SetColor(g, "${orange}")`,
     `A = (${xA},${yA})`,
-    "SetFixed(A, true)  ",
+    "SetFixed(A, true)",
+    "SetPointStyle(A, 1)",
   ];
 
   const xMin = Math.min(xA, xB);

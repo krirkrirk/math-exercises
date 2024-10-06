@@ -17,7 +17,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
-import { alignTex } from "#root/utils/alignTex";
+import { alignTex } from "#root/utils/latex/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {

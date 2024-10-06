@@ -15,7 +15,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
-import { alignTex } from "#root/utils/alignTex";
+import { alignTex } from "#root/utils/latex/alignTex";
 
 type Identifiers = {
   affine1Coeffs: number[];

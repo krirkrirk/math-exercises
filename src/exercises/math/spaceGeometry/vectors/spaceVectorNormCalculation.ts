@@ -18,7 +18,7 @@ import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
-import { alignTex } from "#root/utils/alignTex";
+import { alignTex } from "#root/utils/latex/alignTex";
 
 type Identifiers = {
   x: number;

@@ -19,7 +19,7 @@ import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
-import { alignTex } from "#root/utils/alignTex";
+import { alignTex } from "#root/utils/latex/alignTex";
 
 /**
  *  type ax+b=cx+d

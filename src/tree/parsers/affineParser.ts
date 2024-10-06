@@ -9,7 +9,7 @@ export const affineParser = (ans: string, variable: string = "x") => {
   const parsed = parseLatex(ans);
   if (isVariableNode(parsed)) {
     if (parsed.name !== variable) return false;
-    return new Affine(1, 0, variable);
+    return parsed;
   }
   //!won't handle Affines à coefficients non entiers
   if (isMultiplyNode(parsed)) {

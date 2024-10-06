@@ -1,6 +1,7 @@
-import { Node, NodeIds, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType, ToTexOptions } from "../node";
 import { AlgebraicNode } from "../algebraicNode";
 import { randint } from "#root/math/utils/random/randint";
+import { colorize } from "#root/utils/latex/colorize";
 export function isNumberNode(a: Node): a is NumberNode {
   return a.type === NodeType.number;
 }
@@ -16,18 +17,27 @@ export class NumberNode implements AlgebraicNode {
   value: number;
   type: NodeType = NodeType.number;
   isNumeric: boolean;
-  constructor(value: number, tex?: string, mathString?: string) {
+  opts?: NodeOptions;
+  constructor(
+    value: number,
+    tex?: string,
+    mathString?: string,
+    opts?: NodeOptions,
+  ) {
     this.value = value;
     this.tex = tex?.replace(".", ",") || (value + "").replace(".", ",");
     this.mathString = mathString || this.value + "";
     this.isNumeric = true;
+    this.opts = opts;
   }
 
   toMathString(): string {
     return `${this.mathString}`;
   }
-  toTex(): string {
-    return `${this.tex}`;
+  toTex(options?: ToTexOptions): string {
+    const opts = this.opts?.toTexOptions ?? options;
+    const color = opts?.color;
+    return colorize(`${this.tex}`, color);
   }
   toMathjs() {
     return this.toMathString();

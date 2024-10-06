@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "nodemon",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
+    "testexo": "npx jest singleExo.test.ts",
     "test": "npx jest global.test.ts",
     "testml": "npx jest ml.test.ts",
     "testxl": "npx jest xl.test.ts",

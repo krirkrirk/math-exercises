@@ -16,7 +16,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { numberParser } from "#root/tree/parsers/numberParser";
-import { alignTex } from "#root/utils/alignTex";
+import { alignTex } from "#root/utils/latex/alignTex";
 import { coinFlip } from "#root/utils/coinFlip";
 import { random } from "#root/utils/random";
 

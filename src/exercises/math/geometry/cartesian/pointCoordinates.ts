@@ -34,6 +34,8 @@ const getPointCoordinatesQuestion: QuestionGenerator<Identifiers> = () => {
   const commands = [
     `A = (${x}, ${y})`,
     `ShowLabel(A, true)`,
+    "SetPointStyle(A, 1)",
+
     `SetVisibleInView(A, 1, true)`,
     `SetCoords(A, ${x}, ${y})`,
     `SetPointStyle(A, 0)`,

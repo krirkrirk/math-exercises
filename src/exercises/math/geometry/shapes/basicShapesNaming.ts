@@ -129,7 +129,6 @@ export const basicShapesNaming: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
-  answerType: "QCU",
   hasGeogebra: true,
   hasHintAndCorrection: true,
 };

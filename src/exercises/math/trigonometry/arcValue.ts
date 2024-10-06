@@ -19,7 +19,7 @@ import { TanNode } from "#root/tree/nodes/functions/tanNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { ArcsinNode } from "#root/tree/nodes/functions/arcSinNode";
 import { ArccosNode } from "#root/tree/nodes/functions/arccosNode";
-import { alignTex } from "#root/utils/alignTex";
+import { alignTex } from "#root/utils/latex/alignTex";
 import { ArctanNode } from "#root/tree/nodes/functions/arctanNode";
 
 type Identifiers = {

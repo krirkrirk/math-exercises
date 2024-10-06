@@ -17,7 +17,7 @@ import {
   SpaceVectorConstructor,
 } from "#root/math/geometry/spaceVector";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
-import { alignTex } from "#root/utils/alignTex";
+import { alignTex } from "#root/utils/latex/alignTex";
 
 type Identifiers = {};
 

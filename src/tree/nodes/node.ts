@@ -23,6 +23,7 @@ export type NodeOptions = {
   allowPowerOne?: boolean;
   allowSimplifySqrt?: boolean;
   forceParenthesis?: boolean;
+  toTexOptions?: ToTexOptions;
 };
 
 export type ToTexOptions = {
@@ -34,6 +35,7 @@ export type ToTexOptions = {
   notScientific?: boolean;
   forceNoSimplification?: boolean;
   forceParenthesis?: boolean;
+  color?: string;
 };
 
 export enum NodeIds {

@@ -21,11 +21,13 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Affine } from "#root/math/polynomials/affine";
+import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { alignTex } from "#root/utils/alignTex";
+import { parseLatex } from "#root/tree/parsers/latexParser";
+import { alignTex } from "#root/utils/latex/alignTex";
 
 //ax(bx+c)
 type Identifiers = {
@@ -36,11 +38,32 @@ type Identifiers = {
 
 const buildFromIdentifiers = (identifiers: Identifiers) => {};
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
+  const affine = new Affine(a, 0);
+  const affine2 = new Affine(b, c);
+  tryToAddWrongProp(propositions, affine.add(affine2).toTree().toTex());
+  tryToAddWrongProp(propositions, new Trinom(a * b, 0, c).toTree().toTex());
+  tryToAddWrongProp(
+    propositions,
+    affine.multiply(affine2.opposite()).toTree().toTex(),
+  );
+
   while (propositions.length < n) {
-    throw Error("QCM not implemented");
+    tryToAddWrongProp(
+      propositions,
+      TrinomConstructor.random(
+        undefined,
+        {
+          min: 0,
+          max: 1,
+        },
+        undefined,
+      )
+        .toTree()
+        .toTex(),
+    );
   }
   return shuffleProps(propositions, n);
 };
@@ -95,8 +118,11 @@ const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
 const getKeys: GetKeys<Identifiers> = (identifiers) => {
   return ["x"];
 };
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  throw Error("VEA not implemented");
+const isAnswerValid: VEA<Identifiers> = (ans, { answer, a, b, c }) => {
+  const affine = new Affine(a, 0);
+  const affine2 = new Affine(b, c);
+  const ansTree = affine.multiply(affine2).toTree();
+  return ansTree.toAllValidTexs().includes(ans);
 };
 
 const getSimpleDistriXCoeffQuestion: QuestionGenerator<Identifiers> = () => {
@@ -134,4 +160,5 @@ export const simpleDistriXCoeff: Exercise<Identifiers> = {
   getHint,
   getCorrection,
   getAnswer,
+  hasHintAndCorrection: true,
 };

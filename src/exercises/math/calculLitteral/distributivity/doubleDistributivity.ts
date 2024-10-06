@@ -15,7 +15,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
-import { alignTex } from "#root/utils/alignTex";
+import { alignTex } from "#root/utils/latex/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 type Identifiers = {
   affine1Coeffs: number[];

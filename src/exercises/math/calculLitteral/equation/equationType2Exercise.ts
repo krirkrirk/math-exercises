@@ -20,7 +20,7 @@ import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
-import { alignTex } from "#root/utils/alignTex";
+import { alignTex } from "#root/utils/latex/alignTex";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 

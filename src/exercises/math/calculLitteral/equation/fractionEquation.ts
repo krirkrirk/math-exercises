@@ -20,7 +20,7 @@ import {
   DiscreteSetNode,
   EmptySet,
 } from "#root/tree/nodes/sets/discreteSetNode";
-import { alignTex } from "#root/utils/alignTex";
+import { alignTex } from "#root/utils/latex/alignTex";
 import { shuffle } from "#root/utils/shuffle";
 
 type Identifiers = {

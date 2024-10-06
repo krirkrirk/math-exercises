@@ -17,7 +17,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { shuffle } from "#root/utils/shuffle";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
-import { alignTex } from "#root/utils/alignTex";
+import { alignTex } from "#root/utils/latex/alignTex";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 
 /**

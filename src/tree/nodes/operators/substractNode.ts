@@ -1,10 +1,11 @@
 // import { subtract } from "mathjs";
-import { Node, NodeIds, NodeType } from "../node";
+import { Node, NodeIds, NodeOptions, NodeType, ToTexOptions } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { OppositeNode } from "../functions/oppositeNode";
 import { AddNode } from "./addNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { coinFlip } from "#root/utils/coinFlip";
+import { colorize } from "#root/utils/latex/colorize";
 export function isSubstractNode(a: Node): a is SubstractNode {
   return isOperatorNode(a) && a.id === OperatorIds.substract;
 }
@@ -14,11 +15,17 @@ export class SubstractNode implements OperatorNode {
   rightChild: AlgebraicNode;
   type: NodeType;
   isNumeric: boolean;
-  constructor(leftChild: AlgebraicNode, rightChild: AlgebraicNode) {
+  opts?: NodeOptions;
+  constructor(
+    leftChild: AlgebraicNode,
+    rightChild: AlgebraicNode,
+    opts?: NodeOptions,
+  ) {
     this.id = OperatorIds.substract;
     this.leftChild = leftChild;
     this.rightChild = rightChild;
     this.type = NodeType.operator;
+    this.opts = opts;
     this.isNumeric = leftChild.isNumeric && rightChild.isNumeric;
   }
 
@@ -52,10 +59,15 @@ export class SubstractNode implements OperatorNode {
     if (coinFlip())
       [this.leftChild, this.rightChild] = [this.rightChild, this.leftChild];
   }
-  toTex(): string {
-    let rightTex = this.rightChild.toTex();
-    let leftTex = this.leftChild.toTex();
+  toTex(options?: ToTexOptions): string {
+    const opts = this.opts?.toTexOptions ?? options;
+    const childOpts = { ...opts };
+    const color = opts?.color;
 
+    if (color) childOpts.color = undefined;
+
+    let rightTex = this.rightChild.toTex(childOpts);
+    let leftTex = this.leftChild.toTex(childOpts);
     const needBrackets =
       (isOperatorNode(this.rightChild) &&
         [OperatorIds.add, OperatorIds.substract].includes(
@@ -65,7 +77,7 @@ export class SubstractNode implements OperatorNode {
 
     if (needBrackets) rightTex = `\\left(${rightTex}\\right)`;
 
-    return `${leftTex}-${rightTex}`;
+    return colorize(`${leftTex}-${rightTex}`, color);
   }
   evaluate(vars: Record<string, number>) {
     return this.leftChild.evaluate(vars) - this.rightChild.evaluate(vars);

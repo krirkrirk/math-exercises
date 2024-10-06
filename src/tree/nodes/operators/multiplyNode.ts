@@ -23,6 +23,7 @@ import { FractionNode, isFractionNode } from "./fractionNode";
 import { isFunctionNode } from "../functions/functionNode";
 import { AddNode } from "./addNode";
 import { round } from "#root/math/utils/round";
+import { colorize } from "#root/utils/latex/colorize";
 export function isMultiplyNode(a: Node): a is MultiplyNode {
   return isOperatorNode(a) && a.id === OperatorIds.multiply;
 }
@@ -68,17 +69,22 @@ export class MultiplyNode implements CommutativeOperatorNode {
     return `(${this.leftChild.toMathString()})*(${this.rightChild.toMathString()})`;
   }
 
-  toTex(opts?: ToTexOptions): string {
-    let leftTex = this.leftChild.toTex(opts);
-    let rightTex = this.rightChild.toTex(opts);
+  toTex(options?: ToTexOptions): string {
+    const opts = this.opts?.toTexOptions ?? options;
+    const color = opts?.color;
 
+    const childOpts = { ...opts };
+    if (color) childOpts.color = undefined;
+
+    let leftTex = this.leftChild.toTex(childOpts);
+    let rightTex = this.rightChild.toTex(childOpts);
     if (
       !opts?.forceNoSimplification &&
       isNumberNode(this.leftChild) &&
       this.leftChild.value === 1 &&
       opts?.scientific === undefined
     ) {
-      return rightTex;
+      return colorize(rightTex, color);
     }
 
     if (isOperatorNode(this.leftChild)) {
@@ -100,7 +106,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
     if (needBrackets) rightTex = `\\left(${rightTex}\\right)`;
     if (leftTex === "-1" && !opts?.forceNoSimplification) {
       // if (!isNumberNode(this.rightChild)) {
-      return "-" + rightTex;
+      return colorize("-" + rightTex, color);
       // }
     }
 
@@ -119,13 +125,16 @@ export class MultiplyNode implements CommutativeOperatorNode {
     const nextIsLetter =
       rightTex[0].toLowerCase() !== rightTex[0].toUpperCase();
     const prevIsCommand = leftTex.match(/\\[a-z]*$/);
-    return `${leftTex}${
-      showTimesSign
-        ? `\\times${nextIsLetter ? " " : ""}`
-        : prevIsCommand && nextIsLetter
-        ? " "
-        : ""
-    }${cDotSign}${rightTex}`;
+    return colorize(
+      `${leftTex}${
+        showTimesSign
+          ? `\\times${nextIsLetter ? " " : ""}`
+          : prevIsCommand && nextIsLetter
+          ? " "
+          : ""
+      }${cDotSign}${rightTex}`,
+      color,
+    );
   }
 
   toAllTexs() {
@@ -263,6 +272,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
         });
       });
     });
+
     return res;
   }
 
