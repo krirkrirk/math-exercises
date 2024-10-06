@@ -16,6 +16,7 @@ import { OppositeNode, isOppositeNode } from "../functions/oppositeNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { MultiplyNode, isMultiplyNode } from "./multiplyNode";
 import { FractionNode, isFractionNode } from "./fractionNode";
+import { shuffle } from "#root/utils/shuffle";
 
 export function isAddNode(a: Node): a is AddNode {
   return isOperatorNode(a) && a.id === OperatorIds.add;
@@ -23,30 +24,27 @@ export function isAddNode(a: Node): a is AddNode {
 
 export class AddNode implements CommutativeOperatorNode {
   id: OperatorIds;
-  leftChild: AlgebraicNode;
-  rightChild: AlgebraicNode;
+  children: AlgebraicNode[];
   type: NodeType;
   opts?: NodeOptions;
   isNumeric: boolean;
-  constructor(
-    leftChild: AlgebraicNode,
-    rightChild: AlgebraicNode,
-    opts?: NodeOptions,
-  ) {
+  constructor(children: AlgebraicNode[], opts?: NodeOptions) {
     this.id = OperatorIds.add;
-    this.leftChild = leftChild;
-    this.rightChild = rightChild;
+    this.children = children;
     this.type = NodeType.operator;
     this.opts = opts;
-    this.isNumeric = leftChild.isNumeric && rightChild.isNumeric;
+    this.isNumeric = children.every((child) => child.isNumeric);
   }
   shuffle = () => {
-    if (coinFlip())
-      [this.leftChild, this.rightChild] = [this.rightChild, this.leftChild];
+    this.children = shuffle(this.children);
   };
 
   toMathString(): string {
-    return `${this.leftChild.toMathString()} + (${this.rightChild.toMathString()})`;
+    let s = this.children[0].toMathString();
+    for (const child of this.children.slice(1)) {
+      s += ` + (${child.toMathString()})`;
+    }
+    return s;
   }
 
   toEquivalentNodes(opts?: NodeOptions): AlgebraicNode[] {
@@ -57,11 +55,11 @@ export class AddNode implements CommutativeOperatorNode {
     //ce seront des nodes qui ne sont pas des AddNode
 
     //1: choper le sous arbre de type Non AddNode (ie les enfants nonAddNode des AddNode)
+    //! pourquoi n'exclut-on pas les substractNode ici ?
     const recursive = (node: AlgebraicNode) => {
       if (isOperatorNode(node)) {
         if (isAddNode(node)) {
-          recursive(node.leftChild);
-          recursive(node.rightChild);
+          node.children.forEach((c) => recursive(c));
         } else addTree.push(node);
       } else addTree.push(node);
     };
@@ -78,7 +76,8 @@ export class AddNode implements CommutativeOperatorNode {
       //4: créé les produits cartésiens des nodes equiv puis nodify
       const cartesiansProducts = getCartesiansProducts(permutation);
       cartesiansProducts.forEach((product) => {
-        res.push(operatorComposition(AddNode, product));
+        if (product.length < 2) return product;
+        return new AddNode(product);
       });
     });
 
@@ -95,33 +94,31 @@ export class AddNode implements CommutativeOperatorNode {
   }
 
   toTex(): string {
-    const rightTex = this.rightChild.toTex();
-
-    const leftTex = this.leftChild.toTex();
-    if (rightTex === "0") return leftTex;
-    const tex = `${leftTex}${rightTex[0] === "-" ? "" : "+"}${rightTex}`;
+    let tex = this.children[0].toTex();
+    for (const child of this.children.slice(1)) {
+      const childTex = child.toTex();
+      tex += `${childTex[0] === "-" ? "" : "+"}${childTex}`;
+    }
     if (this.opts?.forceParenthesis) {
       return `\\left(${tex}\\right)`;
     } else return tex;
   }
   evaluate(vars: Record<string, number>) {
-    return this.leftChild.evaluate(vars) + this.rightChild.evaluate(vars);
+    return this.children.reduce((acc, curr) => acc + curr.evaluate(vars), 0);
   }
   // toMathjs() {
   //   return add(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   // }
   simplify(opts?: SimplifyOptions): AlgebraicNode {
-    const leftSimplified = this.leftChild.simplify(opts);
-    const rightSimplified = this.rightChild.simplify(opts);
-    const copy = new AddNode(leftSimplified, rightSimplified, this.opts);
+    const childrenSimplified = this.children.map((c) => c.simplify(opts));
+    const copy = new AddNode(childrenSimplified, this.opts);
 
-    /**get externals nodes
-     */
+    //1 : met dans externals tous les nodes enfant qui ne sont pas Add ou Substract
+    //ex : 2+3+4*x +exp(3)+(3+2)/(1+3)+((1+(2+3)) => [2,3,4*x,exp(3),(3+2,1+3),1,2,3]
     let externals: AlgebraicNode[] = [];
     const recursive = (node: AlgebraicNode) => {
       if (isAddNode(node)) {
-        recursive(node.leftChild);
-        recursive(node.rightChild);
+        node.children.forEach((c) => recursive(c));
       } else if (isSubstractNode(node)) {
         recursive(node.leftChild);
         recursive(new OppositeNode(node.rightChild));
@@ -145,7 +142,7 @@ export class AddNode implements CommutativeOperatorNode {
         const e = b.leftChild;
         const f = b.rightChild;
         return new FractionNode(
-          new AddNode(new MultiplyNode(c, f), new MultiplyNode(e, d)),
+          new AddNode([new MultiplyNode(c, f), new MultiplyNode(e, d)]),
           new MultiplyNode(d, f),
         ).simplify(opts);
       }
@@ -278,13 +275,12 @@ export class AddNode implements CommutativeOperatorNode {
 
     if (!externals.length) return new NumberNode(0);
     if (externals.length === 1) return externals[0];
-    return operatorComposition(AddNode, externals);
+    return new AddNode(externals);
   }
   toIdentifiers() {
     return {
       id: NodeIds.add,
-      leftChild: this.leftChild.toIdentifiers(),
-      rightChild: this.rightChild.toIdentifiers(),
+      children: this.children.map((c) => c.toIdentifiers()),
     };
   }
   equals(node: AlgebraicNode): boolean {

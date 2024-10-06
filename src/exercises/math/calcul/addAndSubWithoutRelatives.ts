@@ -39,10 +39,7 @@ const getAddAndSubWithoutRelatives: QuestionGenerator<Identifiers> = () => {
     } while (numbers.every((a) => a > 0));
 
     const allNumbersNodes = numbers.map((nb) => new NumberNode(nb));
-    statementTree = new AddNode(allNumbersNodes[0], allNumbersNodes[1]);
-    for (let i = 2; i < allNumbersNodes.length; i++) {
-      statementTree = new AddNode(statementTree, allNumbersNodes[i]);
-    }
+    statementTree = new AddNode(allNumbersNodes);
     answer = numbers.reduce((a, b) => a + b);
   }
   const answerTex = answer.toString();
