@@ -192,7 +192,7 @@ const getGGBOptions: GetGGBOptions<Identifiers> = ({
       ...trinom.toGGBCommands({
         name: "f",
         color: blueMain,
-        label: "\\mathcal C_f",
+        label: "$\\mathcal C_f$",
       }),
       `A = (${xA},${yA})`,
       "SetFixed(A, true)",
