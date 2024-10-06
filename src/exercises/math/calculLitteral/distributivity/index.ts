@@ -6,3 +6,4 @@ export * from "./simpleDistributivity";
 export { thirdIdentity } from "./thirdIdentity";
 export * from "./doubleDistributivityWithCoeff";
 export * from "./canonicalFormDevelopment";
+export * from "./simpleDistriXCoeff";

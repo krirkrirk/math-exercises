@@ -79,6 +79,10 @@ export type GeogebraOptions = {
   yAxis?: GeogebraAxisOptions;
 };
 
+export type KeyboardOptions = {
+  parenthesisShouldNotProduceLeftRight?: boolean;
+};
+
 export interface Question<TIdentifiers = {}> {
   instruction: string;
   hint?: string;
@@ -87,6 +91,7 @@ export interface Question<TIdentifiers = {}> {
   answer?: string;
   answerFormat?: "tex" | "raw";
   ggbAnswer?: string[];
+  keyboardOptions?: KeyboardOptions;
   keys?: (KeyId | KeyProps)[];
   // keys?: KeyId[];
   ggbOptions?: GeogebraOptions;
@@ -113,6 +118,26 @@ export type GGBVEA<TIdentifiers> = (
 export type QuestionGenerator<TIdentifiers = {}, TOptions = {}> = (
   opts?: TOptions,
 ) => Question<TIdentifiers>;
+export type GetHint<TIdentifiers, TPreBuiltObjects = {}> = (
+  args: TIdentifiers,
+  objects?: TPreBuiltObjects,
+) => string;
+export type GetCorrection<TIdentifiers> = (args: TIdentifiers) => string;
+export type GetInstruction<TIdentifiers> = (args: TIdentifiers) => string;
+export type GetAnswer<TIdentifiers> = (args: TIdentifiers) => string;
+export type GetKeys<TIdentifiers> = (
+  args: TIdentifiers,
+) => (KeyId | KeyProps)[];
+export type GetGGBAnswer<TIdentifiers> = (args: TIdentifiers) => string[];
+export type GetGGBOptions<TIdentifiers> = (
+  args: TIdentifiers,
+) => GeogebraOptions;
+export type GetStudentGGBOptions<TIdentifiers> = (
+  args: TIdentifiers,
+) => GeogebraOptions;
+export type RebuildIdentifiers<TIdentifiers> = (
+  oldIdentifiers: any,
+) => TIdentifiers;
 export interface Exercise<TIdentifiers = {}> {
   id: string;
   isSingleStep: boolean;
@@ -133,6 +158,15 @@ export interface Exercise<TIdentifiers = {}> {
   hasGeogebra?: boolean;
   subject: "Mathématiques" | "Chimie" | "Physique";
   hasHintAndCorrection?: boolean;
+  getInstruction?: GetInstruction<TIdentifiers>;
+  getHint?: GetHint<TIdentifiers>;
+  getCorrection?: GetCorrection<TIdentifiers>;
+  getKeys?: GetKeys<TIdentifiers>;
+  getAnswer?: GetAnswer<TIdentifiers>;
+  getGGBAnswer?: GetGGBAnswer<TIdentifiers>;
+  getGGBOptions?: GetGGBOptions<TIdentifiers>;
+  getStudentGGBOptions?: GetStudentGGBOptions<TIdentifiers>;
+  rebuildIdentifiers?: RebuildIdentifiers<TIdentifiers>;
 }
 
 export type MathLevel =

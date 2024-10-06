@@ -122,6 +122,7 @@ export class Point {
       `${this.name} = (${this.x.toMathString()}, ${this.y.toMathString()})`,
       `SetFixed(${this.name},${isFixed ? "true" : "false"})`,
       `ShowLabel(${this.name},${showLabel ? "true" : "false"})`,
+      `SetPointStyle(${this.name}, 1)`,
     ];
   }
 }

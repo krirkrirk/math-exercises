@@ -288,6 +288,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
   copy() {
     return new MultiplyNode(this.leftChild, this.rightChild, this.opts);
   }
+  canonicalOrder() {}
   simplify(opts?: SimplifyOptions): AlgebraicNode {
     const leftSimplified = this.leftChild.simplify(opts);
     const rightSimplified = this.rightChild.simplify(opts);
@@ -428,10 +429,7 @@ const powerSimplify = (
   opts?: SimplifyOptions,
 ): AlgebraicNode | void => {
   if (isPowerNode(a) && isPowerNode(b)) {
-    if (
-      (a.leftChild as AlgebraicNode).toTex() ===
-      (b.leftChild as AlgebraicNode).toTex()
-    )
+    if (a.leftChild.toTex() === b.leftChild.toTex())
       return new PowerNode(
         a.leftChild,
         new AddNode(a.rightChild, b.rightChild).simplify(opts),
@@ -440,10 +438,7 @@ const powerSimplify = (
   if (isVariableNode(a)) {
     if (isVariableNode(b) && b.toTex() === a.toTex() && opts?.keepPowers)
       return new PowerNode(a, new NumberNode(2)).simplify(opts);
-    if (
-      isPowerNode(b) &&
-      (b.leftChild as AlgebraicNode).toTex() === a.toTex()
-    ) {
+    if (isPowerNode(b) && b.leftChild.toTex() === a.toTex()) {
       return new PowerNode(
         a,
         new AddNode(new NumberNode(1), b.rightChild).simplify(opts),

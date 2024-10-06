@@ -47,7 +47,7 @@ const getBasicShapesNamingQuestion: QuestionGenerator<Identifiers> = () => {
     default:
       const line = LineConstructor.random();
       commands.push(...line.toGGBCommands(true));
-      answer = line.name;
+      answer = line.toTexNoLeftRight();
       break;
   }
 
@@ -56,27 +56,21 @@ const getBasicShapesNamingQuestion: QuestionGenerator<Identifiers> = () => {
     hideAxes: true,
     hideGrid: true,
   });
-  // const letters = answer.substring(1, answer.length - 1).split("") as KeyId[];
+  const letters = answer.substring(1, answer.length - 1).split("") as KeyId[];
   // console.log(letters);
   const question: Question<Identifiers> = {
     answer,
     instruction: `Comment se nomme la figure suivante ?`,
-    // keys: ["lbracket", "rbracket", ...letters],
-    // keys: [{
-    //   id: "custom",
-    //   label: "[...]",
-    //   labelType: "tex",
-    //   mathfieldInstructions: {
-    //     method: "write",
-    //     content: "[$1]"
-    //   }
-    // }],
+    keys: ["lbracket", "rbracket", ...letters],
 
     answerFormat: "tex",
     identifiers: { type, commands },
     ggbOptions: ggb.getOptions({
       coords: [-15, 15, -15, 15],
     }),
+    keyboardOptions: {
+      parenthesisShouldNotProduceLeftRight: true,
+    },
     hint: `On rappelle que : 
     
 - Une longueur se note $AB$ ;
@@ -88,7 +82,7 @@ const getBasicShapesNamingQuestion: QuestionGenerator<Identifiers> = () => {
       type === 1
         ? "un segment"
         : type === 2
-        ? `une demi-droite d'origine ${startPointName}$`
+        ? `une demi-droite d'origine $${startPointName}$`
         : "une droite"
     }.
     
@@ -102,14 +96,13 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const name = answer
-    .replace("\\left(", "")
-    .replace("\\right)", "")
+    .replace("(", "")
     .replace("[", "")
     .replace("]", "")
     .replace(")", "");
   tryToAddWrongProp(propositions, "[" + name + "]");
   tryToAddWrongProp(propositions, "[" + name + ")");
-  tryToAddWrongProp(propositions, "\\left(" + name + "\\right)");
+  tryToAddWrongProp(propositions, "(" + name + ")");
   tryToAddWrongProp(propositions, name);
   return shuffleProps(propositions, n);
 };

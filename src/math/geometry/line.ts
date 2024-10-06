@@ -132,6 +132,9 @@ export class Line {
   toTex() {
     return this.name;
   }
+  toTexNoLeftRight() {
+    return this.name.replace("\\left", "").replace("\\right", "");
+  }
 
   toGGBCommands(
     shouldBuildPoints: boolean,
