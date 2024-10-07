@@ -1,5 +1,7 @@
 import {
   Exercise,
+  GetCorrection,
+  GetHint,
   Proposition,
   QCMGenerator,
   Question,
@@ -17,6 +19,12 @@ type Identifiers = {
   tex: string;
 };
 
+const getHint: GetHint<Identifiers> = ({ tex }) => {
+  return `$f$ est une fonction constante égale à $${tex}$`;
+};
+const getCorrection: GetCorrection<Identifiers> = ({ tex }) => {
+  return `La fonction $f$ est une fonction constante égale à $${tex}$. Or, la fonction dérivée d'une fonction constante est nulle. Ainsi, pour tout $x\\in \\mathbb{R}$, $f'(x) = 0$.`;
+};
 export const getConstanteDerivative: QuestionGenerator<Identifiers> = () => {
   const c = NombreConstructor.random();
   const tex = c.toTree().toTex();
@@ -28,6 +36,8 @@ export const getConstanteDerivative: QuestionGenerator<Identifiers> = () => {
     keys: ["x"],
     answerFormat: "tex",
     identifiers: { tex },
+    hint: getHint({ tex }),
+    correction: getCorrection({ tex }),
   };
 
   return question;
@@ -70,4 +80,7 @@ export const constanteDerivative: Exercise<Identifiers> = {
   getPropositions: getConstanteDerivativePropositions,
   isAnswerValid: isConstanteDerivativeAnswerValid,
   subject: "Mathématiques",
+  getHint,
+  getCorrection,
+  hasHintAndCorrection: true,
 };
