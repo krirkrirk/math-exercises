@@ -110,8 +110,8 @@ const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
 
   const corr = `
 ${alignTex([
+  ["", statement.toTex()],
   [
-    statement.toTex(),
     "=",
     new AddNode(
       new MultiplyNode(affine1.toTree(), affine2.toTree()),
@@ -122,7 +122,6 @@ ${alignTex([
     ).toTex(),
   ],
   [
-    "",
     "=",
     new MultiplyNode(
       affine1.toTree(),
@@ -132,7 +131,7 @@ ${alignTex([
       ),
     ).toTex(),
   ],
-  ["", "=", answer],
+  ["=", answer],
 ])}
   `;
   return corr;

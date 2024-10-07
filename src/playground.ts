@@ -31,5 +31,4 @@ export const playground = () => {
   //   new (coinFlip() ? SubstractNode : AddNode)(affine2.toTree(), (1).toTree()),
   // ).toTex();
   // console.log(node);
-  console.log((3).toTree({ toTexOptions: { color: "red" } }));
 };

@@ -10,3 +10,4 @@ export * from "./isTableProportional";
 export * from "./cmToEvolution";
 export * from "./htToTTC";
 export * from "./ttcToHT";
+export * from "./findTVA";

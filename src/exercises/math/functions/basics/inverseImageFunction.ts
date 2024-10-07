@@ -36,13 +36,18 @@ const getInverseImageFunction: QuestionGenerator<Identifiers> = () => {
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, poly1, xValue },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const xValue = Number(answer.split("=")[1]);
+  const poly = new Polynomial(poly1);
+  const image = poly.calculate(xValue);
+  tryToAddWrongProp(propositions, "x=" + image);
   while (propositions.length < n) {
     const wrongAnswer = xValue + randint(-10, 11, [0]);
-    tryToAddWrongProp(propositions, wrongAnswer + "");
+    tryToAddWrongProp(propositions, "x=" + wrongAnswer);
   }
 
   return shuffle(propositions);
