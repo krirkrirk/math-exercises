@@ -38,6 +38,7 @@ const getOperationsPrioritiesParenthesisQuestion: QuestionGenerator<
       statement = new MultiplyNode(
         a.toTree(),
         new AddNode(b.toTree(), c.toTree()),
+        { forceTimesSign: true },
       );
       (statement as MultiplyNode).shuffle();
       answer = (a * (b + c)).frenchify();
@@ -73,6 +74,7 @@ const getOperationsPrioritiesParenthesisQuestion: QuestionGenerator<
         statement = new MultiplyNode(
           new AddNode(a.toTree(), b.toTree()),
           new AddNode(c.toTree(), d.toTree()),
+          { forceTimesSign: true },
         );
         answer = ((a + b) * (c + d)).frenchify();
       } else {
@@ -104,7 +106,9 @@ const getOperationsPrioritiesParenthesisQuestion: QuestionGenerator<
         a.toTree(),
         new (isAdd2 ? AddNode : SubstractNode)(
           b.toTree(),
-          new (isDivide ? DivideNode : MultiplyNode)(c.toTree(), d.toTree()),
+          new (isDivide ? DivideNode : MultiplyNode)(c.toTree(), d.toTree(), {
+            forceTimesSign: true,
+          }),
           { forceParenthesis: isAdd },
         ),
       );

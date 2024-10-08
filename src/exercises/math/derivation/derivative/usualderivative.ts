@@ -57,6 +57,8 @@ const getUsualDerivative: QuestionGenerator<Identifiers> = () => {
       break;
     case 4:
       question = getConstanteDerivative();
+      question.hint = undefined;
+      question.correction = undefined;
       identifiers = { ...question.identifiers, type: 4 };
       break;
     default:

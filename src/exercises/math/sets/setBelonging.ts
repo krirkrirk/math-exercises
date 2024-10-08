@@ -1,5 +1,6 @@
 import {
   Exercise,
+  GetAnswer,
   Proposition,
   QCMGenerator,
   Question,
@@ -20,6 +21,13 @@ type Identifiers = {
   nb: string;
 };
 
+const getAnswer: GetAnswer<Identifiers> = (identifiers) => {
+  const sets = ["N", "Z", "D", "Q", "R"];
+  if (identifiers.type > -1) {
+    return `\\mathbb{${sets[identifiers.type]}}`;
+  }
+  return "";
+};
 const getSetBelongingQuestion: QuestionGenerator<Identifiers> = () => {
   //N Z D Q R (racine2, pi)
   //fraction simplifiable en décimal/entier
@@ -39,7 +47,7 @@ const getSetBelongingQuestion: QuestionGenerator<Identifiers> = () => {
       break;
     case 2:
       nb = DecimalConstructor.random(-50, 50, randint(1, 4)).toTree().toTex();
-      answer = "\\mathrm{D}";
+      answer = "\\mathbb{D}";
       break;
     case 3:
       nb = RationalConstructor.randomIrreductible().toTree().toTex();
@@ -86,7 +94,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return [answer, answer.replace("mathbb", "mathrm")].includes(ans);
+  return [answer].includes(ans);
 };
 
 export const setBelonging: Exercise<Identifiers> = {
@@ -102,4 +110,5 @@ export const setBelonging: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getAnswer,
 };

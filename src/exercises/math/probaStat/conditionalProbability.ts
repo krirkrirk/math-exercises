@@ -121,7 +121,7 @@ ${alignTex([
       pB = randint(2, 100);
       pBStr = (pB / 100).frenchify();
       pA_B = randint(1, pB);
-      pA_BStr = pA_B.frenchify();
+      pA_BStr = (pA_B / 100).frenchify();
       pAB = round((pA_B * pB) / 10000, 2);
       pABStr = pAB.frenchify();
       instruction += `$P(B) = ${pBStr}\\ $ et $\\ P_B(A) = ${pA_BStr}$.$\\\\$Déterminer $P(A \\cap B)$ (arrondir au centième).`;

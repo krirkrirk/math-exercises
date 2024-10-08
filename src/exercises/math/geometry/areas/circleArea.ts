@@ -23,7 +23,6 @@ type Identifiers = {
 const getCircleArea: QuestionGenerator<Identifiers> = () => {
   const radius = randint(1, 13);
   const diametre = randint(1, 21);
-
   const coin = coinFlip();
   const answerNb = coin
     ? round(Math.PI * radius ** 2, 2)
