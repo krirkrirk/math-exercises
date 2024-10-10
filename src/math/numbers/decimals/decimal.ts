@@ -56,7 +56,15 @@ export class Decimal implements Nombre {
     this.decimalPart = decimalPartString || "";
     this.precision = this.decimalPart.length;
   }
-
+  times(n: Nombre | number) {
+    if (typeof n === "number") return new Decimal(round(this.value * n, 10));
+    throw Error("unimplemnented");
+    // if (n.type === NumberType.Real) {
+    //   throw Error("decimal times real not implemented");
+    // }
+    // if (n.type === NumberType.Rational)
+    //   throw Error("decimal times real not implemented");
+  }
   equals(n: Nombre) {
     return this.value === n.value;
   }

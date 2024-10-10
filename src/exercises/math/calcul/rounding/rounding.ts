@@ -15,6 +15,8 @@ import {
 } from "#root/math/numbers/decimals/decimal";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
+import { numberParser } from "#root/tree/parsers/numberParser";
+import { coinFlip } from "#root/utils/coinFlip";
 import { shuffle } from "#root/utils/shuffle";
 import { v4 } from "uuid";
 
@@ -35,6 +37,7 @@ const getRoundQuestions: QuestionGenerator<
   Identifiers,
   { precisionAsked: number }
 > = (opts) => {
+  244.8895;
   const precisionAsked = opts?.precisionAsked || 0;
   const precision = randint(precisionAsked + 1, precisionAsked + 5);
   const dec = DecimalConstructor.random(0, 1000, precision);
@@ -128,11 +131,11 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { decimal, precisionAsked }) => {
-  const dec = new Decimal(decimal);
-  const answer = dec.round(precisionAsked).toTree();
-  const texs = answer.toAllValidTexs();
-  return texs.includes(ans);
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { answer, decimal, precisionAsked },
+) => {
+  return numberParser(ans) === answer;
 };
 export const roundToUnit: Exercise<Identifiers> = {
   id: "roundToUnit",

@@ -1,5 +1,10 @@
 import {
   Exercise,
+  GetAnswer,
+  GetCorrection,
+  GetHint,
+  GetInstruction,
+  GetKeys,
   Proposition,
   QCMGenerator,
   Question,
@@ -14,53 +19,106 @@ import {
   Decimal,
   DecimalConstructor,
 } from "#root/math/numbers/decimals/decimal";
+import {
+  Integer,
+  IntegerConstructor,
+} from "#root/math/numbers/integer/integer";
 import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
+import { numberParser } from "#root/tree/parsers/numberParser";
 import { coinFlip } from "#root/utils/coinFlip";
+import { probaFlip } from "#root/utils/probaFlip";
 
 type Identifiers = {
   isPercentToDecimal: boolean;
   nb: number;
 };
 
-const getPercentToDecimalQuestion: QuestionGenerator<Identifiers> = () => {
-  const isPercentToDecimal = coinFlip();
-  const nb = DecimalConstructor.random(0, 2);
-  const tex = nb.toTree().toTex();
-  const percentTex = nb.toPercentNode().toTex();
-  const instru = isPercentToDecimal ? percentTex : tex;
-  const answer = isPercentToDecimal ? tex : percentTex;
-  const question: Question<Identifiers> = {
-    answer,
-    instruction: `Ecrire le nombre suivant ${
-      isPercentToDecimal
-        ? "sous forme de nombre décimal"
-        : "sous forme de pourcentage"
-    } : $${instru}$`,
-    keys: ["percent"],
-    answerFormat: "tex",
-    identifiers: { isPercentToDecimal, nb: nb.value },
-    hint: `${
-      isPercentToDecimal
-        ? `Pour écrire $x\\%$ en décimal, rappelle toi que $x\\% = \\frac{x}{100}$.`
-        : `Pour écrire un nombre $x$ en pourcentage, on multiplie $x$ par $100$.`
-    }`,
-    correction: `${
-      isPercentToDecimal
-        ? `Le symbole $\\%$ signifie simplement "divisé par $100$". 
+const getAnswer: GetAnswer<Identifiers> = ({ nb, isPercentToDecimal }) => {
+  const dec = new Decimal(nb);
+  const tex = dec.toTree().toTex();
+  const percentTex = dec.toPercentNode().toTex();
+  return isPercentToDecimal ? tex : percentTex;
+};
 
-On a donc $${(nb.value * 100).frenchify()}\\% = \\frac{${(
-            nb.value * 100
-          ).frenchify()}}{100} = ${answer}$
-      `
-        : `Pour écrire un nombre sous la forme d'un pourcentage, il suffit de le multiplier par $100$. 
-      
-On a donc $${nb.value.frenchify()} = ${answer}$.
+const getInstruction: GetInstruction<Identifiers> = ({
+  isPercentToDecimal,
+  nb,
+}) => {
+  const dec = new Decimal(nb);
+  const tex = dec.toTree().toTex();
+  const percentTex = dec.toPercentNode().toTex();
+  const instru = isPercentToDecimal ? percentTex : tex;
+  return `Ecrire le nombre suivant ${
+    isPercentToDecimal
+      ? "sous forme de nombre décimal"
+      : "sous forme de pourcentage"
+  } : $${instru}$`;
+};
+
+const getHint: GetHint<Identifiers> = ({ isPercentToDecimal }) => {
+  return `${
+    isPercentToDecimal
+      ? `Pour écrire $x\\%$ en décimal, rappelle toi que $x\\% = \\frac{x}{100}$.`
+      : `Pour écrire un nombre $x$ en pourcentage, on multiplie $x$ par $100$.`
+  }`;
+};
+const getCorrection: GetCorrection<Identifiers> = ({
+  isPercentToDecimal,
+  nb,
+}) => {
+  const answer = getAnswer({ isPercentToDecimal, nb });
+  const nbPercent = round(nb * 100, 10).frenchify();
+  return `${
+    isPercentToDecimal
+      ? `Le symbole $\\%$ signifie simplement "divisé par $100$". 
+
+On a donc $${nbPercent}\\% = \\frac{${nbPercent}}{100} = ${answer}$
+    `
+      : `Pour écrire un nombre sous la forme d'un pourcentage, il suffit de le multiplier par $100$. 
+    
+On a donc $${nb.frenchify()} = ${answer}$.
 
 En effet, on a bien $${answer} = \\frac{${answer.replace(
-            "\\%",
-            "",
-          )}}{100} = ${nb.value.frenchify()}$.`
-    }`,
+          "\\%",
+          "",
+        )}}{100} = ${nb.frenchify()}$.`
+  }`;
+};
+
+const getKeys: GetKeys<Identifiers> = (identifiers) => {
+  return ["percent"];
+};
+const getPercentToDecimalQuestion: QuestionGenerator<Identifiers> = () => {
+  const isPercentToDecimal = coinFlip();
+  const isNatural = coinFlip();
+  const percentNb = probaFlip(0.3)
+    ? isNatural
+      ? new Integer(IntegerConstructor.random(1, [0]))
+      : DecimalConstructor.random(0, 10)
+    : coinFlip()
+    ? isNatural
+      ? new Integer(IntegerConstructor.random(2))
+      : DecimalConstructor.random(10, 100)
+    : isNatural
+    ? new Integer(IntegerConstructor.random(3))
+    : DecimalConstructor.random(100, 200);
+
+  const nb = percentNb.times(0.01);
+
+  const identifiers = {
+    isPercentToDecimal,
+    nb: nb.value,
+  };
+
+  const question: Question<Identifiers> = {
+    answer: getAnswer(identifiers),
+    instruction: getInstruction(identifiers),
+    keys: getKeys(identifiers),
+    answerFormat: "tex",
+    identifiers,
+    hint: getHint(identifiers),
+    correction: getCorrection(identifiers),
   };
 
   return question;
@@ -103,8 +161,10 @@ const isAnswerValid: VEA<Identifiers> = (
   if (isPercentToDecimal) {
     return ans === answer;
   } else {
-    const texs = dec.toPercentNode().toAllValidTexs();
-    return texs.includes(ans);
+    const rawAns = ans.replace("\\%", "");
+    const parsed = numberParser(rawAns);
+    if (!parsed) return false;
+    return parsed + "\\%" === answer;
   }
 };
 export const percentToDecimal: Exercise<Identifiers> = {

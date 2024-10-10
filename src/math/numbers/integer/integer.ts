@@ -2,6 +2,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { random } from "#root/utils/random";
+import { Decimal } from "../decimals/decimal";
 import { Nombre, NumberType } from "../nombre";
 import { Rational } from "../rationals/rational";
 import { primes } from "./primes";
@@ -55,6 +56,12 @@ export class Integer implements Nombre {
     return new NumberNode(this.value, this.tex);
   }
 
+  times(n: number | Nombre) {
+    if (typeof n === "number") return new Integer(this.value * n);
+    if (n.type === NumberType.Integer) return new Integer(this.value * n.value);
+    if (n.type === NumberType.Decimal) return (n as Decimal).times(n);
+    throw Error("unimplemented");
+  }
   round(precision: number) {
     const intString = this.value + "";
 
