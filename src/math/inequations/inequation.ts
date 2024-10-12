@@ -1,4 +1,4 @@
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 export type InegalitySymbols = "<" | ">" | "\\le" | "\\ge";
 
 export abstract class InequationSymbolConstructor {

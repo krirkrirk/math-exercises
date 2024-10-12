@@ -6,7 +6,7 @@ import {
   VEA,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 import {
   getFirstIdentityPropositions,
   getFirstIdentityQuestion,

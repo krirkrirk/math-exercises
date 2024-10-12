@@ -19,8 +19,8 @@ import { DivideUnit } from "#root/pc/units/divideUnit";
 import { EnergyUnit, energyValues } from "#root/pc/units/energyUnit";
 import { MassUnit } from "#root/pc/units/massUnits";
 import { TimeUnit } from "#root/pc/units/timeUnits";
-import { random } from "#root/utils/random";
-import { shuffle } from "#root/utils/shuffle";
+import { random } from "#root/utils/alea/random";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   isAsking: string;

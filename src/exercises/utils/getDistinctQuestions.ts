@@ -20,6 +20,7 @@ export const getDistinctQuestions = (
   generator: () => Question<any>,
   nb: number,
   max?: number,
+  discriminator?: (q1: Question<any>, q2: Question<any>) => boolean,
 ): Question<any>[] => {
   const res: Question<any>[] = [];
   const trueStop = max === undefined ? nb : Math.min(nb, max);
@@ -28,16 +29,25 @@ export const getDistinctQuestions = (
     let question: Question<any>;
     do {
       question = generator();
-    } while (
-      res.some(
-        (q) =>
-          q.instruction === question.instruction &&
-          q.answer === question.answer &&
-          (!q.ggbOptions?.commands ||
-            equalTab(q.ggbOptions?.commands, question.ggbOptions?.commands!)),
-      )
-    );
+    } while (res.some((q) => compare(q, question, discriminator)));
+
     res.push(question);
   }
   return res;
+};
+
+const compare = (
+  q1: Question<any>,
+  q2: Question<any>,
+  discriminator?: (q1: Question<any>, q2: Question<any>) => boolean,
+) => {
+  if (!!discriminator) {
+    return discriminator(q1, q2);
+  }
+  return (
+    q1.instruction === q2.instruction &&
+    q1.answer === q2.answer &&
+    (!q1.ggbOptions?.commands ||
+      equalTab(q1.ggbOptions?.commands, q2.ggbOptions?.commands!))
+  );
 };

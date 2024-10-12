@@ -17,8 +17,8 @@ import { round } from "#root/math/utils/round";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   pA: number;

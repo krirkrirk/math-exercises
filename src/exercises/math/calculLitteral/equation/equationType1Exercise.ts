@@ -14,7 +14,7 @@ import { Affine } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
 import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { alignTex } from "#root/utils/latex/alignTex";

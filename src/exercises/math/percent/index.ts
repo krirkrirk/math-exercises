@@ -11,3 +11,7 @@ export * from "./cmToEvolution";
 export * from "./htToTTC";
 export * from "./ttcToHT";
 export * from "./findTVA";
+export * from "./evolutionRateFromValues";
+export * from "./findStartValueAfterEvolution";
+export * from "./subPopulationEffectifFromPercent";
+export * from "./populationEffectifFromSubPopulation";

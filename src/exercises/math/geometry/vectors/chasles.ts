@@ -12,8 +12,8 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Vector } from "#root/math/geometry/vector";
 import { randint } from "#root/math/utils/random/randint";
 import { KeyId } from "#root/types/keyIds";
-import { random } from "#root/utils/random";
-import { shuffle } from "#root/utils/shuffle";
+import { random } from "#root/utils/alea/random";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   randLetters: string[];

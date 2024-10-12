@@ -16,7 +16,7 @@ import {
 } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 const getFractionAndIntegerSum: QuestionGenerator<Identifiers> = () => {
   const rational = RationalConstructor.randomIrreductible();

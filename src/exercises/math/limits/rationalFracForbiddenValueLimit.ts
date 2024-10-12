@@ -16,7 +16,7 @@ import { Affine } from "#root/math/polynomials/affine";
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   numCoeffs: number[];

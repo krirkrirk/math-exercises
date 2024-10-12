@@ -16,7 +16,7 @@ import {
 } from "#root/math/numbers/decimals/decimal";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   dec: number;

@@ -10,8 +10,8 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { TrinomConstructor } from "#root/math/polynomials/trinom";
-import { coinFlip } from "#root/utils/coinFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   a: number;

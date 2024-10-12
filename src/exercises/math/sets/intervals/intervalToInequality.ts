@@ -18,8 +18,8 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { BelongsNode } from "#root/tree/nodes/sets/belongsNode";
 import { ClosureType } from "#root/tree/nodes/sets/closure";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   intervalMin: number | string;

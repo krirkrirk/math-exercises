@@ -20,7 +20,7 @@ import { ClosureType } from "#root/tree/nodes/sets/closure";
 
 import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { UnionIntervalNode } from "#root/tree/nodes/sets/unionIntervalNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   yValue: number;

@@ -14,7 +14,7 @@ import { TriangleConstructor } from "#root/math/geometry/triangles";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { KeyId } from "#root/types/keyIds";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {

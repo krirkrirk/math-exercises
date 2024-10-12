@@ -31,7 +31,7 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { LimitNode } from "#root/tree/nodes/operators/limitNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   type: number;

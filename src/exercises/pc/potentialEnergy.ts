@@ -18,7 +18,7 @@ import { DistanceUnit } from "#root/pc/units/distanceUnits";
 import { EnergyUnit } from "#root/pc/units/energyUnit";
 import { MassUnit } from "#root/pc/units/massUnits";
 import { PowerUnit } from "#root/pc/units/powerUnits";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   mass: number;

@@ -11,8 +11,8 @@ import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { MultiplyNode, isMultiplyNode } from "../operators/multiplyNode";
 import { DivideNode, isDivideNode } from "../operators/divideNode";
 import { FractionNode, isFractionNode } from "../operators/fractionNode";
-import { getCartesiansProducts } from "#root/utils/cartesianProducts";
-import { permute } from "#root/utils/permutations";
+import { getCartesiansProducts } from "#root/utils/arrays/cartesianProducts";
+import { permute } from "#root/utils/arrays/permutations";
 export function isOppositeNode(a: Node): a is OppositeNode {
   return isFunctionNode(a) && a.id === FunctionsIds.opposite;
 }

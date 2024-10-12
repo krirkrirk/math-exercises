@@ -1,6 +1,6 @@
 import { KeyId } from "#root/types/keyIds";
 import { KeyProps } from "#root/types/keyProps";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 import { uuid } from "uuidv4";
 
 export const addValidProp = (
@@ -57,10 +57,11 @@ export type Proposition = {
 
 export type GeogebraAxisOptions = {
   steps?: number;
-  hiddden?: boolean;
+  hidden?: boolean;
   hideNumbers?: boolean;
   label?: string;
   natural?: boolean;
+  showPositive?: boolean;
 };
 
 export type GeogebraOptions = {

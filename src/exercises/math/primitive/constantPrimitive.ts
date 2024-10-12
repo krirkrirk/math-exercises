@@ -13,7 +13,7 @@ import { Monom } from "#root/math/polynomials/monom";
 import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   c: number;

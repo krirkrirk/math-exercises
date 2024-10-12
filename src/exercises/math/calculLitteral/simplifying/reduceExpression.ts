@@ -13,7 +13,7 @@ import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 import { Node } from "#root/tree/nodes/node";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   rand: number;

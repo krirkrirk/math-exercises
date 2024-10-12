@@ -14,7 +14,7 @@ import {
   IntervalConstructor,
 } from "#root/math/sets/intervals/intervals";
 import { ClosureType } from "#root/tree/nodes/sets/closure";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   int1Min: number;

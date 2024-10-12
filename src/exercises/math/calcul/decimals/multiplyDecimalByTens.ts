@@ -19,7 +19,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { DivideNode } from "#root/tree/nodes/operators/divideNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { pluralize } from "#root/utils/strings/pluralize";
 
 type Identifiers = {

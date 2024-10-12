@@ -17,7 +17,7 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { DivideNode } from "#root/tree/nodes/operators/divideNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   nodeIds: any;

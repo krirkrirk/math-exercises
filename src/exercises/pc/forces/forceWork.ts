@@ -15,7 +15,7 @@ import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { roundSignificant } from "#root/math/utils/round";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   length: number;

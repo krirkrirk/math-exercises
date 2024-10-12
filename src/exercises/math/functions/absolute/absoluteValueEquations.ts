@@ -15,8 +15,8 @@ import { randint } from "#root/math/utils/random/randint";
 import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { probaFlip } from "#root/utils/probaFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { probaFlip } from "#root/utils/alea/probaFlip";
 
 type Identifiers = {
   a: number;

@@ -16,7 +16,7 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
 import { alignTex } from "#root/utils/latex/alignTex";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 type Identifiers = {
   affine1Coeffs: number[];
   affine2Coeffs: number[];

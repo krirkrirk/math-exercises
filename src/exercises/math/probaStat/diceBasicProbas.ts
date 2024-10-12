@@ -15,8 +15,8 @@ import { randint } from "#root/math/utils/random/randint";
 import { NodeOptions } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { probaFlip } from "#root/utils/probaFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { probaFlip } from "#root/utils/alea/probaFlip";
 type Identifiers = {
   isParityQuestion: boolean;
   isEvenQuestion: boolean;

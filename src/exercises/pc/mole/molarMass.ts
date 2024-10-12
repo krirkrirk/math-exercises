@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { round, roundSignificant } from "#root/math/utils/round";
 import { molecules } from "#root/pc/constants/molecularChemistry/molecule";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 import { requiresApostropheBefore } from "#root/utils/strings/requiresApostropheBefore";
 
 type Identifiers = {};

@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { Measure } from "#root/pc/measure/measure";
 import { AmountOfSubstance } from "#root/pc/units/AmountOfSubstance";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {};
 

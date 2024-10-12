@@ -12,7 +12,7 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { round } from "#root/math/utils/round";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 import { requiresApostropheBefore } from "#root/utils/strings/requiresApostropheBefore";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";

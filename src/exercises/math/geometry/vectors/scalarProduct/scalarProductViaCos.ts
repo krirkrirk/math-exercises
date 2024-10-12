@@ -15,7 +15,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { randomLetter } from "#root/utils/strings/randomLetter";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   AB: number;

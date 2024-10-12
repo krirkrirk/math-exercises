@@ -17,7 +17,7 @@ import {
 } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   num1: number;

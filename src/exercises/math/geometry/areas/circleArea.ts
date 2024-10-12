@@ -11,8 +11,8 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
-import { coinFlip } from "#root/utils/coinFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   coin: boolean;

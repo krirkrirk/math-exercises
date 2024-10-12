@@ -16,9 +16,9 @@ import { randint } from "#root/math/utils/random/randint";
 import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { KeyId } from "#root/types/keyIds";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { isInt } from "#root/utils/isInt";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   square: number;

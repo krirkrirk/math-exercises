@@ -14,7 +14,7 @@ import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { Point, PointConstructor } from "#root/math/geometry/point";
 import { randint } from "#root/math/utils/random/randint";
 import { PointNode } from "#root/tree/nodes/geometry/pointNode";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   x: number;

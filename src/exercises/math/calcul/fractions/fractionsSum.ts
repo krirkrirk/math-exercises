@@ -14,7 +14,7 @@ import {
   RationalConstructor,
 } from "#root/math/numbers/rationals/rational";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   rational: [number, number];

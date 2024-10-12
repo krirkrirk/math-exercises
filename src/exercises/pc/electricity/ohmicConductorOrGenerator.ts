@@ -12,7 +12,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { randint } from "#root/math/utils/random/randint";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {};
 

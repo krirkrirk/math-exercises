@@ -12,7 +12,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { RemarkableValueConstructor } from "#root/math/trigonometry/remarkableValue";
 import { KeyId } from "#root/types/keyIds";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   angleValue: number;

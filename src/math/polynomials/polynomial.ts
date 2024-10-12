@@ -7,7 +7,7 @@ import { PowerNode } from "../../tree/nodes/operators/powerNode";
 import { SubstractNode } from "../../tree/nodes/operators/substractNode";
 import { VariableNode } from "../../tree/nodes/variables/variableNode";
 import { randint } from "#root/math/utils/random/randint";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { Rational } from "../numbers/rationals/rational";
 import {
   MinusInfinityNode,

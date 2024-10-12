@@ -18,7 +18,7 @@ import {
 import { randint } from "#root/math/utils/random/randint";
 import { DivideNode } from "#root/tree/nodes/operators/divideNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 const getFractionAndIntegerDivision: QuestionGenerator<Identifiers> = () => {
   const rational = RationalConstructor.randomIrreductible();

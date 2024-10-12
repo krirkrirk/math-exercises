@@ -20,7 +20,7 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { DivideNode } from "#root/tree/nodes/operators/divideNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
-import { diceFlip } from "#root/utils/diceFlip";
+import { diceFlip } from "#root/utils/alea/diceFlip";
 
 type Identifiers = { nodeIds: any; type: number; subType: number };
 

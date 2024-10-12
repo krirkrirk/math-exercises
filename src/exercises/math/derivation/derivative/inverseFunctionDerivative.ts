@@ -15,7 +15,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 import { v4 } from "uuid";
 type Identifiers = {
   a: number;

@@ -12,8 +12,8 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
-import { coinFlip } from "#root/utils/coinFlip";
-import { probaFlip } from "#root/utils/probaFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { probaFlip } from "#root/utils/alea/probaFlip";
 
 type Identifiers = {
   a: number;

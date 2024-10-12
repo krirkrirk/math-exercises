@@ -6,9 +6,9 @@ import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { Node, NodeOptions } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { random } from "#root/utils/alea/random";
+import { shuffle } from "#root/utils/alea/shuffle";
 import { Integer } from "../integer/integer";
 
 import { Nombre, NumberType } from "../nombre";

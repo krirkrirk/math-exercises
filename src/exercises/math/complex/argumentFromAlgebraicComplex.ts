@@ -19,7 +19,7 @@ import { ComplexNode } from "#root/tree/nodes/complex/complexNode";
 import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   arg: number;

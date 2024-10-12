@@ -11,12 +11,12 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 import { molecules } from "#root/pc/constants/molecularChemistry/molecule";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { requiresApostropheBefore } from "#root/utils/strings/requiresApostropheBefore";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { round } from "#root/math/utils/round";
 
 type Identifiers = {

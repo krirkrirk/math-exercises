@@ -19,7 +19,7 @@ import { Measure } from "#root/pc/measure/measure";
 import { AmountOfSubstance } from "#root/pc/units/AmountOfSubstance";
 import { DivideUnit } from "#root/pc/units/divideUnit";
 import { VolumeUnit } from "#root/pc/units/volumeUnit";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   a: number;

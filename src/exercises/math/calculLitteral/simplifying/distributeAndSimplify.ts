@@ -14,7 +14,7 @@ import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   firstTermIsAffine: boolean;

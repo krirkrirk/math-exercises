@@ -18,7 +18,7 @@ import {
   moonGravity,
 } from "#root/pc/constants/mechanics/gravitational";
 import { Measure } from "#root/pc/measure/measure";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   weight: number;

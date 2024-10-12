@@ -17,8 +17,8 @@ import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
-import { random } from "#root/utils/random";
-import { shuffle } from "#root/utils/shuffle";
+import { random } from "#root/utils/alea/random";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   affinesCoeffs: number[][];

@@ -13,8 +13,8 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Vector, VectorConstructor } from "#root/math/geometry/vector";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   xu: number;

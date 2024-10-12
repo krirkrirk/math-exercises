@@ -12,7 +12,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { round, roundSignificant } from "#root/math/utils/round";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   v: number;

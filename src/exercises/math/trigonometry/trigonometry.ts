@@ -15,7 +15,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { LengthNode } from "#root/tree/nodes/geometry/lengthNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { KeyId } from "#root/types/keyIds";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {

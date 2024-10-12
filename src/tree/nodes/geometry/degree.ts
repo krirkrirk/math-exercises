@@ -14,8 +14,8 @@ export class DegreeNode implements AlgebraicNode {
   constructor(value: number, tex?: string, mathString?: string) {
     this.value = value;
     this.tex =
-      (tex?.replace(".", ",") || (value + "").replace(".", ",")) + `^\\circ`;
-    this.mathString = mathString || this.value + "^\\circ";
+      (tex?.replace(".", ",") || (value + "").replace(".", ",")) + `^{\\circ}`;
+    this.mathString = mathString || this.value + "^\\{\\circ\\}";
     this.isNumeric = true;
   }
   toIdentifiers() {
@@ -36,6 +36,7 @@ export class DegreeNode implements AlgebraicNode {
   toAllValidTexs() {
     const res: string[] = [];
     res.push(this.tex);
+    res.push(this.value.frenchify());
     //!est-ce vraiment nécessaire sachant que les inputs students n'auront en théorie jamais de "."
     if (this.tex.includes(",")) res.push(this.tex.replace(",", "."));
     return res;

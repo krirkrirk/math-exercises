@@ -14,7 +14,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { getElectronicConfigurationFromShells } from "#root/exercises/utils/getElectronicConfigurationFromShells";
 import { AtomSymbols } from "#root/pc/constants/molecularChemistry/atomSymbols";
 import { atomes } from "#root/pc/constants/molecularChemistry/atome";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 import { requiresApostropheBefore } from "#root/utils/strings/requiresApostropheBefore";
 
 type Identifiers = {

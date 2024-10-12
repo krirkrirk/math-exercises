@@ -24,7 +24,7 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { ClosureType } from "#root/tree/nodes/sets/closure";
 import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   askConvex: boolean;

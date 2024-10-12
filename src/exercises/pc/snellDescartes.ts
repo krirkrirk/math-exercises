@@ -12,7 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { frenchify } from "#root/math/utils/latex/frenchify";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 const refractionIndex = [
   { Material: "l'air", Material2: "d'air", Material3: "de l'air", n: 1 },

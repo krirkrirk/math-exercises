@@ -16,7 +16,7 @@ import { CosNode } from "#root/tree/nodes/functions/cosNode";
 import { SinNode } from "#root/tree/nodes/functions/sinNode";
 import { TanNode } from "#root/tree/nodes/functions/tanNode";
 import { DegreeNode } from "#root/tree/nodes/geometry/degree";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   degree: number;

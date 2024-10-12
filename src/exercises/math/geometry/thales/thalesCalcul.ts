@@ -13,8 +13,8 @@ import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { Node } from "#root/tree/nodes/node";
-import { coinFlip } from "#root/utils/coinFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   sideLengths: number[];

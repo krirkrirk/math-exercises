@@ -9,7 +9,7 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { alignTex } from "#root/utils/latex/alignTex";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 import {
   Exercise,
   Proposition,

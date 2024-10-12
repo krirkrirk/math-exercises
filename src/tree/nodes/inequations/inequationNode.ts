@@ -2,9 +2,9 @@ import {
   InegalitySymbols,
   InequationSymbol,
 } from "#root/math/inequations/inequation";
-import { getCartesiansProducts } from "#root/utils/cartesianProducts";
+import { getCartesiansProducts } from "#root/utils/arrays/cartesianProducts";
 import { isLetter } from "#root/utils/strings/isLetter";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 import e from "express";
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { MinusInfinityNode, PlusInfinityNode } from "../numbers/infiniteNode";

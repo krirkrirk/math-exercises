@@ -26,8 +26,8 @@ import {
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { numberParser } from "#root/tree/parsers/numberParser";
-import { coinFlip } from "#root/utils/coinFlip";
-import { probaFlip } from "#root/utils/probaFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { probaFlip } from "#root/utils/alea/probaFlip";
 
 type Identifiers = {
   isPercentToDecimal: boolean;

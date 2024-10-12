@@ -15,8 +15,8 @@ import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   exercise: PyExoVariables;

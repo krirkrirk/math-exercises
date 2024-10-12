@@ -1,8 +1,8 @@
 import { RemarkableValueConstructor } from "#root/math/trigonometry/remarkableValue";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
 import { randint } from "#root/math/utils/random/randint";
-import { coinFlip } from "#root/utils/coinFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 import {
   Exercise,
   Proposition,

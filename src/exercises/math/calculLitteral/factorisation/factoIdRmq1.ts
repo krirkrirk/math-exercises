@@ -17,7 +17,7 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode, SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { alignTex } from "#root/utils/latex/alignTex";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   a: number;

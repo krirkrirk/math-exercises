@@ -15,10 +15,10 @@ import { Polynomial } from "#root/math/polynomials/polynomial";
 import { RationalFrac } from "#root/math/polynomials/rationalFrac";
 import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { doWhile } from "#root/utils/doWhile";
-import { probaFlip } from "#root/utils/probaFlip";
-import { probaLawFlip } from "#root/utils/probaLawFlip";
+import { probaFlip } from "#root/utils/alea/probaFlip";
+import { probaLawFlip } from "#root/utils/alea/probaLawFlip";
 
 type Identifiers = {
   type: string;

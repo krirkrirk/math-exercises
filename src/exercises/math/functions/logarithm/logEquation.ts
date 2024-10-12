@@ -19,7 +19,7 @@ import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 /**aln(x)=k */
 type Identifiers = {

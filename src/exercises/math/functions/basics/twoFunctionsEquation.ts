@@ -17,9 +17,9 @@ import { randint } from "#root/math/utils/random/randint";
 import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { doWhile } from "#root/utils/doWhile";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   yValue: number;

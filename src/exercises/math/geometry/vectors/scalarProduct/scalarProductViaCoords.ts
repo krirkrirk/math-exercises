@@ -13,7 +13,7 @@ import { Vector } from "#root/math/geometry/vector";
 import { distinctRandTupleInt } from "#root/math/utils/random/randTupleInt";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   uCoords: string[];

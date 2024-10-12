@@ -1,7 +1,7 @@
 import { randint } from "#root/math/utils/random/randint";
 import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 import { Decimal } from "../decimals/decimal";
 import { Nombre, NumberType } from "../nombre";
 import { Rational } from "../rationals/rational";

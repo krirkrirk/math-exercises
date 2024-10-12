@@ -10,7 +10,7 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Complex, ComplexConstructor } from "#root/math/complex/complex";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 type Identifiers = {
   z1: number[];
   z2: number[];

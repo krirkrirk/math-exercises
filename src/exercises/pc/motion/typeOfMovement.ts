@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {};
 

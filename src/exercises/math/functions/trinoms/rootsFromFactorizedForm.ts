@@ -15,7 +15,7 @@ import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutio
 import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   a: number;

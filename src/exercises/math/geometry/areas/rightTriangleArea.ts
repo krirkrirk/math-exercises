@@ -14,7 +14,7 @@ import { TriangleConstructor } from "#root/math/geometry/triangles";
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { KeyId } from "#root/types/keyIds";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   sidesLengths: number[];

@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { earthGravity } from "#root/pc/constants/gravity";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 const theta = Math.PI / 4;
 const g = +earthGravity.measure.significantPart.toFixed(2);

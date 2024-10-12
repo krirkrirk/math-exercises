@@ -13,7 +13,7 @@ import {
   Rational,
   RationalConstructor,
 } from "#root/math/numbers/rationals/rational";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   num: number;

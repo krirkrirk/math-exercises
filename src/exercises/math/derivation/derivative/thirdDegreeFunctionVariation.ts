@@ -21,8 +21,8 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { ClosureType } from "#root/tree/nodes/sets/closure";
 import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { UnionIntervalNode } from "#root/tree/nodes/sets/unionIntervalNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {

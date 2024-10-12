@@ -18,7 +18,7 @@ import { nucleonMass } from "#root/pc/constants/molecularChemistry/atoms";
 import { Measure } from "#root/pc/measure/measure";
 import { AtomSymbols } from "#root/pc/constants/molecularChemistry/atomSymbols";
 import { atomes } from "#root/pc/constants/molecularChemistry/atome";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 import { requiresApostropheBefore } from "#root/utils/strings/requiresApostropheBefore";
 import { MassUnit } from "#root/pc/units/massUnits";
 

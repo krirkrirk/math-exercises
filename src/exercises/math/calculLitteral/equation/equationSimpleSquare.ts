@@ -21,10 +21,10 @@ import {
   DiscreteSetNode,
   EmptySet,
 } from "#root/tree/nodes/sets/discreteSetNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { diceFlip } from "#root/utils/diceFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { diceFlip } from "#root/utils/alea/diceFlip";
 import { isInt } from "#root/utils/isInt";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 const squares = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((el) => el ** 2);
 

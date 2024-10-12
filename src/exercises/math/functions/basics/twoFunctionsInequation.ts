@@ -26,9 +26,9 @@ import { ClosureType } from "#root/tree/nodes/sets/closure";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
 import { UnionIntervalNode } from "#root/tree/nodes/sets/unionIntervalNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { doWhile } from "#root/utils/doWhile";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   yValue: number;

@@ -2,7 +2,7 @@ import {
   SquareRoot,
   SquareRootConstructor,
 } from "#root/math/numbers/reals/real";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 import {
   Exercise,
   Proposition,

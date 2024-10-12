@@ -17,7 +17,7 @@ import { Log10Node } from "#root/tree/nodes/functions/log10Node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { alignTex } from "#root/utils/latex/alignTex";
-import { probaFlip } from "#root/utils/probaFlip";
+import { probaFlip } from "#root/utils/alea/probaFlip";
 
 type Identifiers = {
   tenthPower: number;

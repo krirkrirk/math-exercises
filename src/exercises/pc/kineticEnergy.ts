@@ -11,7 +11,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { frenchify } from "#root/math/utils/latex/frenchify";
 import { round } from "#root/math/utils/round";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   mass: number;

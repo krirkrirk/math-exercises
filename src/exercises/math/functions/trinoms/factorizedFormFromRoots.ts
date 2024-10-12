@@ -15,8 +15,8 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { probaFlip } from "#root/utils/probaFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { probaFlip } from "#root/utils/alea/probaFlip";
 
 type Identifiers = {
   roots: number[];

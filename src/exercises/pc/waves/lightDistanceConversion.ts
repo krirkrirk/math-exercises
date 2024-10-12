@@ -16,7 +16,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { lightSpeed } from "#root/pc/constants/mechanics/waves";
 import { Measure } from "#root/pc/measure/measure";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   lightYear: number;

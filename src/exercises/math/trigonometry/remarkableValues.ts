@@ -2,9 +2,9 @@ import { RemarkableValueConstructor } from "#root/math/trigonometry/remarkableVa
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
 import { CosNode } from "#root/tree/nodes/functions/cosNode";
 import { SinNode } from "#root/tree/nodes/functions/sinNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { random } from "#root/utils/alea/random";
+import { shuffle } from "#root/utils/alea/shuffle";
 import {
   Exercise,
   Proposition,

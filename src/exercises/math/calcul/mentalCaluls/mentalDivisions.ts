@@ -13,8 +13,8 @@ import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { DivideNode } from "#root/tree/nodes/operators/divideNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {

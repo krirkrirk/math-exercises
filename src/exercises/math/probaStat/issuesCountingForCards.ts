@@ -11,9 +11,9 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
-import { probaLawFlip } from "#root/utils/probaLawFlip";
-import { random } from "#root/utils/random";
-import { randomEnumValue } from "#root/utils/randomEnumValue";
+import { probaLawFlip } from "#root/utils/alea/probaLawFlip";
+import { random } from "#root/utils/alea/random";
+import { randomEnumValue } from "#root/utils/alea/randomEnumValue";
 import { CardsColor, CardsValues } from "../../utils/cardsData";
 
 type Identifiers = {

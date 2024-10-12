@@ -7,7 +7,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstructor";
 import { PointConstructor } from "#root/math/geometry/point";
-import { arrayHasSameElements } from "#root/utils/arrayHasSameElement";
+import { arrayHasSameElements } from "#root/utils/arrays/arrayHasSameElement";
 import { deleteObjectNamesFromAnswer } from "#root/geogebra/deleteObjectNamesFromAnswer";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 

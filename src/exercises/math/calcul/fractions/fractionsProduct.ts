@@ -14,7 +14,7 @@ import {
   RationalConstructor,
 } from "#root/math/numbers/rationals/rational";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {

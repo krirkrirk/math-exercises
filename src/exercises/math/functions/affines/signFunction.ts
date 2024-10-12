@@ -19,8 +19,8 @@ import {
 } from "#root/tree/nodes/numbers/infiniteNode";
 import { ClosureType } from "#root/tree/nodes/sets/closure";
 import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   a: number;

@@ -1,7 +1,7 @@
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { Node } from "#root/tree/nodes/node";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 import {
   Exercise,
   Proposition,
@@ -137,6 +137,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   while (propositions.length < n) {
     const fakeRand = randint(0, 12);
+    // console.log("marg and cond freq", answer, rand, x1, x2, x3, x4);
     const { answer: answerTree } = getAnswer(fakeRand, x1, x2, x3, x4);
 
     tryToAddWrongProp(propositions, answerTree.toTex());

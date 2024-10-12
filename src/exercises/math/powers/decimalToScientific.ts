@@ -10,7 +10,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
-import { probaFlip } from "#root/utils/probaFlip";
+import { probaFlip } from "#root/utils/alea/probaFlip";
 import {
   Exercise,
   Proposition,

@@ -21,7 +21,7 @@ import {
   DiscreteSetNode,
   EmptySet,
 } from "#root/tree/nodes/sets/discreteSetNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   yValue: number;

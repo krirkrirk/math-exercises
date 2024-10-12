@@ -15,7 +15,7 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { alignTex } from "#root/utils/latex/alignTex";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   firstValue: number;

@@ -1,6 +1,6 @@
 import { randint } from "#root/math/utils/random/randint";
-import { getCartesiansProducts } from "#root/utils/cartesianProducts";
-import { permute } from "#root/utils/permutations";
+import { getCartesiansProducts } from "#root/utils/arrays/cartesianProducts";
+import { permute } from "#root/utils/arrays/permutations";
 import { AlgebraicNode } from "../algebraicNode";
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { MinusInfinityNode } from "../numbers/infiniteNode";

@@ -14,7 +14,7 @@ import {
   RationalConstructor,
 } from "#root/math/numbers/rationals/rational";
 import { DivideNode } from "#root/tree/nodes/operators/divideNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 const getFractionsDivision: QuestionGenerator<Identifiers> = () => {
   const rational = RationalConstructor.randomIrreductible();

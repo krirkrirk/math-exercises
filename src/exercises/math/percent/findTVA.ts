@@ -23,9 +23,9 @@ import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { numberParser } from "#root/tree/parsers/numberParser";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { alignTex } from "#root/utils/latex/alignTex";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   ttc: number;

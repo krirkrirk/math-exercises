@@ -1,5 +1,5 @@
-import { getCartesiansProducts } from "#root/utils/cartesianProducts";
-import { permute } from "#root/utils/permutations";
+import { getCartesiansProducts } from "#root/utils/arrays/cartesianProducts";
+import { permute } from "#root/utils/arrays/permutations";
 import { InequationNode } from "../inequations/inequationNode";
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { isConstantNode } from "../numbers/constantNode";

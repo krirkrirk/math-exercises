@@ -15,7 +15,7 @@ import { randfloat } from "#root/math/utils/random/randfloat";
 import { round } from "#root/math/utils/round";
 import { Measure } from "#root/pc/measure/measure";
 import { molecules } from "#root/pc/constants/molecularChemistry/molecule";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 import { randint } from "#root/math/utils/random/randint";
 import { avogadroConstant } from "#root/pc/constants/molecularChemistry/atoms";
 import { requiresApostropheBefore } from "#root/utils/strings/requiresApostropheBefore";

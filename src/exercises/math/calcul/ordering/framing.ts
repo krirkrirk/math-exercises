@@ -25,8 +25,8 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   type: number;

@@ -18,7 +18,7 @@ import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {};
 

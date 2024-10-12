@@ -12,7 +12,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { RationalConstructor } from "#root/math/numbers/rationals/rational";
 import { System, SystemConstructor } from "#root/math/systems/system";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   coeffs: number[][];

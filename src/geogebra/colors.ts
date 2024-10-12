@@ -1,4 +1,4 @@
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 export const red = "#FF3333";
 export const pinkDark = "#A10039";

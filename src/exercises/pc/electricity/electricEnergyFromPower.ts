@@ -13,7 +13,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { roundSignificant } from "#root/math/utils/round";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 // const homeObjects = [
 //   { id: "lampLed", label: "ampoule LED", gender: "feminine", power: 7 },
 //   { id: "lampLed", label: "ampoule LED", gender: "feminine", power: 7 },

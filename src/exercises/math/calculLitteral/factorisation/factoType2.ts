@@ -26,7 +26,7 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { alignTex } from "#root/utils/latex/alignTex";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 //(ax+b)(cx+d)+-(ax+b)
 // a,c et d non null

@@ -16,7 +16,7 @@ import { InequationSolutionNode } from "#root/tree/nodes/inequations/inequationS
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { ClosureType } from "#root/tree/nodes/sets/closure";
 import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 type Identifiers = {
   a: number;
   b: number;

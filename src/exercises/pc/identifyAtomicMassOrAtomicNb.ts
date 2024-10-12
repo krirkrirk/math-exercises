@@ -12,8 +12,8 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
-import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { random } from "#root/utils/alea/random";
 import { requiresApostropheBefore } from "#root/utils/strings/requiresApostropheBefore";
 import { getAtoms } from "../utils/getAtoms";
 

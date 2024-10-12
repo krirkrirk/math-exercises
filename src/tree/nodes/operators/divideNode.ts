@@ -2,7 +2,7 @@
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { AlgebraicNode } from "../algebraicNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 export function isDivideNode(a: Node): a is DivideNode {
   return isOperatorNode(a) && a.id === OperatorIds.divide;
 }

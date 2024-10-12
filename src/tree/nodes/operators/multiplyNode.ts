@@ -5,12 +5,12 @@ import {
   OperatorIds,
   isOperatorNode,
 } from "./operatorNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { permute } from "#root/utils/permutations";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { permute } from "#root/utils/arrays/permutations";
 import {
   getCartesiansProducts,
   getFlatCartesianProducts,
-} from "#root/utils/cartesianProducts";
+} from "#root/utils/arrays/cartesianProducts";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
 import { PowerNode, SquareNode, isPowerNode } from "./powerNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";

@@ -12,7 +12,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { Measure } from "#root/pc/measure/measure";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   varAsked: string;

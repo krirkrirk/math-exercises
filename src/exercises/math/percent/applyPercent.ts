@@ -1,8 +1,8 @@
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 import {
   Exercise,
   Proposition,

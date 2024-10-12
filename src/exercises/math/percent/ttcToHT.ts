@@ -15,8 +15,8 @@ import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { numberParser } from "#root/tree/parsers/numberParser";
-import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   TTC: number;

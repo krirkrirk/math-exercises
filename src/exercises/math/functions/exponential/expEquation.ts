@@ -20,7 +20,7 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 /**ae^x = k */
 type Identifiers = {

@@ -16,7 +16,7 @@ import { Integer } from "#root/math/numbers/integer/integer";
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 type Identifiers = {
   xA: number;
   yA: number;

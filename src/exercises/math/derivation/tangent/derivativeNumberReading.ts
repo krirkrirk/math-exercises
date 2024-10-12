@@ -23,8 +23,8 @@ import { Rational } from "#root/math/numbers/rationals/rational";
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { random } from "#root/utils/random";
-import { shuffle } from "#root/utils/shuffle";
+import { random } from "#root/utils/alea/random";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   A: number[];

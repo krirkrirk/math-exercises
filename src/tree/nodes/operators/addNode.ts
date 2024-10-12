@@ -6,9 +6,9 @@ import {
   OperatorNode,
   isOperatorNode,
 } from "./operatorNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { permute } from "#root/utils/permutations";
-import { getCartesiansProducts } from "#root/utils/cartesianProducts";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { permute } from "#root/utils/arrays/permutations";
+import { getCartesiansProducts } from "#root/utils/arrays/cartesianProducts";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { isSubstractNode } from "./substractNode";

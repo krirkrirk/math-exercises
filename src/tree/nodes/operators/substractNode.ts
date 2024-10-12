@@ -4,7 +4,7 @@ import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { OppositeNode } from "../functions/oppositeNode";
 import { AddNode } from "./addNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { colorize } from "#root/utils/latex/colorize";
 export function isSubstractNode(a: Node): a is SubstractNode {
   return isOperatorNode(a) && a.id === OperatorIds.substract;

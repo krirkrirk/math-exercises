@@ -16,8 +16,8 @@ import {
   EmptySet,
 } from "#root/tree/nodes/sets/discreteSetNode";
 import { IntervalNode } from "#root/tree/nodes/sets/intervalNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { diceFlip } from "#root/utils/diceFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { diceFlip } from "#root/utils/alea/diceFlip";
 import { MathSet } from "../mathSet";
 import { MathSetInterface } from "../mathSetInterface";
 

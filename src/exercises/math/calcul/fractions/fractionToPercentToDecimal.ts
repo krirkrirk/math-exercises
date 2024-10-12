@@ -18,7 +18,7 @@ import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { PercentNode } from "#root/tree/nodes/numbers/percentNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 const getFractionToPercentToDecimal: QuestionGenerator<Identifiers> = () => {
   const denominator = 2 ** randint(0, 5) * 5 ** randint(0, 5);

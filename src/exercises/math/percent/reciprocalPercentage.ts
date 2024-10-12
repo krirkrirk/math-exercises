@@ -10,8 +10,8 @@ import {
   tryToAddWrongProp,
 } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
-import { shuffle } from "#root/utils/shuffle";
-import { coinFlip } from "#root/utils/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { round } from "#root/math/utils/round";
 type Identifiers = {
   randPercent: number;

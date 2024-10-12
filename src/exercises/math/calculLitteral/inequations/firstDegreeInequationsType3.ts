@@ -21,9 +21,9 @@ import { randint } from "#root/math/utils/random/randint";
 import { InequationNode } from "#root/tree/nodes/inequations/inequationNode";
 import { InequationSolutionNode } from "#root/tree/nodes/inequations/inequationSolutionNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { random } from "#root/utils/alea/random";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   coeff: number;

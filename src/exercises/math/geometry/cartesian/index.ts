@@ -8,3 +8,7 @@ export * from "./drawAlineInGGB";
 export * from "./placeAPoint";
 export * from "./pointCoordinatesNoAxisNumbers";
 // export * from "./pointCoordinatesNoOrthonorm";
+export * from "./readAbscissOnLine";
+export * from "./readAbscissOnSemiLine";
+export * from "./placeAbscissOnLine";
+export * from "./placeAbscissOnSemiLine";

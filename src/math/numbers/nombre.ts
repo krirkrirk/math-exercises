@@ -1,6 +1,6 @@
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { Node, NodeOptions } from "#root/tree/nodes/node";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 import { randint } from "../utils/random/randint";
 import { DecimalConstructor } from "./decimals/decimal";
 import { Integer } from "./integer/integer";

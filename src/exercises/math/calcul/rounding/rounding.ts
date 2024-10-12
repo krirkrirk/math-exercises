@@ -16,8 +16,8 @@ import {
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { numberParser } from "#root/tree/parsers/numberParser";
-import { coinFlip } from "#root/utils/coinFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 import { v4 } from "uuid";
 
 /**

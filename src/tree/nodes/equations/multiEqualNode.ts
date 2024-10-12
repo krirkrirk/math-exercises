@@ -1,6 +1,6 @@
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
-import { permute } from "#root/utils/permutations";
-import { getCartesiansProducts } from "#root/utils/cartesianProducts";
+import { permute } from "#root/utils/arrays/permutations";
+import { getCartesiansProducts } from "#root/utils/arrays/cartesianProducts";
 
 export class MultiEqualNode implements Node {
   children: Node[];

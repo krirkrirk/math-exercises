@@ -29,7 +29,7 @@ export class GeogebraConstructor {
 
   constructor(options: Omit<GeogebraOptions, "coords">) {
     this.customToolBar = options?.customToolBar ?? toolBarConstructor({});
-    this.forbidShiftDragZoom = options?.forbidShiftDragZoom;
+    this.forbidShiftDragZoom = options?.forbidShiftDragZoom ?? false;
     this.commands = options.commands;
     this.is3D = options?.is3D;
     this.gridDistance = options?.gridDistance ?? [1, 1];

@@ -23,7 +23,7 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   a: number;

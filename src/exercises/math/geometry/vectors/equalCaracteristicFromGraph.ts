@@ -13,9 +13,9 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { PiNode } from "#root/tree/nodes/numbers/piNode";
-import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { random } from "#root/utils/alea/random";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   caracAsked: string;

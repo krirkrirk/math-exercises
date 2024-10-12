@@ -21,7 +21,7 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { primes } from "#root/math/numbers/integer/primes";
 import { randint } from "#root/math/utils/random/randint";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 import { primeNumbers } from "./primeNumbers";
 
 type Identifiers = {

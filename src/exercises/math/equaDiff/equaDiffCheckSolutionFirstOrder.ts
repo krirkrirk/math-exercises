@@ -20,9 +20,9 @@ import { Node } from "#root/tree/nodes/node";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { doWhile } from "#root/utils/doWhile";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   type: string;

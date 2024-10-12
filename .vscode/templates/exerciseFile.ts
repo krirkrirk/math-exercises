@@ -5,27 +5,18 @@ import {
   Question,
   QuestionGenerator,
   VEA,
-  GGBVEA,
   addValidProp,
   shuffleProps,
-  tryToAddWrongProp,
   GetAnswer,
   GetHint,
   GetCorrection,
   GetInstruction,
   GetKeys,
-  GetGGBOptions,
-  GetStudentGGBOptions,
-  GetGGBAnswer,
 } from '#root/exercises/exercise';
 import { getDistinctQuestions } from '#root/exercises/utils/getDistinctQuestions';
 
 type Identifiers = {
 };
-
-const buildFromIdentifiers  = (identifiers: Identifiers)=>{
-  
-}
 
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
@@ -52,15 +43,8 @@ const getHint : GetHint<Identifiers> = (identifiers)=>{
 const getCorrection : GetCorrection<Identifiers> = (identifiers)=>{
   
 }
-const getGGBAnswer: GetGGBAnswer<Identifiers> = (identifiers)=>{
-  
-}
-const getGGBOptions: GetGGBOptions<Identifiers> = (identifiers)=>{
-  
-}
-const getStudentGGBOptions: GetStudentGGBOptions<Identifiers> = (identifiers)=>{
-  
-}
+
+
 
 
 const getKeys : GetKeys<Identifiers> = (identifiers)=>{
@@ -68,10 +52,6 @@ const getKeys : GetKeys<Identifiers> = (identifiers)=>{
 }
 const isAnswerValid: VEA<Identifiers> = (ans, {answer})=>{
   throw Error("VEA not implemented")
-}
-
-const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, {ggbAnswer}) => {
-  throw Error("GGBVea not implemented")
 }
 
 const get{{namePascal}}Question: QuestionGenerator<Identifiers>  = ()=>{
@@ -97,16 +77,10 @@ export const {{name}}: Exercise<Identifiers> = {
   generator: (nb: number) => getDistinctQuestions(get{{namePascal}}Question, nb),
   qcmTimer: 60,
   freeTimer: 60,
-  ggbTimer: 60,
   getPropositions,
   isAnswerValid,
-  isGGBAnswerValid,
   subject: "Mathématiques",
   getHint,
   getCorrection,
   getAnswer,
-  getGGBAnswer,
-  getGGBOptions,
-  getStudentGGBOptions,
-  rebuildIdentifiers,
 };

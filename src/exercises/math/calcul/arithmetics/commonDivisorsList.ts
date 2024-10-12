@@ -14,7 +14,7 @@ import { dividersOf } from "#root/math/utils/arithmetic/dividersOf";
 import { gcd } from "#root/math/utils/arithmetic/gcd";
 import { isPrime } from "#root/math/utils/arithmetic/isPrime";
 import { randint } from "#root/math/utils/random/randint";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { doWhile } from "#root/utils/doWhile";
 
 type Identifiers = {

@@ -12,8 +12,8 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
-import { probaLawFlip } from "#root/utils/probaLawFlip";
-import { randomEnumValue } from "#root/utils/randomEnumValue";
+import { probaLawFlip } from "#root/utils/alea/probaLawFlip";
+import { randomEnumValue } from "#root/utils/alea/randomEnumValue";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { CardsColor, CardsValues } from "#root/exercises/utils/cardsData";

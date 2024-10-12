@@ -17,7 +17,7 @@ import {
 } from "#root/math/geometry/CloudPoints";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   isJustified: boolean;

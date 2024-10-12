@@ -12,7 +12,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 type Identifiers = {
   xA: number;
   xB: number;

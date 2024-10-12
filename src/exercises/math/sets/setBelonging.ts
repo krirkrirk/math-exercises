@@ -13,8 +13,8 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { DecimalConstructor } from "#root/math/numbers/decimals/decimal";
 import { RationalConstructor } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
-import { random } from "#root/utils/random";
-import { shuffle } from "#root/utils/shuffle";
+import { random } from "#root/utils/alea/random";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   type: number;

@@ -1,5 +1,5 @@
-import { getCartesiansProducts } from "#root/utils/cartesianProducts";
-import { permute } from "#root/utils/permutations";
+import { getCartesiansProducts } from "#root/utils/arrays/cartesianProducts";
+import { permute } from "#root/utils/arrays/permutations";
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { SetIds, SetNode, isSetNode } from "./setNode";
 export function isDiscreteSetNode(a: Node): a is DiscreteSetNode {
@@ -66,6 +66,13 @@ export class DiscreteSetNode implements SetNode {
     return `\\left\\{${this.elements
       .map((el) => el.toTex())
       .join(";")}\\right\\}`;
+  }
+
+  toDeleteRandomElement() {
+    const index = Math.floor(Math.random() * this.elements.length);
+    const newElements = [...this.elements];
+    newElements.splice(index, 1);
+    return new DiscreteSetNode(newElements);
   }
 }
 

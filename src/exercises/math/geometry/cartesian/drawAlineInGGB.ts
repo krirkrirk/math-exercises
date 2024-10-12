@@ -10,7 +10,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstructor";
 import { Point } from "#root/math/geometry/point";
 import { AffineConstructor } from "#root/math/polynomials/affine";
-import { arrayEqual } from "#root/utils/arrayEqual";
+import { arrayEqual } from "#root/utils/arrays/arrayEqual";
 import { deleteObjectNamesFromAnswer } from "#root/geogebra/deleteObjectNamesFromAnswer";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 

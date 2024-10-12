@@ -14,9 +14,9 @@ import { IntegerConstructor } from "#root/math/numbers/integer/integer";
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randTupleInt } from "#root/math/utils/random/randTupleInt";
 import { randint } from "#root/math/utils/random/randint";
-import { arrayHasSameElements } from "#root/utils/arrayHasSameElement";
-import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
+import { arrayHasSameElements } from "#root/utils/arrays/arrayHasSameElement";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   xValues: number[];

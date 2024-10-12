@@ -13,8 +13,8 @@ import { randomColor } from "#root/geogebra/colors";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { Polynomial } from "#root/math/polynomials/polynomial";
 import { randint } from "#root/math/utils/random/randint";
-import { coinFlip } from "#root/utils/coinFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   rand: boolean;

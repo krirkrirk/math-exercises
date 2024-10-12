@@ -15,7 +15,7 @@ import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { gcd } from "../utils/arithmetic/gcd";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { randint } from "../utils/random/randint";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 import { blueMain } from "#root/geogebra/colors";
 
 export abstract class TrinomConstructor {

@@ -15,7 +15,7 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 
 type Identifiers = {

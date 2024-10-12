@@ -1,5 +1,5 @@
 import { Point } from "#root/math/geometry/point";
-import { getCartesiansProducts } from "#root/utils/cartesianProducts";
+import { getCartesiansProducts } from "#root/utils/arrays/cartesianProducts";
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 
 export class PointNode implements Node {

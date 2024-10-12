@@ -32,7 +32,7 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { alignTex } from "#root/utils/latex/alignTex";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   xA: number;

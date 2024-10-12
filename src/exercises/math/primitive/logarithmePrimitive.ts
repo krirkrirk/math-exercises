@@ -21,7 +21,7 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   coeffs: number[];

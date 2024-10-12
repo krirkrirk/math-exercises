@@ -13,7 +13,7 @@ import { Rational } from "#root/math/numbers/rationals/rational";
 import { Affine } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   a: number;

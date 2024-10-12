@@ -13,9 +13,9 @@ import {
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
 import { round, roundSignificant } from "#root/math/utils/round";
-import { random } from "#root/utils/random";
+import { random } from "#root/utils/alea/random";
 import { randfloat } from "#root/math/utils/random/randfloat";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 const powers = [15, 18, 50, 25, 65, 66, 7.5, 10]; // Puissances en watts
 const durations = [60, 3600, 86400, 604800]; // Durées en secondes (1 min, 1 h, 1 jour, 1 semaine)

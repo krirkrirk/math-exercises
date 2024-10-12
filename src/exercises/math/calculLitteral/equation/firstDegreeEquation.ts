@@ -19,7 +19,7 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { alignTex } from "#root/utils/latex/alignTex";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   a: number;

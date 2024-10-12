@@ -16,7 +16,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit } from "#root/pc/units/distanceUnits";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   scale: number;

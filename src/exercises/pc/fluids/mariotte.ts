@@ -13,7 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { round, roundSignificant } from "#root/math/utils/round";
 import { Measure } from "#root/pc/measure/measure";
-import { coinFlip } from "#root/utils/coinFlip";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { doWhile } from "#root/utils/doWhile";
 
 type Identifiers = {

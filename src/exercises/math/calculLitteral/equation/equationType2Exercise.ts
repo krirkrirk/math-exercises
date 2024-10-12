@@ -18,7 +18,7 @@ import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutio
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 import { v4 } from "uuid";
 import { alignTex } from "#root/utils/latex/alignTex";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";

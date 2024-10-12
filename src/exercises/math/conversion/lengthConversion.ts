@@ -5,7 +5,7 @@ import {
 import { randint } from "#root/math/utils/random/randint";
 import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit, distanceUnits } from "#root/pc/units/distanceUnits";
-import { shuffle } from "#root/utils/shuffle";
+import { shuffle } from "#root/utils/alea/shuffle";
 import {
   Exercise,
   Proposition,

@@ -13,8 +13,8 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { Point } from "#root/math/geometry/point";
 import { randint } from "#root/math/utils/random/randint";
-import { coinFlip } from "#root/utils/coinFlip";
-import { random } from "#root/utils/random";
+import { coinFlip } from "#root/utils/alea/coinFlip";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   isAri: boolean;

@@ -24,8 +24,8 @@ import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
-import { probaFlip } from "#root/utils/probaFlip";
-import { shuffle } from "#root/utils/shuffle";
+import { probaFlip } from "#root/utils/alea/probaFlip";
+import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   type: number;

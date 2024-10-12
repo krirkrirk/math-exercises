@@ -65,7 +65,6 @@ export class Line {
       point.y,
       new AddNode(new MultiplyNode(this.a!, point.x), this.b!),
     ).evaluate({});
-    console.log("eval", evaluation);
     if (allowApprox) {
       return Math.abs(evaluation) < 0.0000001;
     } else return evaluation === 0;
