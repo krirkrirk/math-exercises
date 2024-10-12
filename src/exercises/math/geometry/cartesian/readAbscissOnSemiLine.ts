@@ -68,7 +68,7 @@ const getAnswer: GetAnswer<Identifiers> = ({
 };
 
 const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
-  return `Quelle est l'abscisse du point $A$ sur la droite graduée ci-dessous ?`;
+  return `Quelle est l'abscisse du point $A$ sur la demi-droite graduée ci-dessous ?`;
 };
 const getGGBOptions: GetGGBOptions<Identifiers> = ({
   absciss,

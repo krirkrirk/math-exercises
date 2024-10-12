@@ -33,7 +33,7 @@ type Identifiers = {
 };
 
 const getInstruction: GetInstruction<Identifiers> = ({ abscissTex }) => {
-  return `Placer le point d'abscisse $${abscissTex}$ sur la droite graduée ci-dessous :`;
+  return `Placer le point d'abscisse $${abscissTex}$ sur la demi-droite graduée ci-dessous :`;
 };
 
 // const getHint: GetHint<Identifiers> = (identifiers) => {};
