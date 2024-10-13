@@ -90,12 +90,30 @@ $$
 `;
 };
 
-// const getHint : GetHint<Identifiers> = (identifiers)=>{
-
-// }
-// const getCorrection : GetCorrection<Identifiers> = (identifiers)=>{
-
-// }
+const getHint: GetHint<Identifiers> = (identifiers) => {
+  return `On sait que $\\pi \\ \\text{rad}$ correspond à $180^\\circ$. Il suffit alors de faire un produit en croix.`;
+};
+const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
+  const answer = getAnswer(identifiers);
+  const radNode = NodeConstructor.fromIdentifiers(identifiers.radianNodeIds);
+  return `On sait que $\\pi \\ \\text{rad}$ correspond à $180^\\circ$.
+  
+${
+  identifiers.isDegreeToRadian
+    ? `Pour convertir $${identifiers.degree}^\\circ$ en radians, on fait donc un produit en croix :
+  
+$$
+\\frac{${identifiers.degree}\\times \\pi}{180} = ${answer}
+$$
+  `
+    : `Pour convertir $${radNode.toTex()}\\ \\text{rad}$ en degrés, on fait donc un produit en croix :
+  
+$$
+${radNode.toTex()}\\times \\frac{180}{\\pi} = ${answer}
+$$
+  `
+}`;
+};
 
 const getKeys: GetKeys<Identifiers> = (identifiers) => {
   return ["pi", "degree"];
@@ -156,8 +174,8 @@ const getDegreeToRadiansQuestion: QuestionGenerator<Identifiers> = () => {
     keys: getKeys(identifiers),
     answerFormat: "tex",
     identifiers,
-    // hint: getHint(identifiers),
-    // correction: getCorrection(identifiers)
+    hint: getHint(identifiers),
+    correction: getCorrection(identifiers),
   };
 
   return question;
@@ -176,7 +194,8 @@ export const degreeToRadians: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
-  // getHint,
-  // getCorrection,
+  getHint,
+  getCorrection,
   getAnswer,
+  hasHintAndCorrection: true,
 };

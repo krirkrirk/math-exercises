@@ -22,6 +22,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { round } from "#root/math/utils/round";
 import { euroParser } from "#root/tree/parsers/euroParser";
+import { alignTex } from "#root/utils/latex/alignTex";
 
 type Identifiers = {
   vf: number;
@@ -57,8 +58,38 @@ const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
   return `Après une ${evolution} de $${identifiers.percentRate.frenchify()}\\%$, le prix d'un objet est de $${identifiers.vf.frenchify()}€$. Quel était son prix initial ? Arrondir au centième.`;
 };
 
-// const getHint: GetHint<Identifiers> = (identifiers) => {};
-// const getCorrection: GetCorrection<Identifiers> = (identifiers) => {};
+const getHint: GetHint<Identifiers> = (identifiers) => {
+  return `Transforme le taux d'évolution en coefficient multiplicateur. Puis, divise le prix final par ce coefficient multiplicateur.`;
+};
+const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
+  const evolution = identifiers.percentRate < 0 ? "baisse" : "hausse";
+  const answer = getAnswer(identifiers);
+  const cm = round(1 + identifiers.percentRate / 100, 4);
+
+  return `Le coefficient multiplicateur associé à une ${evolution} de $${identifiers.percentRate.frenchify()}\\%$ est : 
+  
+
+${alignTex([
+  ["CM", "=", "1+\\frac{t}{100}"],
+  ["", "=", `1+\\frac{${identifiers.percentRate.frenchify()}}{100}`],
+  ["", "=", cm.frenchify()],
+])}
+
+
+Si on note $V_d$ la valeur de départ et $V_a$ la valeur d'arrivée, alors on sait que :
+
+$$
+V_d\\times CM = V_a
+$$
+
+Donc, pour trouver $V_d$, il faut diviser $V_a$ par le coefficient multiplicateur : 
+
+${alignTex([
+  ["V_d", "=", `\\frac{${identifiers.vf.frenchify()}}{${cm.frenchify()}}`],
+  ["", "\\approx", answer],
+])}
+  `;
+};
 
 const getKeys: GetKeys<Identifiers> = (identifiers) => {
   return ["euro"];
@@ -82,6 +113,8 @@ const getFindStartValueAfterEvolutionQuestion: QuestionGenerator<
     keys: getKeys(identifiers),
     answerFormat: "tex",
     identifiers,
+    hint: getHint(identifiers),
+    correction: getCorrection(identifiers),
   };
 
   return question;
@@ -102,4 +135,7 @@ export const findStartValueAfterEvolution: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Mathématiques",
   getAnswer,
+  getCorrection,
+  getHint,
+  hasHintAndCorrection: true,
 };

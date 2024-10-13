@@ -91,6 +91,37 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   return numberParser(ans) === answer;
 };
 
+const getHint: GetHint<Identifiers> = (identifiers) => {
+  const itemType = identifiers.contextType === 2 ? "habitants" : "élèves";
+  return `Utilise un produit en croix : si $${identifiers.subPopulationPercent.frenchify()}\\%$ représente $${
+    identifiers.subPopulationEffectif
+  }$ ${itemType}, alors que représente $100\\%$ ?`;
+};
+
+const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
+  const itemType = identifiers.contextType === 2 ? "habitants" : "élèves";
+  const answer = getAnswer(identifiers);
+  return `On sait que $${identifiers.subPopulationPercent.frenchify()}\\%$ représente $${
+    identifiers.subPopulationEffectif
+  }$ ${itemType}, et on cherche ce que réprésente $100\\%$ des ${itemType}.
+  
+  Pour cela, on peut faire un produit en croix : 
+  
+|$?$|$100\\%$|
+|-|-|
+|$${
+    identifiers.subPopulationEffectif
+  }$|$${identifiers.subPopulationPercent.frenchify()}\\%$|
+
+Pour trouver la valeur manquante, il faut donc faire le calcul suivant : 
+
+$$
+\\frac{${
+    identifiers.subPopulationEffectif
+  } \\times 100}{${identifiers.subPopulationPercent.frenchify()}} \\approx ${answer}
+$$
+`;
+};
 const getPopulationEffectifFromSubPopulationQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -129,6 +160,11 @@ const getPopulationEffectifFromSubPopulationQuestion: QuestionGenerator<
     keys: getKeys(identifiers),
     answerFormat: "tex",
     identifiers,
+    hint: getHint(identifiers),
+    correction: getCorrection(identifiers),
+    style: {
+      tableHasNoHeader: true,
+    },
   };
 
   return question;
@@ -148,4 +184,6 @@ export const populationEffectifFromSubPopulation: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getHint,
+  getCorrection,
 };

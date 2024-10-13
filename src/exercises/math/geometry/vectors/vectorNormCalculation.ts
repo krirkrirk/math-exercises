@@ -1,5 +1,8 @@
 import {
   Exercise,
+  GetAnswer,
+  GetCorrection,
+  GetHint,
   Proposition,
   QCMGenerator,
   Question,
@@ -10,31 +13,69 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { VectorConstructor } from "#root/math/geometry/vector";
+import { Vector, VectorConstructor } from "#root/math/geometry/vector";
 import { SquareRootConstructor } from "#root/math/numbers/reals/real";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
+import { alignTex } from "#root/utils/latex/alignTex";
 
 type Identifiers = {
   x: number;
   y: number;
 };
 
+const getAnswer: GetAnswer<Identifiers> = (identifiers) => {
+  const u = new Vector("u", identifiers.x.toTree(), identifiers.y.toTree());
+  const correctAnswer = u.getNorm();
+  return correctAnswer.simplify().toTex();
+};
+const getHint: GetHint<Identifiers> = (identifiers) => {
+  return `La norme d'un vecteur est la racine carrée de la somme des carrés de ses coordonnées. En d'autres termes, la norme du vecteur $$\\overrightarrow{u}\\begin{pmatrix}x\\\\y\\end{pmatrix}$$ est :
+  
+$$
+\\lVert \\overrightarrow u \\rVert = \\sqrt{x^2+y^2}
+$$
+  `;
+};
+const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
+  const x = identifiers.x.toTree();
+  const y = identifiers.y.toTree();
+  const answer = getAnswer(identifiers);
+  return `La norme d'un vecteur est la racine carrée de la somme des carrés de ses coordonnées. Ici, on a donc : 
+
+${alignTex([
+  [
+    "\\lVert \\overrightarrow u \\rVert",
+    "=",
+    new SqrtNode(new AddNode(new SquareNode(x), new SquareNode(y))).toTex(),
+  ],
+  [
+    "",
+    "=",
+    new SqrtNode((x.evaluate({}) ** 2 + y.evaluate({}) ** 2).toTree()).toTex(),
+  ],
+])}
+
+Donc $\\lVert \\overrightarrow u \\rVert = ${answer}$.
+`;
+};
+
 const getVectorNormCalculationQuestion: QuestionGenerator<Identifiers> = () => {
   const u = VectorConstructor.random("u", false);
-  const x = (u.x.simplify() as NumberNode).value;
-  const y = (u.y.simplify() as NumberNode).value;
-  const correctAnswer = u.getNorm();
-
+  const x = u.x.evaluate({});
+  const y = u.y.evaluate({});
+  const identifiers: Identifiers = { x, y };
   const question: Question<Identifiers> = {
-    answer: correctAnswer.simplify().toTex(),
+    answer: getAnswer(identifiers),
     instruction: `Cacluler la norme du vecteur $${u.toTexWithCoords()}$`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { x, y },
+    identifiers,
+    hint: getHint(identifiers),
+    correction: getCorrection(identifiers),
   };
 
   return question;
@@ -81,4 +122,7 @@ export const vectorNormCalculation: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  hasHintAndCorrection: true,
+  getHint,
+  getCorrection,
 };

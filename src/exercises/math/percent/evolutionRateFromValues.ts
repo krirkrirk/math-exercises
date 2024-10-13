@@ -25,6 +25,7 @@ import { round } from "#root/math/utils/round";
 import { percentParser } from "#root/tree/parsers/percentParser";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 import { doWhile } from "#root/utils/doWhile";
+import { alignTex } from "#root/utils/latex/alignTex";
 
 type Identifiers = {
   vd: number;
@@ -63,8 +64,35 @@ const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
   return `Un prix passe de $${identifiers.vd.frenchify()}€$ à $${identifiers.vf.frenchify()}€$. Quel est le taux d'évolution du prix, en pourcentage ? Arrondir au centième de pourcentage.`;
 };
 
-// const getHint: GetHint<Identifiers> = (identifiers) => {};
-// const getCorrection: GetCorrection<Identifiers> = (identifiers) => {};
+const getHint: GetHint<Identifiers> = (identifiers) => {
+  return `Si une valeur passe d'une valeur de départ $V_d$ à une valeur d'arrivée $V_a$, alors le taux d'évolution $t$ en pourcentage est donné par la formule : 
+  
+$$
+t = \\frac{V_a-V_d}{V_d}\\times 100
+$$`;
+};
+const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
+  const answer = getAnswer(identifiers);
+  return `Si une valeur passe d'une valeur de départ $V_d$ à une valeur d'arrivée $V_a$, alors le taux d'évolution $t$ en pourcentage est donné par la formule : 
+  
+$$
+t = \\frac{V_a-V_d}{V_d}\\times 100
+$$
+
+Ici, on a $V_d = ${identifiers.vd.frenchify()}$ et $V_a = ${identifiers.vf.frenchify()}$. 
+
+Donc, le taux d'évolution est : 
+
+${alignTex([
+  [
+    "t",
+    "=",
+    `\\frac{${identifiers.vf.frenchify()}-${identifiers.vd.frenchify()}}{${identifiers.vd.frenchify()}}\\times 100`,
+  ],
+  ["", "\\approx", answer],
+])}
+`;
+};
 
 const getKeys: GetKeys<Identifiers> = (identifiers) => {
   return ["percent"];
@@ -92,8 +120,8 @@ const getEvolutionRateFromValuesQuestion: QuestionGenerator<
     keys: getKeys(identifiers),
     answerFormat: "tex",
     identifiers,
-    // hint: getHint(identifiers),
-    // correction: getCorrection(identifiers),
+    hint: getHint(identifiers),
+    correction: getCorrection(identifiers),
   };
 
   return question;
@@ -113,4 +141,7 @@ export const evolutionRateFromValues: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Mathématiques",
   getAnswer,
+  hasHintAndCorrection: true,
+  getCorrection,
+  getHint,
 };

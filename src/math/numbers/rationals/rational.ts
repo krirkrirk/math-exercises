@@ -2,6 +2,7 @@ import { coprimesOf } from "#root/math/utils/arithmetic/coprimesOf";
 import { gcd } from "#root/math/utils/arithmetic/gcd";
 import { lcd } from "#root/math/utils/arithmetic/lcd";
 import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
 import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { Node, NodeOptions } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -9,6 +10,7 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 import { random } from "#root/utils/alea/random";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { doWhile } from "#root/utils/doWhile";
 import { Integer } from "../integer/integer";
 
 import { Nombre, NumberType } from "../nombre";
@@ -42,6 +44,13 @@ export abstract class RationalConstructor {
     if (b === 1) return new Rational(sign * b, a);
     const [num, denum] = shuffle([a, b]);
     return new Rational(sign * num, denum);
+  }
+  static randomPureRational() {
+    const frac = doWhile(
+      () => RationalConstructor.randomIrreductible(20),
+      (x) => round(x.value, 10) === x.value,
+    );
+    return frac;
   }
 }
 

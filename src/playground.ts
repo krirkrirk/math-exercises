@@ -25,7 +25,7 @@ import { toSeperatedThousands } from "./utils/numberPrototype/toSeparatedThousan
 import { random } from "./utils/alea/random";
 import { shuffle } from "./utils/alea/shuffle";
 import { numberToFrenchWord } from "./utils/strings/numberToFrenchWord";
+import { DecimalConstructor } from "./math/numbers/decimals/decimal";
+import { randint } from "./math/utils/random/randint";
 
-export const playground = () => {
-  // console.log(mainTrigoValues.map((e) => e.angle.toTex()));
-};
+export const playground = () => {};

@@ -66,6 +66,26 @@ const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
   }
 };
 
+const getHint: GetHint<Identifiers> = (identifiers) => {
+  return `Pour calculer $t\\%$ d'un nombre, on le multiplie par $\\frac{t}{100}$.`;
+};
+
+const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
+  const answer = getAnswer(identifiers);
+  return `Pour calculer $t\\%$ d'un nombre, on le multiplie par $\\frac{t}{100}$.
+  
+  Ici, on calcule $${identifiers.populationPercent.frenchify()}\\%$ de $${
+    identifiers.total
+  }$ :
+  
+$$
+${
+  identifiers.total
+}\\times \\frac{${identifiers.populationPercent.frenchify()}}{100} \\approx ${answer}
+$$
+
+`;
+};
 const getKeys: GetKeys<Identifiers> = (identifiers) => {
   return [];
 };
@@ -103,6 +123,8 @@ const getSubPopulationEffectifFromPercentQuestion: QuestionGenerator<
     keys: getKeys(identifiers),
     answerFormat: "tex",
     identifiers,
+    hint: getHint(identifiers),
+    correction: getCorrection(identifiers),
   };
 
   return question;
@@ -122,4 +144,7 @@ export const subPopulationEffectifFromPercent: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Mathématiques",
   getAnswer,
+  getCorrection,
+  getHint,
+  hasHintAndCorrection: true,
 };

@@ -1,6 +1,8 @@
 import {
   Exercise,
   GetAnswer,
+  GetInstruction,
+  GetKeys,
   Proposition,
   QCMGenerator,
   Question,
@@ -20,7 +22,17 @@ type Identifiers = {
   type: number;
   nb: string;
 };
-
+const hotFix = (q: Question<Identifiers>) => {
+  if (q.identifiers.type === 3) {
+    return {
+      ...q,
+      ...getQuestionFromIdentifiers(getIdentifiers(q.identifiers)),
+    };
+  } else return q;
+};
+const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
+  return `Donner le plus petit ensemble auquel le nombre $${identifiers.nb}$ appartient.`;
+};
 const getAnswer: GetAnswer<Identifiers> = (identifiers) => {
   const sets = ["N", "Z", "D", "Q", "R"];
   if (identifiers.type > -1) {
@@ -28,53 +40,58 @@ const getAnswer: GetAnswer<Identifiers> = (identifiers) => {
   }
   return "";
 };
-const getSetBelongingQuestion: QuestionGenerator<Identifiers> = () => {
+
+const getIdentifiers = (prevIdentifiers?: Identifiers): Identifiers => {
   //N Z D Q R (racine2, pi)
   //fraction simplifiable en décimal/entier
   //racine carrée simplifiable en entier / Fraction
   //
-  const type = randint(0, 5);
-  let answer = "";
+  const type = prevIdentifiers?.type ?? randint(0, 5);
   let nb = "";
   switch (type) {
     case 0:
       nb = randint(0, 1000) + "";
-      answer = "\\mathbb{N}";
       break;
     case 1:
       nb = -randint(0, 1000) + "";
-      answer = "\\mathbb{Z}";
       break;
     case 2:
       nb = DecimalConstructor.random(-50, 50, randint(1, 4)).toTree().toTex();
-      answer = "\\mathbb{D}";
       break;
     case 3:
-      nb = RationalConstructor.randomIrreductible().toTree().toTex();
-      answer = "\\mathbb{Q}";
+      nb = RationalConstructor.randomPureRational().toTree().toTex();
       break;
     case 4:
       nb = random(["\\sqrt 2", "\\pi"]);
-      answer = "\\mathbb{R}";
       break;
   }
+  return { type, nb };
+};
+const getKeys: GetKeys<Identifiers> = (identifiers) => {
+  return [
+    "varnothing",
+    "naturals",
+    "integers",
+    "decimals",
+    "rationals",
+    "reals",
+  ];
+};
 
-  const question: Question<Identifiers> = {
-    answer,
-    instruction: `Donner le plus petit ensemble auquel le nombre $${nb}$ appartient.`,
-    keys: [
-      "varnothing",
-      "naturals",
-      "integers",
-      "decimals",
-      "rationals",
-      "reals",
-    ],
+const getQuestionFromIdentifiers = (
+  identifiers: Identifiers,
+): Question<Identifiers> => {
+  return {
+    answer: getAnswer(identifiers),
+    instruction: getInstruction(identifiers),
+    keys: getKeys(identifiers),
     answerFormat: "tex",
-    identifiers: { nb, type },
+    identifiers,
   };
-
-  return question;
+};
+const getSetBelongingQuestion: QuestionGenerator<Identifiers> = () => {
+  const identifiers = getIdentifiers();
+  return getQuestionFromIdentifiers(identifiers);
 };
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
@@ -111,4 +128,6 @@ export const setBelonging: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Mathématiques",
   getAnswer,
+  getQuestionFromIdentifiers,
+  hotFix,
 };

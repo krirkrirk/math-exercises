@@ -139,6 +139,12 @@ export type GetStudentGGBOptions<TIdentifiers> = (
 export type RebuildIdentifiers<TIdentifiers> = (
   oldIdentifiers: any,
 ) => TIdentifiers;
+export type GetQuestionFromIdentifiers<TIdentifiers> = (
+  identifiers: TIdentifiers,
+) => Question<TIdentifiers>;
+export type QuestionHotFix<TIdentifiers> = (
+  q: Question<TIdentifiers>,
+) => Question<TIdentifiers>;
 export interface Exercise<TIdentifiers = {}> {
   id: string;
   isSingleStep: boolean;
@@ -168,6 +174,8 @@ export interface Exercise<TIdentifiers = {}> {
   getGGBOptions?: GetGGBOptions<TIdentifiers>;
   getStudentGGBOptions?: GetStudentGGBOptions<TIdentifiers>;
   rebuildIdentifiers?: RebuildIdentifiers<TIdentifiers>;
+  getQuestionFromIdentifiers?: GetQuestionFromIdentifiers<TIdentifiers>;
+  hotFix?: QuestionHotFix<TIdentifiers>;
 }
 
 export type MathLevel =
