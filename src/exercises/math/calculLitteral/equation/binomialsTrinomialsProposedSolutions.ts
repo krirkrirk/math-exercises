@@ -20,7 +20,10 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 
-type Identifiers = {};
+type Identifiers = {
+  solutionNodeIds: any;
+  equationNodeIds: any;
+};
 
 function generateTrinomialFromRoot(root: number, constante: number): Trinom {
   const a = randint(1, 5);
@@ -57,16 +60,13 @@ const getBinomialsTrinomialsProposedSolutionsQuestion: QuestionGenerator<
     : new EqualNode(binomial1.toTree(), binomial2.toTree());
 
   const ans = degree
-    ? root.toTree().toTex()
+    ? root.toTree()
     : new FractionNode(
         new SubstractNode(binomial2.b.toTree(), binomial1.b.toTree()),
         new SubstractNode(binomial1.a.toTree(), binomial2.a.toTree()),
-      )
-        .simplify()
-        .toTex();
-
+      ).simplify();
   const answertype = coinFlip();
-  const solution = answertype ? ans : randint(-10, 10);
+  const solution = answertype ? ans : randint(-10, 10).toTree();
   const answer = answertype ? "Oui" : "Non";
 
   const question: Question<Identifiers> = {
@@ -74,7 +74,10 @@ const getBinomialsTrinomialsProposedSolutionsQuestion: QuestionGenerator<
     instruction: `Le nombre $${solution}$ est-il une solution de l'équation $${equation.toTex()}$ ?`,
     keys: [],
     answerFormat: "raw",
-    identifiers: {},
+    identifiers: {
+      equationNodeIds: equation.toIdentifiers(),
+      solutionNodeIds: solution.toIdentifiers(),
+    },
   };
 
   return question;

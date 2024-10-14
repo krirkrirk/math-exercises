@@ -42,6 +42,7 @@ export class EquationSolutionNode implements Node {
     } else {
       const solTex = this.solutionsSet.elements.map((e) => e.toTex());
       res.push(solTex.map((e) => `${this.variable}=${e}`).join("\\text{ ou }"));
+      res.push(solTex.map((e) => `${this.variable}=${e}`).join(";"));
       if (this.opts?.allowRawRightChildAsSolution) {
         res.push(solTex.join(";"));
         res.push(solTex.join("\\text{ ou }"));
