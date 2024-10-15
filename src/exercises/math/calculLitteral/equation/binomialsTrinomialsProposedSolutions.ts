@@ -71,7 +71,7 @@ const getBinomialsTrinomialsProposedSolutionsQuestion: QuestionGenerator<
 
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `Le nombre $${solution}$ est-il une solution de l'équation $${equation.toTex()}$ ?`,
+    instruction: `Le nombre $${solution.toTex()}$ est-il une solution de l'équation $${equation.toTex()}$ ?`,
     keys: [],
     answerFormat: "raw",
     identifiers: {

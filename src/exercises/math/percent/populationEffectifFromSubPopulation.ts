@@ -186,4 +186,5 @@ export const populationEffectifFromSubPopulation: Exercise<Identifiers> = {
   subject: "Mathématiques",
   getHint,
   getCorrection,
+  hasHintAndCorrection: true,
 };

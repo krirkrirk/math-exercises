@@ -10,6 +10,8 @@ import { PointConstructor } from "#root/math/geometry/point";
 import { arrayHasSameElements } from "#root/utils/arrays/arrayHasSameElement";
 import { deleteObjectNamesFromAnswer } from "#root/geogebra/deleteObjectNamesFromAnswer";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
+import { getPointFromGGB } from "#root/exercises/utils/geogebra/getPointFromGGB";
+import { parseGGBPoints } from "#root/geogebra/parsers/parseGGBPoints";
 
 type Identifiers = { x: number; y: number };
 
@@ -34,8 +36,12 @@ const getPlaceAPointQuestion: QuestionGenerator<Identifiers> = () => {
   return question;
 };
 
-const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
-  return arrayHasSameElements(deleteObjectNamesFromAnswer(ans), ggbAnswer);
+const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer, x, y }) => {
+  const points = parseGGBPoints(ans);
+  if (points.length !== 1) return false;
+  const [xAns, yAns] = points[0].replace("(", "").replace(")", "").split(",");
+
+  return Math.abs(Number(xAns) - x) < 0.5 && Math.abs(Number(yAns) - y) < 0.5;
 };
 
 export const testGGBAnswer: Exercise<Identifiers> = {

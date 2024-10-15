@@ -37,12 +37,9 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   const invCm = 1 - percentRate / 100;
 
-  tryToAddWrongProp(propositions, round(vf * invCm, 2).frenchify() + "€");
+  tryToAddWrongProp(propositions, round(vf * invCm, 2).frenchify());
   while (propositions.length < n) {
-    tryToAddWrongProp(
-      propositions,
-      round(randfloat(1, 100, 2), 2).frenchify() + "€",
-    );
+    tryToAddWrongProp(propositions, round(randfloat(1, 100, 2), 2).frenchify());
   }
   return shuffleProps(propositions, n);
 };
@@ -50,7 +47,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 const getAnswer: GetAnswer<Identifiers> = (identifiers) => {
   const cm = 1 + identifiers.percentRate / 100;
   const vd = round(identifiers.vf / cm, 2);
-  return vd.frenchify() + "€";
+  return vd.frenchify();
 };
 
 const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
@@ -92,10 +89,10 @@ ${alignTex([
 };
 
 const getKeys: GetKeys<Identifiers> = (identifiers) => {
-  return ["euro"];
+  return [];
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return euroParser(ans) === answer;
+  return euroParser(ans) === answer + "€";
 };
 
 const getFindStartValueAfterEvolutionQuestion: QuestionGenerator<

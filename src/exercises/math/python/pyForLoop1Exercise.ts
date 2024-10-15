@@ -133,7 +133,7 @@ const generateType6Exercise = (): PyExercise => {
   a=int(input("Entrez un nombre"))
   for i in range(1,${nbIteration + 1}):
       b=b*a  
-  print(a)
+  print(b)
   \`\`\`
   `;
   return { instruction, exoVariable };
