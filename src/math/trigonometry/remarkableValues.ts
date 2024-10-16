@@ -312,3 +312,15 @@ export const mainTrigoValues = [
 ];
 
 export const mainPositiveTrigovalues = remarkableTrigoValues.slice(0, 9);
+
+export const trigoValuesOnZeroTwoPIOF = [
+  ...remarkableTrigoValues.slice(1),
+  {
+    angle: new MultiplyNode(new NumberNode(2), PiNode),
+    degree: 0,
+    cos: new NumberNode(1),
+    sin: new NumberNode(0),
+    tan: new NumberNode(0),
+    point: "I",
+  },
+];

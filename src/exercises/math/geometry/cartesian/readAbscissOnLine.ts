@@ -26,6 +26,7 @@ import { Rational } from "#root/math/numbers/rationals/rational";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
+import { NodeConstructor } from "#root/tree/nodes/nodeConstructor";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { parseLatex } from "#root/tree/parsers/latexParser";
@@ -111,13 +112,9 @@ const getKeys: GetKeys<Identifiers> = (identifiers) => {
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, abscissTex }) => {
   try {
+    const answerNode = parseLatex(ans);
     const node = parseLatex(abscissTex);
-    return node
-      .toAllValidTexs({
-        allowFractionToDecimal: true,
-        allowMinusAnywhereInFraction: true,
-      })
-      .includes(ans);
+    return Math.abs(node.evaluate({}) - answerNode.evaluate({})) < 0.00001;
   } catch (err) {
     return false;
   }

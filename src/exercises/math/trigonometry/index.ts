@@ -12,3 +12,4 @@ export * from "./basicTrigoSystemEquation";
 export * from "./mainAngleMeasure";
 export * from "./degreeToRadians";
 export * from "./arcLength";
+// export * from "./equationCosOnRandomInterval";

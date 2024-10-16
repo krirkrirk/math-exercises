@@ -112,13 +112,9 @@ const getKeys: GetKeys<Identifiers> = (identifiers) => {
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, abscissTex }) => {
   try {
+    const answerNode = parseLatex(ans);
     const node = parseLatex(abscissTex);
-    return node
-      .toAllValidTexs({
-        allowFractionToDecimal: true,
-        allowMinusAnywhereInFraction: true,
-      })
-      .includes(ans);
+    return Math.abs(node.evaluate({}) - answerNode.evaluate({})) < 0.00001;
   } catch (err) {
     return false;
   }

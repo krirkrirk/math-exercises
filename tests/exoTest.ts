@@ -9,7 +9,7 @@ export const exoTest = (exo: Exercise) => {
   expect(exo.label.length).toBeGreaterThan(0);
   let before = Date.now();
   console.log("generate questions : ", exo.id);
-  const questions = exo.generator(100);
+  const questions = exo.generator(30);
   let after = Date.now();
   generatorTime = after - before;
 

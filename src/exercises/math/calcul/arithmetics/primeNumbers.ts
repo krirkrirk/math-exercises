@@ -28,7 +28,6 @@ const primes = [2, 3, 5, 7, 11];
 const getPrimeNumbers: QuestionGenerator<Identifiers> = () => {
   const rand = randint(3, 5);
   let chosenNumbers: number[] = [];
-
   let elevenCount = 0;
 
   for (let i = 0; i < rand; i++) {
@@ -52,7 +51,6 @@ const getPrimeNumbers: QuestionGenerator<Identifiers> = () => {
   }
 
   let answer = tree.toTex();
-
   const question: Question<Identifiers> = {
     instruction: `Donner la décomposition en nombres premiers de : $${prod}$`,
     startStatement: `${prod}`,
