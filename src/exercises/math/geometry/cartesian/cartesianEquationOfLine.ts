@@ -194,7 +194,12 @@ const getEquationNodeFromString = (ans: string): AlgebraicNode | undefined => {
 const isValidFormat = (ans: string) => {
   if (!ans.includes("=")) return false;
   const splitted = ans.split("=");
-  if (splitted.length !== 2 || splitted[1] !== "0") return false;
+  if (
+    splitted.length !== 2 ||
+    splitted[1] !== "0" ||
+    (!splitted[0].includes("x") && !splitted[0].includes("y"))
+  )
+    return false;
   return true;
 };
 

@@ -1,8 +1,11 @@
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { mdTable } from "#root/utils/markdown/mdTable";
+import { dollarize } from "#root/utils/latex/dollarize";
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -18,6 +21,19 @@ type Identifiers = {
   randomEffectives: number[];
 };
 
+const getInstruction: GetInstruction<Identifiers> = ({
+  randomEffectives,
+  randomValues,
+}) => {
+  return `On considère le tableau d'effectifs suivant : 
+
+${mdTable([
+  ["Valeur", ...randomValues.map((e) => dollarize(e))],
+  ["Effectif", ...randomEffectives.map((e) => dollarize(e))],
+])}
+
+Calculer la moyenne de cette série de valeurs (arrondir au centième).`;
+};
 const getAverageWithTableQuestion: QuestionGenerator<Identifiers> = () => {
   const getRandomUniqueValues = (
     count: number,
@@ -45,21 +61,16 @@ const getAverageWithTableQuestion: QuestionGenerator<Identifiers> = () => {
   average /= sumEffectives;
   average = round(average, 2);
 
+  const identifiers = { randomEffectives, randomValues };
   const answer = (average + "").replace(".", ",");
   const question: Question<Identifiers> = {
-    instruction: `On considère le tableau d'effectifs suivant : 
-
-| | | | | | |
-|-|-|-|-|-|-|
-|Valeur|${randomValues[0]}|${randomValues[1]}|${randomValues[2]}|${randomValues[3]}|${randomValues[4]}|
-|Effectif|${randomEffectives[0]}|${randomEffectives[1]}|${randomEffectives[2]}|${randomEffectives[3]}|${randomEffectives[4]}|
-
-Calculer la moyenne de cette série de valeurs (arrondir au centième).`,
+    instruction: getInstruction(identifiers),
 
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { randomEffectives, randomValues },
+    identifiers,
+    style: { tableHasNoHeader: true },
   };
 
   return question;
@@ -102,4 +113,5 @@ export const averageWithTable: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getInstruction,
 };

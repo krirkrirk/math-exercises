@@ -8,6 +8,7 @@ import {
   tryToAddWrongProp,
   QCMGenerator,
   VEA,
+  GetInstruction,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Point } from "#root/math/geometry/point";
@@ -20,6 +21,8 @@ import {
 import { randint } from "#root/math/utils/random/randint";
 import { PointNode } from "#root/tree/nodes/geometry/pointNode";
 import { average } from "#root/utils/average";
+import { dollarize } from "#root/utils/latex/dollarize";
+import { mdTable } from "#root/utils/markdown/mdTable";
 import { v4 } from "uuid";
 
 type Identifiers = {
@@ -27,24 +30,30 @@ type Identifiers = {
   yValues: number[];
 };
 
-const getAveragePointQuestion: QuestionGenerator<Identifiers> = () => {
-  const points = distinctRandTupleInt(4, 2, { from: -9, to: 10 });
-  const sortedPoints = points.sort((a, b) => a[0] - b[0]);
-  const tab = `
-|x|${sortedPoints[0][0]}|${sortedPoints[1][0]}|${sortedPoints[2][0]}|${sortedPoints[3][0]}|
-|-|-|-|-|-|
-|y|${sortedPoints[0][1]}|${sortedPoints[1][1]}|${sortedPoints[2][1]}|${sortedPoints[3][1]}|
-  `;
-  const instruction = `On considère la liste de points suivante : ${tab}
+const getInstruction: GetInstruction<Identifiers> = ({ xValues, yValues }) => {
+  const tab = mdTable([
+    ["$x$", ...xValues.map((el) => dollarize(el))],
+    ["$y$", ...yValues.map((el) => dollarize(el))],
+  ]);
+  return `On considère la liste de points suivante : ${tab}
   
   Déterminer les coordonnées du point moyen $G$.
   `;
+};
+const getAveragePointQuestion: QuestionGenerator<Identifiers> = () => {
+  const points = distinctRandTupleInt(4, 2, { from: -9, to: 10 });
+  const sortedPoints = points.sort((a, b) => a[0] - b[0]);
+
   const xG = frenchify(average(sortedPoints.map((el) => el[0])) + "");
   const yG = frenchify(average(sortedPoints.map((el) => el[1])) + "");
   const answer = `\\left(${xG};${yG}\\right)`;
+  const identifiers = {
+    xValues: sortedPoints.map((el) => el[0]),
+    yValues: sortedPoints.map((el) => el[1]),
+  };
   const question: Question<Identifiers> = {
     answer,
-    instruction,
+    instruction: getInstruction(identifiers),
     keys: ["semicolon"],
     answerFormat: "tex",
     identifiers: {
@@ -101,4 +110,5 @@ export const averagePoint: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getInstruction,
 };

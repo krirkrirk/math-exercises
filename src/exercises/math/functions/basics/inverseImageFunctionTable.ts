@@ -1,5 +1,6 @@
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -17,6 +18,8 @@ import { randint } from "#root/math/utils/random/randint";
 import { arrayHasSameElements } from "#root/utils/arrays/arrayHasSameElement";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 import { random } from "#root/utils/alea/random";
+import { mdTable } from "#root/utils/markdown/mdTable";
+import { dollarize } from "#root/utils/latex/dollarize";
 
 type Identifiers = {
   xValues: number[];
@@ -25,6 +28,22 @@ type Identifiers = {
   value: number;
 };
 
+const getInstruction: GetInstruction<Identifiers> = ({
+  imageValues,
+  isAskingImage,
+  value,
+  xValues,
+}) => {
+  return `Ci-dessous est donné le tableau de valeurs d'une fonction $f$. Déterminer ${
+    isAskingImage ? `l'image de` : `le ou les antécédents de`
+  } $${value}$ par $f$.
+
+${mdTable([
+  ["$x$", ...xValues.map((n) => dollarize(n.frenchify()))],
+  ["$f(x)$", ...imageValues.map((n) => dollarize(n.frenchify()))],
+])}
+`;
+};
 const getInverseImageFunctionTableQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -47,18 +66,16 @@ const getInverseImageFunctionTableQuestion: QuestionGenerator<
       : xValues
           .filter((el, index) => yValues[index] === valueAsked)
           .join("\\text{ et }")) + "";
-  const instruction = `Ci-dessous est donné le tableau de valeurs d'une fonction $f$. Déterminer ${
-    isAskingImage ? `l'image de` : `le ou les antécédents de`
-  } $${valueAsked}$ par $f$.
 
-  |$x$|${xValues.map((value) => `$${value}$`).join("|")}|
-  |-|-|-|-|-|-|
-  |$f(x)$|${yValues.map((value) => `$${value}$`).join("|")}|
-`;
-
+  const identifiers = {
+    xValues,
+    imageValues: yValues,
+    isAskingImage,
+    value: valueAsked,
+  };
   const question: Question<Identifiers> = {
     answer,
-    instruction,
+    instruction: getInstruction(identifiers),
     keys: ["et"],
     answerFormat: "tex",
     style: { tableHasNoHeader: true },
@@ -117,4 +134,5 @@ export const inverseImageFunctionTable: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getInstruction,
 };

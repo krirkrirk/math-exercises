@@ -1,8 +1,11 @@
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { dollarize } from "#root/utils/latex/dollarize";
+import { mdTable } from "#root/utils/markdown/mdTable";
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -20,6 +23,22 @@ type Identifiers = {
   randomQuartile: number;
 };
 
+const getInstruction: GetInstruction<Identifiers> = ({
+  randomEffectives,
+  randomQuartile,
+  randomValues,
+}) => {
+  return `On considère le tableau d'effectifs suivant : 
+
+${mdTable([
+  ["Valeur", ...randomValues.map((e) => dollarize(e))],
+  ["Effectif", ...randomEffectives.map((e) => dollarize(e))],
+])}
+
+Calculer le ${
+    randomQuartile === 0 ? "premier" : "troisième"
+  } quartile de cette série de valeurs.`;
+};
 const getQuartiles: QuestionGenerator<Identifiers> = () => {
   const getRandomUniqueValues = (
     count: number,
@@ -54,36 +73,10 @@ const getQuartiles: QuestionGenerator<Identifiers> = () => {
 
   const randomQuartile = randint(0, 2);
 
-  let quartileToString;
-  let choosenQuartile: number;
-
-  switch (randomQuartile) {
-    case 0:
-      quartileToString = "premier quartile";
-      choosenQuartile = firstQuartile;
-      break;
-
-    case 1:
-      quartileToString = "troisième quartile";
-      choosenQuartile = thirdQuartile;
-      break;
-
-    default:
-      quartileToString = "troisième quartile";
-      choosenQuartile = thirdQuartile;
-      break;
-  }
-
-  const answer = choosenQuartile + "";
+  const answer = (randomQuartile === 0 ? firstQuartile : thirdQuartile) + "";
+  const identifiers = { randomValues, randomEffectives, randomQuartile };
   const question: Question<Identifiers> = {
-    instruction: `On considère le tableau d'effectifs suivant : 
-
-|Valeur|${randomValues[0]}|${randomValues[1]}|${randomValues[2]}|${randomValues[3]}|${randomValues[4]}|
-|-|-|-|-|-|-|
-|Effectif|${randomEffectives[0]}|${randomEffectives[1]}|${randomEffectives[2]}|${randomEffectives[3]}|${randomEffectives[4]}|
-
-Calculer le ${quartileToString} de cette série de valeurs.`,
-
+    instruction: getInstruction(identifiers),
     answer,
     keys: [],
     answerFormat: "tex",
@@ -128,4 +121,5 @@ export const quartiles: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getInstruction,
 };

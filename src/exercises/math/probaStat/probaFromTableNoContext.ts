@@ -1,5 +1,6 @@
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -14,6 +15,8 @@ import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { random } from "#root/utils/alea/random";
+import { dollarize } from "#root/utils/latex/dollarize";
+import { mdTable } from "#root/utils/markdown/mdTable";
 
 type Identifiers = {
   aCapB: number;
@@ -25,6 +28,35 @@ type Identifiers = {
   probaFrac: number[];
 };
 
+const getInstruction: GetInstruction<Identifiers> = ({
+  aBarreCapB,
+  aBarreCapBBarre,
+  aCapB,
+  aCapBBarre,
+  event,
+  probaFrac,
+  type,
+}) => {
+  const total = aBarreCapB + aBarreCapBBarre + aCapB + aCapBBarre;
+  const aTotal = aCapB + aCapBBarre;
+  const bTotal = aCapB + aBarreCapB;
+  const aBarreTotal = aBarreCapB + aBarreCapBBarre;
+  const bBarreTotal = aBarreCapBBarre + aCapBBarre;
+  return `On considère deux événements $A$ et $B$. Le tableau suivant donne le nombre d'issues pour chacun des événements $A\\cap B$, $\\overline A\\cap B$, $A\\cap \\overline B$ et $\\overline A \\cap \\overline B$. Calculer la probabilité $${event}$.
+    
+${mdTable([
+  [" ", "$B$", "$\\overline{B}$", "Total"],
+  ["$A$", dollarize(aCapB), `$${aCapBBarre}$`, `$${aTotal}$`],
+  [
+    "$\\overline{A}$",
+    dollarize(aBarreCapB),
+    dollarize(aBarreCapBBarre),
+    dollarize(aBarreTotal),
+  ],
+  ["Total", dollarize(bTotal), dollarize(bBarreTotal), dollarize(total)],
+])}
+    `;
+};
 const getProbaFromTableNoContextQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -80,28 +112,21 @@ const getProbaFromTableNoContextQuestion: QuestionGenerator<
       ]);
   }
   const answer = new Rational(proba[0], proba[1]).simplify().toTree().toTex();
+  const identifiers = {
+    aBarreCapB,
+    aBarreCapBBarre,
+    aCapB,
+    aCapBBarre,
+    event,
+    type,
+    probaFrac: proba,
+  };
   const question: Question<Identifiers> = {
     answer,
-    instruction: `On considère deux événements $A$ et $B$. Le tableau suivant donne le nombre d'issues pour chacun des événements $A\\cap B$, $\\overline A\\cap B$, $A\\cap \\overline B$ et $\\overline A \\cap \\overline B$. Calculer la probabilité $${event}$.
-    
-| | $B$ | $\\overline{B}$| Total
-|-|-|-|-|
-|$A$|${aCapB}|${aCapBBarre}|${aTotal}|
-|$\\overline{A}$|${aBarreCapB}|${aBarreCapBBarre}|${aBarreTotal}|
-|Total|${bTotal}|${bBarreTotal}|${total}|
-    
-    `,
+    instruction: getInstruction(identifiers),
     keys: [],
     answerFormat: "tex",
-    identifiers: {
-      aBarreCapB,
-      aBarreCapBBarre,
-      aCapB,
-      aCapBBarre,
-      event,
-      type,
-      probaFrac: proba,
-    },
+    identifiers,
   };
 
   return question;
@@ -153,4 +178,5 @@ export const probaFromTableNoContext: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getInstruction,
 };

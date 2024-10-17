@@ -1,5 +1,6 @@
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -12,6 +13,8 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { IntegerConstructor } from "#root/math/numbers/integer/integer";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { dollarize } from "#root/utils/latex/dollarize";
+import { mdTable } from "#root/utils/markdown/mdTable";
 
 type Identifiers = {
   randQuation: number;
@@ -19,6 +22,17 @@ type Identifiers = {
   x2: string | number;
   x3: string | number;
   x4: string | number;
+};
+
+const getInstruction: GetInstruction<Identifiers> = ({ x1, x2, x3, x4 }) => {
+  return `On considère le tableau de proportionnalité suivant : 
+
+${mdTable([
+  [dollarize(x1), dollarize(x3)],
+  [dollarize(x2), dollarize(x4)],
+])}
+
+Déterminer le nombre manquant.`;
 };
 
 const getProportionalityTable: QuestionGenerator<Identifiers> = () => {
@@ -51,20 +65,16 @@ const getProportionalityTable: QuestionGenerator<Identifiers> = () => {
       x4 = "?";
       break;
   }
-
+  const identifiers = { x1, x2, x3, x4, randQuation };
   const question: Question<Identifiers> = {
-    instruction: `On considère le tableau de proportionnalité suivant : 
-
-| | |
-|-|-|
-|${x1}|${x3}|
-|${x2}|${x4}|
-
-Déterminer le nombre manquant.`,
+    instruction: getInstruction(identifiers),
     answer: answer,
     keys: [],
     answerFormat: "tex",
     identifiers: { randQuation, x1, x2, x3, x4 },
+    style: {
+      tableHasNoHeader: true,
+    },
   };
 
   return question;
@@ -99,4 +109,5 @@ export const proportionalityTable: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getInstruction,
 };

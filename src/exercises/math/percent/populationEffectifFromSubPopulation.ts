@@ -24,6 +24,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { numberParser } from "#root/tree/parsers/numberParser";
 import { coinFlip } from "#root/utils/alea/coinFlip";
+import { mdTable } from "#root/utils/markdown/mdTable";
 
 type Identifiers = {
   subPopulationEffectif: number;
@@ -107,11 +108,14 @@ const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
   
   Pour cela, on peut faire un produit en croix : 
   
-|$?$|$100\\%$|
-|-|-|
-|$${
-    identifiers.subPopulationEffectif
-  }$|$${identifiers.subPopulationPercent.frenchify()}\\%$|
+${mdTable([
+  ["$?$", "$100\\%$"],
+  [
+    `$${identifiers.subPopulationEffectif}$`,
+    `$${identifiers.subPopulationPercent.frenchify()}\\%$`,
+  ],
+])}
+
 
 Pour trouver la valeur manquante, il faut donc faire le calcul suivant : 
 

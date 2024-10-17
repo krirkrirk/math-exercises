@@ -1,7 +1,10 @@
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { dollarize } from "#root/utils/latex/dollarize";
+import { mdTable } from "#root/utils/markdown/mdTable";
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -14,8 +17,22 @@ import { getDistinctQuestions } from "../../../utils/getDistinctQuestions";
 
 type Identifiers = {
   randomValues: number[];
+  randomEffectives: number[];
 };
 
+const getInstruction: GetInstruction<Identifiers> = ({
+  randomValues,
+  randomEffectives,
+}) => {
+  return `On considère le tableau d'effectifs suivant : 
+
+  ${mdTable([
+    ["Valeur", ...randomValues.map((e) => dollarize(e))],
+    ["Effectif", ...randomEffectives.map((e) => dollarize(e))],
+  ])}
+  
+  Calculer la médiane de cette série de valeurs.`;
+};
 const getMedianWithTable: QuestionGenerator<Identifiers> = () => {
   const getRandomUniqueValues = (
     count: number,
@@ -50,21 +67,14 @@ const getMedianWithTable: QuestionGenerator<Identifiers> = () => {
   } else {
     median = sortedValues[middleIndex];
   }
-
+  const identifiers = { randomValues, randomEffectives };
   const answer = (median + "").replace(".", ",");
   const question: Question<Identifiers> = {
-    instruction: `On considère le tableau d'effectifs suivant : 
-
-|Valeur|${randomValues[0]}|${randomValues[1]}|${randomValues[2]}|${randomValues[3]}|${randomValues[4]}|
-|-|-|-|-|-|-|
-|Effectif|${randomEffectives[0]}|${randomEffectives[1]}|${randomEffectives[2]}|${randomEffectives[3]}|${randomEffectives[4]}|
-
-Calculer la médiane de cette série de valeurs.`,
-
+    instruction: getInstruction(identifiers),
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { randomValues },
+    identifiers,
     style: { tableHasNoHeader: true },
   };
 
@@ -104,4 +114,5 @@ export const medianWithTable: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getInstruction,
 };

@@ -1,5 +1,6 @@
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -13,9 +14,18 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randTupleInt } from "#root/math/utils/random/randTupleInt";
 import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/alea/coinFlip";
+import { dollarize } from "#root/utils/latex/dollarize";
+import { mdTable } from "#root/utils/markdown/mdTable";
 
-type Identifiers = {};
+type Identifiers = { xValues: number[]; yValues: number[] };
 
+const getInstruction: GetInstruction<Identifiers> = ({ xValues, yValues }) => {
+  return `Le tableau ci-dessous est-il un tableau de proportionnalité ?
+
+${mdTable([xValues.map((v) => dollarize(v)), yValues.map((v) => dollarize(v))])}
+
+  `;
+};
 const getIsTableProportionalQuestion: QuestionGenerator<Identifiers> = () => {
   const xValues: number[] = randTupleInt(3, {
     from: 1,
@@ -29,20 +39,14 @@ const getIsTableProportionalQuestion: QuestionGenerator<Identifiers> = () => {
     ? xValues.map((value) => value * coeff)
     : xValues.map((value) => value * randint(2, 5));
 
+  const identifiers = { xValues, yValues };
   const question: Question<Identifiers> = {
     answer: isProportionnal ? "Oui" : "Non",
-    instruction: `On considère le tableau ci-dessous. Est-ce un tableau de proportionnalité
- |${xValues.map((value) => `$${value}$`).join("|")}|
-  |-|-|-|
-  |${yValues.map((value) => `$${value}$`).join("|")}|
-  `,
+    instruction: getInstruction(identifiers),
     keys: [],
     answerFormat: "raw",
     style: { tableHasNoHeader: true },
-    identifiers: {
-      xValues,
-      yValues,
-    },
+    identifiers,
     hint: "Pour passer de la ligne du haut à la ligne du bas, multiplie-t-on toujours par le même nombre ? Si oui, alors c'est un tableau de proportionnalité.",
     correction: `On divise les nombres de la deuxième ligne par les nombres de la première ligne. Si on obtient toujours le même résultat, alors c'est un tableau de proportionnalité. 
 
@@ -91,4 +95,5 @@ export const isTableProportional: Exercise<Identifiers> = {
   answerType: "QCU",
   subject: "Mathématiques",
   hasHintAndCorrection: true,
+  getInstruction,
 };

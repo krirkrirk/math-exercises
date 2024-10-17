@@ -13,6 +13,7 @@ import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 import { shuffle } from "#root/utils/alea/shuffle";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { round } from "#root/math/utils/round";
+import { percentParser } from "#root/tree/parsers/percentParser";
 
 type Identifiers = {
   evolutions: string[];
@@ -100,9 +101,8 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  const allowedTex = [answer];
-  if (answer[0] !== "-") allowedTex.push("+" + answer);
-  return allowedTex.includes(ans);
+  const parsed = percentParser(ans);
+  return parsed === answer.replace("+", "");
 };
 
 export const globalPercent: Exercise<Identifiers> = {

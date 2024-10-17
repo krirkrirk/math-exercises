@@ -1,5 +1,6 @@
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -20,6 +21,8 @@ import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { dollarize } from "#root/utils/latex/dollarize";
+import { mdTable } from "#root/utils/markdown/mdTable";
 import { roundToCentieme } from "../../calcul";
 
 type Identifiers = {
@@ -27,8 +30,20 @@ type Identifiers = {
   G2x: number;
   G2y: number;
   G1y: number;
+  xValues: number[];
+  yValues: number[];
 };
 
+const getInstruction: GetInstruction<Identifiers> = ({ xValues, yValues }) => {
+  let dataTable = mdTable([
+    ["$x$", ...xValues.map((n) => dollarize(n.frenchify()))],
+    ["$y$", ...yValues.map((n) => dollarize(n.frenchify()))],
+  ]);
+  return `On considère la série statistique ci-dessous. Déterminez l'équation de la droite d'ajustement obtenue par la méthode des moindres carrés. 
+
+${dataTable}
+`;
+};
 function generateLinearData(n: number) {
   const slope = randint(-500, 500, [0]) / 100;
   const intercept = randint(100, 5000) / 100;
@@ -72,19 +87,13 @@ const getAffineAdjustmentQuestion: QuestionGenerator<Identifiers> = () => {
     ).simplify({ forbidFactorize: true }),
   ).toTex();
 
-  let dataTable = `
-| $x$ | ${xValues.map((n) => n.frenchify()).join(" | ")} |
-|-|-|-|-|-|-|-|
-| $y$ | ${yValues.map((n) => n.frenchify()).join(" | ")} |
-  `;
-
+  const identifiers = { G1x, G2x, G1y, G2y, xValues, yValues };
   const question: Question<Identifiers> = {
     answer: answer,
-    instruction: `On considère la série statistique ci-dessous. Déterminez l'équation de la droite d'ajustement obtenue par la méthode des moindres carrés. ${dataTable}
-`,
+    instruction: getInstruction(identifiers),
     keys: ["equal", "y", "x", "a", "b"],
     answerFormat: "tex",
-    identifiers: { G1x, G2x, G1y, G2y },
+    identifiers,
     style: { tableHasNoHeader: true },
   };
 
@@ -192,4 +201,5 @@ export const affineAdjustmentExercise: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getInstruction,
 };

@@ -1,5 +1,6 @@
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -14,6 +15,8 @@ import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { random } from "#root/utils/alea/random";
+import { dollarize } from "#root/utils/latex/dollarize";
+import { mdTable } from "#root/utils/markdown/mdTable";
 
 type Identifiers = {
   aCapB: number;
@@ -25,6 +28,26 @@ type Identifiers = {
   probaFrac: number[];
 };
 
+const getInstruction: GetInstruction<Identifiers> = ({
+  aBarreCapB,
+  aBarreCapBBarre,
+  aCapB,
+  aCapBBarre,
+  event,
+  probaFrac,
+  type,
+}) => {
+  return `Le tableau suivant donne le nombre de filles et de garçons portant des lunettes dans un lycée : 
+
+${mdTable([
+  [" ", "Porte des lunettes", "Ne porte pas de lunettes"],
+  ["Filles", dollarize(aCapB), dollarize(aCapBBarre)],
+  ["Garçons", dollarize(aBarreCapB), dollarize(aBarreCapBBarre)],
+])}
+
+On choisit un élève au hasard. Quelle est la probabilité de tomber sur ${event} ?
+    `;
+};
 const getProbaFromTableWithContextQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -83,28 +106,22 @@ const getProbaFromTableWithContextQuestion: QuestionGenerator<
       break;
   }
   const answer = new Rational(proba[0], proba[1]).simplify().toTree().toTex();
+
+  const identifiers = {
+    aBarreCapB,
+    aBarreCapBBarre,
+    aCapB,
+    aCapBBarre,
+    event,
+    type,
+    probaFrac: proba,
+  };
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Le tableau suivant donne le nombre de filles et de garçons portant des lunettes dans un lycée : 
-
-|       | Porte des lunettes     | Ne porte pas de lunettes   |
-|-------|:----------------------:|----------------------------|
-|Filles   |${aCapB}   |${aCapBBarre}|
-|Garçons   |${aBarreCapB}   |${aBarreCapBBarre}   |
-    
-On choisit un élève au hasard. Quelle est la probabilité de tomber sur ${event} ?
-    `,
+    instruction: getInstruction(identifiers),
     keys: [],
     answerFormat: "tex",
-    identifiers: {
-      aBarreCapB,
-      aBarreCapBBarre,
-      aCapB,
-      aCapBBarre,
-      event,
-      type,
-      probaFrac: proba,
-    },
+    identifiers,
   };
 
   return question;
@@ -156,4 +173,5 @@ export const probaFromTableWithContext: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getInstruction,
 };

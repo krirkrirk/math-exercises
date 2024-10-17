@@ -1,5 +1,6 @@
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -12,10 +13,24 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { IntegerConstructor } from "#root/math/numbers/integer/integer";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { dollarize } from "#root/utils/latex/dollarize";
+import { mdTable } from "#root/utils/markdown/mdTable";
 
 type Identifiers = {
   xValues: number[];
   yValues: number[];
+};
+
+const getInstruction: GetInstruction<Identifiers> = ({ xValues, yValues }) => {
+  let dataTable = mdTable([
+    xValues.map((n) => dollarize(n.frenchify())),
+    yValues.map((n) => dollarize(n.frenchify())),
+  ]);
+  return `On considère le tableau de proportionnalité suivant : 
+  
+${dataTable}
+      
+Calculer le coefficient de proportionnalité.`;
 };
 
 const getProportionalityTableCoefficient: QuestionGenerator<
@@ -28,24 +43,15 @@ const getProportionalityTableCoefficient: QuestionGenerator<
   );
   const yValues = xValues.map((x) => x * factor);
 
-  let dataTable = `
-| ${xValues.join(" | ")} |
-|-|-|-|
-| ${yValues.map((n) => n.frenchify()).join(" | ")} |
-  `;
-
-  const instruction = `On considère le tableau de proportionnalité suivant : ${dataTable}
-      
-    \n Calculer le coefficient de proportionnalité.`;
-
   const answer = factor.toTree().toTex();
-
+  const identifiers = { xValues, yValues };
   const question: Question<Identifiers> = {
-    instruction,
+    instruction: getInstruction(identifiers),
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { xValues, yValues },
+    identifiers,
+    style: { tableHasNoHeader: true },
   };
 
   return question;
@@ -82,4 +88,5 @@ export const proportionalityTableCoefficient: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getInstruction,
 };

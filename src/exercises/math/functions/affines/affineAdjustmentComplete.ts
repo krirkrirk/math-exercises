@@ -21,6 +21,8 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
+import { dollarize } from "#root/utils/latex/dollarize";
+import { mdTable } from "#root/utils/markdown/mdTable";
 import { roundToCentieme } from "../../calcul";
 
 type Identifiers = {
@@ -29,6 +31,8 @@ type Identifiers = {
   G2y: number;
   G1y: number;
   rSquared: number;
+  xValues: number[];
+  yValues: number[];
 };
 
 function generateLinearData(n: number) {
@@ -101,12 +105,10 @@ const getAffineAdjustmentCompleteQuestion: QuestionGenerator<
     new PowerNode(new VariableNode("R"), new NumberNode(2)),
     rSquared.toTree(),
   ).toTex();
-
-  let dataTable = `
-| $x$ | ${xValues.join(" | ")} |
-|-|-|-|-|-|-|-|
-| $y$ | ${yValues.map((n) => n.frenchify()).join(" | ")} |
-  `;
+  let dataTable = mdTable([
+    ["$x$", ...xValues.map((n) => dollarize(n.frenchify()))],
+    ["$y$", ...yValues.map((n) => dollarize(n.frenchify()))],
+  ]);
 
   const question: Question<Identifiers> = {
     answer: `${answerEq}\\newline ${answerR}`,
@@ -114,7 +116,7 @@ const getAffineAdjustmentCompleteQuestion: QuestionGenerator<
 `,
     keys: [],
     answerFormat: "tex",
-    identifiers: { G1x, G2x, G1y, G2y, rSquared },
+    identifiers: { G1x, G2x, G1y, G2y, rSquared, xValues, yValues },
     style: { tableHasNoHeader: true },
   };
 
