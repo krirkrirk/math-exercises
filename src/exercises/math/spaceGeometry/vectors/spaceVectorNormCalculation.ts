@@ -1,5 +1,9 @@
 import {
   Exercise,
+  GetAnswer,
+  GetCorrection,
+  GetHint,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -10,7 +14,10 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { SpaceVectorConstructor } from "#root/math/geometry/spaceVector";
+import {
+  SpaceVector,
+  SpaceVectorConstructor,
+} from "#root/math/geometry/spaceVector";
 import { VectorConstructor } from "#root/math/geometry/vector";
 import { SquareRootConstructor } from "#root/math/numbers/reals/real";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
@@ -26,24 +33,13 @@ type Identifiers = {
   z: number;
 };
 
-const getSpaceVectorNormCalculationQuestion: QuestionGenerator<
-  Identifiers
-> = () => {
-  const u = SpaceVectorConstructor.random("u", false);
-  const correctAnswer = u.getNorm();
-  const answer = correctAnswer.simplify().toTex();
-  const question: Question<Identifiers> = {
-    answer,
-    instruction: `Cacluler la norme du vecteur $${u.toTexWithCoords()}$`,
-    keys: [],
-    answerFormat: "tex",
-    identifiers: {
-      x: u.x.evaluate({}),
-      y: u.y.evaluate({}),
-      z: u.z.evaluate({}),
-    },
-    hint: "La norme d'un vecteur de l'espace est la racine carrée de la somme des carrés de ses coordonnées.",
-    correction: `La norme d'un vecteur de l'espace est la racine carrée de la somme des carrés de ses coordonnées. Ici, on a donc : 
+const getHint: GetHint<Identifiers> = (identifiers) => {
+  return "La norme d'un vecteur de l'espace est la racine carrée de la somme des carrés de ses coordonnées.";
+};
+
+const getCorrection: GetCorrection<Identifiers> = ({ x, y, z }) => {
+  const answer = getAnswer({ x, y, z });
+  return `La norme d'un vecteur de l'espace est la racine carrée de la somme des carrés de ses coordonnées. Ici, on a donc : 
  
 ${alignTex([
   [
@@ -51,26 +47,56 @@ ${alignTex([
     "=",
     new SqrtNode(
       new AddNode(
-        new SquareNode(u.x),
-        new AddNode(new SquareNode(u.y), new SquareNode(u.z)),
+        new SquareNode(x.toTree()),
+        new AddNode(new SquareNode(y.toTree()), new SquareNode(z.toTree())),
       ),
     ).toTex(),
   ],
-  [
-    "",
-    "=",
-    new SqrtNode(
-      (
-        u.x.evaluate({}) ** 2 +
-        u.y.evaluate({}) ** 2 +
-        u.z.evaluate({}) ** 2
-      ).toTree(),
-    ).toTex(),
-  ],
+  ["", "=", new SqrtNode((x ** 2 + y ** 2 + z ** 2).toTree()).toTex()],
 ])}
 
 Donc $\\lVert \\overrightarrow u \\rVert = ${answer}$.
-`,
+`;
+};
+
+const getAnswer: GetAnswer<Identifiers> = (identifiers) => {
+  const u = new SpaceVector(
+    "u",
+    identifiers.x.toTree(),
+    identifiers.y.toTree(),
+    identifiers.z.toTree(),
+  );
+  const correctAnswer = u.getNorm();
+  return correctAnswer.simplify().toTex();
+};
+
+const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
+  const u = new SpaceVector(
+    "u",
+    identifiers.x.toTree(),
+    identifiers.y.toTree(),
+    identifiers.z.toTree(),
+  );
+  return `Cacluler la norme du vecteur $${u.toTexWithCoords()}$`;
+};
+
+const getSpaceVectorNormCalculationQuestion: QuestionGenerator<
+  Identifiers
+> = () => {
+  const u = SpaceVectorConstructor.random("u", false);
+  const identifiers = {
+    x: u.x.evaluate({}),
+    y: u.y.evaluate({}),
+    z: u.z.evaluate({}),
+  };
+  const question: Question<Identifiers> = {
+    answer: getAnswer(identifiers),
+    instruction: getInstruction(identifiers),
+    keys: [],
+    answerFormat: "tex",
+    identifiers,
+    hint: getHint(identifiers),
+    correction: getCorrection(identifiers),
   };
 
   return question;
@@ -110,4 +136,8 @@ export const spaceVectorNormCalculation: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Mathématiques",
   hasHintAndCorrection: true,
+  getHint,
+  getCorrection,
+  getAnswer,
+  getInstruction,
 };

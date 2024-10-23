@@ -33,7 +33,7 @@ const getAnswer: GetAnswer<Identifiers> = (identifiers) => {
   return correctAnswer.simplify().toTex();
 };
 const getHint: GetHint<Identifiers> = (identifiers) => {
-  return `La norme d'un vecteur est la racine carrée de la somme des carrés de ses coordonnées. En d'autres termes, la norme du vecteur $$\\overrightarrow{u}\\begin{pmatrix}x\\\\y\\end{pmatrix}$$ est :
+  return `La norme d'un vecteur est la racine carrée de la somme des carrés de ses coordonnées. En d'autres termes, la norme du vecteur $$\\overrightarrow{u}\\begin{pmatrix}x\\\\y\\end{pmatrix}$$ est :
   
 $$
 \\lVert \\overrightarrow u \\rVert = \\sqrt{x^2+y^2}
@@ -44,7 +44,7 @@ const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
   const x = identifiers.x.toTree();
   const y = identifiers.y.toTree();
   const answer = getAnswer(identifiers);
-  return `La norme d'un vecteur est la racine carrée de la somme des carrés de ses coordonnées. Ici, on a donc : 
+  return `La norme d'un vecteur est la racine carrée de la somme des carrés de ses coordonnées. Ici, on a donc : 
 
 ${alignTex([
   [
