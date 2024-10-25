@@ -106,4 +106,5 @@ export const exponentialPrimitive: Exercise<Identifiers> = {
   getPropositions: getExponentialPrimitivePropositions,
   isAnswerValid: isExponentialPrimitiveAnswerValid,
   subject: "Mathématiques",
+  pdfOptions: { shouldSpreadPropositions: true },
 };

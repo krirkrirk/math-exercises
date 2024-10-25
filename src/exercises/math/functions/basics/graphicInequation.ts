@@ -231,4 +231,5 @@ export const graphicInequation: Exercise<Identifiers> = {
   isAnswerValid,
   hasGeogebra: true,
   subject: "Mathématiques",
+  pdfOptions: { shouldSpreadPropositions: true },
 };

@@ -141,4 +141,5 @@ export const factorizeCanonicalFormWithSqrt: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Mathématiques",
   hasHintAndCorrection: true,
+  pdfOptions: { shouldSpreadPropositions: true },
 };

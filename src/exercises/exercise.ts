@@ -145,10 +145,16 @@ export type GetQuestionFromIdentifiers<TIdentifiers> = (
 export type QuestionHotFix<TIdentifiers> = (
   q: Question<TIdentifiers>,
 ) => Question<TIdentifiers>;
+
+type PDFOptions = {
+  //on pourrait mettre ici des props pour geogebra
+  shouldSpreadPropositions?: boolean;
+};
 export interface Exercise<TIdentifiers = {}> {
   id: string;
   isSingleStep: boolean;
   label: string;
+  pdfOptions?: PDFOptions;
   sections?: (MathSection | PCSection)[];
   levels?: MathLevel[];
   connector?: "=" | "\\iff" | "\\approx";

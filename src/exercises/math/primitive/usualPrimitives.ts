@@ -145,4 +145,5 @@ export const usualPrimitives: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  pdfOptions: { shouldSpreadPropositions: true },
 };

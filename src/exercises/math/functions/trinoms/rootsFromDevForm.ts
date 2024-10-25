@@ -77,4 +77,5 @@ export const rootsFromDevForm: Exercise<Identifiers> = {
   freeTimer: 60,
   isAnswerValid,
   subject: "Mathématiques",
+  pdfOptions: { shouldSpreadPropositions: true },
 };

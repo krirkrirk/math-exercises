@@ -108,4 +108,5 @@ export const recognizeArithmeticFromFirstTerms: Exercise<Identifiers> = {
   answerType: "QCU",
   subject: "Mathématiques",
   hasHintAndCorrection: true,
+  pdfOptions: { shouldSpreadPropositions: true },
 };

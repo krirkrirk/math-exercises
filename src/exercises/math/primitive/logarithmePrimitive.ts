@@ -111,4 +111,5 @@ export const logarithmePrimitive: Exercise<Identifiers> = {
   getPropositions: getLogarithmePrimitivePropositions,
   isAnswerValid: isLogarithmePrimitiveAnswerValid,
   subject: "Mathématiques",
+  pdfOptions: { shouldSpreadPropositions: true },
 };

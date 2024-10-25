@@ -112,4 +112,5 @@ export const squareFunctionInequation: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  pdfOptions: { shouldSpreadPropositions: true },
 };

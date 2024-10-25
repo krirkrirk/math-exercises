@@ -109,4 +109,5 @@ export const expUPrimitive: Exercise<Identifiers> = {
   getPropositions: getExpUPrimitivePropositions,
   isAnswerValid: isExpUPrimitiveAnswerValid,
   subject: "Mathématiques",
+  pdfOptions: { shouldSpreadPropositions: true },
 };

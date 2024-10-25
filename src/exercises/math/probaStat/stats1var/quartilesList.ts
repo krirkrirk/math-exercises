@@ -2,6 +2,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/alea/shuffle";
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -16,6 +17,22 @@ import { getDistinctQuestions } from "../../../utils/getDistinctQuestions";
 type Identifiers = {
   randomValues: number[];
   randomQuartile: number;
+};
+
+const getInstruction: GetInstruction<Identifiers> = ({
+  randomQuartile,
+  randomValues,
+}) => {
+  let quartileToString = "";
+  if (randomQuartile === 0) quartileToString = "premier quartile";
+  else quartileToString = "troisième quartile";
+
+  return `On considère la liste suivante : 
+$$
+${randomValues.join(";\\ ")}
+$$
+
+Calculer le ${quartileToString} de cette série de valeurs.`;
 };
 
 const getQuartiles: QuestionGenerator<Identifiers> = () => {
@@ -34,36 +51,20 @@ const getQuartiles: QuestionGenerator<Identifiers> = () => {
 
   const randomQuartile = randint(0, 2);
 
-  let quartileToString;
   let choosenQuartile: number;
 
-  switch (randomQuartile) {
-    case 0:
-      quartileToString = "premier quartile";
-      choosenQuartile = firstQuartile;
-      break;
+  if (randomQuartile === 0) choosenQuartile = firstQuartile;
+  else choosenQuartile = thirdQuartile;
 
-    case 1:
-      quartileToString = "troisième quartile";
-      choosenQuartile = thirdQuartile;
-      break;
-
-    default:
-      quartileToString = "troisième quartile";
-      choosenQuartile = thirdQuartile;
-      break;
-  }
+  const identifiers = { randomValues, randomQuartile };
 
   const answer = choosenQuartile + "";
   const question: Question<Identifiers> = {
-    instruction: `On considère la liste suivante : $${randomValues.join(
-      ";\\ ",
-    )}.$
-    $\\\\$Calculer le ${quartileToString} de cette série de valeurs.`,
+    instruction: getInstruction(identifiers),
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { randomValues, randomQuartile },
+    identifiers,
   };
 
   return question;
@@ -104,4 +105,5 @@ export const quartilesList: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getInstruction,
 };

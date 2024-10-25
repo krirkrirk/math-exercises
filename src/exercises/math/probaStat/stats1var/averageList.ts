@@ -9,6 +9,7 @@ import {
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
+  GetInstruction,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randfloat } from "#root/math/utils/random/randfloat";
@@ -22,6 +23,15 @@ type Identifiers = {
   sortedValues: number[];
 };
 
+const getInstruction: GetInstruction<Identifiers> = ({ sortedValues }) => {
+  return `On considère la liste suivante : 
+$$
+${sortedValues.join(";\\ ")}.
+$$
+
+Calculer la moyenne de cette liste de valeurs (arrondir au centième).`;
+};
+
 const getAverageListQuestion: QuestionGenerator<Identifiers> = () => {
   let randomValues: number[] = [];
   const length = randint(6, 10);
@@ -32,15 +42,13 @@ const getAverageListQuestion: QuestionGenerator<Identifiers> = () => {
   const avg = average(sortedValues);
   const answer = round(average(sortedValues), 2).frenchify();
   const hasRounded = avg.frenchify() !== answer;
+  const identifiers = { sortedValues };
   const question: Question<Identifiers> = {
     answer,
-    instruction: `On considère la liste suivante : $${randomValues.join(
-      ";\\ ",
-    )}.$
-    $\\\\$Calculer la moyenne de cette liste de valeurs (arrondir au centième).`,
+    instruction: getInstruction(identifiers),
     keys: [],
     answerFormat: "tex",
-    identifiers: { sortedValues },
+    identifiers,
     hint: "La moyenne d'une liste de valeurs est la somme de ses valeurs divisé par le nombre de valeurs.",
     correction: `
 On additionne toutes les valeurs :
@@ -101,4 +109,5 @@ export const averageList: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Mathématiques",
   hasHintAndCorrection: true,
+  getInstruction,
 };

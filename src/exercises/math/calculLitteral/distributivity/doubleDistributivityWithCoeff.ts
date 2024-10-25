@@ -9,6 +9,10 @@ import {
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
+  GetHint,
+  GetCorrection,
+  GetAnswer,
+  GetInstruction,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
@@ -24,6 +28,84 @@ type Identifiers = {
   affine2: number[];
 };
 
+const getHint: GetHint<Identifiers> = ({ coeff, affine1, affine2 }) => {
+  return `Choisis deux facteurs de ce produit et multiplie les entre eux. Puis, multiplier le résultat obtenu par le troisième terme.`;
+};
+
+const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
+  const affine1 = new Affine(identifiers.affine1[1], identifiers.affine1[0]);
+  const affine2 = new Affine(identifiers.affine2[1], identifiers.affine2[0]);
+  const affine3 = affine1.times(identifiers.coeff);
+
+  const statement = new MultiplyNode(
+    new MultiplyNode(identifiers.coeff.toTree(), affine1.toTree()),
+    affine2.toTree(),
+  ).toTex();
+
+  return `On commence par multiplier les deux premiers termes entre eux : 
+    
+${alignTex(
+  `${statement} = ${new MultiplyNode(
+    affine1.times(identifiers.coeff).toTree(),
+    affine2.toTree(),
+  ).toTex()}`,
+)}
+
+Puis, on utilise la double distributivité : 
+
+${alignTex([
+  ["", "", new MultiplyNode(affine3.toTree(), affine2.toTree()).toTex()],
+  [
+    "",
+    "=",
+    new AddNode(
+      new MultiplyNode(
+        new Affine(affine3.a, 0).toTree(),
+        new Affine(affine2.a, 0).toTree(),
+        { forceTimesSign: true },
+      ),
+      new AddNode(
+        new MultiplyNode(
+          new Affine(affine3.a, 0).toTree(),
+          affine2.b.toTree(),
+          { forceTimesSign: true },
+        ),
+        new AddNode(
+          new MultiplyNode(
+            affine3.b.toTree(),
+            new Affine(affine2.a, 0).toTree(),
+            { forceTimesSign: true },
+          ),
+          new MultiplyNode(affine3.b.toTree(), affine2.b.toTree(), {
+            forceTimesSign: true,
+          }),
+        ),
+      ),
+    ).toTex(),
+  ],
+  ["", "=", getAnswer(identifiers)],
+])}
+    `;
+};
+
+const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
+  const affine1 = new Affine(identifiers.affine1[1], identifiers.affine1[0]);
+  const affine2 = new Affine(identifiers.affine2[1], identifiers.affine2[0]);
+  const statement = new MultiplyNode(
+    new MultiplyNode(identifiers.coeff.toTree(), affine1.toTree()),
+    affine2.toTree(),
+  ).toTex();
+  return `Développer et réduire : $${statement}$`;
+};
+
+const getAnswer: GetAnswer<Identifiers> = (identifiers) => {
+  const affine1 = new Affine(identifiers.affine1[1], identifiers.affine1[0]);
+  const affine2 = new Affine(identifiers.affine2[1], identifiers.affine2[0]);
+  const affine3 = affine1.times(identifiers.coeff);
+
+  const answer = affine3.multiply(affine2).toTree().toTex();
+  return answer;
+};
 const getDoubleDistributivityWithCoeffQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -34,61 +116,20 @@ const getDoubleDistributivityWithCoeffQuestion: QuestionGenerator<
   const affine2 = AffineConstructor.random(undefined, {
     excludes: [0],
   });
-  const statement = new MultiplyNode(
-    new MultiplyNode(coeff.toTree(), affine1.toTree()),
-    affine2.toTree(),
-  ).toTex();
 
-  const affine3 = affine1.times(coeff);
-
-  const answer = affine3.multiply(affine2).toTree().toTex();
-
+  const identifiers = {
+    coeff,
+    affine1: affine1.coefficients,
+    affine2: affine2.coefficients,
+  };
   const question: Question<Identifiers> = {
-    answer,
-    instruction: `Développer et réduire : $${statement}$`,
+    answer: getAnswer(identifiers),
+    instruction: getInstruction(identifiers),
     keys: ["x"],
     answerFormat: "tex",
-    identifiers: {
-      coeff,
-      affine1: affine1.coefficients,
-      affine2: affine2.coefficients,
-    },
-    hint: `Choisis deux facteurs de ce produit et multiplie les entre eux. Puis, multiplier le résultat obtenu par le troisième terme.`,
-    correction: `On commence par multiplier les deux premiers termes entre eux : 
-    
-${alignTex(
-  `${statement} = ${new MultiplyNode(
-    affine1.times(coeff).toTree(),
-    affine2.toTree(),
-  ).toTex()}`,
-)}
-
-Puis, on utilise la double distributivité : 
-
-${alignTex([
-  [
-    new MultiplyNode(affine3.toTree(), affine2.toTree()).toTex(),
-    "=",
-    new AddNode(
-      new MultiplyNode(
-        new Affine(affine3.a, 0).toTree(),
-        new Affine(affine2.a, 0).toTree(),
-      ),
-      new AddNode(
-        new MultiplyNode(new Affine(affine3.a, 0).toTree(), affine2.b.toTree()),
-        new AddNode(
-          new MultiplyNode(
-            affine3.b.toTree(),
-            new Affine(affine2.a, 0).toTree(),
-          ),
-          new MultiplyNode(affine3.b.toTree(), affine2.b.toTree()),
-        ),
-      ),
-    ).toTex(),
-  ],
-  ["", "=", answer],
-])}
-    `,
+    identifiers: identifiers,
+    hint: getHint(identifiers),
+    correction: getCorrection(identifiers),
   };
 
   return question;
@@ -141,4 +182,8 @@ export const doubleDistributivityWithCoeff: Exercise<Identifiers> = {
   isGGBAnswerValid,
   subject: "Mathématiques",
   hasHintAndCorrection: true,
+  getHint,
+  getCorrection,
+  getAnswer,
+  getInstruction,
 };
