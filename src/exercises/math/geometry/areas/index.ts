@@ -4,3 +4,6 @@ export * from "./rightTriangleArea";
 export * from "./squareArea";
 export * from "./triangleArea";
 export * from "./triangleAreaV2";
+export * from "./squareSideFromArea";
+export * from "./rectangleSideFromArea";
+export * from "./circleRadiusFromArea";

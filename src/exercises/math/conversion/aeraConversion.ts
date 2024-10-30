@@ -67,8 +67,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
       .multiplyByPowerOfTen(
         2 * randint(-2, 4, [randomUnitIndex - randomUnitInstructionIndex]),
       )
-      .value.toString()
-      .replace(".", ",");
+      .value.frenchify();
     tryToAddWrongProp(propositions, wrongAnswer);
   }
 

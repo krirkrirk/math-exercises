@@ -94,6 +94,14 @@ export class SquareRoot extends Real {
       factors.length === 0 ? 1 : factors.reduce((x, y) => x * y);
     return [outsideSqrt, insideSqrt];
   }
+
+  /**simplifier les carrés parfaits mais pas le reste */
+  basicSimplify(): Nombre {
+    if (Math.sqrt(this.operand) === this.operand) {
+      return new Integer(this.operand);
+    }
+    return this;
+  }
   simplify(): Nombre {
     if (this.operand === 0) return new Integer(0);
     if (this.operand === 1) return new Integer(1);

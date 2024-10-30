@@ -87,7 +87,7 @@ const generateExercise = () => {
   const instruction = `Dans un laboratoire, vous avez effectué l'étalonnage d'une solution ${
     requiresApostropheBefore(molecule.name) ? "d'" : "de "
   }${molecule.name}. \n 
-  Vous disposez du coefficient d'extinction molaire $ε$ de $${epsilon}$ $\\text{L}\\cdot\\text{mol}^{-1}\\cdot\\text{cm}^{-1}$ et de la longueur de la cuve $l$ de $${l}$ $\\text{cm}$. \n
+  Vous disposez du coefficient d'extinction molaire $\\varepsilon$ de $${epsilon}$ $\\text{L}\\cdot\\text{mol}^{-1}\\cdot\\text{cm}^{-1}$ et de la longueur de la cuve $l$ de $${l}$ $\\text{cm}$. \n
   Tracer la courbe d'étalonnage de cette solution.`;
   return {
     instruction,
@@ -100,14 +100,14 @@ const generateExercise = () => {
 
 const getCorrection = () => {
   return `1 - Choisir deux coordonnées $x_1$ et $x_2$. \n \\
-    2 - Calculer $A_1 = x_1\\cdot l \\cdotε$ et $A_2 = x_2\\cdot l \\cdotε$. \n \\
+    2 - Calculer $A_1 = x_1\\cdot l \\cdot \\varepsilon$ et $A_2 = x_2\\cdot l \\cdot \\varepsilon$. \n \\
     3 - Tracer la droite qui passe par les deux points $(x_1,A_1)$ et $(x_2,A_2)$.`;
 };
 
 const getHint = () => {
-  return `Utiliser la formule $A=C\\cdot \\ell\\cdot ε$, où :\n
+  return `Utiliser la formule $A=C\\cdot \\ell\\cdot \\varepsilon$, où :\n
 - $A$ est l'absorbance (une grandeur sans unité)\n
-- $ε$ est le coefficient d'extinction molaire (ou coefficient d'absorption molaire) en $\\text{L}\\cdot\\text{mol}^{-1}\\cdot\\text{cm}^{-1}$\n
+- $\\varepsilon$ est le coefficient d'extinction molaire (ou coefficient d'absorption molaire) en $\\text{L}\\cdot\\text{mol}^{-1}\\cdot\\text{cm}^{-1}$\n
 - $C$ est la concentration de la solution en $\\text{mol}\\cdot\\text{L}^{-1}$\n
 - $\\ell$ est la longueur du chemin optique en centimètres $(\\text{cm})$`;
 };

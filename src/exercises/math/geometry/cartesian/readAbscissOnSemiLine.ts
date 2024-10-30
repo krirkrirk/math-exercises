@@ -163,7 +163,7 @@ const getReadAbscissOnSemiLineQuestion: QuestionGenerator<Identifiers> = () => {
       break;
     case NumberType.Decimal:
     default:
-      axisUnit = randfloat(0, 5, 1);
+      axisUnit = randfloat(0.1, 5, 1);
       coeff = randint(2, 10);
       absciss = round(axisUnit * coeff, 2);
       oneUnitTex = axisUnit.frenchify();

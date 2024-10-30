@@ -68,7 +68,11 @@ export class FractionNode implements OperatorNode {
           const [num, denum] = [leftNode.value, rightNode.value];
           const decimal = round(num / denum, 12);
           //on ne push pas les non décimaux (limite arbitraire : partie décimale de 12 => non décimal)
-          if ((decimal + "").split(".")[1].length > 11) return;
+          if (
+            Math.floor(decimal) !== decimal &&
+            (decimal + "").split(".")[1].length > 11
+          )
+            return;
           res.push(new NumberNode(decimal));
         }
       });

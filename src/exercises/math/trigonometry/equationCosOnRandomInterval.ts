@@ -12,6 +12,7 @@ import {
   GetCorrection,
   GetInstruction,
   GetKeys,
+  tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import {
@@ -38,11 +39,27 @@ type Identifiers = {
   leftBoundPiMultiple: number;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, degree, leftBoundPiMultiple },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
+
+  //distracteur avec une solution manquante
+  if (degree !== 0 && degree !== 180) {
+    const answerNode = getAnswerNode({ degree, leftBoundPiMultiple });
+    const newSet = answerNode.solutionsSet.toDeleteRandomElement();
+    tryToAddWrongProp(propositions, new EquationSolutionNode(newSet).toTex());
+  }
+
   while (propositions.length < n) {
-    throw Error("QCM not implemented");
+    const value = random(mainPositiveTrigovalues);
+    const randDegree = value.degree;
+    tryToAddWrongProp(
+      propositions,
+      getAnswer({ degree: randDegree, leftBoundPiMultiple }),
+    );
   }
   return shuffleProps(propositions, n);
 };
@@ -115,10 +132,14 @@ const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
 };
 
 const getKeys: GetKeys<Identifiers> = (identifiers) => {
-  return ["pi"];
+  return ["x", "S", "equal", "lbrace", "semicolon", "rbrace", "pi"];
 };
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  throw Error("VEA not implemented");
+const isAnswerValid: VEA<Identifiers> = (
+  ans,
+  { answer, degree, leftBoundPiMultiple },
+) => {
+  const answerNode = getAnswerNode({ degree, leftBoundPiMultiple });
+  return answerNode.toAllValidTexs().includes(ans);
 };
 
 const getEquationCosOnRandomIntervalQuestion: QuestionGenerator<

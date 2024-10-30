@@ -7,3 +7,4 @@ export * from "./graphicInequation";
 export * from "./twoFunctionsEquation";
 export * from "./twoFunctionsInequation";
 export * from "./inverseImageFunctionTable";
+export * from "./imageAntecedentFromSentence";

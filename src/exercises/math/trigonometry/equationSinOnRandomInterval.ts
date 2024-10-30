@@ -149,7 +149,7 @@ export const equationSinOnRandomInterval: Exercise<Identifiers> = {
   id: "equationSinOnRandomInterval",
   connector: "\\iff",
   label:
-    "Résoudre une équation du type $\\Sin\\left(x\\right)=k$ sur un intervalle donné",
+    "Résoudre une équation du type $\\sin\\left(x\\right)=k$ sur un intervalle donné",
   isSingleStep: true,
   generator: (nb: number) =>
     getDistinctQuestions(getEquationSinOnRandomIntervalQuestion, nb),
