@@ -88,7 +88,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
-    tryToAddWrongProp(propositions, randint(20, 80) + "°");
+    tryToAddWrongProp(propositions, randint(20, 80) + "^{\\circ}");
   }
 
   return shuffle(propositions);

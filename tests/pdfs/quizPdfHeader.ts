@@ -12,7 +12,7 @@ export const quizPdfHeader = ({
   soloQuizSessionLink,
 }: Props) => {
   return `
-
+ \\DecimalMathComma
 
   \\fancyhead[C]{
   \\begin{large}
@@ -24,5 +24,18 @@ export const quizPdfHeader = ({
 
 \\begin{multicols*}{2}
 
+
+{
+    \\def\\OldComma{,}
+    \\catcode\`\\,=13
+    \\def,{%
+      \\ifmmode%
+        \\OldComma\\discretionary{}{}{}%
+      \\else%
+        \\OldComma%
+      \\fi%
+    }%
+Here is some very long text followed by a very  $a,b,c,d,e,f,g,h,i,j,k,l$ etc.%
+}
 `;
 };

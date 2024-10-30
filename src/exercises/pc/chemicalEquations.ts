@@ -65,4 +65,5 @@ export const chemicalEquations: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  pdfOptions: { shouldSpreadPropositions: true },
 };

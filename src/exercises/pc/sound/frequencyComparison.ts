@@ -84,4 +84,5 @@ export const frequencyComparison: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Physique",
   answerType: "QCU",
+  pdfOptions: { shouldSpreadPropositions: true },
 };

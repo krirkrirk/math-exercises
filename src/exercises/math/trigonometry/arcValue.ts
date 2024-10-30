@@ -93,7 +93,7 @@ ${alignTex([
   ],
 ])}
 
-En arrondissant à l'unité, on a donc $\\theta \\approx ${answer}°$.`,
+En arrondissant à l'unité, on a donc $\\theta \\approx ${answer}^{\\circ}$.`,
 
     identifiers: { trigFunction: selectedFunction, trigValue, angleInDegrees },
   };

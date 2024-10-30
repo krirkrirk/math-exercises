@@ -41,7 +41,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
 
   const w1 = avogadroConstant.value.divide(quantity).toSignificant(2);
-  const w2 = `$${answer}  mol$`;
+  const w2 = `${answer}\\ mol`;
 
   tryToAddWrongProp(propositions, w1.toTex());
   tryToAddWrongProp(propositions, w2);

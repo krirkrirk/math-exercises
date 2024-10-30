@@ -65,6 +65,7 @@ Données:
   const hint = `Utilisez la formule de la force gravitationnelle.`;
 
   const correction = `La force gravitationnelle est donnée par la formule vectorielle :
+
   $$\\vec{F}_{\\text{Soleil/${
     selectedPlanet.name
   }}} = -G \\cdot \\frac{m_{\\text{soleil}} \\cdot m_{${selectedPlanet.name.charAt(
@@ -77,6 +78,7 @@ Données:
     0,
   )}}}{d^2}$$. \n
   En utilisant les valeurs fournies :
+  
   $$F_{\\text{Soleil/${selectedPlanet.name}}} = ${G.toTex({
     scientific: 2,
   })} \\cdot \\frac{${selectedPlanet.mass.toTex({

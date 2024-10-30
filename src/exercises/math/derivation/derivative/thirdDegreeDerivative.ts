@@ -74,7 +74,10 @@ export const getThirdDegreeDerivativePropositions: QCMGenerator<Identifiers> = (
     randomCoefficients.push(randint(-9, 10, [0]));
 
     const randomPolynomial = new Polynomial(randomCoefficients);
-    tryToAddWrongProp(propositions, randomPolynomial.derivate().toString());
+    tryToAddWrongProp(
+      propositions,
+      randomPolynomial.derivate().toTree().toTex(),
+    );
   }
 
   return shuffleProps(propositions, n);

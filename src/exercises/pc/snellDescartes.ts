@@ -79,8 +79,8 @@ const getSnellDescartes: QuestionGenerator<Identifiers> = () => {
   const n2 = refractionIndex[randomMaterial2].n;
   const ramdonAngleIncidenceDeg = randint(10, 90);
 
-  const instruction = `Un rayon de lumière se propage dans ${refractionIndex[randomMaterial1].Material} (n1 ≈ ${n1}) et atteint une surface ${refractionIndex[randomMaterial2].Material2}
-  (n2 ≈ ${n2}) sous un angle d'incidence de ${ramdonAngleIncidenceDeg} degrés. $\\\\$ Calculer l'angle de
+  const instruction = `Un rayon de lumière se propage dans ${refractionIndex[randomMaterial1].Material} ($n1 \\approx ${n1}$) et atteint une surface ${refractionIndex[randomMaterial2].Material2}
+  ($n2 \\approx ${n2}$) sous un angle d'incidence de $${ramdonAngleIncidenceDeg}$ degrés. $\\\\$ Calculer l'angle de
   réfraction de la lumière à l'intérieur ${refractionIndex[randomMaterial2].Material3} en utilisant la loi de Snell-Descartes.`;
 
   const angleIncidenceRad = (ramdonAngleIncidenceDeg * Math.PI) / 180;
@@ -90,7 +90,7 @@ const getSnellDescartes: QuestionGenerator<Identifiers> = () => {
 
   // Convertir l'angle de réfraction de radians à degrés
   const angleRefractionDeg = (angleRefractionRad * 180) / Math.PI;
-  const answer = `${frenchify(round(angleRefractionDeg, 1))}°`;
+  const answer = `${frenchify(round(angleRefractionDeg, 1))}^{\\circ}`;
   const question: Question<Identifiers> = {
     instruction,
     answer,
@@ -108,7 +108,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      frenchify(round(randint(100, 900) / 10, 1)) + "°",
+      frenchify(round(randint(100, 900) / 10, 1)) + "^{\\circ}",
     );
   }
 

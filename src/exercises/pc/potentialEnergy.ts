@@ -68,7 +68,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
   while (propositions.length < n) {
     tryToAddWrongProp(
       propositions,
-      frenchify(round(potentialEnergy * (0.3 + Math.random() * 1.5), 2)) + "J",
+      frenchify(round(potentialEnergy * (0.3 + Math.random() * 1.5), 2)) +
+        "\\text{J}",
     );
   }
 

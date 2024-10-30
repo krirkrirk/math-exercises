@@ -56,6 +56,7 @@ const getLightDistanceConversionQuestion: QuestionGenerator<
   - Il y a $365.25 \\text{ jours} \\times 24 \\text{ heures/jour} \\times 3600 \\text{ secondes/heure}$ secondes dans une année (Le 0.25 compte pour la moyenne sur quatres années dont une bissextile).
   
   La distance parcourue par la lumière en une année est :
+  
   $$
   c \\times \\text{secondes par année}
   $$
@@ -64,46 +65,54 @@ const getLightDistanceConversionQuestion: QuestionGenerator<
 
   const correction = isLightYearToMeters
     ? `La distance parcourue par la lumière en une année est donnée par :
+  
   $$
   c \\times \\text{secondes par année} = 3 \\times 10^8 \\text{ m/s} \\times 365.25 \\times 24 \\times 3600 \\text{ s}
   $$
 
   En simplifiant, nous obtenons :
+  
   $$
   3 \\times 10^8 \\text{ m/s} \\times 31,557,600 \\text{ s} = 9.46728 \\times 10^{15} \\text{ m}
   $$
 
   Pour convertir des années-lumière en mètres, nous utilisons la relation suivante :
+  
   $$
-  \\text{distance en mètres} = \\text{distance en années-lumière} \\times 9.46728 \\times 10^{15} \\text{ m}
+  \\text{distance en années-lumière} \\times 9.46728 \\times 10^{15} \\text{ m}
   $$
 
   En appliquant cette relation avec la valeur donnée de ${lightYear} années-lumière, nous obtenons :
+
   $$
   \\text{distance en mètres} = ${lightYear} \\times 9.46728 \\times 10^{15} = ${distanceFromEarthMeters
         .toSignificant(2)
         .toTex()} \\text{ m}
   $$`
     : `La distance parcourue par la lumière en une année est donnée par :
-  $$
+  
+    $$
   c \\times \\text{secondes par année} = 3 \\times 10^8 \\text{ m/s} \\times 365.25 \\times 24 \\times 3600 \\text{ s}
   $$
 
   En simplifiant, nous obtenons :
+
   $$
   3 \\times 10^8 \\text{ m/s} \\times 31,557,600 \\text{ s} = 9.46728 \\times 10^{15} \\text{ m}
   $$
 
   Pour convertir des mètres en années-lumière, nous utilisons la relation suivante :
+
   $$
-  \\text{distance en années-lumière} = \\frac{\\text{distance en mètres}}{9.46728 \\times 10^{15} \\text{ m}}
+  \\frac{\\text{distance en mètres}}{9.46728 \\times 10^{15} \\text{ m}}
   $$
 
   En appliquant cette relation avec la valeur donnée de $${distanceFromEarthMeters
     .toSignificant(2)
     .toTex()} \\text{m}$, nous obtenons :
+
   $$
-  \\text{distance en années-lumière} = \\frac{${distanceFromEarthMeters
+  \\frac{${distanceFromEarthMeters
     .toSignificant(2)
     .toTex()}}{9.46728 \\times 10^{15}} = ${lightYear.toScientific(2).toTex()}
   $$`;

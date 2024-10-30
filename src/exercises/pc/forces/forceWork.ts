@@ -46,7 +46,7 @@ const getForceWorkQuestion: QuestionGenerator<Identifiers> = () => {
       1,
     )}\\ \\text{m}$ et $\\widehat{\\left(\\overrightarrow F ; \\overrightarrow{AB}\\right)} = ${
       angle.degree
-    }^°$. Calculer le travail de la force $\\overrightarrow F$ lors du déplacement de $A$ vers $B$.`,
+    }^{\\circ}$. Calculer le travail de la force $\\overrightarrow F$ lors du déplacement de $A$ vers $B$.`,
     keys: ["J", "timesTenPower"],
     answerFormat: "tex",
     identifiers: { length, forceValue, angleDegree: angle.degree },

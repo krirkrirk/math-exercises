@@ -3,7 +3,9 @@ export const quizPdfPreambule = () => {
 \\usepackage[dvipsnames]{xcolor}
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
+\\usepackage[francais]{babel}
 \\usepackage{arev}
+
 \\usepackage[left=1cm, right=1cm, top=1cm, bottom=1cm,includehead,includefoot]{geometry}
 \\usepackage{eurosym}
 \\usepackage{amstext} 
@@ -69,6 +71,5 @@ export const quizPdfPreambule = () => {
 \\renewcommand{\\headrulewidth}{0pt}
 \\renewcommand{\\footrulewidth}{0.4pt}
 \\renewcommand{\\footruleskip}{2pt}
-
 `;
 };
