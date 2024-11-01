@@ -9,6 +9,8 @@ import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstr
 import { Vector } from "#root/math/geometry/vector";
 import { randint } from "#root/math/utils/random/randint";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
+import { GeogebraParser } from "#root/geogebra/parsers/geogebraParser";
+import { approxEqual } from "#root/geogebra/parsers/approxEqual";
 
 type Identifiers = {
   x: number;
@@ -40,32 +42,11 @@ const getDrawAVectorInGgbQuestion: QuestionGenerator<Identifiers> = () => {
 };
 
 const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer, x, y }) => {
-  const vector = ans.find((s) => !!s.match(/[a-z]=/)?.length);
-  if (!vector) return false;
-  const points = vector
-    .substring(vector.indexOf("["))
-    .replaceAll("[", "")
-    .replaceAll("]", "")
-    .replaceAll(" ", "")
-    .split(",");
-  const origin = ans.find((s) => s[0] === points[0]);
-  const end = ans.find((s) => s[0] === points[1]);
-  if (!origin || !end) return false;
-  const originCoords = origin
-    .split("=")[1]
-    .replaceAll("(", "")
-    .replaceAll(")", "")
-    .split(",");
-  const endCoords = end
-    .split("=")[1]
-    .replaceAll("(", "")
-    .replaceAll(")", "")
-    .split(",");
-  const coords = [
-    Number(endCoords[0]) - Number(originCoords[0]),
-    Number(endCoords[1]) - Number(originCoords[1]),
-  ];
-  return Number(coords[0]) === x && Number(coords[1]) === y;
+  const parser = new GeogebraParser(ans);
+  const vectors = parser.vectors();
+  if (vectors.length !== 1) return false;
+  const vector = vectors[0];
+  return approxEqual(vector[0], x) && approxEqual(vector[1], y);
 };
 
 export const drawAVectorInGGB: Exercise<Identifiers> = {

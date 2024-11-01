@@ -26,7 +26,6 @@ import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { parseLatex } from "#root/tree/parsers/latexParser";
 import { alignTex } from "#root/utils/latex/alignTex";
 
 //ax(bx+c)

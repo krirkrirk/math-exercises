@@ -15,6 +15,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { parseLatex } from "#root/tree/parsers/latexParser";
 
 type Identifiers = {
   affineA: number;
@@ -78,18 +79,14 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, affineA, affineB }) => {
-  const affine = new Affine(affineA, affineB);
-
-  const fct = new SqrtNode(affine.toTree());
-  const fraction = new FractionNode(
-    affine.a.toTree(),
-    new MultiplyNode((2).toTree(), fct),
-  ).simplify();
-  const texs = fraction.toAllValidTexs({
-    allowFractionToDecimal: true,
-    allowMinusAnywhereInFraction: true,
-  });
-  return texs.includes(ans);
+  try {
+    const parsed = parseLatex(ans);
+    const simplified = parsed.simplify();
+    console.log(simplified.toTex());
+    return simplified.toTex() === answer;
+  } catch (err) {
+    return false;
+  }
 };
 export const sqrtCompositionDerivation: Exercise<Identifiers> = {
   id: "sqrtCompositionDerivation",

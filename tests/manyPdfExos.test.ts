@@ -17,7 +17,7 @@ test("pdfExo", () => {
   try {
     fs.rmSync(__dirname + "/pdfs/dump", { recursive: true, force: true });
     fs.mkdirSync(__dirname + "/pdfs/dump");
-    const exos = pcExercises.slice(110, 140);
+    const exos = pcExercises.slice(50, 80);
     for (const exo of exos) {
       buildPdfForExercise(exo as Exercise<any>);
     }

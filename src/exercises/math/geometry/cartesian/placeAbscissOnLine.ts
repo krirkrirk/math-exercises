@@ -83,10 +83,11 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (
   { ggbAnswer, absciss, abscissTex, abscissType, axisUnit, coeff, oneUnitTex },
 ) => {
   const points = parseGGBPoints(ans).map((p) => ggbPointToCoords(p));
-  return points.some(
-    (point) => point.y === 0 && Math.abs(point.x - coeff) < 0.1,
+  return (
+    points.length === 1 &&
+    points[0].y === 0 &&
+    Math.abs(points[0].x - coeff) < 0.1
   );
-  return false;
 };
 
 const getPlaceAbscissOnLineQuestion: QuestionGenerator<Identifiers> = () => {

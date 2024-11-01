@@ -35,7 +35,9 @@ const getBasicNiceValuesSystemResolutionQuestion: QuestionGenerator<
     answer,
     instruction: `Soit le système d'équations suivant :
   
-  $${sys.toTex()}$
+$$
+${sys.toTex()}
+$$
   
   Que vaut $${variable}$ ?`,
     keys: [],

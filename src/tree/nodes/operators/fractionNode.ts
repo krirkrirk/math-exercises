@@ -100,6 +100,7 @@ export class FractionNode implements OperatorNode {
 
     return `\\frac{${this.leftChild.toTex()}}{${this.rightChild.toTex()}}`;
   }
+
   evaluate(vars: Record<string, number>) {
     return this.leftChild.evaluate(vars) / this.rightChild.evaluate(vars);
   }
