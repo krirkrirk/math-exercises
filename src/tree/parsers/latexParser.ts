@@ -2,6 +2,7 @@ import { AlgebraicNode } from "../nodes/algebraicNode";
 import { OppositeNode } from "../nodes/functions/oppositeNode";
 import { SqrtNode } from "../nodes/functions/sqrtNode";
 import { NumberNode } from "../nodes/numbers/numberNode";
+import { PiNode } from "../nodes/numbers/piNode";
 import { AddNode } from "../nodes/operators/addNode";
 import { FractionNode } from "../nodes/operators/fractionNode";
 import { MultiplyNode, isMultiplyNode } from "../nodes/operators/multiplyNode";
@@ -9,7 +10,7 @@ import { PowerNode } from "../nodes/operators/powerNode";
 import { SubstractNode } from "../nodes/operators/substractNode";
 import { VariableNode } from "../nodes/variables/variableNode";
 
-//cmd that needs a child, like \exp{3}
+//cmds that needs a child, like \exp{3}
 const functions = [
   "\\exp",
   "\\sqrt",
@@ -20,6 +21,9 @@ const functions = [
   "\\frac",
 ];
 const operators = ["+", "-", "\\div", "\\times", "^"];
+
+//cmds childless, like \\pi
+const symbols = [{ tex: "\\pi", node: PiNode }];
 
 const isDyck = (tokens: string[]) => {
   const brackets = tokens.filter((el) => el === "(" || el === ")");
@@ -140,6 +144,10 @@ const buildTreeForSameDepthTokens = (tokens: (string | AlgebraicNode)[]) => {
       tempTokens[i] = new NumberNode(Number(token));
     } else if (token[0].match(/[a-z]/i))
       tempTokens[i] = new VariableNode(token);
+    else if (symbols.some((el) => el.tex === token)) {
+      const obj = symbols.find((el) => el.tex === token)!;
+      tempTokens[i] = obj.node;
+    }
     //! les fonctions qui attendent un child ne sont pas encore parsées
     else if (functions.includes(token)) {
       tempTokens[i] = token;

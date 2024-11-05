@@ -131,6 +131,9 @@ export class FractionNode implements OperatorNode {
       } else if (isOppositeNode(node)) {
         oppositesCount++;
         recursiveNums(node.child);
+      } else if (isNumberNode(node) && node.value < 0) {
+        oppositesCount++;
+        externalsNums.push(new NumberNode(Math.abs(node.value)));
       } else {
         externalsNums.push(node);
       }
@@ -142,15 +145,19 @@ export class FractionNode implements OperatorNode {
       } else if (isOppositeNode(node)) {
         oppositesCount++;
         recursiveNums(node.child);
+      } else if (isNumberNode(node) && node.value < 0) {
+        oppositesCount++;
+        externalsNums.push(new NumberNode(Math.abs(node.value)));
       } else {
         externalsDenums.push(node);
       }
     };
     recursiveNums(copy.leftChild);
     recursiveDenums(copy.rightChild);
-    if (oppositesCount % 2 === 1) {
-      externalsNums.unshift(new NumberNode(-1));
-    }
+    const shouldAddOppositeNode = oppositesCount % 2 === 1;
+    // if (oppositesCount % 2 === 1) {
+    //   externalsNums.unshift(new NumberNode(-1));
+    // }
     const simplifyExternalNodes = (
       num: AlgebraicNode,
       denum: AlgebraicNode,
@@ -235,7 +242,7 @@ export class FractionNode implements OperatorNode {
         ? externalsNums[0]
         : operatorComposition(MultiplyNode, externalsNums).simplify(opts);
     if (externalsDenums.length === 0) {
-      return nums;
+      return shouldAddOppositeNode ? new OppositeNode(nums).simplify() : nums;
     }
     const denums =
       externalsDenums.length === 1
@@ -243,13 +250,16 @@ export class FractionNode implements OperatorNode {
         : operatorComposition(MultiplyNode, externalsDenums);
     if (opts?.forceDistributeFractions) {
       if (isAddNode(nums)) {
-        return new AddNode(
+        const res = new AddNode(
           new FractionNode(nums.leftChild, denums).simplify(opts),
           new FractionNode(nums.rightChild, denums).simplify(opts),
         );
+        return shouldAddOppositeNode ? new OppositeNode(res) : res;
       }
     }
-    return new FractionNode(nums, denums);
+    return shouldAddOppositeNode
+      ? new OppositeNode(new FractionNode(nums, denums))
+      : new FractionNode(nums, denums);
   }
   equals(node: AlgebraicNode): boolean {
     return (

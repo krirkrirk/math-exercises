@@ -29,6 +29,7 @@ import { PiNode } from "#root/tree/nodes/numbers/piNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { parseLatex } from "#root/tree/parsers/latexParser";
 import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
@@ -78,19 +79,31 @@ $$
   `;
 };
 
-// const getHint : GetHint<Identifiers> = (identifiers)=>{
+const getHint: GetHint<Identifiers> = (identifiers) => {
+  const angle = NodeConstructor.fromIdentifiers(identifiers.nodeIds);
 
-// }
-// const getCorrection : GetCorrection<Identifiers> = (identifiers)=>{
-
-// }
+  return `La mesure principale d'un angle en radian est sa valeur appartenant à l'intervalle $]-\\pi; \\pi]$. Il faut donc ajouter (ou retirer) $2\\pi$ à $${angle.toTex()}$ jusqu'à ce que le résultat soit dans cet intervalle.`;
+};
+const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
+  return `a`;
+};
 
 const getKeys: GetKeys<Identifiers> = (identifiers) => {
   return ["pi"];
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, degree }) => {
   const value = mainTrigoValues.find((e) => e.degree === degree)!;
-  return value.angle.toAllValidTexs().includes(ans);
+  try {
+    const parsed = parseLatex(ans);
+    console.log("parsed", parsed);
+    const simplified = parsed.simplify().toTex();
+    console.log("simp", simplified);
+    return simplified === answer;
+    // return value.angle.toAllValidTexs().includes(ans);
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
 };
 
 const getMainAngleMeasureQuestion: QuestionGenerator<Identifiers> = () => {
@@ -111,8 +124,8 @@ const getMainAngleMeasureQuestion: QuestionGenerator<Identifiers> = () => {
     keys: getKeys(identifiers),
     answerFormat: "tex",
     identifiers,
-    // hint: getHint(identifiers),
-    // correction: getCorrection(identifiers)
+    hint: getHint(identifiers),
+    correction: getCorrection(identifiers),
   };
 
   return question;
@@ -131,7 +144,8 @@ export const mainAngleMeasure: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
-  // getHint,
-  // getCorrection,
+  getHint,
+  getCorrection,
   getAnswer,
+  hasHintAndCorrection: true,
 };
