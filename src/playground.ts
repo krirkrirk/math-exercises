@@ -27,5 +27,7 @@ import { shuffle } from "./utils/alea/shuffle";
 import { numberToFrenchWord } from "./utils/strings/numberToFrenchWord";
 import { DecimalConstructor } from "./math/numbers/decimals/decimal";
 import { randint } from "./math/utils/random/randint";
+import { numberParser } from "./tree/parsers/numberParser";
+import { parseLatex } from "./tree/parsers/latexParser";
 
 export const playground = () => {};

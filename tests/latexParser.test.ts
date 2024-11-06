@@ -54,3 +54,11 @@ test("latexParser", () => {
     throw err;
   }
 });
+
+test("singularLatexTest", () => {
+  try {
+    console.log(parseLatex("+2").toTex());
+  } catch (err) {
+    console.log(err);
+  }
+});

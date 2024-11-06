@@ -72,7 +72,7 @@ const get{{namePascal}}Question: QuestionGenerator<Identifiers>  = ()=>{
 export const {{name}}: Exercise<Identifiers> = {
   id: '{{name}}',
   connector: "",
-  label: "",
+  label: undefined,
   isSingleStep: true,
   generator: (nb: number) => getDistinctQuestions(get{{namePascal}}Question, nb),
   qcmTimer: 60,

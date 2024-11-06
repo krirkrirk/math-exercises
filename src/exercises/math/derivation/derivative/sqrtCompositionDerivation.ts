@@ -82,7 +82,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, affineA, affineB }) => {
   try {
     const parsed = parseLatex(ans);
     const simplified = parsed.simplify();
-    console.log(simplified.toTex());
     return simplified.toTex() === answer;
   } catch (err) {
     return false;

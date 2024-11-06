@@ -83,7 +83,7 @@ const getAnswer: GetAnswer<Identifiers> = (identifiers) => {
 const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
   return `Soit $\\mathcal C$ un cercle de centre $O$ et de rayon $${
     identifiers.radius
-  }$. Soient $A$ et $B$ deux points sur ce cercle. L'angle au centre $\\widehat{BAO}$ vaut $${
+  }$. Soient $A$ et $B$ deux points sur ce cercle. L'angle au centre $\\widehat{AOB}$ vaut $${
     identifiers.isThetaInDegree
       ? new DegreeNode(identifiers.thetaInDegree!).toTex()
       : NodeConstructor.fromIdentifiers(identifiers.thetaInRadNodeIds).toTex() +

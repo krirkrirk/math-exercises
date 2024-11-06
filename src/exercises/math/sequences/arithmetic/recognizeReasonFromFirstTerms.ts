@@ -11,6 +11,7 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
+import { numberParser } from "#root/tree/parsers/numberParser";
 
 type Identifiers = {
   reason: number;
@@ -49,7 +50,8 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+  const parsed = numberParser(ans);
+  return parsed === answer;
 };
 export const recognizeReasonFromFirstTerms: Exercise<Identifiers> = {
   id: "recognizeReasonFromFirstTerms",
