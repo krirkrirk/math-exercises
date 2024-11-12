@@ -13,6 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { numberParser } from "#root/tree/parsers/numberParser";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
@@ -84,7 +85,8 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+  const parsed = numberParser(ans);
+  return parsed === answer;
 };
 
 export const evolutionToCM: Exercise<Identifiers> = {

@@ -72,7 +72,10 @@ t = \\frac{V_a-V_d}{V_d}\\times 100
 $$`;
 };
 const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
-  const answer = getAnswer(identifiers);
+  const answer = round(
+    ((identifiers.vf - identifiers.vd) / identifiers.vd) * 100,
+    2,
+  ).frenchify();
   return `Si une valeur passe d'une valeur de départ $V_d$ à une valeur d'arrivée $V_a$, alors le taux d'évolution $t$ en pourcentage est donné par la formule : 
   
 $$
@@ -81,7 +84,7 @@ $$
 
 Ici, on a $V_d = ${identifiers.vd.frenchify()}$ et $V_a = ${identifiers.vf.frenchify()}$. 
 
-Donc, le taux d'évolution est : 
+Donc, le taux d'évolution, en pourcentage, est : 
 
 ${alignTex([
   [

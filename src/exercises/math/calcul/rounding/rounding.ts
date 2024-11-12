@@ -33,10 +33,11 @@ const instructions = [
   "Arrondir au millième :",
 ];
 
-const getRoundQuestions: QuestionGenerator<
-  Identifiers,
-  { precisionAsked: number }
-> = (opts) => {
+type Options = {
+  precisionAsked: number;
+};
+
+const getRoundQuestions: QuestionGenerator<Identifiers, Options> = (opts) => {
   244.8895;
   const precisionAsked = opts?.precisionAsked || 0;
   const precision = randint(precisionAsked + 1, precisionAsked + 5);
@@ -44,7 +45,7 @@ const getRoundQuestions: QuestionGenerator<
   const decTex = dec.toTree().toTex();
   const answer = dec.round(precisionAsked).toTree().toTex();
   const figureToLookAt = dec.getDigitAtRank(-(precisionAsked + 1));
-  const question: Question<Identifiers> = {
+  const question: Question<Identifiers, Options> = {
     instruction: `${instructions[precisionAsked]} $${decTex}$`,
     startStatement: decTex,
     answer,

@@ -39,10 +39,13 @@ const runServer = () => {
 
   app.get("/exo", (req: Request, res: Response) => {
     const exoId = req.query.exoId;
+    const options = req.query.options
+      ? JSON.parse(req.query.options as string)
+      : undefined;
     const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
     const exo = allExercises[exoIndex];
     if (!exo) res.send("Exo not found");
-    const questions = exo?.generator(10);
+    const questions = exo?.generator(10, options);
     res.json({
       exercise: exo,
       questions,
@@ -82,7 +85,10 @@ const runServer = () => {
 
   app.post("/vea", jsonParser, (req: Request, res: Response) => {
     const exoId = req.query.exoId;
-
+    const options = req.query.options
+      ? JSON.parse(req.query.options as string)
+      : undefined;
+    console.log("vea opts", options);
     const { ans, veaProps } = req.body;
     const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
     const exo = allExercises[exoIndex];
@@ -94,7 +100,7 @@ const runServer = () => {
       res.send("No VEA implemented");
       return;
     }
-    const result = exo.isAnswerValid(ans as string, veaProps) ?? false;
+    const result = exo.isAnswerValid(ans as string, veaProps, options) ?? false;
     res.json({
       result,
     });

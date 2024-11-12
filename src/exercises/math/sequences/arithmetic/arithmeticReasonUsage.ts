@@ -46,6 +46,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, startRank }) => {
   return [
     answer,
+    `u${startRank + 1}=${answer}`,
     `u_${startRank + 1}=${answer}`,
     `u_{${startRank + 1}}=${answer}`,
   ].includes(ans);

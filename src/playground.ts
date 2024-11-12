@@ -1,6 +1,6 @@
 import { numberToFrenchWriting } from "./exercises/math/calcul/writing/numberToFrenchWriting";
 import { Affine, AffineConstructor } from "./math/polynomials/affine";
-import { Interval } from "./math/sets/intervals/intervals";
+import { Interval, IntervalConstructor } from "./math/sets/intervals/intervals";
 import {
   mainTrigoValues,
   negativeMainTrigovalues,
@@ -30,4 +30,10 @@ import { randint } from "./math/utils/random/randint";
 import { numberParser } from "./tree/parsers/numberParser";
 import { parseLatex } from "./tree/parsers/latexParser";
 
-export const playground = () => {};
+export const playground = () => {
+  const int1 = new Interval((1).toTree(), (8).toTree(), 0);
+  const int2 = new Interval(MinusInfinityNode, (8).toTree(), 3);
+  const set = int1.union(int2);
+  const answer = set.tex;
+  console.log(answer);
+};

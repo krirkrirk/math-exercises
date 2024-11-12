@@ -28,10 +28,12 @@ type Identifiers = {
   c: number;
 };
 
-const getPowersDivisionQuestion: QuestionGenerator<
-  Identifiers,
-  { useOnlyPowersOfTen: boolean }
-> = (opts) => {
+type Options = {
+  useOnlyPowersOfTen: boolean;
+};
+const getPowersDivisionQuestion: QuestionGenerator<Identifiers, Options> = (
+  opts,
+) => {
   let a = opts!.useOnlyPowersOfTen ? 10 : randint(-11, 11, [0]);
   const [b, c] = [1, 2].map((el) => randint(-11, 11));
 
@@ -42,7 +44,7 @@ const getPowersDivisionQuestion: QuestionGenerator<
   const answerTree = new Power(a, b - c).simplify();
   const answer = answerTree.toTex();
   const statementTex = statement.toTex();
-  const question: Question<Identifiers> = {
+  const question: Question<Identifiers, Options> = {
     instruction: `Simplifier : $${statementTex}$`,
     startStatement: statementTex,
     answer,

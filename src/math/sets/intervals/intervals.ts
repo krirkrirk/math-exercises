@@ -129,7 +129,7 @@ export class Interval implements MathSetInterface {
     let unionLeftBracket =
       this.min < interval.min
         ? this.leftBracket
-        : this.max === interval.max
+        : this.min === interval.min
         ? this.leftBracket === "[" || interval.leftBracket === "["
           ? "["
           : "]"

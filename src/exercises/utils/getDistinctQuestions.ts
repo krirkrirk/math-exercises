@@ -17,16 +17,16 @@ export function equalTab<T>(array1: T[], array2: T[]) {
  * @returns
  */
 export const getDistinctQuestions = (
-  generator: () => Question<any>,
+  generator: () => Question<any, any>,
   nb: number,
   max?: number,
-  discriminator?: (q1: Question<any>, q2: Question<any>) => boolean,
-): Question<any>[] => {
-  const res: Question<any>[] = [];
+  discriminator?: (q1: Question<any, any>, q2: Question<any, any>) => boolean,
+): Question<any, any>[] => {
+  const res: Question<any, any>[] = [];
   const trueStop = max === undefined ? nb : Math.min(nb, max);
 
   for (let i = 0; i < trueStop ?? nb; i++) {
-    let question: Question<any>;
+    let question: Question<any, any>;
     do {
       question = generator();
     } while (res.some((q) => compare(q, question, discriminator)));
@@ -37,9 +37,9 @@ export const getDistinctQuestions = (
 };
 
 const compare = (
-  q1: Question<any>,
-  q2: Question<any>,
-  discriminator?: (q1: Question<any>, q2: Question<any>) => boolean,
+  q1: Question<any, any>,
+  q2: Question<any, any>,
+  discriminator?: (q1: Question<any, any>, q2: Question<any, any>) => boolean,
 ) => {
   if (!!discriminator) {
     return discriminator(q1, q2);

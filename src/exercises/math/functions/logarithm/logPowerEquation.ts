@@ -32,11 +32,13 @@ type Identifiers = {
   isLog10: boolean;
 };
 
+type Options = {
+  isLog10: boolean;
+};
 /**a*b^x+c=d */
-const getLogPowerEquationQuestion: QuestionGenerator<
-  Identifiers,
-  { isLog10: boolean }
-> = (opts) => {
+const getLogPowerEquationQuestion: QuestionGenerator<Identifiers, Options> = (
+  opts,
+) => {
   const powered = randint(2, 8);
   const a = randint(1, 10, [powered]);
   const c = randint(-5, 5, [a]);
@@ -71,7 +73,7 @@ const getLogPowerEquationQuestion: QuestionGenerator<
     "rbrace",
   ];
   keys.push(opts?.isLog10 ? "log" : "ln");
-  const question: Question<Identifiers> = {
+  const question: Question<Identifiers, Options> = {
     answer,
     instruction: `Résoudre : $${equation.toTex()}$`,
     keys,

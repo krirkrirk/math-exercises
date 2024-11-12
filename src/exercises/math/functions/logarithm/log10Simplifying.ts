@@ -28,9 +28,13 @@ type Identifiers = {
   isLog10: boolean;
 };
 
+type Options = {
+  isLog10: boolean;
+};
+
 const getLog10SumSimplifyingQuestion: QuestionGenerator<
   Identifiers,
-  { isLog10: boolean }
+  Options
 > = (opts) => {
   const nb = randint(2, 10);
   const trueNb = [2, 4, 8].includes(nb) ? 2 : [3, 9].includes(nb) ? 3 : nb;
@@ -58,7 +62,7 @@ const getLog10SumSimplifyingQuestion: QuestionGenerator<
   );
   const statement = operatorComposition(AddNode, logs);
   const answer = statement.simplify();
-  const question: Question<Identifiers> = {
+  const question: Question<Identifiers, Options> = {
     answer: answer.toTex(),
     instruction: `Exprimer le nombre suivant sous la forme $a${
       opts?.isLog10 ? "\\log" : "\\ln"

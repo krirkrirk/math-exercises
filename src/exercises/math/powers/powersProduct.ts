@@ -29,10 +29,12 @@ type Identifiers = {
   c: number;
 };
 
-const getPowersProductQuestion: QuestionGenerator<
-  Identifiers,
-  { useOnlyPowersOfTen: boolean }
-> = (opts) => {
+type Options = {
+  useOnlyPowersOfTen: boolean;
+};
+const getPowersProductQuestion: QuestionGenerator<Identifiers, Options> = (
+  opts,
+) => {
   const a = opts?.useOnlyPowersOfTen ? 10 : randint(-11, 11, [0]);
   const [b, c] = [1, 2].map((el) => randint(-11, 11));
 
@@ -43,7 +45,7 @@ const getPowersProductQuestion: QuestionGenerator<
   const answerTree = new Power(a, b + c).simplify();
   const answer = answerTree.toTex();
   const statmentTex = statement.toTex();
-  const question: Question<Identifiers> = {
+  const question: Question<Identifiers, Options> = {
     instruction: `Calculer : $${statmentTex}$`,
 
     startStatement: statmentTex,

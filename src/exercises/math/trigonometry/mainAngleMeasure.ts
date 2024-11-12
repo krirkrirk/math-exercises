@@ -95,13 +95,10 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, degree }) => {
   const value = mainTrigoValues.find((e) => e.degree === degree)!;
   try {
     const parsed = parseLatex(ans);
-    console.log("parsed", parsed);
     const simplified = parsed.simplify().toTex();
-    console.log("simp", simplified);
     return simplified === answer;
     // return value.angle.toAllValidTexs().includes(ans);
   } catch (err) {
-    console.log(err);
     return false;
   }
 };
