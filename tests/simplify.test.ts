@@ -20,6 +20,12 @@ const data: { in: AlgebraicNode; out: AlgebraicNode }[] = [
       new FractionNode(new NumberNode(1), new NumberNode(2)),
     ),
   },
+  {
+    in: new FractionNode(new NumberNode(2), new NumberNode(-4)),
+    out: new OppositeNode(
+      new FractionNode(new NumberNode(1), new NumberNode(2)),
+    ),
+  },
 ];
 test("simplify", () => {
   try {

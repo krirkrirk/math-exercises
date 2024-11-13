@@ -130,6 +130,10 @@ export const isFirstIdentityAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   return texs.includes(ans);
 };
 
+const tests = () => {
+  //si identifiers = x,y alors questions devrait etre x,y et vea devrait accepter x,y,z
+};
+
 export const firstIdentity: Exercise<Identifiers> = {
   id: "idRmq1",
   connector: "=",

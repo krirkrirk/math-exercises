@@ -29,11 +29,13 @@ import { DecimalConstructor } from "./math/numbers/decimals/decimal";
 import { randint } from "./math/utils/random/randint";
 import { numberParser } from "./tree/parsers/numberParser";
 import { parseLatex } from "./tree/parsers/latexParser";
+import { FractionNode } from "./tree/nodes/operators/fractionNode";
+import { OppositeNode } from "./tree/nodes/functions/oppositeNode";
 
 export const playground = () => {
-  const int1 = new Interval((1).toTree(), (8).toTree(), 0);
-  const int2 = new Interval(MinusInfinityNode, (8).toTree(), 3);
-  const set = int1.union(int2);
-  const answer = set.tex;
-  console.log(answer);
+  // const frac = new AddNode(
+  //   (3).toTree(),
+  //   new OppositeNode(new FractionNode((1).toTree(), (2).toTree())),
+  // ).simplify();
+  // console.log(frac.toTex());
 };

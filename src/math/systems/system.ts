@@ -50,37 +50,42 @@ export class System {
   solve() {
     if (this.coeffs.length !== 2)
       throw Error("General system resolution not implemented yet");
-    //x = (c'-b'c/b)/(a'-b'a/b)
-    if (
-      !this.coeffs[0][1] ||
-      this.coeffs[1][0] ===
-        (this.coeffs[1][1] * this.coeffs[0][0]) / this.coeffs[0][1]
-    )
-      throw Error("No solution");
+
+    const [a, b, c] = this.coeffs[0];
+    const [d, e, f] = this.coeffs[1];
+    if (!b || d * b === e * a) throw Error("No solution");
     const x = new FractionNode(
-      new SubstractNode(
-        this.coeffs[1][2].toTree(),
-        new FractionNode(
-          (this.coeffs[1][1] * this.coeffs[0][2]).toTree(),
-          this.coeffs[0][1].toTree(),
-        ),
-      ),
-      new SubstractNode(
-        this.coeffs[1][0].toTree(),
-        new FractionNode(
-          (this.coeffs[1][1] * this.coeffs[0][0]).toTree(),
-          this.coeffs[0][1].toTree(),
-        ),
-      ),
+      (b * f - e * c).toTree(),
+      (d * b - e * a).toTree(),
     ).simplify();
-    //y = c-ax/b
     const y = new FractionNode(
-      new SubstractNode(
-        this.coeffs[0][2].toTree(),
-        new MultiplyNode(this.coeffs[0][0].toTree(), x),
-      ),
-      this.coeffs[0][1].toTree(),
+      new SubstractNode(c.toTree(), new MultiplyNode(a.toTree(), x)),
+      b.toTree(),
     ).simplify();
+    // const x = new FractionNode(
+    //   new SubstractNode(
+    //     this.coeffs[1][2].toTree(),
+    //     new FractionNode(
+    //       (this.coeffs[1][1] * this.coeffs[0][2]).toTree(),
+    //       this.coeffs[0][1].toTree(),
+    //     ).simplify(),
+    //   ).simplify(),
+    //   new SubstractNode(
+    //     this.coeffs[1][0].toTree(),
+    //     new FractionNode(
+    //       (this.coeffs[1][1] * this.coeffs[0][0]).toTree(),
+    //       this.coeffs[0][1].toTree(),
+    //     ).simplify(),
+    //   ).simplify(),
+    // ).simplify();
+    // //y = c-ax/b
+    // const y = new FractionNode(
+    //   new SubstractNode(
+    //     this.coeffs[0][2].toTree(),
+    //     new MultiplyNode(this.coeffs[0][0].toTree(), x).simplify(),
+    //   ).simplify(),
+    //   this.coeffs[0][1].toTree(),
+    // ).simplify();
     return {
       x,
       y,

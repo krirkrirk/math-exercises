@@ -144,10 +144,10 @@ export class FractionNode implements OperatorNode {
         recursiveDenums(node.rightChild);
       } else if (isOppositeNode(node)) {
         oppositesCount++;
-        recursiveNums(node.child);
+        recursiveDenums(node.child);
       } else if (isNumberNode(node) && node.value < 0) {
         oppositesCount++;
-        externalsNums.push(new NumberNode(Math.abs(node.value)));
+        externalsDenums.push(new NumberNode(Math.abs(node.value)));
       } else {
         externalsDenums.push(node);
       }
@@ -158,6 +158,7 @@ export class FractionNode implements OperatorNode {
     // if (oppositesCount % 2 === 1) {
     //   externalsNums.unshift(new NumberNode(-1));
     // }
+
     const simplifyExternalNodes = (
       num: AlgebraicNode,
       denum: AlgebraicNode,

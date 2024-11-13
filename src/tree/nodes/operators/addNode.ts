@@ -155,6 +155,54 @@ export class AddNode implements CommutativeOperatorNode {
           new MultiplyNode(d, f),
         ).simplify(opts);
       }
+      if (isOppositeNode(a) && isFractionNode(a.child) && isFractionNode(b)) {
+        //-(c/d) + e/f   =  -cf+ed / df
+        const c = a.child.leftChild;
+        const d = a.child.rightChild;
+        const e = b.leftChild;
+        const f = b.rightChild;
+        return new FractionNode(
+          new AddNode(
+            new MultiplyNode(new OppositeNode(c), f),
+            new MultiplyNode(e, d),
+          ),
+          new MultiplyNode(d, f),
+        ).simplify(opts);
+      }
+      if (isOppositeNode(b) && isFractionNode(b.child) && isFractionNode(a)) {
+        //(c/d) + (-e/f)   =  cf-ed / df
+        const c = a.leftChild;
+        const d = a.rightChild;
+        const e = b.child.leftChild;
+        const f = b.child.rightChild;
+        return new FractionNode(
+          new AddNode(
+            new MultiplyNode(c, f),
+            new MultiplyNode(new OppositeNode(e), d),
+          ),
+          new MultiplyNode(d, f),
+        ).simplify(opts);
+      }
+      if (
+        isOppositeNode(b) &&
+        isFractionNode(b.child) &&
+        isOppositeNode(a) &&
+        isFractionNode(a.child)
+      ) {
+        //-(c/d) + (-e/f)   =  -cf-ed / df
+        const c = a.child.leftChild;
+        const d = a.child.rightChild;
+        const e = b.child.leftChild;
+        const f = b.child.rightChild;
+        return new FractionNode(
+          new AddNode(
+            new MultiplyNode(new OppositeNode(c), f),
+            new MultiplyNode(new OppositeNode(e), d),
+          ),
+          new MultiplyNode(d, f),
+        ).simplify(opts);
+      }
+
       if (isFractionNode(a)) {
         //c/d + b
         const c = a.leftChild;
@@ -164,12 +212,34 @@ export class AddNode implements CommutativeOperatorNode {
           d,
         ).simplify(opts);
       }
+      if (isOppositeNode(a) && isFractionNode(a.child)) {
+        //-(c/d) + b = (-c+bd)/d
+        const c = a.child.leftChild;
+        const d = a.child.rightChild;
+        return new FractionNode(
+          new AddNode(new OppositeNode(c), new MultiplyNode(d, b)),
+          d,
+        ).simplify(opts);
+      }
       if (isFractionNode(b) && !opts?.forceDistributeFractions) {
         //a+c/d
         const c = b.leftChild;
         const d = b.rightChild;
         return new FractionNode(
           new AddNode(c, new MultiplyNode(d, a)),
+          d,
+        ).simplify(opts);
+      }
+      if (
+        isOppositeNode(b) &&
+        isFractionNode(b.child) &&
+        !opts?.forceDistributeFractions
+      ) {
+        //a+-(c/d) = (da-c)/d
+        const c = b.child.leftChild;
+        const d = b.child.rightChild;
+        return new FractionNode(
+          new AddNode(new OppositeNode(c), new MultiplyNode(d, a)),
           d,
         ).simplify(opts);
       }
