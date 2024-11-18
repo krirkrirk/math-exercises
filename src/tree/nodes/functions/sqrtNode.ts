@@ -107,4 +107,7 @@ export class SqrtNode implements FunctionNode {
   equals(node: AlgebraicNode): boolean {
     return isSqrtNode(node) && node.child.equals(this.child);
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new SqrtNode(this.child.toDetailedEvaluation(vars));
+  }
 }

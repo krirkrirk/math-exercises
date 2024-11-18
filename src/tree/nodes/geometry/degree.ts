@@ -53,4 +53,7 @@ export class DegreeNode implements AlgebraicNode {
   equals(node: AlgebraicNode) {
     return isDegreeNode(node) && node.value === this.value;
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return this;
+  }
 }

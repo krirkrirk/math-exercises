@@ -46,10 +46,22 @@ export const shuffleProps = (props: Proposition[], n: number) => {
   return shuffle([props[0], ...shuffle(props.slice(1)).slice(0, n - 1)]);
 };
 
-export type GeneratorOptions = {
+export enum GeneratorOptionTarget {
+  generation,
+  vea,
+  ggb,
+  instruction,
+  hint,
+  correction,
+  answer,
+  qcm,
+  keys,
+}
+export type GeneratorOption = {
   id: string;
   label: string;
   type: "checkbox" | "select";
+  target: GeneratorOptionTarget;
 };
 
 export type Proposition = {
@@ -181,7 +193,7 @@ export interface Exercise<TIdentifiers = {}, TOptions = {}> {
   isSingleStep: boolean;
   label: string;
   pdfOptions?: PDFOptions;
-  options?: GeneratorOptions[];
+  options?: GeneratorOption[];
   sections?: (MathSection | PCSection)[];
   levels?: MathLevel[];
   connector?: "=" | "\\iff" | "\\approx";

@@ -72,4 +72,7 @@ export class ArctanNode implements FunctionNode {
   equals(node: AlgebraicNode): boolean {
     return isArctanNode(node) && node.child.equals(this.child);
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new ArctanNode(this.child.toDetailedEvaluation(vars));
+  }
 }

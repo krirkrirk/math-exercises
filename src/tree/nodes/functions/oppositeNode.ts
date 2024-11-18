@@ -110,4 +110,7 @@ export class OppositeNode implements FunctionNode {
   equals(node: AlgebraicNode): boolean {
     return isOppositeNode(node) && node.child.equals(this.child);
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new OppositeNode(this.child.toDetailedEvaluation(vars));
+  }
 }

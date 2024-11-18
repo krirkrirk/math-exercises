@@ -76,4 +76,7 @@ export class CosNode implements FunctionNode {
   equals(node: AlgebraicNode): boolean {
     return isCosNode(node) && node.child.equals(this.child);
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new CosNode(this.child.toDetailedEvaluation(vars));
+  }
 }

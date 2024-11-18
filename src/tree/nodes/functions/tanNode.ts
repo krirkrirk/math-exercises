@@ -76,4 +76,7 @@ export class TanNode implements FunctionNode {
   equals(node: AlgebraicNode): boolean {
     return isTanNode(node) && node.child.equals(this.child);
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new TanNode(this.child.toDetailedEvaluation(vars));
+  }
 }

@@ -93,7 +93,12 @@ export class PowerNode implements OperatorNode {
       this.rightChild.evaluate(vars),
     );
   }
-
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new PowerNode(
+      this.leftChild.toDetailedEvaluation(vars),
+      this.rightChild.toDetailedEvaluation(vars),
+    );
+  }
   // simplify(): AlgebraicNode {
   //   const leftSimplified = this.leftChild.simplify();
   //   const rightSimplified = this.rightChild.simplify();

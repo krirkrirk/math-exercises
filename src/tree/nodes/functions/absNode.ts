@@ -55,4 +55,8 @@ export class AbsNode implements FunctionNode {
   equals(node: AlgebraicNode) {
     return isAbsNode(node) && node.child.equals(this.child);
   }
+
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new AbsNode(this.child.toDetailedEvaluation(vars));
+  }
 }

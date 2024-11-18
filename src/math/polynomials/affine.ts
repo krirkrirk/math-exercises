@@ -1,3 +1,5 @@
+import { EqualNode } from "#root/tree/nodes/equations/equalNode";
+import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { Nombre } from "../numbers/nombre";
 import { Rational } from "../numbers/rationals/rational";
 import { randint } from "../utils/random/randint";
@@ -73,5 +75,9 @@ export class Affine extends Polynomial {
 
   toString(): string {
     return super.toTex();
+  }
+
+  toReducedEquation(): string {
+    return `y=${this.toTex()}`;
   }
 }

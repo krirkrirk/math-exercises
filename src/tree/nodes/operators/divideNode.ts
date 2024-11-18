@@ -100,4 +100,10 @@ export class DivideNode implements OperatorNode {
       node.rightChild.equals(this.rightChild)
     );
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new DivideNode(
+      this.leftChild.toDetailedEvaluation(vars),
+      this.rightChild.toDetailedEvaluation(vars),
+    );
+  }
 }

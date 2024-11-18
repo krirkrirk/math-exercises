@@ -373,4 +373,10 @@ export class AddNode implements CommutativeOperatorNode {
           node.rightChild.equals(this.leftChild)))
     );
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new AddNode(
+      this.leftChild.toDetailedEvaluation(vars),
+      this.rightChild.toDetailedEvaluation(vars),
+    );
+  }
 }

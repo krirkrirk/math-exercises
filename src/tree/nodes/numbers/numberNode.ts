@@ -67,4 +67,7 @@ export class NumberNode implements AlgebraicNode {
   equals(node: AlgebraicNode) {
     return isNumberNode(node) && node.value === this.value;
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return this;
+  }
 }

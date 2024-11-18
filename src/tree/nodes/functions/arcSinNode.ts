@@ -71,4 +71,7 @@ export class ArcsinNode implements FunctionNode {
   equals(node: AlgebraicNode): boolean {
     return isArcsinNode(node) && node.child.equals(this.child);
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new ArcsinNode(this.child.toDetailedEvaluation(vars));
+  }
 }

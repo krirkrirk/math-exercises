@@ -50,4 +50,7 @@ export class ConstantNode implements AlgebraicNode {
   equals(node: AlgebraicNode) {
     return isConstantNode(node) && node.tex === this.tex;
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return this;
+  }
 }

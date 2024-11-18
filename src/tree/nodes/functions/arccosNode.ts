@@ -72,4 +72,7 @@ export class ArccosNode implements FunctionNode {
   equals(node: AlgebraicNode): boolean {
     return isArccosNode(node) && node.child.equals(this.child);
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new ArccosNode(this.child.toDetailedEvaluation(vars));
+  }
 }

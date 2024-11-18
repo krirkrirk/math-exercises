@@ -269,4 +269,10 @@ export class FractionNode implements OperatorNode {
       node.rightChild.equals(this.rightChild)
     );
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new FractionNode(
+      this.leftChild.toDetailedEvaluation(vars),
+      this.rightChild.toDetailedEvaluation(vars),
+    );
+  }
 }

@@ -1,6 +1,7 @@
 import {
   Exercise,
-  GeneratorOptions,
+  GeneratorOption,
+  GeneratorOptionTarget,
   Proposition,
   QCMGenerator,
   Question,
@@ -96,11 +97,12 @@ const isAnswerValid: VEA<Identifiers, Options> = (
   else return texs.includes(ans);
 };
 
-const options: GeneratorOptions[] = [
+const options: GeneratorOption[] = [
   {
     id: "allowNonIrreductible",
     label: "Autoriser les fractions non réduites",
     type: "checkbox",
+    target: GeneratorOptionTarget.vea,
   },
 ];
 

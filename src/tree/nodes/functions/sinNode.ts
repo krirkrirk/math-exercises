@@ -76,4 +76,7 @@ export class SinNode implements FunctionNode {
   equals(node: AlgebraicNode): boolean {
     return isSinNode(node) && node.child.equals(this.child);
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new SinNode(this.child.toDetailedEvaluation(vars));
+  }
 }

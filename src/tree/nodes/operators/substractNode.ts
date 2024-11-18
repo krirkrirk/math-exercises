@@ -98,4 +98,10 @@ export class SubstractNode implements OperatorNode {
       node.rightChild.equals(this.rightChild)
     );
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new SubstractNode(
+      this.leftChild.toDetailedEvaluation(vars),
+      this.rightChild.toDetailedEvaluation(vars),
+    );
+  }
 }

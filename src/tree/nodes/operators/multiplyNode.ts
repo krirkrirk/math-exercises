@@ -431,6 +431,12 @@ export class MultiplyNode implements CommutativeOperatorNode {
           node.rightChild.equals(this.leftChild)))
     );
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new MultiplyNode(
+      this.leftChild.toDetailedEvaluation(vars),
+      this.rightChild.toDetailedEvaluation(vars),
+    );
+  }
 }
 
 const powerSimplify = (

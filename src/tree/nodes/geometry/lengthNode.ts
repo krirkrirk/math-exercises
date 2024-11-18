@@ -59,4 +59,7 @@ export class LengthNode implements AlgebraicNode {
   equals(node: AlgebraicNode) {
     return isLengthNode(node) && node.segmentName === this.segmentName;
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return this;
+  }
 }

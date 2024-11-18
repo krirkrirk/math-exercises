@@ -99,4 +99,7 @@ export class Log10Node implements FunctionNode {
   equals(node: AlgebraicNode): boolean {
     return isLog10Node(node) && node.child.equals(this.child);
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new Log10Node(this.child.toDetailedEvaluation(vars));
+  }
 }

@@ -1,3 +1,5 @@
+import { AlgebraicNode } from "./algebraicNode";
+
 export enum NodeType {
   number,
   constant,

@@ -49,4 +49,9 @@ export class VariableNode implements AlgebraicNode {
   equals(node: AlgebraicNode) {
     return isVariableNode(node) && node.name === this.name;
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    if (!vars[this.name])
+      throw Error("Detailed Evaluation variable non handled");
+    return vars[this.name];
+  }
 }

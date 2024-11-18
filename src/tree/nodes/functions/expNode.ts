@@ -76,4 +76,7 @@ export class ExpNode implements FunctionNode {
   equals(node: AlgebraicNode): boolean {
     return isExpNode(node) && node.child.equals(this.child);
   }
+  toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
+    return new ExpNode(this.child.toDetailedEvaluation(vars));
+  }
 }
