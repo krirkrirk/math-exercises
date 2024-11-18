@@ -50,15 +50,21 @@ const getReciprocalPercentageQuestion: QuestionGenerator<Identifiers> = () => {
       isUp ? "hausse" : "baisse"
     } de $${randPercent}\\%$ est :
     
-$1${isUp ? "+" : "-"}\\frac{${randPercent}}{100} = ${cm.frenchify()}$
+$$
+1${isUp ? "+" : "-"}\\frac{${randPercent}}{100} = ${cm.frenchify()}
+$$
 
 Le coefficient multiplicateur réciproque est l'inverse du coefficient multiplicateur : 
 
-$\\frac{1}{${cm.frenchify()}} = ${recipCm.frenchify()}$
+$$
+\\frac{1}{${cm.frenchify()}} = ${recipCm.frenchify()}
+$$
 
 On transforme ce coefficient multiplicateur en taux d'évolution : 
 
-$(${recipCm.frenchify()}-1)\\times 100 = ${round(ans, 2).frenchify()}$.
+$$
+(${recipCm.frenchify()}-1)\\times 100 = ${round(ans, 2).frenchify()}
+$$
 
 Ainsi, le taux d'évolution permettant de revenir au prix initial est de $${answer}$.
     `,

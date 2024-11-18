@@ -42,7 +42,11 @@ const getFractionsSumsSameDenominatorsQuestion: QuestionGenerator<
   const answer = answerRatio.simplify().toTree().toTex();
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Calculer et donner le résultat sous forme d'une fraction irréductible : $${statement}$`,
+    instruction: `Calculer et donner le résultat sous forme d'une fraction irréductible : 
+    
+$$
+${statement}
+$$`,
     keys: [],
     hint: `Pour additionner deux fractions qui ont le même dénominateur, on peut additionner leurs numerateurs.`,
     correction: `Les deux fractions ont bien le même dénominateur donc on additionne leurs numérateurs : 

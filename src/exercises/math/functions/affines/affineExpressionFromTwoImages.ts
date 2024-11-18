@@ -62,7 +62,7 @@ $$
 ${yA} = ${new MultiplyNode(a, xA.toTree()).toTex()}+b
 $$ 
     
-    On a donc 
+On a donc 
 
 $$
 b = ${new SubstractNode(

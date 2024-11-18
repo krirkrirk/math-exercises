@@ -57,10 +57,14 @@ export enum GeneratorOptionTarget {
   qcm,
   keys,
 }
+export enum GeneratorOptionType {
+  checkbox,
+  select,
+}
 export type GeneratorOption = {
   id: string;
   label: string;
-  type: "checkbox" | "select";
+  type: GeneratorOptionType;
   target: GeneratorOptionTarget;
 };
 
