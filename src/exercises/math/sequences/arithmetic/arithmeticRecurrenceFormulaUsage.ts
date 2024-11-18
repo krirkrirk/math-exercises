@@ -1,6 +1,5 @@
 import {
   Exercise,
-  GeneratorOptions,
   Proposition,
   Question,
   QuestionGenerator,
