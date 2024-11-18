@@ -2,6 +2,7 @@ import {
   Exercise,
   GeneratorOption,
   GeneratorOptionTarget,
+  GeneratorOptionType,
   Proposition,
   QCMGenerator,
   Question,
@@ -101,7 +102,7 @@ const options: GeneratorOption[] = [
   {
     id: "allowNonIrreductible",
     label: "Autoriser les fractions non réduites",
-    type: "checkbox",
+    type: GeneratorOptionType.checkbox,
     target: GeneratorOptionTarget.vea,
   },
 ];
