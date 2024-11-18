@@ -47,19 +47,19 @@ export const shuffleProps = (props: Proposition[], n: number) => {
 };
 
 export enum GeneratorOptionTarget {
-  generation,
-  vea,
-  ggb,
-  instruction,
-  hint,
-  correction,
-  answer,
-  qcm,
-  keys,
+  generation = "generation",
+  vea = "vea",
+  ggb = "ggb",
+  instruction = "instruction",
+  hint = "hint",
+  correction = "correction",
+  answer = "answer",
+  qcm = "qcm",
+  keys = "keys",
 }
 export enum GeneratorOptionType {
-  checkbox,
-  select,
+  checkbox = "checkbox",
+  select = "select",
 }
 export type GeneratorOption = {
   id: string;
