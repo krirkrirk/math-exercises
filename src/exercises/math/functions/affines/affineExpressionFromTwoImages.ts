@@ -56,7 +56,7 @@ Il faut ensuite trouver l'ordonnée à l'origine $b$. On sait que $f(${xA}) = ${
 Donc 
 
 $$
-${yA} = ${new MultiplyNode(a, xA.toTree()).toTex()}+b
+${yA} = ${new MultiplyNode(aSimplified, xA.toTree()).toTex()}+b
 $$ 
     
 On a donc 
@@ -64,7 +64,7 @@ On a donc
 $$
 b = ${new SubstractNode(
     yA.toTree(),
-    new MultiplyNode(a, xA.toTree()),
+    new MultiplyNode(aSimplified, xA.toTree()),
   ).toTex()} = ${b.toTex()}
 $$
 

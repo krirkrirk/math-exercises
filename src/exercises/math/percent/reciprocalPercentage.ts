@@ -54,7 +54,7 @@ $$
 On transforme ce coefficient multiplicateur en taux d'évolution : 
 
 $$
-(${recipCm.frenchify()}-1)\\times 100 = ${round(ans, 2).frenchify()}
+(${recipCm.frenchify()}-1)\\times 100 = ${round(ans, 2).frenchify()}\\%
 $$
 
 Ainsi, le taux d'évolution permettant de revenir au prix initial est de $${answer}$.
