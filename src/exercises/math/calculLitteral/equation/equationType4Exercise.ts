@@ -20,6 +20,8 @@ import { DiscreteSetNode } from "#root/tree/nodes/sets/discreteSetNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/alea/shuffle";
 import { alignTex } from "#root/utils/latex/alignTex";
+import { equationSolutionParser } from "#root/tree/parsers/equationSolutionParser";
+import { round } from "#root/math/utils/round";
 
 /**
  *  type ax+b=cx+d
@@ -98,6 +100,19 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d }) => {
+  // try {
+  //   const parsed = equationSolutionParser(ans);
+  //   if (!parsed) return false;
+  //   console.log("parsed", parsed.toTex());
+  //   const solution = new Rational(d - b, a - c).simplify().toTree();
+  //   const solutionTex = solution.toTex();
+  //   const decimal = round(solution.evaluate({}), 12).frenchify();
+  //   const parsedSolution = parsed.simplify().toTex();
+  //   return solutionTex === parsedSolution || decimal === parsedSolution;
+  // } catch (err) {
+  //   return false;
+  // }
+
   const solution = new Rational(d - b, a - c).simplify().toTree();
   const answerTree = new EquationSolutionNode(new DiscreteSetNode([solution]), {
     opts: { allowFractionToDecimal: true, allowRawRightChildAsSolution: true },

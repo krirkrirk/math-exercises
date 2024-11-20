@@ -58,7 +58,9 @@ export class ComplexNode implements Node {
       new MultiplyNode(this.im, new VariableNode("i")),
     ).toTex();
   }
-
+  simplify() {
+    return this;
+  }
   // toMathjs() {
   //   return complex(evaluate(this.re.toMathjs()), evaluate(this.im.toMathjs()));
   // }

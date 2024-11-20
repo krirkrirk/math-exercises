@@ -28,14 +28,13 @@ import { numberToFrenchWord } from "./utils/strings/numberToFrenchWord";
 import { DecimalConstructor } from "./math/numbers/decimals/decimal";
 import { randint } from "./math/utils/random/randint";
 import { numberParser } from "./tree/parsers/numberParser";
-import { parseLatex } from "./tree/parsers/latexParser";
 import { FractionNode } from "./tree/nodes/operators/fractionNode";
 import { OppositeNode } from "./tree/nodes/functions/oppositeNode";
 
 export const playground = () => {
-  // const frac = new AddNode(
-  //   (3).toTree(),
-  //   new OppositeNode(new FractionNode((1).toTree(), (2).toTree())),
-  // ).simplify();
-  // console.log(frac.toTex());
+  const mul = new MultiplyNode(
+    new SqrtNode((2).toTree()),
+    (-1).toTree(),
+  ).simplify();
+  console.log(mul.toTex());
 };

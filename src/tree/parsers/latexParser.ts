@@ -1,6 +1,9 @@
+import { InegalitySymbols } from "#root/math/inequations/inequation";
 import { AlgebraicNode } from "../nodes/algebraicNode";
+import { EqualNode } from "../nodes/equations/equalNode";
 import { OppositeNode } from "../nodes/functions/oppositeNode";
 import { SqrtNode } from "../nodes/functions/sqrtNode";
+import { InequationNode } from "../nodes/inequations/inequationNode";
 import { NumberNode } from "../nodes/numbers/numberNode";
 import { PiNode } from "../nodes/numbers/piNode";
 import { AddNode } from "../nodes/operators/addNode";
@@ -24,6 +27,8 @@ const operators = ["+", "-", "\\div", "\\times", "^"];
 
 //cmds childless, like \\pi
 const symbols = [{ tex: "\\pi", node: PiNode }];
+
+const separators = ["=", "<", ">", "\\leq", "\\geq"];
 
 const isDyck = (tokens: string[]) => {
   const brackets = tokens.filter((el) => el === "(" || el === ")");
@@ -49,7 +54,7 @@ export const tokenize = (latex: string) => {
   for (let i = 0; i < latex.length; i++) {
     const char = latex[i];
     if (char === " ") continue;
-    const match = char.match(/[\+\-\(\)\^a-zA-Z_=\{\}]/);
+    const match = char.match(/[\+\-\(\)\^a-zA-Z_=<>\{\}]/);
     if (match) {
       tokens.push(char);
       continue;
@@ -74,16 +79,61 @@ export const tokenize = (latex: string) => {
   return tokens;
 };
 
+export const parseAlgebraic = (latex: string) => {
+  const formattedLatex = latex
+    .replaceAll("\\left", "")
+    .replaceAll("\\right", "");
+
+  try {
+    const tokens = tokenize(formattedLatex);
+    if (!isDyck(tokens)) throw Error("Problème de parenthèses.");
+    const parsed = buildTree(tokens);
+    return parsed;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export const parseLatex = (latex: string) => {
   const formattedLatex = latex
     .replaceAll("\\left", "")
     .replaceAll("\\right", "");
-  const tokens = tokenize(formattedLatex);
-  if (!isDyck(tokens)) throw Error("Problème de parenthèses.");
 
   try {
-    const parsed = buildTree(tokens);
-    return parsed;
+    const tokens = tokenize(formattedLatex);
+    if (!isDyck(tokens)) throw Error("Problème de parenthèses.");
+
+    if (tokens.some((el) => separators.includes(el))) {
+      const groups: (string | string[])[] = [];
+
+      for (const token of tokens) {
+        if (separators.includes(token)) {
+          if (typeof groups[groups.length - 1] === "string") {
+            throw Error("Consecutive separators not allowed");
+          }
+          groups.push(token);
+        } else {
+          if (Array.isArray(groups[groups.length - 1]))
+            (groups[groups.length - 1] as string[]).push(token);
+          else groups.push([token]);
+        }
+      }
+      if (groups.length !== 3)
+        throw Error("Consecutive separators not implemented");
+
+      const children = [
+        buildTree(groups[0] as string[]),
+        buildTree(groups[2] as string[]),
+      ];
+      const parsed =
+        groups[1] === "="
+          ? new EqualNode(children[0], children[1])
+          : new InequationNode(children, groups[1] as InegalitySymbols);
+      return parsed;
+    } else {
+      const parsed = buildTree(tokens);
+      return parsed;
+    }
   } catch (err) {
     throw err;
   }

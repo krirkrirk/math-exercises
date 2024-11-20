@@ -2,6 +2,9 @@
 import { AlgebraicNode } from "../algebraicNode";
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 
+export const isEqualNode = (node: Node): node is EqualNode =>
+  node.type === NodeType.equality;
+
 export class EqualNode implements Node {
   leftChild: Node;
   rightChild: Node;
@@ -51,6 +54,10 @@ export class EqualNode implements Node {
   }
   toTex(): string {
     return `${this.leftChild.toTex()}=${this.rightChild.toTex()}`;
+  }
+
+  simplify() {
+    return this;
   }
 
   // toMathjs() {

@@ -129,4 +129,7 @@ export class InequationNode implements Node {
   toTex() {
     return this.tex;
   }
+  simplify() {
+    return this;
+  }
 }

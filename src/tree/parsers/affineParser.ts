@@ -3,10 +3,10 @@ import { Node } from "../nodes/node";
 import { isNumberNode } from "../nodes/numbers/numberNode";
 import { isMultiplyNode } from "../nodes/operators/multiplyNode";
 import { isVariableNode } from "../nodes/variables/variableNode";
-import { parseLatex } from "./latexParser";
+import { parseAlgebraic } from "./latexParser";
 
 export const affineParser = (ans: string, variable: string = "x") => {
-  const parsed = parseLatex(ans);
+  const parsed = parseAlgebraic(ans);
   if (isVariableNode(parsed)) {
     if (parsed.name !== variable) return false;
     return parsed;

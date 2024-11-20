@@ -46,4 +46,7 @@ export class BelongsNode implements Node {
       rightChild: this.rightChild.toIdentifiers(),
     };
   }
+  simplify() {
+    return this;
+  }
 }

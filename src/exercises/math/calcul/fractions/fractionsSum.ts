@@ -17,7 +17,7 @@ import {
   RationalConstructor,
 } from "#root/math/numbers/rationals/rational";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { parseLatex } from "#root/tree/parsers/latexParser";
+import { parseAlgebraic } from "#root/tree/parsers/latexParser";
 import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
@@ -90,7 +90,7 @@ const isAnswerValid: VEA<Identifiers, Options> = (
   const texs = answerTree.toAllValidTexs();
   if (allow)
     try {
-      const parsed = parseLatex(ans).simplify().toTex();
+      const parsed = parseAlgebraic(ans).simplify().toTex();
       return texs.includes(parsed);
     } catch (err) {
       return false;

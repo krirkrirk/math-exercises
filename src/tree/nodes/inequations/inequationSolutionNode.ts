@@ -67,4 +67,7 @@ export class InequationSolutionNode implements Node {
   toTex() {
     return `S=${this.intervalSolution.toTex()}`;
   }
+  simplify() {
+    return this;
+  }
 }

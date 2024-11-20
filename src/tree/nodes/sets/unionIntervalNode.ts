@@ -66,4 +66,7 @@ export class UnionIntervalNode implements Node {
       children: this.sets.map((set) => set.toIdentifiers()),
     };
   }
+  simplify() {
+    return this;
+  }
 }

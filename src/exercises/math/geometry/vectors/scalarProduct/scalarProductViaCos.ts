@@ -10,12 +10,16 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { RemarkableValueConstructor } from "#root/math/trigonometry/remarkableValue";
-import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
+import {
+  mainTrigoValues,
+  remarkableTrigoValues,
+} from "#root/math/trigonometry/remarkableValues";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { randomLetter } from "#root/utils/strings/randomLetter";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   AB: number;
@@ -27,7 +31,7 @@ type Identifiers = {
 const getScalarProductViaCosQuestion: QuestionGenerator<Identifiers> = () => {
   const AB = randint(1, 10);
   const AC = randint(1, 10);
-  const trigo = RemarkableValueConstructor.mainInterval();
+  const trigo = random(mainTrigoValues);
   const answer = new MultiplyNode(new NumberNode(AB * AC), trigo.cos)
     .simplify()
     .toTex();
@@ -63,7 +67,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   );
   const coeff = new NumberNode(AB * AC);
   while (propositions.length < n) {
-    const trigoValue = RemarkableValueConstructor.mainInterval();
+    const trigoValue = random(mainTrigoValues);
     tryToAddWrongProp(
       propositions,
       new MultiplyNode(coeff, trigoValue.sin).simplify().toTex(),

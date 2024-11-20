@@ -89,6 +89,6 @@ export interface Node {
   toAllValidTexs: (opts?: NodeOptions) => string[];
   toTex: (opts?: ToTexOptions) => string;
   // toMathjs: () => any;
-  // simplify: () => Node;
+  simplify: () => Node;
   toIdentifiers: () => { id: NodeIds } & Record<string, any>;
 }

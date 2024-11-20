@@ -16,3 +16,6 @@ export interface AlgebraicNode extends Node {
   equals: (node: AlgebraicNode) => boolean;
   isNumeric: boolean;
 }
+
+export const isAlgebraicNode = (node: Node): node is AlgebraicNode =>
+  Object(node).hasOwnProperty("isNumeric");

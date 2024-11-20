@@ -74,6 +74,9 @@ export class DiscreteSetNode implements SetNode {
     newElements.splice(index, 1);
     return new DiscreteSetNode(newElements);
   }
+  simplify() {
+    return this;
+  }
 }
 
 export const EmptySet = new DiscreteSetNode([]);

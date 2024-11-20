@@ -30,7 +30,7 @@ import {
   UnionIntervalNodeBuilder,
 } from "#root/tree/nodes/sets/unionIntervalNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { parseLatex } from "#root/tree/parsers/latexParser";
+import { parseAlgebraic } from "#root/tree/parsers/latexParser";
 import { intervalKeys } from "../../utils/keys/intervalKeys";
 
 type Identifiers = {
@@ -102,10 +102,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const aTree = parseLatex(a);
-  const bTree = parseLatex(b);
-  const cTree = parseLatex(c);
-  const dTree = parseLatex(d);
+  const aTree = parseAlgebraic(a);
+  const bTree = parseAlgebraic(b);
+  const cTree = parseAlgebraic(c);
+  const dTree = parseAlgebraic(d);
   const det = new SubstractNode(
     new MultiplyNode(aTree, dTree),
     new MultiplyNode(bTree, cTree),

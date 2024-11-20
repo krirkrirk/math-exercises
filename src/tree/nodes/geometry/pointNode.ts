@@ -52,4 +52,7 @@ export class PointNode implements Node {
   toTex() {
     return this.point.toTexWithCoords();
   }
+  simplify() {
+    return this;
+  }
 }

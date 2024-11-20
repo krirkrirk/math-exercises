@@ -29,7 +29,7 @@ import { PiNode } from "#root/tree/nodes/numbers/piNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { parseLatex } from "#root/tree/parsers/latexParser";
+import { parseAlgebraic } from "#root/tree/parsers/latexParser";
 import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
@@ -94,7 +94,7 @@ const getKeys: GetKeys<Identifiers> = (identifiers) => {
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, degree }) => {
   const value = mainTrigoValues.find((e) => e.degree === degree)!;
   try {
-    const parsed = parseLatex(ans);
+    const parsed = parseAlgebraic(ans);
     const simplified = parsed.simplify().toTex();
     return simplified === answer;
     // return value.angle.toAllValidTexs().includes(ans);

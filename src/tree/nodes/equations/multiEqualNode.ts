@@ -48,4 +48,8 @@ export class MultiEqualNode implements Node {
   toMathjs() {
     return this.toTex();
   }
+
+  simplify() {
+    return this;
+  }
 }

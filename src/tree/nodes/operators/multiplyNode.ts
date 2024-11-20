@@ -317,6 +317,9 @@ export class MultiplyNode implements CommutativeOperatorNode {
       } else if (isOppositeNode(node)) {
         oppositesCount++;
         recursive(node.child);
+      } else if (isNumberNode(node) && node.value < 0) {
+        oppositesCount++;
+        externals.push(new NumberNode(Math.abs(node.value)));
       } else {
         externals.push(node);
       }
@@ -327,7 +330,6 @@ export class MultiplyNode implements CommutativeOperatorNode {
     if (externals.some((node) => isNumberNode(node) && node.value === 0)) {
       return new NumberNode(0);
     }
-
     if (oppositesCount % 2 === 1) {
       externals.unshift(new NumberNode(-1));
     }

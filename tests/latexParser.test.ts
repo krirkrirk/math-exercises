@@ -1,4 +1,4 @@
-import { parseLatex } from "../src/tree/parsers/latexParser";
+import { parseAlgebraic } from "../src/tree/parsers/latexParser";
 
 const texsThatShouldNotChange = [
   "3",
@@ -44,10 +44,10 @@ const texsThatShouldChange: {
 test("latexParser", () => {
   try {
     for (const tex of texsThatShouldNotChange) {
-      expect(parseLatex(tex).toTex()).toBe(tex);
+      expect(parseAlgebraic(tex).toTex()).toBe(tex);
     }
     for (const data of texsThatShouldChange) {
-      expect(parseLatex(data.in).toTex()).toBe(data.out);
+      expect(parseAlgebraic(data.in).toTex()).toBe(data.out);
     }
   } catch (err) {
     console.log(err);
@@ -57,7 +57,7 @@ test("latexParser", () => {
 
 test("singularLatexTest", () => {
   try {
-    console.log(parseLatex("+2").toTex());
+    console.log(parseAlgebraic("+2").toTex());
   } catch (err) {
     console.log(err);
   }

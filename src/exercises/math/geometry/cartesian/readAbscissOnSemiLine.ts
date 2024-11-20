@@ -28,7 +28,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { parseLatex } from "#root/tree/parsers/latexParser";
+import { parseAlgebraic } from "#root/tree/parsers/latexParser";
 import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
@@ -46,7 +46,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
-  const unitNode = parseLatex(oneUnitTex);
+  const unitNode = parseAlgebraic(oneUnitTex);
   while (propositions.length < n) {
     const coeff = randint(2, 10);
     tryToAddWrongProp(
@@ -112,8 +112,8 @@ const getKeys: GetKeys<Identifiers> = (identifiers) => {
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, abscissTex }) => {
   try {
-    const answerNode = parseLatex(ans);
-    const node = parseLatex(abscissTex);
+    const answerNode = parseAlgebraic(ans);
+    const node = parseAlgebraic(abscissTex);
     return Math.abs(node.evaluate({}) - answerNode.evaluate({})) < 0.00001;
   } catch (err) {
     return false;

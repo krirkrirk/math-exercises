@@ -41,4 +41,7 @@ export class IntegralNode implements Node {
   toAllValidTexs() {
     return [this.toTex()];
   }
+  simplify() {
+    return this;
+  }
 }

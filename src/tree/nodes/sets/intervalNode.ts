@@ -186,4 +186,8 @@ export class IntervalNode implements SetNode {
           Closure.isRightOpen(this.closure) ? "exclu" : "inclus"
         }`;
   }
+
+  simplify() {
+    return this;
+  }
 }

@@ -21,10 +21,8 @@ import {
   trigoValuesOnZeroTwoPIOF,
 } from "#root/math/trigonometry/remarkableValues";
 import { randint } from "#root/math/utils/random/randint";
-import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { EquationSolutionNode } from "#root/tree/nodes/equations/equationSolutionNode";
 import { CosNode } from "#root/tree/nodes/functions/cosNode";
-import { OppositeNode } from "#root/tree/nodes/functions/oppositeNode";
 import { PiNode } from "#root/tree/nodes/numbers/piNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";

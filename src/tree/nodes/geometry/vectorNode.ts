@@ -38,4 +38,7 @@ export class VectorNode implements Node {
   toTex() {
     return `\\overrightarrow{${this.name}}`;
   }
+  simplify() {
+    return this;
+  }
 }

@@ -9,3 +9,4 @@ export * from "./volumes";
 // export * from "./triangles";
 export * from "./euclidianConstructions";
 export * from "./shapes";
+// export * from "./euclidian";

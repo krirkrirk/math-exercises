@@ -68,4 +68,7 @@ export class EquationSolutionNode implements Node {
   toTex() {
     return `S=${this.solutionsSet.toTex()}`;
   }
+  simplify() {
+    return this;
+  }
 }

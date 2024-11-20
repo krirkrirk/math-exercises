@@ -30,4 +30,7 @@ export class PercentNode implements Node {
   toEquivalentNodes() {
     return [this];
   }
+  simplify() {
+    return this;
+  }
 }

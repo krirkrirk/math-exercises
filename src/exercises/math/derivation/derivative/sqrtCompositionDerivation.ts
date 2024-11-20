@@ -15,7 +15,7 @@ import { randint } from "#root/math/utils/random/randint";
 import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { parseLatex } from "#root/tree/parsers/latexParser";
+import { parseAlgebraic } from "#root/tree/parsers/latexParser";
 
 type Identifiers = {
   affineA: number;
@@ -80,7 +80,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, affineA, affineB }) => {
   try {
-    const parsed = parseLatex(ans);
+    const parsed = parseAlgebraic(ans);
     const simplified = parsed.simplify();
     return simplified.toTex() === answer;
   } catch (err) {
