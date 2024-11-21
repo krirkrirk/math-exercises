@@ -18,6 +18,7 @@ import {
 } from "#root/math/numbers/rationals/rational";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { parseAlgebraic } from "#root/tree/parsers/latexParser";
+import { rationalParser } from "#root/tree/parsers/rationalParser";
 import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
@@ -26,7 +27,7 @@ type Identifiers = {
 };
 
 type Options = {
-  allowNonIrreductible: boolean;
+  allowNonIrreductible?: boolean;
 };
 
 const getFractionsSum: QuestionGenerator<Identifiers, Options> = (opts) => {
@@ -36,7 +37,15 @@ const getFractionsSum: QuestionGenerator<Identifiers, Options> = (opts) => {
   const answerTree = rational.add(rational2).toTree();
   const answer = answerTree.toTex();
   const question: Question<Identifiers, Options> = {
-    instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
+    instruction: `Calculer ${
+      opts?.allowNonIrreductible
+        ? ""
+        : "et donner le résultat sous la forme d'une fraction irréductible"
+    } : 
+    
+$$
+${statementTree.toTex()}
+$$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: [],
@@ -90,8 +99,9 @@ const isAnswerValid: VEA<Identifiers, Options> = (
   const texs = answerTree.toAllValidTexs();
   if (allow)
     try {
-      const parsed = parseAlgebraic(ans).simplify().toTex();
-      return texs.includes(parsed);
+      const parsed = rationalParser(ans);
+      if (!parsed) return false;
+      return texs.includes(parsed.simplify().toTex());
     } catch (err) {
       return false;
     }

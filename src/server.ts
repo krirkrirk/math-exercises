@@ -39,9 +39,11 @@ const runServer = () => {
 
   app.get("/exo", (req: Request, res: Response) => {
     const exoId = req.query.exoId;
+    console.log(req.query.options);
     const options = req.query.options
       ? JSON.parse(req.query.options as string)
       : undefined;
+    console.log("parsed", options);
     const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
     const exo = allExercises[exoIndex];
     if (!exo) res.send("Exo not found");
@@ -58,18 +60,26 @@ const runServer = () => {
 
   app.get("/qcmExo", (req: Request, res: Response) => {
     const exoId = req.query.exoId;
+    const options = req.query.options
+      ? JSON.parse(req.query.options as string)
+      : undefined;
+
     const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
     const exo = allExercises[exoIndex];
 
     if (!exo) res.send("Exo not found");
-    const questions = exo?.generator(10);
+    const questions = exo?.generator(10, options);
     const populatedQuestions = questions?.map((q) => {
       return {
         ...q,
-        propositions: exo.getPropositions?.(4, {
-          answer: q.answer,
-          ...q.identifiers,
-        }),
+        propositions: exo.getPropositions?.(
+          4,
+          {
+            answer: q.answer,
+            ...q.identifiers,
+          },
+          options,
+        ),
       };
     });
     res.json({
@@ -88,7 +98,7 @@ const runServer = () => {
     const options = req.query.options
       ? JSON.parse(req.query.options as string)
       : undefined;
-    console.log("vea opts", options);
+
     const { ans, veaProps } = req.body;
     const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
     const exo = allExercises[exoIndex];

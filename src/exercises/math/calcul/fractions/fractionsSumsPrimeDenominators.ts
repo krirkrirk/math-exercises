@@ -9,6 +9,9 @@ import {
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
+  GeneratorOption,
+  GeneratorOptionTarget,
+  GeneratorOptionType,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import {
@@ -18,6 +21,8 @@ import {
 import { gcd } from "#root/math/utils/arithmetic/gcd";
 import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { parseAlgebraic } from "#root/tree/parsers/latexParser";
+import { rationalParser } from "#root/tree/parsers/rationalParser";
 
 type Identifiers = {
   num1: number;
@@ -26,9 +31,14 @@ type Identifiers = {
   denom2: number;
 };
 
+type Options = {
+  allowNonIrreductible?: boolean;
+};
+
 const getFractionsSumsPrimeDenominatorsQuestion: QuestionGenerator<
-  Identifiers
-> = () => {
+  Identifiers,
+  Options
+> = (opts) => {
   const denom1 = randint(2, 13);
   let denom2 = 0;
   do {
@@ -42,7 +52,15 @@ const getFractionsSumsPrimeDenominatorsQuestion: QuestionGenerator<
   const answer = ratio1.add(ratio2).toTree().toTex();
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Calculer et donner le résultat sous forme de fraction irréductible : $${statement}$`,
+    instruction: `Calculer ${
+      opts?.allowNonIrreductible
+        ? ""
+        : "et donner le résultat sous la forme d'une fraction irréductible"
+    } : 
+    
+$$
+${statement}
+$$`,
     keys: [],
     answerFormat: "tex",
     identifiers: { num1, num2, denom1, denom2 },
@@ -70,9 +88,39 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+const isAnswerValid: VEA<Identifiers, Options> = (
+  ans,
+  { answer, denom1, denom2, num1, num2 },
+  opts,
+) => {
+  const rationalA = new Rational(num1, denom1);
+  const rationalB = new Rational(num2, denom2);
+
+  const answerTree = rationalA
+    .add(rationalB)
+    .toTree({ allowFractionToDecimal: true });
+
+  const texs = answerTree.toAllValidTexs();
+
+  if (opts?.allowNonIrreductible) {
+    try {
+      const parsed = rationalParser(ans);
+      if (!parsed) return false;
+      return texs.includes(parsed.simplify().toTex());
+    } catch (err) {
+      return false;
+    }
+  } else return texs.includes(ans);
 };
+
+const options: GeneratorOption[] = [
+  {
+    id: "allowNonIrreductible",
+    label: "Autoriser les fractions non réduites",
+    target: GeneratorOptionTarget.vea,
+    type: GeneratorOptionType.checkbox,
+  },
+];
 
 export const fractionsSumsPrimeDenominators: Exercise<Identifiers> = {
   id: "fractionsSumsPrimeDenominators",
@@ -81,11 +129,15 @@ export const fractionsSumsPrimeDenominators: Exercise<Identifiers> = {
   levels: [],
   isSingleStep: true,
   sections: [],
-  generator: (nb: number) =>
-    getDistinctQuestions(getFractionsSumsPrimeDenominatorsQuestion, nb),
+  generator: (nb, opts) =>
+    getDistinctQuestions(
+      () => getFractionsSumsPrimeDenominatorsQuestion(opts),
+      nb,
+    ),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  options,
 };

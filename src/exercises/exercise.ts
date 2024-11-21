@@ -61,11 +61,14 @@ export enum GeneratorOptionType {
   checkbox = "checkbox",
   select = "select",
 }
-export type GeneratorOption = {
+export type GeneratorOption<TValue = any> = {
   id: string;
   label: string;
   type: GeneratorOptionType;
   target: GeneratorOptionTarget;
+  tooltipText?: string;
+  defaultValue?: TValue;
+  values?: TValue[];
 };
 
 export type Proposition = {
@@ -110,6 +113,7 @@ export interface Question<TIdentifiers = {}, TOptions = {}> {
   correction?: string;
   startStatement?: string;
   answer?: string;
+  answers?: string[];
   answerFormat?: "tex" | "raw";
   ggbAnswer?: string[];
   keyboardOptions?: KeyboardOptions;

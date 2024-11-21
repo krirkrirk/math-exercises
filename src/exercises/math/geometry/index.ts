@@ -10,3 +10,4 @@ export * from "./volumes";
 export * from "./euclidianConstructions";
 export * from "./shapes";
 // export * from "./euclidian";
+export * from "./parametric";

@@ -66,6 +66,17 @@ export abstract class SpacePointConstructor {
     }
     return res;
   }
+  static fromScalars(arr: number[], name: string = "A") {
+    if (arr.length !== 3) {
+      throw new Error("array must have 3 elements");
+    }
+    return new SpacePoint(
+      name,
+      new NumberNode(arr[0]),
+      new NumberNode(arr[1]),
+      new NumberNode(arr[2]),
+    );
+  }
 }
 
 export class SpacePoint {
@@ -83,6 +94,13 @@ export class SpacePoint {
     this.x = x;
     this.y = y;
     this.z = z;
+  }
+
+  getCoords() {
+    return [this.x, this.y, this.z];
+  }
+  getEvaluatedCoords() {
+    return this.getCoords().map((e) => e.evaluate({}));
   }
 
   toTex(): string {

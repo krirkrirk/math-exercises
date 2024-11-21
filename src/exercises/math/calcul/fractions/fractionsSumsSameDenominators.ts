@@ -9,6 +9,9 @@ import {
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
+  GeneratorOption,
+  GeneratorOptionTarget,
+  GeneratorOptionType,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import {
@@ -20,6 +23,9 @@ import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { parseAlgebraic } from "#root/tree/parsers/latexParser";
+import { numberParser } from "#root/tree/parsers/numberParser";
+import { rationalParser } from "#root/tree/parsers/rationalParser";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
 import { alignTex } from "#root/utils/latex/alignTex";
 
@@ -29,9 +35,13 @@ type Identifiers = {
   num2: number;
 };
 
+type Options = {
+  allowNonIrreductible?: boolean;
+};
 const getFractionsSumsSameDenominatorsQuestion: QuestionGenerator<
-  Identifiers
-> = () => {
+  Identifiers,
+  Options
+> = (opts) => {
   const denom = randint(2, 15);
   const num1 = randint(1, denom + 10);
   const num2 = randint(1, denom + 10);
@@ -42,14 +52,18 @@ const getFractionsSumsSameDenominatorsQuestion: QuestionGenerator<
   const answer = answerRatio.simplify().toTree().toTex();
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Calculer et donner le résultat sous forme d'une fraction irréductible : 
+    instruction: `Calculer ${
+      opts?.allowNonIrreductible
+        ? ""
+        : "et donner le résultat sous la forme d'une fraction irréductible"
+    } : 
     
 $$
 ${statement}
 $$`,
     keys: [],
-    hint: `Pour additionner deux fractions qui ont le même dénominateur, on peut additionner leurs numerateurs.`,
-    correction: `Les deux fractions ont bien le même dénominateur donc on additionne leurs numérateurs : 
+    hint: `Pour additionner deux fractions qui ont le même dénominateur, on peut additionner leurs numérateurs.`,
+    correction: `Les deux fractions ont bien le même dénominateur, donc on additionne leurs numérateurs : 
     
 ${alignTex([
   [
@@ -66,7 +80,7 @@ ${alignTex([
 ${
   answerRatio.isSimplified && answerRatio.denum !== 1
     ? "Cette fraction est bien irréductible."
-    : `Puis on simplifie la fraction : 
+    : `Puis, on simplifie la fraction : 
     
 ${alignTex([
   [
@@ -113,9 +127,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (
+const isAnswerValid: VEA<Identifiers, Options> = (
   ans,
   { answer, denom, num1, num2 },
+  opts,
 ) => {
   const rationalA = new Rational(num1, denom);
   const rationalB = new Rational(num2, denom);
@@ -125,9 +140,27 @@ const isAnswerValid: VEA<Identifiers> = (
     .toTree({ allowFractionToDecimal: true });
 
   const texs = answerTree.toAllValidTexs();
-  return texs.includes(ans);
+  if (opts?.allowNonIrreductible) {
+    try {
+      const parsed = rationalParser(ans);
+      if (!parsed) return false;
+      return texs.includes(parsed.simplify().toTex());
+    } catch (err) {
+      return false;
+    }
+  } else {
+    return texs.includes(ans);
+  }
 };
 
+const options: GeneratorOption[] = [
+  {
+    id: "allowNonIrreductible",
+    label: "Autoriser les fractions non réduites",
+    target: GeneratorOptionTarget.vea,
+    type: GeneratorOptionType.checkbox,
+  },
+];
 export const fractionsSumsSameDenominators: Exercise<Identifiers> = {
   id: "fractionsSumsSameDenominators",
   connector: "=",
@@ -135,12 +168,16 @@ export const fractionsSumsSameDenominators: Exercise<Identifiers> = {
   levels: [],
   isSingleStep: true,
   sections: [],
-  generator: (nb: number) =>
-    getDistinctQuestions(getFractionsSumsSameDenominatorsQuestion, nb),
+  generator: (nb, opts) =>
+    getDistinctQuestions(
+      () => getFractionsSumsSameDenominatorsQuestion(opts),
+      nb,
+    ),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
   hasHintAndCorrection: true,
+  options,
 };

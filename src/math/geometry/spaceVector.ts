@@ -3,6 +3,7 @@ import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { Node, NodeType } from "#root/tree/nodes/node";
 import { NumberNode, isNumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
@@ -42,6 +43,17 @@ export abstract class SpaceVectorConstructor {
     }
     return res;
   }
+  static fromScalars(arr: number[]) {
+    if (arr.length !== 3) {
+      throw new Error("array must have 3 elements");
+    }
+    return new SpaceVector(
+      "P",
+      new NumberNode(arr[0]),
+      new NumberNode(arr[1]),
+      new NumberNode(arr[2]),
+    );
+  }
 }
 
 export class SpaceVector {
@@ -62,7 +74,12 @@ export class SpaceVector {
     this.y = y;
     this.z = z;
   }
-
+  getCoords() {
+    return [this.x, this.y, this.z];
+  }
+  getEvaluatedCoords() {
+    return this.getCoords().map((e) => e.evaluate({}));
+  }
   toTex(): string {
     return `\\overrightarrow{${this.name}}`;
   }
@@ -81,7 +98,30 @@ export class SpaceVector {
     }}\\begin{pmatrix}${this.x.toTex()} \\\\ ${this.y.toTex()} \\\\ ${this.z.toTex()} \\end{pmatrix}`;
   }
 
+  vetorialProduct(v: SpaceVector): SpaceVector {
+    return new SpaceVector(
+      `w`,
+      new SubstractNode(
+        new MultiplyNode(this.y, v.z),
+        new MultiplyNode(this.z, v.y),
+      ).simplify(),
+      new SubstractNode(
+        new MultiplyNode(this.z, v.x),
+        new MultiplyNode(this.x, v.z),
+      ).simplify(),
+      new SubstractNode(
+        new MultiplyNode(this.x, v.y),
+        new MultiplyNode(this.y, v.x),
+      ).simplify(),
+    );
+  }
   isColinear(v: SpaceVector): boolean {
+    const vectorialProduct = this.vetorialProduct(v);
+    return vectorialProduct.equals(
+      new SpaceVector("0", (0).toTree(), (0).toTree(), (0).toTree()),
+    );
+  }
+  isCoplanar(v: SpaceVector): boolean {
     throw Error("unimplemented");
   }
   determinant(v: SpaceVector): AlgebraicNode {

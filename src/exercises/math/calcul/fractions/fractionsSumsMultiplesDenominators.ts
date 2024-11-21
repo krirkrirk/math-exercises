@@ -9,6 +9,9 @@ import {
   addValidProp,
   shuffleProps,
   tryToAddWrongProp,
+  GeneratorOption,
+  GeneratorOptionTarget,
+  GeneratorOptionType,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import {
@@ -17,6 +20,8 @@ import {
 } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { parseAlgebraic } from "#root/tree/parsers/latexParser";
+import { rationalParser } from "#root/tree/parsers/rationalParser";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
@@ -26,9 +31,14 @@ type Identifiers = {
   denom2: number;
 };
 
+type Options = {
+  allowNonIrreductible?: boolean;
+};
+
 const getFractionsSumsMultiplesDenominatorsQuestion: QuestionGenerator<
-  Identifiers
-> = () => {
+  Identifiers,
+  Options
+> = (opts) => {
   let denom1 = randint(2, 10);
   let denom2 = denom1 * randint(2, 10);
   if (coinFlip()) [denom1, denom2] = [denom2, denom1];
@@ -40,7 +50,15 @@ const getFractionsSumsMultiplesDenominatorsQuestion: QuestionGenerator<
   const answer = ratio1.add(ratio2).toTree().toTex();
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Calculer et donner le résultat sous forme de fraction irréductible : $${statement}$`,
+    instruction: `Calculer ${
+      opts?.allowNonIrreductible
+        ? ""
+        : "et donner le résultat sous la forme d'une fraction irréductible"
+    } : 
+    
+$$
+${statement}
+$$`,
     keys: [],
     answerFormat: "tex",
     identifiers: { num1, num2, denom1, denom2 },
@@ -68,9 +86,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (
+const isAnswerValid: VEA<Identifiers, Options> = (
   ans,
   { answer, denom1, denom2, num1, num2 },
+  opts,
 ) => {
   const rationalA = new Rational(num1, denom1);
   const rationalB = new Rational(num2, denom2);
@@ -80,8 +99,26 @@ const isAnswerValid: VEA<Identifiers> = (
     .toTree({ allowFractionToDecimal: true });
 
   const texs = answerTree.toAllValidTexs();
-  return texs.includes(ans);
+
+  if (opts?.allowNonIrreductible) {
+    try {
+      const parsed = rationalParser(ans);
+      if (!parsed) return false;
+      return texs.includes(parsed.simplify().toTex());
+    } catch (err) {
+      return false;
+    }
+  } else return texs.includes(ans);
 };
+
+const options: GeneratorOption[] = [
+  {
+    id: "allowNonIrreductible",
+    label: "Autoriser les fractions non réduites",
+    target: GeneratorOptionTarget.vea,
+    type: GeneratorOptionType.checkbox,
+  },
+];
 
 export const fractionsSumsMultiplesDenominators: Exercise<Identifiers> = {
   id: "fractionsSumsMultiplesDenominators",
@@ -90,11 +127,15 @@ export const fractionsSumsMultiplesDenominators: Exercise<Identifiers> = {
   levels: [],
   isSingleStep: true,
   sections: [],
-  generator: (nb: number) =>
-    getDistinctQuestions(getFractionsSumsMultiplesDenominatorsQuestion, nb),
+  generator: (nb, opts) =>
+    getDistinctQuestions(
+      () => getFractionsSumsMultiplesDenominatorsQuestion(opts),
+      nb,
+    ),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  options,
 };
