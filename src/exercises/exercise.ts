@@ -60,7 +60,7 @@ export enum GeneratorOptionTarget {
 export enum GeneratorOptionType {
   checkbox = "checkbox",
   select = "select",
-  multiSelect = "multiSelect",
+  multiselect = "multiselect",
 }
 export type GeneratorOption<TValue = any> = {
   id: string;

@@ -132,7 +132,7 @@ const options: GeneratorOption[] = [
   {
     id: "units",
     label: "N'utiliser que les unités suivantes :",
-    type: GeneratorOptionType.multiSelect,
+    type: GeneratorOptionType.multiselect,
     target: GeneratorOptionTarget.generation,
     values: units,
   },
