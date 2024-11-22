@@ -61,12 +61,9 @@ export class Affine extends Polynomial {
   }
 
   square(): Trinom {
-    return new Trinom(
-      this.a ** 2,
-      2 * this.a * this.b,
-      this.b ** 2,
-      this.variable,
-    );
+    return new Trinom(this.a ** 2, 2 * this.a * this.b, this.b ** 2, {
+      variable: this.variable,
+    });
   }
 
   times(n: number) {

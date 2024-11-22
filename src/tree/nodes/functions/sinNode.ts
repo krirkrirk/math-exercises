@@ -69,7 +69,7 @@ export class SinNode implements FunctionNode {
     return new SinNode(simplifiedChild);
   }
 
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return Math.sin(this.child.evaluate(vars));
   }
 

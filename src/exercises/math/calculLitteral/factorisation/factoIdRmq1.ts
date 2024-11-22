@@ -18,6 +18,7 @@ import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { PowerNode, SquareNode } from "#root/tree/nodes/operators/powerNode";
 import { alignTex } from "#root/utils/latex/alignTex";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { gcd } from "#root/math/utils/arithmetic/gcd";
 
 type Identifiers = {
   a: number;
@@ -103,8 +104,18 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b }) => {
 
 const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   const affine = new Affine(a, b);
+
   const answerTree = new SquareNode(affine.toTree());
   const validLatexs = answerTree.toAllValidTexs();
+
+  const pgcd = gcd(a, b);
+
+  if (pgcd !== 1) {
+    const affine2 = new Affine(a / pgcd, b / pgcd);
+    const coeff = pgcd ** 2;
+    const answerTree2 = new MultiplyNode(coeff.toTree(), affine2.toTree());
+    validLatexs.push(...answerTree2.toAllValidTexs());
+  }
   return validLatexs.includes(ans);
 };
 

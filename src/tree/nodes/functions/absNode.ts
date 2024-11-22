@@ -49,7 +49,7 @@ export class AbsNode implements FunctionNode {
     return new AbsNode(this.child.simplify());
   }
 
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return Math.abs(this.child.evaluate(vars));
   }
   equals(node: AlgebraicNode) {

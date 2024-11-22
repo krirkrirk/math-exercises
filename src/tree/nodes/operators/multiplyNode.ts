@@ -16,7 +16,11 @@ import { PowerNode, SquareNode, isPowerNode } from "./powerNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { isInt } from "#root/utils/isInt";
 import { isVariableNode } from "../variables/variableNode";
-import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
+import {
+  AlgebraicNode,
+  SimplifyOptions,
+  isAlgebraicNode,
+} from "../algebraicNode";
 import { SqrtNode, isSqrtNode } from "../functions/sqrtNode";
 import { OppositeNode, isOppositeNode } from "../functions/oppositeNode";
 import { FractionNode, isFractionNode } from "./fractionNode";
@@ -28,6 +32,16 @@ export function isMultiplyNode(a: Node): a is MultiplyNode {
   return isOperatorNode(a) && a.id === OperatorIds.multiply;
 }
 
+export const multiply = (
+  a: AlgebraicNode | number | string,
+  b: AlgebraicNode | number | string,
+) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  const nodeB =
+    typeof b === "number" ? b.toTree() : typeof b === "string" ? b.toTree() : b;
+  return new MultiplyNode(nodeA, nodeB);
+};
 export const sortMultiplyNodes = (arr: AlgebraicNode[]) => {
   arr.sort((a, b) => {
     return (
@@ -291,7 +305,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
   //   return multiply(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   // }
 
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return this.leftChild.evaluate(vars) * this.rightChild.evaluate(vars);
   }
 

@@ -93,7 +93,7 @@ export class Log10Node implements FunctionNode {
     }
     return this;
   }
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return Math.log10(this.child.evaluate(vars));
   }
   equals(node: AlgebraicNode): boolean {

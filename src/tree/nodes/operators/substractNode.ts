@@ -9,6 +9,18 @@ import { colorize } from "#root/utils/latex/colorize";
 export function isSubstractNode(a: Node): a is SubstractNode {
   return isOperatorNode(a) && a.id === OperatorIds.substract;
 }
+
+export const substract = (
+  a: AlgebraicNode | number | string,
+  b: AlgebraicNode | number | string,
+) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  const nodeB =
+    typeof b === "number" ? b.toTree() : typeof b === "string" ? b.toTree() : b;
+  return new SubstractNode(nodeA, nodeB);
+};
+
 export class SubstractNode implements OperatorNode {
   id: OperatorIds;
   leftChild: AlgebraicNode;
@@ -79,7 +91,7 @@ export class SubstractNode implements OperatorNode {
 
     return colorize(`${leftTex}-${rightTex}`, color);
   }
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return this.leftChild.evaluate(vars) - this.rightChild.evaluate(vars);
   }
   // toMathjs() {

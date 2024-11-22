@@ -17,6 +17,12 @@ export function isOppositeNode(a: Node): a is OppositeNode {
   return isFunctionNode(a) && a.id === FunctionsIds.opposite;
 }
 
+export const opposite = (a: AlgebraicNode | number | string) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  return new OppositeNode(nodeA);
+};
+
 const getEquivalentTrees = (root: Node) => {};
 export class OppositeNode implements FunctionNode {
   id: FunctionsIds;
@@ -100,7 +106,7 @@ export class OppositeNode implements FunctionNode {
   // toMathjs() {
   //   return unaryMinus(this.child.toMathjs());
   // }
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return -this.child.evaluate(vars);
   }
   simplify(opts?: SimplifyOptions) {

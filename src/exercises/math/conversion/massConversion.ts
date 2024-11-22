@@ -3,6 +3,7 @@ import {
   DecimalConstructor,
 } from "#root/math/numbers/decimals/decimal";
 import { randint } from "#root/math/utils/random/randint";
+import { numberParser } from "#root/tree/parsers/numberParser";
 import { shuffle } from "#root/utils/alea/shuffle";
 import {
   Exercise,
@@ -72,7 +73,9 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+  const parsed = numberParser(ans);
+  if (!parsed) return false;
+  return parsed === answer;
 };
 
 export const massConversion: Exercise<Identifiers> = {

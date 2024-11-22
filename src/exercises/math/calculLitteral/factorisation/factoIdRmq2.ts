@@ -20,6 +20,7 @@ import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { alignTex } from "#root/utils/latex/alignTex";
 import { shuffle } from "#root/utils/alea/shuffle";
 import { v4 } from "uuid";
+import { gcd } from "#root/math/utils/arithmetic/gcd";
 type Identifiers = {
   a: number;
   b: number;
@@ -109,6 +110,13 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b }) => {
   const affine = new Affine(a, b);
   const answerTree = new SquareNode(affine.toTree());
   const validLatexs = answerTree.toAllValidTexs();
+  const pgcd = gcd(a, Math.abs(b));
+  if (pgcd !== 1) {
+    const affine2 = new Affine(a / pgcd, b / pgcd);
+    const coeff = pgcd ** 2;
+    const answerTree2 = new MultiplyNode(coeff.toTree(), affine2.toTree());
+    validLatexs.push(...answerTree2.toAllValidTexs());
+  }
   return validLatexs.includes(ans);
 };
 

@@ -9,6 +9,13 @@ export function isPowerNode(a: Node): a is PowerNode {
   return isOperatorNode(a) && a.id === OperatorIds.power;
 }
 
+export const square = (a: AlgebraicNode | number | string) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+
+  return new SquareNode(nodeA);
+};
+
 export class PowerNode implements OperatorNode {
   opts?: NodeOptions;
   id: OperatorIds;
@@ -87,7 +94,7 @@ export class PowerNode implements OperatorNode {
   // toMathjs() {
   //   return pow(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   // }
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return Math.pow(
       this.leftChild.evaluate(vars),
       this.rightChild.evaluate(vars),

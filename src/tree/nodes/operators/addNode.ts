@@ -22,6 +22,17 @@ export function isAddNode(a: Node): a is AddNode {
   return isOperatorNode(a) && a.id === OperatorIds.add;
 }
 
+export const add = (
+  a: AlgebraicNode | number | string,
+  b: AlgebraicNode | number | string,
+) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  const nodeB =
+    typeof b === "number" ? b.toTree() : typeof b === "string" ? b.toTree() : b;
+  return new AddNode(nodeA, nodeB);
+};
+
 export class AddNode implements CommutativeOperatorNode {
   id: OperatorIds;
   leftChild: AlgebraicNode;
@@ -110,7 +121,7 @@ export class AddNode implements CommutativeOperatorNode {
       return colorize(`\\left(${tex}\\right)`, color);
     } else return colorize(tex, color);
   }
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return this.leftChild.evaluate(vars) + this.rightChild.evaluate(vars);
   }
   // toMathjs() {

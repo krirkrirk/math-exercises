@@ -70,7 +70,7 @@ export class LimitNode implements OperatorNode {
     }\\lim_{x \\to ${leftTex}${fromDisplay}} ${rightTex}`;
   }
 
-  evaluate(vars: Record<string, number>): number {
+  evaluate(vars?: Record<string, number>): number {
     throw Error("unimplemented limit evaluation");
   }
 

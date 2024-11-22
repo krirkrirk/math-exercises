@@ -70,7 +70,7 @@ export class ExpNode implements FunctionNode {
     if (isLogNode(simplifiedChild)) return simplifiedChild.child;
     return new ExpNode(simplifiedChild);
   }
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return Math.exp(this.child.evaluate(vars));
   }
   equals(node: AlgebraicNode): boolean {

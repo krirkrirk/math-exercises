@@ -1,3 +1,4 @@
+import { numberVEA } from "#root/exercises/vea/numberVEA";
 import {
   Decimal,
   DecimalConstructor,
@@ -5,9 +6,15 @@ import {
 import { randint } from "#root/math/utils/random/randint";
 import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit, distanceUnits } from "#root/pc/units/distanceUnits";
+import { random } from "#root/utils/alea/random";
 import { shuffle } from "#root/utils/alea/shuffle";
 import {
   Exercise,
+  GeneratorOption,
+  GeneratorOptionTarget,
+  GeneratorOptionType,
+  GetAnswer,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -24,6 +31,9 @@ type Identifiers = {
   randomUnitInstructionIndex: number;
   randomLength: number;
 };
+type Options = {
+  units: string[];
+};
 const units = ["mm", "cm", "dm", "m", "dam", "hm", "km"];
 const unitsObj = [
   DistanceUnit.mm,
@@ -35,34 +45,68 @@ const unitsObj = [
   DistanceUnit.km,
 ];
 
-const getLengthConversion: QuestionGenerator<Identifiers> = () => {
-  const randomUnitIndex = randint(0, 7);
-  const randomUnitInstructionIndex = randint(0, 7, [randomUnitIndex]);
-  const randomLength = DecimalConstructor.random(0, 1000, randint(0, 4));
-  const measure = new Measure(randomLength.value, 0, unitsObj[randomUnitIndex]);
+const getInstruction: GetInstruction<Identifiers, Options> = (
+  identifiers,
+  options,
+) => {
+  const measure = new Measure(
+    identifiers.randomLength,
+    0,
+    unitsObj[identifiers.randomUnitIndex],
+  );
+  return `Compléter : $${measure.toTex({
+    notScientific: true,
+  })} = \\ldots  ${unitsObj[identifiers.randomUnitInstructionIndex].toTex()}$`;
+};
+
+const getAnswer: GetAnswer<Identifiers, Options> = (identifiers, options) => {
+  const measure = new Measure(
+    identifiers.randomLength,
+    0,
+    unitsObj[identifiers.randomUnitIndex],
+  );
   const answer = measure
-    .convert(units[randomUnitInstructionIndex] as distanceUnits)
-    .toTex({ notScientific: true });
-  const question: Question<Identifiers> = {
-    instruction: `Compléter : $${measure.toTex({
-      notScientific: true,
-    })} = \\ldots  ${unitsObj[randomUnitInstructionIndex].toTex()}$`,
-    answer,
+    .convert(units[identifiers.randomUnitInstructionIndex] as distanceUnits)
+    .toTex({ notScientific: true, hideUnit: true });
+
+  return answer;
+};
+const getLengthConversion: QuestionGenerator<Identifiers, Options> = (
+  options,
+) => {
+  if (options && !validateOptions(options).valid)
+    throw Error("options invalides, gen lengthConversion");
+
+  const availableUnitsIndexes = units
+    .map((e, i) => i)
+    .filter((i) => !options?.units?.length || options.units.includes(units[i]));
+
+  const randomUnitIndex = random(availableUnitsIndexes);
+  const randomUnitInstructionIndex = random(availableUnitsIndexes, [
+    randomUnitIndex,
+  ]);
+  const randomLength = DecimalConstructor.random(0, 1000, randint(0, 4));
+
+  const identifiers = {
+    randomLength: randomLength.value,
+    randomUnitIndex,
+    randomUnitInstructionIndex,
+  };
+  const question: Question<Identifiers, Options> = {
+    instruction: getInstruction(identifiers, options),
+    answer: getAnswer(identifiers, options),
     keys: [],
     answerFormat: "tex",
-    identifiers: {
-      randomLength: randomLength.value,
-      randomUnitIndex,
-      randomUnitInstructionIndex,
-    },
+    identifiers,
   };
 
   return question;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (
+const getPropositions: QCMGenerator<Identifiers, Options> = (
   n,
   { answer, randomLength, randomUnitIndex, randomUnitInstructionIndex },
+  options,
 ) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
@@ -81,20 +125,50 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+  return numberVEA(ans, answer);
 };
 
-export const lengthConversion: Exercise<Identifiers> = {
+const options: GeneratorOption[] = [
+  {
+    id: "units",
+    label: "N'utiliser que les unités suivantes :",
+    type: GeneratorOptionType.multiSelect,
+    target: GeneratorOptionTarget.generation,
+    values: units,
+  },
+];
+
+const validateOptions = (opts: Options) => {
+  if (opts.units.length < 2)
+    return {
+      message: "Vous devez choisir au moins deux unités.",
+      valid: false,
+    };
+  return {
+    message: "Options valides",
+    valid: true,
+  };
+};
+
+const mockOptions = {
+  units: ["mm", "cm", "m"],
+};
+export const lengthConversion: Exercise<Identifiers, Options> = {
   id: "lengthConversion",
   connector: "=",
   label: "Conversion de longueurs",
   levels: ["6ème", "5ème", "CAP", "2ndPro"],
   sections: ["Conversions"],
   isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(getLengthConversion, nb),
+  generator: (nb, opts) =>
+    getDistinctQuestions(() => getLengthConversion(mockOptions), nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getAnswer,
+  getInstruction,
+  options,
+  validateOptions,
 };

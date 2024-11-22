@@ -9,7 +9,7 @@ export type SimplifyOptions = {
   isDegree?: boolean;
 };
 export interface AlgebraicNode extends Node {
-  evaluate: (vars: Record<string, number>) => number;
+  evaluate: (vars?: Record<string, number>) => number;
   toDetailedEvaluation: (vars: Record<string, AlgebraicNode>) => AlgebraicNode;
   toEquivalentNodes: (opts?: NodeOptions) => AlgebraicNode[];
   simplify: (opts?: SimplifyOptions) => AlgebraicNode;

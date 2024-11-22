@@ -13,6 +13,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randint } from "#root/math/utils/random/randint";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { round } from "#root/math/utils/round";
+import { numberParser } from "#root/tree/parsers/numberParser";
 
 type Identifiers = {
   radius: number;
@@ -112,13 +113,9 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, radius, height }) => {
-  const validanswer = round(
-    (1 / 3) * Math.PI * Math.pow(radius, 2) * height,
-    2,
-  ).toTree();
-  const latexs = validanswer.toAllValidTexs();
-
-  return latexs.includes(ans);
+  const parsed = numberParser(ans);
+  if (!parsed) return false;
+  return parsed === answer;
 };
 
 export const coneVolume: Exercise<Identifiers> = {

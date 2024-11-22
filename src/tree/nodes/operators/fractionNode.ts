@@ -13,6 +13,18 @@ import { AddNode, isAddNode } from "./addNode";
 export function isFractionNode(a: Node): a is FractionNode {
   return isOperatorNode(a) && a.id === OperatorIds.fraction;
 }
+
+export const frac = (
+  a: AlgebraicNode | number | string,
+  b: AlgebraicNode | number | string,
+) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  const nodeB =
+    typeof b === "number" ? b.toTree() : typeof b === "string" ? b.toTree() : b;
+  return new FractionNode(nodeA, nodeB);
+};
+
 export class FractionNode implements OperatorNode {
   opts?: NodeOptions;
   /**
@@ -101,7 +113,7 @@ export class FractionNode implements OperatorNode {
     return `\\frac{${this.leftChild.toTex()}}{${this.rightChild.toTex()}}`;
   }
 
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return this.leftChild.evaluate(vars) / this.rightChild.evaluate(vars);
   }
   // toMathjs() {

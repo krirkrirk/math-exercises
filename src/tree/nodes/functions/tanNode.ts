@@ -69,7 +69,7 @@ export class TanNode implements FunctionNode {
     return new TanNode(simplifiedChild);
   }
 
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return Math.tan(this.child.evaluate(vars));
   }
 

@@ -71,9 +71,9 @@ const getProbaFromTableWithContextQuestion: QuestionGenerator<
     case "singleEvent":
       [event, proba] = random([
         ["une fille", [aTotal, total]],
-        ["une élève qui porte des lunettes", [bTotal, total]],
+        ["un élève qui porte des lunettes", [bTotal, total]],
         ["un garçon", [aBarreTotal, total]],
-        ["une élève qui ne porte pas de lunettes", [bBarreTotal, total]],
+        ["un élève qui ne porte pas de lunettes", [bBarreTotal, total]],
       ]);
       break;
     case "intersection":

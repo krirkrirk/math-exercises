@@ -91,7 +91,7 @@ export abstract class TrinomConstructor {
       x2Opts?.excludes ?? [],
     );
 
-    //a*x^2 + ax*-x2 + a*-x1*x + a*-x1*-x2
+    //a*x^2 - ax*x2 - a*x1*x + a*x1*x2
     return new Trinom(a, -a * (x1 + x2), a * x1 * x2);
   }
   static randomNiceRoots(nbOfRoots: number = 2) {
@@ -120,17 +120,19 @@ export abstract class TrinomConstructor {
   }
 }
 
+type TrinomOptions = { variable: string };
 export class Trinom extends Polynomial {
   a: number;
   b: number;
   c: number;
   variable: string;
-  constructor(a: number, b: number, c: number, variable: string = "x") {
-    super([c, b, a], variable);
+  // roots: AlgebraicNode[];
+  constructor(a: number, b: number, c: number, opts?: TrinomOptions) {
+    super([c, b, a], opts?.variable ?? "x");
     this.a = a;
     this.b = b;
     this.c = c;
-    this.variable = variable;
+    this.variable = opts?.variable ?? "x";
   }
 
   getDelta() {
@@ -155,6 +157,11 @@ export class Trinom extends Polynomial {
     if (delta < 0) return [];
     if (delta === 0)
       return [new Rational(-this.b, 2 * this.a).simplify().toTree()];
+
+    // const root1 = new FractionNode(
+    //   ,
+    //   new MultiplyNode(2)
+    // )
     const sqrtDelta = Math.sqrt(delta);
     const isDeltaPerfectSquare =
       Math.sqrt(delta) === Math.floor(Math.sqrt(delta));

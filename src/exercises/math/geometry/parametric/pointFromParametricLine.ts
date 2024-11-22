@@ -53,12 +53,12 @@ const getAnswer: GetAnswer<Identifiers> = (identifiers) => {
 };
 
 const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
-  const point = SpacePointConstructor.fromScalars(
+  const askedPoint = SpacePointConstructor.fromScalars(
     identifiers.askedPointCoords,
     identifiers.askedPointName,
   );
   const line = new ParametricLine(
-    point,
+    SpacePointConstructor.fromScalars(identifiers.startPoint),
     SpaceVectorConstructor.fromScalars(identifiers.vector),
   );
 
@@ -70,7 +70,7 @@ $$
 
 où $t\\in \\mathbb{R}$. 
 
-Le point $${point.toTexWithCoords()}$ appartient-il à $d$ ?
+Le point $${askedPoint.toTexWithCoords()}$ appartient-il à $d$ ?
   `;
 };
 

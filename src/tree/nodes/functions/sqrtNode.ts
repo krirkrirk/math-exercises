@@ -10,6 +10,13 @@ import { operatorComposition } from "#root/tree/utilities/operatorComposition";
 export function isSqrtNode(a: Node): a is SqrtNode {
   return isFunctionNode(a) && a.id === FunctionsIds.sqrt;
 }
+
+export const sqrt = (a: AlgebraicNode | number | string) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  return new SqrtNode(nodeA);
+};
+
 export class SqrtNode implements FunctionNode {
   id: FunctionsIds;
   child: AlgebraicNode;
@@ -66,7 +73,7 @@ export class SqrtNode implements FunctionNode {
   toAllValidTexs(opts?: NodeOptions): string[] {
     return this.toEquivalentNodes(opts).map((node) => node.toTex());
   }
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return Math.sqrt(this.child.evaluate(vars));
   }
   simplify(opts?: SimplifyOptions) {

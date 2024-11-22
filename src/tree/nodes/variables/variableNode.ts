@@ -34,8 +34,8 @@ export class VariableNode implements AlgebraicNode {
     return [this];
   }
 
-  evaluate(vars: Record<string, number>) {
-    const value = vars[this.name];
+  evaluate(vars?: Record<string, number>) {
+    const value = vars?.[this.name];
     if (value === undefined)
       throw Error(`Can't evaluate variable ${this.name}`);
     return value;

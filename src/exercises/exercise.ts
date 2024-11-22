@@ -60,6 +60,7 @@ export enum GeneratorOptionTarget {
 export enum GeneratorOptionType {
   checkbox = "checkbox",
   select = "select",
+  multiSelect = "multiSelect",
 }
 export type GeneratorOption<TValue = any> = {
   id: string;
@@ -232,6 +233,7 @@ export interface Exercise<TIdentifiers = {}, TOptions = {}> {
     TOptions
   >;
   hotFix?: QuestionHotFix<TIdentifiers, TOptions>;
+  validateOptions?: (opts: TOptions) => { message: string; valid: boolean };
 }
 
 export type MathLevel =

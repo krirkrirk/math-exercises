@@ -64,7 +64,7 @@ export class ArcsinNode implements FunctionNode {
     return this;
   }
 
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return Math.asin(this.child.evaluate(vars));
   }
 

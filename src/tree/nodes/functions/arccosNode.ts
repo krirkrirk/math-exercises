@@ -65,7 +65,7 @@ export class ArccosNode implements FunctionNode {
     return this;
   }
 
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return Math.acos(this.child.evaluate(vars));
   }
 

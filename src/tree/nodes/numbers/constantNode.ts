@@ -41,7 +41,7 @@ export class ConstantNode implements AlgebraicNode {
   toEquivalentNodes() {
     return [this];
   }
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return this.value;
   }
   simplify() {

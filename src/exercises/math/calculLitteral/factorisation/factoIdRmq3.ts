@@ -11,6 +11,7 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
+import { gcd } from "#root/math/utils/arithmetic/gcd";
 import { randint } from "#root/math/utils/random/randint";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
@@ -126,6 +127,21 @@ const isAnswerValid: VEA<Identifiers> = (
   const affine2 = new Affine(affine2Coeffs[1], affine2Coeffs[0]);
   const answerTree = new MultiplyNode(affine.toTree(), affine2.toTree());
   const validLatexs = answerTree.toAllValidTexs();
+  const pgcd = gcd(Math.abs(affine1Coeffs[1]), Math.abs(affine1Coeffs[0]));
+  if (pgcd !== 1) {
+    const affineA = new Affine(
+      affine1Coeffs[1] / pgcd,
+      affine1Coeffs[0] / pgcd,
+    );
+    const affineB = new Affine(
+      affine2Coeffs[1] / pgcd,
+      affine2Coeffs[0] / pgcd,
+    );
+    const answer2 = new MultiplyNode(affineA.toTree(), affineB.toTree());
+    const coeff = pgcd ** 2;
+    const answerTree2 = new MultiplyNode(coeff.toTree(), answer2);
+    validLatexs.push(...answerTree2.toAllValidTexs());
+  }
   return validLatexs.includes(ans);
 };
 

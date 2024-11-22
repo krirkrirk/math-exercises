@@ -13,6 +13,7 @@ export enum NodeType {
   belongs,
   vector,
   set,
+  trinom,
 }
 export type NodeOptions = {
   forceTimesSign?: boolean;

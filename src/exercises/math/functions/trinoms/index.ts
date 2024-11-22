@@ -17,3 +17,4 @@ export * from "./summitAbscissFromDevForm";
 export * from "./trinomialMeanValue";
 export * from "./solveSecondDegreeEquationByFactorisation";
 export * from "./solveSecondDegreeEquationFromCano";
+export * from "./trinomSignFromRoots";

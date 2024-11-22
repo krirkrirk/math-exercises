@@ -84,7 +84,7 @@ export class DivideNode implements OperatorNode {
   toTex(): string {
     return divideNodeToTex(this.leftChild, this.rightChild);
   }
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return this.leftChild.evaluate(vars) / this.rightChild.evaluate(vars);
   }
   // toMathjs() {

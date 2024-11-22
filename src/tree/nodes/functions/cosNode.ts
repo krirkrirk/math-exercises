@@ -69,7 +69,7 @@ export class CosNode implements FunctionNode {
     return new CosNode(simplifiedChild);
   }
 
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     return Math.cos(this.child.evaluate(vars));
   }
 

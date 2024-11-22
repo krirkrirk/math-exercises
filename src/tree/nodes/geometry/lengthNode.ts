@@ -45,10 +45,10 @@ export class LengthNode implements AlgebraicNode {
     return this.segmentName;
   }
 
-  evaluate(vars: Record<string, number>) {
+  evaluate(vars?: Record<string, number>) {
     const value =
-      vars[this.segmentName] ??
-      vars[this.segmentName.split("").reverse().join("")];
+      vars?.[this.segmentName] ??
+      vars?.[this.segmentName.split("").reverse().join("")];
     if (value === undefined)
       throw Error(`Can't evaluate length ${this.segmentName}`);
     return value;
