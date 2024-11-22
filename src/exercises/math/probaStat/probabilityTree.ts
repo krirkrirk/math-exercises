@@ -3,9 +3,16 @@ import { Integer } from "#root/math/numbers/integer/integer";
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { gcd } from "#root/math/utils/arithmetic/gcd";
 import { randint } from "#root/math/utils/random/randint";
+import { round } from "#root/math/utils/round";
+import { frac } from "#root/tree/nodes/operators/fractionNode";
+import { multiply } from "#root/tree/nodes/operators/multiplyNode";
+import { parseAlgebraic } from "#root/tree/parsers/latexParser";
 import { shuffle } from "#root/utils/alea/shuffle";
 import {
   Exercise,
+  GeneratorOption,
+  GeneratorOptionTarget,
+  GeneratorOptionType,
   Proposition,
   QCMGenerator,
   Question,
@@ -27,26 +34,26 @@ type Identifiers = {
 };
 
 const getAnswerNode = ({ type, A, B, AC, AD, BC, BD }: Identifiers) => {
-  const pA = new Rational(A, A + B).simplify();
-  const pB = new Rational(B, A + B).simplify();
-  const pA_C = new Rational(AC, AC + AD).simplify();
-  const pA_D = new Rational(AD, AC + AD).simplify();
-  const pB_C = new Rational(BC, BC + BD).simplify();
-  const pB_D = new Rational(BD, BC + BD).simplify();
+  const pA = frac(A, A + B);
+  const pB = frac(B, A + B);
+  const pA_C = frac(AC, AC + AD);
+  const pA_D = frac(AD, AC + AD);
+  const pB_C = frac(BC, BC + BD);
+  const pB_D = frac(BD, BC + BD);
   switch (type) {
     case 1:
-      return pA.multiply(pA_C);
+      return multiply(pA, pA_C).simplify();
     case 2:
-      return pA.multiply(pA_D);
+      return multiply(pA, pA_D).simplify();
     case 3:
-      return pB.multiply(pB_C);
+      return multiply(pB, pB_C).simplify();
     case 4:
     default:
-      return pB.multiply(pB_D);
+      return multiply(pB, pB_D).simplify();
   }
 };
 
-const getProbabilityTree: QuestionGenerator<Identifiers> = () => {
+const getProbabilityTree: QuestionGenerator<Identifiers, Options> = (opts) => {
   const A = randint(2, 9);
   const B = randint(2, 10 - A);
   const AC = randint(2, 9);
@@ -59,7 +66,7 @@ const getProbabilityTree: QuestionGenerator<Identifiers> = () => {
 
   const type = randint(1, 5);
   const answer = getAnswerNode({ type, A, AC, AD, B, BC, BD });
-  const answerTex = answer.toTree().toTex();
+  const answerTex = answer.toTex();
   switch (type) {
     case 1: {
       instruction += `calculer $P(A \\cap C)$.`;
@@ -83,6 +90,9 @@ const getProbabilityTree: QuestionGenerator<Identifiers> = () => {
     }
   }
 
+  if (opts?.allowApproximate) {
+    instruction += ` Donner la valeur exacte ou une valeur arrondie au ${opts.allowApproximate}.`;
+  }
   let commands = [
     "A = Point({2,2})",
     "B = Point({2,-2})",
@@ -127,7 +137,7 @@ const getProbabilityTree: QuestionGenerator<Identifiers> = () => {
     hideAxes: true,
     hideGrid: true,
   });
-  const question: Question<Identifiers> = {
+  const question: Question<Identifiers, Options> = {
     instruction,
     startStatement,
     answer: answerTex,
@@ -150,24 +160,59 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   const answerNode = getAnswerNode({ A, AC, AD, B, BC, BD, type });
   while (propositions.length < n) {
-    const wrongAnswer = answerNode.multiply(new Integer(randint(2, 11)));
-    tryToAddWrongProp(propositions, wrongAnswer.toTree().toTex());
+    const wrongAnswer = multiply(answerNode, randint(2, 11)).simplify();
+    tryToAddWrongProp(propositions, wrongAnswer.toTex());
   }
 
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<Identifiers> = (
+type Options = {
+  allowApproximate: string;
+};
+const isAnswerValid: VEA<Identifiers, Options> = (
   ans,
-  { A, AC, AD, B, BC, BD, type },
+  { answer, A, AC, AD, B, BC, BD, type },
+  opts,
 ) => {
-  const answer = getAnswerNode({ type, A, AC, AD, B, BC, BD });
-  const texs = answer.toTree({ allowFractionToDecimal: true }).toAllValidTexs();
-
-  return texs.includes(ans);
+  try {
+    console.log(opts);
+    const parsed = parseAlgebraic(ans);
+    if (!parsed) return false;
+    const simplified = parsed.simplify();
+    if (opts?.allowApproximate) {
+      const rank = ["dixième", "centième", "millième"].indexOf(
+        opts.allowApproximate,
+      );
+      return (
+        answer === simplified.toTex() ||
+        simplified.evaluate() ===
+          round(
+            getAnswerNode({ type, A, AC, AD, B, BC, BD }).evaluate(),
+            rank + 1,
+          )
+      );
+    }
+    return answer === simplified.toTex();
+    // const answer = getAnswerNode({ type, A, AC, AD, B, BC, BD });
+    // const texs = answer.toTree({ allowFractionToDecimal: true }).toAllValidTexs();
+  } catch (err) {
+    return false;
+  }
 };
 
-export const probabilityTree: Exercise<Identifiers> = {
+const options: GeneratorOption[] = [
+  {
+    id: "allowApproximate",
+    label: "Autoriser les valeurs approchées au : ",
+    target: GeneratorOptionTarget.vea,
+    type: GeneratorOptionType.select,
+    defaultValue: "centieme",
+    values: ["dixième", "centième", "millième"],
+  },
+];
+
+export const probabilityTree: Exercise<Identifiers, Options> = {
   id: "probabilityTree",
   connector: "=",
   label: "Calculs de probabilités à l'aide d'un arbre pondéré",
@@ -182,11 +227,13 @@ export const probabilityTree: Exercise<Identifiers> = {
   ],
   isSingleStep: false,
   sections: ["Probabilités"],
-  generator: (nb: number) => getDistinctQuestions(getProbabilityTree, nb),
+  generator: (nb, opts) =>
+    getDistinctQuestions(() => getProbabilityTree(opts), nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
   hasGeogebra: true,
   subject: "Mathématiques",
+  options,
 };
