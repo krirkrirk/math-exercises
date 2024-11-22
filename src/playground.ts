@@ -32,9 +32,9 @@ import { FractionNode } from "./tree/nodes/operators/fractionNode";
 import { OppositeNode } from "./tree/nodes/functions/oppositeNode";
 
 export const playground = () => {
-  const mul = new MultiplyNode(
-    new SqrtNode((2).toTree()),
-    (-1).toTree(),
-  ).simplify();
-  console.log(mul.toTex());
+  // const mul = new MultiplyNode(
+  //   new SqrtNode((2).toTree()),
+  //   (-1).toTree(),
+  // ).simplify();
+  // console.log(mul.toTex());
 };

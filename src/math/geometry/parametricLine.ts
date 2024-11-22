@@ -42,7 +42,7 @@ export class ParametricLine {
       this.startPoint,
       secondPoint,
     );
-    console.log(vector1.toInlineCoordsTex(), vector2.toInlineCoordsTex());
+
     return vector1.isColinear(vector2);
   }
 

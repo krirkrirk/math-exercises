@@ -9,6 +9,7 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { numberVEA } from "#root/exercises/vea/numberVEA";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { coinFlip } from "#root/utils/alea/coinFlip";
@@ -149,9 +150,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, rand }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (studentAns, { answer }) => {
-  const answerTree = new NumberNode(Number(answer.replace(",", ".")));
-  const texs = answerTree.toAllValidTexs();
-  return texs.includes(studentAns);
+  return numberVEA(studentAns, answer);
 };
 
 export const mentalPercentage: Exercise<Identifiers> = {

@@ -150,9 +150,6 @@ const validateOptions = (opts: Options) => {
   };
 };
 
-const mockOptions = {
-  units: ["mm", "cm", "m"],
-};
 export const lengthConversion: Exercise<Identifiers, Options> = {
   id: "lengthConversion",
   connector: "=",
@@ -161,7 +158,7 @@ export const lengthConversion: Exercise<Identifiers, Options> = {
   sections: ["Conversions"],
   isSingleStep: true,
   generator: (nb, opts) =>
-    getDistinctQuestions(() => getLengthConversion(mockOptions), nb),
+    getDistinctQuestions(() => getLengthConversion(opts), nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,

@@ -160,4 +160,5 @@ export const trinomSignFromRoots: Exercise<Identifiers> = {
   getHint,
   getCorrection,
   getAnswer,
+  hasHintAndCorrection: true,
 };

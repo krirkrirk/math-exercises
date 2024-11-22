@@ -109,7 +109,15 @@ export class FractionNode implements OperatorNode {
         .toTex()
         .slice(1)}}{${this.rightChild.toTex()}}`;
     }
-
+    if (
+      !this.opts?.allowMinusAnywhereInFraction &&
+      (isOppositeNode(this.rightChild) ||
+        (isNumberNode(this.rightChild) && this.rightChild.value < 0))
+    ) {
+      return `-\\frac{${this.leftChild.toTex()}}{${this.rightChild
+        .toTex()
+        .slice(1)}}`;
+    }
     return `\\frac{${this.leftChild.toTex()}}{${this.rightChild.toTex()}}`;
   }
 
