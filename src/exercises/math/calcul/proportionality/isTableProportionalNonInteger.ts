@@ -25,6 +25,7 @@ import { add } from "#root/tree/nodes/operators/addNode";
 import { multiply } from "#root/tree/nodes/operators/multiplyNode";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 import { random } from "#root/utils/alea/random";
+import { doWhile } from "#root/utils/doWhile";
 import { dollarize } from "#root/utils/latex/dollarize";
 import { mdTable } from "#root/utils/markdown/mdTable";
 
@@ -38,10 +39,10 @@ type Identifiers = {
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
-  addValidProp(propositions, answer);
-  tryToAddWrongProp(propositions, "Non");
-  tryToAddWrongProp(propositions, "On ne peut pas savoir");
-  tryToAddWrongProp(propositions, "Oui");
+  addValidProp(propositions, answer, "raw");
+  tryToAddWrongProp(propositions, "Non", "raw");
+  tryToAddWrongProp(propositions, "On ne peut pas savoir", "raw");
+  tryToAddWrongProp(propositions, "Oui", "raw");
 
   return shuffleProps(propositions, n);
 };
@@ -83,22 +84,33 @@ const getIsTableProportionalNonIntegerQuestion: QuestionGenerator<
     case 1:
       //coeff entier, valeurs décimal/frac
       coeff = randint(2, 10).toTree();
-      xValues = [0, 1, 2]
-        .map((e) =>
-          coinFlip()
-            ? randfloat(1.1, 10, 1).toTree()
-            : RationalConstructor.randomIrreductible().toTree(),
-        )
-        .sort((a, b) => a.evaluate() - b.evaluate());
+      for (let i = 0; i < 3; i++) {
+        let x: AlgebraicNode = doWhile<AlgebraicNode>(
+          () =>
+            coinFlip()
+              ? randfloat(1.1, 10, 1).toTree()
+              : RationalConstructor.randomIrreductible().toTree(),
+          (y) => y.equals(x),
+        );
+        xValues.push(x);
+      }
+      xValues.sort((a, b) => a.evaluate() - b.evaluate());
+
       break;
     case 2:
       //coeff décimal, valeurs entieres/décimal
       coeff = randfloat(1.1, 10, 1).toTree();
-      xValues = [0, 1, 2]
-        .map((e) =>
-          coinFlip() ? randint(1, 10).toTree() : randfloat(1.1, 10, 1).toTree(),
-        )
-        .sort((a, b) => a.evaluate() - b.evaluate());
+      for (let i = 0; i < 3; i++) {
+        let x: AlgebraicNode = doWhile<AlgebraicNode>(
+          () =>
+            coinFlip()
+              ? randint(1, 10).toTree()
+              : randfloat(1.1, 10, 1).toTree(),
+          (y) => y.equals(x),
+        );
+        xValues.push(x);
+      }
+      xValues.sort((a, b) => a.evaluate() - b.evaluate());
       break;
 
     case 3:
@@ -106,13 +118,17 @@ const getIsTableProportionalNonIntegerQuestion: QuestionGenerator<
     default:
       coeff = RationalConstructor.randomPureRational().toTree();
 
-      xValues = [0, 1, 2]
-        .map((e) =>
-          coinFlip()
-            ? randint(1, 10).toTree()
-            : RationalConstructor.randomIrreductible().toTree(),
-        )
-        .sort((a, b) => a.evaluate() - b.evaluate());
+      for (let i = 0; i < 3; i++) {
+        let x: AlgebraicNode = doWhile<AlgebraicNode>(
+          () =>
+            coinFlip()
+              ? randint(1, 10).toTree()
+              : RationalConstructor.randomIrreductible().toTree(),
+          (y) => y.equals(x),
+        );
+        xValues.push(x);
+      }
+      xValues.sort((a, b) => a.evaluate() - b.evaluate());
   }
   const yValues = isProportionnal
     ? xValues.map((x) => multiply(x, coeff).simplify())
@@ -129,10 +145,13 @@ const getIsTableProportionalNonIntegerQuestion: QuestionGenerator<
     answer: getAnswer(identifiers),
     instruction: getInstruction(identifiers),
     keys: getKeys(identifiers),
-    answerFormat: "tex",
+    answerFormat: "raw",
     identifiers,
     // hint: getHint(identifiers),
     // correction: getCorrection(identifiers),
+    style: {
+      tableHasNoHeader: true,
+    },
   };
 
   return question;

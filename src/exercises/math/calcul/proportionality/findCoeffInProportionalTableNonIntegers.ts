@@ -26,6 +26,7 @@ import { multiply } from "#root/tree/nodes/operators/multiplyNode";
 import { parseAlgebraic } from "#root/tree/parsers/latexParser";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 import { random } from "#root/utils/alea/random";
+import { doWhile } from "#root/utils/doWhile";
 import { dollarize } from "#root/utils/latex/dollarize";
 import { mdTable } from "#root/utils/markdown/mdTable";
 
@@ -96,36 +97,49 @@ const getFindCoeffInProportionalTableNonIntegersQuestion: QuestionGenerator<
     case 1:
       //coeff entier, valeurs décimal/frac
       coeff = randint(2, 10).toTree();
-      xValues = [0, 1, 2]
-        .map((e) =>
-          coinFlip()
-            ? randfloat(1.1, 10, 1).toTree()
-            : RationalConstructor.randomIrreductible().toTree(),
-        )
-        .sort((a, b) => a.evaluate() - b.evaluate());
+      for (let i = 0; i < 3; i++) {
+        let x: AlgebraicNode = doWhile<AlgebraicNode>(
+          () =>
+            coinFlip()
+              ? randfloat(1.1, 10, 1).toTree()
+              : RationalConstructor.randomIrreductible().toTree(),
+          (y) => y.equals(x),
+        );
+        xValues.push(x);
+      }
+      xValues.sort((a, b) => a.evaluate() - b.evaluate());
       break;
     case 2:
       //coeff décimal, valeurs entieres/décimal
       coeff = randfloat(1.1, 10, 1).toTree();
-      xValues = [0, 1, 2]
-        .map((e) =>
-          coinFlip() ? randint(1, 10).toTree() : randfloat(1.1, 10, 1).toTree(),
-        )
-        .sort((a, b) => a.evaluate() - b.evaluate());
+      for (let i = 0; i < 3; i++) {
+        let x: AlgebraicNode = doWhile<AlgebraicNode>(
+          () =>
+            coinFlip()
+              ? randint(1, 10).toTree()
+              : randfloat(1.1, 10, 1).toTree(),
+          (y) => y.equals(x),
+        );
+        xValues.push(x);
+      }
+      xValues.sort((a, b) => a.evaluate() - b.evaluate());
       break;
 
     case 3:
     //coeff frac, valeurs frac / entieres
     default:
       coeff = RationalConstructor.randomPureRational().toTree();
-
-      xValues = [0, 1, 2]
-        .map((e) =>
-          coinFlip()
-            ? randint(1, 10).toTree()
-            : RationalConstructor.randomIrreductible().toTree(),
-        )
-        .sort((a, b) => a.evaluate() - b.evaluate());
+      for (let i = 0; i < 3; i++) {
+        let x: AlgebraicNode = doWhile<AlgebraicNode>(
+          () =>
+            coinFlip()
+              ? randint(1, 10).toTree()
+              : RationalConstructor.randomIrreductible().toTree(),
+          (y) => y.equals(x),
+        );
+        xValues.push(x);
+      }
+      xValues.sort((a, b) => a.evaluate() - b.evaluate());
   }
   const yValues = xValues.map((x) => multiply(x, coeff).simplify());
 
@@ -143,6 +157,9 @@ const getFindCoeffInProportionalTableNonIntegersQuestion: QuestionGenerator<
     identifiers,
     // hint: getHint(identifiers),
     // correction: getCorrection(identifiers),
+    style: {
+      tableHasNoHeader: true,
+    },
   };
 
   return question;
