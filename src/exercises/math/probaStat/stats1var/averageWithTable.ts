@@ -15,6 +15,7 @@ import {
   tryToAddWrongProp,
 } from "../../../exercise";
 import { getDistinctQuestions } from "../../../utils/getDistinctQuestions";
+import { numberVEA } from "#root/exercises/vea/numberVEA";
 
 type Identifiers = {
   randomValues: number[];
@@ -96,7 +97,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+  return numberVEA(ans, answer);
 };
 
 export const averageWithTable: Exercise<Identifiers> = {

@@ -2,6 +2,17 @@
 import { AlgebraicNode } from "../algebraicNode";
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 
+export const equal = (
+  a: AlgebraicNode | number | string,
+  b: AlgebraicNode | number | string,
+) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  const nodeB =
+    typeof b === "number" ? b.toTree() : typeof b === "string" ? b.toTree() : b;
+  return new EqualNode(nodeA, nodeB);
+};
+
 export const isEqualNode = (node: Node): node is EqualNode =>
   node.type === NodeType.equality;
 

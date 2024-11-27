@@ -176,7 +176,6 @@ const isAnswerValid: VEA<Identifiers, Options> = (
   opts,
 ) => {
   try {
-    console.log(opts);
     const parsed = parseAlgebraic(ans);
     if (!parsed) return false;
     const simplified = parsed.simplify();

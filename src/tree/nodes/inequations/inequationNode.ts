@@ -10,15 +10,16 @@ import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { MinusInfinityNode, PlusInfinityNode } from "../numbers/infiniteNode";
 import { ClosureType } from "../sets/closure";
 import { IntervalNode } from "../sets/intervalNode";
+import { AlgebraicNode } from "../algebraicNode";
 
 export class InequationNode implements Node {
   opts?: NodeOptions | undefined;
   type: NodeType;
   tex: string;
-  children: Node[];
+  children: AlgebraicNode[];
   symbols: InegalitySymbols[];
   constructor(
-    children: Node[],
+    children: AlgebraicNode[],
     symbols: InegalitySymbols[] | InegalitySymbols,
   ) {
     if (children.length < 2)

@@ -25,9 +25,10 @@ import { SqrtNode, isSqrtNode } from "../functions/sqrtNode";
 import { OppositeNode, isOppositeNode } from "../functions/oppositeNode";
 import { FractionNode, isFractionNode } from "./fractionNode";
 import { isFunctionNode } from "../functions/functionNode";
-import { AddNode } from "./addNode";
+import { AddNode, add, isAddNode } from "./addNode";
 import { round } from "#root/math/utils/round";
 import { colorize } from "#root/utils/latex/colorize";
+import { isSubstractNode } from "./substractNode";
 export function isMultiplyNode(a: Node): a is MultiplyNode {
   return isOperatorNode(a) && a.id === OperatorIds.multiply;
 }
@@ -35,12 +36,13 @@ export function isMultiplyNode(a: Node): a is MultiplyNode {
 export const multiply = (
   a: AlgebraicNode | number | string,
   b: AlgebraicNode | number | string,
+  opts?: NodeOptions,
 ) => {
   const nodeA =
     typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
   const nodeB =
     typeof b === "number" ? b.toTree() : typeof b === "string" ? b.toTree() : b;
-  return new MultiplyNode(nodeA, nodeB);
+  return new MultiplyNode(nodeA, nodeB, opts);
 };
 export const sortMultiplyNodes = (arr: AlgebraicNode[]) => {
   arr.sort((a, b) => {
@@ -131,7 +133,8 @@ export class MultiplyNode implements CommutativeOperatorNode {
         isNumberNode(this.rightChild) ||
         (isVariableNode(this.leftChild) &&
           isVariableNode(this.rightChild) &&
-          this.leftChild.name === this.rightChild.name));
+          this.leftChild.name === this.rightChild.name) ||
+        (isSqrtNode(this.leftChild) && isSqrtNode(this.rightChild)));
     if (isOperatorNode(this.rightChild)) {
       showTimesSign ||= [OperatorIds.fraction].includes(this.rightChild.id);
     }
@@ -318,36 +321,38 @@ export class MultiplyNode implements CommutativeOperatorNode {
     const rightSimplified = this.rightChild.simplify(opts);
     const copy = new MultiplyNode(leftSimplified, rightSimplified, this.opts);
 
-    /**get externals nodes
+    /**get externals nodes (= extremités du sous arbre non multiplicatif)
      * les opposites sont supprimés et on ajoute *-1 à la fin si leur nb est impair
      */
-    let externals: AlgebraicNode[] = [];
-    let oppositesCount = 0;
-
-    const recursive = (node: AlgebraicNode) => {
-      if (isMultiplyNode(node)) {
-        recursive(node.leftChild);
-        recursive(node.rightChild);
-      } else if (isOppositeNode(node)) {
-        oppositesCount++;
-        recursive(node.child);
-      } else if (isNumberNode(node) && node.value < 0) {
-        oppositesCount++;
-        externals.push(new NumberNode(Math.abs(node.value)));
-      } else {
-        externals.push(node);
+    const getExternalNodes = (root: AlgebraicNode) => {
+      let oppositesCount = 0;
+      const res: AlgebraicNode[] = [];
+      const recursive = (node: AlgebraicNode) => {
+        if (isMultiplyNode(node)) {
+          recursive(node.leftChild);
+          recursive(node.rightChild);
+        } else if (isOppositeNode(node)) {
+          oppositesCount++;
+          recursive(node.child);
+        } else if (isNumberNode(node) && node.value < 0) {
+          oppositesCount++;
+          res.push(new NumberNode(Math.abs(node.value)));
+        } else {
+          res.push(node);
+        }
+      };
+      recursive(root);
+      if (oppositesCount % 2 === 1) {
+        res.unshift(new NumberNode(-1));
       }
+      return res;
     };
-    recursive(copy);
+    let externals: AlgebraicNode[] = getExternalNodes(copy);
 
     //si 0 on s'arrete
     if (externals.some((node) => isNumberNode(node) && node.value === 0)) {
       return new NumberNode(0);
     }
-    if (oppositesCount % 2 === 1) {
-      externals.unshift(new NumberNode(-1));
-    }
-
     //suppression des 1
     externals = externals.filter(
       (node) => !isNumberNode(node) || node.value !== 1,
@@ -388,6 +393,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
       if (isNumberNode(a) && isNumberNode(b)) {
         return new NumberNode(round(a.value * b.value, 12));
       }
+
       if (isSqrtNode(a) && isSqrtNode(b)) {
         return new SqrtNode(new MultiplyNode(a.child, b.child)).simplify(opts);
       }
@@ -408,6 +414,20 @@ export class MultiplyNode implements CommutativeOperatorNode {
       powerSimplified = powerSimplify(b, a, opts);
       if (powerSimplified) return powerSimplified;
 
+      if (opts?.towardsDistribute && (isAddNode(a) || isSubstractNode(a))) {
+        return add(
+          multiply(a.leftChild, b),
+          multiply(a.rightChild, b),
+        ).simplify();
+      } else if (
+        opts?.towardsDistribute &&
+        (isAddNode(b) || isSubstractNode(b))
+      ) {
+        return add(
+          multiply(a, b.leftChild),
+          multiply(a, b.rightChild),
+        ).simplify();
+      }
       //TODo continue
       return null;
     };
@@ -420,8 +440,14 @@ export class MultiplyNode implements CommutativeOperatorNode {
           const right = externals[j];
           const simplified = simplifyExternalNodes(left, right);
           if (simplified) {
-            externals[i] = simplified;
             externals.splice(j, 1);
+
+            if (isMultiplyNode(simplified)) {
+              const subExternals = getExternalNodes(simplified);
+              externals.splice(i, 1, ...subExternals);
+            } else {
+              externals[i] = simplified;
+            }
             if (isNumberNode(simplified) && simplified.value === 1) {
               externals.splice(i, 1);
             }
@@ -434,6 +460,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
     simplifyIteration();
     if (!externals.length) return new NumberNode(1);
     if (externals.length === 1) return externals[0];
+    sortMultiplyNodes(externals);
     return operatorComposition(MultiplyNode, externals);
   }
 

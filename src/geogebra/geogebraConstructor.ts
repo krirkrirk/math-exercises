@@ -54,16 +54,16 @@ export class GeogebraConstructor {
     const showAxes = forceShowAxes ?? (this.hideAxes ? false : true);
     const xDelta = xMax - xMin;
     const yDelta = yMax - yMin;
-
+    const coeff = 0.1;
     if (this.is3D && zMin !== undefined && zMax !== undefined) {
       const zDelta = zMax - zMin;
       const coords = [
-        xMin === xMax ? xMin - 1 : xMin - Math.max(1, 0.2 * Math.abs(xDelta)),
-        xMin === xMax ? xMax + 1 : xMax + Math.max(1, 0.2 * Math.abs(xDelta)),
-        yMin === yMax ? yMin - 1 : yMin - Math.max(1, 0.2 * Math.abs(yDelta)),
-        yMin === yMax ? yMax + 1 : yMax + Math.max(1, 0.2 * Math.abs(yDelta)),
-        zMin === zMax ? zMin - 1 : zMin - Math.max(1, 0.2 * Math.abs(zDelta)),
-        zMin === zMax ? zMax + 1 : zMax + Math.max(1, 0.2 * Math.abs(zDelta)),
+        xMin === xMax ? xMin - 1 : xMin - Math.max(1, coeff * Math.abs(xDelta)),
+        xMin === xMax ? xMax + 1 : xMax + Math.max(1, coeff * Math.abs(xDelta)),
+        yMin === yMax ? yMin - 1 : yMin - Math.max(1, coeff * Math.abs(yDelta)),
+        yMin === yMax ? yMax + 1 : yMax + Math.max(1, coeff * Math.abs(yDelta)),
+        zMin === zMax ? zMin - 1 : zMin - Math.max(1, coeff * Math.abs(zDelta)),
+        zMin === zMax ? zMax + 1 : zMax + Math.max(1, coeff * Math.abs(zDelta)),
       ];
       if (showAxes) {
         coords[0] = Math.min(-1, coords[0]);
@@ -76,10 +76,10 @@ export class GeogebraConstructor {
       return coords;
     } else {
       const coords = [
-        xMin === xMax ? xMin - 1 : xMin - Math.max(1, 0.2 * Math.abs(xDelta)),
-        xMin === xMax ? xMax + 1 : xMax + Math.max(1, 0.2 * Math.abs(xDelta)),
-        yMin === yMax ? yMin - 1 : yMin - Math.max(1, 0.2 * Math.abs(yDelta)),
-        yMin === yMax ? yMax + 1 : yMax + Math.max(1, 0.2 * Math.abs(yDelta)),
+        xMin === xMax ? xMin - 1 : xMin - Math.max(1, coeff * Math.abs(xDelta)),
+        xMin === xMax ? xMax + 1 : xMax + Math.max(1, coeff * Math.abs(xDelta)),
+        yMin === yMax ? yMin - 1 : yMin - Math.max(1, coeff * Math.abs(yDelta)),
+        yMin === yMax ? yMax + 1 : yMax + Math.max(1, coeff * Math.abs(yDelta)),
       ];
       if (showAxes) {
         coords[0] = Math.min(-1, coords[0]);

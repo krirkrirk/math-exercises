@@ -124,7 +124,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   addValidProp(propositions, answer, "raw");
   tryToAddWrongProp(propositions, "Paire", "raw");
   tryToAddWrongProp(propositions, "Impaire", "raw");
-  tryToAddWrongProp(propositions, "Ni paire ni impaire", "raw");
+  tryToAddWrongProp(propositions, "Ni paire, ni impaire", "raw");
   tryToAddWrongProp(propositions, "On ne peut pas savoir", "raw");
 
   return shuffleProps(propositions, n);

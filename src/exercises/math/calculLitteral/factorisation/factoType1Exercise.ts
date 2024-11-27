@@ -61,7 +61,11 @@ const getFactoType1Question: QuestionGenerator<Identifiers> = () => {
   const answer = answerTree.toTex();
 
   const question: Question<Identifiers> = {
-    instruction: `Factoriser : $${statementTree.toTex()}$`,
+    instruction: `Factoriser et réduire : 
+
+$$
+${statementTree.toTex()}
+$$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: ["x"],

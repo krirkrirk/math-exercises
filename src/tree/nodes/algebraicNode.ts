@@ -7,6 +7,7 @@ export type SimplifyOptions = {
   //nb de chiffres significatifs
   scientific?: number;
   isDegree?: boolean;
+  towardsDistribute?: boolean;
 };
 export interface AlgebraicNode extends Node {
   evaluate: (vars?: Record<string, number>) => number;

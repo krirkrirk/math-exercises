@@ -8,7 +8,7 @@ import {
 import { distinctRandTupleInt } from "./math/utils/random/randTupleInt";
 import { CosNode } from "./tree/nodes/functions/cosNode";
 import { ExpNode } from "./tree/nodes/functions/expNode";
-import { SqrtNode } from "./tree/nodes/functions/sqrtNode";
+import { SqrtNode, sqrt } from "./tree/nodes/functions/sqrtNode";
 import { NodeConstructor } from "./tree/nodes/nodeConstructor";
 import {
   MinusInfinityNode,
@@ -16,7 +16,7 @@ import {
 } from "./tree/nodes/numbers/infiniteNode";
 import { NumberNode } from "./tree/nodes/numbers/numberNode";
 import { AddNode } from "./tree/nodes/operators/addNode";
-import { MultiplyNode } from "./tree/nodes/operators/multiplyNode";
+import { MultiplyNode, multiply } from "./tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "./tree/nodes/operators/substractNode";
 import { ClosureType } from "./tree/nodes/sets/closure";
 import { DiscreteSetNode } from "./tree/nodes/sets/discreteSetNode";
@@ -32,9 +32,6 @@ import { FractionNode } from "./tree/nodes/operators/fractionNode";
 import { OppositeNode } from "./tree/nodes/functions/oppositeNode";
 
 export const playground = () => {
-  // const mul = new MultiplyNode(
-  //   new SqrtNode((2).toTree()),
-  //   (-1).toTree(),
-  // ).simplify();
-  // console.log(mul.toTex());
+  // const node = multiply(sqrt(3), sqrt(8)).simplify();
+  // console.log(node.toTex());
 };

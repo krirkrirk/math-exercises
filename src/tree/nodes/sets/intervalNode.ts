@@ -1,5 +1,6 @@
 import { getCartesiansProducts } from "#root/utils/arrays/cartesianProducts";
 import { permute } from "#root/utils/arrays/permutations";
+import { AlgebraicNode } from "../algebraicNode";
 import { InequationNode } from "../inequations/inequationNode";
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { isConstantNode } from "../numbers/constantNode";
@@ -21,10 +22,15 @@ export class IntervalNode implements SetNode {
   id: SetIds;
   opts?: NodeOptions | undefined;
   closure: ClosureType;
-  a: Node;
-  b: Node;
+  a: AlgebraicNode;
+  b: AlgebraicNode;
   isEmpty: boolean;
-  constructor(a: Node, b: Node, closure: ClosureType, opts?: NodeOptions) {
+  constructor(
+    a: AlgebraicNode,
+    b: AlgebraicNode,
+    closure: ClosureType,
+    opts?: NodeOptions,
+  ) {
     this.type = NodeType.set;
     this.id = SetIds.interval;
     this.closure = closure;
@@ -60,7 +66,7 @@ export class IntervalNode implements SetNode {
     return res;
   }
 
-  toInequality(middleChild?: Node) {
+  toInequality(middleChild?: AlgebraicNode) {
     let middle = middleChild ?? new VariableNode("x");
     if (isConstantNode(this.a) && this.a.tex.includes("infty")) {
       return new InequationNode(

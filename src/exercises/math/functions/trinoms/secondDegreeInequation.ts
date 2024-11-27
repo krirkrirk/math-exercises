@@ -17,6 +17,7 @@ import {
 } from "#root/math/inequations/inequation";
 import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { InequationSolutionNode } from "#root/tree/nodes/inequations/inequationSolutionNode";
 import { Node } from "#root/tree/nodes/node";
 import {
@@ -37,7 +38,7 @@ type Identifiers = {
 
 type Props = {
   a: number;
-  roots: Node[];
+  roots: AlgebraicNode[];
   ineqType: InequationSymbol;
 };
 

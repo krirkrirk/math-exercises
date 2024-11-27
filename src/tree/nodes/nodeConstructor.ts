@@ -221,8 +221,12 @@ export abstract class NodeConstructor {
       }
       case NodeIds.interval: {
         return new IntervalNode(
-          NodeConstructor.fromIdentifiers(identifiers.leftChild),
-          NodeConstructor.fromIdentifiers(identifiers.rightChild),
+          NodeConstructor.fromIdentifiers(
+            identifiers.leftChild,
+          ) as AlgebraicNode,
+          NodeConstructor.fromIdentifiers(
+            identifiers.rightChild,
+          ) as AlgebraicNode,
           identifiers.closure,
         );
       }

@@ -1,5 +1,6 @@
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -13,6 +14,7 @@ import {
   Rational,
   RationalConstructor,
 } from "#root/math/numbers/rationals/rational";
+import { frac } from "#root/tree/nodes/operators/fractionNode";
 import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
@@ -20,17 +22,28 @@ type Identifiers = {
   denum: number;
 };
 
+const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
+  const rational = frac(identifiers.num, identifiers.denum);
+  return `Simplifier le plus possible : 
+  
+$$
+${rational.toTex()}
+$$`;
+};
+
 const getSimplifyFraction: QuestionGenerator<Identifiers> = () => {
   const rational = RationalConstructor.randomSimplifiable(10);
   const rationalTex = rational.toTree().toTex();
   const answer = rational.simplify().toTree().toTex();
+
+  const identifiers = { num: rational.num, denum: rational.denum };
   const question: Question<Identifiers> = {
-    instruction: `Mettre sous forme irréductible : $${rationalTex}$`,
+    instruction: getInstruction(identifiers),
     startStatement: rationalTex,
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: { num: rational.num, denum: rational.denum },
+    identifiers,
   };
   return question;
 };
