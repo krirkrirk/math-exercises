@@ -8,6 +8,7 @@ import { Measure } from "#root/pc/measure/measure";
 import { DistanceUnit, distanceUnits } from "#root/pc/units/distanceUnits";
 import { random } from "#root/utils/alea/random";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { doWhile } from "#root/utils/doWhile";
 import {
   Exercise,
   GeneratorOption,
@@ -85,7 +86,10 @@ const getLengthConversion: QuestionGenerator<Identifiers, Options> = (
   const randomUnitInstructionIndex = random(availableUnitsIndexes, [
     randomUnitIndex,
   ]);
-  const randomLength = DecimalConstructor.random(0, 1000, randint(0, 4));
+  const randomLength = doWhile(
+    () => DecimalConstructor.random(0, 1000, randint(0, 4)),
+    (x) => x.value === 0,
+  );
 
   const identifiers = {
     randomLength: randomLength.value,

@@ -4,6 +4,7 @@ import {
 } from "#root/math/numbers/decimals/decimal";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { doWhile } from "#root/utils/doWhile";
 import {
   Exercise,
   Proposition,
@@ -26,7 +27,10 @@ const units = ["mL", "cL", "dL", "L", "daL", "hL", "kL"];
 const getCapacityConversion: QuestionGenerator<Identifiers> = () => {
   const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(0, 7, [randomUnitIndex]);
-  const randomCapacity = DecimalConstructor.random(0, 1000, randint(0, 4));
+  const randomCapacity = doWhile(
+    () => DecimalConstructor.random(0, 1000, randint(0, 4)),
+    (x) => x.value === 0,
+  );
   const answer = (
     randomCapacity.multiplyByPowerOfTen(
       randomUnitIndex - randomUnitInstructionIndex,

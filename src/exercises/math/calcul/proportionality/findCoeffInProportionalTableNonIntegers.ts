@@ -103,7 +103,7 @@ const getFindCoeffInProportionalTableNonIntegersQuestion: QuestionGenerator<
             coinFlip()
               ? randfloat(1.1, 10, 1).toTree()
               : RationalConstructor.randomIrreductible().toTree(),
-          (y) => y.equals(x),
+          (y) => xValues.some((x) => x.equals(y)),
         );
         xValues.push(x);
       }
@@ -118,7 +118,7 @@ const getFindCoeffInProportionalTableNonIntegersQuestion: QuestionGenerator<
             coinFlip()
               ? randint(1, 10).toTree()
               : randfloat(1.1, 10, 1).toTree(),
-          (y) => y.equals(x),
+          (y) => xValues.some((x) => x.equals(y)),
         );
         xValues.push(x);
       }
@@ -135,7 +135,7 @@ const getFindCoeffInProportionalTableNonIntegersQuestion: QuestionGenerator<
             coinFlip()
               ? randint(1, 10).toTree()
               : RationalConstructor.randomIrreductible().toTree(),
-          (y) => y.equals(x),
+          (y) => xValues.some((x) => x.equals(y)),
         );
         xValues.push(x);
       }

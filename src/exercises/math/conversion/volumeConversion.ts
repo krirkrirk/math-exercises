@@ -4,6 +4,7 @@ import {
 } from "#root/math/numbers/decimals/decimal";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { doWhile } from "#root/utils/doWhile";
 import {
   Exercise,
   Proposition,
@@ -30,7 +31,12 @@ const getVolumeConversion: QuestionGenerator<Identifiers> = () => {
     randomUnitIndex + 2 > 6 ? 6 : randomUnitIndex + 2,
     [randomUnitIndex],
   );
-  const randomVolume = DecimalConstructor.random(0, 1000, randint(0, 4));
+
+  const randomVolume = doWhile(
+    () => DecimalConstructor.random(0, 1000, randint(0, 4)),
+    (x) => x.value === 0,
+  );
+
   const answer = (
     randomVolume.multiplyByPowerOfTen(
       3 * (randomUnitIndex - randomUnitInstructionIndex),

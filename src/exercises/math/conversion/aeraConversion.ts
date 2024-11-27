@@ -4,6 +4,7 @@ import {
 } from "#root/math/numbers/decimals/decimal";
 import { randint } from "#root/math/utils/random/randint";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { doWhile } from "#root/utils/doWhile";
 import {
   Exercise,
   Proposition,
@@ -30,7 +31,10 @@ const getAeraConversion: QuestionGenerator<Identifiers> = () => {
     randomUnitIndex + 2 > 7 ? 7 : randomUnitIndex + 3,
     [randomUnitIndex],
   );
-  const randomAera = DecimalConstructor.random(0, 1000, randint(0, 4));
+  const randomAera = doWhile(
+    () => DecimalConstructor.random(0, 1000, randint(0, 4)),
+    (x) => x.value === 0,
+  );
   const answer = (
     randomAera.multiplyByPowerOfTen(
       2 * (randomUnitIndex - randomUnitInstructionIndex),
@@ -62,6 +66,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   const aeraDecimal = new Decimal(randomAera);
+
   while (propositions.length < n) {
     const wrongAnswer = aeraDecimal
       .multiplyByPowerOfTen(

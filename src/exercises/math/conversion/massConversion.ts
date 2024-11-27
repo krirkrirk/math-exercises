@@ -5,6 +5,7 @@ import {
 import { randint } from "#root/math/utils/random/randint";
 import { numberParser } from "#root/tree/parsers/numberParser";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { doWhile } from "#root/utils/doWhile";
 import {
   Exercise,
   Proposition,
@@ -27,7 +28,12 @@ const units = ["mg", "cg", "dg", "g", "dag", "hg", "kg"];
 const getMassConversion: QuestionGenerator<Identifiers> = () => {
   const randomUnitIndex = randint(0, 7);
   const randomUnitInstructionIndex = randint(0, 7, [randomUnitIndex]);
-  const randomMass = DecimalConstructor.random(0, 1000, randint(0, 4));
+
+  const randomMass = doWhile(
+    () => DecimalConstructor.random(0, 1000, randint(0, 4)),
+    (x) => x.value === 0,
+  );
+
   const answer = (
     randomMass.multiplyByPowerOfTen(
       randomUnitIndex - randomUnitInstructionIndex,

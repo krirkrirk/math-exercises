@@ -5,6 +5,7 @@ import {
 import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 import { shuffle } from "#root/utils/alea/shuffle";
+import { doWhile } from "#root/utils/doWhile";
 import {
   Exercise,
   Proposition,
@@ -33,8 +34,10 @@ const getVolumeCapacityConversion: QuestionGenerator<Identifiers> = () => {
     randomUnitInstructionIndex - 1 < 0 ? 0 : randomUnitInstructionIndex - 1,
     randomUnitInstructionIndex + 2 > 7 ? 7 : randomUnitInstructionIndex + 2,
   );
-  const random = DecimalConstructor.random(0, 1000, randint(0, 4));
-
+  const random = doWhile(
+    () => DecimalConstructor.random(0, 1000, randint(0, 4)),
+    (x) => x.value === 0,
+  );
   let instructionUnit;
   let answerUnit;
   let answer: Decimal;
