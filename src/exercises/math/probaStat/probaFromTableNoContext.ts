@@ -1,5 +1,6 @@
 import {
   Exercise,
+  GeneratorOption,
   GetInstruction,
   Proposition,
   QCMGenerator,
@@ -10,10 +11,12 @@ import {
   shuffleProps,
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
+import { allowNonIrreductibleOption } from "#root/exercises/options/allowNonIrreductibleFractions";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { rationalParser } from "#root/tree/parsers/rationalParser";
 import { random } from "#root/utils/alea/random";
 import { dollarize } from "#root/utils/latex/dollarize";
 import { mdTable } from "#root/utils/markdown/mdTable";
@@ -154,16 +157,31 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffleProps(propositions, n);
 };
 
-const isAnswerValid: VEA<Identifiers> = (ans, { answer, probaFrac }) => {
-  const fracTexs = new FractionNode(
-    probaFrac[0].toTree(),
-    probaFrac[1].toTree(),
-  )
-    .simplify()
-    .toAllValidTexs();
-  return fracTexs.includes(ans);
+type Options = {
+  allowNonIrreductible?: boolean;
 };
-export const probaFromTableNoContext: Exercise<Identifiers> = {
+const options: GeneratorOption[] = [allowNonIrreductibleOption];
+
+const isAnswerValid: VEA<Identifiers, Options> = (
+  ans,
+  { answer, probaFrac },
+  options,
+) => {
+  if (options?.allowNonIrreductible) {
+    const parsed = rationalParser(ans);
+    if (!parsed) return false;
+    return parsed.simplify().toTex() === answer;
+  } else {
+    const fracTexs = new FractionNode(
+      probaFrac[0].toTree(),
+      probaFrac[1].toTree(),
+    )
+      .simplify()
+      .toAllValidTexs();
+    return fracTexs.includes(ans);
+  }
+};
+export const probaFromTableNoContext: Exercise<Identifiers, Options> = {
   id: "probaFromTableNoContext",
   connector: "=",
   label:
@@ -179,4 +197,5 @@ export const probaFromTableNoContext: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Mathématiques",
   getInstruction,
+  options,
 };

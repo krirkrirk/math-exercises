@@ -14,6 +14,7 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { randTupleInt } from "#root/math/utils/random/randTupleInt";
 import { randint } from "#root/math/utils/random/randint";
 import { coinFlip } from "#root/utils/alea/coinFlip";
+import { doWhile } from "#root/utils/doWhile";
 import { dollarize } from "#root/utils/latex/dollarize";
 import { mdTable } from "#root/utils/markdown/mdTable";
 
@@ -35,9 +36,23 @@ const getIsTableProportionalQuestion: QuestionGenerator<Identifiers> = () => {
 
   const isProportionnal = coinFlip();
   const coeff = randint(2, 6);
-  const yValues = isProportionnal
-    ? xValues.map((value) => value * coeff)
-    : xValues.map((value) => value * randint(2, 5));
+  const fakeCoeffs: number[] = [];
+  let yValues: number[] = [];
+  if (isProportionnal) {
+    yValues = xValues.map((value) => value * coeff);
+  } else {
+    xValues.forEach((x) => {
+      const newCoeff = doWhile(
+        () => randint(2, 6),
+        (newX) =>
+          fakeCoeffs.length === 2 &&
+          fakeCoeffs[0] === newX &&
+          fakeCoeffs[1] === newX,
+      );
+      fakeCoeffs.push(newCoeff);
+      yValues.push(x * newCoeff);
+    });
+  }
 
   const identifiers = { xValues, yValues };
   const question: Question<Identifiers> = {

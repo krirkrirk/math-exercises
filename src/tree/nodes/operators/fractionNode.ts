@@ -184,7 +184,6 @@ export class FractionNode implements OperatorNode {
       denum: AlgebraicNode,
     ) => {
       if (isNumberNode(num) && isNumberNode(denum)) {
-        // console.log("num nb, denum nb", num.toTex(), denum.toTex());
         if (denum.value < 0) {
           if (num.value < 0) {
             return new FractionNode(
@@ -218,7 +217,6 @@ export class FractionNode implements OperatorNode {
         (isFractionNode(num) ||
           (isOppositeNode(num) && isFractionNode(num.child)))
       ) {
-        // console.log("num frac, denum nb, ", num.toTex(), denum.toTex());
         const trueNum = isFractionNode(num) ? num : (num.child as FractionNode);
         return new FractionNode(
           trueNum.leftChild,

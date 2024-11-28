@@ -57,7 +57,6 @@ const getBasicShapesNamingQuestion: QuestionGenerator<Identifiers> = () => {
     hideGrid: true,
   });
   const letters = answer.substring(1, answer.length - 1).split("") as KeyId[];
-  // console.log(letters);
   const question: Question<Identifiers> = {
     answer,
     instruction: `Comment se nomme la figure suivante ?`,

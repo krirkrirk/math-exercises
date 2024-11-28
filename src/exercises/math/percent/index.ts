@@ -6,7 +6,6 @@ export * from "./reciprocalPercentage";
 export * from "./percentToDecimal";
 export * from "./valuePercent";
 export * from "./findProportion";
-export * from "./isTableProportional";
 export * from "./cmToEvolution";
 export * from "./htToTTC";
 export * from "./ttcToHT";

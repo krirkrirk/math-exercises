@@ -184,7 +184,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   while (propositions.length < n) {
     const fakeRand = randint(0, 12);
-    // console.log("marg and cond freq", answer, rand, x1, x2, x3, x4);
+
     const answerTree = getAnswerNode(fakeRand, x1, x2, x3, x4);
     tryToAddWrongProp(propositions, answerTree.toTex());
   }

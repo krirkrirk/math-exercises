@@ -103,7 +103,6 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c, d }) => {
   // try {
   //   const parsed = equationSolutionParser(ans);
   //   if (!parsed) return false;
-  //   console.log("parsed", parsed.toTex());
   //   const solution = new Rational(d - b, a - c).simplify().toTree();
   //   const solutionTex = solution.toTex();
   //   const decimal = round(solution.evaluate({}), 12).frenchify();

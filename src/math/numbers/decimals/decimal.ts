@@ -108,7 +108,6 @@ export class Decimal implements Nombre {
           (isNegative ? "-" : "") +
           intPartString.slice(0, power + intPartString.length);
     }
-    // console.log("in", newIntPart, newFracPart);
     return DecimalConstructor.fromParts(newIntPart, newFracPart);
   }
 
@@ -154,7 +153,6 @@ export class Decimal implements Nombre {
       decimals === undefined
         ? this.toScientificPart()
         : round(this.toScientificPart(), decimals);
-    // console.log(value);
     let power = 0;
     if (value >= 10) {
       value = 1;
