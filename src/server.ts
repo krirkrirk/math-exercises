@@ -39,11 +39,9 @@ const runServer = () => {
 
   app.get("/exo", (req: Request, res: Response) => {
     const exoId = req.query.exoId;
-    console.log(req.query.options);
     const options = req.query.options
       ? JSON.parse(req.query.options as string)
       : undefined;
-    console.log("parsed", options);
     const exoIndex = allExercises.findIndex((exo) => exo.id == exoId);
     const exo = allExercises[exoIndex];
     if (!exo) res.send("Exo not found");

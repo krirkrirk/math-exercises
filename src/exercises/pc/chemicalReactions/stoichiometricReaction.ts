@@ -15,7 +15,12 @@ import { Measure } from "#root/pc/measure/measure";
 import { AmountOfSubstance } from "#root/pc/units/AmountOfSubstance";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 
-type Identifiers = {};
+type Identifiers = {
+  instruction: string;
+  answer: string;
+  nA: number;
+  nB: number;
+};
 
 const getStoichiometricReactionQuestion: QuestionGenerator<
   Identifiers
@@ -27,7 +32,7 @@ const getStoichiometricReactionQuestion: QuestionGenerator<
     instruction: exo.instruction,
     keys: [],
     answerFormat: "raw",
-    identifiers: {},
+    identifiers: { ...exo },
   };
 
   return question;

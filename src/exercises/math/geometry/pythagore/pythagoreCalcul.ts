@@ -10,7 +10,10 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
-import { TriangleConstructor } from "#root/math/geometry/triangles";
+import {
+  TriangleConstructor,
+  TriangleIdentifiers,
+} from "#root/math/geometry/triangle";
 import { SquareRoot } from "#root/math/numbers/reals/real";
 import { randint } from "#root/math/utils/random/randint";
 import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
@@ -23,6 +26,7 @@ import { shuffle } from "#root/utils/alea/shuffle";
 type Identifiers = {
   square: number;
   sideLengths: number[];
+  triangleIdentifiers: TriangleIdentifiers;
 };
 
 const getPythagoreCalcul: QuestionGenerator<Identifiers> = () => {
@@ -76,6 +80,7 @@ const getPythagoreCalcul: QuestionGenerator<Identifiers> = () => {
     hideAxes: true,
     hideGrid: true,
   });
+  const triangleIdentifiers = triangle.toIdentifiers();
   answer = answer + "";
   const question: Question<Identifiers> = {
     instruction: `Dans le triangle $${triangle.getTriangleName()}$ rectangle en $${triangle.getRightAngle()}$, on sait que $${
@@ -89,7 +94,7 @@ const getPythagoreCalcul: QuestionGenerator<Identifiers> = () => {
       coords: triangle.generateCoords(),
     }),
     answerFormat: "tex",
-    identifiers: { square, sideLengths },
+    identifiers: { square, sideLengths, triangleIdentifiers },
   };
 
   return question;

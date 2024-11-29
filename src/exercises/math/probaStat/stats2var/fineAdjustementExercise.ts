@@ -14,6 +14,7 @@ import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import {
   CloudPoints,
   CloudPointsConstructor,
+  CloudPointsIdentifiers,
 } from "#root/math/geometry/CloudPoints";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -21,6 +22,7 @@ import { coinFlip } from "#root/utils/alea/coinFlip";
 
 type Identifiers = {
   isJustified: boolean;
+  cloudPointsIdentifiers: CloudPointsIdentifiers;
 };
 
 type ExerciseType = {
@@ -69,7 +71,10 @@ const getFineAdjustementExerciseQuestion: QuestionGenerator<
     }),
     keys: [],
     answerFormat: "raw",
-    identifiers: { isJustified: exercise.isJustified },
+    identifiers: {
+      isJustified: exercise.isJustified,
+      cloudPointsIdentifiers: cloudPoints.toIdentifiers(),
+    },
   };
 
   return question;

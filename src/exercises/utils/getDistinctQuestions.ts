@@ -1,3 +1,4 @@
+import isEqual from "lodash.isequal";
 import { Question } from "../exercise";
 
 export function equalTab<T>(array1: T[], array2: T[]) {
@@ -44,10 +45,11 @@ const compare = (
   if (!!discriminator) {
     return discriminator(q1, q2);
   }
-  return (
-    q1.instruction === q2.instruction &&
-    q1.answer === q2.answer &&
-    (!q1.ggbOptions?.commands ||
-      equalTab(q1.ggbOptions?.commands, q2.ggbOptions?.commands!))
-  );
+  return isEqual(q1.identifiers, q2.identifiers);
+  // return (
+  //   q1.instruction === q2.instruction &&
+  //   q1.answer === q2.answer &&
+  //   (!q1.ggbOptions?.commands ||
+  //     equalTab(q1.ggbOptions?.commands, q2.ggbOptions?.commands!))
+  // );
 };

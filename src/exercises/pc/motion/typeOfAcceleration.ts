@@ -15,7 +15,10 @@ import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { random } from "#root/utils/alea/random";
 
-type Identifiers = {};
+type Identifiers = {
+  typeOfAcceleration: string;
+  ggbCommands: string[];
+};
 
 const getTypeOfAccelerationQuestion: QuestionGenerator<Identifiers> = () => {
   const exo = generateExo();
@@ -28,7 +31,10 @@ const getTypeOfAccelerationQuestion: QuestionGenerator<Identifiers> = () => {
     }),
     keys: [],
     answerFormat: "raw",
-    identifiers: {},
+    identifiers: {
+      typeOfAcceleration: exo.typeOfAcceleration,
+      ggbCommands: exo.ggb.object.commands!,
+    },
   };
 
   return question;
@@ -62,6 +68,7 @@ const generateExo = () => {
     instruction,
     answer: typeOfAcceleration,
     ggb,
+    typeOfAcceleration,
   };
 };
 

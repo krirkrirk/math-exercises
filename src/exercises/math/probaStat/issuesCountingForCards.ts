@@ -18,6 +18,8 @@ import { CardsColor, CardsValues } from "../../utils/cardsData";
 
 type Identifiers = {
   questionType: string;
+  value?: string;
+  color?: string;
 };
 
 const getIssuesCountingForCardsQuestion: QuestionGenerator<
@@ -33,8 +35,8 @@ const getIssuesCountingForCardsQuestion: QuestionGenerator<
   ]);
   let answer = "";
   let target = "";
-  let value: string;
-  let color: string;
+  let value: string | undefined;
+  let color: string | undefined;
   switch (questionType) {
     case "oneCard":
       value = randomEnumValue(CardsValues);
@@ -64,7 +66,7 @@ const getIssuesCountingForCardsQuestion: QuestionGenerator<
     instruction: `On tire une carte dans un jeu de 52 cartes. Combien l'événement $A = $ "obtenir ${target}" compte-t-il d'issues ?`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { questionType },
+    identifiers: { questionType, value, color },
   };
 
   return question;

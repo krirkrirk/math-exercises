@@ -28,6 +28,7 @@ import { ConstantNode } from "./numbers/constantNode";
 import { NumberNode } from "./numbers/numberNode";
 import { PercentNode } from "./numbers/percentNode";
 import { AddNode } from "./operators/addNode";
+import { BinomialCoefficientNode } from "./operators/binomialCoefficientNode";
 import { DivideNode } from "./operators/divideNode";
 import { FractionNode } from "./operators/fractionNode";
 import { LimitNode } from "./operators/limitNode";
@@ -41,10 +42,9 @@ import { SetNode } from "./sets/setNode";
 import { UnionIntervalNode } from "./sets/unionIntervalNode";
 import { VariableNode } from "./variables/variableNode";
 
+export type NodeIdentifiers = { id: NodeIds } & Record<string, any>;
 export abstract class NodeConstructor {
-  static fromIdentifiers(
-    identifiers: { id: NodeIds } & Record<string, any>,
-  ): Node {
+  static fromIdentifiers(identifiers: NodeIdentifiers): Node {
     switch (identifiers.id) {
       case NodeIds.variable: {
         return new VariableNode(identifiers.name);
@@ -308,6 +308,16 @@ export abstract class NodeConstructor {
             identifiers.rightChild,
           ) as AlgebraicNode,
           identifiers.from,
+        );
+      }
+      case NodeIds.binomialCoefficient: {
+        return new BinomialCoefficientNode(
+          NodeConstructor.fromIdentifiers(
+            identifiers.leftChild,
+          ) as AlgebraicNode,
+          NodeConstructor.fromIdentifiers(
+            identifiers.rightChild,
+          ) as AlgebraicNode,
         );
       }
     }

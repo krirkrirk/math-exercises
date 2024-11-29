@@ -20,6 +20,8 @@ import { CardsColor, CardsValues } from "#root/exercises/utils/cardsData";
 
 type Identifiers = {
   questionType: string;
+  value?: string;
+  color?: CardsColor;
 };
 
 const getCardBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
@@ -30,8 +32,8 @@ const getCardBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
   ]);
   let answer = "";
   let target = "";
-  let value: string;
-  let color: CardsColor;
+  let value = "";
+  let color: CardsColor | undefined;
   switch (questionType) {
     case "oneCard":
       value = randomEnumValue(CardsValues);
@@ -45,6 +47,7 @@ const getCardBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
       answer = "\\frac{1}{13}";
       break;
     case "colorCard":
+    default:
       color = randomEnumValue(CardsColor);
       target = `un ${color}`;
       answer = `\\frac{1}{4}`;
@@ -56,7 +59,7 @@ const getCardBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
     instruction: `On tire une carte dans un jeu de 52 cartes. Quelle est la probabilité d'obtenir ${target} ?`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { questionType },
+    identifiers: { questionType, value, color: color },
   };
 
   return question;

@@ -10,6 +10,7 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
+import { TriangleIdentifiers } from "#root/math/geometry/triangle";
 import { randint } from "#root/math/utils/random/randint";
 import { MultiEqualNode } from "#root/tree/nodes/equations/multiEqualNode";
 import { LengthNode } from "#root/tree/nodes/geometry/lengthNode";
@@ -19,6 +20,13 @@ import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
   vertices: string[];
+  xA: number;
+  yA: number;
+  xB: number;
+  yB: number;
+  xC: number;
+  yC: number;
+  factor: number;
 };
 
 const getThales: QuestionGenerator<Identifiers> = () => {
@@ -96,7 +104,7 @@ const getThales: QuestionGenerator<Identifiers> = () => {
       coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
     }),
     answerFormat: "tex",
-    identifiers: { vertices },
+    identifiers: { vertices, xA, yA, xB, yB, xC, yC, factor },
   };
 
   return question;

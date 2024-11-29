@@ -20,6 +20,8 @@ import { getAtoms } from "../utils/getAtoms";
 type Identifiers = {
   atomicMass: number;
   atomicNumber: number;
+  isAsking: string;
+  symbol: string;
 };
 
 const getIdentifyAtomicMassOrAtomicNbQuestion: QuestionGenerator<
@@ -38,6 +40,8 @@ const getIdentifyAtomicMassOrAtomicNbQuestion: QuestionGenerator<
     identifiers: {
       atomicMass: exo.atomicMasss,
       atomicNumber: exo.atomicNumber,
+      isAsking: exo.isAsking,
+      symbol: exo.atom.symbole,
     },
   };
 

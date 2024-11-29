@@ -1,12 +1,22 @@
 import { ToGGBCommandsProps } from "#root/exercises/utils/geogebra/toGGBCommandsProps";
 import { randomSegmentName } from "#root/exercises/utils/geometry/randomSegmentName";
-import { Point, PointConstructor } from "./point";
+import { Point, PointConstructor, PointIdentifiers } from "./point";
 
+export type SegmentIdentifiers = {
+  pointA: PointIdentifiers;
+  pointB: PointIdentifiers;
+};
 export abstract class SegmentConstructor {
   static random() {
     const name = randomSegmentName();
     const points = PointConstructor.randomDifferent(name.split(""));
     return new Segment(points[0], points[1]);
+  }
+  static fromIdentifiers(identifiers: SegmentIdentifiers) {
+    return new Segment(
+      PointConstructor.fromIdentifiers(identifiers.pointA),
+      PointConstructor.fromIdentifiers(identifiers.pointB),
+    );
   }
 }
 export class Segment {
@@ -20,11 +30,21 @@ export class Segment {
     this.name = `[${pointA.name}${pointB.name}]`;
     this.ggbName = `segment_{${pointA.name}${pointB.name}}`;
   }
+
+  toIdentifiers() {
+    return {
+      pointA: this.pointA.toIdentifiers(),
+      pointB: this.pointB.toIdentifiers(),
+    };
+  }
   getLength() {
     return this.pointA.distanceTo(this.pointB);
   }
   toTex() {
     return this.name;
+  }
+  toInsideName() {
+    return `${this.pointA.name}${this.pointB.name}`;
   }
   toGGBCommands(
     shouldBuildPoints: boolean,

@@ -14,13 +14,14 @@ import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { NodeOptions } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { FractionNode, frac } from "#root/tree/nodes/operators/fractionNode";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 import { probaFlip } from "#root/utils/alea/probaFlip";
 type Identifiers = {
   isParityQuestion: boolean;
   isEvenQuestion: boolean;
   nbFaces: number;
+  faceAsked: number;
 };
 
 const getDiceBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
@@ -33,16 +34,20 @@ const getDiceBasicProbasQuestion: QuestionGenerator<Identifiers> = () => {
     : `la face ${faceAsked}`;
   const answer = isParityQuestion
     ? isEvenQuestion
-      ? new Rational(Math.floor(nbFaces / 2), nbFaces).simplify().tex
-      : new Rational(Math.ceil(nbFaces / 2), nbFaces).simplify().tex
-    : `\\frac{1}{${nbFaces}}`;
+      ? frac(Math.floor(nbFaces / 2), nbFaces)
+          .simplify()
+          .toTex()
+      : frac(Math.ceil(nbFaces / 2), nbFaces)
+          .simplify()
+          .toTex()
+    : frac(1, nbFaces).toTex();
 
   const question: Question<Identifiers> = {
     answer,
     instruction: `On lance un dé équilibré à ${nbFaces} faces. Quelle est la probabilité d'obtenir ${target} ?`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { isParityQuestion, isEvenQuestion, nbFaces },
+    identifiers: { isParityQuestion, isEvenQuestion, nbFaces, faceAsked },
   };
 
   return question;

@@ -18,3 +18,4 @@ export * from "./trinomialMeanValue";
 export * from "./solveSecondDegreeEquationByFactorisation";
 export * from "./solveSecondDegreeEquationFromCano";
 export * from "./trinomSignFromRoots";
+export * from "./coefficientsIdentification";

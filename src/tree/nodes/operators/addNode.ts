@@ -155,7 +155,7 @@ export class AddNode implements CommutativeOperatorNode {
     if (externals.length === 1) return externals[0];
 
     const simplifyExternalNodes = (a: AlgebraicNode, b: AlgebraicNode) => {
-      if (isFractionNode(a) && isFractionNode(b)) {
+      if (!opts?.towardsDistribute && isFractionNode(a) && isFractionNode(b)) {
         //c/d + e/f   =  cf+ed / df
         const c = a.leftChild;
         const d = a.rightChild;
@@ -166,7 +166,12 @@ export class AddNode implements CommutativeOperatorNode {
           new MultiplyNode(d, f),
         ).simplify(opts);
       }
-      if (isOppositeNode(a) && isFractionNode(a.child) && isFractionNode(b)) {
+      if (
+        !opts?.towardsDistribute &&
+        isOppositeNode(a) &&
+        isFractionNode(a.child) &&
+        isFractionNode(b)
+      ) {
         //-(c/d) + e/f   =  -cf+ed / df
         const c = a.child.leftChild;
         const d = a.child.rightChild;
@@ -180,7 +185,12 @@ export class AddNode implements CommutativeOperatorNode {
           new MultiplyNode(d, f),
         ).simplify(opts);
       }
-      if (isOppositeNode(b) && isFractionNode(b.child) && isFractionNode(a)) {
+      if (
+        !opts?.towardsDistribute &&
+        isOppositeNode(b) &&
+        isFractionNode(b.child) &&
+        isFractionNode(a)
+      ) {
         //(c/d) + (-e/f)   =  cf-ed / df
         const c = a.leftChild;
         const d = a.rightChild;
@@ -195,6 +205,7 @@ export class AddNode implements CommutativeOperatorNode {
         ).simplify(opts);
       }
       if (
+        !opts?.towardsDistribute &&
         isOppositeNode(b) &&
         isFractionNode(b.child) &&
         isOppositeNode(a) &&
@@ -214,7 +225,7 @@ export class AddNode implements CommutativeOperatorNode {
         ).simplify(opts);
       }
 
-      if (isFractionNode(a)) {
+      if (!opts?.towardsDistribute && isFractionNode(a)) {
         //c/d + b
         const c = a.leftChild;
         const d = a.rightChild;
@@ -223,7 +234,11 @@ export class AddNode implements CommutativeOperatorNode {
           d,
         ).simplify(opts);
       }
-      if (isOppositeNode(a) && isFractionNode(a.child)) {
+      if (
+        !opts?.towardsDistribute &&
+        isOppositeNode(a) &&
+        isFractionNode(a.child)
+      ) {
         //-(c/d) + b = (-c+bd)/d
         const c = a.child.leftChild;
         const d = a.child.rightChild;
@@ -232,7 +247,11 @@ export class AddNode implements CommutativeOperatorNode {
           d,
         ).simplify(opts);
       }
-      if (isFractionNode(b) && !opts?.forceDistributeFractions) {
+      if (
+        !opts?.towardsDistribute &&
+        isFractionNode(b) &&
+        !opts?.forceDistributeFractions
+      ) {
         //a+c/d
         const c = b.leftChild;
         const d = b.rightChild;
@@ -242,6 +261,7 @@ export class AddNode implements CommutativeOperatorNode {
         ).simplify(opts);
       }
       if (
+        !opts?.towardsDistribute &&
         isOppositeNode(b) &&
         isFractionNode(b.child) &&
         !opts?.forceDistributeFractions

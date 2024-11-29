@@ -34,7 +34,7 @@ const getMolarMassQuestion: QuestionGenerator<Identifiers> = () => {
     }$.`,
     keys: [],
     answerFormat: "tex",
-    identifiers: {},
+    identifiers: { molecule: molecule.formula },
   };
 
   return question;

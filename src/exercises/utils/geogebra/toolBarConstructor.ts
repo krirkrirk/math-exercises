@@ -6,6 +6,10 @@ export const toolBarConstructor = (options: {
   intersect?: boolean;
   vector?: boolean;
   circleTwoPoints?: boolean;
+  circleRadius?: boolean;
+  segment?: boolean;
+  segmentFixed?: boolean;
+  polygon?: boolean;
 }) => {
   let customToolBar = "0||6";
   if (options.point) customToolBar += "||1";
@@ -15,5 +19,9 @@ export const toolBarConstructor = (options: {
   if (options.intersect) customToolBar += "||5";
   if (options.vector) customToolBar += "||7";
   if (options.circleTwoPoints) customToolBar += "||10";
+  if (options.segment) customToolBar += "||15";
+  if (options.segmentFixed) customToolBar += "||45";
+  if (options.circleRadius) customToolBar += "||34";
+  if (options.polygon) customToolBar += "||16";
   return customToolBar;
 };

@@ -15,7 +15,10 @@ import { Affine, AffineConstructor } from "#root/math/polynomials/affine";
 import { randint } from "#root/math/utils/random/randint";
 import { random } from "#root/utils/alea/random";
 
-type Identifiers = {};
+type Identifiers = {
+  ggbCommands: string[];
+  movementType: string;
+};
 
 const getTypeOfMovementQuestion: QuestionGenerator<Identifiers> = () => {
   const exo = generateExercise();
@@ -28,7 +31,7 @@ const getTypeOfMovementQuestion: QuestionGenerator<Identifiers> = () => {
     }),
     keys: [],
     answerFormat: "raw",
-    identifiers: {},
+    identifiers: { movementType: exo.answer, ggbCommands: ggb.commands! },
   };
 
   return question;

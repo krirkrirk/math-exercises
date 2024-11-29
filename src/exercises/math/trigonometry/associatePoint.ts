@@ -11,11 +11,14 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { RemarkableValueConstructor } from "#root/math/trigonometry/remarkableValue";
+import { NodeIdentifiers } from "#root/tree/nodes/nodeConstructor";
 import { KeyId } from "#root/types/keyIds";
 import { random } from "#root/utils/alea/random";
 
 type Identifiers = {
   angleValue: number;
+  angleIdentifiers: NodeIdentifiers;
+  point: string;
 };
 
 const points: KeyId[] = [
@@ -47,7 +50,11 @@ const getAssociatePointQuestion: QuestionGenerator<Identifiers> = () => {
     `,
     keys: points,
     answerFormat: "tex",
-    identifiers: { angleValue: remarkableValue.mainAngle.evaluate({}) },
+    identifiers: {
+      angleValue: remarkableValue.mainAngle.evaluate({}),
+      point: answer,
+      angleIdentifiers: remarkableValue.angle.toIdentifiers(),
+    },
   };
 
   return question;

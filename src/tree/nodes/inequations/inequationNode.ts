@@ -36,7 +36,7 @@ export class InequationNode implements Node {
       if (i < children.length - 1) {
         const shouldAddSpace =
           (this.symbols[i] === "\\le" || this.symbols[i] === "\\ge") &&
-          isLetter(children[i + 1].toTex());
+          isLetter(children[i + 1].toTex()[0]);
 
         this.tex += `${this.symbols[i]}${shouldAddSpace ? " " : ""}`;
       }

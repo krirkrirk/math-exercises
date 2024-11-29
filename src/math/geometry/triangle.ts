@@ -1,4 +1,4 @@
-import { Point } from "./point";
+import { Point, PointConstructor, PointIdentifiers } from "./point";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
@@ -6,8 +6,22 @@ import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { randint } from "../utils/random/randint";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
+import { randomLetter } from "#root/utils/strings/randomLetter";
+import { Segment } from "./segment";
 
+export type TriangleIdentifiers = {
+  vertexA: PointIdentifiers;
+  vertexB: PointIdentifiers;
+  vertexC: PointIdentifiers;
+};
 export abstract class TriangleConstructor {
+  static fromIdentifiers(identifiers: TriangleIdentifiers): Triangle {
+    return new Triangle(
+      PointConstructor.fromIdentifiers(identifiers.vertexA),
+      PointConstructor.fromIdentifiers(identifiers.vertexB),
+      PointConstructor.fromIdentifiers(identifiers.vertexC),
+    );
+  }
   static createRandomRightTriangle({
     minRapport = 0,
     maxRapport = 5,
@@ -65,6 +79,14 @@ export abstract class TriangleConstructor {
     );
     return new Triangle(pointA, pointB, pointC);
   }
+  static randomName() {
+    const startVertix = randomLetter(true, ["Y", "Z"]);
+    return [
+      startVertix,
+      String.fromCharCode(startVertix.charCodeAt(0) + 1),
+      String.fromCharCode(startVertix.charCodeAt(0) + 2),
+    ];
+  }
 }
 
 type GenerateCommandsProps = {
@@ -87,6 +109,29 @@ export class Triangle {
     this.vertexA = vertexA;
     this.vertexB = vertexB;
     this.vertexC = vertexC;
+  }
+  getSegments() {
+    return [
+      this.getSideASegment(),
+      this.getSideBSegment(),
+      this.getSideCSegment(),
+    ];
+  }
+  getSideASegment() {
+    return new Segment(this.vertexB, this.vertexC);
+  }
+  getSideBSegment() {
+    return new Segment(this.vertexA, this.vertexC);
+  }
+  getSideCSegment() {
+    return new Segment(this.vertexA, this.vertexB);
+  }
+  toIdentifiers(): TriangleIdentifiers {
+    return {
+      vertexA: this.vertexA.toIdentifiers(),
+      vertexB: this.vertexB.toIdentifiers(),
+      vertexC: this.vertexC.toIdentifiers(),
+    };
   }
 
   getSideAnumber(): number {

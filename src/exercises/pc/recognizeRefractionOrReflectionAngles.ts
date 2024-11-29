@@ -15,7 +15,9 @@ import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { randint } from "#root/math/utils/random/randint";
 import { random } from "#root/utils/alea/random";
 
-type Identifiers = {};
+type Identifiers = {
+  commands: string[];
+};
 
 const IsAsking = {
   RefractionAngle: "Angle de réfraction",
@@ -40,7 +42,7 @@ const getRecognizeRefractionOrReflectionAnglesQuestion: QuestionGenerator<
       coords: exo.coords,
     }),
     answerFormat: "raw",
-    identifiers: {},
+    identifiers: { commands: exo.commands },
   };
 
   return question;

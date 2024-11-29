@@ -1,4 +1,4 @@
-import { Point, PointConstructor } from "./point";
+import { Point, PointConstructor, PointIdentifiers } from "./point";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
@@ -8,6 +8,9 @@ import { randint } from "../utils/random/randint";
 import { covarianceXY } from "../utils/covariance";
 import { variance } from "../utils/variance";
 
+export type CloudPointsIdentifiers = {
+  pointsIdentifiers: PointIdentifiers[];
+};
 export abstract class CloudPointsConstructor {
   static random(nbPoints: number) {
     const names: string[] = [];
@@ -49,6 +52,12 @@ export class CloudPoints {
 
   constructor(points: Point[]) {
     this.points = points;
+  }
+
+  toIdentifiers(): CloudPointsIdentifiers {
+    return {
+      pointsIdentifiers: this.points.map((p) => p.toIdentifiers()),
+    };
   }
 
   getFineAdjustement(): EqualNode {

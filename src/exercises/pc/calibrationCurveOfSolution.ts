@@ -24,6 +24,7 @@ import { toolBarConstructor } from "../utils/geogebra/toolBarConstructor";
 type Identifiers = {
   epsilon: number;
   l: number;
+  molecule: string;
 };
 
 const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
@@ -56,6 +57,7 @@ const getCalibrationCurveOfSolutionQuestion: QuestionGenerator<
     identifiers: {
       epsilon: exo.epsilon,
       l: exo.l,
+      molecule: exo.molecule.formula,
     },
   };
 
@@ -95,6 +97,7 @@ const generateExercise = () => {
     correction: getCorrection(),
     epsilon,
     l,
+    molecule,
   };
 };
 

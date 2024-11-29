@@ -14,7 +14,10 @@ import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
 import { randint } from "#root/math/utils/random/randint";
 import { random } from "#root/utils/alea/random";
 
-type Identifiers = {};
+type Identifiers = {
+  ggbCommands: string[];
+  type: string;
+};
 
 const getOhmicConductorOrGeneratorQuestion: QuestionGenerator<
   Identifiers
@@ -32,7 +35,7 @@ const getOhmicConductorOrGeneratorQuestion: QuestionGenerator<
     hint: exo.hint,
     correction: exo.correction,
     answerFormat: "raw",
-    identifiers: {},
+    identifiers: { type: exo.type, ggbCommands: exo.ggb.commands! },
   };
 
   return question;
@@ -65,6 +68,7 @@ const generateExercise = () => {
     answer: type,
     hint,
     correction,
+    type,
   };
 };
 

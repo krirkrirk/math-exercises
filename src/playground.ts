@@ -28,10 +28,10 @@ import { numberToFrenchWord } from "./utils/strings/numberToFrenchWord";
 import { DecimalConstructor } from "./math/numbers/decimals/decimal";
 import { randint } from "./math/utils/random/randint";
 import { numberParser } from "./tree/parsers/numberParser";
-import { FractionNode } from "./tree/nodes/operators/fractionNode";
-import { OppositeNode } from "./tree/nodes/functions/oppositeNode";
+import { FractionNode, frac } from "./tree/nodes/operators/fractionNode";
+import { OppositeNode, opposite } from "./tree/nodes/functions/oppositeNode";
+import { PointConstructor } from "./math/geometry/point";
+import { randfloat } from "./math/utils/random/randfloat";
+import { VectorConstructor } from "./math/geometry/vector";
 
-export const playground = () => {
-  // const node = multiply(sqrt(3), sqrt(8)).simplify();
-  // console.log(node.toTex());
-};
+export const playground = () => {};

@@ -80,6 +80,7 @@ export enum NodeIds {
   vector,
   inequation,
   inequationSolution,
+  binomialCoefficient,
 }
 
 export interface Node {

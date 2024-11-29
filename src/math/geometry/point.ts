@@ -6,12 +6,46 @@ import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { Vector, VectorConstructor } from "./vector";
 import { randint } from "../utils/random/randint";
 import { ToGGBCommandsProps } from "#root/exercises/utils/geogebra/toGGBCommandsProps";
+import {
+  NodeConstructor,
+  NodeIdentifiers,
+} from "#root/tree/nodes/nodeConstructor";
+import { randfloat } from "../utils/random/randfloat";
 
+export type PointIdentifiers = {
+  id: "point";
+  name: string;
+  x: NodeIdentifiers;
+  y: NodeIdentifiers;
+};
 export abstract class PointConstructor {
-  static random(name: string): Point {
-    const x = randint(-10, 11);
-    const y = randint(-10, 11);
+  static random(name: string, min = -10, max = 11): Point {
+    const x = randint(min, max);
+    const y = randint(min, max);
     return new Point(name, new NumberNode(x), new NumberNode(y));
+  }
+
+  static fromIdentifiers(identifiers: PointIdentifiers) {
+    return new Point(
+      identifiers.name,
+      NodeConstructor.fromIdentifiers(identifiers.x) as AlgebraicNode,
+      NodeConstructor.fromIdentifiers(identifiers.y) as AlgebraicNode,
+    );
+  }
+
+  static onSegment(
+    A: Point,
+    B: Point,
+    name: string,
+    {
+      spacing = 0.1,
+      coefficient,
+    }: { spacing?: number; coefficient?: number } = {},
+  ) {
+    const coeff = coefficient ?? randfloat(spacing, 1 - spacing);
+    const vector = VectorConstructor.fromPoints(A, B).times(coeff.toTree());
+    const point = vector.getEndPoint(A, name);
+    return point;
   }
 
   static randomDifferent(names: string[]) {
@@ -58,7 +92,7 @@ export class Point {
   toTex(): string {
     return `${this.name}`;
   }
-  toIdentifiers() {
+  toIdentifiers(): PointIdentifiers {
     return {
       id: "point",
       name: this.name,
@@ -74,15 +108,11 @@ export class Point {
   }
 
   getXnumber(): number {
-    if (this.x.type !== NodeType.number)
-      throw Error("general point not implemented yet");
-    return (this.x as NumberNode).value;
+    return this.x.evaluate();
   }
 
   getYnumber(): number {
-    if (this.y.type !== NodeType.number)
-      throw Error("general point not implemented yet");
-    return (this.y as NumberNode).value;
+    return this.y.evaluate();
   }
 
   midpoint(B: Point, name = "I"): Point {
@@ -117,12 +147,27 @@ export class Point {
     return AB.isColinear(AC);
   }
 
-  toGGBCommand({ isFixed = true, showLabel = true }: ToGGBCommandsProps = {}) {
-    return [
+  toGGBCommand({
+    isFixed = true,
+    showLabel = true,
+    style,
+    size,
+    color,
+  }: ToGGBCommandsProps = {}) {
+    const commands = [
       `${this.name} = (${this.x.toMathString()}, ${this.y.toMathString()})`,
       `SetFixed(${this.name},${isFixed ? "true" : "false"})`,
       `ShowLabel(${this.name},${showLabel ? "true" : "false"})`,
-      `SetPointStyle(${this.name}, 1)`,
     ];
+    if (style !== undefined) {
+      commands.push(`SetPointStyle(${this.name}, ${style})`);
+    }
+    if (size) {
+      commands.push(`SetPointSize(${this.name}, ${size})`);
+    }
+    if (color) {
+      commands.push(`SetColor(${this.name}, "${color}")`);
+    }
+    return commands;
   }
 }

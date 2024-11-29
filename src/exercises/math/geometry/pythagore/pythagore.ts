@@ -10,7 +10,10 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { TriangleConstructor } from "#root/math/geometry/triangles";
+import {
+  TriangleConstructor,
+  TriangleIdentifiers,
+} from "#root/math/geometry/triangle";
 import { randint } from "#root/math/utils/random/randint";
 import { LengthNode } from "#root/tree/nodes/geometry/lengthNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
@@ -23,6 +26,7 @@ type Identifiers = {
   sideA: string;
   sideB: string;
   sideC: string;
+  triangleIdentifiers: TriangleIdentifiers;
 };
 
 const getPythagore: QuestionGenerator<Identifiers> = () => {
@@ -39,6 +43,7 @@ const getPythagore: QuestionGenerator<Identifiers> = () => {
   const sideA = triangle.getSideAName();
   const sideB = triangle.getSideBName();
   const sideC = triangle.getSideCName();
+  const triangleIdentifiers = triangle.toIdentifiers();
   const ggb = new GeogebraConstructor({
     commands: triangle.generateCommands({}),
     hideAxes: true,
@@ -55,7 +60,7 @@ const getPythagore: QuestionGenerator<Identifiers> = () => {
       coords: triangle.generateCoords(),
     }),
     answerFormat: "tex",
-    identifiers: { sideA, sideB, sideC },
+    identifiers: { sideA, sideB, sideC, triangleIdentifiers },
   };
 
   return question;

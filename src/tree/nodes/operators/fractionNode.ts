@@ -17,12 +17,13 @@ export function isFractionNode(a: Node): a is FractionNode {
 export const frac = (
   a: AlgebraicNode | number | string,
   b: AlgebraicNode | number | string,
+  opts?: NodeOptions,
 ) => {
   const nodeA =
     typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
   const nodeB =
     typeof b === "number" ? b.toTree() : typeof b === "string" ? b.toTree() : b;
-  return new FractionNode(nodeA, nodeB);
+  return new FractionNode(nodeA, nodeB, opts);
 };
 
 export class FractionNode implements OperatorNode {

@@ -1,5 +1,7 @@
 import {
   Exercise,
+  GetCorrection,
+  GetHint,
   Proposition,
   QCMGenerator,
   Question,
@@ -11,9 +13,12 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { Rational } from "#root/math/numbers/rationals/rational";
-import { TrinomConstructor } from "#root/math/polynomials/trinom";
+import { Trinom, TrinomConstructor } from "#root/math/polynomials/trinom";
 import { randint } from "#root/math/utils/random/randint";
-import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
+import { opposite } from "#root/tree/nodes/functions/oppositeNode";
+import { FractionNode, frac } from "#root/tree/nodes/operators/fractionNode";
+import { multiply } from "#root/tree/nodes/operators/multiplyNode";
+import { alignTex } from "#root/utils/latex/alignTex";
 
 type Identifiers = {
   a: number;
@@ -27,6 +32,7 @@ const getSummitAbscissFromDevFormQuestion: QuestionGenerator<
   const trinom = TrinomConstructor.random();
   const alpha = trinom.getAlphaNode();
   const answer = alpha.toTex();
+  const identifiers = { a: trinom.a, b: trinom.b, c: trinom.c };
   const question: Question<Identifiers> = {
     answer,
     instruction: `Soit $f(x) = ${trinom
@@ -34,7 +40,9 @@ const getSummitAbscissFromDevFormQuestion: QuestionGenerator<
       .toTex()}$ une fonction polynôme du second degré. Quelle est l'abscisse du sommet de la parabole représentant $f$ ?`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { a: trinom.a, b: trinom.b, c: trinom.c },
+    identifiers,
+    hint: getHint(identifiers),
+    correction: getCorrection(identifiers),
   };
 
   return question;
@@ -55,6 +63,37 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
     tryToAddWrongProp(propositions, randint(-10, 10) + "");
   }
   return shuffleProps(propositions, n);
+};
+
+const getHint: GetHint<Identifiers> = (identifiers) => {
+  return `L'abscisse $\\alpha$ du sommet d'une parabole s'obtient à partir de la forme développée $f(x) = ax^2 + bx +c$ via la formule : 
+  
+$$
+\\alpha = \\frac{-b}{2a}
+$$`;
+};
+
+const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
+  const { a, b, c } = identifiers;
+  const alpha = frac(opposite(b), multiply(2, a), {
+    allowMinusAnywhereInFraction: true,
+  });
+  return `On sait que l'abscisse  $\\alpha$ du sommet de la parabole vaut :
+  
+$$
+\\alpha = \\frac{-b}{2a}
+$$
+
+Ici, $a=${a}$ et $b=${b}$.
+
+Donc, 
+
+${alignTex([
+  ["\\alpha", "=", alpha.toTex()],
+
+  ["", "=", alpha.simplify().toTex()],
+])}
+`;
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
@@ -79,5 +118,8 @@ export const summitAbscissFromDevForm: Exercise<Identifiers> = {
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
+  hasHintAndCorrection: true,
+  getHint,
+  getCorrection,
   subject: "Mathématiques",
 };

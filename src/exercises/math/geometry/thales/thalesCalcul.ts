@@ -5,213 +5,304 @@ import {
   Question,
   QuestionGenerator,
   VEA,
+  GGBVEA,
   addValidProp,
+  shuffleProps,
   tryToAddWrongProp,
+  GetAnswer,
+  GetHint,
+  GetCorrection,
+  GetInstruction,
+  GetKeys,
+  GetGGBOptions,
+  GetStudentGGBOptions,
+  GetGGBAnswer,
+  GeneratorOption,
+  GeneratorOptionType,
+  GeneratorOptionTarget,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { numberVEA } from "#root/exercises/vea/numberVEA";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
-import { Rational } from "#root/math/numbers/rationals/rational";
+import {
+  Line,
+  LineConstructor,
+  LineIdentifiers,
+} from "#root/math/geometry/line";
+import { PointConstructor, PointIdentifiers } from "#root/math/geometry/point";
+import {
+  Segment,
+  SegmentConstructor,
+  SegmentIdentifiers,
+} from "#root/math/geometry/segment";
+import {
+  Triangle,
+  TriangleConstructor,
+  TriangleIdentifiers,
+} from "#root/math/geometry/triangle";
+import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
-import { Node } from "#root/tree/nodes/node";
+import { round } from "#root/math/utils/round";
+import { frac } from "#root/tree/nodes/operators/fractionNode";
+import { multiply } from "#root/tree/nodes/operators/multiplyNode";
 import { coinFlip } from "#root/utils/alea/coinFlip";
-import { shuffle } from "#root/utils/alea/shuffle";
+import { random } from "#root/utils/alea/random";
+import { randomLetter } from "#root/utils/strings/randomLetter";
 
 type Identifiers = {
-  sideLengths: number[];
-  rand: number;
-  rand2: number;
-  isAskingC: boolean;
-};
-
-const getThales: QuestionGenerator<Identifiers> = () => {
-  const vertices = [];
-  const code = 65 + randint(0, 22); // Générer un code de caractère majuscule aléatoire (A-Z)
-  for (let i = 0; i < 5; i++) vertices.push(String.fromCharCode(code + i));
-
-  const [xA, yA] = [randint(-10, 11), randint(-10, 11)];
-  let xB, yB, xC, yC;
-  let d1, d2, d3; // distance entre le point A et B
-  let theta = 0; // angle entre AB et AC
-
-  do {
-    [xB, yB, xC, yC] = [
-      randint(-10, 11),
-      randint(-10, 11),
-      randint(-10, 11),
-      randint(-10, 11),
-    ];
-    d1 = Math.hypot(xB - xA, yB - yA); // Calculer la distance entre A et B
-    d2 = Math.hypot(xC - xA, yC - yA); // Calculer la distance entre A et C
-    theta = Math.acos(
-      ((xB - xA) * (xC - xA) + (yB - yA) * (yC - yA)) / (d1 * d2),
-    );
-  } while (
-    !theta ||
-    theta < 0.35 ||
-    theta > 2.1 ||
-    d1 / d2 > 1.3 ||
-    d1 / d2 < 0.7
-  );
-
-  d3 = Math.sqrt(d1 ** 2 + d2 ** 2 - 2 * d1 * d2 * Math.cos(theta)); // Calculer la distance entre C et B
-  // CB² = AB² * AC² - 2*AB*AC*cos(theta)  : pythagore généralisé
-
-  const factor = randint(-5, 6, [-2, -1, 0, 1, 2]) / 10; // facteur = AB/AE, Pour que l'affichage soit acceptable, les valeurs de factor sont +- 0.5 0.4 0.3
-
-  const [xD, yD] = [xA + factor * (xB - xA), yA + factor * (yB - yA)];
-  const [xE, yE] = [xA + factor * (xC - xA), yA + factor * (yC - yA)];
-
-  const xMin = Math.min(xA, xB, xC, xD, xE);
-  const xMax = Math.max(xA, xB, xC, xD, xE);
-  const yMin = Math.min(yA, yB, yC, yD, yE);
-  const yMax = Math.max(yA, yB, yC, yD, yE);
-
-  // AB AC BC AD AE
-  const sides = [
-    `${vertices[0]}${vertices[1]}`,
-    `${vertices[0]}${vertices[3]}`,
-    `${vertices[0]}${vertices[2]}`,
-    `${vertices[0]}${vertices[4]}`,
-    `${vertices[1]}${vertices[2]}`,
-    `${vertices[3]}${vertices[4]}`,
-  ];
-
-  // round pour avoir des valeurs dans N tout en gardant les proportions pour que ça soit cohérent. sides[i] a pour longueur sideLengths[i]
-  const sideLengths = [d1, factor * d1, d2, factor * d2, d3, factor * d3].map(
-    (el) => Math.round(Math.abs(el)),
-  );
-
-  const rand = randint(0, 3);
-  let rand2 = randint(0, 3, [rand]);
-  if (sideLengths[2 * rand] === sideLengths[2 * rand2])
-    rand2 = randint(0, 3, [rand, rand2]); // condition pour pas prendre 2 longueurs identiques
-
-  let instruction = `Dans la figure ci-dessous, on a $(${vertices[3]}${vertices[4]})//(${vertices[1]}${vertices[2]})$, `;
-  let statement: Node;
-  let startStatement;
-
-  const isAskingC = coinFlip();
-  if (isAskingC) {
-    // a/b = c/d on cherche c
-    instruction += `$${sides[2 * rand]} = ${sideLengths[2 * rand]}$, $${
-      sides[2 * rand + 1]
-    } = ${sideLengths[2 * rand + 1]}$, $${sides[2 * rand2]} = ${
-      sideLengths[2 * rand2]
-    }$. Déterminer $${sides[2 * rand2 + 1]}$.`;
-
-    startStatement = `${sides[2 * rand2 + 1]}`;
-
-    statement = new Rational(
-      sideLengths[2 * rand2] * sideLengths[2 * rand + 1],
-      sideLengths[2 * rand],
-    )
-      .simplify()
-      .toTree();
-  } else {
-    // a/b = c/d on cherche d
-    instruction += `$${sides[2 * rand]} = ${sideLengths[2 * rand]}$, $${
-      sides[2 * rand + 1]
-    } = ${sideLengths[2 * rand + 1]}$, $${sides[2 * rand2 + 1]} = ${
-      sideLengths[2 * rand2 + 1]
-    }$. Déterminer $${sides[2 * rand2]}$.`;
-
-    startStatement = `${sides[2 * rand2]}`;
-
-    statement = new Rational(
-      sideLengths[2 * rand2 + 1] * sideLengths[2 * rand],
-      sideLengths[2 * rand + 1],
-    )
-      .simplify()
-      .toTree();
-  }
-
-  const commands = [
-    `${vertices[0]} = Point({${xA}, ${yA}})`,
-    `${vertices[1]} = Point({${xB}, ${yB}})`,
-    `${vertices[2]} = Point({${xC}, ${yC}})`,
-    `${vertices[3]} = Point(${vertices[0]}, Vector(${factor}Vector(${vertices[0]},${vertices[1]})))`,
-    `${vertices[4]} = Intersect(Line(${vertices[3]}, Line(${vertices[1]}, ${vertices[2]})) , Line(${vertices[0]}, ${vertices[2]}))`,
-    `l = Segment(${vertices[0]}, ${vertices[1]})`,
-    `i = Segment(${vertices[0]}, ${vertices[2]})`,
-    `j = Segment(${vertices[1]}, ${vertices[2]})`,
-    `k = Segment(${vertices[3]}, ${vertices[4]})`,
-    `If(${factor} < 0, Segment(${vertices[0]}, ${vertices[3]}))`,
-    `If(${factor} < 0, Segment(${vertices[0]}, ${vertices[4]}))`,
-    `ShowLabel(${vertices[0]}, true)`,
-    `ShowLabel(${vertices[1]}, true)`,
-    `ShowLabel(${vertices[2]}, true)`,
-    `ShowLabel(${vertices[3]}, true)`,
-    `ShowLabel(${vertices[4]}, true)`,
-  ];
-  const ggb = new GeogebraConstructor({
-    commands,
-    hideAxes: true,
-    hideGrid: true,
-  });
-  const answer = statement.toTex();
-  const question: Question<Identifiers> = {
-    instruction,
-    startStatement,
-    answer,
-    keys: [],
-    ggbOptions: ggb.getOptions({
-      coords: [xMin - 1, xMax + 1, yMin - 1, yMax + 1],
-    }),
-    answerFormat: "tex",
-    identifiers: { isAskingC, rand, rand2, sideLengths },
-  };
-
-  return question;
+  triangleIdentifiers: TriangleIdentifiers;
+  insidePointsIdentifiers: PointIdentifiers[];
+  segmentAsked: SegmentIdentifiers;
+  isPapillon: boolean;
 };
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
-    tryToAddWrongProp(
-      propositions,
-      new Rational(randint(2, 30), randint(2, 30)).simplify().toTree().toTex(),
+    tryToAddWrongProp(propositions, randfloat(3, 20, 1).frenchify());
+  }
+  return shuffleProps(propositions, n);
+};
+
+const getAnswer: GetAnswer<Identifiers> = (identifiers) => {
+  const triangle = TriangleConstructor.fromIdentifiers(
+    identifiers.triangleIdentifiers,
+  );
+  const pointD = PointConstructor.fromIdentifiers(
+    identifiers.insidePointsIdentifiers[0],
+  );
+  const pointE = PointConstructor.fromIdentifiers(
+    identifiers.insidePointsIdentifiers[1],
+  );
+  //order is important
+  const subTriangle = new Triangle(pointD, triangle.vertexB, pointE);
+
+  const segmentAskedName = SegmentConstructor.fromIdentifiers(
+    identifiers.segmentAsked,
+  ).toInsideName();
+  const lengths = [
+    ...triangle.getSegments().map((s) => {
+      return {
+        name: s.toInsideName(),
+        length: round(s.getLength(), 1),
+      };
+    }),
+    ...subTriangle.getSegments().map((s) => {
+      return {
+        name: s.toInsideName(),
+        length: round(s.getLength(), 1),
+      };
+    }),
+  ];
+  const askedIndex = lengths.findIndex((l) => l.name === segmentAskedName);
+  const otherIndex = randint(0, 3, [askedIndex]);
+  const ratio = frac(
+    lengths[otherIndex].length,
+    lengths[otherIndex + 3].length,
+  );
+
+  if (askedIndex > 2) {
+    return round(
+      frac(lengths[askedIndex - 3].length, ratio).evaluate(),
+      1,
+    ).frenchify();
+  } else {
+    return round(
+      multiply(ratio, lengths[askedIndex + 3].length).evaluate(),
+      1,
+    ).frenchify();
+  }
+};
+
+const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
+  const triangle = TriangleConstructor.fromIdentifiers(
+    identifiers.triangleIdentifiers,
+  );
+  const pointD = PointConstructor.fromIdentifiers(
+    identifiers.insidePointsIdentifiers[0],
+  );
+  const pointE = PointConstructor.fromIdentifiers(
+    identifiers.insidePointsIdentifiers[1],
+  );
+  const subTriangle = new Triangle(pointD, triangle.vertexB, pointE);
+
+  const oppositeSegment = triangle.getSideBName();
+  const insideSegmentName =
+    identifiers.insidePointsIdentifiers[0].name +
+    identifiers.insidePointsIdentifiers[1].name;
+  const segmentAskedName = SegmentConstructor.fromIdentifiers(
+    identifiers.segmentAsked,
+  ).toInsideName();
+  const lengths = [
+    ...triangle.getSegments().map((s) => {
+      return {
+        name: s.toInsideName(),
+        length: round(s.getLength(), 1).frenchify(),
+      };
+    }),
+    ...subTriangle.getSegments().map((s) => {
+      return {
+        name: s.toInsideName(),
+        length: round(s.getLength(), 1).frenchify(),
+      };
+    }),
+  ];
+  return `Dans le triangle $${triangle.getTriangleName()}$ ci-dessous, les droites $\\left(${insideSegmentName}\\right)$ et $\\left(${oppositeSegment}\\right)$ sont parallèles.
+  
+On sait de plus que : ${lengths
+    .filter((e) => e.name !== segmentAskedName)
+    .map((e) => `$${e.name}=${e.length}$`)
+    .join(" , ")}.
+
+Calculer $${segmentAskedName}$ (arrondir aux dixième).`;
+};
+
+// const getHint : GetHint<Identifiers> = (identifiers)=>{
+
+// }
+// const getCorrection : GetCorrection<Identifiers> = (identifiers)=>{
+
+// }
+
+const getGGBOptions: GetGGBOptions<Identifiers> = (identifiers) => {
+  const triangle = TriangleConstructor.fromIdentifiers(
+    identifiers.triangleIdentifiers,
+  );
+
+  const points = identifiers.insidePointsIdentifiers.map((d) =>
+    PointConstructor.fromIdentifiers(d),
+  );
+
+  const subTriangle = new Triangle(points[0], triangle.vertexB, points[1]);
+
+  const seg = new Segment(points[0], points[1]);
+  const commands = [
+    ...triangle.generateCommands({}),
+    ...points.flatMap((p) =>
+      p.toGGBCommand({ style: 0, color: "#444444", size: 4 }),
+    ),
+    ...seg.toGGBCommands(false),
+  ];
+  if (identifiers.isPapillon) {
+    commands.push(
+      ...new Segment(points[0], triangle.vertexB).toGGBCommands(false),
+    );
+    commands.push(
+      ...new Segment(points[1], triangle.vertexB).toGGBCommands(false),
     );
   }
 
-  return shuffle(propositions);
+  const ggb = new GeogebraConstructor({
+    commands,
+    hideAxes: true,
+    hideGrid: true,
+  });
+  let coords = triangle.generateCoords();
+  if (identifiers.isPapillon) {
+    const subCoords = subTriangle.generateCoords();
+    coords = [
+      Math.min(subCoords[0], coords[0]),
+      Math.max(subCoords[1], coords[1]),
+      Math.min(subCoords[2], coords[2]),
+      Math.max(subCoords[3], coords[3]),
+    ];
+  }
+  return ggb.getOptions({
+    coords: coords,
+  });
 };
 
-const isAnswerValid: VEA<Identifiers> = (
-  ans,
-  { isAskingC, rand, rand2, sideLengths },
+const getKeys: GetKeys<Identifiers> = (identifiers) => {
+  return [];
+};
+const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
+  return numberVEA(ans, answer);
+};
+
+type Options = {
+  configurationType: string;
+};
+const options: GeneratorOption[] = [
+  {
+    id: "configurationType",
+    label: "Types de figure",
+    defaultValue: "Toutes",
+    values: ["Toutes", "Uniquement papillon", "Uniquement non papillon"],
+    target: GeneratorOptionTarget.generation,
+    type: GeneratorOptionType.select,
+  },
+];
+const getThalesFindSideQuestion: QuestionGenerator<Identifiers, Options> = (
+  opts,
 ) => {
-  let answer: Node;
-  if (isAskingC)
-    answer = new Rational(
-      sideLengths[2 * rand2] * sideLengths[2 * rand + 1],
-      sideLengths[2 * rand],
-    )
-      .simplify()
-      .toTree();
-  else
-    answer = new Rational(
-      sideLengths[2 * rand2 + 1] * sideLengths[2 * rand],
-      sideLengths[2 * rand + 1],
-    )
-      .simplify()
-      .toTree();
-  const texs = answer.toAllValidTexs({ allowFractionToDecimal: true });
+  const summitNames = TriangleConstructor.randomName();
+  const triangle = TriangleConstructor.createRandomTriangle({
+    names: summitNames,
+  });
 
-  return texs.includes(ans);
+  const isPapillon =
+    !opts || opts?.configurationType === "Toutes"
+      ? coinFlip()
+      : opts.configurationType === "Uniquement papillon"
+      ? true
+      : false;
+
+  const pointD = PointConstructor.onSegment(
+    triangle.vertexA,
+    triangle.vertexB,
+    randomLetter(true, summitNames),
+    isPapillon ? { coefficient: randfloat(1.2, 1.8) } : { spacing: 0.2 },
+  );
+  const line = new Line(triangle.vertexA, triangle.vertexC);
+  const parallel = line.getParallele(pointD);
+  const intersectLine = new Line(triangle.vertexB, triangle.vertexC);
+  const pointE = parallel.intersect(
+    intersectLine,
+    randomLetter(true, [...summitNames, pointD.name]),
+  );
+
+  const subTriangle = new Triangle(pointD, triangle.vertexB, pointE);
+  const segmentAsked = random([
+    ...triangle.getSegments(),
+    ...subTriangle.getSegments(),
+  ]);
+  const identifiers: Identifiers = {
+    triangleIdentifiers: triangle.toIdentifiers(),
+    insidePointsIdentifiers: [pointD.toIdentifiers(), pointE.toIdentifiers()],
+    segmentAsked: segmentAsked.toIdentifiers(),
+    isPapillon,
+  };
+  const question: Question<Identifiers, Options> = {
+    answer: getAnswer(identifiers),
+    instruction: getInstruction(identifiers),
+    keys: getKeys(identifiers),
+    answerFormat: "tex",
+    identifiers,
+    // hint: getHint(identifiers),
+    // correction: getCorrection(identifiers),
+    ggbOptions: getGGBOptions(identifiers),
+  };
+
+  return question;
 };
-export const thalesCalcul: Exercise<Identifiers> = {
+
+export const thalesCalcul: Exercise<Identifiers, Options> = {
   id: "thalesCalcul",
   connector: "=",
-  label: "Utiliser le théoreme de Thalès pour faire des calculs",
-  levels: ["5ème", "4ème", "3ème", "2nde"],
-  isSingleStep: false,
-  sections: ["Théorème de Thalès", "Géométrie euclidienne"],
-  generator: (nb: number) => getDistinctQuestions(getThales, nb),
+  label: "Utiliser le théoreme de Thalès calculer un côté",
+  isSingleStep: true,
+  generator: (nb, opts) =>
+    getDistinctQuestions(() => getThalesFindSideQuestion(opts), nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
-  hasGeogebra: true,
   subject: "Mathématiques",
+  // getHint,
+  // getCorrection,
+  getAnswer,
+  getGGBOptions,
+  options,
+  hasGeogebra: true,
 };

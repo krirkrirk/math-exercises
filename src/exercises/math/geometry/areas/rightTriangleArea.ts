@@ -10,7 +10,7 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { GeogebraConstructor } from "#root/geogebra/geogebraConstructor";
-import { TriangleConstructor } from "#root/math/geometry/triangles";
+import { TriangleConstructor } from "#root/math/geometry/triangle";
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { KeyId } from "#root/types/keyIds";

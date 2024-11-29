@@ -15,7 +15,7 @@ import {
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
-import { Triangle } from "#root/math/geometry/triangles";
+import { Triangle } from "#root/math/geometry/triangle";
 import { pythagoricianTriplets } from "#root/math/utils/geometry/pythagoricianTriplets";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";

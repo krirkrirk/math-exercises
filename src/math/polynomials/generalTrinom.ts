@@ -116,7 +116,7 @@ export abstract class GeneralTrinomConstructor {
   }
 }
 
-type TrinomOptions = { variable: string };
+type GeneralTrinomOptions = { variable: string };
 export class GeneralTrinom {
   a: AlgebraicNode;
   b: AlgebraicNode;
@@ -128,7 +128,7 @@ export class GeneralTrinom {
     a: AlgebraicNode | number,
     b: AlgebraicNode | number,
     c: AlgebraicNode | number,
-    opts?: TrinomOptions,
+    opts?: GeneralTrinomOptions,
   ) {
     // super([c, b, a], opts?.variable ?? "x");
     this.a = typeof a === "number" ? a.toTree() : a;

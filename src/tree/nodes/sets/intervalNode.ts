@@ -3,6 +3,7 @@ import { permute } from "#root/utils/arrays/permutations";
 import { AlgebraicNode } from "../algebraicNode";
 import { InequationNode } from "../inequations/inequationNode";
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
+import { NodeIdentifiers } from "../nodeConstructor";
 import { isConstantNode } from "../numbers/constantNode";
 import {
   MinusInfinityNode,
@@ -17,6 +18,13 @@ import { UnionIntervalNode } from "./unionIntervalNode";
 export function isIntervalNode(a: Node): a is IntervalNode {
   return isSetNode(a) && a.id === SetIds.interval;
 }
+export type IntervalNodeIdentifiers = {
+  id: NodeIds;
+  leftChild: NodeIdentifiers;
+  rightChild: NodeIdentifiers;
+  closure: ClosureType;
+  opts?: NodeOptions;
+};
 export class IntervalNode implements SetNode {
   type: NodeType;
   id: SetIds;
@@ -167,12 +175,13 @@ export class IntervalNode implements SetNode {
         : "[";
     return `${left}${this.a.toTex()};${this.b.toTex()}${right}`;
   }
-  toIdentifiers() {
+  toIdentifiers(): IntervalNodeIdentifiers {
     return {
       id: NodeIds.interval,
       leftChild: this.a.toIdentifiers(),
       rightChild: this.b.toIdentifiers(),
       closure: this.closure,
+      opts: this.opts,
     };
   }
 

@@ -37,6 +37,11 @@ export abstract class RationalConstructor {
     const [num, denum] = shuffle([a, b]);
     return new Rational(num, denum);
   }
+  static randomIrreductibleProba(maxDenum: number = 11) {
+    const b = randint(2, maxDenum);
+    const a = randint(1, b);
+    return new Rational(a, b).simplify();
+  }
   static randomIrreductibleWithSign(max: number = 11) {
     const sign = coinFlip() ? 1 : -1;
     const a = randint(2, max);
