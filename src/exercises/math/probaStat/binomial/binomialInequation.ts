@@ -217,20 +217,21 @@ const options: GeneratorOption[] = [
   {
     id: "instructionType",
     label: "Types de consignes",
-    target: GeneratorOptionTarget.instruction,
+    target: GeneratorOptionTarget.generation,
     type: GeneratorOptionType.select,
     values: [
       "Toutes",
       "Uniquement sous forme de phrase",
       "Uniquement sous forme mathématique",
     ],
+    defaultValue: "Toutes",
   },
 ];
 export const binomialInequation: Exercise<Identifiers, Options> = {
   id: "binomialInequation",
   connector: "\\iff",
   label:
-    "Calculer une probabilité binomiale du type $P(x) \\leq a$, $P(X)\\geq a$ ou $a\\leq P(X)\\leq b$",
+    "Calculer une probabilité binomiale du type $P(X) \\leq a$, $P(X)\\geq a$ ou $a\\leq P(X)\\leq b$",
   isSingleStep: true,
   generator: (nb, opts) =>
     getDistinctQuestions(() => getBinomialInequationQuestion(opts), nb),

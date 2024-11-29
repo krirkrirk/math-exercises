@@ -143,7 +143,7 @@ const getPointImageFromTranslationQuestion: QuestionGenerator<
 
 export const pointImageFromTranslation: Exercise<Identifiers> = {
   id: "pointImageFromTranslation",
-  label: "undefined",
+  label: "Placer l'image d'un point par une translation",
   isSingleStep: true,
   generator: (nb: number) =>
     getDistinctQuestions(getPointImageFromTranslationQuestion, nb),
