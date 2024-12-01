@@ -125,7 +125,7 @@ ${
     : `Calculer en donnant la réponse à $10^{-2}$ près :
   
 $$
-${interval.toInequality("P(X)".toTree()).toTex()}
+P\\left(${interval.toInequality("X".toTree()).toTex()}\\right)
 $$`
 }`;
 };
@@ -231,7 +231,7 @@ export const binomialInequation: Exercise<Identifiers, Options> = {
   id: "binomialInequation",
   connector: "\\iff",
   label:
-    "Calculer une probabilité binomiale du type $P(X) \\leq a$, $P(X)\\geq a$ ou $a\\leq P(X)\\leq b$",
+    "Calculer une probabilité binomiale du type $P(X \\leq a)$, $P(X \\geq a)$ ou $P(a\\leq X\\leq b)$",
   isSingleStep: true,
   generator: (nb, opts) =>
     getDistinctQuestions(() => getBinomialInequationQuestion(opts), nb),

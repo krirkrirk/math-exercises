@@ -1,5 +1,6 @@
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -11,9 +12,15 @@ import {
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { randint } from "#root/math/utils/random/randint";
-import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { SquareNode } from "#root/tree/nodes/operators/powerNode";
-import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import {
+  MultiplyNode,
+  multiply,
+} from "#root/tree/nodes/operators/multiplyNode";
+import { SquareNode, square } from "#root/tree/nodes/operators/powerNode";
+import {
+  SubstractNode,
+  substract,
+} from "#root/tree/nodes/operators/substractNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 import { probaFlip } from "#root/utils/alea/probaFlip";
@@ -23,23 +30,27 @@ type Identifiers = {
   a: number;
 };
 
-const getAnswer = (roots: number[], a: number) => {
+const getAnswerNode = (roots: number[], a: number) => {
   const isSingleRoot = roots.length === 1;
   return isSingleRoot
-    ? new MultiplyNode(
-        a.toTree(),
-        new SquareNode(
-          new SubstractNode(new VariableNode("x"), roots[0].toTree()),
-        ),
-      ).simplify({ keepPowers: true })
-    : new MultiplyNode(
-        new MultiplyNode(
-          a.toTree(),
-          new SubstractNode(new VariableNode("x"), roots[0].toTree()),
-        ),
-        new SubstractNode(new VariableNode("x"), roots[1].toTree()),
+    ? multiply(a, square(substract("x", roots[0]))).simplify({
+        keepPowers: true,
+      })
+    : multiply(
+        multiply(a, substract("x", roots[0])),
+        substract("x", roots[1]),
       ).simplify();
 };
+
+const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
+  const { a, roots } = identifiers;
+  return `Soit $f(x) = ax^2 + bx + c$ un polynôme du second degré avec $a = ${a}$ et qui a ${
+    roots.length === 1
+      ? `pour seule racine : $${roots[0]}$`
+      : `deux racines : $${roots[0]}$ et $${roots[1]}$`
+  }. Déterminer la forme factorisée de $f$.`;
+};
+
 const getFactorizedFormFromRootsQuestion: QuestionGenerator<
   Identifiers
 > = () => {
@@ -50,18 +61,15 @@ const getFactorizedFormFromRootsQuestion: QuestionGenerator<
   const roots = isSingleRoot
     ? [firstRoot]
     : [firstRoot, secondRoot].sort((a, b) => a - b);
-  const answer = getAnswer(roots, a);
+  const answer = getAnswerNode(roots, a);
   const answerTex = answer.toTex();
+  const identifiers = { a, roots };
   const question: Question<Identifiers> = {
     answer: answerTex,
-    instruction: `Soit $f(x) = ax^2 + bx + c$ un polynôme du second degré avec $a = ${a}$ et qui a ${
-      roots.length === 1
-        ? `une racine : $${roots[0]}$`
-        : `deux racines : $${roots[0]}$ et $${roots[1]}$`
-    }. Déterminer la forme factorisée de $f$.`,
+    instruction: getInstruction(identifiers),
     keys: ["x"],
     answerFormat: "tex",
-    identifiers: { a, roots },
+    identifiers,
   };
 
   return question;
@@ -75,7 +83,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
   addValidProp(propositions, answer);
   tryToAddWrongProp(
     propositions,
-    getAnswer(
+    getAnswerNode(
       roots.map((r) => -r),
       a,
     ).toTex(),
@@ -85,7 +93,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
     const x2 = randint(-10, 10, [x1]);
     tryToAddWrongProp(
       propositions,
-      getAnswer(
+      getAnswerNode(
         [x1, x2].sort((a, b) => a - b),
         randint(-10, 10, [0]),
       ).toTex(),
@@ -95,7 +103,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer, a, roots }) => {
-  const answerNode = getAnswer(roots, a);
+  const answerNode = getAnswerNode(roots, a);
   const texs = answerNode.toAllValidTexs();
   return texs.includes(ans);
 };
