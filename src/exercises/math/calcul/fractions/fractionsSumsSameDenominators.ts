@@ -55,7 +55,7 @@ const getFractionsSumsSameDenominatorsQuestion: QuestionGenerator<
     instruction: `Calculer ${
       opts?.allowNonIrreductible
         ? ""
-        : "et donner le résultat sous la forme d'une fraction irréductible"
+        : "et donner le résultat sous la forme la plus simplifiée possible"
     } : 
     
 $$
@@ -79,7 +79,7 @@ ${alignTex([
 
 ${
   answerRatio.isSimplified && answerRatio.denum !== 1
-    ? "Cette fraction est bien irréductible."
+    ? "Cette fraction est bien simplifiée."
     : `Puis, on simplifie la fraction : 
     
 ${alignTex([

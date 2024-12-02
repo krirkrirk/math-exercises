@@ -54,7 +54,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, {answer})=>{
   throw Error("VEA not implemented")
 }
 
-const get{{namePascal}}Question: QuestionGenerator<Identifiers>  = ()=>{
+const get{{namePascal}}Question: QuestionGenerator<Identifiers>  = (ops)=>{
   const identifiers: Identifiers = {}
   const question: Question<Identifiers> = {
     answer: getAnswer(identifiers),
@@ -74,12 +74,13 @@ export const {{name}}: Exercise<Identifiers> = {
   connector: "",
   label: undefined,
   isSingleStep: true,
-  generator: (nb: number) => getDistinctQuestions(get{{namePascal}}Question, nb),
+  generator: (nb, opts) => getDistinctQuestions(()=>get{{namePascal}}Question(opts), nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getInstruction,
   getHint,
   getCorrection,
   getAnswer,

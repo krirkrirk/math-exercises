@@ -1,5 +1,9 @@
 import {
   Exercise,
+  GetAnswer,
+  GetCorrection,
+  GetHint,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -20,34 +24,53 @@ import { DivideNode } from "#root/tree/nodes/operators/divideNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 
-const getFractionAndIntegerDivision: QuestionGenerator<Identifiers> = () => {
-  const rational = RationalConstructor.randomIrreductible();
-  const integerFirst = coinFlip();
-  const integer = integerFirst
-    ? new Integer(randint(-10, 11, [0]))
-    : new Integer(randint(-10, 11, [0, 1]));
+type Identifiers = {
+  integerFirst: boolean;
+  integer: number;
+  rational: number[];
+};
 
-  const statementTree = integerFirst
-    ? new DivideNode(integer.toTree(), rational.toTree())
-    : new DivideNode(rational.toTree(), integer.toTree());
+const getAnswer: GetAnswer<Identifiers> = (identifiers) => {
+  const { integerFirst, integer, rational } = identifiers;
+  const rationalObj = new Rational(rational[0], rational[1]);
+  const integerObj = new Integer(integer);
   const answerTree = integerFirst
-    ? integer.divide(rational).toTree()
-    : rational.divide(integer).toTree();
+    ? integerObj.divide(rationalObj).toTree()
+    : rationalObj.divide(integerObj).toTree();
   const answerTex = answerTree.toTex();
+  return answerTex;
+};
+
+const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
+  const { integerFirst, integer, rational } = identifiers;
+  const rationalObj = new Rational(rational[0], rational[1]);
+  const statementTree = integerFirst
+    ? new DivideNode(integer.toTree(), rationalObj.toTree())
+    : new DivideNode(rationalObj.toTree(), integer.toTree());
+
+  return `Calculer et simplifier au maximum : 
+    
+$$
+${statementTree.toTex()}
+$$`;
+};
+
+const getHint: GetHint<Identifiers> = (identifiers) => {
+  return "Pour diviser une fraction par un nombre entier, on peut écrire le nombre entier sous forme de fraction. Puis, on multiplie la première fraction par l'inverse de la seconde. Enfin, on simplife la fraction obtenue si possible.";
+};
+
+const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
+  const { integerFirst, integer, rational } = identifiers;
+  const rationalObj = new Rational(rational[0], rational[1]);
   const beforeSimplification = integerFirst
-    ? new Rational(integer.value * rational.denum, rational.num)
-    : new Rational(rational.num, rational.denum * integer.value);
-  const question: Question<Identifiers> = {
-    instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
-    startStatement: statementTree.toTex(),
-    answer: answerTex,
-    keys: [],
-    hint: "Pour diviser une fraction par un nombre entier, on peut écrire le nombre entier sous forme de fraction. Puis, on multiplie la première fraction par l'inverse de la seconde. Enfin, on simplife la fraction obtenue si possible.",
-    correction: `
-On écrit $${integer.value}$ sous forme de fraction : 
+    ? new Rational(integer * rationalObj.denum, rationalObj.num)
+    : new Rational(rationalObj.num, rationalObj.denum * integer);
+  const answerTex = getAnswer(identifiers);
+  return `
+On écrit $${integer}$ sous forme de fraction : 
 
 $$
-${integer.value} = \\frac{${integer.value}}{1}
+${integer} = \\frac{${integer}}{1}
 $$
 
 On multiplie la première fraction par l'inverse de la seconde :
@@ -55,25 +78,27 @@ On multiplie la première fraction par l'inverse de la seconde :
 $$
 ${
   integerFirst
-    ? `\\frac{${integer.value}}{1}\\div ${rational.toTree().toTex()} = \\frac{${
-        integer.value
-      }}{1} \\times ${rational
+    ? `\\frac{${integer}}{1}\\div ${rationalObj
+        .toTree()
+        .toTex()} = \\frac{${integer}}{1} \\times ${rationalObj
         .reverse(false)
         .toTree()
         .toTex()} = \\frac{${new MultiplyNode(
         integer.toTree(),
-        rational.denum.toTree(),
+        rationalObj.denum.toTree(),
       ).toTex({ forceNoSimplification: true })}}{${new MultiplyNode(
         (1).toTree(),
-        rational.num.toTree(),
+        rationalObj.num.toTree(),
       ).toTex({ forceNoSimplification: true })}}
     = ${beforeSimplification.toTree().toTex()}`
-    : `${rational.toTree().toTex()}\\div \\frac{${
-        integer.value
-      }}{1} = ${rational.toTree().toTex()}\\times \\frac{1}{${
-        integer.value
-      }} = \\frac{${rational.num}\\times 1}{${new MultiplyNode(
-        rational.denum.toTree(),
+    : `${rationalObj
+        .toTree()
+        .toTex()}\\div \\frac{${integer}}{1} = ${rationalObj
+        .toTree()
+        .toTex()}\\times \\frac{1}{${integer}} = \\frac{${
+        rationalObj.num
+      }\\times 1}{${new MultiplyNode(
+        rationalObj.denum.toTree(),
         integer.toTree(),
       ).toTex({ forceNoSimplification: true })}} = ${beforeSimplification
         .toTree()
@@ -89,26 +114,42 @@ $$
 ${beforeSimplification.toTree().toTex()} = ${answerTex}
 $$
   `
-    : "Cette fraction est déjà irréductible."
+    : "Cette fraction est déjà simplifiée."
 }
 
 Ainsi, le résultat attendu est $${answerTex}$.
-    `,
+    `;
+};
+const getFractionAndIntegerDivision: QuestionGenerator<Identifiers> = () => {
+  const rational = RationalConstructor.randomIrreductible();
+  const integerFirst = coinFlip();
+  const integer = integerFirst
+    ? new Integer(randint(-10, 11, [0]))
+    : new Integer(randint(-10, 11, [0, 1]));
+
+  const statementTree = integerFirst
+    ? new DivideNode(integer.toTree(), rational.toTree())
+    : new DivideNode(rational.toTree(), integer.toTree());
+
+  const identifiers = {
+    integerFirst,
+    integer: integer.value,
+    rational: [rational.num, rational.denum],
+  };
+
+  const question: Question<Identifiers> = {
+    instruction: getInstruction(identifiers),
+    startStatement: statementTree.toTex(),
+    answer: getAnswer(identifiers),
+    keys: [],
+    hint: getHint(identifiers),
+    correction: getCorrection(identifiers),
     answerFormat: "tex",
-    identifiers: {
-      integerFirst,
-      integer: integer.value,
-      rational: [rational.num, rational.denum],
-    },
+    identifiers,
   };
   return question;
 };
 
-type Identifiers = {
-  integerFirst: boolean;
-  integer: number;
-  rational: [number, number];
-};
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, integerFirst, integer, rational },
@@ -163,4 +204,8 @@ export const fractionAndIntegerDivision: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Mathématiques",
   hasHintAndCorrection: true,
+  getAnswer,
+  getInstruction,
+  getHint,
+  getCorrection,
 };

@@ -160,6 +160,10 @@ export type GetInstruction<TIdentifiers, TOptions = {}> = (
   args: TIdentifiers,
   options?: TOptions,
 ) => string;
+export type GetStartStatement<TIdentifiers, TOptions = {}> = (
+  args: TIdentifiers,
+  options?: TOptions,
+) => string;
 export type GetAnswer<TIdentifiers, TOptions = {}> = (
   args: TIdentifiers,
   options?: TOptions,
@@ -220,6 +224,7 @@ export interface Exercise<TIdentifiers = {}, TOptions = {}> {
   subject: "Mathématiques" | "Chimie" | "Physique";
   hasHintAndCorrection?: boolean;
   getInstruction?: GetInstruction<TIdentifiers, TOptions>;
+  getStartStatement?: GetStartStatement<TIdentifiers, TOptions>;
   getHint?: GetHint<TIdentifiers, TOptions>;
   getCorrection?: GetCorrection<TIdentifiers, TOptions>;
   getKeys?: GetKeys<TIdentifiers, TOptions>;

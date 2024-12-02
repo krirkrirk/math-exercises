@@ -7,6 +7,10 @@ import { MultiplyNode, isMultiplyNode } from "../operators/multiplyNode";
 import { isInt } from "#root/utils/isInt";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
+import { frac, isFractionNode } from "../operators/fractionNode";
+import { isSquare } from "#root/math/utils/arithmetic/isSquare";
+import { isSquareNode } from "../operators/powerNode";
+import { AbsNode } from "./absNode";
 export function isSqrtNode(a: Node): a is SqrtNode {
   return isFunctionNode(a) && a.id === FunctionsIds.sqrt;
 }
@@ -97,6 +101,12 @@ export class SqrtNode implements FunctionNode {
         return sqrt.simplify().toTree();
       }
       //TODO diviser par 2 les puissances (dont exp)
+      if (isSquareNode(a)) {
+        return new AbsNode(a.leftChild).simplify();
+      }
+      if (isFractionNode(a)) {
+        return frac(sqrt(a.leftChild), sqrt(a.rightChild)).simplify(opts);
+      }
       return new SqrtNode(a);
     };
     const simplifyIteration = () => {

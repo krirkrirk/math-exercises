@@ -62,7 +62,7 @@ import {
   }
   
 
-  const get{{namePascal}}Question: QuestionGenerator<Identifiers>  = ()=>{
+  const get{{namePascal}}Question: QuestionGenerator<Identifiers>  = (opts)=>{
     const identifiers: Identifiers = {}
     const question: Question<Identifiers> = {
       answer: getAnswer(identifiers),
@@ -83,7 +83,7 @@ import {
     connector: "",
     label: "",
     isSingleStep: true,
-    generator: (nb: number) => getDistinctQuestions(get{{namePascal}}Question, nb),
+    generator: (nb,opts) => getDistinctQuestions(()=>get{{namePascal}}Question(opts), nb),
     qcmTimer: 60,
     freeTimer: 60,
     getPropositions,
@@ -91,6 +91,7 @@ import {
     subject: "Mathématiques",
     getHint,
     getCorrection,
+    getInstruction,
     getAnswer,
     getGGBOptions,
   };

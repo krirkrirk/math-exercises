@@ -121,4 +121,5 @@ export const factorizedFormFromRoots: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
+  getInstruction,
 };

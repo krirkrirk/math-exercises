@@ -33,5 +33,12 @@ import { OppositeNode, opposite } from "./tree/nodes/functions/oppositeNode";
 import { PointConstructor } from "./math/geometry/point";
 import { randfloat } from "./math/utils/random/randfloat";
 import { VectorConstructor } from "./math/geometry/vector";
+import { square } from "./tree/nodes/operators/powerNode";
 
-export const playground = () => {};
+export const playground = () => {
+  console.log(
+    sqrt(square(frac(2, 3)))
+      .simplify()
+      .toTex(),
+  );
+};

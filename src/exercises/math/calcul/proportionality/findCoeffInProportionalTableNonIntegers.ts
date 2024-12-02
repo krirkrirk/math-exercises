@@ -13,6 +13,9 @@ import {
   GetInstruction,
   GetKeys,
   tryToAddWrongProp,
+  GeneratorOptionType,
+  GeneratorOptionTarget,
+  GeneratorOption,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { RationalConstructor } from "#root/math/numbers/rationals/rational";
@@ -34,21 +37,25 @@ type Identifiers = {
   coeffIds: any;
   xValues: any[];
   yValues: any[];
-  type: number;
+  coeffType: string;
+  valuesType: string;
 };
 
-const getPropositions: QCMGenerator<Identifiers> = (n, { answer, type }) => {
+const getPropositions: QCMGenerator<Identifiers> = (
+  n,
+  { answer, coeffType },
+) => {
   const propositions: Proposition[] = [];
   addValidProp(propositions, answer);
   while (propositions.length < n) {
-    switch (type) {
-      case 1:
+    switch (coeffType) {
+      case "Entier":
         tryToAddWrongProp(propositions, randint(1, 10) + "");
         break;
-      case 2:
+      case "Décimal":
         tryToAddWrongProp(propositions, randfloat(1, 10, 1).frenchify());
         break;
-      case 3:
+      case "Fraction":
         tryToAddWrongProp(
           propositions,
           RationalConstructor.randomIrreductible().toTree().toTex(),
@@ -88,68 +95,53 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 };
 
 const getFindCoeffInProportionalTableNonIntegersQuestion: QuestionGenerator<
-  Identifiers
-> = () => {
-  const type = randint(1, 4);
+  Identifiers,
+  Options
+> = (opts) => {
   let coeff: AlgebraicNode;
   let xValues: AlgebraicNode[] = [];
-  switch (type) {
-    case 1:
-      //coeff entier, valeurs décimal/frac
-      coeff = randint(2, 10).toTree();
-      for (let i = 0; i < 3; i++) {
-        let x: AlgebraicNode = doWhile<AlgebraicNode>(
-          () =>
-            coinFlip()
-              ? randfloat(1.1, 10, 1).toTree()
-              : RationalConstructor.randomIrreductible().toTree(),
-          (y) => xValues.some((x) => x.equals(y)),
-        );
-        xValues.push(x);
-      }
-      xValues.sort((a, b) => a.evaluate() - b.evaluate());
-      break;
-    case 2:
-      //coeff décimal, valeurs entieres/décimal
-      coeff = randfloat(1.1, 10, 1).toTree();
-      for (let i = 0; i < 3; i++) {
-        let x: AlgebraicNode = doWhile<AlgebraicNode>(
-          () =>
-            coinFlip()
-              ? randint(1, 10).toTree()
-              : randfloat(1.1, 10, 1).toTree(),
-          (y) => xValues.some((x) => x.equals(y)),
-        );
-        xValues.push(x);
-      }
-      xValues.sort((a, b) => a.evaluate() - b.evaluate());
-      break;
+  const coeffType = random(
+    opts?.coeffNumberTypes ?? ["Entier", "Décimal", "Fraction"],
+  );
+  if (!coeffType) throw Error("No Coeff Type");
+  const valuesType = random(
+    opts?.valuesNumberTypes ?? ["Entières", "Décimales", "Fractions"],
+  );
+  if (!valuesType) throw Error("No value type");
 
-    case 3:
-    //coeff frac, valeurs frac / entieres
-    default:
-      coeff = RationalConstructor.randomPureRational().toTree();
-      for (let i = 0; i < 3; i++) {
-        let x: AlgebraicNode = doWhile<AlgebraicNode>(
-          () =>
-            coinFlip()
-              ? randint(1, 10).toTree()
-              : RationalConstructor.randomIrreductible().toTree(),
-          (y) => xValues.some((x) => x.equals(y)),
-        );
-        xValues.push(x);
-      }
-      xValues.sort((a, b) => a.evaluate() - b.evaluate());
+  coeff =
+    coeffType === "Entier"
+      ? randint(2, 10).toTree()
+      : coeffType === "Décimal"
+      ? randfloat(1.1, 10, 1).toTree()
+      : RationalConstructor.randomPureRational().toTree();
+
+  const getX = () => {
+    return valuesType === "Entières"
+      ? randint(1, 10).toTree()
+      : valuesType === "Décimales"
+      ? randfloat(1.1, 10, 1).toTree()
+      : RationalConstructor.randomIrreductible().toTree();
+  };
+
+  for (let i = 0; i < 3; i++) {
+    let x: AlgebraicNode = doWhile<AlgebraicNode>(getX, (y) =>
+      xValues.some((x) => x.equals(y)),
+    );
+    xValues.push(x);
   }
+  xValues.sort((a, b) => a.evaluate() - b.evaluate());
+
   const yValues = xValues.map((x) => multiply(x, coeff).simplify());
 
   const identifiers: Identifiers = {
     coeffIds: coeff.toIdentifiers(),
     xValues: xValues.map((e) => e.toIdentifiers()),
     yValues: yValues.map((e) => e.toIdentifiers()),
-    type,
+    coeffType,
+    valuesType,
   };
-  const question: Question<Identifiers> = {
+  const question: Question<Identifiers, Options> = {
     answer: getAnswer(identifiers),
     instruction: getInstruction(identifiers),
     keys: getKeys(identifiers),
@@ -164,16 +156,41 @@ const getFindCoeffInProportionalTableNonIntegersQuestion: QuestionGenerator<
 
   return question;
 };
+type Options = {
+  coeffNumberTypes: string[];
+  valuesNumberTypes: string[];
+};
+const options: GeneratorOption[] = [
+  {
+    id: "coeffNumberTypes",
+    label: "Type du coefficient",
+    type: GeneratorOptionType.multiselect,
+    target: GeneratorOptionTarget.generation,
+    values: ["Entier", "Décimal", "Fraction"],
+    defaultValue: ["Entier", "Décimal", "Fraction"],
+  },
+  {
+    id: "valuesNumberTypes",
+    label: "Type des valeurs",
+    type: GeneratorOptionType.multiselect,
+    target: GeneratorOptionTarget.generation,
+    values: ["Entières", "Décimales", "Fractions"],
+    defaultValue: ["Entier", "Décimal", "Fraction"],
+  },
+];
 
-export const findCoeffInProportionalTableNonIntegers: Exercise<Identifiers> = {
+export const findCoeffInProportionalTableNonIntegers: Exercise<
+  Identifiers,
+  Options
+> = {
   id: "findCoeffInProportionalTableNonIntegers",
   connector: "=",
   label:
     "Calculer un coefficient de proportionnalité à partir d'un tableau (valeurs non entières)",
   isSingleStep: true,
-  generator: (nb: number) =>
+  generator: (nb, opts) =>
     getDistinctQuestions(
-      getFindCoeffInProportionalTableNonIntegersQuestion,
+      () => getFindCoeffInProportionalTableNonIntegersQuestion(opts),
       nb,
     ),
   qcmTimer: 60,
@@ -185,4 +202,5 @@ export const findCoeffInProportionalTableNonIntegers: Exercise<Identifiers> = {
   // getCorrection,
   getAnswer,
   answerType: "QCU",
+  options,
 };

@@ -13,6 +13,9 @@ import {
   GetInstruction,
   GetKeys,
   tryToAddWrongProp,
+  GeneratorOptionType,
+  GeneratorOption,
+  GeneratorOptionTarget,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { RationalConstructor } from "#root/math/numbers/rationals/rational";
@@ -34,7 +37,8 @@ type Identifiers = {
   xValues: any[];
   yValues: any[];
   isProportionnal: boolean;
-  type: number;
+  coeffType: string;
+  valuesType: string;
 };
 
 const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
@@ -72,78 +76,68 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
   throw Error("VEA not implemented");
 };
 
+type Options = {
+  coeffNumberTypes: string[];
+  valuesNumberTypes: string[];
+};
+// ["Entier", "Décimal", "Fraction"],
+// ["Entières", "Décimales", "Fractions"],
 const getIsTableProportionalNonIntegerQuestion: QuestionGenerator<
-  Identifiers
-> = () => {
-  const type = randint(1, 4);
+  Identifiers,
+  Options
+> = (opts) => {
+  const coeffType = random(
+    opts?.coeffNumberTypes ?? ["Entier", "Décimal", "Fraction"],
+  );
+  if (!coeffType) throw Error("No Coeff Type");
+  const valuesType = random(
+    opts?.valuesNumberTypes ?? ["Entières", "Décimales", "Fractions"],
+  );
+  if (!valuesType) throw Error("No value type");
+
   let coeff: AlgebraicNode;
   let xValues: AlgebraicNode[] = [];
   const isProportionnal = coinFlip();
 
-  switch (type) {
-    case 1:
-      //coeff entier, valeurs décimal/frac
-      coeff = randint(2, 10).toTree();
-      for (let i = 0; i < 3; i++) {
-        let x: AlgebraicNode = doWhile<AlgebraicNode>(
-          () =>
-            coinFlip()
-              ? randfloat(1.1, 10, 1).toTree()
-              : RationalConstructor.randomIrreductible().toTree(),
-          (y) => xValues.some((x) => x.equals(y)),
-        );
-        xValues.push(x);
-      }
-      xValues.sort((a, b) => a.evaluate() - b.evaluate());
+  coeff =
+    coeffType === "Entier"
+      ? randint(2, 10).toTree()
+      : coeffType === "Décimal"
+      ? randfloat(1.1, 10, 1).toTree()
+      : RationalConstructor.randomPureRational().toTree();
 
-      break;
-    case 2:
-      //coeff décimal, valeurs entieres/décimal
-      coeff = randfloat(1.1, 10, 1).toTree();
-      for (let i = 0; i < 3; i++) {
-        let x: AlgebraicNode = doWhile<AlgebraicNode>(
-          () =>
-            coinFlip()
-              ? randint(1, 10).toTree()
-              : randfloat(1.1, 10, 1).toTree(),
-          (y) => xValues.some((x) => x.equals(y)),
-        );
-        xValues.push(x);
-      }
-      xValues.sort((a, b) => a.evaluate() - b.evaluate());
-      break;
+  const getX = () => {
+    return valuesType === "Entières"
+      ? randint(1, 10).toTree()
+      : valuesType === "Décimales"
+      ? randfloat(1.1, 10, 1).toTree()
+      : RationalConstructor.randomIrreductible().toTree();
+  };
 
-    case 3:
-    //coeff frac, valeurs frac / entieres
-    default:
-      coeff = RationalConstructor.randomPureRational().toTree();
-
-      for (let i = 0; i < 3; i++) {
-        let x: AlgebraicNode = doWhile<AlgebraicNode>(
-          () =>
-            coinFlip()
-              ? randint(1, 10).toTree()
-              : RationalConstructor.randomIrreductible().toTree(),
-          (y) => xValues.some((x) => x.equals(y)),
-        );
-        xValues.push(x);
-      }
-      xValues.sort((a, b) => a.evaluate() - b.evaluate());
+  for (let i = 0; i < 3; i++) {
+    let x: AlgebraicNode = doWhile<AlgebraicNode>(getX, (y) =>
+      xValues.some((x) => x.equals(y)),
+    );
+    xValues.push(x);
   }
+  xValues.sort((a, b) => a.evaluate() - b.evaluate());
+
   const yValues = isProportionnal
     ? xValues.map((x) => multiply(x, coeff).simplify())
-    : xValues.map((x) => multiply(add(x, random([-1, 1])), coeff).simplify());
+    : xValues.map((x) => multiply(add(x, 1), coeff).simplify());
 
   const identifiers: Identifiers = {
     coeffIds: coeff.toIdentifiers(),
     xValues: xValues.map((e) => e.toIdentifiers()),
     yValues: yValues.map((e) => e.toIdentifiers()),
     isProportionnal: isProportionnal,
-    type,
+    valuesType,
+    coeffType,
   };
-  const question: Question<Identifiers> = {
+
+  const question: Question<Identifiers, Options> = {
     answer: getAnswer(identifiers),
-    instruction: getInstruction(identifiers),
+    instruction: getInstruction(identifiers, opts),
     keys: getKeys(identifiers),
     answerFormat: "raw",
     identifiers,
@@ -157,13 +151,32 @@ const getIsTableProportionalNonIntegerQuestion: QuestionGenerator<
   return question;
 };
 
-export const isTableProportionalNonInteger: Exercise<Identifiers> = {
+const options: GeneratorOption[] = [
+  {
+    id: "coeffNumberTypes",
+    label: "Type du coefficient",
+    type: GeneratorOptionType.multiselect,
+    target: GeneratorOptionTarget.generation,
+    values: ["Entier", "Décimal", "Fraction"],
+  },
+  {
+    id: "valuesNumberTypes",
+    label: "Type des valeurs",
+    type: GeneratorOptionType.multiselect,
+    target: GeneratorOptionTarget.generation,
+    values: ["Entières", "Décimales", "Fractions"],
+  },
+];
+export const isTableProportionalNonInteger: Exercise<Identifiers, Options> = {
   id: "isTableProportionalNonInteger",
   connector: "=",
   label: "Reconnaître un tableau de proportionnalité (valeurs non entières)",
   isSingleStep: true,
-  generator: (nb: number) =>
-    getDistinctQuestions(getIsTableProportionalNonIntegerQuestion, nb),
+  generator: (nb, opts) =>
+    getDistinctQuestions(
+      () => getIsTableProportionalNonIntegerQuestion(opts),
+      nb,
+    ),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
@@ -173,4 +186,5 @@ export const isTableProportionalNonInteger: Exercise<Identifiers> = {
   // getCorrection,
   getAnswer,
   answerType: "QCU",
+  options,
 };

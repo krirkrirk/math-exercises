@@ -59,7 +59,7 @@ const getSignFunction: QuestionGenerator<Identifiers> = () => {
     instruction,
     startStatement: "S",
     answer,
-    keys: ["S", "equal", "lbracket", "rbracket", "semicolon", "infty"],
+    keys: ["lbracket", "semicolon", "rbracket", "infty"],
     answerFormat: "tex",
     identifiers: { a, askingPositive, b },
   };

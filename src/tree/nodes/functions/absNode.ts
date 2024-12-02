@@ -2,6 +2,8 @@
 import { Node, NodeIds, NodeType } from "../node";
 import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
+import { isNumberNode } from "../numbers/numberNode";
+import { isOppositeNode } from "./oppositeNode";
 export function isAbsNode(a: Node): a is AbsNode {
   return isFunctionNode(a) && a.id === FunctionsIds.abs;
 }
@@ -46,7 +48,13 @@ export class AbsNode implements FunctionNode {
     return this.toEquivalentNodes().map((node) => node.toTex());
   }
   simplify() {
-    return new AbsNode(this.child.simplify());
+    const childSimplified = this.child.simplify();
+    if (isNumberNode(childSimplified))
+      return Math.abs(childSimplified.value).toTree();
+    if (isOppositeNode(childSimplified)) {
+      return childSimplified.child;
+    }
+    return new AbsNode(childSimplified);
   }
 
   evaluate(vars?: Record<string, number>) {

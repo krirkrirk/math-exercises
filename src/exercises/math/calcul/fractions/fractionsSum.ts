@@ -3,6 +3,7 @@ import {
   GeneratorOption,
   GeneratorOptionTarget,
   GeneratorOptionType,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -22,12 +23,34 @@ import { rationalParser } from "#root/tree/parsers/rationalParser";
 import { shuffle } from "#root/utils/alea/shuffle";
 
 type Identifiers = {
-  rational: [number, number];
-  rational2: [number, number];
+  rational: number[];
+  rational2: number[];
 };
 
 type Options = {
   allowNonIrreductible?: boolean;
+};
+
+const getInstruction: GetInstruction<Identifiers, Options> = (
+  identifiers,
+  opts,
+) => {
+  const { rational, rational2 } = identifiers;
+  const rationalObj = new Rational(rational[0], rational[1]);
+  const rationalObj2 = new Rational(rational2[0], rational2[1]);
+  const statementTree = new AddNode(
+    rationalObj.toTree(),
+    rationalObj2.toTree(),
+  );
+  return `Calculer ${
+    opts?.allowNonIrreductible
+      ? ""
+      : "et donner le résultat sous la forme la plus simplifiée possible"
+  } : 
+    
+$$
+${statementTree.toTex()}
+$$`;
 };
 
 const getFractionsSum: QuestionGenerator<Identifiers, Options> = (opts) => {
@@ -36,24 +59,18 @@ const getFractionsSum: QuestionGenerator<Identifiers, Options> = (opts) => {
   const statementTree = new AddNode(rational.toTree(), rational2.toTree());
   const answerTree = rational.add(rational2).toTree();
   const answer = answerTree.toTex();
+  const identifiers = {
+    rational: [rational.num, rational.denum],
+    rational2: [rational2.num, rational2.denum],
+  };
+
   const question: Question<Identifiers, Options> = {
-    instruction: `Calculer ${
-      opts?.allowNonIrreductible
-        ? ""
-        : "et donner le résultat sous la forme d'une fraction irréductible"
-    } : 
-    
-$$
-${statementTree.toTex()}
-$$`,
+    instruction: getInstruction(identifiers, opts),
     startStatement: statementTree.toTex(),
     answer,
     keys: [],
     answerFormat: "tex",
-    identifiers: {
-      rational: [rational.num, rational.denum],
-      rational2: [rational2.num, rational2.denum],
-    },
+    identifiers,
   };
   return question;
 };
@@ -132,4 +149,5 @@ export const fractionsSum: Exercise<Identifiers, Options> = {
   isAnswerValid,
   subject: "Mathématiques",
   options,
+  getInstruction,
 };

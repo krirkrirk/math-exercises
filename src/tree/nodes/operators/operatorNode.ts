@@ -11,6 +11,7 @@ export enum OperatorIds {
   limit,
   integral,
   binomialCoefficient,
+  square,
 }
 
 export interface OperatorNode extends AlgebraicNode {

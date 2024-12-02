@@ -53,7 +53,7 @@ const getFractionsSumsMultiplesDenominatorsQuestion: QuestionGenerator<
     instruction: `Calculer ${
       opts?.allowNonIrreductible
         ? ""
-        : "et donner le résultat sous la forme d'une fraction irréductible"
+        : "et donner le résultat sous la forme la plus simplifiée possible"
     } : 
     
 $$

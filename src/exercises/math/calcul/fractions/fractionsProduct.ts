@@ -8,12 +8,14 @@ import {
   addValidProp,
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
+import { allowNonIrreductibleOption } from "#root/exercises/options/allowNonIrreductibleFractions";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import {
   Rational,
   RationalConstructor,
 } from "#root/math/numbers/rationals/rational";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import { rationalParser } from "#root/tree/parsers/rationalParser";
 import { shuffle } from "#root/utils/alea/shuffle";
 import { v4 } from "uuid";
 
@@ -22,7 +24,11 @@ type Identifiers = {
   rationalDenum: [number, number];
 };
 
-const getFractionsProduct: QuestionGenerator<Identifiers> = () => {
+type Options = {
+  allowNonIrreductible?: boolean;
+};
+
+const getFractionsProduct: QuestionGenerator<Identifiers, Options> = (opts) => {
   const rational = RationalConstructor.randomIrreductible();
   const rational2 = RationalConstructor.randomIrreductible();
   const statementTree = new MultiplyNode(rational.toTree(), rational2.toTree());
@@ -32,8 +38,16 @@ const getFractionsProduct: QuestionGenerator<Identifiers> = () => {
     rational.num * rational2.num,
     rational.denum * rational2.denum,
   );
-  const question: Question<Identifiers> = {
-    instruction: `Calculer et donner le résultat sous la forme d'une fraction irréductible : $${statementTree.toTex()}$`,
+  const question: Question<Identifiers, Options> = {
+    instruction: `Calculer ${
+      opts?.allowNonIrreductible
+        ? ""
+        : "et donner le résultat sous la forme la plus simplifiée possible"
+    } : 
+    
+$$
+${statementTree.toTex()}
+$$`,
     startStatement: statementTree.toTex(),
     answer,
     keys: [],
@@ -58,7 +72,7 @@ ${
 $$
 ${beforeSimplification.toTree().toTex()} = ${answer}
 $$`
-    : "Cette fraction est déjà sous forme irréductible."
+    : "Cette fraction est déjà simplifiée."
 }
 
 Ainsi, le résultat attendu est $${answer}$.
@@ -84,9 +98,10 @@ const getPropositions: QCMGenerator<Identifiers> = (
   return shuffle(propositions);
 };
 
-const isAnswerValid: VEA<Identifiers> = (
+const isAnswerValid: VEA<Identifiers, Options> = (
   ans,
   { rationalDenum, rationalNum },
+  opts,
 ) => {
   const rational = new Rational(rationalNum[0], rationalNum[1]);
   const rational2 = new Rational(rationalDenum[0], rationalDenum[1]);
@@ -95,21 +110,32 @@ const isAnswerValid: VEA<Identifiers> = (
     .toTree({ allowFractionToDecimal: true });
 
   const texs = answerTree.toAllValidTexs();
-  return texs.includes(ans);
+
+  if (opts?.allowNonIrreductible) {
+    const parsed = rationalParser(ans);
+    if (!parsed) return false;
+    return texs.includes(parsed.simplify().toTex());
+  } else {
+    return texs.includes(ans);
+  }
 };
 
-export const fractionsProduct: Exercise<Identifiers> = {
+const options = [allowNonIrreductibleOption];
+
+export const fractionsProduct: Exercise<Identifiers, Options> = {
   id: "fractionsProduct",
   connector: "=",
   label: "Produits de fractions",
   levels: ["4ème", "3ème", "2nde", "CAP", "2ndPro", "1rePro"],
   sections: ["Fractions"],
   isSingleStep: false,
-  generator: (nb: number) => getDistinctQuestions(getFractionsProduct, nb),
+  generator: (nb, opts) =>
+    getDistinctQuestions(() => getFractionsProduct(opts), nb),
   qcmTimer: 60,
   freeTimer: 60,
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
   hasHintAndCorrection: true,
+  options,
 };

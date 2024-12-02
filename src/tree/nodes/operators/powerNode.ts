@@ -4,11 +4,15 @@ import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { MultiplyNode, isMultiplyNode } from "./multiplyNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
+import { isSqrtNode } from "../functions/sqrtNode";
 
 export function isPowerNode(a: Node): a is PowerNode {
   return isOperatorNode(a) && a.id === OperatorIds.power;
 }
 
+export function isSquareNode(a: Node): a is SquareNode {
+  return isOperatorNode(a) && a.id === OperatorIds.square;
+}
 export const square = (a: AlgebraicNode | number | string) => {
   const nodeA =
     typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
@@ -106,93 +110,6 @@ export class PowerNode implements OperatorNode {
       this.rightChild.toDetailedEvaluation(vars),
     );
   }
-  // simplify(): AlgebraicNode {
-  //   const leftSimplified = this.leftChild.simplify();
-  //   const rightSimplified = this.rightChild.simplify();
-  //   const copy = new PowerNode(leftSimplified, rightSimplified, this.opts);
-
-  //   if (isNumberNode(rightSimplified)) {
-  //     const value = rightSimplified.value;
-  //     if (value === 0) return new NumberNode(1);
-  //     if (value === 1) return leftSimplified;
-  //   }
-
-  //   if (isNumberNode(leftSimplified)) {
-  //     const value = leftSimplified.value;
-  //     if (value === 0) return leftSimplified;
-  //     if (value === 1) return leftSimplified;
-  //   }
-
-  //   let externals: AlgebraicNode[] = [];
-  //   //TODO Fractions
-  //   const recursive = (node: AlgebraicNode) => {
-  //     if (isMultiplyNode(node)) {
-  //       recursive(node.leftChild);
-  //       recursive(node.rightChild);
-  //     } else {
-  //       externals.push(node);
-  //     }
-  //   };
-  //   recursive(copy.leftChild)
-
-  //   const simplifyIteration = () => {
-  //     for (let i = 0; i < externals.length - 1; i++) {
-  //       const left = externals[i];
-  //       for (let j = i + 1; j < externals.length; j++) {
-  //         const right = externals[j];
-  //         const simplified = simplifyExternalNodes(left, right);
-  //         if (simplified) {
-  //           externals[i] = simplified;
-  //           externals.splice(j, 1);
-  //           if (isNumberNode(simplified) && simplified.value === 1) {
-  //             externals.splice(i, 1);
-  //           }
-  //           simplifyIteration();
-  //           return;
-  //         }
-  //       }
-  //     }
-  //   };
-  //   simplifyIteration();
-
-  //   if (isNumberNode(rightSimplified) && isNumberNode(leftSimplified)) {
-  //     const value = this.evaluate({});
-  //     // à partir de ^21 et de ^-7, javascript returns des écritures scientifiques
-  //     if (
-  //       Math.abs(value) < Math.pow(10, 21) ||
-  //       Math.abs(value) < Math.pow(10, -7)
-  //     ) {
-  //       return new NumberNode(value);
-  //     } else return this;
-  //   }
-  //   if (isExpNode(leftSimplified) && isLogNode(rightSimplified)) {
-  //     return rightSimplified.child;
-  //   }
-  //   if (isPowerNode(leftSimplified)) {
-  //     return new PowerNode(
-  //       leftSimplified.leftChild,
-  //       new MultiplyNode(leftSimplified.rightChild, rightSimplified),
-  //     ).simplify();
-  //   }
-  //   if (isSqrtNode(leftSimplified) && isNumberNode(rightSimplified)) {
-  //     const powerValue = rightSimplified.value;
-  //     const powerIsEven = powerValue % 2 === 0;
-  //     if (powerIsEven) {
-  //       return new PowerNode(
-  //         leftSimplified.child,
-  //         new NumberNode(powerValue / 2),
-  //       ).simplify();
-  //     } else {
-  //       const parityPower = Math.floor(powerValue / 2);
-  //       return new MultiplyNode(
-  //         new PowerNode(leftSimplified.child, new NumberNode(parityPower)),
-  //         leftSimplified,
-  //       ).simplify();
-  //     }
-  //   }
-  //   return this;
-  //   // puissances négatives ?
-  // }
 
   simplify(opts?: SimplifyOptions): AlgebraicNode {
     const leftSimplified = this.leftChild.simplify(opts);
@@ -214,7 +131,13 @@ export class PowerNode implements OperatorNode {
         ),
       ).simplify(opts);
     }
-
+    if (
+      isSqrtNode(leftSimplified) &&
+      isNumberNode(rightSimplified) &&
+      rightSimplified.value === 2
+    ) {
+      return leftSimplified.child;
+    }
     if (isMultiplyNode(leftSimplified)) {
       return new MultiplyNode(
         new PowerNode(leftSimplified.leftChild, rightSimplified),
@@ -243,5 +166,6 @@ export class PowerNode implements OperatorNode {
 export class SquareNode extends PowerNode {
   constructor(child: AlgebraicNode, opts?: NodeOptions) {
     super(child, new NumberNode(2), opts);
+    this.id = OperatorIds.square;
   }
 }

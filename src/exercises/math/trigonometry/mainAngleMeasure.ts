@@ -79,14 +79,14 @@ $$
   `;
 };
 
-const getHint: GetHint<Identifiers> = (identifiers) => {
-  const angle = NodeConstructor.fromIdentifiers(identifiers.nodeIds);
+// const getHint: GetHint<Identifiers> = (identifiers) => {
+//   const angle = NodeConstructor.fromIdentifiers(identifiers.nodeIds);
 
-  return `La mesure principale d'un angle en radian est sa valeur appartenant à l'intervalle $]-\\pi; \\pi]$. Il faut donc ajouter (ou retirer) $2\\pi$ à $${angle.toTex()}$ jusqu'à ce que le résultat soit dans cet intervalle.`;
-};
-const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
-  return `a`;
-};
+//   return `La mesure principale d'un angle en radian est sa valeur appartenant à l'intervalle $]-\\pi; \\pi]$. Il faut donc ajouter (ou retirer) $2\\pi$ à $${angle.toTex()}$ jusqu'à ce que le résultat soit dans cet intervalle.`;
+// };
+// const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
+//   return `a`;
+// };
 
 const getKeys: GetKeys<Identifiers> = (identifiers) => {
   return ["pi"];
@@ -105,7 +105,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer, degree }) => {
 
 const getMainAngleMeasureQuestion: QuestionGenerator<Identifiers> = () => {
   const value = random(mainTrigoValues);
-  const multipleOf2PiToAdd = randint(-3, 4, [0]);
+  const multipleOf2PiToAdd = randint(-100, 100, [0]);
   const node = new AddNode(
     value.angle,
     new MultiplyNode((2 * multipleOf2PiToAdd).toTree(), PiNode),
@@ -121,8 +121,8 @@ const getMainAngleMeasureQuestion: QuestionGenerator<Identifiers> = () => {
     keys: getKeys(identifiers),
     answerFormat: "tex",
     identifiers,
-    hint: getHint(identifiers),
-    correction: getCorrection(identifiers),
+    // hint: getHint(identifiers),
+    // correction: getCorrection(identifiers),
   };
 
   return question;
@@ -141,8 +141,8 @@ export const mainAngleMeasure: Exercise<Identifiers> = {
   getPropositions,
   isAnswerValid,
   subject: "Mathématiques",
-  getHint,
-  getCorrection,
+  // getHint,
+  // getCorrection,
   getAnswer,
-  hasHintAndCorrection: true,
+  // hasHintAndCorrection: false,
 };
