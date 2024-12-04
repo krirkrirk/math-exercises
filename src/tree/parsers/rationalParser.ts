@@ -26,7 +26,4 @@ export const rationalParser = (ans: string) => {
     const nodeFracs = fracs.map((e) => e.unfrenchify().toTree());
     return opposite(frac(nodeFracs[0], nodeFracs[1]));
   }
-  // const nb = ans.unfrenchify();
-  // if (isNaN(nb)) return false;
-  // return nb.frenchify();
 };

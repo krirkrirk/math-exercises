@@ -153,24 +153,15 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
 
 const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
   const powerNode = power(a, b + c);
-  //version frac ou number
-  //version power absolute
-  //version 1/power
   const answerTree = powerNode.simplify();
   const ev = answerTree.evaluate();
 
   const parsed = rationalParser(ans);
-  console.log(parsed, ev);
   if (parsed && Math.abs(parsed.evaluate() - ev) < 0.000001) return true;
   const powerParsed = powerParser(ans);
   if (powerParsed && Math.abs(powerParsed.evaluate() - ev) < 0.000001)
     return true;
   return false;
-  // const texs = answerTree.toAllValidTexs();
-
-  // const rawTex = powerNode.toTex();
-  // if (!texs.includes(rawTex)) texs.push(rawTex);
-  // return texs.includes(ans);
 };
 
 export const powersOfTenProduct: Exercise<Identifiers> = {

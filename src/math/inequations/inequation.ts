@@ -5,6 +5,9 @@ export abstract class InequationSymbolConstructor {
   static random() {
     return new InequationSymbol(random(["<", ">", "\\le", "\\ge"]));
   }
+  static randomSymbol() {
+    return random<InegalitySymbols>(["<", ">", "\\le", "\\ge"]);
+  }
 }
 export class InequationSymbol {
   isStrict: boolean;

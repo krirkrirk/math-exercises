@@ -8,6 +8,9 @@ import {
   GetInstruction,
   GetStudentGGBOptions,
   GetGGBAnswer,
+  GeneratorOption,
+  GeneratorOptionType,
+  GeneratorOptionTarget,
 } from "#root/exercises/exercise";
 import { toolBarConstructor } from "#root/exercises/utils/geogebra/toolBarConstructor";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
@@ -31,8 +34,20 @@ type Identifiers = {
   translationPoints: string[];
 };
 
-const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
-  return `Placer l'image du point $${identifiers.startPoint}$ par la translation qui transforme $${identifiers.translationPoints[0]}$ en $${identifiers.translationPoints[1]}$.`;
+type Options = {
+  useVector: boolean;
+};
+const getInstruction: GetInstruction<Identifiers, Options> = (
+  identifiers,
+  opts,
+) => {
+  return `Placer l'image du point $${
+    identifiers.startPoint
+  }$ par la translation ${
+    opts?.useVector
+      ? `de vecteur $\\overrightarrow{${identifiers.translationPoints[0]}${identifiers.translationPoints[1]}}$.`
+      : `qui transforme $${identifiers.translationPoints[0]}$ en $${identifiers.translationPoints[1]}$.`
+  }`;
 };
 
 const getEndPoint = (identifiers: Identifiers) => {
@@ -106,8 +121,9 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
 };
 
 const getPointImageFromTranslationQuestion: QuestionGenerator<
-  Identifiers
-> = () => {
+  Identifiers,
+  Options
+> = (opts) => {
   const points: Point[] = [];
   for (let i = 0; i < 4; i++) {
     const name = String.fromCharCode(65 + i);
@@ -129,9 +145,9 @@ const getPointImageFromTranslationQuestion: QuestionGenerator<
     startPoint,
     translationPoints,
   };
-  const question: Question<Identifiers> = {
+  const question: Question<Identifiers, Options> = {
     ggbAnswer: getGGBAnswer(identifiers),
-    instruction: getInstruction(identifiers),
+    instruction: getInstruction(identifiers, opts),
     studentGgbOptions: getStudentGGBOptions(identifiers),
     identifiers,
     // hint: getHint(identifiers),
@@ -141,12 +157,20 @@ const getPointImageFromTranslationQuestion: QuestionGenerator<
   return question;
 };
 
-export const pointImageFromTranslation: Exercise<Identifiers> = {
+const options: GeneratorOption[] = [
+  {
+    id: "useVector",
+    label: 'Utiliser le terme "translation de vecteur"',
+    type: GeneratorOptionType.checkbox,
+    target: GeneratorOptionTarget.instruction,
+  },
+];
+export const pointImageFromTranslation: Exercise<Identifiers, Options> = {
   id: "pointImageFromTranslation",
   label: "Placer l'image d'un point par une translation",
   isSingleStep: true,
-  generator: (nb: number) =>
-    getDistinctQuestions(getPointImageFromTranslationQuestion, nb),
+  generator: (nb, opts) =>
+    getDistinctQuestions(() => getPointImageFromTranslationQuestion(opts), nb),
   ggbTimer: 60,
   isGGBAnswerValid,
   subject: "Mathématiques",
@@ -155,4 +179,5 @@ export const pointImageFromTranslation: Exercise<Identifiers> = {
   getGGBAnswer,
   getStudentGGBOptions,
   answerType: "GGB",
+  options,
 };

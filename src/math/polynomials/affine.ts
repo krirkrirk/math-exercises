@@ -1,3 +1,4 @@
+import { randomColor } from "#root/geogebra/colors";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { Nombre } from "../numbers/nombre";
@@ -76,5 +77,9 @@ export class Affine extends Polynomial {
 
   toReducedEquation(): string {
     return `y=${this.toTex()}`;
+  }
+
+  toGGBCommands() {
+    return [`f(x) = ${this.toString()}`, `SetColor(f, "${randomColor()}")`];
   }
 }

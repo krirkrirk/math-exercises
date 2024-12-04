@@ -8,3 +8,4 @@ export * from "./twoFunctionsEquation";
 export * from "./twoFunctionsInequation";
 export * from "./inverseImageFunctionTable";
 export * from "./imageAntecedentFromSentence";
+export * from "./graphicInequationAffine";

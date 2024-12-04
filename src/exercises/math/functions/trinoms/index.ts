@@ -19,3 +19,6 @@ export * from "./solveSecondDegreeEquationByFactorisation";
 export * from "./solveSecondDegreeEquationFromCano";
 export * from "./trinomSignFromRoots";
 export * from "./coefficientsIdentification";
+export * from "./rootsSum";
+export * from "./rootsProduct";
+export * from "./findSecondRoot";

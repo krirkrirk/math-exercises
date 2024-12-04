@@ -1,42 +1,18 @@
-import { SqrtNode, sqrt } from "#root/tree/nodes/functions/sqrtNode";
-import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { AddNode, add } from "#root/tree/nodes/operators/addNode";
-import { FractionNode, frac } from "#root/tree/nodes/operators/fractionNode";
-import {
-  MultiplyNode,
-  multiply,
-} from "#root/tree/nodes/operators/multiplyNode";
-import {
-  PowerNode,
-  SquareNode,
-  square,
-} from "#root/tree/nodes/operators/powerNode";
-import {
-  SubstractNode,
-  substract,
-} from "#root/tree/nodes/operators/substractNode";
-import { VariableNode } from "#root/tree/nodes/variables/variableNode";
-import { Point } from "../geometry/point";
-import { Integer } from "../numbers/integer/integer";
-import { Rational } from "../numbers/rationals/rational";
-import { SquareRoot } from "../numbers/reals/real";
-import { Polynomial } from "./polynomial";
-import {
-  OppositeNode,
-  opposite,
-} from "#root/tree/nodes/functions/oppositeNode";
-import { gcd } from "../utils/arithmetic/gcd";
-import { AlgebraicNode, SimplifyOptions } from "#root/tree/nodes/algebraicNode";
+import { sqrt } from "#root/tree/nodes/functions/sqrtNode";
+import { add } from "#root/tree/nodes/operators/addNode";
+import { frac } from "#root/tree/nodes/operators/fractionNode";
+import { multiply } from "#root/tree/nodes/operators/multiplyNode";
+import { square } from "#root/tree/nodes/operators/powerNode";
+import { substract } from "#root/tree/nodes/operators/substractNode";
+import { opposite } from "#root/tree/nodes/functions/oppositeNode";
+import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { randint } from "../utils/random/randint";
 import { random } from "#root/utils/alea/random";
-import { blueMain } from "#root/geogebra/colors";
+import { NodeType } from "#root/tree/nodes/node";
 import {
-  NodeIds,
-  NodeOptions,
-  NodeType,
-  ToTexOptions,
-} from "#root/tree/nodes/node";
-import { NodeConstructor } from "#root/tree/nodes/nodeConstructor";
+  NodeConstructor,
+  NodeIdentifiers,
+} from "#root/tree/nodes/nodeConstructor";
 
 export abstract class GeneralTrinomConstructor {
   static random(
@@ -114,7 +90,29 @@ export abstract class GeneralTrinomConstructor {
   static fromCoeffs(coeffs: number[]) {
     return new GeneralTrinom(coeffs[2], coeffs[1], coeffs[0]);
   }
+
+  static fromIdentifiers(identifiers: GeneralTrinomIdentifiers) {
+    return new GeneralTrinom(
+      typeof identifiers.a === "number"
+        ? identifiers.a
+        : (NodeConstructor.fromIdentifiers(identifiers.a) as AlgebraicNode),
+      typeof identifiers.b === "number"
+        ? identifiers.b
+        : (NodeConstructor.fromIdentifiers(identifiers.b) as AlgebraicNode),
+      typeof identifiers.c === "number"
+        ? identifiers.c
+        : (NodeConstructor.fromIdentifiers(identifiers.c) as AlgebraicNode),
+      identifiers.opts,
+    );
+  }
 }
+
+export type GeneralTrinomIdentifiers = {
+  a: number | NodeIdentifiers;
+  b: number | NodeIdentifiers;
+  c: number | NodeIdentifiers;
+  opts?: GeneralTrinomOptions;
+};
 
 type GeneralTrinomOptions = { variable: string };
 export class GeneralTrinom {
@@ -171,10 +169,15 @@ export class GeneralTrinom {
   }
 
   toTree() {
-    return add(
-      multiply(this.a, square(this.variable)),
-      add(multiply(this.b, this.variable), this.c),
-    );
+    const bEv = this.b.evaluate();
+    const cEv = this.c.evaluate();
+    const highMonom = multiply(this.a, square(this.variable));
+    const middleMonom = multiply(this.b, this.variable);
+
+    if (!bEv && !cEv) return highMonom;
+    if (!cEv) return add(highMonom, middleMonom);
+    if (!bEv) return add(highMonom, this.c);
+    return add(highMonom, add(middleMonom, this.c));
   }
 
   toTex() {
@@ -182,5 +185,14 @@ export class GeneralTrinom {
   }
   getCoeffs() {
     return [this.c.evaluate(), this.b.evaluate(), this.a.evaluate()];
+  }
+
+  toIdentifiers(): GeneralTrinomIdentifiers {
+    return {
+      a: this.a.toIdentifiers(),
+      b: this.b.toIdentifiers(),
+      c: this.c.toIdentifiers(),
+      opts: { variable: this.variable },
+    };
   }
 }

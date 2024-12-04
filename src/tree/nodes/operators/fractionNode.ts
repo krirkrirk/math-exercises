@@ -294,4 +294,13 @@ export class FractionNode implements OperatorNode {
       this.rightChild.toDetailedEvaluation(vars),
     );
   }
+
+  toSimplificationString() {
+    const simplified = this.simplify();
+    const thisTex = this.toTex();
+    const simpTex = simplified.toTex();
+    const isSimplified = thisTex === simpTex;
+    if (isSimplified) return thisTex;
+    else return `${thisTex} = ${simpTex}`;
+  }
 }
