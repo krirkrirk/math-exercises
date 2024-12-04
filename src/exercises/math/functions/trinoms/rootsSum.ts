@@ -72,7 +72,7 @@ Que vaut la somme des racines de $f$ ?`;
 };
 
 const getHint: GetHint<Identifiers> = (identifiers) => {
-  return `Si $f(x) = ax^2 + bx + c$ admet deux racines, alors leur produit vaut : 
+  return `Si $f(x) = ax^2 + bx + c$ admet deux racines, alors leur somme vaut : 
   
 $$
 S = -\\frac{b}{a}
@@ -85,7 +85,7 @@ const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
   const bTex = trinom.b.toTex();
   const ans = frac(opposite(trinom.b), trinom.a);
 
-  return `Si $f(x) = ax^2 + bx + c$ admet deux racines, alors leur smomme $S$ vaut : 
+  return `Si $f(x) = ax^2 + bx + c$ admet deux racines, alors leur somme $S$ vaut : 
   
 $$
 S = \\frac{c}{a}

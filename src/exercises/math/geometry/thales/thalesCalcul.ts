@@ -255,8 +255,10 @@ const getThalesFindSideQuestion: QuestionGenerator<Identifiers, Options> = (
     isPapillon ? { coefficient: randfloat(1.2, 1.8) } : { spacing: 0.2 },
   );
   const line = new Line(triangle.vertexA, triangle.vertexC);
+
   const parallel = line.getParallele(pointD);
   const intersectLine = new Line(triangle.vertexB, triangle.vertexC);
+
   const pointE = parallel.intersect(
     intersectLine,
     randomLetter(true, [...summitNames, pointD.name]),

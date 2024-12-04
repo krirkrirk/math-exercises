@@ -1,5 +1,8 @@
 import { Point, PointConstructor, PointIdentifiers } from "./point";
-import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import {
+  SubstractNode,
+  substract,
+} from "#root/tree/nodes/operators/substractNode";
 import { PowerNode } from "#root/tree/nodes/operators/powerNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -8,6 +11,7 @@ import { randint } from "../utils/random/randint";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { randomLetter } from "#root/utils/strings/randomLetter";
 import { Segment } from "./segment";
+import { multiply } from "#root/tree/nodes/operators/multiplyNode";
 
 export type TriangleIdentifiers = {
   vertexA: PointIdentifiers;
@@ -69,6 +73,13 @@ export abstract class TriangleConstructor {
       triangle = new Triangle(pointA, pointB, pointC);
     } while (
       triangle.isRight() ||
+      //to prevent aligned
+      //shouldnt be done this way
+      substract(
+        multiply(substract(pointB.x, pointA.x), substract(pointC.y, pointA.y)),
+        multiply(substract(pointC.x, pointA.x), substract(pointB.y, pointA.y)),
+      ).evaluate() === 0 ||
+      //xb-xa * yc-ya = xc-xa * yb-ya
       pointA.distanceTo(pointB) === 0 ||
       pointB.distanceTo(pointC) === 0 ||
       pointC.distanceTo(pointA) === 0 ||

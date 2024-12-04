@@ -178,4 +178,5 @@ export const graphicInequationAffine: Exercise<Identifiers> = {
   getInstruction,
   getAnswer,
   getGGBOptions,
+  hasGeogebra: true,
 };
