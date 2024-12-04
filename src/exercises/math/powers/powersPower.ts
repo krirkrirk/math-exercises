@@ -5,7 +5,9 @@
 import { Power } from "#root/math/numbers/integer/power";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { PowerNode, power } from "#root/tree/nodes/operators/powerNode";
+import { powerParser } from "#root/tree/parsers/powerParser";
+import { rationalParser } from "#root/tree/parsers/rationalParser";
 import { shuffle } from "#root/utils/alea/shuffle";
 import {
   Exercise,
@@ -33,15 +35,16 @@ const getPowersPowerQuestion: QuestionGenerator<Identifiers, Options> = (
   const a = opts?.useOnlyPowersOfTen ? 10 : randint(-11, 11, [0, 1]);
   const [b, c] = [1, 2].map((el) => randint(-11, 11));
 
-  const statement = new PowerNode(
-    new PowerNode(new NumberNode(a), new NumberNode(b)),
-    new NumberNode(c),
-  );
-  let answerTree = new Power(a, b * c).simplify();
+  const statement = power(power(a, b), c);
+  let answerTree = power(a, b * c).simplify();
   const answer = answerTree.toTex();
   const statementTex = statement.toTex();
   const question: Question<Identifiers, Options> = {
-    instruction: `Simplifier : $${statementTex}$`,
+    instruction: `Simplifier : 
+    
+$$
+${statementTex}
+$$`,
 
     startStatement: statementTex,
     answer,
@@ -73,12 +76,16 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
   return shuffleProps(propositions, n);
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
-  const power = new Power(a, b * c);
-  const answerTree = power.simplify();
-  const texs = answerTree.toAllValidTexs();
-  const rawTex = power.toTree().toTex();
-  if (!texs.includes(rawTex)) texs.push(rawTex);
-  return texs.includes(ans);
+  const powerNode = power(a, b * c);
+  const answerTree = powerNode.simplify();
+  const ev = answerTree.evaluate();
+
+  const parsed = rationalParser(ans);
+  if (parsed && Math.abs(parsed.evaluate() - ev) < 0.000001) return true;
+  const powerParsed = powerParser(ans);
+  if (powerParsed && Math.abs(powerParsed.evaluate() - ev) < 0.000001)
+    return true;
+  return false;
 };
 export const powersOfTenPower: Exercise<Identifiers> = {
   id: "powersOfTenPower",

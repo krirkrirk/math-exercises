@@ -11,6 +11,7 @@ import { coinFlip } from "#root/utils/alea/coinFlip";
 import { random } from "#root/utils/alea/random";
 import { shuffle } from "#root/utils/alea/shuffle";
 import { doWhile } from "#root/utils/doWhile";
+import { Decimal } from "../decimals/decimal";
 import { Integer } from "../integer/integer";
 
 import { Nombre, NumberType } from "../nombre";
@@ -50,9 +51,9 @@ export abstract class RationalConstructor {
     const [num, denum] = shuffle([a, b]);
     return new Rational(sign * num, denum);
   }
-  static randomPureRational() {
+  static randomPureRational(max: number = 20) {
     const frac = doWhile(
-      () => RationalConstructor.randomIrreductible(20),
+      () => RationalConstructor.randomIrreductible(max),
       (x) => round(x.value, 10) === x.value,
     );
     return frac;
@@ -168,11 +169,23 @@ export class Rational implements Nombre {
 
   simplify(): Integer | Rational {
     const sign = this.num * this.denum > 0 ? 1 : -1;
-    const div = Math.abs(gcd(this.num, this.denum));
-    if (Math.abs(this.denum) === div) return new Integer(this.num / this.denum);
+    let intNum = this.num;
+    let intDenum = this.denum;
+    if (Math.floor(intNum) !== intNum || Math.floor(intDenum) !== intDenum) {
+      const numDec = new Decimal(intNum);
+      const denumDec = new Decimal(intDenum);
+      const numPrec = numDec.precision;
+      const denumPrec = denumDec.precision;
+      const totalPrec = Math.max(numPrec, denumPrec);
+      intNum = numDec.multiplyByPowerOfTen(totalPrec).value;
+      intDenum = denumDec.multiplyByPowerOfTen(totalPrec).value;
+    }
+    const div = Math.abs(gcd(intNum, intDenum));
+
+    if (Math.abs(intDenum) === div) return new Integer(intNum / intDenum);
     return new Rational(
-      (sign * Math.abs(this.num)) / div,
-      Math.abs(this.denum) / div,
+      (sign * Math.abs(intNum)) / div,
+      Math.abs(intDenum) / div,
     );
   }
 }

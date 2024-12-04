@@ -3,9 +3,15 @@ import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
 import { Node, NodeType } from "#root/tree/nodes/node";
 import { NumberNode, isNumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import {
+  MultiplyNode,
+  multiply,
+} from "#root/tree/nodes/operators/multiplyNode";
 import { SquareNode } from "#root/tree/nodes/operators/powerNode";
-import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import {
+  SubstractNode,
+  substract,
+} from "#root/tree/nodes/operators/substractNode";
 import { randint } from "../utils/random/randint";
 import { Point } from "./point";
 
@@ -59,17 +65,7 @@ export class Vector {
     return det.evaluate({}) === 0;
   }
   determinant(v: Vector): AlgebraicNode {
-    if (
-      [this.x.type, this.y.type, v.x.type, v.y.type].some(
-        (el) => el !== NodeType.number,
-      )
-    )
-      throw Error("general determinant not implemented");
-    const xValue = (this.x as NumberNode).value;
-    const yValue = (this.y as NumberNode).value;
-    const vxValue = (v.x as NumberNode).value;
-    const vyValue = (v.y as NumberNode).value;
-    return new NumberNode(xValue * vyValue - yValue * vxValue);
+    return substract(multiply(this.x, v.y), multiply(this.y, v.x)).simplify();
   }
 
   times(k: AlgebraicNode, name?: string) {

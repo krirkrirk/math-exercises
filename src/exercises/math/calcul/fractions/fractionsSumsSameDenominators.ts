@@ -23,8 +23,6 @@ import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
 import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { parseAlgebraic } from "#root/tree/parsers/latexParser";
-import { numberParser } from "#root/tree/parsers/numberParser";
 import { rationalParser } from "#root/tree/parsers/rationalParser";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
 import { alignTex } from "#root/utils/latex/alignTex";

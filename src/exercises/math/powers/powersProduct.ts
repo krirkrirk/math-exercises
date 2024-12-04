@@ -5,13 +5,21 @@
 import { Power } from "#root/math/numbers/integer/power";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { AddNode, add } from "#root/tree/nodes/operators/addNode";
+import {
+  MultiplyNode,
+  multiply,
+} from "#root/tree/nodes/operators/multiplyNode";
+import { PowerNode, power } from "#root/tree/nodes/operators/powerNode";
 import { alignTex } from "#root/utils/latex/alignTex";
 import { shuffle } from "#root/utils/alea/shuffle";
 import {
   Exercise,
+  GetAnswer,
+  GetCorrection,
+  GetHint,
+  GetInstruction,
+  GetStartStatement,
   Proposition,
   QCMGenerator,
   Question,
@@ -22,6 +30,8 @@ import {
 } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 import { v4 } from "uuid";
+import { rationalParser } from "#root/tree/parsers/rationalParser";
+import { powerParser } from "#root/tree/parsers/powerParser";
 
 type Identifiers = {
   a: number;
@@ -32,49 +42,93 @@ type Identifiers = {
 type Options = {
   useOnlyPowersOfTen: boolean;
 };
+
+const getInstruction: GetInstruction<Identifiers, Options> = (
+  identifiers,
+  opts,
+) => {
+  const { a, b, c } = identifiers;
+  const statement = multiply(power(a, b), power(a, c));
+
+  const statmentTex = statement.toTex();
+
+  return `Simplifier : 
+  
+$$
+${statmentTex}
+$$`;
+};
+
+const getStartStatement: GetStartStatement<Identifiers, Options> = (
+  identifiers,
+  opts,
+) => {
+  const { a, b, c } = identifiers;
+  const statement = multiply(power(a, b), power(a, c));
+  const statmentTex = statement.toTex();
+  return statmentTex;
+};
+
+const getHint: GetHint<Identifiers, Options> = (identifiers, opts) => {
+  return `Utilise la propriété :
+  
+$$
+${
+  opts?.useOnlyPowersOfTen
+    ? `10^n \\times 10^m = 10^{n+m}`
+    : `a^n \\times a^m = a^{n+m}`
+}
+$$
+`;
+};
+
+const getCorrection: GetCorrection<Identifiers, Options> = (
+  identifiers,
+  opts,
+) => {
+  const { a, b, c } = identifiers;
+  const addPower = power(a, add(b, c));
+  return `On sait que : 
+  
+$$
+${
+  opts?.useOnlyPowersOfTen
+    ? `10^n \\times 10^m = 10^{n+m}`
+    : `a^n \\times a^m = a^{n+m}`
+}
+$$
+    
+On a donc : 
+
+${alignTex([
+  [multiply(power(a, b), power(a, c)).toTex(), "=", addPower.toTex()],
+  ["", "=", addPower.simplify().toTex()],
+])}
+    `;
+};
+
+const getAnswer: GetAnswer<Identifiers, Options> = (identifiers) => {
+  const { a, b, c } = identifiers;
+  const answerTree = power(a, b + c, { allowPowerOne: false }).simplify();
+  const answer = answerTree.toTex();
+  return answer;
+};
 const getPowersProductQuestion: QuestionGenerator<Identifiers, Options> = (
   opts,
 ) => {
   const a = opts?.useOnlyPowersOfTen ? 10 : randint(-11, 11, [0]);
   const [b, c] = [1, 2].map((el) => randint(-11, 11));
 
-  const statement = new MultiplyNode(
-    new PowerNode(new NumberNode(a), new NumberNode(b)),
-    new PowerNode(new NumberNode(a), new NumberNode(c)),
-  );
-  const answerTree = new Power(a, b + c).simplify();
-  const answer = answerTree.toTex();
-  const statmentTex = statement.toTex();
+  const identifiers = { a, b, c };
   const question: Question<Identifiers, Options> = {
-    instruction: `Calculer : $${statmentTex}$`,
-
-    startStatement: statmentTex,
-    answer,
+    instruction: getInstruction(identifiers, opts),
+    startStatement: getStartStatement(identifiers, opts),
+    answer: getAnswer(identifiers),
     keys: [],
     answerFormat: "tex",
-    identifiers: { a, b, c },
-    hint: `Utilise la propriété : ${
-      opts?.useOnlyPowersOfTen
-        ? `$10^n \\times 10^m = 10^{n+m}$`
-        : `$a^n \\times a^m = a^{n+m}$`
-    }`,
-    correction: `On sait que ${
-      opts?.useOnlyPowersOfTen
-        ? `$10^n \\times 10^m = 10^{n+m}$`
-        : `$a^n \\times a^m = a^{n+m}$`
-    }.
-    
-On a donc : 
-
-${alignTex([
-  [
-    statmentTex,
-    "=",
-    new PowerNode(a.toTree(), new AddNode(b.toTree(), c.toTree())).toTex(),
-  ],
-  ["", "=", answer],
-])}
-    `,
+    identifiers,
+    hint: getHint(identifiers, opts),
+    correction: getCorrection(identifiers, opts),
   };
   return question;
 };
@@ -98,12 +152,25 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
-  const power = new Power(a, b + c);
-  const answerTree = power.simplify();
-  const texs = answerTree.toAllValidTexs();
-  const rawTex = power.toTree().toTex();
-  if (!texs.includes(rawTex)) texs.push(rawTex);
-  return texs.includes(ans);
+  const powerNode = power(a, b + c);
+  //version frac ou number
+  //version power absolute
+  //version 1/power
+  const answerTree = powerNode.simplify();
+  const ev = answerTree.evaluate();
+
+  const parsed = rationalParser(ans);
+  console.log(parsed, ev);
+  if (parsed && Math.abs(parsed.evaluate() - ev) < 0.000001) return true;
+  const powerParsed = powerParser(ans);
+  if (powerParsed && Math.abs(powerParsed.evaluate() - ev) < 0.000001)
+    return true;
+  return false;
+  // const texs = answerTree.toAllValidTexs();
+
+  // const rawTex = powerNode.toTex();
+  // if (!texs.includes(rawTex)) texs.push(rawTex);
+  // return texs.includes(ans);
 };
 
 export const powersOfTenProduct: Exercise<Identifiers> = {
@@ -138,14 +205,14 @@ export const powersOfTenProduct: Exercise<Identifiers> = {
   hasHintAndCorrection: true,
 };
 
-export const powersProduct: Exercise<Identifiers> = {
+export const powersProduct: Exercise<Identifiers, Options> = {
   id: "powersProduct",
   connector: "=",
   label: "Multiplication de puissances",
   levels: ["4ème", "3ème", "2nde"],
   sections: ["Puissances"],
   isSingleStep: true,
-  generator: (nb: number) =>
+  generator: (nb, opts) =>
     getDistinctQuestions(
       () => getPowersProductQuestion({ useOnlyPowersOfTen: false }),
       nb,
@@ -156,4 +223,9 @@ export const powersProduct: Exercise<Identifiers> = {
   isAnswerValid,
   subject: "Mathématiques",
   hasHintAndCorrection: true,
+  getAnswer,
+  getCorrection,
+  getHint,
+  getInstruction,
+  getStartStatement,
 };

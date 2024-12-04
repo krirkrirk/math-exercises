@@ -85,8 +85,11 @@ export class Line {
     if (line.isVertical) {
       return this.isVertical;
     }
-    return this.a!.equals(line.a!);
+    const vec = VectorConstructor.fromPoints(this.pointA, this.pointB);
+    const lineVec = VectorConstructor.fromPoints(line.pointA, line.pointB);
+    return vec.isColinear(lineVec);
   }
+
   getParallele(point: Point) {
     if (this.isVertical) {
       const y = add(point.y, 1).simplify();
@@ -228,7 +231,6 @@ export class Line {
     if (line.isParallele(this)) throw Error("Lines are parallel");
     const { a, b, c } = this.toCartesianCoeffs();
     const { a: a2, b: b2, c: c2 } = line.toCartesianCoeffs();
-
     const sys = new GeneralSystem([
       [a, b, opposite(c)],
       [a2, b2, opposite(c2)],

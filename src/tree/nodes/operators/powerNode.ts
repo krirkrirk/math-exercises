@@ -20,6 +20,18 @@ export const square = (a: AlgebraicNode | number | string) => {
   return new SquareNode(nodeA);
 };
 
+export const power = (
+  a: AlgebraicNode | number | string,
+  b: AlgebraicNode | number | string,
+  opts?: NodeOptions,
+) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  const nodeB =
+    typeof b === "number" ? b.toTree() : typeof b === "string" ? b.toTree() : b;
+  return new PowerNode(nodeA, nodeB, opts);
+};
+
 export class PowerNode implements OperatorNode {
   opts?: NodeOptions;
   id: OperatorIds;
@@ -117,6 +129,8 @@ export class PowerNode implements OperatorNode {
     const copy = new PowerNode(leftSimplified, rightSimplified, this.opts);
 
     //! temporaire
+    if (isNumberNode(leftSimplified) && leftSimplified.value === 1)
+      return (1).toTree();
     if (isNumberNode(rightSimplified) && rightSimplified.value === 0) {
       return new NumberNode(1);
     }
@@ -144,6 +158,7 @@ export class PowerNode implements OperatorNode {
         new PowerNode(leftSimplified.rightChild, rightSimplified),
       ).simplify(opts);
     }
+    //! j'aime po ce truc
     if (
       !opts?.keepPowers &&
       isNumberNode(copy.rightChild) &&

@@ -16,6 +16,7 @@ import {
   GeneratorOptionType,
   GeneratorOption,
   GeneratorOptionTarget,
+  ValidateOptions,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
 import { RationalConstructor } from "#root/math/numbers/rationals/rational";
@@ -104,7 +105,7 @@ const getIsTableProportionalNonIntegerQuestion: QuestionGenerator<
       ? randint(2, 10).toTree()
       : coeffType === "Décimal"
       ? randfloat(1.1, 10, 1).toTree()
-      : RationalConstructor.randomPureRational().toTree();
+      : RationalConstructor.randomPureRational(10).toTree();
 
   const getX = () => {
     return valuesType === "Entières"
@@ -150,7 +151,13 @@ const getIsTableProportionalNonIntegerQuestion: QuestionGenerator<
 
   return question;
 };
-
+// const validateOptions : ValidateOptions<Options> = (opts) => {
+//   if(!opts.coeffNumberTypes)
+//   return {
+//     valid: !!opts?.coeffNumberTypes,
+//     message: "Veuillez choisir un type de consigne.",
+//   };
+// },
 const options: GeneratorOption[] = [
   {
     id: "coeffNumberTypes",

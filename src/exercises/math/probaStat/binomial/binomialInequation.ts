@@ -244,4 +244,10 @@ export const binomialInequation: Exercise<Identifiers, Options> = {
   // getCorrection,
   getAnswer,
   options,
+  validateOptions: (opts) => {
+    return {
+      valid: !!opts?.instructionType,
+      message: "Veuillez choisir un type de consigne.",
+    };
+  },
 };

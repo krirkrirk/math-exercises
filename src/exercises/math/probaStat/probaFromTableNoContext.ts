@@ -45,7 +45,9 @@ const getInstruction: GetInstruction<Identifiers> = ({
   const bTotal = aCapB + aBarreCapB;
   const aBarreTotal = aBarreCapB + aBarreCapBBarre;
   const bBarreTotal = aBarreCapBBarre + aCapBBarre;
-  return `On considère deux événements $A$ et $B$. Le tableau suivant donne le nombre d'issues pour chacun des événements $A\\cap B$, $\\overline A\\cap B$, $A\\cap \\overline B$ et $\\overline A \\cap \\overline B$. Calculer la probabilité $${event}$.
+  return `On considère deux événements $A$ et $B$. 
+  
+Le tableau suivant donne le nombre d'issues pour chacun des événements $A\\cap B$, $\\overline A\\cap B$, $A\\cap \\overline B$ et $\\overline A \\cap \\overline B$. 
     
 ${mdTable([
   [" ", "$B$", "$\\overline{B}$", "Total"],
@@ -58,6 +60,8 @@ ${mdTable([
   ],
   ["Total", dollarize(bTotal), dollarize(bBarreTotal), dollarize(total)],
 ])}
+
+Calculer la probabilité $${event}$.
     `;
 };
 const getProbaFromTableNoContextQuestion: QuestionGenerator<

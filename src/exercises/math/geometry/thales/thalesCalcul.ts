@@ -305,4 +305,10 @@ export const thalesCalcul: Exercise<Identifiers, Options> = {
   getGGBOptions,
   options,
   hasGeogebra: true,
+  validateOptions: (opts) => {
+    return {
+      valid: !!opts?.configurationType,
+      message: "Veuillez choisir un type de figure.",
+    };
+  },
 };

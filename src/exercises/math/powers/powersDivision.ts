@@ -5,8 +5,8 @@
 import { Power } from "#root/math/numbers/integer/power";
 import { randint } from "#root/math/utils/random/randint";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
-import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { PowerNode } from "#root/tree/nodes/operators/powerNode";
+import { FractionNode, frac } from "#root/tree/nodes/operators/fractionNode";
+import { PowerNode, power } from "#root/tree/nodes/operators/powerNode";
 import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
 import { alignTex } from "#root/utils/latex/alignTex";
 import { shuffle } from "#root/utils/alea/shuffle";
@@ -21,6 +21,8 @@ import {
   tryToAddWrongProp,
 } from "../../exercise";
 import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
+import { rationalParser } from "#root/tree/parsers/rationalParser";
+import { powerParser } from "#root/tree/parsers/powerParser";
 
 type Identifiers = {
   a: number;
@@ -37,15 +39,16 @@ const getPowersDivisionQuestion: QuestionGenerator<Identifiers, Options> = (
   let a = opts!.useOnlyPowersOfTen ? 10 : randint(-11, 11, [0]);
   const [b, c] = [1, 2].map((el) => randint(-11, 11));
 
-  const statement = new FractionNode(
-    new PowerNode(new NumberNode(a), new NumberNode(b)),
-    new PowerNode(new NumberNode(a), new NumberNode(c)),
-  );
-  const answerTree = new Power(a, b - c).simplify();
+  const statement = frac(power(a, b), power(a, c));
+  const answerTree = power(a, b - c).simplify();
   const answer = answerTree.toTex();
   const statementTex = statement.toTex();
   const question: Question<Identifiers, Options> = {
-    instruction: `Simplifier : $${statementTex}$`,
+    instruction: `Simplifier : 
+    
+$$
+${statementTex}
+$$`,
     startStatement: statementTex,
     answer,
     keys: [],
@@ -108,12 +111,16 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer, a, b, c }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { a, b, c }) => {
-  const power = new Power(a, b - c);
-  const answerTree = power.simplify();
-  const texs = answerTree.toAllValidTexs();
-  const rawTex = power.toTree().toTex();
-  if (!texs.includes(rawTex)) texs.push(rawTex);
-  return texs.includes(ans);
+  const powerNode = power(a, b - c);
+  const answerTree = powerNode.simplify();
+  const ev = answerTree.evaluate();
+
+  const parsed = rationalParser(ans);
+  if (parsed && Math.abs(parsed.evaluate() - ev) < 0.000001) return true;
+  const powerParsed = powerParser(ans);
+  if (powerParsed && Math.abs(powerParsed.evaluate() - ev) < 0.000001)
+    return true;
+  return false;
 };
 export const powersDivision: Exercise<Identifiers> = {
   id: "powersDivision",

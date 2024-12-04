@@ -5,7 +5,7 @@ import { numberParser } from "./numberParser";
 export const rationalParser = (ans: string) => {
   const nb = numberParser(ans);
   if (nb !== false) {
-    return nb.toTree();
+    return nb.unfrenchify().toTree();
   }
   if (!ans.includes("\\frac")) return false;
 

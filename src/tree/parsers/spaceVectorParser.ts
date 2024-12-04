@@ -1,6 +1,3 @@
-import { SpacePoint } from "#root/math/geometry/spacePoint";
-import e from "express";
-import { numberParser } from "./numberParser";
 import { valueParser } from "./valueParser";
 import { SpaceVector } from "#root/math/geometry/spaceVector";
 

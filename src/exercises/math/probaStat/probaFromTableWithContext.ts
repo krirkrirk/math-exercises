@@ -43,9 +43,25 @@ const getInstruction: GetInstruction<Identifiers> = ({
   return `Le tableau suivant donne le nombre de filles et de garçons portant des lunettes dans un lycée : 
 
 ${mdTable([
-  [" ", "Porte des lunettes", "Ne porte pas de lunettes"],
-  ["Filles", dollarize(aCapB), dollarize(aCapBBarre)],
-  ["Garçons", dollarize(aBarreCapB), dollarize(aBarreCapBBarre)],
+  [" ", "Porte des lunettes", "Ne porte pas de lunettes", "Total"],
+  [
+    "Filles",
+    dollarize(aCapB),
+    dollarize(aCapBBarre),
+    dollarize(aCapB + aCapBBarre),
+  ],
+  [
+    "Garçons",
+    dollarize(aBarreCapB),
+    dollarize(aBarreCapBBarre),
+    dollarize(aBarreCapB + aBarreCapBBarre),
+  ],
+  [
+    "Total",
+    dollarize(aCapB + aBarreCapB),
+    dollarize(aCapBBarre + aBarreCapBBarre),
+    dollarize(aCapB + aCapBBarre + aBarreCapB + aBarreCapBBarre),
+  ],
 ])}
 
 On choisit un élève au hasard. Quelle est la probabilité de tomber sur ${event} ?

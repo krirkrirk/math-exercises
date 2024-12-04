@@ -196,7 +196,10 @@ export type QuestionHotFix<TIdentifiers, TOptions = {}> = (
   q: Question<TIdentifiers>,
   options?: TOptions,
 ) => Question<TIdentifiers>;
-
+export type ValidateOptions<TOptions = {}> = (options: TOptions) => {
+  valid: boolean;
+  message: string;
+};
 type PDFOptions = {
   //on pourrait mettre ici des props pour geogebra
   shouldSpreadPropositions?: boolean;

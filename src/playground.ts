@@ -34,11 +34,10 @@ import { PointConstructor } from "./math/geometry/point";
 import { randfloat } from "./math/utils/random/randfloat";
 import { VectorConstructor } from "./math/geometry/vector";
 import { square } from "./tree/nodes/operators/powerNode";
+import { Rational } from "./math/numbers/rationals/rational";
 
 export const playground = () => {
-  console.log(
-    sqrt(square(frac(2, 3)))
-      .simplify()
-      .toTex(),
-  );
+  // console.log(multiply(1.8, frac(3, 7)).simplify().toTex());
+  const ratio = new Rational(5.4, 7).simplify();
+  console.log(ratio.toTree().toTex());
 };

@@ -114,7 +114,7 @@ const getFindCoeffInProportionalTableNonIntegersQuestion: QuestionGenerator<
       ? randint(2, 10).toTree()
       : coeffType === "Décimal"
       ? randfloat(1.1, 10, 1).toTree()
-      : RationalConstructor.randomPureRational().toTree();
+      : RationalConstructor.randomPureRational(10).toTree();
 
   const getX = () => {
     return valuesType === "Entières"

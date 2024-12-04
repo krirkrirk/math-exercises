@@ -28,16 +28,20 @@ const getBasicSystemResolutionQuestion: QuestionGenerator<Identifiers> = () => {
   const isXAsked = coinFlip();
   const variable = isXAsked ? "x" : "y";
   const answer = isXAsked ? x.toTex() : y.toTex();
+
+  const identifiers = { coeffs: sys.coeffs, isXAsked };
   const question: Question<Identifiers> = {
     answer,
     instruction: `Soit le système d'équations suivant :
 
-$${sys.toTex()}$
+$$
+${sys.toTex()}
+$$
 
 Que vaut $${variable}$ ?`,
     keys: [],
     answerFormat: "tex",
-    identifiers: { coeffs: sys.coeffs, isXAsked },
+    identifiers,
   };
 
   return question;
