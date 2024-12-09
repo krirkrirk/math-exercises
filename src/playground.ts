@@ -35,9 +35,18 @@ import { randfloat } from "./math/utils/random/randfloat";
 import { VectorConstructor } from "./math/geometry/vector";
 import { square } from "./tree/nodes/operators/powerNode";
 import { Rational } from "./math/numbers/rationals/rational";
+import { parseLatex } from "./tree/parsers/latexParser";
 
 export const playground = () => {
-  // console.log(multiply(1.8, frac(3, 7)).simplify().toTex());
-  const ratio = new Rational(5.4, 7).simplify();
-  console.log(ratio.toTree().toTex());
+  // logIdentifiers();
+  // const parsed = parseLatex("^{^3}");
+  // console.log(parsed.toTex());
+};
+
+const logIdentifiers = () => {
+  const ids =
+    '{"xA":-3,"yA":-2,"yPrimeA":{"id":31,"child":{"id":3,"leftChild":{"id":7,"value":3},"rightChild":{"id":7,"value":2}}},"trinomCoeffs":[0.3888888888888889,0.833333333333333,-3]}';
+  const parsed = <Record<string, any>>JSON.parse(ids);
+  console.log(parsed);
+  console.log(NodeConstructor.fromIdentifiers({ ...parsed.yPrimeA }).toTex());
 };

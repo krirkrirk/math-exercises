@@ -56,8 +56,8 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
       ? [MinusInfinityNode, k]
       : [k, PlusInfinityNode];
     const closure = Closure.fromBrackets(
-      isTowardsLeft ? "]" : "[",
-      random(["]", "["]),
+      isTowardsLeft ? "]" : random(["]", "["]),
+      isTowardsLeft ? random(["]", "["]) : "[",
     );
 
     tryToAddWrongProp(

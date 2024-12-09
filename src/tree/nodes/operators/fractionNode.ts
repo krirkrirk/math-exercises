@@ -42,6 +42,13 @@ export class FractionNode implements OperatorNode {
     rightChild: AlgebraicNode,
     opts?: NodeOptions,
   ) {
+    if (
+      !opts?.allowDivideByZero &&
+      isNumberNode(rightChild) &&
+      rightChild.value === 0
+    ) {
+      throw new Error("Cannot divide by zero");
+    }
     this.id = OperatorIds.fraction;
     this.leftChild = leftChild;
     this.rightChild = rightChild;

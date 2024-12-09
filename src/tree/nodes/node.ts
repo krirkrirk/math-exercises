@@ -27,6 +27,8 @@ export type NodeOptions = {
   allowSimplifySqrt?: boolean;
   forceParenthesis?: boolean;
   toTexOptions?: ToTexOptions;
+  allowCommaInInterval?: boolean;
+  allowDivideByZero?: boolean;
 };
 
 export type ToTexOptions = {

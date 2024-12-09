@@ -27,12 +27,19 @@ import { randint } from "#root/math/utils/random/randint";
 import { AlgebraicNode } from "#root/tree/nodes/algebraicNode";
 import { EqualNode } from "#root/tree/nodes/equations/equalNode";
 import { NodeConstructor } from "#root/tree/nodes/nodeConstructor";
-import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
-import { SubstractNode } from "#root/tree/nodes/operators/substractNode";
+import { AddNode, add } from "#root/tree/nodes/operators/addNode";
+import {
+  MultiplyNode,
+  multiply,
+} from "#root/tree/nodes/operators/multiplyNode";
+import {
+  SubstractNode,
+  substract,
+} from "#root/tree/nodes/operators/substractNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { alignTex } from "#root/utils/latex/alignTex";
 import { random } from "#root/utils/alea/random";
+import { frac } from "#root/tree/nodes/operators/fractionNode";
 
 type Identifiers = {
   xA: number;
@@ -123,8 +130,14 @@ const getAnswerTree = ({ xA, yA, yPrimeA }: Identifiers) => {
     yA.toTree(),
     new MultiplyNode(yPrimeTree, xA.toTree()),
   ).simplify();
-  const ansTree = new AddNode(pente, b).simplify({
+
+  // const yPrimeTree = frac(-3, 2);
+  // const pente = multiply(yPrimeTree, "x");
+  // //f(a)-f'(a)a
+  // const b = substract((-2).toTree(), multiply(yPrimeTree, -3)).simplify();
+  const ansTree = add(pente, b).simplify({
     forceDistributeFractions: true,
+    forbidFactorize: true,
   });
   return ansTree;
 };

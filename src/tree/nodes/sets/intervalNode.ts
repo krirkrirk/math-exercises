@@ -1,3 +1,4 @@
+import { random } from "#root/utils/alea/random";
 import { getCartesiansProducts } from "#root/utils/arrays/cartesianProducts";
 import { permute } from "#root/utils/arrays/permutations";
 import { AlgebraicNode } from "../algebraicNode";
@@ -49,8 +50,8 @@ export class IntervalNode implements SetNode {
   }
 
   toAllValidTexs(opts?: NodeOptions) {
-    return this.toEquivalentNodes(opts ?? this.opts).map((node) =>
-      node.toTex(),
+    return this.toEquivalentNodes(opts ?? this.opts).flatMap((node) =>
+      node.toAllTexs(opts ?? this.opts),
     );
   }
 
@@ -120,15 +121,16 @@ export class IntervalNode implements SetNode {
     return new IntervalNode(this.a, this.b, Closure.rightReverse(this.closure));
   }
   toRandomDifferentClosure() {
-    return new IntervalNode(
-      this.a,
-      this.b,
-      Math.random() < 0.3
-        ? Closure.leftReverse(this.closure)
-        : Math.random() < 0.3
-        ? Closure.reverse(this.closure)
-        : Closure.rightReverse(this.closure),
-    );
+    if (isInfiniteNode(this.a) && isInfiniteNode(this.b)) return this;
+    let closure;
+    do {
+      const left = isInfiniteNode(this.a) ? "]" : random<"[" | "]">(["[", "]"]);
+      const right = isInfiniteNode(this.b)
+        ? "["
+        : random<"[" | "]">(["[", "]"]);
+      closure = Closure.fromBrackets(left, right);
+    } while (closure === this.closure);
+    return new IntervalNode(this.a, this.b, closure);
   }
   toComplement() {
     if (isInfiniteNode(this.a) && isInfiniteNode(this.b)) return this;
@@ -174,6 +176,13 @@ export class IntervalNode implements SetNode {
         ? "]"
         : "[";
     return `${left}${this.a.toTex()};${this.b.toTex()}${right}`;
+  }
+  toAllTexs(opts?: NodeOptions): string[] {
+    const res = [this.toTex()];
+    if (opts?.allowCommaInInterval) {
+      res.push(this.toTex().replace(";", ","));
+    }
+    return res;
   }
   toIdentifiers(): IntervalNodeIdentifiers {
     return {

@@ -230,6 +230,7 @@ const buildTreeForSameDepthTokens = (tokens: (string | AlgebraicNode)[]) => {
       }
     }
     if (token === "^") {
+      console.log(tempTokens[i - 1]);
       if (
         !tempTokens[i - 1] ||
         typeof tempTokens[i - 1] === "string" ||

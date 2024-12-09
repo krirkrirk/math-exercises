@@ -15,6 +15,7 @@ export const rationalParser = (ans: string) => {
     const parsedFracs = fracs.map((e) => numberParser(e));
     if (parsedFracs.some((e) => e === false)) return false;
     const nodeFracs = fracs.map((e) => e.unfrenchify().toTree());
+    if (nodeFracs[1].evaluate() === 0) return false;
     return frac(nodeFracs[0], nodeFracs[1]);
   }
   if (ans.startsWith("-")) {
@@ -24,6 +25,7 @@ export const rationalParser = (ans: string) => {
     const parsedFracs = fracs.map((e) => numberParser(e));
     if (parsedFracs.some((e) => e === false)) return false;
     const nodeFracs = fracs.map((e) => e.unfrenchify().toTree());
+    if (nodeFracs[1].evaluate() === 0) return false;
     return opposite(frac(nodeFracs[0], nodeFracs[1]));
   }
 };

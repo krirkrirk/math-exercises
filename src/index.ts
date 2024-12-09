@@ -1,3 +1,4 @@
+import { Exercise, Question } from "./exercises/exercise";
 import * as MathExercises from "./exercises/math";
 import * as PCExercises from "./exercises/pc";
 import "./prototypesEnhancement";
@@ -5,4 +6,4 @@ import "./prototypesEnhancement";
 const mathExercises = Object.values(MathExercises);
 const pcExercises = Object.values(PCExercises);
 
-export { mathExercises, pcExercises };
+export { mathExercises, pcExercises, Exercise, Question };

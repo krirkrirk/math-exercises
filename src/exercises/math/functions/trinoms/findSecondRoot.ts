@@ -121,7 +121,7 @@ const getFindSecondRootQuestion: QuestionGenerator<Identifiers> = (ops) => {
   // const firstRoot = coinFlip()
   //   ? randint(-10, 10).toTree()
   //   : RationalConstructor.randomIrreductibleWithSign(5).toTree();
-  const firstRoot = randint(-10, 10);
+  const firstRoot = randint(-10, 10, [0]);
   // const secondRoot = doWhile(
   //   () =>
   //     coinFlip()

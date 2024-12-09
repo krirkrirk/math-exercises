@@ -146,7 +146,7 @@ const isAnswerValid: VEA<Identifiers> = (
   { answer, a, b, closure, type },
 ) => {
   const interval = getAnswer(a, b, type, closure);
-  const texs = interval.toAllValidTexs();
+  const texs = interval.toAllValidTexs({ allowCommaInInterval: true });
   return texs.includes(ans);
 };
 export const squareImageInterval: Exercise<Identifiers> = {

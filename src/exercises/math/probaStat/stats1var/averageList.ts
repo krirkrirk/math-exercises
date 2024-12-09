@@ -12,6 +12,7 @@ import {
   GetInstruction,
 } from "#root/exercises/exercise";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { numberVEA } from "#root/exercises/vea/numberVEA";
 import { randfloat } from "#root/math/utils/random/randfloat";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
@@ -92,7 +93,7 @@ const getPropositions: QCMGenerator<Identifiers> = (
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+  return numberVEA(ans, answer);
 };
 
 export const averageList: Exercise<Identifiers> = {
