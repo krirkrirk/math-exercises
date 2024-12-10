@@ -88,7 +88,7 @@ const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
         new MultiplyNode((2).toTree(), PiNode),
       ).toTex(),
     ],
-    ["", "\\aprox", getAnswer(identifiers)],
+    ["", "\\approx", getAnswer(identifiers)],
   ])}
   `;
 };

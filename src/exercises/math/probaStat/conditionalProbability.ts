@@ -13,6 +13,7 @@ import { getDistinctQuestions } from "../../utils/getDistinctQuestions";
 import { round } from "#root/math/utils/round";
 import { shuffle } from "#root/utils/alea/shuffle";
 import { alignTex } from "#root/utils/latex/alignTex";
+import { numberVEA } from "#root/exercises/vea/numberVEA";
 type Identifiers = {
   flip: number;
   pA?: number;
@@ -234,7 +235,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  return ans === answer;
+  return numberVEA(ans, answer);
 };
 
 export const conditionalProbability: Exercise<Identifiers> = {

@@ -169,7 +169,7 @@ export const coefficientsIdentification: Exercise<Identifiers> = {
   id: "coefficientsIdentification",
   connector: "=",
   label:
-    "Reconnaître les coefficients d'un trinôme exprimé sous forme développée",
+    "Reconnaître les coefficients $a$, $b$ et $c$ d'un trinôme exprimé sous forme développée",
   isSingleStep: true,
   generator: (nb: number) =>
     getDistinctQuestions(getCoefficientsIdentificationQuestion, nb),
