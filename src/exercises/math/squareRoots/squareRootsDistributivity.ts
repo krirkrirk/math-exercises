@@ -53,7 +53,11 @@ const getSquareRootsDistributivityQuestion: QuestionGenerator<
     .toTex();
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Développer et simplifier : $${statement.toTex()}$`,
+    instruction: `Développer et simplifier : 
+    
+$$
+${statement.toTex()}
+$$`,
     keys: [],
     answerFormat: "tex",
     identifiers: { a, b: b.operand, c, d },

@@ -18,7 +18,6 @@ import {
   RationalConstructor,
 } from "#root/math/numbers/rationals/rational";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { parseAlgebraic } from "#root/tree/parsers/latexParser";
 import { rationalParser } from "#root/tree/parsers/rationalParser";
 import { shuffle } from "#root/utils/alea/shuffle";
 

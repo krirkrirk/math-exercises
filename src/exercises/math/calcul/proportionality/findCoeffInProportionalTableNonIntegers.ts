@@ -89,9 +89,13 @@ const getKeys: GetKeys<Identifiers> = (identifiers) => {
   return [];
 };
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  const parsed = parseAlgebraic(ans);
-  if (!parsed) return false;
-  return parsed.simplify().toTex() === answer;
+  try {
+    const parsed = parseAlgebraic(ans);
+    if (!parsed) return false;
+    return parsed.simplify().toTex() === answer;
+  } catch (err) {
+    return false;
+  }
 };
 
 const getFindCoeffInProportionalTableNonIntegersQuestion: QuestionGenerator<

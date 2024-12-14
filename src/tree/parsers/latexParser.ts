@@ -4,7 +4,7 @@ import { EqualNode } from "../nodes/equations/equalNode";
 import { OppositeNode } from "../nodes/functions/oppositeNode";
 import { SqrtNode } from "../nodes/functions/sqrtNode";
 import { InequationNode } from "../nodes/inequations/inequationNode";
-import { NumberNode } from "../nodes/numbers/numberNode";
+import { NumberNode, isNumberNode } from "../nodes/numbers/numberNode";
 import { PiNode } from "../nodes/numbers/piNode";
 import { AddNode } from "../nodes/operators/addNode";
 import { FractionNode } from "../nodes/operators/fractionNode";
@@ -28,8 +28,10 @@ const operators = ["+", "-", "\\div", "\\times", "^"];
 //cmds childless, like \\pi
 const symbols = [{ tex: "\\pi", node: PiNode }];
 
+//separators between trees
 const separators = ["=", "<", ">", "\\leq", "\\geq"];
 
+//le nombre de parentheses est il respecté
 const isDyck = (tokens: string[]) => {
   const brackets = tokens.filter((el) => el === "(" || el === ")");
   while (brackets.length) {
@@ -49,6 +51,8 @@ const isDyck = (tokens: string[]) => {
   return true;
 };
 
+//?on push les nb, commands, variables, symboles dans un array de token
+//?ex [3 ; +  ; \\pi ; \\frac ; { ; 2 ; x ; } ; { 3 ; x ; }]
 export const tokenize = (latex: string) => {
   const tokens: string[] = [];
   for (let i = 0; i < latex.length; i++) {
@@ -139,6 +143,9 @@ export const parseLatex = (latex: string) => {
   }
 };
 
+//? parcours en profondeur dans le sens où profondeur = ouverture d'un sous arbre math
+//? genre dans 3exp(x^2) , x^2 est à la profondeur 2 et ^2 est pronfondeur 3
+//
 const buildTree = (tokens: string[]) => {
   let currentDepth = 0;
   let maxDepth = 0;
@@ -152,7 +159,15 @@ const buildTree = (tokens: string[]) => {
     if (currentDepth > maxDepth) maxDepth = currentDepth;
     if (token === ")" || token === "}") currentDepth--;
   }
-  // console.log("depthed: ", depthedTokens);
+
+  //? on parcours en partant de profondeur max, pour chaque profondeur on build le tree de l'expression
+  //? ce tree remplace les tokens de cette profondeur
+  //? donc 3exp(x^2)
+  //?    -> via tokenize : [3, exp, x, ^, 2]
+  //?    -> to depthed: [{3, 0}, {exp, 0}, {x, 1}, {^, 1}, {2, 2}]
+  //?    -> itération 1 : [{3, 0}, {exp, 0}, {x, 1}, {^, 1}, {NumberNode(2), 1}]
+  //?    -> itération 2 : [{3, 0}, {exp, 0}, {SquareNode(x), 1}]
+  //?    -> itération 3 : Multiply(3, ExpNode(SquareNode(x)))
   while (true) {
     if (maxDepth === 0) {
       const tree = buildTreeForSameDepthTokens(
@@ -162,9 +177,10 @@ const buildTree = (tokens: string[]) => {
     }
     for (let i = 0; i < depthedTokens.length; i++) {
       const token = depthedTokens[i];
+      //? on commence par les tokens de depth max
       if (token.depth < maxDepth) continue;
-      //le token est forcément ici ( ou {
-      //et on est sur qu'il n'y a aucun autre nestage à l'intérieur
+      //? le token est forcément ici ( ou {
+      //? et on est sur qu'il n'y a aucun autre nestage à l'intérieur
       const endIndex = depthedTokens.findIndex(
         (el, index) => index > i && (el.token === ")" || el.token === "}"),
       );
@@ -175,21 +191,25 @@ const buildTree = (tokens: string[]) => {
         token: tree,
         depth: token.depth - 1,
       });
-      // console.log(`depthed after iter ${i}`, depthedTokens);
     }
     maxDepth--;
   }
 };
 
 const buildTreeForSameDepthTokens = (tokens: (string | AlgebraicNode)[]) => {
-  // console.log("start: ", tokens);
+  //? à ce stade les tokens sont soit des charactères soit des nodes déjà build (par buildTree)
+  //? ici on n'est dans une profondeur unique
   let tempTokens: (string | AlgebraicNode)[] = [];
+
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
+    //?buildTree a déjà pu build des expressions de profondeur plus grande
     if (typeof token !== "string") {
       tempTokens[i] = token;
       continue;
     }
+
+    //? les nombres, variables et symboles (pi) sont direct push en node
     if (token[0].match(/[0-9]/)) {
       tempTokens[i] = new NumberNode(Number(token));
     } else if (token[0].match(/[a-z]/i))
@@ -198,6 +218,7 @@ const buildTreeForSameDepthTokens = (tokens: (string | AlgebraicNode)[]) => {
       const obj = symbols.find((el) => el.tex === token)!;
       tempTokens[i] = obj.node;
     }
+
     //! les fonctions qui attendent un child ne sont pas encore parsées
     else if (functions.includes(token)) {
       tempTokens[i] = token;
@@ -207,8 +228,7 @@ const buildTreeForSameDepthTokens = (tokens: (string | AlgebraicNode)[]) => {
     else throw Error(`token not implemented: ${token}`);
   }
 
-  // console.log("after parses : ", tempTokens);
-  //1 build les fct
+  //?1 build les fct
   for (let i = 0; i < tempTokens.length; i++) {
     if (typeof tempTokens[i] !== "string") continue;
     const token = tempTokens[i] as string;
@@ -230,7 +250,6 @@ const buildTreeForSameDepthTokens = (tokens: (string | AlgebraicNode)[]) => {
       }
     }
     if (token === "^") {
-      console.log(tempTokens[i - 1]);
       if (
         !tempTokens[i - 1] ||
         typeof tempTokens[i - 1] === "string" ||
@@ -338,7 +357,18 @@ const buildTreeForSameDepthTokens = (tokens: (string | AlgebraicNode)[]) => {
     const token = tempTokens[i];
     if (!currentAdd) {
       if (typeof token === "string") {
-        if (token === "+" || token === "-") {
+        //ici on accepte +3 (mais seulement en début de tree)
+        //donc +3 + X est ok
+        //mais pas x \\times +3
+        if (
+          token === "+" &&
+          !!tempTokens[i + 1] &&
+          typeof tempTokens[i + 1] !== "string" &&
+          isNumberNode(tempTokens[i + 1] as AlgebraicNode)
+        ) {
+          currentAdd = tempTokens[i + 1] as AlgebraicNode;
+          i++;
+        } else if (token === "+" || token === "-") {
           throw Error("Addition with no first term");
         } else throw Error(`unexpected non parsed token ${token}`);
       } else {

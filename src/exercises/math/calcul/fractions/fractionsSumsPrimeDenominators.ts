@@ -21,7 +21,6 @@ import {
 import { gcd } from "#root/math/utils/arithmetic/gcd";
 import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { parseAlgebraic } from "#root/tree/parsers/latexParser";
 import { rationalParser } from "#root/tree/parsers/rationalParser";
 
 type Identifiers = {

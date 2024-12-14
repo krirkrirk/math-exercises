@@ -5,6 +5,10 @@ import { rationalParser } from "#root/tree/parsers/rationalParser";
 export const rationalVEA = (studentAns: string, answer: string) => {
   const parsed = rationalParser(studentAns);
   if (!parsed) return false;
-  const parsedAnswer = parseAlgebraic(answer);
-  return Math.abs(parsed.evaluate() - parsedAnswer.evaluate()) < 0.0000001;
+  try {
+    const parsedAnswer = parseAlgebraic(answer);
+    return Math.abs(parsed.evaluate() - parsedAnswer.evaluate()) < 0.0000001;
+  } catch (err) {
+    return false;
+  }
 };

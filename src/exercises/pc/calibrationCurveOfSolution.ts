@@ -123,8 +123,7 @@ export const calibrationCurveOfSolution: Exercise<Identifiers> = {
   sections: ["Spectrophotométrie"],
   generator: (nb: number) =>
     getDistinctQuestions(getCalibrationCurveOfSolutionQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+  ggbTimer: 60,
   isGGBAnswerValid,
   answerType: "GGB",
   subject: "Physique",

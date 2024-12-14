@@ -39,7 +39,7 @@ import { parseLatex } from "./tree/parsers/latexParser";
 
 export const playground = () => {
   // logIdentifiers();
-  // const parsed = parseLatex("^{^3}");
+  // const parsed = parseLatex("x\\times +3");
   // console.log(parsed.toTex());
 };
 

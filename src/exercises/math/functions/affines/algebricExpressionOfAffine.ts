@@ -28,7 +28,7 @@ const getAlgebricExpressionOfAffineQuestion: QuestionGenerator<
   const question: Question<Identifiers> = {
     answer: f.toTex(),
     instruction: `Soit une fonction affine $f$ dont le coefficient directeur vaut $${a}$ et l'ordonnée à l'origine vaut $${b}$. Écrire l'expression algébrique de $f(x)$.`,
-    keys: ["x", "equal"],
+    keys: ["x"],
     answerFormat: "tex",
     identifiers: { a, b },
   };

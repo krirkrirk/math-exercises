@@ -57,8 +57,7 @@ export const drawAVectorInGGB: Exercise<Identifiers> = {
   sections: ["Géométrie cartésienne"],
   generator: (nb: number) =>
     getDistinctQuestions(getDrawAVectorInGgbQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+  ggbTimer: 60,
   answerType: "GGB",
   isGGBAnswerValid,
   subject: "Mathématiques",

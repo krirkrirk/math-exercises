@@ -1,6 +1,8 @@
 // import { equal } from "mathjs";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { AlgebraicNode } from "../algebraicNode";
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
+import { NodeConstructor, NodeIdentifiers } from "../nodeConstructor";
 
 export const equal = (
   a: AlgebraicNode | number | string,
@@ -12,6 +14,23 @@ export const equal = (
     typeof b === "number" ? b.toTree() : typeof b === "string" ? b.toTree() : b;
   return new EqualNode(nodeA, nodeB);
 };
+
+export type EqualNodeIdentifiers = {
+  id: NodeIds.equal;
+  leftChild: NodeIdentifiers;
+  rightChild: NodeIdentifiers;
+  opts?: NodeOptions;
+};
+
+export abstract class EqualNodeConstructor {
+  static fromIdentifiers(identifiers: EqualNodeIdentifiers): EqualNode {
+    return new EqualNode(
+      NodeConstructor.fromIdentifiers(identifiers.leftChild),
+      NodeConstructor.fromIdentifiers(identifiers.rightChild),
+      identifiers.opts,
+    );
+  }
+}
 
 export const isEqualNode = (node: Node): node is EqualNode =>
   node.type === NodeType.equality;
@@ -28,11 +47,12 @@ export class EqualNode implements Node {
     this.opts = opts;
   }
 
-  toIdentifiers() {
+  toIdentifiers(): EqualNodeIdentifiers {
     return {
       id: NodeIds.equal,
       leftChild: this.leftChild.toIdentifiers(),
       rightChild: this.rightChild.toIdentifiers(),
+      opts: this.opts,
     };
   }
   toEquivalentNodes(opts?: NodeOptions) {
@@ -69,6 +89,14 @@ export class EqualNode implements Node {
 
   simplify() {
     return this;
+  }
+
+  shuffle() {
+    return coinFlip() ? this : this.reverse();
+  }
+
+  reverse() {
+    return new EqualNode(this.rightChild, this.leftChild, this.opts);
   }
 
   // toMathjs() {

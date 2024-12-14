@@ -20,7 +20,6 @@ import {
 } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { AddNode } from "#root/tree/nodes/operators/addNode";
-import { parseAlgebraic } from "#root/tree/parsers/latexParser";
 import { rationalParser } from "#root/tree/parsers/rationalParser";
 import { coinFlip } from "#root/utils/alea/coinFlip";
 

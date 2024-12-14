@@ -136,8 +136,7 @@ export const buildMediatriceWithCompass: Exercise<Identifiers> = {
   sections: [],
   generator: (nb: number) =>
     getDistinctQuestions(getBuildMediatriceWithCompassQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+  ggbTimer: 60,
   getPropositions,
   isGGBAnswerValid,
   subject: "Mathématiques",

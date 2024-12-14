@@ -52,8 +52,7 @@ export const testGGBAnswer: Exercise<Identifiers> = {
   sections: ["Géométrie euclidienne"],
   generator: (nb: number) => getDistinctQuestions(getPlaceAPointQuestion, nb),
   answerType: "GGB",
-  qcmTimer: 60,
-  freeTimer: 60,
+  ggbTimer: 60,
   isGGBAnswerValid,
   subject: "Mathématiques",
 };

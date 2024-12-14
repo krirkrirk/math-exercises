@@ -108,7 +108,11 @@ const getSquareRootIdentitiesQuestion: QuestionGenerator<Identifiers> = () => {
   const answer = getAnswer(type, firstTerm, secondTerm).toTex();
   const question: Question<Identifiers> = {
     answer,
-    instruction: `Développer et simplifier : $${statement.toTex()}$`,
+    instruction: `Développer et simplifier : 
+    
+$$
+${statement.toTex()}
+$$`,
     keys: [],
     answerFormat: "tex",
     identifiers: { type, a: a.operand, b: b?.operand, x, y },

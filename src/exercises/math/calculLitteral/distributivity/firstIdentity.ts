@@ -49,7 +49,7 @@ export const getFirstIdentityQuestion: QuestionGenerator<Identifiers> = () => {
     keys: ["x"],
     answerFormat: "tex",
     identifiers: { a: affine.a, b: affine.b },
-    hint: `Utilise l'identité remarquable 
+    hint: `Utilise l'identité remarquable :
     
 $$
 (a+b)^2 = a^2 + 2ab+b^2

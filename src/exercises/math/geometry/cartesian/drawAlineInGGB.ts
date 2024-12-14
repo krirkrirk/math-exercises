@@ -85,8 +85,7 @@ export const drawAlineInGGB: Exercise<Identifiers> = {
   sections: ["Géométrie cartésienne"],
   generator: (nb: number) =>
     getDistinctQuestions(getDrawAlineInGgbQuestion, nb),
-  qcmTimer: 60,
-  freeTimer: 60,
+  ggbTimer: 60,
   isGGBAnswerValid,
   subject: "Mathématiques",
 };
