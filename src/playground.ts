@@ -36,11 +36,11 @@ import { VectorConstructor } from "./math/geometry/vector";
 import { square } from "./tree/nodes/operators/powerNode";
 import { Rational } from "./math/numbers/rationals/rational";
 import { parseLatex } from "./tree/parsers/latexParser";
+import { monomParser } from "./tree/parsers/monomParser";
+import { affineParser } from "./tree/parsers/affineParser";
 
 export const playground = () => {
-  // logIdentifiers();
-  // const parsed = parseLatex("x\\times +3");
-  // console.log(parsed.toTex());
+  console.log(affineParser("8"));
 };
 
 const logIdentifiers = () => {

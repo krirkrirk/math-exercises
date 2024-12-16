@@ -30,6 +30,7 @@ import {
   GeneratorOption,
   GeneratorOptionTarget,
   GeneratorOptionType,
+  GetAnswer,
   GetGGBOptions,
   GetInstruction,
   Proposition,
@@ -147,6 +148,9 @@ const getAnswerNode = (identifiers: Identifiers) => {
   }
 };
 
+const getAnswer: GetAnswer<Identifiers> = (identifiers: Identifiers) => {
+  return getAnswerNode(identifiers).toTex();
+};
 const getInstruction: GetInstruction<Identifiers, Options> = (
   identifiers,
   options,
@@ -220,7 +224,7 @@ const getProbabilityTree: QuestionGenerator<Identifiers, Options> = (opts) => {
   const question: Question<Identifiers, Options> = {
     instruction: getInstruction(identifiers, opts),
     startStatement: probaName,
-    answer: getAnswerNode(identifiers).toTex(),
+    answer: getAnswer(identifiers),
     keys: [],
     ggbOptions: getGGBOptions(identifiers, opts),
     answerFormat: "tex",
@@ -353,4 +357,6 @@ export const probabilityTree: Exercise<Identifiers, Options> = {
   subject: "Mathématiques",
   options,
   rebuildIdentifiers,
+  getInstruction,
+  getAnswer,
 };
