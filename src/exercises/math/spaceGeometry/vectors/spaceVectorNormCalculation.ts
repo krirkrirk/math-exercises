@@ -34,12 +34,12 @@ type Identifiers = {
 };
 
 const getHint: GetHint<Identifiers> = (identifiers) => {
-  return "La norme d'un vecteur de l'espace est la racine carrée de la somme des carrés de ses coordonnées.";
+  return "Dans un repère dans l'espace orthonormé, la norme d'un vecteur  est la racine carrée de la somme des carrés de ses coordonnées.";
 };
 
 const getCorrection: GetCorrection<Identifiers> = ({ x, y, z }) => {
   const answer = getAnswer({ x, y, z });
-  return `La norme d'un vecteur de l'espace est la racine carrée de la somme des carrés de ses coordonnées. Ici, on a donc : 
+  return `Dans un repère de l'espace orthonormé, la norme d'un vecteur  est la racine carrée de la somme des carrés de ses coordonnées. Ici, on a donc : 
  
 ${alignTex([
   [
@@ -77,7 +77,11 @@ const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
     identifiers.y.toTree(),
     identifiers.z.toTree(),
   );
-  return `Cacluler la norme du vecteur $${u.toTexWithCoords()}$`;
+  return `On se place dans un repère de l'espace orthonormé. Calculer la norme du vecteur : 
+
+$$
+${u.toTexWithCoords()}
+$$`;
 };
 
 const getSpaceVectorNormCalculationQuestion: QuestionGenerator<

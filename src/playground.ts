@@ -15,7 +15,7 @@ import {
   PlusInfinityNode,
 } from "./tree/nodes/numbers/infiniteNode";
 import { NumberNode } from "./tree/nodes/numbers/numberNode";
-import { AddNode } from "./tree/nodes/operators/addNode";
+import { AddNode, add } from "./tree/nodes/operators/addNode";
 import { MultiplyNode, multiply } from "./tree/nodes/operators/multiplyNode";
 import { SubstractNode } from "./tree/nodes/operators/substractNode";
 import { ClosureType } from "./tree/nodes/sets/closure";

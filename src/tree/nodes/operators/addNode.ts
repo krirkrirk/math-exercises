@@ -17,6 +17,7 @@ import { NumberNode, isNumberNode } from "../numbers/numberNode";
 import { MultiplyNode, isMultiplyNode } from "./multiplyNode";
 import { FractionNode, isFractionNode } from "./fractionNode";
 import { colorize } from "#root/utils/latex/colorize";
+import { round } from "#root/math/utils/round";
 
 export function isAddNode(a: Node): a is AddNode {
   return isOperatorNode(a) && a.id === OperatorIds.add;
@@ -275,7 +276,7 @@ export class AddNode implements CommutativeOperatorNode {
         ).simplify(opts);
       }
       if (isNumberNode(a) && isNumberNode(b)) {
-        return new NumberNode(a.value + b.value);
+        return new NumberNode(round(a.value + b.value, 12));
       }
       if (isOppositeNode(a) && isNumberNode(a.child) && isNumberNode(b)) {
         return new NumberNode(-a.child.value + b.value);

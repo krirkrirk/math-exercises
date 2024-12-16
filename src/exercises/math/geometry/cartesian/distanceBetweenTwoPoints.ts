@@ -44,7 +44,9 @@ const getDistanceBetweenTwoPoints: QuestionGenerator<Identifiers> = () => {
     .toTex();
 
   const question: Question<Identifiers> = {
-    instruction: `Soit $${A.toTexWithCoords()}$ et $${B.toTexWithCoords()}$. Calculer la distance $AB$.`,
+    instruction: `Dans un repère orthonormé, soit deux points $${A.toTexWithCoords()}$ et $${B.toTexWithCoords()}$. 
+    
+Calculer la distance $AB$.`,
     startStatement: "AB",
     answer,
     keys: [],

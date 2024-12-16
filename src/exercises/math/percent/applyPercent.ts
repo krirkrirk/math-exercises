@@ -1,3 +1,4 @@
+import { numberVEA } from "#root/exercises/vea/numberVEA";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
@@ -99,9 +100,7 @@ const getPropositions: QCMGenerator<Identifiers> = (n, { answer }) => {
 };
 
 const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
-  const answerTree = new NumberNode(Number(answer.replace(",", ".")));
-  const texs = answerTree.toAllValidTexs();
-  return texs.includes(ans);
+  return numberVEA(ans, answer);
 };
 
 export const applyPercent: Exercise<Identifiers> = {

@@ -1,60 +1,99 @@
 import {
   Exercise,
+  GetAnswer,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
   QuestionGenerator,
+  RebuildIdentifiers,
   VEA,
   addValidProp,
   tryToAddWrongProp,
 } from "#root/exercises/exercise";
 import { allowNonIrreductibleOption } from "#root/exercises/options/allowNonIrreductibleFractions";
 import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions";
+import { rationalVEA } from "#root/exercises/vea/rationalVEA";
 import { Integer } from "#root/math/numbers/integer/integer";
 import {
   Rational,
   RationalConstructor,
 } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
-import { AddNode } from "#root/tree/nodes/operators/addNode";
+import { AddNode, add } from "#root/tree/nodes/operators/addNode";
+import { frac } from "#root/tree/nodes/operators/fractionNode";
 import { rationalParser } from "#root/tree/parsers/rationalParser";
+import { coinFlip } from "#root/utils/alea/coinFlip";
 import { shuffle } from "#root/utils/alea/shuffle";
+
+type Identifiers = {
+  isIntegerFirst: boolean;
+  integer: number;
+  rational: [number, number];
+};
+
+const rebuildIdentifiers: RebuildIdentifiers<Identifiers> = (
+  oldIdentifiers,
+) => {
+  if (oldIdentifiers.isIntegerFirst !== undefined) return oldIdentifiers;
+  return {
+    integer: oldIdentifiers.integer,
+    isIntegerFirst: coinFlip(),
+    rational: oldIdentifiers.rational,
+  };
+};
+
+const getStatementNode = (identifiers: Identifiers) => {
+  const ratio = frac(identifiers.rational[0], identifiers.rational[1]);
+  const statement = identifiers.isIntegerFirst
+    ? add(identifiers.integer, ratio)
+    : add(ratio, identifiers.integer);
+  return statement;
+};
+const getInstruction: GetInstruction<Identifiers, Options> = (
+  identifiers,
+  opts,
+) => {
+  const statement = getStatementNode(identifiers);
+
+  return `Calculer ${
+    opts?.allowNonIrreductible
+      ? ""
+      : "et donner le résultat sous la forme la plus simplifiée possible"
+  } : 
+  
+$$
+${statement.toTex()}
+$$`;
+};
+
+const getAnswer: GetAnswer<Identifiers, Options> = (identifiers, opts) => {
+  const answerTree = getStatementNode(identifiers);
+  return answerTree.simplify().toTex();
+};
 
 const getFractionAndIntegerSum: QuestionGenerator<Identifiers, Options> = (
   opts,
 ) => {
   const rational = RationalConstructor.randomIrreductible();
-  const integer = new Integer(randint(-10, 11, [0]));
-  const statementTree = new AddNode(rational.toTree(), integer.toTree());
-  statementTree.shuffle();
-  const answerTree = rational.add(integer).toTree();
-  const answer = answerTree.toTex();
+  const integer = randint(-10, 11, [0]);
+  const isIntegerFirst = coinFlip();
+  const identifiers: Identifiers = {
+    integer: integer,
+    rational: [rational.num, rational.denum],
+    isIntegerFirst,
+  };
   const question: Question<Identifiers, Options> = {
-    instruction: `Calculer ${
-      opts?.allowNonIrreductible
-        ? ""
-        : "et donner le résultat sous la forme la plus simplifiée possible"
-    } : 
-  
-$$
-${statementTree.toTex()}
-$`,
-    startStatement: statementTree.toTex(),
-    answer,
+    instruction: getInstruction(identifiers, opts),
+    startStatement: getStatementNode(identifiers).toTex(),
+    answer: getAnswer(identifiers, opts),
     keys: [],
     answerFormat: "tex",
-    identifiers: {
-      integer: integer.value,
-      rational: [rational.num, rational.denum],
-    },
+    identifiers,
   };
   return question;
 };
 
-type Identifiers = {
-  integer: number;
-  rational: [number, number];
-};
 const getPropositions: QCMGenerator<Identifiers> = (
   n,
   { answer, integer, rational },
@@ -94,31 +133,19 @@ const options = [allowNonIrreductibleOption];
 
 const isAnswerValid: VEA<Identifiers, Options> = (
   ans,
-  { integer, rational },
+  { answer, integer, rational },
   opts,
 ) => {
-  const integerObj = new Integer(integer);
-  const rationalObj = new Rational(rational[0], rational[1]);
-  const answerTree = rationalObj
-    .add(integerObj)
-    .toTree({ allowFractionToDecimal: true });
-  const texs = answerTree.toAllValidTexs();
-  if (opts?.allowNonIrreductible) {
-    const parsed = rationalParser(ans);
-    if (!parsed) return false;
-    return texs.includes(parsed.simplify().toTex());
-  } else {
-    return texs.includes(ans);
-  }
+  return rationalVEA(ans, answer, {
+    allowNonIrreductible: !!opts?.allowNonIrreductible,
+  });
 };
 
 export const fractionAndIntegerSum: Exercise<Identifiers, Options> = {
   id: "fractionAndIntegerSum",
   connector: "=",
   label: "Somme d'un entier et d'une fraction",
-  levels: ["4ème", "3ème", "2nde", "CAP", "2ndPro", "1rePro"],
   isSingleStep: false,
-  sections: ["Fractions"],
   generator: (nb, opts) =>
     getDistinctQuestions(() => getFractionAndIntegerSum(opts), nb),
   qcmTimer: 60,
@@ -127,4 +154,7 @@ export const fractionAndIntegerSum: Exercise<Identifiers, Options> = {
   isAnswerValid,
   subject: "Mathématiques",
   options,
+  getAnswer,
+  getInstruction,
+  rebuildIdentifiers,
 };

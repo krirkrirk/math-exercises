@@ -10,6 +10,7 @@ import { MultiplyNode, isMultiplyNode } from "./multiplyNode";
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { operatorComposition } from "#root/tree/utilities/operatorComposition";
 import { AddNode, isAddNode } from "./addNode";
+import { NodeIdentifiers } from "../nodeConstructor";
 export function isFractionNode(a: Node): a is FractionNode {
   return isOperatorNode(a) && a.id === OperatorIds.fraction;
 }
@@ -26,6 +27,11 @@ export const frac = (
   return new FractionNode(nodeA, nodeB, opts);
 };
 
+export type FractionNodeIdentifiers = {
+  id: NodeIds.fraction;
+  leftChild: NodeIdentifiers;
+  rightChild: NodeIdentifiers;
+};
 export class FractionNode implements OperatorNode {
   opts?: NodeOptions;
   /**
@@ -61,7 +67,7 @@ export class FractionNode implements OperatorNode {
     return `(${this.leftChild.toMathString()}) / (${this.rightChild.toMathString()})`;
   }
 
-  toIdentifiers() {
+  toIdentifiers(): FractionNodeIdentifiers {
     return {
       id: NodeIds.fraction,
       leftChild: this.leftChild.toIdentifiers(),
@@ -106,7 +112,16 @@ export class FractionNode implements OperatorNode {
   toAllValidTexs(opts?: NodeOptions): string[] {
     return this.toEquivalentNodes(opts).map((node) => node.toTex());
   }
-
+  isDecimal() {
+    if (!isNumberNode(this.leftChild)) return false;
+    if (!isNumberNode(this.rightChild)) return false;
+    const simp = this.simplify();
+    if (isNumberNode(simp)) return true;
+    let denum = (simp as FractionNode).leftChild.evaluate();
+    while (denum % 2 === 0) denum = denum / 2;
+    while (denum % 5 === 0) denum = denum / 5;
+    return denum === 1;
+  }
   toTex(): string {
     if (
       !this.opts?.allowMinusAnywhereInFraction &&
