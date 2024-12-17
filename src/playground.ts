@@ -17,7 +17,7 @@ import {
 import { NumberNode } from "./tree/nodes/numbers/numberNode";
 import { AddNode, add } from "./tree/nodes/operators/addNode";
 import { MultiplyNode, multiply } from "./tree/nodes/operators/multiplyNode";
-import { SubstractNode } from "./tree/nodes/operators/substractNode";
+import { SubstractNode, substract } from "./tree/nodes/operators/substractNode";
 import { ClosureType } from "./tree/nodes/sets/closure";
 import { DiscreteSetNode } from "./tree/nodes/sets/discreteSetNode";
 import { coinFlip } from "./utils/alea/coinFlip";
@@ -34,14 +34,17 @@ import { PointConstructor } from "./math/geometry/point";
 import { randfloat } from "./math/utils/random/randfloat";
 import { VectorConstructor } from "./math/geometry/vector";
 import { square } from "./tree/nodes/operators/powerNode";
-import { Rational } from "./math/numbers/rationals/rational";
-import { parseLatex } from "./tree/parsers/latexParser";
+import {
+  Rational,
+  RationalConstructor,
+} from "./math/numbers/rationals/rational";
+import { parseAlgebraic, parseLatex } from "./tree/parsers/latexParser";
 import { monomParser } from "./tree/parsers/monomParser";
 import { affineParser } from "./tree/parsers/affineParser";
+import { TrinomConstructor } from "./math/polynomials/trinom";
+import { GeneralTrinomConstructor } from "./math/polynomials/generalTrinom";
 
-export const playground = () => {
-  console.log(affineParser("8"));
-};
+export const playground = () => {};
 
 const logIdentifiers = () => {
   const ids =

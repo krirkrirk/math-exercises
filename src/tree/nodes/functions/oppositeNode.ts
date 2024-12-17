@@ -119,4 +119,7 @@ export class OppositeNode implements FunctionNode {
   toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
     return new OppositeNode(this.child.toDetailedEvaluation(vars));
   }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    return opposite(this.child.derivative(varName));
+  }
 }

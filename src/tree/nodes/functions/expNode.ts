@@ -4,6 +4,14 @@ import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
 import { isNumberNode } from "../numbers/numberNode";
 import { isLogNode } from "./logNode";
+import { multiply } from "../operators/multiplyNode";
+
+export const exp = (a: AlgebraicNode | number | string) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  return new ExpNode(nodeA);
+};
+
 export function isExpNode(a: Node): a is ExpNode {
   return isFunctionNode(a) && a.id === FunctionsIds.exp;
 }
@@ -78,5 +86,8 @@ export class ExpNode implements FunctionNode {
   }
   toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
     return new ExpNode(this.child.toDetailedEvaluation(vars));
+  }
+  derivative(varName?: string | undefined) {
+    return multiply(this.child.derivative(varName), this);
   }
 }

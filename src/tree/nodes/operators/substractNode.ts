@@ -47,8 +47,8 @@ export class SubstractNode implements OperatorNode {
   toIdentifiers() {
     return {
       id: NodeIds.substract,
-      left: this.leftChild.toIdentifiers(),
-      right: this.rightChild.toIdentifiers(),
+      leftChild: this.leftChild.toIdentifiers(),
+      rightChild: this.rightChild.toIdentifiers(),
     };
   }
   toEquivalentNodes(): AlgebraicNode[] {
@@ -116,4 +116,14 @@ export class SubstractNode implements OperatorNode {
       this.rightChild.toDetailedEvaluation(vars),
     );
   }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    return substract(
+      this.leftChild.derivative(varName),
+      this.rightChild.derivative(varName),
+    );
+  }
+  shuffle = () => {
+    if (coinFlip())
+      [this.leftChild, this.rightChild] = [this.rightChild, this.leftChild];
+  };
 }

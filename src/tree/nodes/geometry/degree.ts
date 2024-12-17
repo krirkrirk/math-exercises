@@ -56,4 +56,7 @@ export class DegreeNode implements AlgebraicNode {
   toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
     return this;
   }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    throw new Error("unimplemented derivative");
+  }
 }

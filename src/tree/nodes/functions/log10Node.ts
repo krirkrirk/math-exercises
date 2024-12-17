@@ -102,4 +102,7 @@ export class Log10Node implements FunctionNode {
   toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
     return new Log10Node(this.child.toDetailedEvaluation(vars));
   }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    throw new Error("unimplemented derivative");
+  }
 }

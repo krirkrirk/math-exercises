@@ -4,6 +4,12 @@ import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
 import { hasVariableNode } from "../hasVariableNode";
 
+export const tan = (a: AlgebraicNode | number | string) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  return new TanNode(nodeA);
+};
+
 export function isTanNode(a: Node): a is TanNode {
   return isFunctionNode(a) && a.id === FunctionsIds.tan;
 }
@@ -78,5 +84,8 @@ export class TanNode implements FunctionNode {
   }
   toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
     return new TanNode(this.child.toDetailedEvaluation(vars));
+  }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    throw new Error("unimplemented derivative");
   }
 }

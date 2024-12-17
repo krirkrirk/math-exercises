@@ -3,10 +3,18 @@ import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { remarkableTrigoValues } from "#root/math/trigonometry/remarkableValues";
 import { hasVariableNode } from "../hasVariableNode";
+import { multiply } from "../operators/multiplyNode";
+import { cos } from "./cosNode";
 
 export function isSinNode(a: Node): a is SinNode {
   return isFunctionNode(a) && a.id === FunctionsIds.sin;
 }
+
+export const sin = (a: AlgebraicNode | number | string) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  return new SinNode(nodeA);
+};
 
 export class SinNode implements FunctionNode {
   id: FunctionsIds;
@@ -78,5 +86,8 @@ export class SinNode implements FunctionNode {
   }
   toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
     return new SinNode(this.child.toDetailedEvaluation(vars));
+  }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    return multiply(this.child.derivative(varName), cos(this.child));
   }
 }

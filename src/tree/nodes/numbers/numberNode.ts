@@ -70,4 +70,7 @@ export class NumberNode implements AlgebraicNode {
   toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
     return this;
   }
+  derivative(varName?: string | undefined) {
+    return (0).toTree() as AlgebraicNode;
+  }
 }

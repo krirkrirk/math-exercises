@@ -1,5 +1,6 @@
 import {
   Exercise,
+  GetInstruction,
   Proposition,
   QCMGenerator,
   Question,
@@ -12,17 +13,31 @@ import { getDistinctQuestions } from "#root/exercises/utils/getDistinctQuestions
 import { Rational } from "#root/math/numbers/rationals/rational";
 import { randint } from "#root/math/utils/random/randint";
 import { round } from "#root/math/utils/round";
-import { SqrtNode } from "#root/tree/nodes/functions/sqrtNode";
+import { SqrtNode, sqrt } from "#root/tree/nodes/functions/sqrtNode";
 import { Node } from "#root/tree/nodes/node";
 import { NumberNode } from "#root/tree/nodes/numbers/numberNode";
 import { FractionNode } from "#root/tree/nodes/operators/fractionNode";
-import { MultiplyNode } from "#root/tree/nodes/operators/multiplyNode";
+import {
+  MultiplyNode,
+  multiply,
+} from "#root/tree/nodes/operators/multiplyNode";
 import { VariableNode } from "#root/tree/nodes/variables/variableNode";
 import { shuffle } from "#root/utils/alea/shuffle";
 import { v4 } from "uuid";
 
 type Identifiers = {
   a: number;
+};
+
+const getStatementNode = (identifiers: Identifiers): Node => {
+  return multiply(identifiers.a, sqrt("x"));
+};
+const getInstruction: GetInstruction<Identifiers> = (identifiers) => {
+  return `Déterminer la fonction dérivée $f'$ de la fonction $f$ définie par :
+  
+$$
+f(x) = ${getStatementNode(identifiers).toTex()}
+$$ `;
 };
 
 const getRootFunctionDerivative: QuestionGenerator<Identifiers> = () => {
@@ -90,7 +105,7 @@ const isAnswerValid: VEA<Identifiers> = (ans, { a }) => {
 export const rootFunctionDerivative: Exercise<Identifiers> = {
   id: "rootFunctionDerivative",
   connector: "=",
-  label: "Dérivée d'une fonction racine",
+  label: "Dérivée d'une fonction racine carrée",
   levels: ["1reESM", "1reSpé", "1reTech", "MathComp"],
   sections: ["Dérivation", "Racines carrées"],
   isSingleStep: false,

@@ -3,9 +3,23 @@ import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { AlgebraicNode } from "../algebraicNode";
 import { coinFlip } from "#root/utils/alea/coinFlip";
+import { frac } from "./fractionNode";
 export function isDivideNode(a: Node): a is DivideNode {
   return isOperatorNode(a) && a.id === OperatorIds.divide;
 }
+
+export const divide = (
+  a: AlgebraicNode | number | string,
+  b: AlgebraicNode | number | string,
+  opts?: NodeOptions,
+) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  const nodeB =
+    typeof b === "number" ? b.toTree() : typeof b === "string" ? b.toTree() : b;
+  return new DivideNode(nodeA, nodeB);
+};
+
 const divideNodeToTex = (leftChild: Node, rightChild: Node) => {
   let rightTex = rightChild.toTex();
   let leftTex = leftChild.toTex();
@@ -24,6 +38,7 @@ const divideNodeToTex = (leftChild: Node, rightChild: Node) => {
       OperatorIds.add,
       OperatorIds.substract,
       OperatorIds.divide,
+      OperatorIds.multiply,
     ].includes(rightChild.id);
   }
   if (needBrackets) rightTex = `\\left(${rightTex}\\right)`;
@@ -91,7 +106,7 @@ export class DivideNode implements OperatorNode {
   //   return divide(this.leftChild.toMathjs(), this.rightChild.toMathjs());
   // }
   simplify() {
-    return this;
+    return frac(this.leftChild, this.rightChild).simplify();
   }
   equals(node: AlgebraicNode) {
     return (
@@ -106,4 +121,11 @@ export class DivideNode implements OperatorNode {
       this.rightChild.toDetailedEvaluation(vars),
     );
   }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    throw new Error("unimplemented derivative");
+  }
+  shuffle = () => {
+    if (coinFlip())
+      [this.leftChild, this.rightChild] = [this.rightChild, this.leftChild];
+  };
 }

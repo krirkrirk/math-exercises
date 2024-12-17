@@ -54,4 +54,9 @@ export class VariableNode implements AlgebraicNode {
       throw Error("Detailed Evaluation variable non handled");
     return vars[this.name];
   }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    const variable = varName ?? "x";
+    if (this.name === variable) return (1).toTree();
+    else return (0).toTree();
+  }
 }

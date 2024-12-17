@@ -86,7 +86,7 @@ const isGGBAnswerValid: GGBVEA<Identifiers> = (
   return (
     points.length === 1 &&
     points[0].y === 0 &&
-    Math.abs(points[0].x - coeff) < 0.1
+    Math.abs(points[0].x - coeff) < 0.2
   );
 };
 

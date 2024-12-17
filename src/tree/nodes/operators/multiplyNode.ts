@@ -28,7 +28,7 @@ import { isFunctionNode } from "../functions/functionNode";
 import { AddNode, add, isAddNode } from "./addNode";
 import { round } from "#root/math/utils/round";
 import { colorize } from "#root/utils/latex/colorize";
-import { isSubstractNode } from "./substractNode";
+import { isSubstractNode, substract } from "./substractNode";
 export function isMultiplyNode(a: Node): a is MultiplyNode {
   return isOperatorNode(a) && a.id === OperatorIds.multiply;
 }
@@ -115,9 +115,11 @@ export class MultiplyNode implements CommutativeOperatorNode {
     let needBrackets = rightTex[0] === "-";
     if (isOperatorNode(this.rightChild)) {
       const operatorRightChild = this.rightChild;
-      needBrackets ||= [OperatorIds.add, OperatorIds.substract].includes(
-        operatorRightChild.id,
-      );
+      needBrackets ||= [
+        OperatorIds.add,
+        OperatorIds.substract,
+        OperatorIds.divide,
+      ].includes(operatorRightChild.id);
     }
     if (needBrackets) rightTex = `\\left(${rightTex}\\right)`;
     if (leftTex === "-1" && !opts?.forceNoSimplification) {
@@ -128,7 +130,7 @@ export class MultiplyNode implements CommutativeOperatorNode {
 
     let showTimesSign =
       !opts?.forceDotSign &&
-      (this.opts?.forceTimesSign ||
+      (opts?.forceTimesSign ||
         !isNaN(+rightTex[0]) ||
         isNumberNode(this.rightChild) ||
         (isVariableNode(this.leftChild) &&
@@ -478,6 +480,14 @@ export class MultiplyNode implements CommutativeOperatorNode {
     return new MultiplyNode(
       this.leftChild.toDetailedEvaluation(vars),
       this.rightChild.toDetailedEvaluation(vars),
+    );
+  }
+
+  //(uv)' = u'v + uv'
+  derivative(varName?: string | undefined): AlgebraicNode {
+    return add(
+      multiply(this.leftChild.derivative(varName), this.rightChild),
+      multiply(this.leftChild, this.rightChild.derivative(varName)),
     );
   }
 }

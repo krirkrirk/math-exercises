@@ -34,6 +34,7 @@ export type NodeOptions = {
 export type ToTexOptions = {
   displayStyle?: boolean;
   forceDotSign?: boolean;
+  forceTimesSign?: boolean;
   //number est le nombre de décimals significatifs
   scientific?: number;
   hideUnit?: boolean;

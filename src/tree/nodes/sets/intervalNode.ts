@@ -5,12 +5,8 @@ import { AlgebraicNode } from "../algebraicNode";
 import { InequationNode } from "../inequations/inequationNode";
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { NodeIdentifiers } from "../nodeConstructor";
-import { isConstantNode } from "../numbers/constantNode";
-import {
-  MinusInfinityNode,
-  PlusInfinityNode,
-  isInfiniteNode,
-} from "../numbers/infiniteNode";
+import { isConstantNode, isInfiniteNode } from "../numbers/constantNode";
+import { MinusInfinityNode, PlusInfinityNode } from "../numbers/infiniteNode";
 import { VariableNode } from "../variables/variableNode";
 import { Closure, ClosureType } from "./closure";
 import { SetIds, SetNode, isSetNode } from "./setNode";

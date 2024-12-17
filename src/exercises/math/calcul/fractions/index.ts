@@ -10,3 +10,4 @@ export * from "./periodicWritingToFraction";
 export * from "./fractionsSumsSameDenominators";
 export * from "./fractionsSumsMultiplesDenominators";
 export * from "./fractionsSumsPrimeDenominators";
+export * from "./fractionsOperations";

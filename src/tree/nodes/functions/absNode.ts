@@ -4,6 +4,8 @@ import { FunctionNode, FunctionsIds, isFunctionNode } from "./functionNode";
 import { AlgebraicNode } from "../algebraicNode";
 import { isNumberNode } from "../numbers/numberNode";
 import { isOppositeNode } from "./oppositeNode";
+import { frac } from "../operators/fractionNode";
+import { multiply } from "../operators/multiplyNode";
 export function isAbsNode(a: Node): a is AbsNode {
   return isFunctionNode(a) && a.id === FunctionsIds.abs;
 }
@@ -66,5 +68,11 @@ export class AbsNode implements FunctionNode {
 
   toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
     return new AbsNode(this.child.toDetailedEvaluation(vars));
+  }
+
+  //|u|' = (u/|u|)*u'
+  derivative(varName?: string | undefined) {
+    const variable = varName ?? "x";
+    return multiply(frac(this.child, this), this.child.derivative(variable));
   }
 }

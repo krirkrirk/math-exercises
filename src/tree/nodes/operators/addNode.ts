@@ -411,4 +411,10 @@ export class AddNode implements CommutativeOperatorNode {
       this.rightChild.toDetailedEvaluation(vars),
     );
   }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    return add(
+      this.leftChild.derivative(varName),
+      this.rightChild.derivative(varName),
+    );
+  }
 }

@@ -69,4 +69,7 @@ export class BinomialCoefficientNode implements OperatorNode {
   toTex() {
     return `\\binom{${this.leftChild.toTex()}}${this.rightChild.toTex()}}`;
   }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    throw new Error("unimplemented derivative");
+  }
 }

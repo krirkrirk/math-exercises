@@ -16,6 +16,7 @@ export interface AlgebraicNode extends Node {
   simplify: (opts?: SimplifyOptions) => AlgebraicNode;
   equals: (node: AlgebraicNode) => boolean;
   isNumeric: boolean;
+  derivative: (varName?: string) => AlgebraicNode;
 }
 
 export const isAlgebraicNode = (node: Node): node is AlgebraicNode =>

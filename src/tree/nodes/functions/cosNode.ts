@@ -8,6 +8,12 @@ export function isCosNode(a: Node): a is CosNode {
   return isFunctionNode(a) && a.id === FunctionsIds.cos;
 }
 
+export const cos = (a: AlgebraicNode | number | string) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  return new CosNode(nodeA);
+};
+
 export class CosNode implements FunctionNode {
   id: FunctionsIds;
   child: AlgebraicNode;
@@ -78,5 +84,8 @@ export class CosNode implements FunctionNode {
   }
   toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
     return new CosNode(this.child.toDetailedEvaluation(vars));
+  }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    throw new Error("unimplemented derivative");
   }
 }

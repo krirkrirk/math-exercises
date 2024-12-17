@@ -2,7 +2,7 @@
 import { Node, NodeIds, NodeOptions, NodeType } from "../node";
 import { OperatorIds, OperatorNode, isOperatorNode } from "./operatorNode";
 import { NumberNode, isNumberNode } from "../numbers/numberNode";
-import { MultiplyNode, isMultiplyNode } from "./multiplyNode";
+import { MultiplyNode, isMultiplyNode, multiply } from "./multiplyNode";
 import { AlgebraicNode, SimplifyOptions } from "../algebraicNode";
 import { isSqrtNode } from "../functions/sqrtNode";
 
@@ -174,6 +174,20 @@ export class PowerNode implements OperatorNode {
       isPowerNode(node) &&
       node.leftChild.equals(this.leftChild) &&
       node.rightChild.equals(this.rightChild)
+    );
+  }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    if (
+      !isNumberNode(this.rightChild) ||
+      Math.floor(this.rightChild.value) !== this.rightChild.value
+    )
+      throw Error("unimplemented");
+    return multiply(
+      multiply(
+        this.rightChild,
+        power(this.leftChild, this.rightChild.value - 1),
+      ),
+      this.leftChild.derivative(varName),
     );
   }
 }

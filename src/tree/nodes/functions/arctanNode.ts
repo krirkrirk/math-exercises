@@ -75,4 +75,7 @@ export class ArctanNode implements FunctionNode {
   toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
     return new ArctanNode(this.child.toDetailedEvaluation(vars));
   }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    throw new Error("unimplemented derivative");
+  }
 }

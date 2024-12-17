@@ -75,4 +75,8 @@ export class ArccosNode implements FunctionNode {
   toDetailedEvaluation(vars: Record<string, AlgebraicNode>) {
     return new ArccosNode(this.child.toDetailedEvaluation(vars));
   }
+
+  derivative(varName?: string | undefined): AlgebraicNode {
+    throw new Error("unimplemented derivative");
+  }
 }

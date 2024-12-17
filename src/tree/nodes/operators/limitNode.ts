@@ -91,4 +91,7 @@ export class LimitNode implements OperatorNode {
       this.from,
     );
   }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    throw new Error("unimplemented derivative");
+  }
 }

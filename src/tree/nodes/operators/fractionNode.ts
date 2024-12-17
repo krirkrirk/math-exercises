@@ -325,4 +325,7 @@ export class FractionNode implements OperatorNode {
     if (isSimplified) return thisTex;
     else return `${thisTex} = ${simpTex}`;
   }
+  derivative(varName?: string | undefined): AlgebraicNode {
+    throw new Error("unimplemented derivative");
+  }
 }
