@@ -123,9 +123,14 @@ export class FractionNode implements OperatorNode {
     return denum === 1;
   }
   toTex(): string {
+    //! this stinks
+    //! to tex shouldn't be doing all of this
+    //! we need a "canonicalToTex" or a "purifyTex" in order to print correct latex without simplifying mathematically
     if (
       !this.opts?.allowMinusAnywhereInFraction &&
-      (isOppositeNode(this.leftChild) ||
+      ((isOppositeNode(this.leftChild) &&
+        isNumberNode(this.leftChild.child) &&
+        this.leftChild.child.value > 0) ||
         (isNumberNode(this.leftChild) && this.leftChild.value < 0))
     ) {
       return `-\\frac{${this.leftChild

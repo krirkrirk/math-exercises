@@ -112,7 +112,9 @@ const getStudentGGBOptions: GetStudentGGBOptions<Identifiers> = (
 const isGGBAnswerValid: GGBVEA<Identifiers> = (ans, { ggbAnswer }) => {
   const studentAns = ans.filter((c) => !["A", "B", "C", "D"].includes(c[0]));
   if (studentAns.length !== 1) return false;
-  const coords = ggbPointToCoords(studentAns[0].split("=")[1]);
+  const studentPoint = studentAns[0].split("=")[1];
+  if (studentPoint === undefined) return false;
+  const coords = ggbPointToCoords(studentPoint);
   const coordsAns = ggbPointToCoords(ggbAnswer[0].split("=")[1]);
   return (
     approxEqual(coords.x, coordsAns.x, 0.2) &&

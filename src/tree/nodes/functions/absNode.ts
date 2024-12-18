@@ -9,6 +9,11 @@ import { multiply } from "../operators/multiplyNode";
 export function isAbsNode(a: Node): a is AbsNode {
   return isFunctionNode(a) && a.id === FunctionsIds.abs;
 }
+export const abs = (a: AlgebraicNode | number | string) => {
+  const nodeA =
+    typeof a === "number" ? a.toTree() : typeof a === "string" ? a.toTree() : a;
+  return new AbsNode(nodeA);
+};
 export class AbsNode implements FunctionNode {
   id: FunctionsIds;
   child: AlgebraicNode;

@@ -44,7 +44,13 @@ import { affineParser } from "./tree/parsers/affineParser";
 import { TrinomConstructor } from "./math/polynomials/trinom";
 import { GeneralTrinomConstructor } from "./math/polynomials/generalTrinom";
 
-export const playground = () => {};
+export const playground = () => {
+  const fraction = frac(opposite(-6), opposite(4)).toSimplificationString();
+
+  console.log(fraction);
+  console.log(frac(opposite(-6), 4).toTex());
+  console.log(opposite(-6).toTex());
+};
 
 const logIdentifiers = () => {
   const ids =

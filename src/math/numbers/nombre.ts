@@ -62,4 +62,27 @@ export abstract class NombreConstructor {
     }
     return res;
   }
+  static manyRandom(
+    n: number,
+    {
+      types,
+      excludes,
+      allDifferent = false,
+    }: {
+      types?: NumberType[];
+      excludes?: Nombre[];
+      allDifferent?: boolean;
+    } = {},
+  ) {
+    const res = [];
+    res.push(NombreConstructor.random({ types, excludes }));
+    for (let i = 0; i < n - 1; i++) {
+      let b: Nombre;
+      do {
+        b = NombreConstructor.random({ types, excludes });
+      } while (allDifferent && res.some((el) => el.equals(b)));
+      res.push(b);
+    }
+    return res;
+  }
 }

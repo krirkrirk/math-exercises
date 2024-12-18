@@ -88,7 +88,7 @@ const getCorrection: GetCorrection<Identifiers> = (identifiers) => {
   return `Si $f(x) = ax^2 + bx + c$ admet deux racines, alors leur somme $S$ vaut : 
   
 $$
-S = \\frac{c}{a}
+S = \\frac{-b}{a}
 $$
 
 Ici, on a $a = ${aTex}$ et $b = ${bTex}$, donc :
@@ -107,11 +107,10 @@ const isAnswerValid: VEA<Identifiers> = (ans, { answer }) => {
 };
 
 const getRootsSumQuestion: QuestionGenerator<Identifiers> = (ops) => {
-  //(b,c) != 0
   //ac <= 0
   const a = randint(-10, 10, [0]);
   const b = randint(-10, 10);
-  const c = (a / Math.abs(a)) * randint(-10, 10, !b ? [0] : []);
+  const c = (a / Math.abs(a)) * randint(-10, 0, !b ? [0] : []);
   // const trinom = GeneralTrinomConstructor.randomNiceRoots(2);
   const trinom = new GeneralTrinom(a, b, c);
   const identifiers: Identifiers = {

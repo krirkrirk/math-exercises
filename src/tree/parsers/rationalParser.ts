@@ -28,4 +28,5 @@ export const rationalParser = (ans: string) => {
     if (nodeFracs[1].evaluate() === 0) return false;
     return opposite(frac(nodeFracs[0], nodeFracs[1]));
   }
+  return false;
 };

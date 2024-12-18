@@ -117,7 +117,7 @@ const getRootsProductQuestion: QuestionGenerator<Identifiers> = (ops) => {
   //ac <= 0
   const a = randint(-10, 10, [0]);
   const b = randint(-10, 10);
-  const c = (a / Math.abs(a)) * randint(-10, 10, !b ? [0] : []);
+  const c = (a / Math.abs(a)) * randint(-10, 0, !b ? [0] : []);
   const trinom = new GeneralTrinom(a, b, c);
   const identifiers: Identifiers = {
     trinomIdentifiers: trinom.toIdentifiers(),

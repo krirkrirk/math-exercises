@@ -1,5 +1,6 @@
 import { Exercise } from "../src/exercises/exercise";
 import {
+  absolueValueAffineEquation,
   factoType2,
   lengthConversion,
   marginalAndConditionalFrequency,
@@ -13,7 +14,7 @@ import { exoTest } from "./exoTest";
 
 test("singleExo", () => {
   try {
-    exoTest(thalesCalcul as Exercise<any, any>);
+    exoTest(absolueValueAffineEquation as Exercise<any, any>);
   } catch (err) {
     console.log(err);
     throw err;

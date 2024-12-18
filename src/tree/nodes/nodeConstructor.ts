@@ -42,6 +42,10 @@ import { SetNode } from "./sets/setNode";
 import { UnionIntervalNode } from "./sets/unionIntervalNode";
 import { VariableNode } from "./variables/variableNode";
 
+export const reifyAlgebraic = (identifiers: NodeIdentifiers) =>
+  NodeConstructor.fromIdentifiers(identifiers) as AlgebraicNode;
+export const reifyNode = (identifiers: NodeIdentifiers) =>
+  NodeConstructor.fromIdentifiers(identifiers);
 export type NodeIdentifiers = { id: NodeIds } & Record<string, any>;
 export abstract class NodeConstructor {
   static fromIdentifiers(identifiers: NodeIdentifiers): Node {
